@@ -1,243 +1,87 @@
 {
   "purpose": "test-only named reciprocal and deeper-prefix UI; none of these extra descendants is published",
   "index": {
-    "nodes": [
-      {
-        "path": "",
-        "locus": "overview",
-        "name": "cambium",
-        "parent": null,
-        "role": "wood",
-        "children": [
-          "w",
-          "x",
-          "z",
-          "y"
-        ],
-        "occupants": [],
-        "split_receipt": "synthetic-test-only"
-      },
-      {
-        "path": "w",
-        "locus": "vertex:w",
+    "name": "cambium",
+    "whole": "synthetic recursive navigation specimen used only to test named local refinement and shared geometric loci.",
+    "w": {
+      "name": "expression",
+      "whole": "synthetic expression whole used to test local refinement.",
+      "w": {
         "name": "expression",
-        "role": "wood",
-        "parent": "",
-        "children": [
-          "ww",
-          "wx",
-          "wz",
-          "wy"
-        ],
-        "occupants": [],
-        "split_receipt": "synthetic-test-only"
+        "whole": "synthetic finer self-continuation of expression."
       },
-      {
-        "path": "x",
-        "locus": "vertex:x",
-        "name": "continuity",
-        "role": "wood",
-        "parent": "",
-        "children": [
-          "xw",
-          "xx",
-          "xz",
-          "xy"
-        ],
-        "occupants": [],
-        "split_receipt": "synthetic-test-only"
-      },
-      {
-        "path": "z",
-        "locus": "vertex:z",
-        "name": "orientation",
-        "role": "cambium",
-        "parent": "",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "y",
-        "locus": "vertex:y",
-        "name": "renewal",
-        "role": "cambium",
-        "parent": "",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "ww",
-        "locus": "vertex:w",
-        "name": "expression",
-        "role": "router",
-        "parent": "w",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wx",
-        "locus": "junction:wx",
+      "x": {
         "name": "representation",
-        "role": "wood",
-        "parent": "w",
-        "children": [
-          "wxw",
-          "wxx",
-          "wxz",
-          "wxy"
-        ],
-        "occupants": [],
-        "split_receipt": "synthetic-test-only"
+        "whole": "synthetic shared whole where expression and continuity converge for reciprocal-trail testing.",
+        "w": {
+          "name": "shape",
+          "whole": "synthetic shape whole."
+        },
+        "x": {
+          "name": "representation",
+          "whole": "synthetic finer self-continuation of representation."
+        },
+        "z": {
+          "name": "comparison",
+          "whole": "synthetic shared comparison whole used for deeper reciprocal-trail testing."
+        },
+        "y": {
+          "name": "revision",
+          "whole": "synthetic revision whole."
+        }
       },
-      {
-        "path": "wz",
-        "locus": "junction:wz",
+      "z": {
         "name": "legibility",
-        "role": "wood",
-        "parent": "w",
-        "children": [
-          "wzw",
-          "wzx",
-          "wzz",
-          "wzy"
-        ],
-        "occupants": [],
-        "split_receipt": "synthetic-test-only"
+        "whole": "synthetic legibility whole used to test a second differentiated local context.",
+        "w": {
+          "name": "perception",
+          "whole": "synthetic perception whole."
+        },
+        "x": {
+          "name": "comparison",
+          "whole": "synthetic shared comparison whole used for deeper reciprocal-trail testing."
+        },
+        "z": {
+          "name": "legibility",
+          "whole": "synthetic finer self-continuation of legibility."
+        },
+        "y": {
+          "name": "adjustment",
+          "whole": "synthetic adjustment whole."
+        }
       },
-      {
-        "path": "wy",
-        "locus": "junction:wy",
+      "y": {
         "name": "iteration",
-        "role": "cambium",
-        "parent": "w",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "xw",
-        "locus": "junction:wx",
-        "name": "representation",
-        "role": "cambium",
-        "parent": "x",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "xx",
-        "locus": "vertex:x",
-        "name": "continuity",
-        "role": "router",
-        "parent": "x",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "xz",
-        "locus": "junction:xz",
-        "name": "addressability",
-        "role": "cambium",
-        "parent": "x",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "xy",
-        "locus": "junction:xy",
-        "name": "succession",
-        "role": "cambium",
-        "parent": "x",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wxw",
-        "locus": "junction:wwx",
-        "name": "shape",
-        "role": "cambium",
-        "parent": "wx",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wxx",
-        "locus": "junction:wx",
-        "name": "representation",
-        "role": "router",
-        "parent": "wx",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wxz",
-        "locus": "junction:wxz",
-        "name": "comparison",
-        "role": "cambium",
-        "parent": "wx",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wxy",
-        "locus": "junction:wxy",
-        "name": "revision",
-        "role": "cambium",
-        "parent": "wx",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wzw",
-        "locus": "junction:wwz",
-        "name": "perception",
-        "role": "cambium",
-        "parent": "wz",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wzx",
-        "locus": "junction:wxz",
-        "name": "comparison",
-        "role": "cambium",
-        "parent": "wz",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wzz",
-        "locus": "junction:wz",
-        "name": "legibility",
-        "role": "router",
-        "parent": "wz",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
-      },
-      {
-        "path": "wzy",
-        "locus": "junction:wzy",
-        "name": "adjustment",
-        "role": "cambium",
-        "parent": "wz",
-        "children": [],
-        "occupants": [],
-        "split_receipt": null
+        "whole": "synthetic iteration whole."
       }
-    ],
-    "files": []
+    },
+    "x": {
+      "name": "continuity",
+      "whole": "synthetic continuity whole used to test reciprocal convergence.",
+      "w": {
+        "name": "representation",
+        "whole": "synthetic shared whole where expression and continuity converge for reciprocal-trail testing."
+      },
+      "x": {
+        "name": "continuity",
+        "whole": "synthetic finer self-continuation of continuity."
+      },
+      "z": {
+        "name": "addressability",
+        "whole": "synthetic addressability whole."
+      },
+      "y": {
+        "name": "succession",
+        "whole": "synthetic succession whole."
+      }
+    },
+    "z": {
+      "name": "orientation",
+      "whole": "synthetic orientation leaf."
+    },
+    "y": {
+      "name": "renewal",
+      "whole": "synthetic renewal leaf."
+    }
   }
 }
