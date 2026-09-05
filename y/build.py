@@ -30,6 +30,7 @@ def render():
     for n in data['index']['nodes']:
         if n['path'] and n['path'] not in data['copy']['organs']:
             raise ValueError(f'missing public interpretation for {n["path"]}')
+    # Only repository-local, relative source paths are exposed by the skin.
     for f in data['index'].get('files', []):
         p = Path(f['path'])
         if p.is_absolute() or '..' in p.parts or ':' in str(p) or not (ROOT / p).is_file():
