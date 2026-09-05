@@ -88,6 +88,7 @@ def main():
                     assert all(v['x']>=0 and v['x']+v['w']<=560 and v['y']>=0 and v['y']+v['h']<=500 for v in labels),(width,h,labels)
                 report['layouts'].append({'width':width,'real_routes':5,'overflow':False,'labels_in_view':True})
             passed('all real pages fit seven viewport widths')
+            # Rotate through edge-on and upside-down views; screen labels stay in bounds.
             go('#/');page.set_viewport_size({'width':390,'height':900});map_host.focus()
             for key in ['ArrowUp']*36+['ArrowRight']*36+['e']*36:
                 page.keyboard.press(key)
@@ -106,6 +107,7 @@ def main():
             go('#/z');page.locator('.crumb').blur();page.mouse.move(1,1);page.screenshot(path=str(args.out/'orientation.png'),full_page=True)
             map_host.focus();page.keyboard.press('ArrowUp');page.keyboard.press('ArrowUp');page.keyboard.press('ArrowRight');map_host.blur();page.mouse.move(1,1)
             page.screenshot(path=str(args.out/'tilted.png'),full_page=True)
+            # Test a real touchscreen gesture, then an ordinary noun tap.
             touch=b.new_context(viewport={'width':390,'height':900},has_touch=True,is_mobile=True)
             tp=touch.new_page();mount(tp);tp.locator('#geometry').scroll_into_view_if_needed()
             box=tp.locator('#geometry').bounding_box();sx=box['x']+box['width']/2;sy=box['y']+box['height']/2
@@ -116,12 +118,13 @@ def main():
             assert changed(tq,tp.evaluate('Cambium.getView()'));assert tp.evaluate('Cambium.getState().path')=='';passed('touchscreen vertical drag changes view without route activation')
             tp.locator('#reset-view').tap();tp.locator('.map-node[data-path="w"] .node-label').tap();tp.wait_for_function('Cambium.getState().path==="w"');passed('ordinary touchscreen noun tap still navigates after drag')
             touch.close()
+            # A separate, injected test document exercises reciprocal named descendants.
             test=ctx.new_page();test.on('pageerror',lambda e:report['errors'].append(str(e)))
             source=(ROOT/'index.html').read_text();pattern=r'(<script id="cambium-data" type="application/json">)(.*?)(</script>)'
             payload=json.loads(re.search(pattern,source,re.S).group(2));payload['index']=json.loads((ROOT/'y/specimen.json').read_text())['index']
             for n in payload['index']['nodes']:
                 if n['path']:payload['copy']['organs'][n['path']]={'title':n['name'],'lead':'synthetic named-prefix test','detail':'not a production page'}
-            source=re.sub(pattern,lambda m:m.group(1)+json.dumps(payload).replace('<','\u003c')+m.group(3),source,flags=re.S)
+            source=re.sub(pattern,lambda m:m.group(1)+json.dumps(payload).replace('<','\\u003c')+m.group(3),source,flags=re.S)
             test.set_content(source);test.evaluate('location.hash="#/w.x"');test.wait_for_function('Cambium.getState().path==="wx"')
             assert test.locator('.trail a').all_text_contents()==['expression','representation','continuity','representation'];passed('fixture: reciprocal trails use each complete-prefix noun')
             assert test.locator('.trail a').evaluate_all('(els)=>els.map(a=>a.getAttribute("href"))')==['#/w','#/w.x','#/x','#/x.w'];passed('fixture: each named step keeps its full symbolic-prefix link')
