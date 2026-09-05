@@ -11,9 +11,15 @@ from threading import Thread
 import argparse, json, re, shutil
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parent.parent
+GENES='wxzy'
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *_args): pass
+
+def walk_index(node,path=''):
+    yield path,node
+    for g in GENES:
+        if g in node:yield from walk_index(node[g],path+g)
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
@@ -30,6 +36,7 @@ def main():
     report={'transport':'localhost HTTP' if args.http else 'self-contained HTML injected into Chromium; no HTTP or public host tested',
             'interactions':[],'layouts':[],'errors':[],'external_requests':[],'notes':[
                 'one root split and four unsplit limbs; no production semantic descendants added',
+                'canonical navigation is derived from the recursive semantic INDEX, not a flat node table',
                 'synthetic named descendants are injected only into an isolated test document',
                 'bounded functional checks, not a complete accessibility/security/legal audit']}
     def passed(s):report['interactions'].append({'test':s,'status':'pass'})
@@ -51,6 +58,7 @@ def main():
             assert page.locator('.next-place').all_text_contents()==['expression','continuity','orientation','renewal'];passed('root choices use the four derived nouns')
             assert page.locator('.node-label').all_text_contents()==['expression','continuity','orientation','renewal'];passed('map and text expose the same names')
             assert page.evaluate('Object.keys(JSON.parse(document.querySelector("#cambium-data").textContent)).sort()')==['copy','index'];passed('no test fixture in production payload')
+            assert page.evaluate('JSON.parse(document.querySelector("#cambium-data").textContent).index.w.name')=='expression';passed('production payload preserves recursive semantic indexing')
             page.locator('.next-place[data-path="w"]').click();page.wait_for_function('Cambium.getState().path==="w"')
             assert page.locator('.crumb').all_text_contents()==['expression'];assert page.locator('#next-places').is_hidden();passed('leaf has a named prefix and no invented next choices')
             page.locator('summary').click();assert page.locator('#source-files li').count()==4
@@ -88,7 +96,6 @@ def main():
                     assert all(v['x']>=0 and v['x']+v['w']<=560 and v['y']>=0 and v['y']+v['h']<=500 for v in labels),(width,h,labels)
                 report['layouts'].append({'width':width,'real_routes':5,'overflow':False,'labels_in_view':True})
             passed('all real pages fit seven viewport widths')
-            # Rotate through edge-on and upside-down views; screen labels stay in bounds.
             go('#/');page.set_viewport_size({'width':390,'height':900});map_host.focus()
             for key in ['ArrowUp']*36+['ArrowRight']*36+['e']*36:
                 page.keyboard.press(key)
@@ -107,7 +114,6 @@ def main():
             go('#/z');page.locator('.crumb').blur();page.mouse.move(1,1);page.screenshot(path=str(args.out/'orientation.png'),full_page=True)
             map_host.focus();page.keyboard.press('ArrowUp');page.keyboard.press('ArrowUp');page.keyboard.press('ArrowRight');map_host.blur();page.mouse.move(1,1)
             page.screenshot(path=str(args.out/'tilted.png'),full_page=True)
-            # Test a real touchscreen gesture, then an ordinary noun tap.
             touch=b.new_context(viewport={'width':390,'height':900},has_touch=True,is_mobile=True)
             tp=touch.new_page();mount(tp);tp.locator('#geometry').scroll_into_view_if_needed()
             box=tp.locator('#geometry').bounding_box();sx=box['x']+box['width']/2;sy=box['y']+box['height']/2
@@ -118,12 +124,12 @@ def main():
             assert changed(tq,tp.evaluate('Cambium.getView()'));assert tp.evaluate('Cambium.getState().path')=='';passed('touchscreen vertical drag changes view without route activation')
             tp.locator('#reset-view').tap();tp.locator('.map-node[data-path="w"] .node-label').tap();tp.wait_for_function('Cambium.getState().path==="w"');passed('ordinary touchscreen noun tap still navigates after drag')
             touch.close()
-            # A separate, injected test document exercises reciprocal named descendants.
+            # A separate injected test document exercises recursively nested reciprocal named descendants.
             test=ctx.new_page();test.on('pageerror',lambda e:report['errors'].append(str(e)))
             source=(ROOT/'index.html').read_text();pattern=r'(<script id="cambium-data" type="application/json">)(.*?)(</script>)'
             payload=json.loads(re.search(pattern,source,re.S).group(2));payload['index']=json.loads((ROOT/'y/specimen.json').read_text())['index']
-            for n in payload['index']['nodes']:
-                if n['path']:payload['copy']['organs'][n['path']]={'title':n['name'],'lead':'synthetic named-prefix test','detail':'not a production page'}
+            for path,node in walk_index(payload['index']):
+                if path:payload['copy']['organs'][path]={'title':node['name'],'lead':'synthetic named-prefix test','detail':'not a production page'}
             source=re.sub(pattern,lambda m:m.group(1)+json.dumps(payload).replace('<','\\u003c')+m.group(3),source,flags=re.S)
             test.set_content(source);test.evaluate('location.hash="#/w.x"');test.wait_for_function('Cambium.getState().path==="wx"')
             assert test.locator('.trail a').all_text_contents()==['expression','representation','continuity','representation'];passed('fixture: reciprocal trails use each complete-prefix noun')
@@ -135,6 +141,8 @@ def main():
             test.evaluate('location.hash="#/w.x.z"');test.wait_for_function('Cambium.getState().path==="wxz"')
             assert test.locator('.trail a').all_text_contents()==['expression','representation','comparison','expression','legibility','comparison'];passed('fixture: deeper local nouns are not global gene-name substitutions')
             test.locator('.trail[data-witness="wzx"] a').nth(1).click();test.wait_for_function('Cambium.getState().path==="wz"');passed('fixture: earlier noun exits through the other enclosing context')
+            test.evaluate('location.hash="#/w.w"');test.wait_for_function('Cambium.getState().path==="ww"')
+            assert test.evaluate('Cambium.getState().locus')==test.evaluate('CambiumAddress.key("w")');passed('fixture: living self-refinement keeps the raw witness at the same geometric place')
             for width in [320,390,768,1440]:
                 test.set_viewport_size({'width':width,'height':1000});test.evaluate('location.hash="#/w.x.z"');test.wait_for_timeout(60)
                 assert test.evaluate('document.documentElement.scrollWidth<=innerWidth+1');assert test.locator('.trail a').count()==6
