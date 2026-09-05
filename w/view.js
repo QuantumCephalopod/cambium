@@ -56,6 +56,7 @@
     const seen=new Set();
     for(const child of s.children){
       const p=child.path;if(seen.has(p))continue;seen.add(p);
+      // Self is already the current crumb, not another fictitious destination.
       if(child.self)continue;
       const a=link(p,child.name,'next-place',N.namePath(p,index));host.append(a);
     }
@@ -109,6 +110,7 @@
       const group=svg('g',{class:cls,'aria-hidden':'true'});canvas.append(group);const pts=paths.map(point);
       for(const[i,j]of EDGES){const line=svg('line');group.append(line);scene.segments.push({line,a:pts[i],b:pts[j]});}
     };
+    // Unlabelled weave is a visual study, not extra indexed destinations.
     if(!deep){let prefixes=[''];for(let d=0;d<3;d++)prefixes=prefixes.flatMap(p=>A.GENES.map(g=>p+g));
       for(const f of prefixes)addFrame(A.GENES.map(g=>f+g),'map-mesh');}
     for(const f of frames)addFrame(registry.nodes.get(f).children.map(A.stripSelf),'map-frame'+(f!==s.node.parent&&frames.length>1?' other-frame':''));
@@ -131,6 +133,7 @@
     if(!scene)return;
     for(const s of scene.segments){const a=project(s.a),b=project(s.b);for(const[k,v]of Object.entries({x1:a[0],y1:a[1],x2:b[0],y2:b[1]}))s.line.setAttribute(k,v);}
     const placed=[];
+    // Stable order prevents label jitter; collision handling never affects addresses.
     for(const n of scene.nodes){
       const[x,y]=project(n.pos);n.dot.setAttribute('cx',x);n.dot.setAttribute('cy',y);
       const size=parseFloat(getComputedStyle(n.text).fontSize)||17;
@@ -150,6 +153,7 @@
       placed.push(best);n.text.setAttribute('x',left);n.text.setAttribute('y',best.baseline);
       const near=Math.max(left,Math.min(left+width,x));
       for(const[k,v]of Object.entries({x1:x,y1:y,x2:near,y2:best.baseline-5}))n.leader.setAttribute(k,v);
+      // Every labelled destination has a target at least 44 CSS pixels high.
       const rect={x:left-7,y:best.baseline-size/2-minH/2,w:width+14,h:minH};
       for(const[k,v]of Object.entries({x:rect.x,y:rect.y,width:rect.w,height:rect.h}))n.hit.setAttribute(k,v);
     }
