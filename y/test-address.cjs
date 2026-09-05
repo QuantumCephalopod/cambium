@@ -16,7 +16,7 @@ for(let depth=1;depth<=7;depth++){
  words=words.flatMap(p=>A.GENES.map(g=>p+g));
  const level=new Map();
  for(const p of words){const k=A.key(p),e=A.exactKey(p);if(keys.has(k))eq(keys.get(k),e);if(geom.has(e))eq(geom.get(e),k);keys.set(k,e);geom.set(e,k);count++;level.set(e,(level.get(e)||0)+1);}
- if(depth===6){ // word length 6 is depth 5 relative to the four initial vertices
+ if(depth===6){
    const counts=[...level.values()];level5={loci:level.size,one:counts.filter(v=>v===1).length,two:counts.filter(v=>v===2).length};
  }
 }
@@ -25,8 +25,9 @@ eq(count,21844);eq(keys.size,8194);eq(level5,{loci:2050,one:4,two:2046});
 const deep='wxzy'.repeat(1024),p=deep+'wx',q=deep+'xw';eq(A.key(p),A.key(q));eq(A.exactKey(p),A.exactKey(q));
 const relative=A.relative(deep+'w',deep+'x',deep.length);eq(relative,[1,-1,0,0]);
 eq(A.key('wxzy'.repeat(3000)).length>12000,true,'symbolic algebra has no 4k depth limit');
-// Names belong to full prefixes, not a global letter-to-name replacement.
+// The canonical test index is recursively address-native; runtime maps are derived.
 const specimen=JSON.parse(fs.readFileSync(path.join(root,'y/specimen.json'))).index;
+const registry=N.registry(specimen);eq([...registry.nodes.keys()].slice(0,5),['','w','ww','wx','wxw']);
 const state=N.resolve('site','wx',specimen),trails=N.trails(state,specimen);
 eq(trails.map(t=>t.steps.map(s=>s.path)),[['w','wx'],['x','xw']]);
 eq(trails.map(t=>t.steps.map(s=>s.label)),[['expression','representation'],['continuity','representation']]);
@@ -36,19 +37,22 @@ eq(N.trails(N.resolve('site','wxz',specimen),specimen).map(t=>t.steps.map(s=>s.l
  [['expression','representation','comparison'],['expression','legibility','comparison']]);
 eq(N.trails(N.resolve('site','wzx',specimen),specimen)[1].steps[2].label,'comparison');
 eq(N.namePath('wzx',specimen),'cambium · expression · legibility · comparison');
-eq(N.parse('#/w.x').path,'wx');eq(N.parse('#/site/w.x.x.x').path,'wx');
+eq(N.parse('#/w.x').path,'wx');eq(N.parse('#/site/w.x.x.x').path,'wxxx');
 eq(N.url('site','wz'),'#/w.z');
 for(const h of ['#/site/wx<script>','#/study/w.x','#/../','#/w..x','#/else/w','#/'+deep+'w']){assert.throws(()=>N.parse(h));checks++;}
 assert.throws(()=>N.resolve('study','wx',specimen));checks++;
+// Raw self-refinement remains a distinct semantic witness even at the same geometric locus.
+eq(N.parse('#/w.w').path,'ww');eq(N.resolve('site','ww',specimen).path,'ww');eq(N.resolve('site','ww',specimen).locus,N.resolve('site','w',specimen).locus);
+eq(N.resolve('site','ww',specimen).aliases,['ww']);
 const index=JSON.parse(fs.readFileSync(path.join(root,'INDEX.json')));N.registry(index);checks++;
 assert.throws(()=>N.resolve('site','wx',index));checks++;
-eq(N.resolve('site','w',index).aliases,['w']);eq(N.resolve('site','wwww',index).path,'w');
-// Without an admitted reciprocal branch, geometry alone may not create its link.
-const one=JSON.parse(JSON.stringify(specimen));
-one.nodes=one.nodes.filter(n=>!n.path.startsWith('x')||n.path==='x');
-const x=one.nodes.find(n=>n.path==='x');x.children=[];x.split_receipt=null;x.role='cambium';
+eq(N.resolve('site','w',index).aliases,['w']);assert.throws(()=>N.resolve('site','wwww',index));checks++;
+// Geometry alone may not mint semantic coalescence: remove the reciprocal x split.
+const one=JSON.parse(JSON.stringify(specimen));for(const g of A.GENES)delete one.x[g];
 eq(N.resolve('site','wx',one).aliases,['wx']);
-const unnamed=JSON.parse(JSON.stringify(index));unnamed.nodes[1].name='';assert.throws(()=>N.registry(unnamed));checks++;
+const unnamed=JSON.parse(JSON.stringify(index));unnamed.w.name='';assert.throws(()=>N.registry(unnamed));checks++;
+const unwhole=JSON.parse(JSON.stringify(index));unwhole.z.whole='';assert.throws(()=>N.registry(unwhole));checks++;
+const partial=JSON.parse(JSON.stringify(index));partial.w.w={name:'unearned',whole:'partial'};assert.throws(()=>N.registry(partial));checks++;
 // Camera math is deliberately outside identity algebra.
 const R=require(path.join(root,'w/view.js'));
 const near=(a,b,eps=1e-10)=>ok(Math.abs(a-b)<eps);
@@ -64,5 +68,5 @@ for(let i=0;i<2000;i++)camera=R.normalize(R.multiply(R.axisQuaternion([[1,0,0],[
 near(Math.hypot(...camera),1);near(Math.hypot(...R.rotateVector(camera,[1,0,0])),1);
 eq(A.key('wx'),state.locus,'camera operations must not mutate address identity');
 const result={status:'pass',assertions:checks,enumerated_words:count,unique_loci:keys.size,depth_five:level5,
- deep_exact_relative_prefix_length:deep.length,unbounded_symbolic_test_length:12000,named_prefixes:'pass',quaternion_camera:'pass'};
+ deep_exact_relative_prefix_length:deep.length,unbounded_symbolic_test_length:12000,named_prefixes:'pass',raw_self_witnesses:'pass',quaternion_camera:'pass'};
 console.log(JSON.stringify(result,null,2));
