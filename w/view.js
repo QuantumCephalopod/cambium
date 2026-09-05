@@ -34,8 +34,8 @@
     if(label){a.setAttribute('aria-label',label);a.title=label;a.dataset.hint=label;}return a;
   }
   function breadcrumbs(s,index){
-    const box=$('address-trails');box.replaceChildren();
-    const home=link('',index.nodes.find(n=>n.path==='').name,'home-crumb','return to cambium');
+    const box=$('address-trails'),registry=N.registry(index);box.replaceChildren();
+    const home=link('',registry.nodes.get('').name,'home-crumb','return to cambium');
     if(!s.path)home.setAttribute('aria-current','page');box.append(home);
     if(!s.path)return;
     const group=el('div','trails-group');box.append(group);
@@ -56,8 +56,6 @@
     const seen=new Set();
     for(const child of s.children){
       const p=child.path;if(seen.has(p))continue;seen.add(p);
-      // Self is already the current crumb, not another fictitious destination.
-      if(child.self)continue;
       const a=link(p,child.name,'next-place',N.namePath(p,index));host.append(a);
     }
     if(!host.childElementCount)host.hidden=true;
@@ -78,9 +76,8 @@
       $('page-title').textContent=c.title;$('eyebrow-text').textContent=s.node.name;
       $('main-description').textContent=c.lead;$('practice-label').textContent='within '+s.node.name;$('practice-copy').textContent=c.detail;
       const files=$('source-files');files.replaceChildren();
-      for(const id of s.node.occupants||[]){
-        const f=data.index.files.find(f=>f.id===id);if(!f)continue;
-        const li=el('li'),a=el('a','source-link',f.path);a.href=f.path;li.append(a);files.append(li);
+      for(const carrier of Object.values(s.node.tissue||{})){
+        const li=el('li'),a=el('a','source-link',carrier);a.href=carrier;li.append(a);files.append(li);
       }
       $('source-block').hidden=!files.childElementCount;
     }
@@ -100,8 +97,8 @@
     const deep=frames.some(p=>p.length>0),power=deep?Math.max(...frames.map(p=>p.length)):0;
     const point=p=>xyz(deep?A.relative(p,s.path,power):A.barycentric(p).map(v=>v-.25));
     const candidates=new Map();
-    for(const f of frames)for(const raw of registry.nodes.get(f).children){
-      const p=A.stripSelf(raw),k=A.key(p);
+    for(const f of frames)for(const p of registry.nodes.get(f).children){
+      const k=A.key(p);
       if(!candidates.has(k)||p===s.path)candidates.set(k,{path:p,pos:point(p)});
     }
     const maxRadius=Math.max(.001,...[...candidates.values()].map(v=>norm(v.pos)));
@@ -113,7 +110,7 @@
     // Unlabelled weave is a visual study, not extra indexed destinations.
     if(!deep){let prefixes=[''];for(let d=0;d<3;d++)prefixes=prefixes.flatMap(p=>A.GENES.map(g=>p+g));
       for(const f of prefixes)addFrame(A.GENES.map(g=>f+g),'map-mesh');}
-    for(const f of frames)addFrame(registry.nodes.get(f).children.map(A.stripSelf),'map-frame'+(f!==s.node.parent&&frames.length>1?' other-frame':''));
+    for(const f of frames)addFrame(registry.nodes.get(f).children,'map-frame'+(f!==s.node.parent&&frames.length>1?' other-frame':''));
     for(const[k,item]of candidates){
       const p=item.path,name=registry.nodes.get(p).name;
       const anchor=svg('a',{href:N.url('site',p),'data-path':p,'data-locus':k,tabindex:'0',class:'map-node'+(k===s.locus?' current-node':''),'aria-label':'open '+name,'data-hint':N.namePath(p,data.index)});
