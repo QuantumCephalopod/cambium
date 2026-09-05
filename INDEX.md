@@ -78,9 +78,9 @@ there is no second website split. named dual ancestry appears only where the atl
 
 ## frontier
 
-one noun-labelled address navigator, preserved paired ancestry, and full-view arcball rotation implemented locally; original root split retained.
+one noun-labelled address navigator, preserved paired ancestry, full-view arcball rotation, and a witnessed GitHub staging-fork write; original root split retained.
 
-review named navigation and free rotation before upload; resolve launch queue separately.
+complete and verify the staging fork, open/merge the upstream pull request, then resolve launch queue separately.
 
 open: public contact, legal/privacy review, licensing, app write authorization, commit/readback, Pages and DNS/HTTPS verification. [`_stomach/launch.md`](_stomach/launch.md) owns that unresolved intake.
 
