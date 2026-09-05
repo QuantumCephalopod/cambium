@@ -1,0 +1,29 @@
+{
+  "purpose": "test-only named reciprocal and deeper-prefix UI; none of these extra descendants is published",
+  "index": {
+    "nodes": [
+      {"path":"","locus":"overview","name":"cambium","parent":null,"role":"wood","children":["w","x","z","y"],"occupants":[],"split_receipt":"synthetic-test-only"},
+      {"path":"w","locus":"vertex:w","name":"expression","role":"wood","parent":"","children":["ww","wx","wz","wy"],"occupants":[],"split_receipt":"synthetic-test-only"},
+      {"path":"x","locus":"vertex:x","name":"continuity","role":"wood","parent":"","children":["xw","xx","xz","xy"],"occupants":[],"split_receipt":"synthetic-test-only"},
+      {"path":"z","locus":"vertex:z","name":"orientation","role":"cambium","parent":"","children":[],"occupants":[],"split_receipt":null},
+      {"path":"y","locus":"vertex:y","name":"renewal","role":"cambium","parent":"","children":[],"occupants":[],"split_receipt":null},
+      {"path":"ww","locus":"vertex:w","name":"expression","role":"router","parent":"w","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wx","locus":"junction:wx","name":"representation","role":"wood","parent":"w","children":["wxw","wxx","wxz","wxy"],"occupants":[],"split_receipt":"synthetic-test-only"},
+      {"path":"wz","locus":"junction:wz","name":"legibility","role":"wood","parent":"w","children":["wzw","wzx","wzz","wzy"],"occupants":[],"split_receipt":"synthetic-test-only"},
+      {"path":"wy","locus":"junction:wy","name":"iteration","role":"cambium","parent":"w","children":[],"occupants":[],"split_receipt":null},
+      {"path":"xw","locus":"junction:wx","name":"representation","role":"cambium","parent":"x","children":[],"occupants":[],"split_receipt":null},
+      {"path":"xx","locus":"vertex:x","name":"continuity","role":"router","parent":"x","children":[],"occupants":[],"split_receipt":null},
+      {"path":"xz","locus":"junction:xz","name":"addressability","role":"cambium","parent":"x","children":[],"occupants":[],"split_receipt":null},
+      {"path":"xy","locus":"junction:xy","name":"succession","role":"cambium","parent":"x","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wxw","locus":"junction:wwx","name":"shape","role":"cambium","parent":"wx","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wxx","locus":"junction:wx","name":"representation","role":"router","parent":"wx","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wxz","locus":"junction:wxz","name":"comparison","role":"cambium","parent":"wx","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wxy","locus":"junction:wxy","name":"revision","role":"cambium","parent":"wx","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wzw","locus":"junction:wwz","name":"perception","role":"cambium","parent":"wz","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wzx","locus":"junction:wxz","name":"comparison","role":"cambium","parent":"wz","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wzz","locus":"junction:wz","name":"legibility","role":"router","parent":"wz","children":[],"occupants":[],"split_receipt":null},
+      {"path":"wzy","locus":"junction:wzy","name":"adjustment","role":"cambium","parent":"wz","children":[],"occupants":[],"split_receipt":null}
+    ],
+    "files": []
+  }
+}
