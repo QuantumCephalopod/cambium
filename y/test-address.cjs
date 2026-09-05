@@ -16,14 +16,16 @@ for(let depth=1;depth<=7;depth++){
  words=words.flatMap(p=>A.GENES.map(g=>p+g));
  const level=new Map();
  for(const p of words){const k=A.key(p),e=A.exactKey(p);if(keys.has(k))eq(keys.get(k),e);if(geom.has(e))eq(geom.get(e),k);keys.set(k,e);geom.set(e,k);count++;level.set(e,(level.get(e)||0)+1);}
- if(depth===6){
+ if(depth===6){ // word length 6 is depth 5 relative to the four initial vertices
    const counts=[...level.values()];level5={loci:level.size,one:counts.filter(v=>v===1).length,two:counts.filter(v=>v===2).length};
  }
 }
 eq(count,21844);eq(keys.size,8194);eq(level5,{loci:2050,one:4,two:2046});
+// At long depths, identity survives where Number-based world coordinates collapse.
 const deep='wxzy'.repeat(1024),p=deep+'wx',q=deep+'xw';eq(A.key(p),A.key(q));eq(A.exactKey(p),A.exactKey(q));
 const relative=A.relative(deep+'w',deep+'x',deep.length);eq(relative,[1,-1,0,0]);
 eq(A.key('wxzy'.repeat(3000)).length>12000,true,'symbolic algebra has no 4k depth limit');
+// Names belong to full prefixes, not a global letter-to-name replacement.
 const specimen=JSON.parse(fs.readFileSync(path.join(root,'y/specimen.json'))).index;
 const state=N.resolve('site','wx',specimen),trails=N.trails(state,specimen);
 eq(trails.map(t=>t.steps.map(s=>s.path)),[['w','wx'],['x','xw']]);
@@ -41,11 +43,13 @@ assert.throws(()=>N.resolve('study','wx',specimen));checks++;
 const index=JSON.parse(fs.readFileSync(path.join(root,'INDEX.json')));N.registry(index);checks++;
 assert.throws(()=>N.resolve('site','wx',index));checks++;
 eq(N.resolve('site','w',index).aliases,['w']);eq(N.resolve('site','wwww',index).path,'w');
+// Without an admitted reciprocal branch, geometry alone may not create its link.
 const one=JSON.parse(JSON.stringify(specimen));
 one.nodes=one.nodes.filter(n=>!n.path.startsWith('x')||n.path==='x');
 const x=one.nodes.find(n=>n.path==='x');x.children=[];x.split_receipt=null;x.role='cambium';
 eq(N.resolve('site','wx',one).aliases,['wx']);
 const unnamed=JSON.parse(JSON.stringify(index));unnamed.nodes[1].name='';assert.throws(()=>N.registry(unnamed));checks++;
+// Camera math is deliberately outside identity algebra.
 const R=require(path.join(root,'w/view.js'));
 const near=(a,b,eps=1e-10)=>ok(Math.abs(a-b)<eps);
 let q0=R.initial(),q1=R.multiply(R.axisQuaternion([1,0,0],.6),q0);
