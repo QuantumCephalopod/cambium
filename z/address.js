@@ -18,6 +18,7 @@
     }
     return word;
   }
+  // Only TERMINAL self-repetition is contracted. Interior order is preserved.
   function stripSelf(word) {
     validate(word);
     let n = word.length;
@@ -38,6 +39,7 @@
   }
   function key(word) {
     const p = witnesses(word)[0];
+    // Empty is a navigation overview, NOT a fifth spatial vertex.
     return p === '' ? 'overview' : p.length === 1 ? 'vertex:' + p : 'junction:' + p;
   }
   function same(a, b) { return key(a) === key(b); }
@@ -62,7 +64,9 @@
     }).join('') : compact;
     return validate(p);
   }
+  // F_{a1} ... F_{a(n-1)}(v_an) as four exact dyadic barycentrics.
   function exact(word) {
+    // Deliberately evaluate the RAW witness, independently of the quotient.
     const p = validate(word);
     if (!p) throw new RangeError('the overview has no vertex coordinate');
     let numerator = [0n, 0n, 0n, 0n], denominator = 1n;
@@ -80,6 +84,7 @@
     const p = exact(word);
     return p.numerator.join(',') + '/' + p.denominator.toString();
   }
+  // Safe approximate ratio even when numerator/denominator exceed Number range.
   function ratio(n, d) {
     if (d <= 0n) throw new RangeError('positive denominator required');
     if (n === 0n) return 0;
@@ -88,6 +93,7 @@
     const sd = Math.max(0, d.toString(2).length - 52);
     return sign * (Number(a >> BigInt(sa)) / Number(d >> BigInt(sd))) * 2 ** (sa - sd);
   }
+  // Exact subtraction and scale compensation BEFORE projecting into pixels.
   function relative(word, origin, scalePower = 0) {
     const p = exact(word), o = exact(origin);
     const d = p.denominator > o.denominator ? p.denominator : o.denominator;
