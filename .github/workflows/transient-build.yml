@@ -1,0 +1,29 @@
+name: transient-build
+
+on:
+  push:
+    paths:
+      - '.github/workflows/transient-build.yml'
+      - '.build-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: regenerate outward skin
+        run: python3 y/build.py
+      - name: commit generated projections
+        run: |
+          git config user.name "QuantumCephalopod"
+          git config user.email "eds.mnemos@gmail.com"
+          git add index.html INDEX.md
+          if git diff --cached --quiet; then
+            echo "generated projections already current"
+          else
+            git commit -m "regenerate outward skin"
+            git push
+          fi
