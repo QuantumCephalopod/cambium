@@ -1,0 +1,154 @@
+{
+  "schema": "cambium-site-atlas/v1",
+  "organism": "cambium",
+  "repository": "self-similar-systems/cambium",
+  "intended_domain": "sss.saarland",
+  "state": "first_split_named_navigation_local_review",
+  "authority": "active differentiation receipt -> INDEX.json -> generated navigation; this is the realized body, not every possible geometry",
+  "dna": {
+    "w": "CREATE",
+    "x": "COPY",
+    "z": "CONTROL",
+    "y": "CULTIVATE"
+  },
+  "root_receipt": "ROOT_SPLIT.md",
+  "nodes": [
+    {
+      "path": "",
+      "locus": "overview",
+      "name": "cambium",
+      "role": "wood",
+      "parent": null,
+      "children": ["w", "x", "z", "y"],
+      "occupants": [],
+      "split_receipt": "ROOT_SPLIT.md",
+      "closure": "4V6E4F1T_DERIVED",
+      "status": "first_split_locally_materialized"
+    },
+    {
+      "path": "w",
+      "locus": "vertex:w",
+      "name": "expression",
+      "gene": "CREATE",
+      "role": "cambium",
+      "parent": "",
+      "children": [],
+      "occupants": ["surface.template", "surface.style", "surface.renderer", "surface.mark"],
+      "split_receipt": null,
+      "birth_receipt": "ROOT_SPLIT.md",
+      "closure": "UNSPLIT",
+      "status": "living"
+    },
+    {
+      "path": "x",
+      "locus": "vertex:x",
+      "name": "continuity",
+      "gene": "COPY",
+      "role": "cambium",
+      "parent": "",
+      "children": [],
+      "occupants": ["public.contract"],
+      "split_receipt": null,
+      "birth_receipt": "ROOT_SPLIT.md",
+      "closure": "UNSPLIT",
+      "status": "living"
+    },
+    {
+      "path": "z",
+      "locus": "vertex:z",
+      "name": "orientation",
+      "gene": "CONTROL",
+      "role": "cambium",
+      "parent": "",
+      "children": [],
+      "occupants": ["address.algebra", "address.resolver", "address.controller"],
+      "split_receipt": null,
+      "birth_receipt": "ROOT_SPLIT.md",
+      "closure": "UNSPLIT",
+      "status": "living"
+    },
+    {
+      "path": "y",
+      "locus": "vertex:y",
+      "name": "renewal",
+      "gene": "CULTIVATE",
+      "role": "cambium",
+      "parent": "",
+      "children": [],
+      "occupants": ["renewal.compiler", "renewal.algebra-tests", "renewal.structure-tests", "renewal.browser-tests", "renewal.specimen", "renewal.interaction"],
+      "split_receipt": null,
+      "birth_receipt": "ROOT_SPLIT.md",
+      "closure": "UNSPLIT",
+      "status": "living"
+    }
+  ],
+  "files": [
+    {"id":"surface.template","path":"w/template.html","locus":"w","role":"composition of the encounterable document"},
+    {"id":"surface.style","path":"w/style.css","locus":"w","role":"typography, spatial hierarchy, responsive and focus presentation"},
+    {"id":"surface.renderer","path":"w/view.js","locus":"w","role":"readable dual trails and geometric expression of resolved state"},
+    {"id":"surface.mark","path":"w/favicon.svg","locus":"w","role":"small visual identity carrier"},
+    {"id":"public.contract","path":"x/contract.json","locus":"x","role":"approved public wording and bounded organ descriptions"},
+    {"id":"address.algebra","path":"z/address.js","locus":"z","role":"exact quotient identity and dyadic geometry"},
+    {"id":"address.resolver","path":"z/navigation.js","locus":"z","role":"actual-atlas admission, prefix semantics and chamber resolution"},
+    {"id":"address.controller","path":"z/app.js","locus":"z","role":"URL-mediated interaction, history and input boundary"},
+    {"id":"renewal.compiler","path":"y/build.py","locus":"y","role":"regenerate a new skin from current sources"},
+    {"id":"renewal.algebra-tests","path":"y/test-address.cjs","locus":"y","role":"independent exact implementation comparisons and boundary tests"},
+    {"id":"renewal.structure-tests","path":"y/check.py","locus":"y","role":"whole-body atlas, generated-skin and source-integrity checks"},
+    {"id":"renewal.browser-tests","path":"y/browser-check.py","locus":"y","role":"reproducible rendered interaction and responsive checks"},
+    {"id":"renewal.specimen","path":"y/specimen.json","locus":"y","role":"explicit geometry-only interaction specimen"},
+    {"id":"renewal.interaction","path":"y/interaction.md","locus":"y","role":"current usability correction, preserved boundaries and next review question"}
+  ],
+  "closure": {
+    "vertices": ["w", "x", "z", "y"],
+    "edges": ["wx", "wz", "wy", "xz", "xy", "zy"],
+    "faces": ["wxz", "wxy", "wzy", "xzy"],
+    "volume": "wxzy",
+    "receipt": "ROOT_SPLIT.md",
+    "scope": "bounded website decomposition, not universal ontology"
+  },
+  "shell": [
+    {"path":"_stomach/","role":"unresolved intake","occupants":["_stomach/launch.md"]},
+    {"path":"_waste/","role":"spent residue","occupants":[]},
+    {"path":"SKILLS/START_HERE.md","role":"reentry receptor"},
+    {"path":"INDEX.json","role":"complete machine-readable navigation"},
+    {"path":"INDEX.md","role":"generated readable atlas"},
+    {"path":"ROOT_SPLIT.md","role":"first differentiation and address-metabolism receipt"},
+    {"path":"README.md","role":"human entry"},
+    {"path":"index.html","role":"generated outward skin; never authored in place"},
+    {"path":"CNAME","role":"intended domain, not witnessed DNS"},
+    {"path":".nojekyll","role":"static hosting convention"},
+    {"path":".gitignore","role":"local storage hygiene"}
+  ],
+  "geometry": {
+    "identity": "terminal-repeat contraction plus unordered terminal sibling junction",
+    "coordinate_law": "F_k(p)=(v_k+p)/2",
+    "aliases": "only actual realized witnesses; each visible prefix uses its own locally derived noun",
+    "overview": "navigation context, not a fifth spatial vertex",
+    "camera": "free quaternion arcball rotation; camera pose is presentation only, not identity or path"
+  },
+  "specimen": {
+    "file": "y/specimen.json",
+    "semantic_status": "synthetic test input, not the website atlas",
+    "delivery": "development tests only; excluded from embedded public payload"
+  },
+  "publication": {
+    "committed_to_github": false,
+    "pages_enabled": false,
+    "dns_changed": false,
+    "legal_review": "open",
+    "public_contact": "not selected",
+    "license": "not selected",
+    "full_compass": "not implemented"
+  },
+  "frontier": {
+    "positive": "one noun-labelled address navigator, preserved paired ancestry, and full-view arcball rotation implemented locally; original root split retained",
+    "next": "review named navigation and free rotation before upload; resolve launch queue separately",
+    "forbidden": "invented deeper semantic nodes, private material, assumed remote write success, fabricated publications or credentials"
+  },
+  "interface": {
+    "update": "y/interaction.md",
+    "visible_names": "exact full-prefix node.name from INDEX, never a global gene-name substitution",
+    "production_routes": "one realized atlas; former study namespace retired",
+    "route_identity": "symbolic w/x/z/y hash addresses remain separate from mutable display nouns"
+  }
+}
