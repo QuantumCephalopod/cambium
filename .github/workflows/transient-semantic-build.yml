@@ -1,0 +1,32 @@
+name: transient-semantic-build
+
+on:
+  push:
+    paths:
+      - '.semantic-build-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: regenerate skin
+        run: python3 y/build.py
+      - name: structural checks
+        run: python3 y/check.py
+      - name: address and recursive navigation checks
+        run: node y/test-address.cjs
+      - name: deterministic build check
+        run: python3 y/build.py --check
+      - name: persist generated skin if changed
+        run: |
+          if ! git diff --quiet -- index.html; then
+            git config user.name "QuantumCephalopod"
+            git config user.email "eds.mnemos@gmail.com"
+            git add index.html
+            git commit -m "build: regenerate semantic skin"
+            git push
+          fi
