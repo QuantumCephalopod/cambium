@@ -1,0 +1,599 @@
+<!-- generated from w/x/z/y by y/build.py; edit source tissue, not this skin. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="an independent lab for artistic and scientific inquiry. we give questions form—and let those forms question us.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="referrer" content="no-referrer">
+<title>self-similar-systems saar · cambium</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%20%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%23f5f3eb%22/%3E%0A%20%20%3Cpath%20d%3D%22M32%209%209%2050%2055%2050Z%20M32%209V35L9%2050%20M32%2035%2055%2050%22%20fill%3D%22none%22%20stroke%3D%22%23294b43%22%20stroke-width%3D%222.4%22%20stroke-linejoin%3D%22round%22/%3E%0A%20%20%3Ccircle%20cx%3D%2232%22%20cy%3D%2235%22%20r%3D%223.8%22%20fill%3D%22%23ac5038%22/%3E%0A%3C/svg%3E%0A">
+<style>/* a single readable skin; named places and geometry share the same atlas. */
+:root {
+ color-scheme:light; --paper:#f5f3eb; --ink:#243b33; --muted:#626c60;
+ --line:#c8cec0; --field:#e9eddf; --green:#446958; --accent:#ac5038;
+ --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+ --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+ --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+}
+* {box-sizing:border-box}
+html {background:var(--paper);scroll-behavior:smooth}
+body {margin:0;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+::selection {background:#d9e1c9;color:var(--ink)}
+a {color:inherit;text-decoration:none;text-underline-offset:.3em}
+a:hover {text-decoration:underline}
+a:focus-visible,button:focus-visible,summary:focus-visible {outline:2px solid var(--accent);outline-offset:5px;border-radius:2px}
+button {font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+button:hover {color:var(--accent)}
+p,h1,h2,figure {margin:0}
+[hidden] {display:none!important}
+.sr-only {position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.skip-link {position:absolute;top:-5rem;left:1.5rem;z-index:10;padding:.8rem 1.2rem;background:var(--ink);color:var(--paper)}
+.skip-link:focus {top:1rem}
+.page {max-width:1560px;margin:auto;padding:0 clamp(22px,4.6vw,76px)}
+.site-header {min-height:96px;display:flex;align-items:center;border-bottom:1px solid var(--line)}
+.wordmark {display:inline-flex;align-items:center;gap:15px;font-size:19px;letter-spacing:-.55px;font-weight:500;min-height:44px}
+.wordmark-symbol {width:33px;height:36px;flex:0 0 33px;fill:none;stroke:var(--ink);stroke-width:1.1;stroke-linejoin:round}
+.wordmark-symbol circle {stroke:none;fill:var(--accent)}
+.place {color:var(--muted)}
+/* one landmark: current approach(es) and the next realized differentiation. */
+.place-navigation {display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px 28px;min-height:78px;padding:10px 0;border-bottom:1px solid var(--line);font:12px/1.5 var(--mono)}
+.address-trails {display:flex;align-items:center;flex-wrap:wrap;gap:0 13px;min-width:0;max-width:100%;padding:3px 0}
+.home-crumb,.crumb {display:inline-flex;align-items:center;min-height:44px;padding:4px 3px;position:relative;overflow-wrap:anywhere}
+.home-crumb {color:var(--muted)}
+.home-crumb[aria-current="page"] {color:var(--ink)}
+.home-crumb::before {content:'';display:block;flex:none;width:5px;height:5px;border-radius:50%;background:var(--line);margin-right:10px}
+.home-crumb[aria-current="page"]::before {background:var(--accent)}
+.trails-group {display:flex;flex-wrap:wrap;align-items:center;gap:0 14px;min-width:0;max-width:100%}
+.trail {display:flex;flex-wrap:wrap;gap:0;list-style:none;margin:0;padding:0;min-width:0;max-width:100%}
+.crumb-step {display:inline-flex;align-items:center;min-width:0;max-width:100%}
+.crumb-step::before {content:'·';color:var(--muted);padding:0 10px}
+.trail + .trail .crumb-step:first-child::before {content:'';padding:0}
+.trail-separator {font:22px var(--serif);color:var(--muted)}
+.crumb[aria-current="page"] {color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px}
+.next-places {display:flex;align-items:center;flex-wrap:wrap;gap:3px 23px;min-width:0}
+.next-place {display:inline-flex;align-items:center;min-height:44px;max-width:100%;padding:5px 0;overflow-wrap:anywhere}
+.next-place::after {content:'↗';font-size:11px;color:var(--muted);margin-left:7px}
+.crumb.is-highlighted,.next-place.is-highlighted {color:var(--accent)}
+.error-message {padding:16px;margin:20px 0;border-left:2px solid var(--accent);font-size:14px;line-height:1.6}
+.error-message a {text-decoration:underline;display:inline-block;margin-left:12px}
+.hero {display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:22px;padding:53px 0 46px;min-height:540px}
+.hero-copy {min-width:0}
+.eyebrow {display:flex;align-items:baseline;gap:11px;max-width:100%;font:11px/1.85 var(--mono);letter-spacing:-.1px;margin-bottom:28px}
+.seed-mark {width:5px;height:5px;flex:0 0 5px;background:var(--accent);border-radius:50%;transform:translateY(-1px)}
+h1 {font-family:var(--serif);font-size:clamp(43px,5.2vw,84px);font-weight:400;line-height:1.04;letter-spacing:-.056em;overflow-wrap:anywhere}
+h1 em {font-weight:400;color:var(--green)}
+.title-main,.title-answer {display:block}
+.title-answer {margin-top:8px}
+.dash {color:var(--accent);margin-left:.025em}
+.main-description {font-size:19px;line-height:1.65;max-width:530px;margin-top:25px;letter-spacing:-.3px;overflow-wrap:anywhere}
+.organ-title {font-size:clamp(51px,5.8vw,84px);max-width:570px}
+.hero-geometry {width:100%;max-width:590px;justify-self:end;min-width:0}
+#geometry {width:100%;touch-action:none;cursor:grab;border-radius:18px;user-select:none;-webkit-user-select:none}
+#geometry.is-dragging {cursor:grabbing}
+#geometry:focus-visible {outline:1px solid var(--green);outline-offset:6px}
+.geometry {display:block;width:100%;height:auto;overflow:visible}
+.map-field {fill:var(--field)}
+.map-frame {stroke:var(--ink);stroke-width:1;fill:none;stroke-linejoin:round;pointer-events:none}
+.other-frame {stroke:var(--green);stroke-dasharray:5 5;stroke-width:.8;opacity:.5}
+.map-mesh {stroke:var(--green);stroke-width:.5;opacity:.3;fill:none;pointer-events:none}
+.map-node {cursor:pointer}
+.node-target {fill:transparent;stroke:none}
+.node-dot {fill:var(--ink);stroke:var(--paper);stroke-width:2}
+.current-node .node-dot {fill:var(--accent)}
+.node-label {fill:var(--ink);font:17px var(--mono);paint-order:stroke;stroke:var(--field);stroke-width:5px;stroke-linejoin:round}
+.label-leader {stroke:var(--green);stroke-width:.6;opacity:.5;pointer-events:none}
+.map-node:hover .node-dot,.map-node:focus .node-dot,.map-node.is-highlighted .node-dot {fill:var(--accent);stroke:var(--accent);stroke-width:3}
+.map-node:hover .node-label,.map-node:focus .node-label,.map-node.is-highlighted .node-label {fill:var(--accent)}
+.map-node:focus-visible {outline:none}
+.map-node:focus-visible .node-target {stroke:var(--accent);stroke-width:1.5}
+.focus-ring {fill:none;stroke:var(--accent);stroke-width:1;pointer-events:none}
+figcaption {display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:0 7px;font:10px/1.6 var(--mono);color:var(--muted)}
+.map-tools {display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:4px;padding:0 7px;color:var(--muted);font:10px/1.6 var(--mono)}
+.map-tools button {min-height:44px;padding:7px 0 7px 16px}
+.map-tools button span {font-size:16px;margin-left:6px}
+.practice {display:grid;grid-template-columns:1fr 3fr;gap:40px;padding:33px 0 39px;border-top:1px solid var(--line)}
+.section-label {font:11px/1.8 var(--mono);color:var(--muted);font-weight:400;padding-top:5px}
+.practice-copy {max-width:890px;min-width:0;font-size:clamp(18px,1.65vw,23px);line-height:1.58;letter-spacing:-.35px;overflow-wrap:anywhere}
+.source-block {padding:12px 0 20px;border-top:1px solid var(--line);font:11px/1.7 var(--mono);color:var(--muted)}
+.source-block summary {cursor:pointer;padding:12px 0;min-height:44px;width:fit-content}
+.source-block ul {list-style:none;margin:2px 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px 24px}
+.source-block li {max-width:100%}
+.source-link {display:inline-block;min-height:36px;overflow-wrap:anywhere}
+.site-footer {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 24px;padding:22px 0 26px;border-top:1px solid var(--line);font:10px/1.8 var(--mono);color:var(--muted)}
+.footer-dot {margin:0 10px}.footer-signature {color:var(--ink)}.footer-signature span {color:var(--accent);margin-left:10px}
+.noscript-note {padding:20px 0;font-size:14px;line-height:1.7}.noscript-note a {text-decoration:underline}
+@media (min-width:1500px) {.hero {min-height:620px}}
+@media (max-width:1050px) {
+ .site-header {min-height:88px}.place-navigation {gap:4px 20px}.next-places {gap:3px 16px}
+ .hero {grid-template-columns:1.1fr 1fr;padding:42px 0 38px;min-height:465px}
+ .eyebrow {font-size:10px}.main-description {font-size:17px}.practice {grid-template-columns:1fr 2.5fr;gap:25px}
+}
+@media (max-width:700px) {
+ .page {padding:0 22px}.site-header {min-height:81px}.wordmark {gap:10px;font-size:17px;letter-spacing:-.55px}.wordmark-symbol {width:28px;flex-basis:28px}
+ .place-navigation {display:block;padding:9px 0 12px;font-size:11px}.address-trails {gap:0 7px}
+ .next-places {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px 18px;padding-top:3px}
+ .next-place {min-height:42px}.crumb-step::before {padding:0 8px}
+ .hero {grid-template-columns:1fr;gap:29px;padding:35px 0 25px;min-height:0}
+ h1 {font-size:clamp(39px,9.4vw,64px)}.eyebrow {max-width:345px;margin-bottom:24px}
+ .hero-geometry {max-width:480px;justify-self:center}.node-label {font-size:20px}
+ .main-description {font-size:18px}.organ-title {font-size:clamp(44px,10.3vw,66px)}
+ figcaption,.map-tools {font-size:9px;padding:0}.map-tools button {min-height:44px}
+ .practice {grid-template-columns:1fr;gap:14px;padding:26px 0 31px}.practice-copy {font-size:19px}.section-label {font-size:10px}
+ .site-footer {font-size:9px;gap:10px}.source-block ul {display:block}
+}
+@media (max-width:370px) {.page{padding:0 19px}.wordmark{font-size:15px}.next-places{gap:0 12px}h1{font-size:38px}.practice-copy{font-size:18px}}
+@media (prefers-reduced-motion:reduce) {html {scroll-behavior:auto}*,*::before,*::after {animation:none!important;transition:none!important}}
+@media print {
+ .page{padding:0}.site-header{min-height:60px}.place-navigation,.map-tools,.skip-link,.map-action-hint{display:none}
+ .hero{grid-template-columns:1.3fr 1fr;min-height:0;padding:35px 0}h1{font-size:38pt}.practice-copy{font-size:13pt}.hero,.practice{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">skip to content</a>
+<div class="page">
+<header class="site-header">
+<a href="#/" class="wordmark" aria-label="self-similar-systems saar, home">
+<svg viewBox="0 0 40 40" aria-hidden="true" class="wordmark-symbol"><path d="M20 3 3 34 37 34ZM20 3V24L3 34M20 24 37 34"/><circle cx="20" cy="24" r="2"/></svg>
+<span>self-similar-systems <span class="place">saar</span></span></a>
+</header>
+<nav id="place-navigation" class="place-navigation" aria-label="places in cambium" hidden>
+<div id="address-trails" class="address-trails"></div>
+<div id="next-places" class="next-places" role="group" aria-label="within this place"></div>
+</nav>
+<p id="navigation-hint" class="sr-only" role="status"></p>
+<p id="error-message" role="alert" class="error-message" hidden></p>
+<main id="main" tabindex="-1">
+<section class="hero" aria-labelledby="page-title">
+<div class="hero-copy"><p class="eyebrow"><span class="seed-mark" aria-hidden="true"></span><span id="eyebrow-text">an independent lab for artistic and scientific inquiry</span></p>
+<h1 id="page-title" tabindex="-1"><span class="title-main">we give questions<br>form<span class="dash">—</span></span><em class="title-answer">and let those forms<br>question us.</em></h1>
+<p id="main-description" class="main-description" hidden></p>
+</div>
+<figure class="hero-geometry" id="map-figure" hidden>
+<div id="geometry" tabindex="0" role="group" aria-label="spatial view of the current places" aria-describedby="map-instructions"></div>
+<figcaption><span id="map-context">within cambium</span><span class="map-action-hint">drag to turn</span></figcaption>
+<div class="map-tools"><span>select a place to enter</span><button id="reset-view" type="button" aria-label="reset the spatial view">reset view <span aria-hidden="true">↺</span></button></div>
+<p id="map-instructions" class="sr-only">drag horizontally or vertically to turn the structure. drag around its edge to roll. with the view focused, use arrow keys to turn and tilt, q and e to roll, or home to reset. use tab to focus a named place and enter to visit it. rotation never changes your address.</p>
+</figure>
+</section>
+<section class="practice" aria-labelledby="practice-label"><h2 id="practice-label" class="section-label">a practice in becoming</h2><p id="practice-copy" class="practice-copy">through language, images and working models, we explore how relationships take shape, what holds through change, and what becomes possible when things meet.</p></section>
+<details id="source-block" class="source-block" hidden><summary>the source here</summary><ul id="source-files"></ul></details>
+<noscript><p class="noscript-note">the landing page is available without scripts. the spatial navigator needs javascript. the complete semantic anatomy is also readable in <a href="INDEX.json">the organism index</a>.</p></noscript>
+</main>
+<footer class="site-footer"><span>saarland, germany <span class="footer-dot">·</span> independent by nature</span><span class="footer-signature">a small beginning <span aria-hidden="true">↗</span></span></footer>
+<p id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+<script id="cambium-data" type="application/json">{"index":{"name":"cambium","whole":"a renewable public skin carries a particular body of meaning into a legible, addressable encounter, and can change its expression without losing either its carried distinctions or its navigational truth.","_stomach":{"whole":"unresolved launch work and retained derivational nutrient whose remaining value has not yet earned further living structure.","tissue":{"launch":"_stomach/launch.md","first_contact":"_stomach/first_contact.md","root_differentiation":"_stomach/root-differentiation.md"}},"_waste":{"whole":"spent residue whose living function has ended.","tissue":{}},"SKILLS":{"whole":"the organism-local re-entry receptor and pointers to the shared physiology that governs this body.","tissue":{"start":"SKILLS/START_HERE.md"}},"w":{"name":"expression","whole":"the encounterable surface through which carried meaning and resolved position become perceptible as composition, typography, geometry and interaction.","tissue":{"template":"w/template.html","style":"w/style.css","renderer":"w/view.js","mark":"w/favicon.svg"}},"x":{"name":"continuity","whole":"the public meaning that remains available while expression changes: approved wording and distinctions are carried without making one presentation their identity.","tissue":{"contract":"x/contract.json"}},"z":{"name":"orientation","whole":"the lawful relation by which a visitor knows where they are, through which approach they arrived, and which realized destinations the current body actually admits.","tissue":{"algebra":"z/address.js","resolver":"z/navigation.js","controller":"z/app.js"}},"y":{"name":"renewal","whole":"the capacity by which the public skin is rebuilt, challenged, corrected and regenerated as the living body changes.","tissue":{"builder":"y/build.py","algebra_checks":"y/test-address.cjs","structure_checks":"y/check.py","browser_checks":"y/browser-check.py","specimen":"y/specimen.json","interaction":"y/interaction.md"}}},"copy":{"brand":"self-similar-systems saar","eyebrow":"an independent lab for artistic and scientific inquiry","headline":["we give questions","form","and let those forms","question us."],"practice_label":"a practice in becoming","practice":"through language, images and working models, we explore how relationships take shape, what holds through change, and what becomes possible when things meet.","location":"saarland, germany","footer":"independent by nature","boundary":"a website is a living surface. the research it presents keeps becoming.","organs":{"w":{"title":"a form you can enter.","lead":"expression gives the body a perceptible surface: type, space, geometry and the small gestures that make a place readable.","detail":"this is where the display is composed. it presents what the body carries and what orientation resolves; it does not invent destinations to make the picture more elaborate."},"x":{"title":"what holds through change.","lead":"continuity carries the wording and distinctions that remain available when their appearance changes.","detail":"a public surface can be revised without forgetting what it says or where it came from. the landing-page contract lives here. there are no invented publications waiting behind it."},"z":{"title":"every step is a place.","lead":"orientation makes your present place legible, along with the other ways it can be approached.","detail":"an address is not a picture coordinate. each named step opens its whole prefix, and another approach can meet it at the same place. the names come from the body’s actual differentiations; turning the view changes neither location nor meaning."},"y":{"title":"a surface in becoming.","lead":"renewal gives a changing website a repeatable way to test, correct and regenerate its skin.","detail":"the builder and checks live here. they let the surface change without losing the distinctions it carries. a difficult interaction is an invitation to return, revise and try again."}}}}</script>
+<script>/* exact finite vertex witnesses of the 1->4 tetrahedral carrier.
+ * the string quotient is identity; floating-point coordinates are display only.
+ * source: cambium-diamond, router quotient section (v1.1).
+ */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.CambiumAddress = api;
+})(typeof globalThis === 'object' ? globalThis : this, function () {
+  'use strict';
+  const GENES = Object.freeze(['w', 'x', 'z', 'y']);
+  const STUDY = Object.freeze({ w: 'a', x: 'b', z: 'c', y: 'd' });
+  const ORDER = new Map(GENES.map((g, i) => [g, i]));
+
+  function validate(word) {
+    if (typeof word !== 'string' || !/^[wxzy]*$/.test(word)) {
+      throw new TypeError('an address contains only w, x, z, y; the empty word is the overview');
+    }
+    return word;
+  }
+  // Only TERMINAL self-repetition is contracted. Interior order is preserved.
+  function stripSelf(word) {
+    validate(word);
+    let n = word.length;
+    while (n > 1 && word[n - 1] === word[n - 2]) n--;
+    return word.slice(0, n);
+  }
+  function compare(a, b) {
+    for (let i = 0; i < Math.min(a.length, b.length); i++) {
+      const delta = ORDER.get(a[i]) - ORDER.get(b[i]);
+      if (delta) return delta;
+    }
+    return a.length - b.length;
+  }
+  function witnesses(word) {
+    const p = stripSelf(word);
+    if (p.length < 2) return [p];
+    return [p, p.slice(0, -2) + p.at(-1) + p.at(-2)].sort(compare);
+  }
+  function key(word) {
+    const p = witnesses(word)[0];
+    // Empty is a navigation overview, NOT a fifth spatial vertex.
+    return p === '' ? 'overview' : p.length === 1 ? 'vertex:' + p : 'junction:' + p;
+  }
+  function same(a, b) { return key(a) === key(b); }
+  function prefixes(word) {
+    validate(word);
+    return Array.from(word, (_, i) => word.slice(0, i + 1));
+  }
+  function display(word, specimen = false) {
+    validate(word);
+    return Array.from(word, g => specimen ? STUDY[g] : g).join('.');
+  }
+  function fromDisplay(text, specimen = false) {
+    if (typeof text !== 'string') throw new TypeError('address must be text');
+    const clean = text.trim().toLowerCase();
+    const allowed = specimen ? /^(?:[abcd](?:\.?[abcd])*)?$/ : /^(?:[wxzy](?:\.?[wxzy])*)?$/;
+    if (!allowed.test(clean)) throw new TypeError('each address step needs one letter');
+    const compact = clean.replaceAll('.', '');
+    const p = specimen ? Array.from(compact, c => {
+      const entry = Object.entries(STUDY).find(([, label]) => label === c);
+      if (!entry) throw new TypeError('the address study uses a, b, c, d');
+      return entry[0];
+    }).join('') : compact;
+    return validate(p);
+  }
+  // F_{a1} ... F_{a(n-1)}(v_an) as four exact dyadic barycentrics.
+  function exact(word) {
+    // Deliberately evaluate the RAW witness, independently of the quotient.
+    const p = validate(word);
+    if (!p) throw new RangeError('the overview has no vertex coordinate');
+    let numerator = [0n, 0n, 0n, 0n], denominator = 1n;
+    numerator[ORDER.get(p.at(-1))] = 1n;
+    for (let i = p.length - 2; i >= 0; i--) {
+      numerator[ORDER.get(p[i])] += denominator;
+      denominator *= 2n;
+    }
+    while (denominator > 1n && numerator.every(v => v % 2n === 0n)) {
+      numerator = numerator.map(v => v / 2n); denominator /= 2n;
+    }
+    return { numerator, denominator };
+  }
+  function exactKey(word) {
+    const p = exact(word);
+    return p.numerator.join(',') + '/' + p.denominator.toString();
+  }
+  // Safe approximate ratio even when numerator/denominator exceed Number range.
+  function ratio(n, d) {
+    if (d <= 0n) throw new RangeError('positive denominator required');
+    if (n === 0n) return 0;
+    const sign = n < 0n ? -1 : 1, a = n < 0n ? -n : n;
+    const sa = Math.max(0, a.toString(2).length - 52);
+    const sd = Math.max(0, d.toString(2).length - 52);
+    return sign * (Number(a >> BigInt(sa)) / Number(d >> BigInt(sd))) * 2 ** (sa - sd);
+  }
+  // Exact subtraction and scale compensation BEFORE projecting into pixels.
+  function relative(word, origin, scalePower = 0) {
+    const p = exact(word), o = exact(origin);
+    const d = p.denominator > o.denominator ? p.denominator : o.denominator;
+    const scale = 1n << BigInt(scalePower);
+    return p.numerator.map((n, i) => ratio((n * (d / p.denominator) - o.numerator[i] * (d / o.denominator)) * scale, d));
+  }
+  function barycentric(word) {
+    const p = exact(word);
+    return p.numerator.map(n => ratio(n, p.denominator));
+  }
+  return Object.freeze({ GENES, STUDY, validate, stripSelf, compare, witnesses, key, same, prefixes, display, fromDisplay, exact, exactKey, ratio, relative, barycentric });
+});
+</script><script>/* One semantic organism, one navigation. The canonical index follows the same
+ * recursive w/x/z/y grammar as the body; runtime registries are derived views.
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory(require('./address.js'));
+  else root.CambiumNavigation = factory(root.CambiumAddress);
+})(typeof globalThis === 'object' ? globalThis : this, function (A) {
+  'use strict';
+  const registryCache = new WeakMap();
+  const ROUTE_BUDGET = 4096; // finite browser interaction budget, not semantic depth
+  const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
+  const genes = node => A.GENES.filter(g => own(node,g));
+  const url = (_mode, path) => '#/' + A.display(A.validate(path));
+
+  function parse(hash) {
+    if (!hash || hash === '#' || hash === '#/') return {mode:'site', path:''};
+    if (hash === '#main') return {anchor:true};
+    // Keep the earlier /site/ prefix usable; the public demo namespace stays retired.
+    const match = /^#\/(?:site\/)?([wxzy.]*)$/.exec(hash);
+    if (!match) throw new Error('this link does not identify a place in this website');
+    if (match[1].length > ROUTE_BUDGET * 2) throw new Error('this address exceeds the browser interaction budget');
+    const path = A.fromDisplay(match[1]);
+    if (path.length > ROUTE_BUDGET) throw new Error('this address exceeds the browser interaction budget');
+    return {mode:'site', path};
+  }
+
+  function registry(index) {
+    if (registryCache.has(index)) return registryCache.get(index);
+    if (!index || typeof index !== 'object' || Array.isArray(index)) throw new Error('the organism index must be one semantic whole');
+    const nodes = new Map(), byLocus = new Map();
+
+    function walk(source, path, parent) {
+      A.validate(path);
+      if (!source || typeof source !== 'object' || Array.isArray(source)) throw new Error('a realized place must be a semantic object');
+      if (typeof source.name !== 'string' || !source.name.trim()) throw new Error('a realized place needs its own derived name');
+      if (typeof source.whole !== 'string' || !source.whole.trim()) throw new Error('a realized place needs its current semantic whole');
+      const childGenes = genes(source);
+      if (childGenes.length && childGenes.length !== 4) throw new Error('a realized differentiation needs all four CCCC children');
+      const tissue = source.tissue === undefined ? {} : source.tissue;
+      if (!tissue || typeof tissue !== 'object' || Array.isArray(tissue)) throw new Error('local tissue must be a semantic carrier map');
+      for (const [name, carrier] of Object.entries(tissue)) {
+        if (!name.trim() || typeof carrier !== 'string' || !carrier.trim()) throw new Error('local tissue needs a semantic name and carrier');
+      }
+      if (nodes.has(path)) throw new Error('duplicate address '+path);
+      const node = {
+        path,
+        locus:A.key(path),
+        name:source.name.trim(),
+        whole:source.whole.trim(),
+        parent,
+        children:childGenes.map(g=>path+g),
+        tissue:{...tissue},
+        source
+      };
+      nodes.set(path,node);
+      const bucket=byLocus.get(node.locus)||[];bucket.push(path);byLocus.set(node.locus,bucket);
+      for (const g of childGenes) walk(source[g], path+g, path);
+    }
+
+    walk(index,'',null);
+    const result={nodes,byLocus};registryCache.set(index,result);return result;
+  }
+
+  function resolve(mode, word, index) {
+    if (mode !== 'site') throw new Error('the website has one atlas');
+    const path=A.validate(word);
+    if (path.length > ROUTE_BUDGET) throw new Error('this address exceeds the browser interaction budget');
+    const r=registry(index),node=r.nodes.get(path);
+    if (!node) throw new Error('this place has not yet been differentiated');
+    // Geometry can share a locus without semantic coalescence. Alternate trails are
+    // exposed only when independently realized witnesses carry the same semantic whole.
+    const aliases=(r.byLocus.get(node.locus)||[]).filter(p=>{
+      const other=r.nodes.get(p);return other.name===node.name&&other.whole===node.whole;
+    }).sort(A.compare);
+    return {mode:'site',path,locus:node.locus,node,aliases,
+      children:node.children.map(raw=>({gene:raw.at(-1),path:raw,self:path!==''&&A.same(raw,path),name:r.nodes.get(raw).name}))};
+  }
+
+  function trails(state,index) {
+    const r=registry(index);
+    return state.aliases.map(path=>({path,active:path===state.path,
+      steps:A.prefixes(path).map(p=>({path:p,symbol:p.at(-1),href:url('site',p),label:r.nodes.get(p).name,
+        current:p===state.path&&path===state.path}))}));
+  }
+
+  function namePath(word,index) {
+    const r=registry(index),path=A.validate(word);
+    return [r.nodes.get('').name,...A.prefixes(path).map(p=>{
+      const n=r.nodes.get(p);if(!n)throw new Error('unrealized named prefix');return n.name;
+    })].join(' · ');
+  }
+
+  return Object.freeze({ROUTE_BUDGET,url,parse,registry,resolve,trails,namePath});
+});
+</script><script>/* The view consumes named, resolved places. Camera pose is presentation state,
+ * never an address. No geometric proximity is used to merge semantic identity.
+ */
+(function (root) {
+  'use strict';
+  const A=root.CambiumAddress, N=root.CambiumNavigation;
+  const norm=v=>Math.hypot(...v);
+  function normalize(q){const m=norm(q);return m>1e-14?q.map(v=>v/m):[1,0,0,0];}
+  function multiply(a,b){
+    const [w,x,y,z]=a,[v,i,j,k]=b;
+    return [w*v-x*i-y*j-z*k,w*i+x*v+y*k-z*j,w*j-x*k+y*v+z*i,w*k+x*j-y*i+z*v];
+  }
+  function axisQuaternion(axis,angle){const s=Math.sin(angle/2);return [Math.cos(angle/2),...axis.map(v=>v*s)];}
+  function rotateVector(q,p){const r=multiply(multiply(q,[0,...p]),[q[0],-q[1],-q[2],-q[3]]);return r.slice(1);}
+  function between(a,b){
+    const dot=Math.max(-1,Math.min(1,a.reduce((v,n,i)=>v+n*b[i],0)));
+    let cross=[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+    if(dot < -1+1e-9){
+      const h=Math.abs(a[0])<.8?[1,0,0]:[0,1,0];
+      cross=[a[1]*h[2]-a[2]*h[1],a[2]*h[0]-a[0]*h[2],a[0]*h[1]-a[1]*h[0]];
+      return normalize([0,...cross]);
+    }
+    return normalize([1+dot,...cross]);
+  }
+  function ball(x,y){const d=x*x+y*y;return d<=1?[x,y,Math.sqrt(1-d)]:[x/Math.sqrt(d),y/Math.sqrt(d),0];}
+  const INITIAL=normalize(multiply(axisQuaternion([1,0,0],.17),axisQuaternion([0,1,0],.28)));
+  const math=Object.freeze({normalize,multiply,axisQuaternion,rotateVector,between,ball,initial:()=>[...INITIAL]});
+  if(typeof module==='object'&&module.exports){module.exports=math;return;}
+  const $=id=>document.getElementById(id);
+  function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
+  function svg(tag,attrs={}){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n;}
+  function link(p,text,cls,label){
+    const a=el('a',cls,text);a.href=N.url('site',p);a.dataset.path=p;a.dataset.locus=A.key(p);
+    if(label){a.setAttribute('aria-label',label);a.title=label;a.dataset.hint=label;}return a;
+  }
+  function breadcrumbs(s,index){
+    const box=$('address-trails'),registry=N.registry(index);box.replaceChildren();
+    const home=link('',registry.nodes.get('').name,'home-crumb','return to cambium');
+    if(!s.path)home.setAttribute('aria-current','page');box.append(home);
+    if(!s.path)return;
+    const group=el('div','trails-group');box.append(group);
+    for(const[i,trail]of N.trails(s,index).entries()){
+      if(i){const sep=el('span','trail-separator','|');sep.setAttribute('aria-hidden','true');group.append(sep);}
+      const ol=el('ol','trail'+(trail.active?' active-trail':''));ol.dataset.witness=trail.path;
+      ol.setAttribute('aria-label','approach through '+N.namePath(trail.path,index));
+      for(const step of trail.steps){
+        const li=el('li','crumb-step'),a=link(step.path,step.label,'crumb',N.namePath(step.path,index));
+        if(step.current)a.setAttribute('aria-current','page');li.append(a);ol.append(li);
+      }
+      group.append(ol);
+    }
+  }
+  function choices(s,index){
+    const host=$('next-places');host.replaceChildren();
+    host.hidden=!s.children.length;host.setAttribute('aria-label','within '+s.node.name);
+    const seen=new Set();
+    for(const child of s.children){
+      const p=child.path;if(seen.has(p))continue;seen.add(p);
+      const a=link(p,child.name,'next-place',N.namePath(p,index));host.append(a);
+    }
+    if(!host.childElementCount)host.hidden=true;
+  }
+  function headline(lines){
+    const h=$('page-title');h.replaceChildren();
+    const first=el('span','title-main');first.append(document.createTextNode(lines[0]),el('br'),document.createTextNode(lines[1]),el('span','dash','—'));
+    const last=el('em','title-answer');last.append(document.createTextNode(lines[2]),el('br'),document.createTextNode(lines[3]));h.append(first,last);
+  }
+  function content(s,data){
+    document.body.dataset.path=s.path;document.body.dataset.locus=s.locus;
+    $('source-block').hidden=true;$('page-title').className=s.path?'organ-title':'';
+    if(!s.path){
+      headline(data.copy.headline);$('eyebrow-text').textContent=data.copy.eyebrow;$('main-description').textContent='';
+      $('practice-label').textContent=data.copy.practice_label;$('practice-copy').textContent=data.copy.practice;
+    }else{
+      const c=data.copy.organs[s.path];
+      $('page-title').textContent=c.title;$('eyebrow-text').textContent=s.node.name;
+      $('main-description').textContent=c.lead;$('practice-label').textContent='within '+s.node.name;$('practice-copy').textContent=c.detail;
+      const files=$('source-files');files.replaceChildren();
+      for(const carrier of Object.values(s.node.tissue||{})){
+        const li=el('li'),a=el('a','source-link',carrier);a.href=carrier;li.append(a);files.append(li);
+      }
+      $('source-block').hidden=!files.childElementCount;
+    }
+    $('main-description').hidden=!$('main-description').textContent;
+    document.title=(s.path?s.node.name:data.copy.brand)+' · cambium';
+  }
+  const V=[[0,Math.sqrt(2/3),0],[-.5,0,-Math.sqrt(3)/6],[.5,0,-Math.sqrt(3)/6],[0,0,Math.sqrt(3)/3]];
+  const EDGES=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+  let pose=[...INITIAL],scene=null;
+  const xyz=b=>b.reduce((r,n,i)=>r.map((v,j)=>v+n*V[i][j]),[0,0,0]);
+  function geometry(s,data){
+    const host=$('geometry'),registry=N.registry(data.index);host.replaceChildren();
+    const canvas=svg('svg',{viewBox:'0 0 560 500',class:'geometry',role:'group','aria-label':'named places in '+s.node.name});
+    canvas.append(svg('circle',{cx:280,cy:242,r:212,class:'map-field','aria-hidden':'true'}));
+    let frames=s.children.length?[s.path]:[...new Set(s.aliases.map(p=>registry.nodes.get(p).parent??''))];
+    frames=frames.filter(p=>registry.nodes.get(p)?.children.length).sort(A.compare);if(!frames.length)frames=[''];
+    const deep=frames.some(p=>p.length>0),power=deep?Math.max(...frames.map(p=>p.length)):0;
+    const point=p=>xyz(deep?A.relative(p,s.path,power):A.barycentric(p).map(v=>v-.25));
+    const candidates=new Map();
+    for(const f of frames)for(const p of registry.nodes.get(f).children){
+      const k=A.key(p);
+      if(!candidates.has(k)||p===s.path)candidates.set(k,{path:p,pos:point(p)});
+    }
+    const maxRadius=Math.max(.001,...[...candidates.values()].map(v=>norm(v.pos)));
+    scene={canvas,segments:[],nodes:[],scale:174/maxRadius,center:[280,242],current:s.locus};
+    const addFrame=(paths,cls)=>{
+      const group=svg('g',{class:cls,'aria-hidden':'true'});canvas.append(group);const pts=paths.map(point);
+      for(const[i,j]of EDGES){const line=svg('line');group.append(line);scene.segments.push({line,a:pts[i],b:pts[j]});}
+    };
+    // Unlabelled weave is a visual study, not extra indexed destinations.
+    if(!deep){let prefixes=[''];for(let d=0;d<3;d++)prefixes=prefixes.flatMap(p=>A.GENES.map(g=>p+g));
+      for(const f of prefixes)addFrame(A.GENES.map(g=>f+g),'map-mesh');}
+    for(const f of frames)addFrame(registry.nodes.get(f).children,'map-frame'+(f!==s.node.parent&&frames.length>1?' other-frame':''));
+    for(const[k,item]of candidates){
+      const p=item.path,name=registry.nodes.get(p).name;
+      const anchor=svg('a',{href:N.url('site',p),'data-path':p,'data-locus':k,tabindex:'0',class:'map-node'+(k===s.locus?' current-node':''),'aria-label':'open '+name,'data-hint':N.namePath(p,data.index)});
+      const title=svg('title');title.textContent=N.namePath(p,data.index);anchor.append(title);
+      const leader=svg('line',{class:'label-leader'}),hit=svg('rect',{class:'node-target',rx:5}),dot=svg('circle',{r:k===s.locus?7:4.5,class:'node-dot'}),text=svg('text',{class:'node-label'});
+      text.textContent=name;anchor.append(leader,hit,dot,text);canvas.append(anchor);
+      scene.nodes.push({...item,key:k,anchor,leader,hit,dot,text});
+    }
+    if(deep){const ring=svg('circle',{cx:280,cy:242,r:13,class:'focus-ring','data-focus-locus':s.locus});canvas.append(ring);}
+    host.append(canvas);
+    $('map-context').textContent='within '+frames.map(p=>registry.nodes.get(p).name).join(' · ');
+    $('map-figure').hidden=false;paint();
+  }
+  function project(p){const v=rotateVector(pose,p);return [scene.center[0]+v[0]*scene.scale,scene.center[1]-v[1]*scene.scale,v[2]];}
+  function overlap(a,b){return Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));}
+  function paint(){
+    if(!scene)return;
+    for(const s of scene.segments){const a=project(s.a),b=project(s.b);for(const[k,v]of Object.entries({x1:a[0],y1:a[1],x2:b[0],y2:b[1]}))s.line.setAttribute(k,v);}
+    const placed=[];
+    // Stable order prevents label jitter; collision handling never affects addresses.
+    for(const n of scene.nodes){
+      const[x,y]=project(n.pos);n.dot.setAttribute('cx',x);n.dot.setAttribute('cy',y);
+      const size=parseFloat(getComputedStyle(n.text).fontSize)||17;
+      const width=n.text.getComputedTextLength()||n.text.textContent.length*size*.62;
+      const ratio=scene.canvas.getBoundingClientRect().width/560||1,minH=44/ratio;
+      const h=Math.max(size+12,minH)+4,spacing=Math.max(32,h+2);
+      const desiredX=x<280?x-width-17:x+17;
+      const left=Math.max(12,Math.min(548-width,desiredX));const desiredY=y<242?y-18:y+30;
+      let best=null,bestScore=Infinity;
+      for(const step of [0,-1,1,-2,2,-3,3,-4,4]){
+        const delta=step*spacing;
+        const baseline=Math.max(h/2+size/2+8,Math.min(492-h/2+size/2,desiredY+delta));
+        const r={x:left-9,y:baseline-size/2-h/2,w:width+18,h};
+        const score=placed.reduce((s,b)=>s+overlap(r,b)*200,0)+Math.abs(delta);
+        if(score<bestScore){best={...r,baseline};bestScore=score;}
+      }
+      placed.push(best);n.text.setAttribute('x',left);n.text.setAttribute('y',best.baseline);
+      const near=Math.max(left,Math.min(left+width,x));
+      for(const[k,v]of Object.entries({x1:x,y1:y,x2:near,y2:best.baseline-5}))n.leader.setAttribute(k,v);
+      // Every labelled destination has a target at least 44 CSS pixels high.
+      const rect={x:left-7,y:best.baseline-size/2-minH/2,w:width+14,h:minH};
+      for(const[k,v]of Object.entries({x:rect.x,y:rect.y,width:rect.w,height:rect.h}))n.hit.setAttribute(k,v);
+    }
+  }
+  function render(s,data){breadcrumbs(s,data.index);choices(s,data.index);content(s,data);geometry(s,data);$('place-navigation').hidden=false;$('error-message').hidden=true;}
+  function error(message){const e=$('error-message');e.replaceChildren(document.createTextNode(message+'. '),link('','return to cambium','', 'return to cambium'));e.hidden=false;}
+  function highlight(locus){document.querySelectorAll('[data-locus]').forEach(n=>n.classList.toggle('is-highlighted',!!locus&&n.dataset.locus===locus));}
+  root.CambiumView=Object.freeze({render,error,highlight,repaint:paint,getPose:()=>[...pose],
+    rotate(axis,angle){pose=normalize(multiply(axisQuaternion(axis,angle),pose));paint();},
+    orbit(start,current,initial){pose=normalize(multiply(between(start,current),initial));paint();},
+    ball,reset(){pose=[...INITIAL];paint();}});
+})(globalThis);
+</script><script>/* URL state identifies the place; an independent camera changes how we see it.
+ * Pointer capture belongs to the stable host, not to a replaced SVG child.
+ */
+(function(root){
+ 'use strict';
+ const N=root.CambiumNavigation,V=root.CambiumView,$=id=>document.getElementById(id);
+ const data=JSON.parse($('cambium-data').textContent);
+ let state=N.resolve('site','',data.index),renderCount=0,gesture=null,suppressClickUntil=0,frame=0;
+ function update(initial=false){
+  try{
+   const route=N.parse(location.hash);if(route.anchor)return;
+   const next=N.resolve(route.mode,route.path,data.index);
+   V.render(next,data);state=next;renderCount++;
+   if(!initial){(document.querySelector('.active-trail a[aria-current="page"]')||$('page-title')).focus({preventScroll:true});
+    $('announcer').textContent=N.namePath(state.path,data.index)+(state.aliases.length>1?'. two approaches meet here.':'.');}
+  }catch(e){V.error(e.message);}
+ }
+ window.addEventListener('hashchange',()=>update());
+ document.addEventListener('click',e=>{
+  const a=e.target.closest('a[data-path]');
+  if(a&&a.hash===location.hash&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&!e.altKey){e.preventDefault();$('announcer').textContent='you are already here.';}
+ });
+ function hint(e){const t=e.target.closest('[data-hint]');if(t){$('navigation-hint').textContent=t.dataset.hint;V.highlight(t.dataset.locus);}}
+ document.addEventListener('pointerover',hint);document.addEventListener('focusin',hint);
+ function unhighlight(e){if(e.target.closest('[data-hint]'))V.highlight(null);}
+ document.addEventListener('pointerout',unhighlight);document.addEventListener('focusout',unhighlight);
+ const host=$('geometry');
+ function ballAt(e){const r=host.getBoundingClientRect(),radius=Math.min(r.width,r.height)*.43;return V.ball((e.clientX-r.left-r.width/2)/radius,(r.top+r.height/2-e.clientY)/radius);}
+ host.addEventListener('pointerdown',e=>{
+  if(e.button!==0||!e.isPrimary)return;
+  suppressClickUntil=0;gesture={id:e.pointerId,x:e.clientX,y:e.clientY,start:ballAt(e),pose:V.getPose(),dragged:false,latest:null};
+ });
+ host.addEventListener('pointermove',e=>{
+  if(!gesture||e.pointerId!==gesture.id)return;
+  if(!gesture.dragged){
+   if(Math.hypot(e.clientX-gesture.x,e.clientY-gesture.y)<5)return;
+   gesture.dragged=true;host.setPointerCapture(e.pointerId);host.classList.add('is-dragging');host.focus({preventScroll:true});V.highlight(null);
+  }
+  e.preventDefault();gesture.latest=ballAt(e);
+  if(!frame)frame=requestAnimationFrame(()=>{frame=0;if(gesture?.latest)V.orbit(gesture.start,gesture.latest,gesture.pose);});
+ });
+ function finish(e){
+  if(!gesture||e.pointerId!==gesture.id)return;
+  if(frame){cancelAnimationFrame(frame);frame=0;}
+  if(gesture.dragged){if(gesture.latest)V.orbit(gesture.start,gesture.latest,gesture.pose);suppressClickUntil=performance.now()+400;}
+  const id=gesture.id;gesture=null;host.classList.remove('is-dragging');if(host.hasPointerCapture(id))host.releasePointerCapture(id);
+ }
+ host.addEventListener('pointerup',finish);host.addEventListener('pointercancel',finish);
+ host.addEventListener('lostpointercapture',()=>{gesture=null;host.classList.remove('is-dragging');});
+ host.addEventListener('click',e=>{if(e.detail>0&&performance.now()<suppressClickUntil){e.preventDefault();e.stopPropagation();}},true);
+ host.addEventListener('keydown',e=>{
+  const angles={ArrowLeft:[[0,1,0],-.15],ArrowRight:[[0,1,0],.15],ArrowUp:[[1,0,0],-.15],ArrowDown:[[1,0,0],.15],q:[[0,0,1],-.15],e:[[0,0,1],.15]};
+  if(e.altKey||e.ctrlKey||e.metaKey)return;
+  if(angles[e.key]){e.preventDefault();V.rotate(...angles[e.key]);}
+  else if(e.key==='Home'){e.preventDefault();V.reset();}
+ });
+ $('reset-view').addEventListener('click',()=>{V.reset();$('announcer').textContent='view reset. your place is unchanged.';});
+ window.addEventListener('resize',()=>{if(!frame)frame=requestAnimationFrame(()=>{frame=0;V.repaint();});});
+ root.Cambium=Object.freeze({getState:()=>({mode:'site',path:state.path,locus:state.locus,aliases:[...state.aliases]}),getRenderCount:()=>renderCount,getView:()=>V.getPose()});
+ update(true);document.documentElement.classList.add('enhanced');
+})(globalThis);
+</script>
+</body></html>
