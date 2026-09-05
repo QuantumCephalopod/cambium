@@ -56,24 +56,30 @@ def main():
         check(result.returncode==0,result.stderr)
     if SPLIT:
         index=json.loads((ROOT/'INDEX.json').read_text())
-        check(set(index['dna'])==set('wxzy'),'DNA mismatch')
-        check([n['path'] for n in index['nodes']]==['','w','x','z','y'],'unexpected semantic depth')
-        check(index['nodes'][0]['role']=='wood','root must be navigation wood')
-        check(all(n['children']==[] for n in index['nodes'][1:]),'unearned descendant split')
-        check(all(n['occupants'] for n in index['nodes'][1:]),'empty semantic arm')
-        files=index['files'];check(len({f['id'] for f in files})==len(files),'duplicate stable tissue id')
+        nodes=mod.semantic_nodes(index);paths=[path for path,_ in nodes]
+        check(paths==['','w','x','z','y'],'unexpected semantic depth')
+        check(index['name']=='cambium','root semantic name changed')
+        check(bool(index['whole'].strip()),'root semantic whole missing')
+        check(all(g in index for g in 'wxzy'),'root CCCC body incomplete')
+        check(all(not any(g in index[p] for g in 'wxzy') for p in 'wxzy'),'unearned descendant split')
+        check(all(index[p].get('tissue') for p in 'wxzy'),'empty semantic arm')
+        forbidden_root={'nodes','files','closure','root_receipt','frontier','publication','geometry','schema','dna'}
+        check(not (forbidden_root & set(index)),'flat/meta schema leaked back into the semantic index')
+        forbidden_local={'path','parent','children','gene','depth','locus','split_receipt','birth_receipt','status','role'}
+        check(all(not (forbidden_local & set(node)) for _,node in nodes),'derivable bookkeeping stored inside semantic body')
         body={p.relative_to(ROOT).as_posix() for a in 'wxzy' for p in (ROOT/a).rglob('*') if p.is_file() and '__pycache__' not in p.parts}
-        atlas={f['path'] for f in files}
-        check(body==atlas,'atlas does not address the complete body: '+str(body^atlas))
-        for f in files:
-            check((ROOT/f['path']).is_file(),'missing occupant '+f['path'])
-            check(f['path'][0]==f['locus'],'wrong primary physical locus')
-            check(f['id'] in next(n for n in index['nodes'] if n['path']==f['locus'])['occupants'],'unbound occupant')
+        atlas={carrier for _,node in nodes for carrier in node.get('tissue',{}).values()}
+        check(body==atlas,'semantic index does not address the complete living body: '+str(body^atlas))
+        for carrier in atlas:check((ROOT/carrier).is_file(),'missing addressed tissue '+carrier)
         for a in 'wxzy':
             check(not any(p.is_dir() and p.name!='__pycache__' for p in (ROOT/a).iterdir()),'unearned convenience depth')
+        for shell in ('_stomach','_waste','SKILLS'):
+            check(isinstance(index.get(shell),dict) and index[shell].get('whole'),'missing shell orientation '+shell)
+            for carrier in index[shell].get('tissue',{}).values():check((ROOT/carrier).is_file(),'missing shell tissue '+carrier)
         check((ROOT/'CNAME').read_text().strip()=='sss.saarland','unexpected custom domain')
         check((ROOT/'SKILLS/START_HERE.md').is_file(),'no reentry receptor')
-        check((ROOT/'ROOT_SPLIT.md').is_file(),'split receipt missing')
-        check((ROOT/'INDEX.md').read_text()==mod.render_index(index),'human atlas projection stale')
+        check(not (ROOT/'ROOT_SPLIT.md').exists(),'closed differentiation diary still lives at root')
+        check((ROOT/'_stomach/root-differentiation.md').is_file(),'retained differentiation nutrient missing')
+        check(not (ROOT/'INDEX.md').exists(),'duplicate generated atlas survived semantic-index correction')
     print(json.dumps({'status':'pass','structural_checks':count,'stage':'split' if SPLIT else 'flat'},indent=2))
 if __name__=='__main__':main()
