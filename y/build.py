@@ -10,6 +10,7 @@ from urllib.parse import quote
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent if HERE.name == 'y' else HERE
+GENES = 'wxzy'
 
 
 def inputs():
@@ -24,17 +25,60 @@ def inputs():
     }
 
 
+def semantic_nodes(index):
+    """Return (raw_address, semantic_object) in recursive address order."""
+    out = []
+    def walk(node, path=''):
+        if not isinstance(node, dict):
+            raise ValueError(f'{path or "root"} is not a semantic object')
+        if not isinstance(node.get('name'), str) or not node['name'].strip():
+            raise ValueError(f'{path or "root"} needs an atomic semantic name')
+        if not isinstance(node.get('whole'), str) or not node['whole'].strip():
+            raise ValueError(f'{path or "root"} needs its current semantic whole')
+        children = [g for g in GENES if g in node]
+        if children and len(children) != 4:
+            raise ValueError(f'{path or "root"} has an incomplete CCCC differentiation')
+        tissue = node.get('tissue', {})
+        if not isinstance(tissue, dict):
+            raise ValueError(f'{path or "root"} tissue must be a semantic carrier map')
+        for name, carrier in tissue.items():
+            if not isinstance(name, str) or not name.strip() or not isinstance(carrier, str) or not carrier.strip():
+                raise ValueError(f'{path or "root"} has malformed tissue')
+        out.append((path, node))
+        for g in children:
+            walk(node[g], path + g)
+    walk(index)
+    return out
+
+
+def validate_carrier(carrier):
+    p = Path(carrier)
+    if p.is_absolute() or '..' in p.parts or ':' in str(p) or not (ROOT / p).is_file():
+        raise ValueError(f'invalid or missing tissue path: {p}')
+
+
+def validate_shell(index):
+    for key in ('_stomach', '_waste', 'SKILLS'):
+        shell = index.get(key)
+        if not isinstance(shell, dict) or not isinstance(shell.get('whole'), str) or not shell['whole'].strip():
+            raise ValueError(f'missing semantic shell orientation for {key}')
+        tissue = shell.get('tissue', {})
+        if not isinstance(tissue, dict):
+            raise ValueError(f'{key} tissue must be a semantic carrier map')
+        for carrier in tissue.values():
+            validate_carrier(carrier)
+
+
 def render():
     files = inputs()
     data = {k: json.loads(files[k].read_text(encoding='utf-8')) for k in ('index', 'copy')}
-    for n in data['index']['nodes']:
-        if n['path'] and n['path'] not in data['copy']['organs']:
-            raise ValueError(f'missing public interpretation for {n["path"]}')
-    # Only repository-local, relative source paths are exposed by the skin.
-    for f in data['index'].get('files', []):
-        p = Path(f['path'])
-        if p.is_absolute() or '..' in p.parts or ':' in str(p) or not (ROOT / p).is_file():
-            raise ValueError(f'invalid or missing tissue path: {p}')
+    nodes = semantic_nodes(data['index'])
+    validate_shell(data['index'])
+    for path, node in nodes:
+        if path and path not in data['copy']['organs']:
+            raise ValueError(f'missing public interpretation for {path}')
+        for carrier in node.get('tissue', {}).values():
+            validate_carrier(carrier)
     text = files['template'].read_text(encoding='utf-8')
     copy = data['copy']
     subs = {'EYEBROW':copy['eyebrow'],'PRACTICE_LABEL':copy['practice_label'],'PRACTICE':copy['practice'],
@@ -53,35 +97,6 @@ def render():
     return '<!-- generated from w/x/z/y by y/build.py; edit source tissue, not this skin. -->\n'+text
 
 
-def render_index(index):
-    lines = ['# index — cambium', '',
-      '> generated from `INDEX.json`; edit the living atlas, not this projection.', '',
-      '## current whole', '',
-      'the website has one realized root split and four unsplit living limbs. the root is navigation wood. the first semantic receipt is [`ROOT_SPLIT.md`](ROOT_SPLIT.md).', '',
-      '`w = CREATE · x = COPY · z = CONTROL · y = CULTIVATE`', '',
-      'the generated `index.html` is the outward skin, not an independently authored root content chamber. no upload or public launch is asserted.', '',
-      '## complete body atlas', '']
-    for n in index['nodes'][1:]:
-        lines += [f"### {n['path']} — {n['name']}", '',
-          f"gene: {n['gene'].lower()} · locus: `{n['locus']}` · parent: root · children: none · state: living unsplit cambium", '',
-          '| stable occupant | current carrier | role |', '|---|---|---|']
-        for f in index['files']:
-            if f['id'] in n['occupants']:
-                lines.append(f"| `{f['id']}` | [{f['path']}]({f['path']}) | {f['role']} |")
-        lines.append('')
-    lines += ['## shell and substrate', '', '| surface | role |', '|---|---|']
-    for item in index['shell']:
-        path=item['path']; lines.append(f"| [{path}]({path}) | {item['role']} |")
-    lines += ['', '## geometry and semantic restraint', '',
-      'one public navigator reads only the realized atlas. every visible step takes its noun from its full-prefix record, not a gene-label substitution. exact address identity is independent of camera pose. the geometry specimen stays in renewal tests and is not embedded in the public skin.', '',
-      'there is no second website split. named dual ancestry appears only where the atlas contains both realized witnesses. tests exercise deeper named paths without publishing fabricated branches.', '',
-      '## frontier', '', index['frontier']['positive']+'.', '',
-      index['frontier']['next']+'.', '',
-      'open: public contact, legal/privacy review, licensing, app write authorization, commit/readback, Pages and DNS/HTTPS verification. [`_stomach/launch.md`](_stomach/launch.md) owns that unresolved intake.', '',
-      'scope of checks: exact finite addresses, generated-body consistency and browser interactions. not a proof of the dense-carrier compass and not a full accessibility/security/legal audit.', '']
-    return '\n'.join(lines)
-
-
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--check',action='store_true',help='fail if the checked-in skin is stale')
@@ -90,12 +105,8 @@ def main():
     target=args.output or ROOT/'index.html'; result=render()
     if args.check:
         if not target.exists() or target.read_text(encoding='utf-8')!=result: raise SystemExit('stale skin: run python y/build.py')
-        print('skin is a deterministic projection of the current sources')
-        if (ROOT / 'INDEX.json').exists() and (ROOT/'INDEX.md').read_text(encoding='utf-8') != render_index(json.loads((ROOT/'INDEX.json').read_text())):
-            raise SystemExit('stale human atlas')
+        print('skin is a deterministic projection of the current semantic organism')
     else:
         target.parent.mkdir(parents=True,exist_ok=True);target.write_text(result,encoding='utf-8')
-        if not args.output and (ROOT/'INDEX.json').exists():
-            (ROOT/'INDEX.md').write_text(render_index(json.loads((ROOT/'INDEX.json').read_text())),encoding='utf-8')
         print(f'built {target} ({len(result.encode())} bytes)')
 if __name__=='__main__':main()
