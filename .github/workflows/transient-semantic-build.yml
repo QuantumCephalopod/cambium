@@ -21,6 +21,12 @@ jobs:
         run: node y/test-address.cjs
       - name: deterministic build check
         run: python3 y/build.py --check
+      - name: install browser witness
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright
+          python3 -m playwright install --with-deps chromium
+      - name: browser interaction witness
+        run: python3 y/browser-check.py --out browser-review
       - name: persist generated skin if changed
         run: |
           if ! git diff --quiet -- index.html; then
