@@ -8,8 +8,8 @@ an independent lab for artistic and scientific inquiry.
 cambium is the living website organism, not a mirror of the entire research body.
 its public skin can be a bounded, reproducible artifact while the source practice
 continues to change. the first root split has now been derived from the grown
-implementation and materialized locally. nothing here asserts a GitHub upload,
-public launch or solved dense-carrier compass.
+implementation and materialized locally. the current files are staged through `QuantumCephalopod/cambium` for an upstream pull request.
+no upstream merge, public launch or solved dense-carrier compass is asserted.
 
 ## enter the body
 
@@ -99,7 +99,7 @@ then visit `http://127.0.0.1:8000/`.
 
 ## publication boundary
 
-`_stomach/launch.md` holds unresolved launch work. no personal contact address,
+`_stomach/launch.md` holds unresolved launch work, including the pending upstream merge. no personal contact address,
 legal notice, blanket license or publication list has been invented. the
 administrative Gmail address is not a public contact by default.
 
