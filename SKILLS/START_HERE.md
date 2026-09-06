@@ -4,64 +4,95 @@ you are entering the website organism of self-similar-systems saar.
 
 ## invariant shared entry — before this repository
 
-**every entry into cambium begins at the canonical Drive `/SKILLS` receptor, regardless of whether the current carrier being worked on is Drive, GitHub, a local clone, a browser surface, or another substrate.**
+**every entry into cambium begins at the canonical Drive `/SKILLS` receptor,
+regardless of whether the current carrier is Drive, GitHub, a local clone, a browser
+surface, or another substrate.**
 
 canonical shared receptor:
 https://drive.google.com/file/d/1gaJF8r9Rz8eCttAqOQ_8xq3Fd3SxUkOW/view
 
-read that `START_HERE.md` completely first, then read the shared Diamond(s) it selects for the intended operation completely. treat that shared procedural body as already-in-context operative physiology for the whole pass. GitHub is a carrier of this organism, not a competing source of shared Skill truth.
-
-an entry pipeline that has not supplied the current canonical Drive receptor + required shared Diamond context has not completed re-entry. do not reconstruct unavailable shared Skill versions from repository copies, filenames, chat memory, or old summaries.
-
-then return here for cambium-local orientation.
+read that `START_HERE.md` completely first, then the shared Diamond(s) selected for
+the intended operation. GitHub is a carrier of this organism, not a competing source
+of shared Skill truth.
 
 ## re-entry
 
 1. complete the invariant shared Drive entry above.
 2. read this local receptor completely.
-3. read `../INDEX.json` completely. it is the organism's current recursive semantic overview: each realized address carries the meaning needed to recognize that whole and decide whether deeper descent is necessary.
-4. let that overview choose the smallest relevant locus, then read the exact current tissue named there before changing it.
-5. enter `_stomach` only when the task actually concerns unresolved nutrient. old differentiation reasoning is not normal re-entry ground.
-6. after changing living tissue, backpropagate any changed semantic whole into the recursive index, regenerate the skin, run checks and inspect the result. remote persistence is a separate witnessed operation.
+3. read `../INDEX.yaml` completely. it is the minimal current phenotype: one atomic
+   noun per realized `w/x/z/y` vertex plus realized recursive descendants, and
+   nothing else.
+4. if the constitution of a realized split matters, read that address-local
+   `_cambium.yaml`. the root `_cambium.yaml` contains exactly the current closed
+   `4V/6E/4F/1T` for the root split.
+5. use phenotype + local constitution + living tissue/receptors to choose the
+   smallest relevant locus. current occupants, files, state, wounds and next actions
+   are not INDEX data.
+6. enter `_stomach` only when the task actually concerns unresolved nutrient.
+7. after changing living tissue or structural truth, backpropagate only changed
+   phenotype/constitution, regenerate the skin, run checks, and witness the result.
+   remote persistence is a separate witnessed operation.
 
-## shared physiology — stable Drive identities
-
-these are stable shortcuts to the current shared Diamonds; the global Drive receptor above remains the canonical selector and entry surface.
+## stable shared physiology
 
 - dive-in: https://drive.google.com/file/d/1Vpat1Z61a8bPu3a-isRzsifPd6iAjRHo/view
 - metabolism: https://drive.google.com/file/d/1yyIOqzzYnEbkK-gpAecfK3X6BtbEAmAr/view
 - cambium: https://drive.google.com/file/d/1FVfEJN9MWEzRg3JF_dpCGwWyq92SvmyA/view
 - drive: https://drive.google.com/file/d/1GdAHv7FxhVdvN07KZxY0B2wX_cqH1lKo/view
 
-these references are procedural authority, not website runtime dependencies. Git writes use the GitHub connector's exact contracts; Drive mutation uses Drive physiology. the shared semantic/metabolic laws remain the same context across both substrates.
+these references are procedural authority, not website runtime dependencies.
 
-## local contract
+## local constitutional contract
 
-- `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE` is fixed DNA.
-- `INDEX.json` is not a file lookup table or a history wiki. it is the mandatory semantic self-overview of the living organism.
-- the recursive nesting of w/x/z/y is the semantic address structure. do not flatten it into `nodes[]`, global file tables, parent/child bookkeeping or another foreign schema when that information is already carried by the address.
-- every realized address carries one atomic noun and a current semantic `whole`. after a local 4V/6E/4F/1T closes, the earned rank-4 volume is the differentiated address's current whole; that metabolized closure is what meaning propagates.
-- detailed pressure, rivals, edge/face reasoning and removal-test narration are required while a differentiation is being earned, not as permanent anatomy. unresolved reasoning stays stomach; reusable procedure becomes Skill; spent derivation becomes waste.
-- the currently materialized `expression / continuity / orientation / renewal` differentiation was earned from the functional website/code pressure that existed during first growth. preserve that learned anatomy, but do **not** assume it exhausts the host organism or defines the visitor-facing display ontology by default.
-- `display` is an organ **within cambium's own address space**, not a separate organism alongside it. its truthful host placement and any internal differentiation must be earned from whole-organism pressure before materialization; do not invent four display branches in advance.
-- a closed functional/code organ may preserve its own internally metabolized anatomy while occupying one host locus, according to the shared Cambium organ-boundary law. wrong scope does not erase earned local metabolism.
-- root `index.html` is a generated outward skin, not another authored whole.
-- the visible interface is lowercase; protocol and source-filename casing stays exact.
-- `y/specimen.json` is test-only recursive geometry/navigation tissue. it is not embedded in the public skin and never contributes descendants to the real atlas.
-- there is one public navigation surface. every visible semantic step takes its noun from the actual addressed body rather than a generic letter label.
-- preserve raw symbolic witness paths beneath mutable display names. geometric quotient may identify one place without erasing the genealogical paths that reached it. camera yaw, pitch and roll only change presentation.
-- reciprocal semantic coalescence is earned only when independently realized witnesses converge on the same semantic whole; geometry alone does not mint it.
-- pointer gestures must not trigger route clicks. address trails describe available approaches, not remembered browser history. prefix links target the complete raw prefix.
-- geometry is exact before display. no arbitrary full-string reversal, nearest-pixel identity, silent chamber merging or fabricated navigation depth.
-- the full dense Tetrix compass and its unresolved membership classifier are not implemented by this finite known-address navigator.
-- a released research object is a bounded public surface; source research may continue. still-cited versions are not disposable merely because they are older.
+- `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE` is fixed DNA inside one organism
+  address space.
+- `INDEX.yaml` is phenotype only. each realized vertex contains exactly `noun:` plus
+  realized nested `w/x/z/y` descendants. do not put occupants, file IDs, paths,
+  status, wounds, `1T`, hashes, timestamps, router metadata or next actions there.
+- `_cambium.yaml` exists only for a **closed** split and contains exactly its surviving
+  `4V/6E/4F/1T`. unresolved differentiation stays stomach/fiber until closure.
+- the root `expression / continuity / orientation / renewal` split is closed and its
+  constitutional anatomy is root `_cambium.yaml`.
+- the generated browser registry may be richer than INDEX because it is a disposable
+  projection derived from phenotype, cambium and actual leaf tissue. it must never
+  become a second canonical anatomy.
+- the currently materialized functional fourfold was earned from website/code
+  pressure. preserve it, but do not mistake it for visitor-facing display ontology.
+- `display` is an emerging organ within cambium. organhood is not a folder/program
+  label: it requires an independently reacquirable constitution, truthful host
+  placement, a scope boundary/interface, and preserved identity. an organ may host
+  suborgans; cambium itself may participate as an organ of a larger whole.
+- a closed functional/code organ may keep its own independent inner root while
+  occupying one host locus. entering that root is a scope transition, not another
+  host path digit.
+- root `index.html` is generated outward skin, not authored semantic tissue.
+- `y/specimen.json` is test-only recursive navigation tissue. it never contributes
+  descendants to production phenotype.
+- there is one public navigation surface. visible semantic names come from realized
+  phenotype, not generic gene labels.
+- preserve raw symbolic witness paths beneath mutable names. geometry may identify a
+  place without erasing the genealogical approaches that reached it.
+- reciprocal semantic coalescence is earned, never minted from geometry alone.
+- exact geometry precedes display; camera yaw/pitch/roll changes presentation only.
 
-## intake and witness
+## metabolism / transport boundary
 
-only publication-safe website nutrients enter `_stomach`. unresolved intake is not an archive and is not semantically pre-sorted merely because we can imagine future destinations. cambium-local digestive physiology should be earned from actual recurring intake pressure rather than prebuilt from hypothetical needs.
+- `_stomach` and `_waste` are cambium-local shell roles.
+- another organism's ejection may become cambium nutrition only through an explicit
+  admission membrane; folder identity does not transfer metabolic role.
+- schedulers, GitHub Actions, cron, webhooks or future substrate automation may act as
+  dumb pumps. transport pressure does not own nutrient ontology: source ejection law
+  decides what may leave and cambium's receptors decide what an arrival becomes.
+- repeated intake pressure may earn new local digestive physiology; do not prebuild
+  routing taxonomies from imagined future food.
 
-run `python3 y/build.py`, `python3 y/check.py`, `node y/test-address.cjs` and, when available, `python3 y/browser-check.py`. these are bounded checks, not a full accessibility/security/legal audit. a human must review publication and interpretation choices.
+## witness
 
-before remote writes reacquire the repository and preserve other changes. a reported permission flag is not evidence that a write succeeded. stop on a 403; do not evade the integration boundary with a different write transport.
+run `python3 y/build.py`, `python3 y/check.py`, `node y/test-address.cjs` and, when
+available, `python3 y/browser-check.py`. these are bounded checks, not a complete
+accessibility/security/legal audit.
 
-`self-similar-systems/cambium` is the canonical organization repository after owner merge/readback. `QuantumCephalopod/cambium` remains the writable staging fork for connector mutations; a fork mutation becomes organization truth only after the owner deliberately merges it upstream and provider readback confirms the resulting organization state. Pages, DNS, personal contact publication and license selection retain their own explicit resolution boundaries.
+before remote writes reacquire the staging repository and preserve concurrent work.
+`QuantumCephalopod/cambium` is the writable staging fork. a fork mutation becomes
+organization truth only after the owner deliberately merges it into
+`self-similar-systems/cambium` and provider readback witnesses the resulting state.
