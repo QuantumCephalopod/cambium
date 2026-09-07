@@ -199,6 +199,7 @@ def artifact_files():
         'assets/style.css': DISPLAY / 'style.css',
         'assets/favicon.svg': DISPLAY / 'favicon.svg',
         'assets/view.js': DISPLAY / 'view.js',
+        'assets/papers-view.js': DISPLAY / 'papers-view.js',
         'assets/address.js': ROOT / 'z/address.js',
         'assets/navigation.js': ROOT / 'z/navigation.js',
         'assets/app.js': ROOT / 'z/app.js',
