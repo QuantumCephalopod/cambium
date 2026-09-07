@@ -65,7 +65,7 @@ def main():
     check((DISPLAY/'INDEX.yaml').read_text(encoding='utf-8').strip()=='{}','display internal phenotype must remain unsplit')
     check(not (DISPLAY/'_cambium.yaml').exists(),'display falsely claims an internal closed split')
     check((DISPLAY/'SKILLS/START_HERE.md').is_file(),'display re-entry receptor missing')
-    for name in ('content.json','template.html','style.css','view.js','favicon.svg'):
+    for name in ('content.json','papers.json','template.html','style.css','papers.css','view.js','papers-view.js','favicon.svg'):
         check((DISPLAY/name).is_file(),f'missing display tissue {name}')
     check((DISPLAY/'_stomach/INCOMING — cambium becoming.md').is_file(),'display becoming nutrient missing')
     check((DISPLAY/'_stomach/observations.md').is_file(),'display observations nutrient missing')
@@ -94,32 +94,39 @@ def main():
     check('skip to content' in actual,'skip link missing')
     check('/*__' not in actual and '{{' not in actual,'template slots remain')
     check(all(s.get('src','').startswith('assets/') for s in p.scripts if 'src' in s),'non-artifact application script leaked into membrane')
-    check({s.get('src') for s in p.scripts if 'src' in s}=={'assets/address.js','assets/navigation.js','assets/view.js','assets/app.js'},'membrane script interface changed')
-    check('assets/style.css' in p.links and 'assets/favicon.svg' in p.links,'display visual assets are not membrane-local')
+    check({s.get('src') for s in p.scripts if 'src' in s}=={'assets/address.js','assets/navigation.js','assets/view.js','assets/papers-view.js','assets/app.js'},'membrane script interface changed')
+    check('assets/style.css' in p.links and 'assets/papers.css' in p.links and 'assets/favicon.svg' in p.links,'display visual assets are not membrane-local')
     check('_stomach/' not in actual and 'SKILLS/' not in actual,'organ shell leaked into public membrane')
 
     match=re.search(r'<script id="cambium-data" type="application/json">(.*?)</script>',actual,re.S)
     check(bool(match),'runtime projection missing')
     payload=json.loads(match.group(1))
-    check(set(payload)=={'index','copy'},'unexpected public payload surface')
+    check(set(payload)=={'index','copy','papers'},'unexpected public payload surface')
     check(payload['index']==runtime,'public runtime index differs from derived host projection')
     check(set(payload['copy']['organs'])==set(GENES),'display content does not cover the current host phenotype')
     check(payload['copy']['brand']=='self-similar-systems saar','public identity changed')
+    build.validate_papers(payload['papers']);check(True,'papers projection invalid')
+    check(payload['papers']['source']=='papers/_feed','display papers projection lost source identity')
+    check(payload['papers']['refresh']=='REFRESH ACKNOWLEDGED','display papers projection is not acknowledged')
+    check([payload['papers']['phenotype'][g] for g in GENES]==['Genesis','Continuity','Governance','Evolution'],'papers address space changed unexpectedly')
+    check([len(payload['papers']['groups'][g]) for g in GENES]==[6,18,18,6],'first papers projection no longer matches admitted source-organism census')
+    check(sum(len(payload['papers']['groups'][g]) for g in GENES)==48,'first papers projection must carry 48 source organisms')
+    check('drive.google.com' not in json.dumps(payload['papers']),'private Drive pointers leaked into public papers projection')
 
     style=(DISPLAY/'style.css').read_text(encoding='utf-8')
     check('prefers-reduced-motion' in style,'reduced-motion accommodation missing from display tissue')
     check('localStorage.' not in actual and 'document.cookie' not in actual,'unexpected browser persistence')
     check('mailto:' not in actual,'public contact has not been approved')
-    for rel in ('assets/style.css','assets/favicon.svg','assets/view.js','assets/address.js','assets/navigation.js','assets/app.js','.nojekyll'):
+    for rel in ('assets/style.css','assets/papers.css','assets/favicon.svg','assets/view.js','assets/papers-view.js','assets/address.js','assets/navigation.js','assets/app.js','.nojekyll'):
         check((artifact/rel).is_file(),f'missing artifact member {rel}')
 
-    for source in (DISPLAY/'view.js',ROOT/'z/address.js',ROOT/'z/navigation.js',ROOT/'z/app.js'):
+    for source in (DISPLAY/'view.js',DISPLAY/'papers-view.js',ROOT/'z/address.js',ROOT/'z/navigation.js',ROOT/'z/app.js'):
         result=subprocess.run(['node','--check',str(source)],capture_output=True,text=True)
         check(result.returncode==0,result.stderr or f'javascript syntax failure: {source}')
     compile((ROOT/'y/browser-check.py').read_text(encoding='utf-8'),str(ROOT/'y/browser-check.py'),'exec');check(True,'browser-check syntax')
     check((ROOT/'CNAME').read_text(encoding='utf-8').strip()=='sss.saarland','unexpected intended custom domain')
 
-    print(json.dumps({'status':'pass','structural_checks':count,'host':'cambium','organ':'display','display_host_locus':'w','display_physical_root':'w/display','display_internal_state':'unsplit','artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)},indent=2))
+    print(json.dumps({'status':'pass','structural_checks':count,'host':'cambium','organ':'display','display_host_locus':'w','display_physical_root':'w/display','display_internal_state':'unsplit','papers_projection_event':payload['papers']['event_id'],'papers_source_organisms':48,'artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)},indent=2))
 
 if __name__=='__main__':
     main()
