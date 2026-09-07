@@ -197,6 +197,7 @@ def render():
 def artifact_files():
     sources = {
         'assets/style.css': DISPLAY / 'style.css',
+        'assets/papers.css': DISPLAY / 'papers.css',
         'assets/favicon.svg': DISPLAY / 'favicon.svg',
         'assets/view.js': DISPLAY / 'view.js',
         'assets/papers-view.js': DISPLAY / 'papers-view.js',
