@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build cambium's public Pages artifact from the display organ plus host interfaces.
+"""Build cambium's public Pages artifact from the nested display organ plus host interfaces.
 
 Canonical host anatomy remains INDEX.yaml + address-local _cambium.yaml. Visitor-facing
-content/presentation lives in display/. The generated _site directory is an ephemeral
+content/presentation lives in w/display/. The generated _site directory is an ephemeral
 outward membrane, never living organism anatomy.
 """
 from pathlib import Path
@@ -13,7 +13,7 @@ import shutil
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-DISPLAY = ROOT / 'display'
+DISPLAY = ROOT / 'w' / 'display'
 GENES = 'wxzy'
 
 
@@ -141,7 +141,7 @@ def render():
     index = runtime_index()
     organs = copy.get('organs')
     if not isinstance(organs, dict):
-        raise ValueError('display/content.json needs the current public place copy map')
+        raise ValueError('w/display/content.json needs the current public place copy map')
     for path, _node in semantic_nodes(index):
         if path and path not in organs:
             raise ValueError(f'display content has no public interpretation for realized host path {path}')
@@ -158,7 +158,7 @@ def render():
     text = text.replace('/*__DATA__*/', payload)
     if '/*__' in text or '{{' in text:
         raise ValueError('unresolved display membrane slot')
-    return '<!-- secreted from display/ through cambium host interfaces; generated membrane, not organism anatomy. -->\n' + text
+    return '<!-- secreted from w/display/ through cambium host interfaces; generated membrane, not organism anatomy. -->\n' + text
 
 
 def artifact_files():
@@ -214,7 +214,7 @@ def main():
     target=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
         verify_artifact(target)
-        print('display membrane exactly matches current organ + host interfaces')
+        print('display membrane exactly matches current nested organ + host interfaces')
     else:
         write_artifact(target)
         size=sum(len(v) for v in artifact_files().values())

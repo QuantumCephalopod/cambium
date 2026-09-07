@@ -9,7 +9,7 @@ Later use added two visitor-facing wounds: the top navigation loses useful relat
 movement after entering a place, and mobile touch can fight scrolling/rotation.
 
 This note carries the current host-orientation/renewal consequence. Visitor-facing
-pressure itself now enters the `display` organ's stomach rather than being treated as
+pressure itself enters the `w/display` organ's stomach rather than being treated as
 host semantic anatomy.
 
 ## consequence
@@ -17,10 +17,15 @@ host semantic anatomy.
 - one production navigator consumes a runtime projection derived from host
   `INDEX.yaml + _cambium.yaml`; it never treats the minimal phenotype as a flat node
   table or file registry.
-- visitor-facing wording/template/style/view now live intact in `display/`, placed as
-  one organ at host `w / expression`. They are not scattered across host `w/x/z/y`
-  carrier folders to mimic the root phenotype.
-- host `z` retains exact address identity, route admission and interaction control;
+- the realized host carrier roots are now material again as `w/x/z/y`, while their
+  semantic nouns remain in INDEX. `w` contains the host-side display membrane and the
+  intact display organ; `x` carries continuity/inheritance; `z` carries orientation;
+  `y` carries renewal.
+- visitor-facing wording/template/style/view live intact in `w/display/`, placed as
+  one organ at host `w / expression`. The physical nesting makes the attachment
+  visible but is not host `ww`.
+- host `x` preserves the continuity relation without duplicating display content;
+  host `z` retains exact address identity, route admission and interaction control;
   host `y` retains build/witness/regeneration. Display consumes those across its
   interface without inheriting them as inner descendants.
 - each breadcrumb label is the locally earned noun at its complete raw prefix; the
@@ -36,13 +41,13 @@ host semantic anatomy.
 
 ## display boundary
 
-`display/INDEX.yaml` is currently `{}` and there is no `display/_cambium.yaml`.
-That is deliberate: display is a real independently re-enterable organ, but its
-internal CCCC differentiation has not yet been earned. Current page sources are one
-unsplit body.
+`w/display/INDEX.yaml` is currently `{}` and there is no
+`w/display/_cambium.yaml`. That is deliberate: display is a real independently
+re-enterable organ, but its internal CCCC differentiation has not yet been earned.
+Current page sources are one unsplit body.
 
 The generated `_site/` Pages artifact is a secreted membrane, not living renewal or
-display tissue. Root `index.html` is no longer committed.
+display tissue. Root `index.html` is not committed.
 
 ## witness scope
 
@@ -58,8 +63,9 @@ SITE_DIR=_site node y/test-address.cjs
 fixture logic is covered by the exact Node test rather than published into the Pages
 artifact.
 
-No successful organization merge, Actions deployment, DNS, legal approval or public
-contact is claimed by this note until separately witnessed.
+The organization-side GitHub Actions heartbeat after PULL 03.1 successfully built,
+witnessed, uploaded and deployed the display membrane. DNS/domain/legal/public-contact
+closure remains separately bounded.
 
 ## next review question
 
