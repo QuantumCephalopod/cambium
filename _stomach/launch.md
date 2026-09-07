@@ -8,23 +8,27 @@ function closes.
 
 ## current organism state
 
-cambium is staged in `QuantumCephalopod/cambium`, the writable fork of the
-organization repository. Canonical structural truth is now the evolved pair:
+Canonical structural truth is the evolved pair:
 
 - root `INDEX.yaml` — minimal `expression / continuity / orientation / renewal`
   phenotype only;
 - root `_cambium.yaml` — exact closed root `4V/6E/4F/1T` only.
 
-Visitor-facing content is no longer scattered through host carrier folders. The
-intact `display` organ is placed at host `w / expression`, physically lives under
-`display/`, is internally unsplit (`display/INDEX.yaml = {}`), and owns the current
-public content/presentation source. The becoming narrative and encounter observations
-have been routed into `display/_stomach` without being digested by that transfer.
+All four realized host limbs have carrier roots again. The intact visitor-facing
+`display` organ is seated at host `w / expression` under `w/display/`; that physical
+nesting is host custody, not host `ww`. Display remains internally unsplit
+(`w/display/INDEX.yaml = {}`) and owns the current public content/presentation source.
+Host `x/continuity.md` preserves the inheritance relation without duplicating those
+visitor-facing bytes. Host `z/` and `y/` remain orientation and renewal/witness
+physiology.
+
+The becoming narrative and encounter observations live only in
+`w/display/_stomach`; moving them across the membrane did not digest them.
 
 The outward Pages membrane is generated ephemerally into `_site/`; committed root
-`index.html` and root `.nojekyll` are retired as living-source assumptions.
+`index.html` and root `.nojekyll` are not living-source assumptions.
 
-## upstream repository
+## repository boundary
 
 `QuantumCephalopod/cambium` remains the connector-writable staging carrier. A staging
 mutation becomes organization truth only after the owner deliberately merges it into
@@ -32,28 +36,35 @@ mutation becomes organization truth only after the owner deliberately merges it 
 
 no credentials are to be pasted into chat or repository files.
 
-## GitHub Pages
+## GitHub Pages — vascular sub-pressure closed
 
-The owner has switched the organization repository's **Build and deployment → Source**
-to **GitHub Actions**. This closes the former branch/root publishing assumption.
-
-`.github/workflows/pages.yml` now defines the intended substrate pump:
+The organization repository uses **Build and deployment → Source → GitHub Actions**.
+`.github/workflows/pages.yml` defines the substrate pump:
 
 `checkout → build display membrane → structural/address witness → configure Pages → upload artifact → deploy-pages`
 
-The build/witness path runs on both staging and organization `main`. Configure/upload/
-deploy are gated to exact repository identity `self-similar-systems/cambium`, so the
-staging fork does not attempt to publish the public Pages site.
+After PULL 03.1, the organization-side workflow was witnessed successful through all
+of those steps, including deployment to the `github-pages` environment. The generated
+`_site/` artifact contains only the outward membrane; living display shell/stomach/
+skills are not copied into deployment.
 
-The generated `_site/` artifact contains the outward membrane only; living display
-shell/stomach/skills are not copied into the deployment artifact.
+This closes the question of whether the current GitHub Actions pump can build and
+deploy the display membrane. Remaining launch work is downstream of that fact.
 
-exit for this sub-pressure:
-1. merge the staging change into the organization repository;
-2. witness the organization Actions run and successful `github-pages` deployment;
-3. verify the actual served membrane in a browser;
-4. keep custom-domain state in GitHub Pages Settings rather than treating repository
-   `CNAME` alone as authoritative.
+## served membrane / domain
+
+`CNAME` records intended domain state in the repository, but Pages custom-domain
+configuration is controlled through GitHub Settings/API. DNS and HTTPS still require
+external witness.
+
+remaining exit:
+1. verify the actually served Pages membrane in a browser;
+2. set/verify `sss.saarland` in Pages Settings if not already closed;
+3. configure only the web DNS records required by GitHub Pages, preserving unrelated
+   mail DNS records;
+4. verify HTTPS at the actual domain;
+5. when public launch is deliberately approved, remove `noindex, nofollow` from the
+   display membrane and regenerate/reverify it.
 
 ## public contact
 
@@ -85,20 +96,6 @@ no blanket license has been selected.
 exit: owner deliberately selects the licensing/reuse treatment for site text, code
 and artwork. future public research objects carry their own permissions/version
 status.
-
-## `sss.saarland`
-
-`CNAME` records intended domain state in the repository, but Pages custom-domain
-configuration is controlled through GitHub Settings/API. DNS and HTTPS still require
-external witness.
-
-remaining exit:
-1. set/verify `sss.saarland` in Pages Settings;
-2. configure only the web DNS records required by GitHub Pages, preserving unrelated
-   mail DNS records;
-3. verify HTTPS at the actual domain;
-4. when public launch is deliberately approved, remove `noindex, nofollow` from the
-   display membrane and regenerate/reverify it.
 
 ## closure
 

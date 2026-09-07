@@ -1,0 +1,19 @@
+/* Deliberately plain first skin for the admitted /papers projection.
+ * This is a readable scaffold for aesthetic iteration, not a frozen visual ontology.
+ */
+.research-field{padding:34px 0 46px;border-top:1px solid var(--line)}
+.research-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;margin-bottom:27px}
+.research-title{font-family:var(--serif);font-size:clamp(30px,3.2vw,48px);font-weight:400;line-height:1.05;letter-spacing:-.045em}
+.papers-status{font:10px/1.6 var(--mono);color:var(--muted);text-align:right}
+.papers-groups{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.papers-group{min-width:0;padding:17px 18px 22px 0}
+.papers-group+.papers-group{border-left:1px solid var(--line);padding-left:18px}
+.papers-group-heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:15px}
+.papers-group-title{margin:0;font:400 20px/1.15 var(--serif);letter-spacing:-.03em}
+.papers-count{font:9px/1 var(--mono);color:var(--accent)}
+.papers-list{list-style:none;margin:0;padding:0}
+.paper-item{display:grid;grid-template-columns:auto 1fr;gap:9px;padding:9px 0;border-top:1px solid color-mix(in srgb,var(--line) 55%,transparent)}
+.paper-id{font:9px/1.45 var(--mono);color:var(--muted);white-space:nowrap}
+.paper-title{font-size:12px;line-height:1.42;letter-spacing:-.08px;overflow-wrap:anywhere}
+@media(max-width:1050px){.papers-groups{grid-template-columns:repeat(2,minmax(0,1fr))}.papers-group:nth-child(3){border-left:0}.papers-group:nth-child(n+3){border-top:1px solid var(--line)}}
+@media(max-width:700px){.research-heading{display:block}.papers-status{text-align:left;margin-top:9px}.papers-groups{grid-template-columns:1fr}.papers-group,.papers-group+.papers-group{padding:16px 0 20px;border-left:0}.papers-group:nth-child(n+2){border-top:1px solid var(--line)}.paper-title{font-size:13px}}
