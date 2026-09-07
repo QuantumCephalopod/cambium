@@ -1,15 +1,17 @@
-# /display/SKILLS — START HERE
+# /w/display/SKILLS — START HERE
 
 `display` is the visitor-facing organ of the surrounding `cambium` organism.
 It is an independently re-enterable whole participating at host `w / expression`.
-Physical custody is `display/`; host placement and filesystem path are deliberately
-not the same address space.
+Its physical custody now makes that host relation visible at `w/display/`, while the
+organ's own address space still begins again at `display:root`.
 
 ## current boundary
 
 - **host organism:** `cambium`
 - **outer host locus:** `w / expression`
-- **organ-local root:** `display/`
+- **host-side membrane:** `../interface.md`
+- **physical custody:** `w/display/`
+- **organ-local root:** this directory
 - **current internal phenotype:** unsplit
 - `INDEX.yaml` is therefore the empty mapping `{}`: no internal `w/x/z/y` vertex has
   yet been earned.
@@ -17,10 +19,10 @@ not the same address space.
   falsely claim a closed internal CCCC split.
 - host `w ⟦ display:root ⟧` is a scope transition, not host `ww`.
 
-This organ exists because its whole is now operationally and constitutionally
-separable: cambium can place it as the complete visitor-facing encounter body while
-the organ preserves its own source, intake and output boundary. Its future internal
-anatomy must still grow from actual display pressure.
+This organ exists because its whole is operationally separable: cambium can place it
+as the complete visitor-facing encounter body while the organ preserves its own
+source, intake and output boundary. Its future internal anatomy must still grow from
+actual display pressure.
 
 ## living display tissue
 
@@ -39,14 +41,18 @@ These are one unsplit display body, not five semantic branches.
 Display does not swallow the surrounding organism's physiology merely because its
 membrane uses it.
 
-- `../z/address.js`, `../z/navigation.js`, `../z/app.js` are host **orientation**
-  interfaces. They give the outward membrane lawful address/navigation behavior.
-- `../y/build.py`, `../y/check.py`, `../y/test-address.cjs` and optional
-  `../y/browser-check.py` are host **renewal/witness** interfaces. They build and
+- `../../x/continuity.md` is the host **continuity** interface: visible content stays
+  owned here while the host preserves the inheritance/meaning relation through
+  display changes.
+- `../../z/address.js`, `../../z/navigation.js`, `../../z/app.js` are host
+  **orientation** interfaces. They give the outward membrane lawful address and
+  navigation behavior.
+- `../../y/build.py`, `../../y/check.py`, `../../y/test-address.cjs` and optional
+  `../../y/browser-check.py` are host **renewal/witness** interfaces. They build and
   challenge the membrane without becoming display's inner descendants.
-- `.github/workflows/pages.yml` is substrate circulation: a dumb GitHub Actions pump
-  that builds/tests the membrane and, only in `self-similar-systems/cambium`, hands
-  the artifact to GitHub Pages.
+- `../../.github/workflows/pages.yml` is substrate circulation: a dumb GitHub Actions
+  pump that builds/tests the membrane and, only in `self-similar-systems/cambium`,
+  hands the artifact to GitHub Pages.
 
 The deployed `_site` artifact is an **ephemeral outward membrane**, not living organ
 tissue and not canonical anatomy. It is generated and never committed.
@@ -71,11 +77,14 @@ not transfer metabolic role.
 
 1. enter the surrounding organism through the canonical Drive `/SKILLS` receptor and
    `cambium/SKILLS/START_HERE.md`;
-2. cross the explicit `w / expression ⟦ display ⟧` boundary;
-3. read this receptor and `INDEX.yaml` completely;
-4. because display is currently unsplit, do **not** seek or fabricate an internal
+2. descend to host `w / expression` and read `../interface.md` when the host↔organ
+   relation matters;
+3. cross the explicit `w / expression ⟦ display ⟧` boundary;
+4. read this receptor and `INDEX.yaml` completely;
+5. because display is currently unsplit, do **not** seek or fabricate an internal
    `_cambium.yaml`;
-5. read only the living display tissue or stomach nutrient required by the task.
+6. read only the living display tissue or stomach nutrient required by the task.
 
-Compression: **display owns what the visitor encounters; cambium supplies host
-orientation/renewal interfaces; the Pages artifact is only the secreted membrane.**
+Compression: **display owns what the visitor encounters; cambium carries continuity,
+orientation and renewal across an explicit host membrane; the Pages artifact is only
+the secreted membrane.**

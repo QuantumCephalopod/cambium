@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Standard-library structural witness for cambium + the unsplit display organ."""
+"""Standard-library structural witness for cambium + the nested unsplit display organ."""
 from pathlib import Path
 import argparse
 import html.parser
@@ -9,7 +9,7 @@ import re
 import subprocess
 
 ROOT=Path(__file__).resolve().parent.parent
-DISPLAY=ROOT/'display'
+DISPLAY=ROOT/'w'/'display'
 GENES='wxzy'
 count=0
 
@@ -51,7 +51,17 @@ def main():
     check(all(not any(g in runtime[p] for g in GENES) for p in GENES),'unearned host descendants appeared')
     check(all(runtime[p].get('tissue')=={} for p in GENES),'runtime projection leaked carrier topology into host places')
 
-    check(DISPLAY.is_dir(),'display organ missing')
+    # Every realized host vertex has a carrier root. Raw letters are addresses; semantic
+    # names remain in INDEX.yaml rather than being copied into folder names.
+    for gene in GENES:
+        check((ROOT/gene).is_dir(),f'missing carrier root for realized host limb {gene}')
+    check((ROOT/'w/interface.md').is_file(),'host expression membrane missing')
+    check((ROOT/'x/continuity.md').is_file(),'host continuity interface missing')
+    check('w ⟦ display:root ⟧' in (ROOT/'w/interface.md').read_text(encoding='utf-8'),'host expression membrane does not preserve organ scope transition')
+    check('w/display/content.json' in (ROOT/'x/continuity.md').read_text(encoding='utf-8'),'host continuity interface is not bound to display content ownership')
+    check(not (ROOT/'display').exists(),'display organ still floats at host root')
+
+    check(DISPLAY.is_dir(),'nested display organ missing')
     check((DISPLAY/'INDEX.yaml').read_text(encoding='utf-8').strip()=='{}','display internal phenotype must remain unsplit')
     check(not (DISPLAY/'_cambium.yaml').exists(),'display falsely claims an internal closed split')
     check((DISPLAY/'SKILLS/START_HERE.md').is_file(),'display re-entry receptor missing')
@@ -63,8 +73,8 @@ def main():
     check(not (ROOT/'_stomach/INCOMING — cambium becoming.md').exists(),'display nutrient still duplicated in host stomach')
     check(not (ROOT/'_stomach/observations.md').exists(),'display observation still duplicated in host stomach')
 
-    check(not (ROOT/'w').exists(),'old expression folder still impersonates host anatomy')
-    check(not (ROOT/'x').exists(),'old continuity folder still impersonates host anatomy')
+    check(not (ROOT/'w/_cambium.yaml').exists(),'unsplit host expression limb falsely claims a local split')
+    check(not (ROOT/'x/_cambium.yaml').exists(),'unsplit host continuity limb falsely claims a local split')
     check(not (ROOT/'index.html').exists(),'generated membrane must not be committed at host root')
     check(not (ROOT/'.nojekyll').exists(),'deployment marker belongs to artifact, not living host root')
     check((ROOT/'.github/workflows/pages.yml').is_file(),'Pages pump workflow missing')
@@ -109,7 +119,7 @@ def main():
     compile((ROOT/'y/browser-check.py').read_text(encoding='utf-8'),str(ROOT/'y/browser-check.py'),'exec');check(True,'browser-check syntax')
     check((ROOT/'CNAME').read_text(encoding='utf-8').strip()=='sss.saarland','unexpected intended custom domain')
 
-    print(json.dumps({'status':'pass','structural_checks':count,'host':'cambium','organ':'display','display_internal_state':'unsplit','artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)},indent=2))
+    print(json.dumps({'status':'pass','structural_checks':count,'host':'cambium','organ':'display','display_host_locus':'w','display_physical_root':'w/display','display_internal_state':'unsplit','artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)},indent=2))
 
 if __name__=='__main__':
     main()

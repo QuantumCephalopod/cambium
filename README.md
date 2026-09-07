@@ -6,8 +6,9 @@ an independent lab for artistic and scientific inquiry.
 > we give questions form—and let those forms question us.
 
 cambium is the living website organism, not a mirror of the entire research body.
-Its visitor-facing surface is now carried by an intact `display` organ instead of by
-a generated file committed at the host root.
+Its visitor-facing surface is carried by an intact `display` organ seated inside the
+host's `w / expression` limb, while the deployed Pages site is only an ephemeral
+membrane secreted from that relation.
 
 canonical organization repository: `self-similar-systems/cambium`  
 writable connector staging fork: `QuantumCephalopod/cambium`  
@@ -30,48 +31,52 @@ actual tissue/receptors rather than being copied into INDEX.
 
 The root phenotype remains:
 
-| host address | noun |
-|---|---|
-| `w` | expression |
-| `x` | continuity |
-| `z` | orientation |
-| `y` | renewal |
+| host address | noun | current carrier |
+|---|---|---|
+| `w` | expression | `w/interface.md` + intact `w/display/` organ |
+| `x` | continuity | `x/continuity.md` |
+| `z` | orientation | address/navigation tissue in `z/` |
+| `y` | renewal | build/witness tissue in `y/` |
 
-This fourfold was earned from website/code pressure. It is host physiology, not a
-visitor-facing content taxonomy, and filesystem folders are not required to mirror it.
+The folder letters are stable raw addresses; their mutable semantic names live in
+`INDEX.yaml`. All four realized host limbs therefore have material carrier roots
+without pretending that filesystem names are the ontology.
 
 ## display — visitor-facing organ
 
-`display/` is now one intact organ participating at host `w / expression`.
+`w/display/` is one intact organ participating at host `w / expression`.
 
 The boundary is explicit:
 
 `cambium:w ⟦ display:root ⟧`
 
-Display is internally **unsplit**. Its [`INDEX.yaml`](display/INDEX.yaml) is the empty
-mapping `{}` and there is deliberately no `display/_cambium.yaml` yet. Future
-`w/x/z/y` anatomy inside display must be earned from actual display pressure rather
-than copied from the host.
+The nesting is physical custody and host attachment, **not** host `ww`. Once the
+boundary is crossed, display's address space begins again at its own root.
+
+Display is internally **unsplit**. Its [`INDEX.yaml`](w/display/INDEX.yaml) is the
+empty mapping `{}` and there is deliberately no `w/display/_cambium.yaml` yet. Future
+internal `w/x/z/y` anatomy must be earned from actual display pressure rather than
+copied from the host.
 
 Current living display tissue:
 
-- `display/content.json` — public wording/encounter copy;
-- `display/template.html` — outward document membrane;
-- `display/style.css` — visual expression;
-- `display/view.js` — display-local rendering/camera behavior;
-- `display/favicon.svg` — outward mark.
+- `w/display/content.json` — public wording/encounter copy;
+- `w/display/template.html` — outward document membrane;
+- `w/display/style.css` — visual expression;
+- `w/display/view.js` — display-local rendering/camera behavior;
+- `w/display/favicon.svg` — outward mark.
 
-Its visitor-facing nutrients now enter `display/_stomach`. The becoming narrative and
-actual interaction observations were routed there from the host stomach without being
-silently digested.
+Visitor-facing nutrients enter `w/display/_stomach`. The becoming narrative and
+actual interaction observations remain unresolved food there.
 
-Host `z/` remains orientation physiology; host `y/` remains renewal/witness
-physiology. Display consumes those through an interface instead of swallowing them as
-its own internal branches.
+Host `x/` preserves the continuity/inheritance relation without duplicating display's
+content bytes. Host `z/` remains orientation physiology; host `y/` remains
+renewal/witness physiology. Display consumes those interfaces across its membrane
+instead of swallowing them as inner descendants.
 
 ## Pages artifact — secreted membrane
 
-There is intentionally **no committed root `index.html`** anymore.
+There is intentionally **no committed root `index.html`**.
 
 Build the public membrane with:
 
@@ -113,11 +118,12 @@ manual dispatch.
 
 The build/witness heartbeat runs in both the staging fork and organization repository.
 Actual Pages setup/upload/deployment is gated to the exact repository identity
-`self-similar-systems/cambium`, so staging can test the vascular machinery without
-trying to become the public site.
+`self-similar-systems/cambium`, so staging can test circulation without publishing.
 
-The workflow follows GitHub's Pages artifact route: checkout → build/witness →
-configure Pages → upload `_site` → deploy to the `github-pages` environment.
+The organization-side heartbeat has already been witnessed successfully through:
+checkout → build/witness → configure Pages → upload `_site` → deploy to the
+`github-pages` environment.
+
 Scheduling/transport remains substrate machinery; nutrient ontology and organ anatomy
 remain organism law.
 
