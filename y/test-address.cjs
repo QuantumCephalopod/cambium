@@ -1,10 +1,9 @@
-/* deterministic exact tests; run with node y/test-address.cjs. */
+/* deterministic exact tests; run after y/build.py with SITE_DIR=_site node y/test-address.cjs. */
 'use strict';
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs');
 const root=path.basename(__dirname)==='y'?path.dirname(__dirname):__dirname;
-const split=fs.existsSync(path.join(root,'z'));
-const A=require(path.join(root,split?'z':'','address.js'));
-const N=require(path.join(root,split?'z':'','navigation.js'));
+const A=require(path.join(root,'z','address.js'));
+const N=require(path.join(root,'z','navigation.js'));
 let checks=0;function ok(value,msg){checks++;assert.ok(value,msg);}function eq(a,b,msg){checks++;assert.deepEqual(a,b,msg);}
 for(const [a,b] of [['w','wwww'],['wx','xw'],['wxxx','xwwww'],['wxz','wzx'],['wxzzzz','wzxxxx']]){eq(A.key(a),A.key(b));eq(A.exactKey(a),A.exactKey(b));}
 for(const [a,b] of [['wxz','xwz'],['wxzy','yzwx'],['wwx','wxx'],['wxzy','wxzz']])ok(!A.same(a,b),'non-terminal order must survive');
@@ -36,9 +35,9 @@ eq(N.parse('#/w.x').path,'wx');eq(N.parse('#/site/w.x.x.x').path,'wxxx');eq(N.ur
 for(const h of ['#/site/wx<script>','#/study/w.x','#/../','#/w..x','#/else/w','#/'+deep+'w']){assert.throws(()=>N.parse(h));checks++;}
 assert.throws(()=>N.resolve('study','wx',specimen));checks++;
 eq(N.parse('#/w.w').path,'ww');eq(N.resolve('site','ww',specimen).path,'ww');eq(N.resolve('site','ww',specimen).locus,N.resolve('site','w',specimen).locus);eq(N.resolve('site','ww',specimen).aliases,['ww']);
-// Production navigation consumes the browser projection derived by y/build.py,
-// never canonical INDEX.yaml directly.
-const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+// Production navigation consumes only the membrane projection emitted by display.
+const site=process.env.SITE_DIR?path.resolve(root,process.env.SITE_DIR):path.join(root,'_site');
+const html=fs.readFileSync(path.join(site,'index.html'),'utf8');
 const match=html.match(/<script id="cambium-data" type="application\/json">(.*?)<\/script>/s);ok(match,'embedded runtime projection missing');
 const index=JSON.parse(match[1]).index;N.registry(index);checks++;
 assert.throws(()=>N.resolve('site','wx',index));checks++;
@@ -47,7 +46,7 @@ const one=JSON.parse(JSON.stringify(specimen));for(const g of A.GENES)delete one
 const unnamed=JSON.parse(JSON.stringify(index));unnamed.w.name='';assert.throws(()=>N.registry(unnamed));checks++;
 const unwhole=JSON.parse(JSON.stringify(index));unwhole.z.whole='';assert.throws(()=>N.registry(unwhole));checks++;
 const partial=JSON.parse(JSON.stringify(index));partial.w.w={name:'unearned',whole:'partial'};assert.throws(()=>N.registry(partial));checks++;
-const R=require(path.join(root,'w/view.js'));
+const R=require(path.join(root,'display','view.js'));
 const near=(a,b,eps=1e-10)=>ok(Math.abs(a-b)<eps);
 let q0=R.initial(),q1=R.multiply(R.axisQuaternion([1,0,0],.6),q0);
 ok(q0.some((v,i)=>Math.abs(v-q1[i])>.01),'pitch must change the camera');
@@ -56,5 +55,5 @@ near(Math.hypot(...R.ball(.2,.3)),1);near(Math.hypot(...R.ball(3,4)),1);
 for(const [a,b] of [[[1,0,0],[-1,0,0]],[[0,0,1],[0,1,0]],[[0,1,0],[1,0,0]]]){const q=R.between(a,b),v=R.rotateVector(q,a);v.forEach((n,i)=>near(n,b[i]));}
 let camera=q0;for(let i=0;i<2000;i++)camera=R.normalize(R.multiply(R.axisQuaternion([[1,0,0],[0,1,0],[0,0,1]][i%3],.02),camera));
 near(Math.hypot(...camera),1);near(Math.hypot(...R.rotateVector(camera,[1,0,0])),1);eq(A.key('wx'),state.locus,'camera operations must not mutate address identity');
-const result={status:'pass',assertions:checks,enumerated_words:count,unique_loci:keys.size,depth_five:level5,deep_exact_relative_prefix_length:deep.length,unbounded_symbolic_test_length:12000,named_prefixes:'pass',raw_self_witnesses:'pass',quaternion_camera:'pass',production_projection:'pass'};
+const result={status:'pass',assertions:checks,enumerated_words:count,unique_loci:keys.size,depth_five:level5,deep_exact_relative_prefix_length:deep.length,unbounded_symbolic_test_length:12000,named_prefixes:'pass',raw_self_witnesses:'pass',quaternion_camera:'pass',production_projection:'display membrane'};
 console.log(JSON.stringify(result,null,2));

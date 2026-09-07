@@ -1,76 +1,115 @@
 #!/usr/bin/env python3
-"""Standard-library structural witness for minimal phenotype + local cambium."""
+"""Standard-library structural witness for cambium + the unsplit display organ."""
 from pathlib import Path
-import html.parser, importlib.util, json, subprocess, re
-HERE=Path(__file__).resolve().parent
-ROOT=HERE.parent if HERE.name=='y' else HERE
+import argparse
+import html.parser
+import importlib.util
+import json
+import re
+import subprocess
+
+ROOT=Path(__file__).resolve().parent.parent
+DISPLAY=ROOT/'display'
+GENES='wxzy'
 count=0
 
+
 def check(condition, why):
-    global count; count+=1
-    if not condition: raise AssertionError(why)
+    global count
+    count+=1
+    if not condition:
+        raise AssertionError(why)
+
 
 class Page(html.parser.HTMLParser):
-    def __init__(self): super().__init__(); self.ids=[]; self.links=[]; self.scripts=[]
+    def __init__(self):
+        super().__init__();self.ids=[];self.links=[];self.scripts=[]
     def handle_starttag(self,tag,attrs):
         d=dict(attrs)
         if 'id' in d:self.ids.append(d['id'])
         if tag in ('a','link') and 'href' in d:self.links.append(d['href'])
         if tag=='script':self.scripts.append(d)
 
+
+def load_build():
+    path=ROOT/'y/build.py'
+    spec=importlib.util.spec_from_file_location('compose',path)
+    mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
+
+
 def main():
-    spec=importlib.util.spec_from_file_location('compose',ROOT/'y/build.py');mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
-    actual=(ROOT/'index.html').read_text(encoding='utf-8');check(actual==mod.render(),'generated HTML is stale')
+    ap=argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--artifact',type=Path,default=ROOT/'_site')
+    args=ap.parse_args();artifact=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
+    build=load_build()
+
+    phenotype=build.load_yaml(ROOT/'INDEX.yaml');build.validate_index(phenotype)
+    root_c=build.local_cambium('');runtime=build.runtime_index()
+    check(list(runtime)==['name','whole','tissue','w','x','z','y'],'runtime root shape changed')
+    check(runtime['whole']==root_c['1T'],'runtime whole diverges from root cambium')
+    check([runtime[g]['name'] for g in GENES]==['expression','continuity','orientation','renewal'],'root phenotype changed unexpectedly')
+    check(all(not any(g in runtime[p] for g in GENES) for p in GENES),'unearned host descendants appeared')
+    check(all(runtime[p].get('tissue')=={} for p in GENES),'runtime projection leaked carrier topology into host places')
+
+    check(DISPLAY.is_dir(),'display organ missing')
+    check((DISPLAY/'INDEX.yaml').read_text(encoding='utf-8').strip()=='{}','display internal phenotype must remain unsplit')
+    check(not (DISPLAY/'_cambium.yaml').exists(),'display falsely claims an internal closed split')
+    check((DISPLAY/'SKILLS/START_HERE.md').is_file(),'display re-entry receptor missing')
+    for name in ('content.json','template.html','style.css','view.js','favicon.svg'):
+        check((DISPLAY/name).is_file(),f'missing display tissue {name}')
+    check((DISPLAY/'_stomach/INCOMING — cambium becoming.md').is_file(),'display becoming nutrient missing')
+    check((DISPLAY/'_stomach/observations.md').is_file(),'display observations nutrient missing')
+    check((DISPLAY/'_waste/.gitkeep').is_file(),'display waste shell missing')
+    check(not (ROOT/'_stomach/INCOMING — cambium becoming.md').exists(),'display nutrient still duplicated in host stomach')
+    check(not (ROOT/'_stomach/observations.md').exists(),'display observation still duplicated in host stomach')
+
+    check(not (ROOT/'w').exists(),'old expression folder still impersonates host anatomy')
+    check(not (ROOT/'x').exists(),'old continuity folder still impersonates host anatomy')
+    check(not (ROOT/'index.html').exists(),'generated membrane must not be committed at host root')
+    check(not (ROOT/'.nojekyll').exists(),'deployment marker belongs to artifact, not living host root')
+    check((ROOT/'.github/workflows/pages.yml').is_file(),'Pages pump workflow missing')
+    check((ROOT/'z/address.js').is_file() and (ROOT/'z/navigation.js').is_file() and (ROOT/'z/app.js').is_file(),'host orientation interface incomplete')
+    check((ROOT/'y/interaction.md').is_file(),'renewal interaction witness missing')
+    check('INDEX.json' not in (ROOT/'y/interaction.md').read_text(encoding='utf-8'),'stale rich-index law remains in living interaction tissue')
+
+    build.verify_artifact(artifact)
+    actual=(artifact/'index.html').read_text(encoding='utf-8')
+    check(actual==build.render(),'artifact HTML is stale')
     p=Page();p.feed(actual)
     check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
     check('lang="en"' in actual,'missing document language')
     check('<meta name="robots" content="noindex, nofollow">' in actual,'review-only indexing marker missing')
-    script_src=[s.get('src') for s in p.scripts if 'src' in s]
-    check(script_src==['z/address.js','z/navigation.js','w/view.js','z/app.js'],'unexpected application script surface')
-    check(all((ROOT/src).is_file() for src in script_src),'missing local application script')
-    check('localStorage.' not in actual and 'document.cookie' not in actual,'unexpected browser persistence')
-    check('mailto:' not in actual,'public contact has not been approved')
     check('aria-label="places in cambium"' in actual,'named navigation landmark missing')
     check(actual.count('<nav ')==1,'more than one public navigation landmark')
-    check('INDEX.yaml' in actual and 'INDEX.json' not in actual,'script-free phenotype link is stale')
-    payload=json.loads(re.search(r'<script id="cambium-data" type="application/json">(.*?)</script>',actual,re.S).group(1))
-    check(set(payload)=={'index','copy'},'test fixture is embedded in public skin')
-    check('tabindex="0" role="group"' in actual,'map lacks keyboard rotation support')
-    style=(ROOT/'w/style.css').read_text(encoding='utf-8')
-    check('prefers-reduced-motion' in style,'missing reduced-motion accommodation')
-    check('role="status"' in actual and 'role="alert"' in actual,'live announcements absent')
-    check('skip to content' in actual,'missing skip link')
-    check('/*__' not in actual,'template slots remain')
-    for href in p.links:
-        if href.startswith(('#','data:','https:')):continue
-        check((ROOT/href).is_file(),'broken local link '+href)
-    for name in ('address.js','navigation.js','app.js','view.js'):
-        arm='w' if name=='view.js' else 'z';source=ROOT/arm/name
+    check('skip to content' in actual,'skip link missing')
+    check('/*__' not in actual and '{{' not in actual,'template slots remain')
+    check(all(s.get('src','').startswith('assets/') for s in p.scripts if 'src' in s),'non-artifact application script leaked into membrane')
+    check({s.get('src') for s in p.scripts if 'src' in s}=={'assets/address.js','assets/navigation.js','assets/view.js','assets/app.js'},'membrane script interface changed')
+    check('assets/style.css' in p.links and 'assets/favicon.svg' in p.links,'display visual assets are not membrane-local')
+    check('_stomach/' not in actual and 'SKILLS/' not in actual,'organ shell leaked into public membrane')
+
+    match=re.search(r'<script id="cambium-data" type="application/json">(.*?)</script>',actual,re.S)
+    check(bool(match),'runtime projection missing')
+    payload=json.loads(match.group(1))
+    check(set(payload)=={'index','copy'},'unexpected public payload surface')
+    check(payload['index']==runtime,'public runtime index differs from derived host projection')
+    check(set(payload['copy']['organs'])==set(GENES),'display content does not cover the current host phenotype')
+    check(payload['copy']['brand']=='self-similar-systems saar','public identity changed')
+
+    style=(DISPLAY/'style.css').read_text(encoding='utf-8')
+    check('prefers-reduced-motion' in style,'reduced-motion accommodation missing from display tissue')
+    check('localStorage.' not in actual and 'document.cookie' not in actual,'unexpected browser persistence')
+    check('mailto:' not in actual,'public contact has not been approved')
+    for rel in ('assets/style.css','assets/favicon.svg','assets/view.js','assets/address.js','assets/navigation.js','assets/app.js','.nojekyll'):
+        check((artifact/rel).is_file(),f'missing artifact member {rel}')
+
+    for source in (DISPLAY/'view.js',ROOT/'z/address.js',ROOT/'z/navigation.js',ROOT/'z/app.js'):
         result=subprocess.run(['node','--check',str(source)],capture_output=True,text=True)
-        check(result.returncode==0,result.stderr)
-    phenotype=mod.load_yaml(ROOT/'INDEX.yaml');mod.validate_index(phenotype)
-    check(set(phenotype)==set('wxzy'),'root phenotype changed')
-    check(all(set(phenotype[g])=={'noun'} for g in 'wxzy'),'unearned descendant or metadata in phenotype')
-    check([phenotype[g]['noun'] for g in 'wxzy']==['expression','continuity','orientation','renewal'],'root nouns changed')
-    cambium=mod.load_yaml(ROOT/'_cambium.yaml');mod.validate_cambium(cambium)
-    runtime=mod.runtime_index();nodes=mod.semantic_nodes(runtime);paths=[p for p,_ in nodes]
-    check(paths==['','w','x','z','y'],'unexpected semantic depth')
-    check(runtime['name']=='cambium','derived runtime root changed')
-    check(runtime['whole']==cambium['1T'],'runtime root does not derive from 1T')
-    for g in 'wxzy':
-        check(runtime[g]['name']==phenotype[g]['noun'],f'{g} name not derived from phenotype')
-        check(runtime[g]['whole']==cambium['4V'][g],f'{g} whole not derived from root cambium')
-    body={p.relative_to(ROOT).as_posix() for a in 'wxzy' for p in (ROOT/a).iterdir() if p.is_file() and p.name!='_cambium.yaml' and not p.name.startswith('.')}
-    atlas={carrier for _,node in nodes for carrier in node.get('tissue',{}).values()}
-    check(body==atlas,'runtime projection does not address complete leaf tissue: '+str(body^atlas))
-    check(not (ROOT/'INDEX.json').exists(),'rich legacy INDEX.json survived canonical migration')
-    check((ROOT/'INDEX.yaml').is_file(),'minimal phenotype missing')
-    check((ROOT/'_cambium.yaml').is_file(),'root closed split anatomy missing')
-    for shell in ('_stomach','_waste','SKILLS'):check((ROOT/shell).is_dir(),'missing shell '+shell)
-    check((ROOT/'CNAME').read_text().strip()=='sss.saarland','unexpected custom domain')
-    check((ROOT/'SKILLS/START_HERE.md').is_file(),'no reentry receptor')
-    check(not (ROOT/'ROOT_SPLIT.md').exists(),'closed differentiation diary still lives at root')
-    check((ROOT/'_stomach/root-differentiation.md').is_file(),'retained differentiation nutrient missing')
-    check(not (ROOT/'INDEX.md').exists(),'duplicate generated atlas survived')
-    print(json.dumps({'status':'pass','structural_checks':count,'phenotype':'INDEX.yaml','constitution':'_cambium.yaml'},indent=2))
-if __name__=='__main__':main()
+        check(result.returncode==0,result.stderr or f'javascript syntax failure: {source}')
+    compile((ROOT/'y/browser-check.py').read_text(encoding='utf-8'),str(ROOT/'y/browser-check.py'),'exec');check(True,'browser-check syntax')
+    check((ROOT/'CNAME').read_text(encoding='utf-8').strip()=='sss.saarland','unexpected intended custom domain')
+
+    print(json.dumps({'status':'pass','structural_checks':count,'host':'cambium','organ':'display','display_internal_state':'unsplit','artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)},indent=2))
+
+if __name__=='__main__':
+    main()
