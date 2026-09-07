@@ -46,7 +46,7 @@ const one=JSON.parse(JSON.stringify(specimen));for(const g of A.GENES)delete one
 const unnamed=JSON.parse(JSON.stringify(index));unnamed.w.name='';assert.throws(()=>N.registry(unnamed));checks++;
 const unwhole=JSON.parse(JSON.stringify(index));unwhole.z.whole='';assert.throws(()=>N.registry(unwhole));checks++;
 const partial=JSON.parse(JSON.stringify(index));partial.w.w={name:'unearned',whole:'partial'};assert.throws(()=>N.registry(partial));checks++;
-const R=require(path.join(root,'display','view.js'));
+const R=require(path.join(root,'w','display','view.js'));
 const near=(a,b,eps=1e-10)=>ok(Math.abs(a-b)<eps);
 let q0=R.initial(),q1=R.multiply(R.axisQuaternion([1,0,0],.6),q0);
 ok(q0.some((v,i)=>Math.abs(v-q1[i])>.01),'pitch must change the camera');

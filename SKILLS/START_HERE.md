@@ -22,10 +22,11 @@ of shared Skill truth.
 3. read `../INDEX.yaml` completely. it is the minimal current host phenotype.
 4. if the constitution of a realized host split matters, read that address-local
    `_cambium.yaml`; root `_cambium.yaml` contains the current closed root tetrahedron.
-5. current occupants, files, organs, state, wounds and next actions live in their
-   actual tissue/receptors rather than INDEX.
-6. when the task concerns visitor-facing content or encounter, cross host
-   `w / expression ⟦ display ⟧` and read `../display/SKILLS/START_HERE.md`.
+5. use the realized host address folders `w/x/z/y` only as carrier roots for their
+   current living occupants/tissue; the semantic nouns remain in INDEX.
+6. when the task concerns visitor-facing content or encounter, descend to host
+   `w / expression`, read `../w/interface.md` when the boundary matters, then cross
+   into `../w/display/SKILLS/START_HERE.md`.
 7. enter the relevant `_stomach` only for unresolved nutrient in that organism.
 8. after mutation, backpropagate only changed phenotype/constitution/orientation,
    rebuild the Pages artifact, run checks and witness remote persistence separately.
@@ -47,51 +48,65 @@ these references are procedural authority, not website runtime dependencies.
 - the root `expression / continuity / orientation / renewal` split is closed.
 - those four host answers were earned from website/code pressure. they are host
   physiology, not visitor-facing content taxonomy.
-- filesystem folders do not have to mirror phenotype. In particular the former
-  `w/` and `x/` carrier folders are gone; their former visitor-facing tissue now
-  lives inside the intact display organ rather than being scattered to imitate host
-  branches.
+- all four realized host limbs have truthful carrier roots:
+  - `w/` — expression membrane and the intact display organ occupant;
+  - `x/` — continuity/inheritance interface without duplicating visitor content;
+  - `z/` — orientation/address/navigation tissue;
+  - `y/` — renewal/build/witness tissue.
+- raw folder letters are stable addresses; their current semantic names are the nouns
+  in `INDEX.yaml`. Do not rename carriers merely to restate the phenotype.
 
 ## display organ — current witnessed placement
 
-`display` is now an actual intact organ at host `w / expression`.
+`display` is an actual intact organ at host `w / expression`.
 
 - **outer semantic placement:** host `w / expression`;
-- **physical custody:** `../display/`;
+- **host-side membrane:** `../w/interface.md`;
+- **physical custody:** `../w/display/`;
 - **inner root:** independent `display` root;
-- **inner phenotype:** currently unsplit (`display/INDEX.yaml` is `{}`);
+- **inner phenotype:** currently unsplit (`w/display/INDEX.yaml` is `{}`);
 - **inner cambium:** absent until display actually earns a complete internal split;
 - **interface:** visitor-facing content/presentation remains inside display, while
-  host orientation (`z`) and renewal/witness (`y`) are consumed across the organ
-  boundary without becoming display descendants.
+  host continuity (`x`), orientation (`z`) and renewal/witness (`y`) are consumed
+  across the organ boundary without becoming display descendants.
 
-Host `w ⟦ display:root ⟧` is not host `ww`. Moving or growing display internally must
-not silently rewrite the host address, and host regrowth must not flatten display's
-inner scope.
+Host `w ⟦ display:root ⟧` is not host `ww`. Filesystem containment makes the host
+attachment legible but does not concatenate address spaces.
 
-Display currently owns `content.json`, `template.html`, `style.css`, `view.js` and
-`favicon.svg`. Its first visitor-facing nutrients have been routed from the host
-stomach into `display/_stomach` without being digested by that move.
+Display owns its public copy, presentation/rendering tissue and the first admitted
+`/papers/_feed` projection. The source feed remains owned/private in `/papers`; the
+current display projection is living `w/display/papers.json`, admitted from acknowledged
+event `papers-digestion-20260907T2301-b714c9d4`. It exposes only 48 source-organism
+identities/titles under papers' own `Genesis / Continuity / Governance / Evolution`
+root loci, not private source URLs/credentials/text or nested interiors. This admitted
+snapshot does **not** yet constitute an automatic feed→display refresh mechanism and
+does not create an internal display split.
+
+For exact display tissue and the current feed/admission boundary, enter
+`w/display/SKILLS/START_HERE.md` rather than expanding that organism here.
 
 ## output membrane / GitHub pump
 
-Root `index.html` is no longer committed organism tissue. `y/build.py` combines the
-living display source with the smallest host orientation interfaces into an ephemeral
-`_site/` membrane. `_site/` is ignored by git and must never become canonical anatomy.
+Root `index.html` is not committed organism tissue. `y/build.py` combines the living
+display source with the smallest host interfaces into an ephemeral `_site/` membrane.
+`_site/` is ignored by git and must never become canonical anatomy.
 
-`.github/workflows/pages.yml` is dumb substrate circulation:
+`.github/workflows/pages.yml` is mechanical substrate circulation:
 - every push to staging/main builds and witnesses the membrane;
 - only when the repository identity is exactly `self-similar-systems/cambium` does
   the workflow configure Pages, upload `_site`, and deploy to `github-pages`;
 - the scheduler/action owns transport pressure only. It does not decide display
   nutrition, host placement or semantic anatomy.
 
+The first organization-side Actions deployment has been witnessed successful;
+future deploys remain contingent on the same build/witness gates.
+
 ## metabolism / transport boundary
 
 Host `_stomach/_waste` and display `_stomach/_waste` remain distinct local shells.
-One organism's ejection may become another's nutrition only through an explicit
-membrane/admission relation. Moving visitor nutrients into display does not merge the
-two metabolisms.
+Source-organism feeds likewise remain source-owned self-presentations. One organism's
+output becomes display tissue only through explicit admission/metabolism; transport or
+feed refresh alone does not authorize publication or collapse the source into display.
 
 ## witness
 

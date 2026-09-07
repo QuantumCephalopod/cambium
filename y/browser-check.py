@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Optional browser witness for the Pages artifact secreted by display/.
+"""Optional browser witness for the Pages artifact secreted by w/display/.
 
 Builds _site, serves only that artifact over localhost, and exercises the current
 production routes. Playwright/Chromium are test-only tools. This is a bounded
@@ -35,7 +35,7 @@ def main():
     Thread(target=server.serve_forever,daemon=True).start()
     origin=f'http://127.0.0.1:{server.server_port}'
     report={'transport':'localhost HTTP over generated display artifact','interactions':[],'layouts':[],
-            'errors':[],'external_requests':[],'notes':['display/ is living organ tissue; _site is ephemeral membrane',
+            'errors':[],'external_requests':[],'notes':['w/display/ is living organ tissue; _site is ephemeral membrane',
             'production phenotype is host INDEX.yaml; browser registry is derived projection',
             'bounded functional witness, not a complete audit']}
     def passed(s):report['interactions'].append({'test':s,'status':'pass'})

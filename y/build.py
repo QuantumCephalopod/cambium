@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build cambium's public Pages artifact from the display organ plus host interfaces.
+"""Build cambium's public Pages artifact from the nested display organ plus host interfaces.
 
 Canonical host anatomy remains INDEX.yaml + address-local _cambium.yaml. Visitor-facing
-content/presentation lives in display/. The generated _site directory is an ephemeral
+content/presentation lives in w/display/. The generated _site directory is an ephemeral
 outward membrane, never living organism anatomy.
 """
 from pathlib import Path
@@ -13,7 +13,7 @@ import shutil
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-DISPLAY = ROOT / 'display'
+DISPLAY = ROOT / 'w' / 'display'
 GENES = 'wxzy'
 
 
@@ -93,6 +93,37 @@ def validate_cambium(c, label='_cambium.yaml'):
         raise ValueError(f'{label} 1T is empty')
 
 
+def validate_papers(papers):
+    expected = {'source','event_id','refresh','observed_at_utc','boundary','phenotype','groups'}
+    if set(papers) != expected:
+        raise ValueError('w/display/papers.json has an unexpected public projection shape')
+    if papers['source'] != 'papers/_feed' or papers['refresh'] != 'REFRESH ACKNOWLEDGED':
+        raise ValueError('papers projection is not bound to an acknowledged local feed')
+    if not isinstance(papers['event_id'], str) or not papers['event_id'].startswith('papers-'):
+        raise ValueError('papers projection needs its source feed event identity')
+    if set(papers['phenotype']) != set(GENES) or set(papers['groups']) != set(GENES):
+        raise ValueError('papers projection must preserve exactly its own realized root loci')
+    seen = set()
+    for gene in GENES:
+        if not isinstance(papers['phenotype'][gene], str) or not papers['phenotype'][gene].strip():
+            raise ValueError(f'papers phenotype {gene} is unnamed')
+        group = papers['groups'][gene]
+        if not isinstance(group, list):
+            raise ValueError(f'papers group {gene} must be a list')
+        for item in group:
+            if not isinstance(item, dict) or set(item) != {'id','title'}:
+                raise ValueError(f'papers group {gene} contains non-public fields')
+            if not isinstance(item['id'], str) or not item['id'].startswith('S.'):
+                raise ValueError('papers projection currently admits source-organism identities only')
+            if not isinstance(item['title'], str) or not item['title'].strip():
+                raise ValueError(f'papers source {item.get("id", "?")} has no title')
+            if item['id'] in seen:
+                raise ValueError(f'duplicate papers source identity {item["id"]}')
+            seen.add(item['id'])
+    if not seen:
+        raise ValueError('papers projection is empty')
+
+
 def local_cambium(path):
     p = ROOT / path / '_cambium.yaml' if path else ROOT / '_cambium.yaml'
     if not p.is_file():
@@ -138,10 +169,12 @@ def semantic_nodes(index):
 
 def render():
     copy = json.loads((DISPLAY / 'content.json').read_text(encoding='utf-8'))
+    papers = json.loads((DISPLAY / 'papers.json').read_text(encoding='utf-8'))
+    validate_papers(papers)
     index = runtime_index()
     organs = copy.get('organs')
     if not isinstance(organs, dict):
-        raise ValueError('display/content.json needs the current public place copy map')
+        raise ValueError('w/display/content.json needs the current public place copy map')
     for path, _node in semantic_nodes(index):
         if path and path not in organs:
             raise ValueError(f'display content has no public interpretation for realized host path {path}')
@@ -154,18 +187,20 @@ def render():
     subs.update({f'HEAD{i}':s for i,s in enumerate(copy['headline'])})
     for key, value in subs.items():
         text = text.replace('{{'+key+'}}', html.escape(value))
-    payload = json.dumps({'index':index,'copy':copy}, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
+    payload = json.dumps({'index':index,'copy':copy,'papers':papers}, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
     text = text.replace('/*__DATA__*/', payload)
     if '/*__' in text or '{{' in text:
         raise ValueError('unresolved display membrane slot')
-    return '<!-- secreted from display/ through cambium host interfaces; generated membrane, not organism anatomy. -->\n' + text
+    return '<!-- secreted from w/display/ through cambium host interfaces; generated membrane, not organism anatomy. -->\n' + text
 
 
 def artifact_files():
     sources = {
         'assets/style.css': DISPLAY / 'style.css',
+        'assets/papers.css': DISPLAY / 'papers.css',
         'assets/favicon.svg': DISPLAY / 'favicon.svg',
         'assets/view.js': DISPLAY / 'view.js',
+        'assets/papers-view.js': DISPLAY / 'papers-view.js',
         'assets/address.js': ROOT / 'z/address.js',
         'assets/navigation.js': ROOT / 'z/navigation.js',
         'assets/app.js': ROOT / 'z/app.js',
@@ -214,7 +249,7 @@ def main():
     target=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
         verify_artifact(target)
-        print('display membrane exactly matches current organ + host interfaces')
+        print('display membrane exactly matches current nested organ + host interfaces')
     else:
         write_artifact(target)
         size=sum(len(v) for v in artifact_files().values())
