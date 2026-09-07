@@ -48,7 +48,7 @@ these references are procedural authority, not website runtime dependencies.
 - the root `expression / continuity / orientation / renewal` split is closed.
 - those four host answers were earned from website/code pressure. they are host
   physiology, not visitor-facing content taxonomy.
-- all four realized host limbs now have truthful carrier roots:
+- all four realized host limbs have truthful carrier roots:
   - `w/` — expression membrane and the intact display organ occupant;
   - `x/` — continuity/inheritance interface without duplicating visitor content;
   - `z/` — orientation/address/navigation tissue;
@@ -73,9 +73,17 @@ these references are procedural authority, not website runtime dependencies.
 Host `w ⟦ display:root ⟧` is not host `ww`. Filesystem containment makes the host
 attachment legible but does not concatenate address spaces.
 
-Display currently owns `content.json`, `template.html`, `style.css`, `view.js` and
-`favicon.svg`. Its visitor-facing nutrients live in `w/display/_stomach` and remain
-undigested until a bounded display metabolism earns living consequence.
+Display owns its public copy, presentation/rendering tissue and the first admitted
+`/papers/_feed` projection. The source feed remains owned/private in `/papers`; the
+current display projection is living `w/display/papers.json`, admitted from acknowledged
+event `papers-digestion-20260907T2301-b714c9d4`. It exposes only 48 source-organism
+identities/titles under papers' own `Genesis / Continuity / Governance / Evolution`
+root loci, not private source URLs/credentials/text or nested interiors. This admitted
+snapshot does **not** yet constitute an automatic feed→display refresh mechanism and
+does not create an internal display split.
+
+For exact display tissue and the current feed/admission boundary, enter
+`w/display/SKILLS/START_HERE.md` rather than expanding that organism here.
 
 ## output membrane / GitHub pump
 
@@ -83,22 +91,22 @@ Root `index.html` is not committed organism tissue. `y/build.py` combines the li
 display source with the smallest host interfaces into an ephemeral `_site/` membrane.
 `_site/` is ignored by git and must never become canonical anatomy.
 
-`.github/workflows/pages.yml` is dumb substrate circulation:
+`.github/workflows/pages.yml` is mechanical substrate circulation:
 - every push to staging/main builds and witnesses the membrane;
 - only when the repository identity is exactly `self-similar-systems/cambium` does
   the workflow configure Pages, upload `_site`, and deploy to `github-pages`;
 - the scheduler/action owns transport pressure only. It does not decide display
   nutrition, host placement or semantic anatomy.
 
-The first organization-side Actions deployment has now been witnessed successful;
+The first organization-side Actions deployment has been witnessed successful;
 future deploys remain contingent on the same build/witness gates.
 
 ## metabolism / transport boundary
 
 Host `_stomach/_waste` and display `_stomach/_waste` remain distinct local shells.
-One organism's ejection may become another's nutrition only through an explicit
-membrane/admission relation. Moving visitor nutrients into display does not merge the
-two metabolisms.
+Source-organism feeds likewise remain source-owned self-presentations. One organism's
+output becomes display tissue only through explicit admission/metabolism; transport or
+feed refresh alone does not authorize publication or collapse the source into display.
 
 ## witness
 
