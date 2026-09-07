@@ -1,112 +1,224 @@
 #!/usr/bin/env python3
-"""Compile the public skin. No network, package manager or external dependencies.
-The output is a projection, not a second source of content or navigation truth.
+"""Build cambium's public Pages artifact from the display organ plus host interfaces.
+
+Canonical host anatomy remains INDEX.yaml + address-local _cambium.yaml. Visitor-facing
+content/presentation lives in display/. The generated _site directory is an ephemeral
+outward membrane, never living organism anatomy.
 """
 from pathlib import Path
 import argparse
 import html
 import json
-from urllib.parse import quote
+import shutil
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent if HERE.name == 'y' else HERE
+ROOT = HERE.parent
+DISPLAY = ROOT / 'display'
 GENES = 'wxzy'
 
 
-def inputs():
-    split = (ROOT / 'w').is_dir()
-    def p(name, arm): return ROOT / arm / name if split else ROOT / name
-    return {
-        'index': ROOT / ('INDEX.json' if split else 'index-flat.json'),
-        'copy': p('contract.json', 'x'), 'specimen': p('specimen.json', 'y'),
-        'template': p('template.html', 'w'), 'style': p('style.css', 'w'),
-        'favicon': p('favicon.svg', 'w'), 'address': p('address.js', 'z'),
-        'navigation': p('navigation.js', 'z'), 'view': p('view.js', 'w'), 'app': p('app.js', 'z')
-    }
+def scalar(text):
+    text = text.strip()
+    if not text:
+        return {}
+    if text.startswith(('"', "'")):
+        return json.loads(text) if text.startswith('"') else text[1:-1]
+    return text
+
+
+def load_yaml(path):
+    """Strict tiny YAML subset sufficient for canonical INDEX/_cambium surfaces."""
+    root, stack = {}, [(-1, {})]
+    root = stack[0][1]
+    for number, raw in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+        if not raw.strip() or raw.lstrip().startswith('#'):
+            continue
+        if raw.strip() == '{}':
+            if root:
+                raise ValueError(f'{path.name}:{number}: empty mapping must stand alone')
+            continue
+        indent = len(raw) - len(raw.lstrip(' '))
+        if indent % 2:
+            raise ValueError(f'{path.name}:{number}: indentation must use two-space steps')
+        line = raw.strip()
+        if ':' not in line:
+            raise ValueError(f'{path.name}:{number}: expected key: value')
+        key, value = line.split(':', 1)
+        key = key.strip()
+        while stack[-1][0] >= indent:
+            stack.pop()
+        parent = stack[-1][1]
+        if key in parent:
+            raise ValueError(f'{path.name}:{number}: duplicate key {key}')
+        parsed = scalar(value)
+        parent[key] = parsed
+        if isinstance(parsed, dict):
+            stack.append((indent, parsed))
+    return root
+
+
+def validate_index(index):
+    def walk(node, path=''):
+        if not isinstance(node, dict):
+            raise ValueError(f'{path or "root"} phenotype must be a mapping')
+        keys = set(node)
+        if path:
+            if not isinstance(node.get('noun'), str) or not node['noun'].strip():
+                raise ValueError(f'{path} needs one atomic noun')
+            keys.remove('noun')
+        if not keys <= set(GENES):
+            raise ValueError(f'{path or "root"} contains non-phenotype fields: {sorted(keys-set(GENES))}')
+        children = [g for g in GENES if g in node]
+        if children and len(children) != 4:
+            raise ValueError(f'{path or "root"} has an incomplete realized CCCC split')
+        for g in children:
+            walk(node[g], path + g)
+    if set(index) != set(GENES):
+        raise ValueError('root INDEX.yaml must contain exactly the realized w/x/z/y phenotype')
+    for g in GENES:
+        walk(index[g], g)
+
+
+def validate_cambium(c, label='_cambium.yaml'):
+    expected = {'4V': set(GENES), '6E': {'wx','wz','wy','xz','xy','zy'},
+                '4F': {'wxz','wxy','wzy','xzy'}}
+    if set(c) != {'4V','6E','4F','1T'}:
+        raise ValueError(f'{label} contains noncanonical fields')
+    for rank, keys in expected.items():
+        if not isinstance(c[rank], dict) or set(c[rank]) != keys:
+            raise ValueError(f'{label} {rank} is incomplete')
+        if any(not isinstance(v, str) or not v.strip() for v in c[rank].values()):
+            raise ValueError(f'{label} {rank} contains an empty closure')
+    if not isinstance(c['1T'], str) or not c['1T'].strip():
+        raise ValueError(f'{label} 1T is empty')
+
+
+def local_cambium(path):
+    p = ROOT / path / '_cambium.yaml' if path else ROOT / '_cambium.yaml'
+    if not p.is_file():
+        raise ValueError(f'missing closed split anatomy: {p.relative_to(ROOT)}')
+    data = load_yaml(p)
+    validate_cambium(data, p.relative_to(ROOT).as_posix())
+    return data
+
+
+def runtime_index():
+    """Derive browser navigation state without enlarging canonical phenotype."""
+    phenotype = load_yaml(ROOT / 'INDEX.yaml')
+    validate_index(phenotype)
+    root_c = local_cambium('')
+    root = {'name':'cambium', 'whole':root_c['1T'], 'tissue':{}}
+
+    def build(node, path, inherited_whole):
+        out = {'name':node['noun'].strip(), 'whole':inherited_whole, 'tissue':{}}
+        children = [g for g in GENES if g in node]
+        if children:
+            c = local_cambium(path)
+            if c['1T'] != inherited_whole:
+                raise ValueError(f'{path} inherited whole disagrees with local 1T')
+            for g in children:
+                out[g] = build(node[g], path + g, c['4V'][g])
+        return out
+
+    for g in GENES:
+        root[g] = build(phenotype[g], g, root_c['4V'][g])
+    return root
 
 
 def semantic_nodes(index):
-    """Return (raw_address, semantic_object) in recursive address order."""
-    out = []
-    def walk(node, path=''):
-        if not isinstance(node, dict):
-            raise ValueError(f'{path or "root"} is not a semantic object')
-        if not isinstance(node.get('name'), str) or not node['name'].strip():
-            raise ValueError(f'{path or "root"} needs an atomic semantic name')
-        if not isinstance(node.get('whole'), str) or not node['whole'].strip():
-            raise ValueError(f'{path or "root"} needs its current semantic whole')
-        children = [g for g in GENES if g in node]
-        if children and len(children) != 4:
-            raise ValueError(f'{path or "root"} has an incomplete CCCC differentiation')
-        tissue = node.get('tissue', {})
-        if not isinstance(tissue, dict):
-            raise ValueError(f'{path or "root"} tissue must be a semantic carrier map')
-        for name, carrier in tissue.items():
-            if not isinstance(name, str) or not name.strip() or not isinstance(carrier, str) or not carrier.strip():
-                raise ValueError(f'{path or "root"} has malformed tissue')
-        out.append((path, node))
-        for g in children:
-            walk(node[g], path + g)
+    out=[]
+    def walk(node,path=''):
+        out.append((path,node))
+        for g in GENES:
+            if g in node:
+                walk(node[g],path+g)
     walk(index)
     return out
 
 
-def validate_carrier(carrier):
-    p = Path(carrier)
-    if p.is_absolute() or '..' in p.parts or ':' in str(p) or not (ROOT / p).is_file():
-        raise ValueError(f'invalid or missing tissue path: {p}')
-
-
-def validate_shell(index):
-    for key in ('_stomach', '_waste', 'SKILLS'):
-        shell = index.get(key)
-        if not isinstance(shell, dict) or not isinstance(shell.get('whole'), str) or not shell['whole'].strip():
-            raise ValueError(f'missing semantic shell orientation for {key}')
-        tissue = shell.get('tissue', {})
-        if not isinstance(tissue, dict):
-            raise ValueError(f'{key} tissue must be a semantic carrier map')
-        for carrier in tissue.values():
-            validate_carrier(carrier)
-
-
 def render():
-    files = inputs()
-    data = {k: json.loads(files[k].read_text(encoding='utf-8')) for k in ('index', 'copy')}
-    nodes = semantic_nodes(data['index'])
-    validate_shell(data['index'])
-    for path, node in nodes:
-        if path and path not in data['copy']['organs']:
-            raise ValueError(f'missing public interpretation for {path}')
-        for carrier in node.get('tissue', {}).values():
-            validate_carrier(carrier)
-    text = files['template'].read_text(encoding='utf-8')
-    copy = data['copy']
-    subs = {'EYEBROW':copy['eyebrow'],'PRACTICE_LABEL':copy['practice_label'],'PRACTICE':copy['practice'],
-            'LOCATION':copy['location'],'FOOTER':copy['footer']}
+    copy = json.loads((DISPLAY / 'content.json').read_text(encoding='utf-8'))
+    index = runtime_index()
+    organs = copy.get('organs')
+    if not isinstance(organs, dict):
+        raise ValueError('display/content.json needs the current public place copy map')
+    for path, _node in semantic_nodes(index):
+        if path and path not in organs:
+            raise ValueError(f'display content has no public interpretation for realized host path {path}')
+
+    text = (DISPLAY / 'template.html').read_text(encoding='utf-8')
+    subs = {
+        'EYEBROW':copy['eyebrow'], 'PRACTICE_LABEL':copy['practice_label'],
+        'PRACTICE':copy['practice'], 'LOCATION':copy['location'], 'FOOTER':copy['footer']
+    }
     subs.update({f'HEAD{i}':s for i,s in enumerate(copy['headline'])})
-    for key, value in subs.items(): text = text.replace('{{'+key+'}}', html.escape(value))
-    icon = files['favicon'].read_text(encoding='utf-8')
-    text = text.replace('{{FAVICON}}', 'data:image/svg+xml,' + quote(icon))
-    payload = json.dumps(data, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
+    for key, value in subs.items():
+        text = text.replace('{{'+key+'}}', html.escape(value))
+    payload = json.dumps({'index':index,'copy':copy}, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
     text = text.replace('/*__DATA__*/', payload)
-    for k in ('style','address','navigation','view','app'):
-        body = files[k].read_text(encoding='utf-8')
-        if k!='style' and '</script' in body.lower(): raise ValueError('unsafe inline script delimiter')
-        text=text.replace('/*__'+k.upper()+'__*/',body)
-    if '/*__' in text or '{{' in text: raise ValueError('unresolved template slot')
-    return '<!-- generated from w/x/z/y by y/build.py; edit source tissue, not this skin. -->\n'+text
+    if '/*__' in text or '{{' in text:
+        raise ValueError('unresolved display membrane slot')
+    return '<!-- secreted from display/ through cambium host interfaces; generated membrane, not organism anatomy. -->\n' + text
+
+
+def artifact_files():
+    sources = {
+        'assets/style.css': DISPLAY / 'style.css',
+        'assets/favicon.svg': DISPLAY / 'favicon.svg',
+        'assets/view.js': DISPLAY / 'view.js',
+        'assets/address.js': ROOT / 'z/address.js',
+        'assets/navigation.js': ROOT / 'z/navigation.js',
+        'assets/app.js': ROOT / 'z/app.js',
+    }
+    files = {'index.html': render().encode('utf-8'), '.nojekyll': b''}
+    for dest, source in sources.items():
+        if not source.is_file():
+            raise ValueError(f'missing membrane dependency: {source.relative_to(ROOT)}')
+        files[dest] = source.read_bytes()
+    return files
+
+
+def write_artifact(target):
+    target = target.resolve()
+    if target == ROOT.resolve() or target == DISPLAY.resolve():
+        raise ValueError('artifact target must be outside living anatomy')
+    if target.exists():
+        if target.is_dir():
+            shutil.rmtree(target)
+        else:
+            target.unlink()
+    for relative, data in artifact_files().items():
+        path = target / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+
+
+def verify_artifact(target):
+    target = target.resolve()
+    expected = artifact_files()
+    if not target.is_dir():
+        raise ValueError(f'missing artifact directory: {target}')
+    actual = {p.relative_to(target).as_posix():p.read_bytes() for p in target.rglob('*') if p.is_file()}
+    if set(actual) != set(expected):
+        raise ValueError(f'artifact file-set mismatch: {sorted(set(actual)^set(expected))}')
+    for path, data in expected.items():
+        if actual[path] != data:
+            raise ValueError(f'stale artifact byte content: {path}')
 
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--check',action='store_true',help='fail if the checked-in skin is stale')
-    ap.add_argument('--output',type=Path,help='write a self-contained preview outside the repo')
+    ap.add_argument('--artifact',type=Path,default=ROOT/'_site',help='Pages artifact directory')
+    ap.add_argument('--check',action='store_true',help='verify an existing artifact without writing')
     args=ap.parse_args()
-    target=args.output or ROOT/'index.html'; result=render()
+    target=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
-        if not target.exists() or target.read_text(encoding='utf-8')!=result: raise SystemExit('stale skin: run python y/build.py')
-        print('skin is a deterministic projection of the current semantic organism')
+        verify_artifact(target)
+        print('display membrane exactly matches current organ + host interfaces')
     else:
-        target.parent.mkdir(parents=True,exist_ok=True);target.write_text(result,encoding='utf-8')
-        print(f'built {target} ({len(result.encode())} bytes)')
-if __name__=='__main__':main()
+        write_artifact(target)
+        size=sum(len(v) for v in artifact_files().values())
+        print(f'built {target} ({size} bytes across {len(artifact_files())} files)')
+
+if __name__=='__main__':
+    main()
