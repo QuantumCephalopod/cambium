@@ -6,9 +6,8 @@ an independent lab for artistic and scientific inquiry.
 > we give questions form—and let those forms question us.
 
 cambium is the living website organism, not a mirror of the entire research body.
-its source is open, its public skin is generated from living tissue, and its
-visitor-facing display is still growing from actual encounter pressure rather than
-from a prebuilt content taxonomy.
+Its visitor-facing surface is now carried by an intact `display` organ instead of by
+a generated file committed at the host root.
 
 canonical organization repository: `self-similar-systems/cambium`  
 writable connector staging fork: `QuantumCephalopod/cambium`  
@@ -16,102 +15,122 @@ current Pages surface: https://self-similar-systems.github.io/cambium/
 
 ## enter the body
 
-**shared procedural entry is substrate-invariant.** whether you arrived through
-GitHub, Drive, a local clone, or another carrier, first read the canonical Drive
-`/SKILLS/START_HERE.md` completely:
+Start every re-entry at the canonical Drive `/SKILLS/START_HERE.md`, then read
+[`SKILLS/START_HERE.md`](SKILLS/START_HERE.md) in this repository.
 
-https://drive.google.com/file/d/1gaJF8r9Rz8eCttAqOQ_8xq3Fd3SxUkOW/view
+Host structural truth is split cleanly:
 
-from that receptor, load the shared Diamond(s) required for the operation completely.
-GitHub is a carrier of this organism, not a competing Skill authority.
+- [`INDEX.yaml`](INDEX.yaml) = minimal recursive phenotype only;
+- [`_cambium.yaml`](_cambium.yaml) = the closed root `4V/6E/4F/1T` only.
 
-then read [`SKILLS/START_HERE.md`](SKILLS/START_HERE.md), followed by
-[`INDEX.yaml`](INDEX.yaml). `INDEX.yaml` is deliberately tiny: it is the current
-recursive phenotype and contains only the atomic noun at each realized `w/x/z/y`
-address. It is not a file table, registry, work queue, status surface, or prose
-summary.
+Living occupants, source files, stomach matter, organs and work state remain in their
+actual tissue/receptors rather than being copied into INDEX.
 
-when the constitution of a realized split matters, read that address's
-`_cambium.yaml`. The root [`_cambium.yaml`](_cambium.yaml) carries exactly the
-closed `4V/6E/4F/1T` that earned the present root differentiation. Living occupants,
-source files, stomach matter, current wounds and continuation remain in their own
-tissue and receptors.
+## current host body
 
-## current body
+The root phenotype remains:
 
-The first materialized `expression / continuity / orientation / renewal` split was
-earned from the functional website/code pressure that existed during first growth.
-That learning remains real, but its scope is explicit: it must not be mistaken for
-the visitor-facing display ontology or assumed to exhaust every future organ of the
-host organism.
+| host address | noun |
+|---|---|
+| `w` | expression |
+| `x` | continuity |
+| `z` | orientation |
+| `y` | renewal |
 
-Current root phenotype:
+This fourfold was earned from website/code pressure. It is host physiology, not a
+visitor-facing content taxonomy, and filesystem folders are not required to mirror it.
 
-| address | noun | living tissue |
-|---|---|---|
-| `w` | expression | template, style, renderer, mark |
-| `x` | continuity | approved public contract |
-| `z` | orientation | address algebra, route admission, interaction |
-| `y` | renewal | builder, checks, geometry specimen, interaction witness |
+## display — visitor-facing organ
 
-The richer browser registry used by the generated skin is **derived at build time**
-from `INDEX.yaml`, local `_cambium.yaml` closure and actual leaf files. It is a
-runtime projection, not canonical anatomy.
+`display/` is now one intact organ participating at host `w / expression`.
 
-`display` is an emerging organ **inside cambium's own organism**, not a folder
-category and not a second organism merely placed beside it. Its host placement,
-independent inner root, metabolism and any internal `w/x/z/y` differentiation must
-be earned from actual encounter pressure. Do not invent four display branches in
-advance.
+The boundary is explicit:
 
-## try it
+`cambium:w ⟦ display:root ⟧`
 
-open `index.html` directly in a browser, or visit the current GitHub Pages surface.
-it is a static generated membrane that links only its repository-local living CSS/JS
-tissue: no CDN, remote font, framework, package install, analytics or application
-server is needed. scripts only enhance the already-readable landing page.
+Display is internally **unsplit**. Its [`INDEX.yaml`](display/INDEX.yaml) is the empty
+mapping `{}` and there is deliberately no `display/_cambium.yaml` yet. Future
+`w/x/z/y` anatomy inside display must be earned from actual display pressure rather
+than copied from the host.
 
-one navigation surface shows the named places admitted by the current phenotype.
-each breadcrumb opens its complete raw prefix. geometry is spatial expression of
-the same address structure, not a second menu or ontology.
+Current living display tissue:
 
-`y/specimen.json` exercises deeper recursive and reciprocal paths with explicitly
-synthetic names without publishing those descendants. exact symbolic address keys
-and BigInt dyadic coordinates precede approximate screen projection. geometric
-quotient is never permission to erase raw semantic witnesses.
+- `display/content.json` — public wording/encounter copy;
+- `display/template.html` — outward document membrane;
+- `display/style.css` — visual expression;
+- `display/view.js` — display-local rendering/camera behavior;
+- `display/favicon.svg` — outward mark.
 
-## change and check
+Its visitor-facing nutrients now enter `display/_stomach`. The becoming narrative and
+actual interaction observations were routed there from the host stomach without being
+silently digested.
 
-Python 3 and Node.js are development/test tools, not website runtime dependencies.
-From this repository root:
+Host `z/` remains orientation physiology; host `y/` remains renewal/witness
+physiology. Display consumes those through an interface instead of swallowing them as
+its own internal branches.
+
+## Pages artifact — secreted membrane
+
+There is intentionally **no committed root `index.html`** anymore.
+
+Build the public membrane with:
 
 ```sh
-python3 y/build.py
-python3 y/check.py
-node y/test-address.cjs
-python3 y/build.py --check
+python3 y/build.py --artifact _site
 ```
 
-on Windows, `py` can replace `python3`. edit living source tissue and canonical
-phenotype/constitution rather than hand-editing generated root `index.html`.
+That produces only the static bytes GitHub Pages needs:
 
-Optional browser checks require Python Playwright and Chromium:
+```text
+_site/
+  index.html
+  .nojekyll
+  assets/
+```
+
+`_site/` is disposable generated output and is gitignored. It is not an organism,
+organ, archive or second anatomy.
+
+Run the bounded witnesses with:
+
+```sh
+python3 y/build.py --artifact _site
+python3 y/check.py --artifact _site
+SITE_DIR=_site node y/test-address.cjs
+python3 y/build.py --artifact _site --check
+```
+
+Optional browser checks require Playwright/Chromium:
 
 ```sh
 python3 y/browser-check.py --out ../cambium-review
 ```
 
+## GitHub Actions — dumb Pages pump
+
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) runs on `main` pushes and
+manual dispatch.
+
+The build/witness heartbeat runs in both the staging fork and organization repository.
+Actual Pages setup/upload/deployment is gated to the exact repository identity
+`self-similar-systems/cambium`, so staging can test the vascular machinery without
+trying to become the public site.
+
+The workflow follows GitHub's Pages artifact route: checkout → build/witness →
+configure Pages → upload `_site` → deploy to the `github-pages` environment.
+Scheduling/transport remains substrate machinery; nutrient ontology and organ anatomy
+remain organism law.
+
 ## intake and publication boundary
 
-`_stomach` is unresolved intake, not an archive and not a folder for everything
-noncanonical. `_waste` is cambium-local terminal outflow. Organism-relative
-excretion may later cross an explicit membrane into another organism's stomach, but
-that transport must be governed by live receptor law rather than by folder identity.
+Host `_stomach/_waste` and display `_stomach/_waste` remain separate local metabolic
+shells. Material crosses only through explicit routing/admission; one folder never
+becomes another organism's metabolic role by naming convention.
 
-The repository is public. `_stomach`, `_waste`, `SKILLS`, source code and git history
-are public material even when not linked from the rendered page. no private research,
-credentials or unpublished third-party carriers belong here.
+The repository itself is public. No private research, credentials or unpublished
+third-party carriers belong here.
 
-`CNAME` records the intended `sss.saarland` address. Pages/DNS/HTTPS, public contact,
-legal information and licensing remain explicit launch boundaries. The preview
-retains `noindex, nofollow` until indexing is deliberately approved.
+`CNAME` records the intended `sss.saarland` address, but GitHub Pages custom-domain
+configuration remains authoritative in repository Settings. DNS/HTTPS, public
+contact, legal information and licensing remain explicit launch boundaries. The
+public membrane retains `noindex, nofollow` until indexing is deliberately approved.

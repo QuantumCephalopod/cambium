@@ -1,0 +1,53 @@
+name: display membrane
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reacquire cambium
+        uses: actions/checkout@v6
+
+      - name: Build display membrane
+        run: python3 y/build.py --artifact _site
+
+      - name: Witness structural body
+        run: python3 y/check.py --artifact _site
+
+      - name: Witness address algebra
+        run: SITE_DIR=_site node y/test-address.cjs
+
+      - name: Configure GitHub Pages
+        if: github.repository == 'self-similar-systems/cambium'
+        uses: actions/configure-pages@v5
+
+      - name: Upload display membrane
+        if: github.repository == 'self-similar-systems/cambium'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    if: github.repository == 'self-similar-systems/cambium'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy display membrane
+        id: deployment
+        uses: actions/deploy-pages@v4
