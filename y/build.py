@@ -93,6 +93,37 @@ def validate_cambium(c, label='_cambium.yaml'):
         raise ValueError(f'{label} 1T is empty')
 
 
+def validate_papers(papers):
+    expected = {'source','event_id','refresh','observed_at_utc','boundary','phenotype','groups'}
+    if set(papers) != expected:
+        raise ValueError('w/display/papers.json has an unexpected public projection shape')
+    if papers['source'] != 'papers/_feed' or papers['refresh'] != 'REFRESH ACKNOWLEDGED':
+        raise ValueError('papers projection is not bound to an acknowledged local feed')
+    if not isinstance(papers['event_id'], str) or not papers['event_id'].startswith('papers-'):
+        raise ValueError('papers projection needs its source feed event identity')
+    if set(papers['phenotype']) != set(GENES) or set(papers['groups']) != set(GENES):
+        raise ValueError('papers projection must preserve exactly its own realized root loci')
+    seen = set()
+    for gene in GENES:
+        if not isinstance(papers['phenotype'][gene], str) or not papers['phenotype'][gene].strip():
+            raise ValueError(f'papers phenotype {gene} is unnamed')
+        group = papers['groups'][gene]
+        if not isinstance(group, list):
+            raise ValueError(f'papers group {gene} must be a list')
+        for item in group:
+            if not isinstance(item, dict) or set(item) != {'id','title'}:
+                raise ValueError(f'papers group {gene} contains non-public fields')
+            if not isinstance(item['id'], str) or not item['id'].startswith('S.'):
+                raise ValueError('papers projection currently admits source-organism identities only')
+            if not isinstance(item['title'], str) or not item['title'].strip():
+                raise ValueError(f'papers source {item.get("id", "?")} has no title')
+            if item['id'] in seen:
+                raise ValueError(f'duplicate papers source identity {item["id"]}')
+            seen.add(item['id'])
+    if not seen:
+        raise ValueError('papers projection is empty')
+
+
 def local_cambium(path):
     p = ROOT / path / '_cambium.yaml' if path else ROOT / '_cambium.yaml'
     if not p.is_file():
@@ -138,6 +169,8 @@ def semantic_nodes(index):
 
 def render():
     copy = json.loads((DISPLAY / 'content.json').read_text(encoding='utf-8'))
+    papers = json.loads((DISPLAY / 'papers.json').read_text(encoding='utf-8'))
+    validate_papers(papers)
     index = runtime_index()
     organs = copy.get('organs')
     if not isinstance(organs, dict):
@@ -154,7 +187,7 @@ def render():
     subs.update({f'HEAD{i}':s for i,s in enumerate(copy['headline'])})
     for key, value in subs.items():
         text = text.replace('{{'+key+'}}', html.escape(value))
-    payload = json.dumps({'index':index,'copy':copy}, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
+    payload = json.dumps({'index':index,'copy':copy,'papers':papers}, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
     text = text.replace('/*__DATA__*/', payload)
     if '/*__' in text or '{{' in text:
         raise ValueError('unresolved display membrane slot')
