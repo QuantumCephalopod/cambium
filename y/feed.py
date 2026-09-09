@@ -72,8 +72,17 @@ def local(path: Path, root: Path) -> str:
     return rel.as_posix()
 
 
-def read_home(path: Path) -> dict:
+def read_root_event(path: Path) -> dict:
     data = json.loads((ROOT / path).read_text(encoding="utf-8"))
+    if path.stem != data.get("event_id"):
+        raise ValueError(f"{path}: filename must equal event_id")
+    return data
+
+
+def read_home(path: Path) -> dict | None:
+    data = read_root_event(path)
+    if data.get("kind") != "HOME":
+        return None
     required = {
         "event_id", "home_at_utc", "organism", "entrypoint", "outcome",
         "changed_scope", "context", "kind", "delivery_state"
@@ -81,10 +90,6 @@ def read_home(path: Path) -> dict:
     missing = required - set(data)
     if missing:
         raise ValueError(f"{path}: HOME missing {sorted(missing)}")
-    if data["kind"] != "HOME":
-        raise ValueError(f"{path}: only HOME events actuate _feed")
-    if path.stem != data["event_id"]:
-        raise ValueError(f"{path}: filename must equal event_id")
     return data
 
 
@@ -156,9 +161,14 @@ def projection(root: Path, home: dict, source_revision: str) -> dict:
     }
 
 
-def write_feed(root: Path, home: dict, source_revision: str) -> Path:
+def write_feed(root: Path, home: dict, source_revision: str) -> Path | None:
     out = root / "_feed" / "current.json"
     out.parent.mkdir(parents=True, exist_ok=True)
+    if out.is_file():
+        existing = json.loads(out.read_text(encoding="utf-8"))
+        if existing.get("reflected_home_event") == home["event_id"]:
+            print(f"{out.relative_to(ROOT)} already reflects {home['event_id']}")
+            return None
     body = projection(root, home, source_revision)
     out.write_text(
         json.dumps(body, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
@@ -173,25 +183,38 @@ def main() -> None:
     ap.add_argument("--after", default="HEAD")
     args = ap.parse_args()
 
-    homes = changed_home_paths(args.before, args.after)
-    if not homes:
+    root_events = changed_home_paths(args.before, args.after)
+    if not root_events:
         print("no new durable HOME pressure; feeds unchanged")
         return
 
     grouped: dict[Path, list[tuple[Path, dict]]] = {}
-    for path in homes:
+    for path in root_events:
+        home = read_home(path)
+        if home is None:
+            print(f"{path}: skipped non-HOME root ring")
+            continue
         root = organism_root(path)
-        grouped.setdefault(root, []).append((path, read_home(path)))
+        grouped.setdefault(root, []).append((path, home))
+
+    if not grouped:
+        print("no new durable HOME pressure; feeds unchanged")
+        return
 
     changed = []
     for root, items in grouped.items():
         items.sort(key=lambda x: (x[1]["home_at_utc"], x[1]["event_id"]))
         path, home = items[-1]
         out = write_feed(root, home, args.after)
+        if out is None:
+            continue
         changed.append(out.relative_to(ROOT).as_posix())
         print(f"{path}: projected {out.relative_to(ROOT)}")
 
-    print("feed projections:", ", ".join(changed))
+    if changed:
+        print("feed projections:", ", ".join(changed))
+    else:
+        print("feeds already current")
 
 
 if __name__ == "__main__":
