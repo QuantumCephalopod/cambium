@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Build cambium's public Pages artifact from the nested display organ plus host interfaces.
+"""Build cambium's public Pages artifact from Display's current root encounter organism.
 
-Canonical host anatomy remains INDEX.yaml + address-local _cambium.yaml. Visitor-facing
-content/presentation lives in w/display/. The generated _site directory is an ephemeral
-outward membrane, never living organism anatomy.
+Canonical host anatomy remains INDEX.yaml + address-local _cambium.yaml. Display owns
+the visitor-facing membrane. Philosophy is currently admitted as Display's root
+encounter organism; its own address space restarts at philosophy:root.
 """
 from pathlib import Path
 import argparse
@@ -14,6 +14,7 @@ import shutil
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 DISPLAY = ROOT / 'w' / 'display'
+PHILOSOPHY = DISPLAY / 'philosophy'
 GENES = 'wxzy'
 
 
@@ -133,20 +134,28 @@ def local_cambium(path):
     return data
 
 
-def runtime_index():
-    """Derive browser navigation state without enlarging canonical phenotype."""
-    phenotype = load_yaml(ROOT / 'INDEX.yaml')
+def _runtime_organism(root_path, name):
+    """Derive one independently rooted semantic body for browser navigation."""
+    phenotype = load_yaml(root_path / 'INDEX.yaml')
     validate_index(phenotype)
-    root_c = local_cambium('')
-    root = {'name':'cambium', 'whole':root_c['1T'], 'tissue':{}}
+    root_c_path = root_path / '_cambium.yaml'
+    if not root_c_path.is_file():
+        raise ValueError(f'missing closed root constitution: {root_c_path.relative_to(ROOT)}')
+    root_c = load_yaml(root_c_path)
+    validate_cambium(root_c, root_c_path.relative_to(ROOT).as_posix())
+    root = {'name': name, 'whole': root_c['1T'], 'tissue': {}}
 
     def build(node, path, inherited_whole):
-        out = {'name':node['noun'].strip(), 'whole':inherited_whole, 'tissue':{}}
+        out = {'name': node['noun'].strip(), 'whole': inherited_whole, 'tissue': {}}
         children = [g for g in GENES if g in node]
         if children:
-            c = local_cambium(path)
+            p = root_path / path / '_cambium.yaml'
+            if not p.is_file():
+                raise ValueError(f'missing closed split anatomy: {p.relative_to(ROOT)}')
+            c = load_yaml(p)
+            validate_cambium(c, p.relative_to(ROOT).as_posix())
             if c['1T'] != inherited_whole:
-                raise ValueError(f'{path} inherited whole disagrees with local 1T')
+                raise ValueError(f'{p.relative_to(ROOT)} inherited whole disagrees with local 1T')
             for g in children:
                 out[g] = build(node[g], path + g, c['4V'][g])
         return out
@@ -156,50 +165,143 @@ def runtime_index():
     return root
 
 
+def runtime_index():
+    """Host semantic body. Kept separate from the visitor-facing root encounter."""
+    return _runtime_organism(ROOT, 'cambium')
+
+
+def public_index():
+    """Display's current root encounter: philosophy:root."""
+    return _runtime_organism(PHILOSOPHY, 'philosophy')
+
+
 def semantic_nodes(index):
-    out=[]
-    def walk(node,path=''):
-        out.append((path,node))
+    out = []
+    def walk(node, path=''):
+        out.append((path, node))
         for g in GENES:
             if g in node:
-                walk(node[g],path+g)
+                walk(node[g], path + g)
     walk(index)
     return out
 
 
+def load_public_pages(index, encounter):
+    languages = encounter.get('available_languages')
+    if not isinstance(languages, list) or set(languages) != {'de','en'}:
+        raise ValueError('philosophy encounter must currently expose de + en')
+    pages = {}
+    for path, node in semantic_nodes(index):
+        if not path:
+            continue
+        carrier = PHILOSOPHY / path / 'content.json'
+        if not carrier.is_file():
+            raise ValueError(f'public address {path} has no content carrier')
+        page = json.loads(carrier.read_text(encoding='utf-8'))
+        expected = {'semantic_id','address','gene','canonical_concept','expressions'}
+        if set(page) != expected:
+            raise ValueError(f'{carrier.relative_to(ROOT)} has an unexpected encounter shape')
+        if page['address'] != path or page['semantic_id'] != f'philosophy:{path}':
+            raise ValueError(f'{carrier.relative_to(ROOT)} identity/address mismatch')
+        if page['canonical_concept'] != node['name']:
+            raise ValueError(f'{carrier.relative_to(ROOT)} concept diverges from INDEX')
+        if set(page['expressions']) != set(languages):
+            raise ValueError(f'{carrier.relative_to(ROOT)} language coverage mismatch')
+        for lang in languages:
+            exp = page['expressions'][lang]
+            if set(exp) != {'concept','question','body'}:
+                raise ValueError(f'{carrier.relative_to(ROOT)} {lang} expression shape mismatch')
+            if not isinstance(exp['body'], list) or not exp['body'] or any(not isinstance(x,str) or not x.strip() for x in exp['body']):
+                raise ValueError(f'{carrier.relative_to(ROOT)} {lang} body is empty')
+        pages[path] = page
+    return pages
+
+
+def split_mission(text):
+    """Stable four-beat root headline; semantic identity does not depend on line wrapping."""
+    known = {
+        'de': ['wir geben fragen', 'form', 'und lassen diese formen', 'uns zurückfragen.'],
+        'en': ['we give questions', 'form', 'and let those forms', 'question us.'],
+    }
+    return known
+
+
+def translated_copy(site, encounter, pages):
+    result = {}
+    headlines = split_mission('')
+    for lang in encounter['available_languages']:
+        root_exp = encounter['expressions'][lang]
+        organs = {}
+        for path, page in pages.items():
+            exp = page['expressions'][lang]
+            organs[path] = {
+                'title': exp['concept'],
+                'lead': exp['question'],
+                'detail': ' '.join(exp['body']),
+            }
+        result[lang] = {
+            'brand': site['brand'],
+            'eyebrow': ('philosophie · root' if lang == 'de' else 'philosophy · root'),
+            'headline': headlines[lang],
+            'practice_label': ('position' if lang == 'de' else 'position'),
+            'practice': root_exp['position'],
+            'organs': organs,
+        }
+    return result
+
+
 def render():
-    copy = json.loads((DISPLAY / 'content.json').read_text(encoding='utf-8'))
+    site = json.loads((DISPLAY / 'content.json').read_text(encoding='utf-8'))
     papers = json.loads((DISPLAY / 'papers.json').read_text(encoding='utf-8'))
     validate_papers(papers)
-    index = runtime_index()
-    organs = copy.get('organs')
-    if not isinstance(organs, dict):
-        raise ValueError('w/display/content.json needs the current public place copy map')
-    for path, _node in semantic_nodes(index):
-        if path and path not in organs:
-            raise ValueError(f'display content has no public interpretation for realized host path {path}')
+    encounter = json.loads((PHILOSOPHY / 'encounter.json').read_text(encoding='utf-8'))
+    if encounter.get('organism') != 'philosophy' or encounter.get('default_language') not in encounter.get('available_languages', []):
+        raise ValueError('philosophy encounter identity/language contract is invalid')
+    if encounter.get('language_is_expression_not_address') is not True:
+        raise ValueError('language must remain expression, not semantic address')
+    if encounter.get('lateral_contract') != ['address','CCCC','concept','question']:
+        raise ValueError('philosophy lateral display contract changed unexpectedly')
+
+    index = public_index()
+    pages = load_public_pages(index, encounter)
+    translations = translated_copy(site, encounter, pages)
+    default_lang = encounter['default_language']
+    default_root = encounter['expressions'][default_lang]
 
     text = (DISPLAY / 'template.html').read_text(encoding='utf-8')
     subs = {
-        'EYEBROW':copy['eyebrow'], 'PRACTICE_LABEL':copy['practice_label'],
-        'PRACTICE':copy['practice'], 'LOCATION':copy['location'], 'FOOTER':copy['footer']
+        'ROOT_TITLE': default_root['title'],
+        'ROOT_MISSION': default_root['mission'],
+        'ROOT_POSITION': default_root['position'],
+        'LOCATION': site['location'],
+        'FOOTER': site['footer'],
     }
-    subs.update({f'HEAD{i}':s for i,s in enumerate(copy['headline'])})
     for key, value in subs.items():
         text = text.replace('{{'+key+'}}', html.escape(value))
-    payload = json.dumps({'index':index,'copy':copy,'papers':papers}, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
+
+    payload = json.dumps({
+        'public_root': 'philosophy',
+        'index': index,
+        'copy': translations[default_lang],
+        'translations': translations,
+        'encounter': encounter,
+        'pages': pages,
+        'papers': papers,
+    }, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
     text = text.replace('/*__DATA__*/', payload)
     if '/*__' in text or '{{' in text:
         raise ValueError('unresolved display membrane slot')
-    return '<!-- secreted from w/display/ through cambium host interfaces; generated membrane, not organism anatomy. -->\n' + text
+    return '<!-- secreted from w/display/; philosophy is the current root encounter organism. -->\n' + text
 
 
 def artifact_files():
     sources = {
         'assets/style.css': DISPLAY / 'style.css',
+        'assets/philosophy.css': DISPLAY / 'philosophy.css',
         'assets/papers.css': DISPLAY / 'papers.css',
         'assets/favicon.svg': DISPLAY / 'favicon.svg',
         'assets/view.js': DISPLAY / 'view.js',
+        'assets/philosophy-view.js': DISPLAY / 'philosophy-view.js',
         'assets/papers-view.js': DISPLAY / 'papers-view.js',
         'assets/address.js': ROOT / 'z/address.js',
         'assets/navigation.js': ROOT / 'z/navigation.js',
@@ -242,18 +344,19 @@ def verify_artifact(target):
 
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--artifact',type=Path,default=ROOT/'_site',help='Pages artifact directory')
-    ap.add_argument('--check',action='store_true',help='verify an existing artifact without writing')
-    args=ap.parse_args()
-    target=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--artifact', type=Path, default=ROOT/'_site', help='Pages artifact directory')
+    ap.add_argument('--check', action='store_true', help='verify an existing artifact without writing')
+    args = ap.parse_args()
+    target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
         verify_artifact(target)
-        print('display membrane exactly matches current nested organ + host interfaces')
+        print('display membrane exactly matches philosophy root encounter + display interfaces')
     else:
         write_artifact(target)
-        size=sum(len(v) for v in artifact_files().values())
+        size = sum(len(v) for v in artifact_files().values())
         print(f'built {target} ({size} bytes across {len(artifact_files())} files)')
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
