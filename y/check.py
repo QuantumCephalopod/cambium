@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Structural witness for cambium, Display, and the Philosophy root encounter."""
+"""Structural witness for the current main-root WebGL display membrane."""
 from pathlib import Path
 import argparse
 import html.parser
@@ -8,170 +8,113 @@ import json
 import re
 import subprocess
 
-ROOT=Path(__file__).resolve().parent.parent
-DISPLAY=ROOT/'w'/'display'
-PHILOSOPHY=DISPLAY/'philosophy'
-GENES='wxzy'
-count=0
+ROOT = Path(__file__).resolve().parent.parent
+DISPLAY = ROOT / 'w' / 'display'
+count = 0
 
 
 def check(condition, why):
     global count
-    count+=1
+    count += 1
     if not condition:
         raise AssertionError(why)
 
 
 class Page(html.parser.HTMLParser):
     def __init__(self):
-        super().__init__();self.ids=[];self.links=[];self.scripts=[]
-    def handle_starttag(self,tag,attrs):
+        super().__init__(); self.ids=[]; self.scripts=[]; self.links=[]
+    def handle_starttag(self, tag, attrs):
         d=dict(attrs)
-        if 'id' in d:self.ids.append(d['id'])
-        if tag in ('a','link') and 'href' in d:self.links.append(d['href'])
-        if tag=='script':self.scripts.append(d)
+        if 'id' in d: self.ids.append(d['id'])
+        if tag == 'script': self.scripts.append(d)
+        if tag == 'link': self.links.append(d)
 
 
 def load_build():
     path=ROOT/'y/build.py'
-    spec=importlib.util.spec_from_file_location('compose',path)
-    mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
-
-
-def read_feed(root, owner):
-    path=root/'_feed/current.json'
-    check(path.is_file(),f'{owner} current _feed missing')
-    data=json.loads(path.read_text(encoding='utf-8'))
-    check(data.get('owner')==owner,f'{owner} _feed owner mismatch')
-    check(data.get('boundary')=='LOCAL_BODY_ONLY',f'{owner} _feed boundary mismatch')
-    event=data.get('reflected_home_event')
-    check(isinstance(event,str) and event,f'{owner} _feed has no reflected HOME')
-    check((root/'_root'/f'{event}.json').is_file(),f'{owner} _feed reflects unknown HOME')
-    return data
+    spec=importlib.util.spec_from_file_location('compose', path)
+    mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); return mod
 
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--artifact',type=Path,default=ROOT/'_site')
+    ap.add_argument('--artifact', type=Path, default=ROOT/'_site')
     args=ap.parse_args()
     artifact=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     build=load_build()
 
-    phenotype=build.load_yaml(ROOT/'INDEX.yaml');build.validate_index(phenotype)
-    root_c=build.local_cambium('');host_runtime=build.runtime_index()
-    check(host_runtime['whole']==root_c['1T'],'host runtime whole diverges from cambium')
-    check([host_runtime[g]['name'] for g in GENES]==['expression','continuity','orientation','renewal'],'host phenotype changed unexpectedly')
-    check(all(not any(g in host_runtime[p] for g in GENES) for p in GENES),'unearned host descendants appeared')
-    check((ROOT/'RITUALS/organism/RITUAL.md').is_file(),'host ritual receptor missing')
-    check(not (ROOT/'SKILLS').exists(),'legacy host SKILLS receptor remains')
-    for role in ('_stomach','_feed','_root','_waste'):
-        check((ROOT/role).is_dir(),f'host lifecycle role missing: {role}')
-    host_feed=read_feed(ROOT,'cambium')
+    check((DISPLAY/'INDEX.yaml').read_text(encoding='utf-8').strip()=='{}', 'display internal phenotype must remain unsplit')
+    check(not (DISPLAY/'_cambium.yaml').exists(), 'display falsely claims an internal semantic split')
+    check((DISPLAY/'RITUALS/organism/RITUAL.md').is_file(), 'display organism ritual missing')
+    check((DISPLAY/'RITUALS/navigation/RITUAL.md').is_file(), 'display navigation ritual missing')
+    check((DISPLAY/'navigation-physiology.js').is_file(), 'navigation physiology core missing')
+    check((DISPLAY/'navigation-physiology.test.cjs').is_file(), 'navigation physiology witness missing')
 
-    check(DISPLAY.is_dir(),'nested display organ missing')
-    check((DISPLAY/'INDEX.yaml').read_text(encoding='utf-8').strip()=='{}','display internal phenotype must remain unsplit')
-    check(not (DISPLAY/'_cambium.yaml').exists(),'display falsely claims an internal split')
-    check((DISPLAY/'RITUALS/organism/RITUAL.md').is_file(),'display ritual receptor missing')
-    for role in ('_stomach','_feed','_root','_waste'):
-        check((DISPLAY/role).is_dir(),f'display lifecycle role missing: {role}')
-    display_feed=read_feed(DISPLAY,'display')
-    check((ROOT/'w/interface.md').is_file(),'host expression membrane missing')
-    check((DISPLAY/'philosophy.interface.md').is_file(),'display↔philosophy membrane missing')
-
-    check(PHILOSOPHY.is_dir(),'philosophy root encounter organism missing')
-    philosophy_index=build.load_yaml(PHILOSOPHY/'INDEX.yaml');build.validate_index(philosophy_index)
-    philosophy_c=build.load_yaml(PHILOSOPHY/'_cambium.yaml');build.validate_cambium(philosophy_c,'philosophy/_cambium.yaml')
-    public_index=build.public_index()
-    check(public_index['name']=='philosophy','public root is not philosophy')
-    check(public_index['whole']==philosophy_c['1T'],'public root whole diverges from philosophy constitution')
-    check([public_index[g]['name'] for g in GENES]==['Inquiry','Continuity','Care','Becoming'],'philosophy phenotype changed unexpectedly')
-    for role in ('_stomach','_feed','_root','_waste'):
-        check((PHILOSOPHY/role).is_dir(),f'philosophy lifecycle role missing: {role}')
-    check((PHILOSOPHY/'RITUALS/organism/RITUAL.md').is_file(),'philosophy ritual receptor missing')
-    encounter=json.loads((PHILOSOPHY/'encounter.json').read_text(encoding='utf-8'))
-    check(encounter['language_is_expression_not_address'] is True,'language became semantic address')
-    check(encounter['lateral_contract']==['address','CCCC','concept','question'],'4-step lateral invariant changed')
-    pages=build.load_public_pages(public_index,encounter)
-    check(set(pages)==set(GENES),'philosophy root encounter does not expose exactly its four realized loci')
-    check([pages[g]['gene'] for g in GENES]==['CREATE','COPY','CONTROL','CULTIVATE'],'CCCC mapping changed')
-    check(all(set(pages[g]['expressions'])=={'de','en'} for g in GENES),'DE/EN coverage incomplete')
-
-    for name in ('content.json','papers.json','template.html','style.css','philosophy.css','papers.css','view.js','philosophy-view.js','papers-view.js','favicon.svg'):
-        check((DISPLAY/name).is_file(),f'missing display tissue {name}')
-    check((ROOT/'.github/workflows/pages.yml').is_file(),'Pages workflow missing')
-    check((ROOT/'y/feed.py').is_file(),'HOME→feed carrier missing')
-    check((ROOT/'z/address.js').is_file() and (ROOT/'z/navigation.js').is_file() and (ROOT/'z/app.js').is_file(),'host orientation interface incomplete')
-    check(not (ROOT/'index.html').exists(),'generated membrane must not be committed at host root')
+    projection=build.root_projection()
+    check(projection['source']['organism']=='main-root', 'public projection is not main-root')
+    check(projection['source']['home'].startswith('main-root-cambium-split-'), 'public projection lacks root split HOME')
+    check([projection['root']['children'][g]['noun'] for g in 'wxzy']==['Form','Continuity','Care','Inquiry'], 'public 4V diverges from Drive root')
+    check([projection['root']['children'][g]['gene'] for g in 'wxzy']==['CREATE','COPY','CONTROL','CULTIVATE'], 'public CCCC mapping changed')
+    check(projection['constitution']['4V']=={'w':'Form','x':'Continuity','z':'Care','y':'Inquiry'}, 'projection constitution 4V mismatch')
+    check(projection['occupancy']=={'w':['morphogenetic-painting'],'x':['ternary','mnemos-autobiography'],'z':['regeneration'],'y':['papers']}, 'root organ placement projection changed')
+    check(projection['membranes']=={'provider':['Google AI Studio'],'unresolved':['muses'],'stomach':['legacy']}, 'root membrane/tree-eye projection changed')
 
     build.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8')
-    check(actual==build.render(),'artifact HTML is stale')
-    p=Page();p.feed(actual)
-    check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
-    check('lang="de"' in actual,'default document language is not German')
-    check('<meta name="robots" content="noindex, nofollow">' in actual,'review-only indexing marker missing')
-    check('aria-label="places in the current whole"' in actual,'recursive navigation landmark missing')
-    check('turnable tetrahedral navigation surface' in actual,'tetrahedron is not exposed as the invariant navigation object')
-    check('Adresse → CCCC → Begriff → Frage' in actual,'4-step lateral surface missing')
-    check('data-language="de"' in actual and 'data-language="en"' in actual,'language switch missing')
-    check(actual.count('<nav ')==1,'more than one public navigation landmark')
-    check('/*__' not in actual and '{{' not in actual,'template slots remain')
-    check(all(s.get('src','').startswith('assets/') for s in p.scripts if 'src' in s),'non-artifact application script leaked into membrane')
+    check(actual==build.render(), 'artifact HTML is stale')
+    p=Page(); p.feed(actual)
+    check(len(p.ids)==len(set(p.ids)), 'duplicate element ids')
+    for element_id in ('stage','stage2d','navTwin','axis-x','axis-y','commit','root-projection'):
+        check(element_id in p.ids, f'missing interaction surface: {element_id}')
 
-    expected_scripts={
-        'assets/address.js','assets/navigation.js','assets/view.js','assets/papers-view.js',
-        'assets/philosophy-view.js','assets/app.js'
-    }
-    check({s.get('src') for s in p.scripts if 'src' in s}==expected_scripts,'membrane script interface changed unexpectedly')
-    check({'assets/style.css','assets/philosophy.css','assets/papers.css','assets/favicon.svg'} <= set(p.links),'display visual assets are not membrane-local')
-    check(all(token not in actual for token in ('_stomach/','_feed/','_root/','_waste/','RITUALS/','SKILLS/')),'organ shell/receptor leaked into public membrane')
+    match=re.search(r'<script id="root-projection" type="application/json">(.*?)</script>', actual, re.S)
+    check(bool(match), 'embedded main-root projection missing')
+    embedded=json.loads(match.group(1))
+    check(embedded==projection, 'embedded projection differs from admitted Display tissue')
 
-    match=re.search(r'<script id="cambium-data" type="application/json">(.*?)</script>',actual,re.S)
-    check(bool(match),'runtime projection missing')
-    payload=json.loads(match.group(1))
-    expected_payload={'public_root','index','copy','translations','encounter','pages','papers'}
-    check(set(payload)==expected_payload,'unexpected public payload surface')
-    check(payload['public_root']=='philosophy','public root identity changed')
-    check(payload['index']==public_index,'public runtime index differs from Philosophy body')
-    check(payload['encounter']==encounter,'public encounter differs from Philosophy source')
-    check(set(payload['translations'])=={'de','en'},'language projections changed')
-    check(payload['copy']==payload['translations']['de'],'default display expression is not German')
-    check(set(payload['pages'])==set(GENES),'public Philosophy pages incomplete')
-    check(payload['copy']['brand']=='self-similar-systems saar','public identity changed')
+    nav_src=(DISPLAY/'navigation-physiology.js').read_text(encoding='utf-8')
+    view_src=(DISPLAY/'root-view.js').read_text(encoding='utf-8')
+    css_src=(DISPLAY/'root-view.css').read_text(encoding='utf-8')
+    check('function collectStructure' in nav_src and 'hasFullSplit' in nav_src, 'realized-only structural traversal missing')
+    check('showRelation' not in view_src and 'hitBig' not in view_src and 'data-rel=' not in actual, 'ambient relation hit/highlight system returned')
+    check('location.hash' not in view_src and 'URLSearchParams' not in view_src, 'inspection was coupled back to URL/file routing')
+    check('two axes · two knobs' in actual, 'two-axis control contract missing')
+    check('axisValue(axis' in nav_src, 'independent axis mapping missing')
+    check('setPointerCapture' in view_src, 'pointer capture missing from direct manipulation')
+    check('touch-action:none' in css_src, 'touch manipulation does not own its fullscreen gesture')
+    check('overflow:hidden' in css_src, 'fullscreen no-scroll contract missing')
+    check('prefers-reduced-motion' in css_src, 'reduced-motion accommodation missing')
+    check('PAGE main:root · VIEW main:root' in actual, 'inspect/commit state language missing')
+    check('provider aperture · Google AI Studio · not an address' in css_src, 'tree-eye boundary disappeared')
+    check('philosophy · root' not in actual.lower(), 'superseded Philosophy root leaked into public main')
 
-    build.validate_papers(payload['papers']);check(True,'papers projection invalid')
-    check(payload['papers']['source']=='papers/_feed','display papers projection lost source identity')
-    check([payload['papers']['phenotype'][g] for g in GENES]==['Genesis','Continuity','Governance','Evolution'],'papers address space changed unexpectedly')
-    check(sum(len(payload['papers']['groups'][g]) for g in GENES)==48,'papers projection must carry 48 source organisms')
-    check('drive.google.com' not in json.dumps(payload['papers']),'private Drive pointers leaked into public papers projection')
+    srcs={s.get('src') for s in p.scripts if s.get('src')}
+    check(srcs=={'assets/navigation-physiology.js','assets/root-view.js'}, 'unexpected public script surface')
+    styles={d.get('href') for d in p.links if d.get('rel')=='stylesheet'}
+    check(styles=={'assets/root-view.css'}, 'unexpected public stylesheet surface')
+    check(not any((u or '').startswith(('http://','https://','//')) for u in srcs|styles), 'remote application dependency leaked into membrane')
 
-    style=(DISPLAY/'style.css').read_text(encoding='utf-8')+(DISPLAY/'philosophy.css').read_text(encoding='utf-8')
-    check('prefers-reduced-motion' in style,'reduced-motion accommodation missing')
-    check('localStorage.' not in actual and 'document.cookie' not in actual,'unexpected browser persistence')
-    check('mailto:' not in actual,'public contact has not been approved')
-    for rel in ('assets/style.css','assets/philosophy.css','assets/papers.css','assets/favicon.svg',
-                'assets/view.js','assets/philosophy-view.js','assets/papers-view.js',
-                'assets/address.js','assets/navigation.js','assets/app.js','.nojekyll'):
-        check((artifact/rel).is_file(),f'missing artifact member {rel}')
-
-    for source in (DISPLAY/'view.js',DISPLAY/'philosophy-view.js',DISPLAY/'papers-view.js',
-                   ROOT/'z/address.js',ROOT/'z/navigation.js',ROOT/'z/app.js'):
+    for source in (DISPLAY/'root-view.js', DISPLAY/'navigation-physiology.js'):
         result=subprocess.run(['node','--check',str(source)],capture_output=True,text=True)
-        check(result.returncode==0,result.stderr or f'javascript syntax failure: {source}')
-    compile((ROOT/'y/browser-check.py').read_text(encoding='utf-8'),str(ROOT/'y/browser-check.py'),'exec');check(True,'browser-check syntax')
-    check((ROOT/'CNAME').read_text(encoding='utf-8').strip()=='sss.saarland','unexpected custom domain')
+        check(result.returncode==0, result.stderr or f'javascript syntax failure: {source.name}')
+
+    nav=subprocess.run(['node',str(DISPLAY/'navigation-physiology.test.cjs')],capture_output=True,text=True)
+    check(nav.returncode==0, nav.stderr or 'navigation physiology witness failed')
+
+    for rel in ('assets/root-view.css','assets/root-view.js','assets/navigation-physiology.js','assets/favicon.svg','.nojekyll'):
+        check((artifact/rel).is_file(), f'missing artifact member {rel}')
+    check(not (ROOT/'index.html').exists(), 'generated membrane must not be committed at host root')
+    check((ROOT/'.github/workflows/pages.yml').is_file(), 'Pages workflow missing')
+    check((ROOT/'CNAME').read_text(encoding='utf-8').strip()=='sss.saarland', 'unexpected custom domain')
 
     print(json.dumps({
         'status':'pass',
         'structural_checks':count,
-        'host':'cambium',
-        'organ':'display',
-        'root_encounter':'philosophy',
-        'philosophy_4V':[public_index[g]['name'] for g in GENES],
-        'display_invariant':'address -> CCCC -> concept -> question',
-        'languages':encounter['available_languages'],
-        'host_feed_home':host_feed['reflected_home_event'],
-        'display_feed_home':display_feed['reflected_home_event'],
+        'display':'unsplit organ',
+        'public_root':'main-root',
+        'root_4V':['Form','Continuity','Care','Inquiry'],
+        'renderer':'accepted WebGL v3 physiology',
+        'navigation':'realized-only / direct-drag / minimap / independent-axis / inspect!=commit',
         'artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)
     },indent=2))
 
