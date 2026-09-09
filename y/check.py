@@ -37,6 +37,18 @@ def load_build():
     mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
 
 
+def read_feed(root, owner):
+    path=root/'_feed/current.json'
+    check(path.is_file(),f'{owner} current _feed missing')
+    data=json.loads(path.read_text(encoding='utf-8'))
+    check(data.get('owner')==owner,f'{owner} _feed owner mismatch')
+    check(data.get('boundary')=='LOCAL_BODY_ONLY',f'{owner} _feed boundary mismatch')
+    event=data.get('reflected_home_event')
+    check(isinstance(event,str) and event,f'{owner} _feed has no reflected HOME')
+    check((root/'_root'/f'{event}.json').is_file(),f'{owner} _feed reflects unknown HOME')
+    return data
+
+
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--artifact',type=Path,default=ROOT/'_site')
@@ -51,6 +63,13 @@ def main():
     check(all(not any(g in runtime[p] for g in GENES) for p in GENES),'unearned host descendants appeared')
     check(all(runtime[p].get('tissue')=={} for p in GENES),'runtime projection leaked carrier topology into host places')
 
+    # Same discoverable organism interface regardless of substrate.
+    check((ROOT/'RITUALS/organism/RITUAL.md').is_file(),'host ritual receptor missing')
+    check(not (ROOT/'SKILLS').exists(),'legacy host SKILLS receptor remains')
+    for role in ('_stomach','_feed','_root','_waste'):
+        check((ROOT/role).is_dir(),f'host lifecycle role missing: {role}')
+    host_feed=read_feed(ROOT,'cambium')
+
     # Every realized host vertex has a carrier root. Raw letters are addresses; semantic
     # names remain in INDEX.yaml rather than being copied into folder names.
     for gene in GENES:
@@ -64,10 +83,16 @@ def main():
     check(DISPLAY.is_dir(),'nested display organ missing')
     check((DISPLAY/'INDEX.yaml').read_text(encoding='utf-8').strip()=='{}','display internal phenotype must remain unsplit')
     check(not (DISPLAY/'_cambium.yaml').exists(),'display falsely claims an internal closed split')
-    check((DISPLAY/'SKILLS/START_HERE.md').is_file(),'display re-entry receptor missing')
+    check((DISPLAY/'RITUALS/organism/RITUAL.md').is_file(),'display ritual receptor missing')
+    check(not (DISPLAY/'SKILLS').exists(),'legacy display SKILLS receptor remains')
+    for role in ('_stomach','_feed','_root','_waste'):
+        check((DISPLAY/role).is_dir(),f'display lifecycle role missing: {role}')
+    display_feed=read_feed(DISPLAY,'display')
+
     for name in ('content.json','papers.json','template.html','style.css','papers.css','view.js','papers-view.js','favicon.svg'):
         check((DISPLAY/name).is_file(),f'missing display tissue {name}')
     check((DISPLAY/'_stomach/INCOMING — cambium becoming.md').is_file(),'display becoming nutrient missing')
+    check((DISPLAY/'_stomach/INCOMING — care propagates.md').is_file(),'display care nutrient missing')
     check((DISPLAY/'_stomach/observations.md').is_file(),'display observations nutrient missing')
     check((DISPLAY/'_waste/.gitkeep').is_file(),'display waste shell missing')
     check(not (ROOT/'_stomach/INCOMING — cambium becoming.md').exists(),'display nutrient still duplicated in host stomach')
@@ -78,6 +103,7 @@ def main():
     check(not (ROOT/'index.html').exists(),'generated membrane must not be committed at host root')
     check(not (ROOT/'.nojekyll').exists(),'deployment marker belongs to artifact, not living host root')
     check((ROOT/'.github/workflows/pages.yml').is_file(),'Pages pump workflow missing')
+    check((ROOT/'y/feed.py').is_file(),'HOME→feed mechanical carrier missing')
     check((ROOT/'z/address.js').is_file() and (ROOT/'z/navigation.js').is_file() and (ROOT/'z/app.js').is_file(),'host orientation interface incomplete')
     check((ROOT/'y/interaction.md').is_file(),'renewal interaction witness missing')
     check('INDEX.json' not in (ROOT/'y/interaction.md').read_text(encoding='utf-8'),'stale rich-index law remains in living interaction tissue')
@@ -96,14 +122,14 @@ def main():
     check(all(s.get('src','').startswith('assets/') for s in p.scripts if 'src' in s),'non-artifact application script leaked into membrane')
     check({s.get('src') for s in p.scripts if 'src' in s}=={'assets/address.js','assets/navigation.js','assets/view.js','assets/papers-view.js','assets/app.js'},'membrane script interface changed')
     check('assets/style.css' in p.links and 'assets/papers.css' in p.links and 'assets/favicon.svg' in p.links,'display visual assets are not membrane-local')
-    check('_stomach/' not in actual and 'SKILLS/' not in actual,'organ shell leaked into public membrane')
+    check(all(token not in actual for token in ('_stomach/','_feed/','_root/','_waste/','RITUALS/','SKILLS/')),'organ shell/receptor leaked into public membrane')
 
     match=re.search(r'<script id="cambium-data" type="application/json">(.*?)</script>',actual,re.S)
     check(bool(match),'runtime projection missing')
     payload=json.loads(match.group(1))
     check(set(payload)=={'index','copy','papers'},'unexpected public payload surface')
     check(payload['index']==runtime,'public runtime index differs from derived host projection')
-    check(set(payload['copy']['organs'])==set(GENES),'display content does not cover the current host phenotype')
+    check(set(payload['copy']['organs'])==set(GENES),'current display copy map changed unexpectedly')
     check(payload['copy']['brand']=='self-similar-systems saar','public identity changed')
     build.validate_papers(payload['papers']);check(True,'papers projection invalid')
     check(payload['papers']['source']=='papers/_feed','display papers projection lost source identity')
@@ -126,7 +152,15 @@ def main():
     compile((ROOT/'y/browser-check.py').read_text(encoding='utf-8'),str(ROOT/'y/browser-check.py'),'exec');check(True,'browser-check syntax')
     check((ROOT/'CNAME').read_text(encoding='utf-8').strip()=='sss.saarland','unexpected intended custom domain')
 
-    print(json.dumps({'status':'pass','structural_checks':count,'host':'cambium','organ':'display','display_host_locus':'w','display_physical_root':'w/display','display_internal_state':'unsplit','papers_projection_event':payload['papers']['event_id'],'papers_source_organisms':48,'artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)},indent=2))
+    print(json.dumps({
+        'status':'pass','structural_checks':count,'host':'cambium','organ':'display',
+        'host_feed_home':host_feed['reflected_home_event'],
+        'display_feed_home':display_feed['reflected_home_event'],
+        'display_host_locus':'w','display_physical_root':'w/display',
+        'display_internal_state':'unsplit','papers_projection_event':payload['papers']['event_id'],
+        'papers_source_organisms':48,
+        'artifact':artifact.relative_to(ROOT).as_posix() if artifact.is_relative_to(ROOT) else str(artifact)
+    },indent=2))
 
 if __name__=='__main__':
     main()
