@@ -1,7 +1,7 @@
 ---
 name: display
-description: "Local ritual receptor for cambium's visitor-facing display organ: preserve its independent unsplit root, nested-whole encounter boundary, recursive page/address equivalence, translation-independent semantic identity, lifecycle shell and outward membrane without inventing a second ontology."
-version: "1.1"
+description: "Local ritual receptor for cambium's visitor-facing display organ: preserve its independent unsplit root, nested-whole encounter boundary, recursive page/address equivalence, turnable tetrahedral navigation surface, translation-independent semantic identity, lifecycle shell and outward membrane without inventing a second ontology."
+version: "1.2"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -24,7 +24,7 @@ Enter shared root `RITUALS/`, then cambium root `RITUALS/`, then cross the expli
 
 ## current root encounter occupant
 
-The first public semantic whole has now been born as an intact independently re-enterable Philosophy organism:
+The first public semantic whole is an intact independently re-enterable Philosophy organism:
 
 `display:root ⟦ philosophy:root ⟧`
 
@@ -43,11 +43,28 @@ For one realized locus, the invariant lateral projection is:
 
 `address → CCCC aperture → locally earned semantic concept → encounter expression/question`
 
-These are four resolutions of one locus, not four different nodes. A presentation may make all four visible simultaneously so the recursive address grammar organizes thought rather than hiding beneath the interface.
+These are four resolutions of one locus, not four different nodes. The public membrane makes the relation visible so the recursive grammar organizes thought rather than hiding beneath the interface.
 
 When a realized locus differentiates, the same public grammar recurs at the finer addresses. When an independently rooted organ/organism occupies a locus, entering it crosses an explicit membrane and restarts semantic address space while retaining the same Display contract.
 
 Occupant identity is not address identity: lawful cambial regrowth may change an occupant's placement without requiring redesign or re-identification of the occupant.
+
+## invariant tetrahedral navigation object
+
+The semantic fourfold is also a persistent **physical navigation surface**.
+
+Wherever the visitor is, Display exposes the locally relevant realized tetrahedron as one turnable object:
+
+- at a split whole, the object is that whole's four realized children;
+- at an unsplit leaf, the object remains the containing tetrahedron so the visitor can orient among sibling loci and return through the surrounding whole;
+- after deeper differentiation, the same operation recurs at the finer address;
+- after crossing an organ/organism membrane, address space resets but the same navigational object/gesture continues.
+
+The tetrahedron is analogous to a globe only in the sense that it is a manipulable orientation object. Its topology is tetrahedral and alien to ordinary page menus: turn it, inspect it from another side, then choose a locus to enter.
+
+**Rotation is view state, never address state.** Turning the object must not change semantic identity, current locus, root boundary or navigation history.
+
+The tetrahedral object and the lateral `address → CCCC → concept → question` surface are two perceptual projections of the same current frame. Hover/focus/selection should reveal that identity rather than create two competing navigation systems.
 
 ## translation / modality invariant
 
@@ -58,6 +75,7 @@ Switching language must preserve:
 - current address;
 - CCCC aperture;
 - local semantic relation;
+- tetrahedral camera/orientation state;
 - navigation state;
 - root/organ boundaries.
 
@@ -72,8 +90,10 @@ Current display-owned tissue includes:
 - `papers.json`
 - `template.html`
 - `style.css`
+- `philosophy.css`
 - `papers.css`
 - `view.js`
+- `philosophy-view.js`
 - `papers-view.js`
 - `favicon.svg`
 - the explicit `philosophy.interface.md` boundary to the intact Philosophy root occupant.
@@ -106,11 +126,13 @@ A future refresh must preserve:
 
 Transport never makes arrival equal assimilation.
 
+The current Philosophy `y / Becoming` encounter may expose the admitted papers projection as metabolized/public ground without making papers loci descendants of Philosophy. A later independently rooted `/papers` encounter remains a separate root crossing.
+
 ## current unresolved nutrients
 
 `_stomach/` currently contains:
 - `INCOMING — cambium becoming.md`
-- `INCOMING — care propagates.md` — now partially digested; only its unresolved collaboration/immunity/transduction residue remains food;
+- `INCOMING — care propagates.md` — partially digested; only unresolved collaboration/immunity/transduction residue remains food;
 - `observations.md`
 
 The host's real `expression / continuity / orientation / renewal` anatomy is not display's visitor taxonomy. Display remains unsplit while its page grammar operates across independently rooted semantic wholes.
@@ -128,6 +150,6 @@ Consumption across the membrane does not make those host organs display descenda
 
 `_site/` is generated, disposable and noncanonical. Publication does not turn `_site` into `_feed`, and `_feed` does not itself authorize publication.
 
-The current renderer has not yet been regrown to render Philosophy as the public root. Philosophy birth and Display's invariant encounter contract are now living source state; renderer/build mutation is a separate bounded implementation act and must not be smuggled into semantic birth.
+The current renderer is source-driven from Philosophy's canonical `INDEX.yaml`, `_cambium.yaml`, root `encounter.json`, and address-local `content.json`. It renders Philosophy as the root encounter without copying Philosophy into Display's semantic anatomy. German/English expression is selected in place, while the same tetrahedral navigation object persists across root and locus views.
 
-Compression: **every lawful place can be a page; every page exposes the same relational grammar; language changes expression rather than identity; nested wholes restart address without breaking encounter continuity.**
+Compression: **every lawful place can be a page; every page keeps a turnable tetrahedral orientation object; every locus exposes address → CCCC → concept → question; language changes expression rather than identity; nested wholes restart address without breaking encounter continuity.**
