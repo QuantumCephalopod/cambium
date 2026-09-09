@@ -1,0 +1,35 @@
+{
+  "boundary": "LOCAL_BODY_ONLY",
+  "constitution": null,
+  "home": {
+    "changed_scope": [
+      "host renewal/witness carrier only"
+    ],
+    "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+    "outcome": "PASS/EARNED · MECHANICAL REPAIR"
+  },
+  "observed_at_utc": "2026-09-09T15:10:23.785007Z",
+  "owner": "display",
+  "phenotype": {},
+  "reflected_home_event": "display-repair-20260909T150840Z",
+  "rituals": [
+    {
+      "path": "RITUALS/organism/RITUAL.md",
+      "sha256": "0d21ca4bd934ef6b0084c6b39b5ecb411ea2992b5bf067b365c8daa9a0c82ab9"
+    }
+  ],
+  "shell": {
+    "feed": "_feed/current.json",
+    "root_history": "_root",
+    "stomach_direct": [
+      "INCOMING — cambium becoming.md",
+      "INCOMING — care propagates.md",
+      "observations.md"
+    ],
+    "waste_direct_count": 0
+  },
+  "substrate_witness": {
+    "kind": "git",
+    "source_revision": "ec125fa823604a52c544be612ebb465e8477f5c4"
+  }
+}
