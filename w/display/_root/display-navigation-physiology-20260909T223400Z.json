@@ -1,0 +1,22 @@
+{
+  "event_id": "display-navigation-physiology-20260909T223400Z",
+  "parent_event_id": "display-philosophy-renderer-regrowth-20260909T184532Z",
+  "correlation_id": "display-navigation-realized-minimap-20260909",
+  "home_at_utc": "2026-09-09T22:34:00Z",
+  "organism": "display",
+  "pump": "manual-navigation-backpropagation",
+  "entrypoint": "RITUALS/navigation",
+  "outcome": "PASS/EARNED · REALIZED-ONLY ACCESSIBLE NAVIGATION",
+  "changed_scope": [
+    "navigation geometry now follows realized phenotype only and never completes unrealized ranks",
+    "large tetrahedral field is directly draggable without automatic edge/face/volume semantic highlighting",
+    "persistent minimap carries realized address geometry plus HERE/VIEW orientation only",
+    "inspection is reversible view-state and committed page entry is a separate deliberate action",
+    "trackpad rotation uses two independent one-axis velocity knobs with deadzone and zero-on-release"
+  ],
+  "context": "Direct use of the local WebGL specimen exposed two interaction wounds: ambient edge/face highlighting produced high-noise gimmick behavior without navigational information, and a combined two-axis trackpad controller made precise orientation unnecessarily difficult. A deeper structural correction followed: rendering a uniform recursive rank falsely asserts anatomy that the organism has not realized. The accepted specimen therefore derives geometry only from realized address splits, separates inspect from commit, lets the large body be grabbed directly, keeps the minimap structurally quiet, and gives yaw/pitch separate velocity controls. The accepted WebGL specimen was distilled into renderer-independent navigation physiology; the currently published renderer remains a separate later transduction problem rather than being silently replaced by a design checkpoint.",
+  "receipt_pointer": "w/display/navigation-physiology.js + w/display/navigation-physiology.test.cjs + w/display/RITUALS/navigation/RITUAL.md",
+  "return_to": "/_feed",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}
