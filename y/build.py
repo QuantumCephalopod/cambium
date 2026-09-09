@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
-"""Build cambium's public Pages artifact from Display's current root encounter organism.
+"""Build the public Display membrane from the admitted main-root projection.
 
-Canonical host anatomy remains INDEX.yaml + address-local _cambium.yaml. Display owns
-the visitor-facing membrane. Philosophy is currently admitted as Display's root
-encounter organism; its own address space restarts at philosophy:root.
+The repository is a publication carrier. The visitor-facing main page depicts the
+current Self-Similar Systems root projection admitted into Display, while Display
+itself remains an independently rooted unsplit organ.
 """
 from pathlib import Path
 import argparse
-import html
 import json
 import shutil
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 DISPLAY = ROOT / 'w' / 'display'
-PHILOSOPHY = DISPLAY / 'philosophy'
 GENES = 'wxzy'
 
 
@@ -94,218 +92,88 @@ def validate_cambium(c, label='_cambium.yaml'):
         raise ValueError(f'{label} 1T is empty')
 
 
-def validate_papers(papers):
-    expected = {'source','event_id','refresh','observed_at_utc','boundary','phenotype','groups'}
-    if set(papers) != expected:
-        raise ValueError('w/display/papers.json has an unexpected public projection shape')
-    if papers['source'] != 'papers/_feed' or papers['refresh'] != 'REFRESH ACKNOWLEDGED':
-        raise ValueError('papers projection is not bound to an acknowledged local feed')
-    if not isinstance(papers['event_id'], str) or not papers['event_id'].startswith('papers-'):
-        raise ValueError('papers projection needs its source feed event identity')
-    if set(papers['phenotype']) != set(GENES) or set(papers['groups']) != set(GENES):
-        raise ValueError('papers projection must preserve exactly its own realized root loci')
-    seen = set()
+def _validate_display_node(node, path):
+    required = {'noun','de','en','gene','one','children'}
+    if not isinstance(node, dict) or set(node) != required:
+        raise ValueError(f'main-root projection node {path} has unexpected fields')
+    if not all(isinstance(node[k], str) and node[k].strip() for k in ('noun','de','en','gene')):
+        raise ValueError(f'main-root projection node {path} is unnamed')
+    if node['gene'] not in {'CREATE','COPY','CONTROL','CULTIVATE'}:
+        raise ValueError(f'main-root projection node {path} has invalid CCCC gene')
+    if not isinstance(node['one'], dict) or set(node['one']) != {'de','en'} or not all(
+        isinstance(node['one'][k], str) and node['one'][k].strip() for k in ('de','en')):
+        raise ValueError(f'main-root projection node {path} lacks bilingual encounter copy')
+    if not isinstance(node['children'], dict):
+        raise ValueError(f'main-root projection node {path} children must be a mapping')
+    if node['children'] and set(node['children']) != set(GENES):
+        raise ValueError(f'main-root projection node {path} invents a partial recursive rank')
     for gene in GENES:
-        if not isinstance(papers['phenotype'][gene], str) or not papers['phenotype'][gene].strip():
-            raise ValueError(f'papers phenotype {gene} is unnamed')
-        group = papers['groups'][gene]
-        if not isinstance(group, list):
-            raise ValueError(f'papers group {gene} must be a list')
-        for item in group:
-            if not isinstance(item, dict) or set(item) != {'id','title'}:
-                raise ValueError(f'papers group {gene} contains non-public fields')
-            if not isinstance(item['id'], str) or not item['id'].startswith('S.'):
-                raise ValueError('papers projection currently admits source-organism identities only')
-            if not isinstance(item['title'], str) or not item['title'].strip():
-                raise ValueError(f'papers source {item.get("id", "?")} has no title')
-            if item['id'] in seen:
-                raise ValueError(f'duplicate papers source identity {item["id"]}')
-            seen.add(item['id'])
-    if not seen:
-        raise ValueError('papers projection is empty')
+        if gene in node['children']:
+            _validate_display_node(node['children'][gene], path + gene)
 
 
-def local_cambium(path):
-    p = ROOT / path / '_cambium.yaml' if path else ROOT / '_cambium.yaml'
-    if not p.is_file():
-        raise ValueError(f'missing closed split anatomy: {p.relative_to(ROOT)}')
-    data = load_yaml(p)
-    validate_cambium(data, p.relative_to(ROOT).as_posix())
+def validate_root_projection(data):
+    expected = {'source','root','occupancy','membranes','constitution'}
+    if not isinstance(data, dict) or set(data) != expected:
+        raise ValueError('w/display/main-root.json has an unexpected projection shape')
+    source = data['source']
+    if set(source) != {'organism','home','authority'} or source['organism'] != 'main-root':
+        raise ValueError('main-root projection source identity is invalid')
+    if source['authority'] != 'independently-rooted Drive organism':
+        raise ValueError('main-root projection authority boundary is invalid')
+    if not isinstance(source['home'], str) or not source['home'].startswith('main-root-'):
+        raise ValueError('main-root projection needs a root HOME identity')
+    root = data['root']
+    if not isinstance(root, dict) or set(root) != {'noun','children'} or root['noun'] != 'Self-Similar Systems':
+        raise ValueError('main-root projection root identity is invalid')
+    if not isinstance(root['children'], dict) or set(root['children']) != set(GENES):
+        raise ValueError('main-root projection must expose exactly the realized root 4V')
+    gene_names = {'w':'CREATE','x':'COPY','z':'CONTROL','y':'CULTIVATE'}
+    for gene in GENES:
+        _validate_display_node(root['children'][gene], gene)
+        if root['children'][gene]['gene'] != gene_names[gene]:
+            raise ValueError(f'main-root projection {gene} remaps fixed CCCC DNA')
+    constitution = data['constitution']
+    validate_cambium(constitution, 'main-root projection constitution')
+    for gene in GENES:
+        if constitution['4V'][gene] != root['children'][gene]['noun']:
+            raise ValueError(f'main-root projection {gene} diverges from constitution')
+    occupancy = data['occupancy']
+    if not isinstance(occupancy, dict) or set(occupancy) != set(GENES):
+        raise ValueError('main-root occupancy must preserve four host loci')
+    if any(not isinstance(v, list) or any(not isinstance(x,str) or not x for x in v) for v in occupancy.values()):
+        raise ValueError('main-root occupancy contains invalid whole identity')
+    membranes = data['membranes']
+    if not isinstance(membranes, dict) or set(membranes) != {'provider','unresolved','stomach'}:
+        raise ValueError('main-root membrane projection is invalid')
+    if any(not isinstance(v,list) or any(not isinstance(x,str) or not x for x in v) for v in membranes.values()):
+        raise ValueError('main-root membrane projection contains invalid boundary identity')
     return data
 
 
-def _runtime_organism(root_path, name):
-    """Derive one independently rooted semantic body for browser navigation."""
-    phenotype = load_yaml(root_path / 'INDEX.yaml')
-    validate_index(phenotype)
-    root_c_path = root_path / '_cambium.yaml'
-    if not root_c_path.is_file():
-        raise ValueError(f'missing closed root constitution: {root_c_path.relative_to(ROOT)}')
-    root_c = load_yaml(root_c_path)
-    validate_cambium(root_c, root_c_path.relative_to(ROOT).as_posix())
-    root = {'name': name, 'whole': root_c['1T'], 'tissue': {}}
-
-    def build(node, path, inherited_whole):
-        out = {'name': node['noun'].strip(), 'whole': inherited_whole, 'tissue': {}}
-        children = [g for g in GENES if g in node]
-        if children:
-            p = root_path / path / '_cambium.yaml'
-            if not p.is_file():
-                raise ValueError(f'missing closed split anatomy: {p.relative_to(ROOT)}')
-            c = load_yaml(p)
-            validate_cambium(c, p.relative_to(ROOT).as_posix())
-            if c['1T'] != inherited_whole:
-                raise ValueError(f'{p.relative_to(ROOT)} inherited whole disagrees with local 1T')
-            for g in children:
-                out[g] = build(node[g], path + g, c['4V'][g])
-        return out
-
-    for g in GENES:
-        root[g] = build(phenotype[g], g, root_c['4V'][g])
-    return root
-
-
-def runtime_index():
-    """Host semantic body. Kept separate from the visitor-facing root encounter."""
-    return _runtime_organism(ROOT, 'cambium')
-
-
-def public_index():
-    """Display's current root encounter: philosophy:root."""
-    return _runtime_organism(PHILOSOPHY, 'philosophy')
-
-
-def semantic_nodes(index):
-    out = []
-    def walk(node, path=''):
-        out.append((path, node))
-        for g in GENES:
-            if g in node:
-                walk(node[g], path + g)
-    walk(index)
-    return out
-
-
-def load_public_pages(index, encounter):
-    languages = encounter.get('available_languages')
-    if not isinstance(languages, list) or set(languages) != {'de','en'}:
-        raise ValueError('philosophy encounter must currently expose de + en')
-    pages = {}
-    for path, node in semantic_nodes(index):
-        if not path:
-            continue
-        carrier = PHILOSOPHY / path / 'content.json'
-        if not carrier.is_file():
-            raise ValueError(f'public address {path} has no content carrier')
-        page = json.loads(carrier.read_text(encoding='utf-8'))
-        expected = {'semantic_id','address','gene','canonical_concept','expressions'}
-        if set(page) != expected:
-            raise ValueError(f'{carrier.relative_to(ROOT)} has an unexpected encounter shape')
-        if page['address'] != path or page['semantic_id'] != f'philosophy:{path}':
-            raise ValueError(f'{carrier.relative_to(ROOT)} identity/address mismatch')
-        if page['canonical_concept'] != node['name']:
-            raise ValueError(f'{carrier.relative_to(ROOT)} concept diverges from INDEX')
-        if set(page['expressions']) != set(languages):
-            raise ValueError(f'{carrier.relative_to(ROOT)} language coverage mismatch')
-        for lang in languages:
-            exp = page['expressions'][lang]
-            if set(exp) != {'concept','question','body'}:
-                raise ValueError(f'{carrier.relative_to(ROOT)} {lang} expression shape mismatch')
-            if not isinstance(exp['body'], list) or not exp['body'] or any(not isinstance(x,str) or not x.strip() for x in exp['body']):
-                raise ValueError(f'{carrier.relative_to(ROOT)} {lang} body is empty')
-        pages[path] = page
-    return pages
-
-
-def split_mission(text):
-    """Stable four-beat root headline; semantic identity does not depend on line wrapping."""
-    known = {
-        'de': ['wir geben fragen', 'form', 'und lassen diese formen', 'uns zurückfragen.'],
-        'en': ['we give questions', 'form', 'and let those forms', 'question us.'],
-    }
-    return known
-
-
-def translated_copy(site, encounter, pages):
-    result = {}
-    headlines = split_mission('')
-    for lang in encounter['available_languages']:
-        root_exp = encounter['expressions'][lang]
-        organs = {}
-        for path, page in pages.items():
-            exp = page['expressions'][lang]
-            organs[path] = {
-                'title': exp['concept'],
-                'lead': exp['question'],
-                'detail': ' '.join(exp['body']),
-            }
-        result[lang] = {
-            'brand': site['brand'],
-            'eyebrow': ('philosophie · root' if lang == 'de' else 'philosophy · root'),
-            'headline': headlines[lang],
-            'practice_label': ('position' if lang == 'de' else 'position'),
-            'practice': root_exp['position'],
-            'organs': organs,
-        }
-    return result
+def root_projection():
+    return validate_root_projection(json.loads((DISPLAY / 'main-root.json').read_text(encoding='utf-8')))
 
 
 def render():
-    site = json.loads((DISPLAY / 'content.json').read_text(encoding='utf-8'))
-    papers = json.loads((DISPLAY / 'papers.json').read_text(encoding='utf-8'))
-    validate_papers(papers)
-    encounter = json.loads((PHILOSOPHY / 'encounter.json').read_text(encoding='utf-8'))
-    if encounter.get('organism') != 'philosophy' or encounter.get('default_language') not in encounter.get('available_languages', []):
-        raise ValueError('philosophy encounter identity/language contract is invalid')
-    if encounter.get('language_is_expression_not_address') is not True:
-        raise ValueError('language must remain expression, not semantic address')
-    if encounter.get('lateral_contract') != ['address','CCCC','concept','question']:
-        raise ValueError('philosophy lateral display contract changed unexpectedly')
-
-    index = public_index()
-    pages = load_public_pages(index, encounter)
-    translations = translated_copy(site, encounter, pages)
-    default_lang = encounter['default_language']
-    default_root = encounter['expressions'][default_lang]
-
+    data = root_projection()
     text = (DISPLAY / 'template.html').read_text(encoding='utf-8')
-    subs = {
-        'ROOT_TITLE': default_root['title'],
-        'ROOT_MISSION': default_root['mission'],
-        'ROOT_POSITION': default_root['position'],
-        'LOCATION': site['location'],
-        'FOOTER': site['footer'],
-    }
-    for key, value in subs.items():
-        text = text.replace('{{'+key+'}}', html.escape(value))
-
-    payload = json.dumps({
-        'public_root': 'philosophy',
-        'index': index,
-        'copy': translations[default_lang],
-        'translations': translations,
-        'encounter': encounter,
-        'pages': pages,
-        'papers': papers,
-    }, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
-    text = text.replace('/*__DATA__*/', payload)
-    if '/*__' in text or '{{' in text:
-        raise ValueError('unresolved display membrane slot')
-    return '<!-- secreted from w/display/; philosophy is the current root encounter organism. -->\n' + text
+    marker = '/*__ROOT_DATA__*/'
+    if text.count(marker) != 1:
+        raise ValueError('display template must contain exactly one root projection slot')
+    payload = json.dumps(data, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
+    text = text.replace(marker, payload)
+    if '/*__ROOT_DATA__*/' in text:
+        raise ValueError('unresolved root projection slot')
+    return '<!-- secreted from w/display/; public main depicts the admitted main-root projection. -->\n' + text
 
 
 def artifact_files():
     sources = {
-        'assets/style.css': DISPLAY / 'style.css',
-        'assets/philosophy.css': DISPLAY / 'philosophy.css',
-        'assets/papers.css': DISPLAY / 'papers.css',
+        'assets/root-view.css': DISPLAY / 'root-view.css',
+        'assets/root-view.js': DISPLAY / 'root-view.js',
+        'assets/navigation-physiology.js': DISPLAY / 'navigation-physiology.js',
         'assets/favicon.svg': DISPLAY / 'favicon.svg',
-        'assets/view.js': DISPLAY / 'view.js',
-        'assets/philosophy-view.js': DISPLAY / 'philosophy-view.js',
-        'assets/papers-view.js': DISPLAY / 'papers-view.js',
-        'assets/address.js': ROOT / 'z/address.js',
-        'assets/navigation.js': ROOT / 'z/navigation.js',
-        'assets/app.js': ROOT / 'z/app.js',
     }
     files = {'index.html': render().encode('utf-8'), '.nojekyll': b''}
     for dest, source in sources.items():
@@ -351,7 +219,7 @@ def main():
     target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
         verify_artifact(target)
-        print('display membrane exactly matches philosophy root encounter + display interfaces')
+        print('display membrane exactly matches the admitted main-root WebGL projection')
     else:
         write_artifact(target)
         size = sum(len(v) for v in artifact_files().values())
