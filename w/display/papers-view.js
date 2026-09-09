@@ -1,5 +1,5 @@
 /* Render the display-owned public projection of /papers/_feed.
- * papers loci remain in papers' address space; they are not cambium destinations.
+ * papers loci remain in papers' address space; they are not philosophy destinations.
  */
 (function(root){
   'use strict';
@@ -11,9 +11,10 @@
     if(text!==undefined)n.textContent=text;
     return n;
   }
-  function render(){
+  function render(visible=true){
     const carrier=$('cambium-data'),section=$('research-field'),host=$('papers-groups'),status=$('papers-status');
     if(!carrier||!section||!host||!status)return;
+    if(!visible){section.hidden=true;return;}
     let data;
     try{data=JSON.parse(carrier.textContent);}catch(_){section.hidden=true;return;}
     const papers=data.papers;
@@ -45,6 +46,6 @@
     status.title=papers.event_id||'';
     section.hidden=false;
   }
-  render();
+  render(false);
   root.PapersDisplay=Object.freeze({render});
 })(globalThis);

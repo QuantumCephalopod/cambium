@@ -1,16 +1,23 @@
 /* URL state identifies the place; an independent camera changes how we see it.
  * Pointer capture belongs to the stable host, not to a replaced SVG child.
+ * Language is expression state and never participates in semantic addressing.
  */
 (function(root){
  'use strict';
- const N=root.CambiumNavigation,V=root.CambiumView,$=id=>document.getElementById(id);
+ const N=root.CambiumNavigation,V=root.CambiumView,P=root.PhilosophyDisplay,$=id=>document.getElementById(id);
  const data=JSON.parse($('cambium-data').textContent);
+ if(P)P.setLanguage(data,data.encounter?.default_language||'de');
  let state=N.resolve('site','',data.index),renderCount=0,gesture=null,suppressClickUntil=0,frame=0;
+ function renderState(next){
+  V.render(next,data);
+  if(P)P.render(next,data);
+  state=next;renderCount++;
+ }
  function update(initial=false){
   try{
    const route=N.parse(location.hash);if(route.anchor)return;
    const next=N.resolve(route.mode,route.path,data.index);
-   V.render(next,data);state=next;renderCount++;
+   renderState(next);
    if(!initial){(document.querySelector('.active-trail a[aria-current="page"]')||$('page-title')).focus({preventScroll:true});
     $('announcer').textContent=N.namePath(state.path,data.index)+(state.aliases.length>1?'. two approaches meet here.':'.');}
   }catch(e){V.error(e.message);}
@@ -24,6 +31,19 @@
  document.addEventListener('pointerover',hint);document.addEventListener('focusin',hint);
  function unhighlight(e){if(e.target.closest('[data-hint]'))V.highlight(null);}
  document.addEventListener('pointerout',unhighlight);document.addEventListener('focusout',unhighlight);
+
+ document.querySelectorAll('[data-language]').forEach(button=>{
+  button.addEventListener('click',()=>{
+   if(!P)return;
+   const next=button.dataset.language;
+   if(next===P.getLanguage())return;
+   if(!P.setLanguage(data,next))return;
+   renderState(state);
+   button.focus({preventScroll:true});
+   $('announcer').textContent=next==='de'?'Sprache: Deutsch. Gleicher Ort.':'Language: English. Same place.';
+  });
+ });
+
  const host=$('geometry');
  function ballAt(e){const r=host.getBoundingClientRect(),radius=Math.min(r.width,r.height)*.43;return V.ball((e.clientX-r.left-r.width/2)/radius,(r.top+r.height/2-e.clientY)/radius);}
  host.addEventListener('pointerdown',e=>{
@@ -56,6 +76,10 @@
  });
  $('reset-view').addEventListener('click',()=>{V.reset();$('announcer').textContent='view reset. your place is unchanged.';});
  window.addEventListener('resize',()=>{if(!frame)frame=requestAnimationFrame(()=>{frame=0;V.repaint();});});
- root.Cambium=Object.freeze({getState:()=>({mode:'site',path:state.path,locus:state.locus,aliases:[...state.aliases]}),getRenderCount:()=>renderCount,getView:()=>V.getPose()});
+ root.Cambium=Object.freeze({
+  getState:()=>({mode:'site',path:state.path,locus:state.locus,aliases:[...state.aliases],language:P?P.getLanguage():null}),
+  getRenderCount:()=>renderCount,
+  getView:()=>V.getPose()
+ });
  update(true);document.documentElement.classList.add('enhanced');
 })(globalThis);
