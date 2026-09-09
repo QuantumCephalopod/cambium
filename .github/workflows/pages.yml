@@ -27,15 +27,52 @@ jobs:
         if: github.event_name == 'push'
         env:
           HOME_BEFORE: ${{ github.event.before }}
-          HOME_AFTER: ${{ github.sha }}
+          EVENT_SHA: ${{ github.sha }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          python3 y/feed.py --before "$HOME_BEFORE" --after "$HOME_AFTER"
-          if [ -n "$(git status --porcelain -- _feed w/display/_feed)" ]; then
+          set -euo pipefail
+
+          projected=0
+          for attempt in 1 2 3; do
+            git fetch origin "refs/heads/${BRANCH}:refs/remotes/origin/${BRANCH}"
+            LIVE_SHA="$(git rev-parse "refs/remotes/origin/${BRANCH}")"
+            echo "feed projection attempt ${attempt}: event=${EVENT_SHA} live=${LIVE_SHA}"
+
+            if [ -n "${HOME_BEFORE}" ] && [ "${HOME_BEFORE//0/}" != "" ]; then
+              if ! git merge-base --is-ancestor "${HOME_BEFORE}" "${LIVE_SHA}"; then
+                echo "event predecessor ${HOME_BEFORE} is no longer an ancestor of live ${BRANCH}; skip stale feed actuation"
+                git reset --hard "${LIVE_SHA}"
+                projected=1
+                break
+              fi
+            fi
+
+            git reset --hard "${LIVE_SHA}"
+            python3 y/feed.py --before "${HOME_BEFORE}" --after "${LIVE_SHA}"
+
+            if [ -z "$(git status --porcelain -- '_feed/current.json' ':(glob)**/_feed/current.json')" ]; then
+              echo "all organism-local feeds already current"
+              projected=1
+              break
+            fi
+
             git config user.name "cambium feed"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add _feed w/display/_feed
+            git add -- '_feed/current.json' ':(glob)**/_feed/current.json'
             git commit -m "feed: reflect durable HOME"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+
+            if git push origin "HEAD:${BRANCH}"; then
+              projected=1
+              break
+            fi
+
+            echo "remote ${BRANCH} advanced during feed projection; reacquiring and recomputing"
+            sleep "$((attempt * 2))"
+          done
+
+          if [ "${projected}" -ne 1 ]; then
+            echo "::error::could not persist current feed projection after three bounded retries"
+            exit 1
           fi
 
       - name: Build display membrane
