@@ -1,0 +1,16 @@
+{
+  "event_id": "display-philosophy-admission-time-correction-20260909T162932Z",
+  "parent_event_id": "display-philosophy-admission-20260909T154000Z",
+  "correlation_id": "display-philosophy-root-birth-20260909T154000Z",
+  "home_at_utc": "2026-09-09T16:29:32Z",
+  "organism": "display",
+  "pump": "manual-repair",
+  "entrypoint": "RITUALS/organism",
+  "outcome": "PASS/EARNED · HOME TIME CORRECTION",
+  "changed_scope": ["HOME chronology only"],
+  "context": "The original Philosophy-admission HOME used the conversational prompt-time snapshot before durable GitHub persistence. Provider readback witnesses source commit 794ddc077511c6f43676a8a3efed02e84d5dc6e3 at 2026-09-09T16:29:32Z. Display's root encounter boundary, page grammar and translation invariant are unchanged; this append-only child ring corrects chronology without mutating the earlier immutable HOME.",
+  "receipt_pointer": "GitHub commit 794ddc077511c6f43676a8a3efed02e84d5dc6e3",
+  "return_to": "/_feed",
+  "kind": "HOME_CORRECTION",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}
