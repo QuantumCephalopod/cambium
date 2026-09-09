@@ -3,19 +3,24 @@
   "constitution": null,
   "home": {
     "changed_scope": [
-      "public root encounter now derives from philosophy:root",
-      "turnable tetrahedron persists as the navigational surface across root and locus views",
-      "address → CCCC → concept → question is rendered as one lateral locus relation",
-      "German/English switch changes expression in place without changing address or camera"
+      "navigation geometry now follows realized phenotype only and never completes unrealized ranks",
+      "large tetrahedral field is directly draggable without automatic edge/face/volume semantic highlighting",
+      "persistent minimap carries realized address geometry plus HERE/VIEW orientation only",
+      "inspection is reversible view-state and committed page entry is a separate deliberate action",
+      "trackpad rotation uses two independent one-axis velocity knobs with deadzone and zero-on-release"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · PHILOSOPHY ROOT RENDERER"
+    "outcome": "PASS/EARNED · REALIZED-ONLY ACCESSIBLE NAVIGATION"
   },
-  "observed_at_utc": "2026-09-09T18:46:24.025671Z",
+  "observed_at_utc": "2026-09-09T22:45:43.613472Z",
   "owner": "display",
   "phenotype": {},
-  "reflected_home_event": "display-philosophy-renderer-regrowth-20260909T184532Z",
+  "reflected_home_event": "display-navigation-physiology-20260909T223400Z",
   "rituals": [
+    {
+      "path": "RITUALS/navigation/RITUAL.md",
+      "sha256": "af6f60b9492af0fd49ff22ddd30e622250a4ebc0735a35f6c3d1f5b454f4fa72"
+    },
     {
       "path": "RITUALS/organism/RITUAL.md",
       "sha256": "15263b1fe58bb16cbcb8f3f60ce8115175f5848921fb3d6a27a78a0b78e13fb4"
@@ -33,6 +38,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "00fa275c82f34126077119d99816deb9e418a591"
+    "source_revision": "44c5f16b6f6fe10c14ff63205d7d2347d05beaa9"
   }
 }
