@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -20,6 +20,23 @@ jobs:
     steps:
       - name: Reacquire cambium
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Project local feeds from durable HOME
+        if: github.event_name == 'push'
+        env:
+          HOME_BEFORE: ${{ github.event.before }}
+          HOME_AFTER: ${{ github.sha }}
+        run: |
+          python3 y/feed.py --before "$HOME_BEFORE" --after "$HOME_AFTER"
+          if ! git diff --quiet -- _feed w/display/_feed; then
+            git config user.name "cambium feed"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add _feed w/display/_feed
+            git commit -m "feed: reflect durable HOME"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
 
       - name: Build display membrane
         run: python3 y/build.py --artifact _site
@@ -29,6 +46,9 @@ jobs:
 
       - name: Witness address algebra
         run: SITE_DIR=_site node y/test-address.cjs
+
+      - name: Verify membrane bytes
+        run: python3 y/build.py --artifact _site --check
 
       - name: Configure GitHub Pages
         if: github.repository == 'self-similar-systems/cambium'
