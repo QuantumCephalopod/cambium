@@ -1,89 +1,43 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="{{ROOT_MISSION}}">
-<meta name="robots" content="noindex, nofollow">
-<meta name="color-scheme" content="light">
-<meta name="referrer" content="no-referrer">
-<title>{{ROOT_TITLE}} · self-similar-systems saar</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#05070a">
+<title>self-similar-systems · live root</title>
 <link rel="icon" href="assets/favicon.svg">
-<link rel="stylesheet" href="assets/style.css">
-<link rel="stylesheet" href="assets/philosophy.css">
-<link rel="stylesheet" href="assets/papers.css">
+<link rel="stylesheet" href="assets/root-view.css">
 </head>
 <body>
-<a href="#main" class="skip-link">skip to content</a>
-<div class="page">
-<header class="site-header">
-<a href="#/" class="wordmark" aria-label="self-similar-systems saar, philosophy root">
-<svg viewBox="0 0 40 40" aria-hidden="true" class="wordmark-symbol"><path d="M20 3 3 34 37 34ZM20 3V24L3 34M20 24 37 34"/><circle cx="20" cy="24" r="2"/></svg>
-<span>self-similar-systems <span class="place">saar</span></span></a>
-<div class="language-switch" role="group" aria-label="Sprache / language">
-<button type="button" data-language="de" aria-pressed="true">DE</button>
-<span aria-hidden="true">/</span>
-<button type="button" data-language="en" aria-pressed="false">EN</button>
-</div>
+<a class="sr-only skip" href="#commit">skip to navigation commitment</a>
+<canvas id="stage" aria-hidden="true"></canvas>
+<canvas id="stage2d" aria-hidden="true"></canvas>
+<div id="noise" aria-hidden="true"></div><div id="veil" aria-hidden="true"></div>
+<header>
+  <button id="root-home" class="brand" type="button" aria-label="Self-Similar Systems root"><i></i><span>self-similar systems</span></button>
+  <div class="lang" role="group" aria-label="Sprache / language"><button data-lang="de" aria-pressed="false">DE</button><span>/</span><button data-lang="en" aria-pressed="true">EN</button></div>
 </header>
-<nav id="place-navigation" class="place-navigation" aria-label="places in the current whole" hidden>
-<div id="address-trails" class="address-trails"></div>
-<div id="next-places" class="next-places" role="group" aria-label="within this place"></div>
+<div id="route-mark">PAGE main:root · VIEW main:root</div>
+<div id="status">live root · adaptive realized structure</div>
+<div id="vertex-labels" aria-hidden="true"></div>
+<div id="organ-labels" aria-hidden="true"></div>
+<div id="tree-eye" aria-hidden="true"><span></span></div>
+<section id="page-copy" class="root" aria-live="polite"></section>
+<button id="commit" type="button" aria-live="polite"></button>
+<aside id="mini" aria-label="global orientation minimap">
+  <div id="mini-title">global orientation · minimap</div>
+  <div id="mini-state">page root · view root</div>
+  <canvas id="navTwin" width="448" height="448" tabindex="0" aria-label="realized tetrahedral minimap"></canvas>
+  <div id="axis-y" class="axis" tabindex="0" role="slider" aria-label="Vertical rotation speed" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0"><span class="knob"></span><span class="axis-letter">y</span></div>
+  <div id="axis-x" class="axis" tabindex="0" role="slider" aria-label="Horizontal rotation speed" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0"><span class="knob"></span><span class="axis-letter">x</span></div>
+  <div id="mini-help">two axes · two knobs · distance from center = angular speed</div>
+</aside>
+<nav class="sr-only" aria-label="Root realized address navigation">
+  <button data-a11y-focus="w">Inspect w · Form</button><button data-a11y-focus="x">Inspect x · Continuity</button><button data-a11y-focus="z">Inspect z · Care</button><button data-a11y-focus="y">Inspect y · Inquiry</button>
 </nav>
-<p id="navigation-hint" class="sr-only" role="status"></p>
-<p id="error-message" role="alert" class="error-message" hidden></p>
-<main id="main" tabindex="-1">
-<section class="hero philosophy-hero" aria-labelledby="page-title">
-<div class="hero-copy">
-<p class="eyebrow"><span class="seed-mark" aria-hidden="true"></span><span id="eyebrow-text">philosophie · root</span></p>
-<h1 id="page-title" tabindex="-1"><span class="title-main">wir geben fragen<br>form<span class="dash">—</span></span><em class="title-answer">und lassen diese formen<br>uns zurückfragen.</em></h1>
-<p id="main-description" class="main-description">{{ROOT_MISSION}}</p>
-</div>
-<figure class="hero-geometry" id="map-figure">
-<div class="object-orbit" aria-hidden="true"></div>
-<div id="geometry" tabindex="0" role="group" aria-label="turnable tetrahedral navigation surface" aria-describedby="map-instructions"></div>
-<figcaption><span id="map-context">within {{ROOT_TITLE}}</span><span class="map-action-hint">drag to turn</span></figcaption>
-<div class="map-tools"><span>turn the whole, then enter a locus</span><button id="reset-view" type="button" aria-label="reset the spatial view">reset view <span aria-hidden="true">↺</span></button></div>
-<p id="map-instructions" class="sr-only">drag horizontally or vertically to turn the tetrahedral navigation surface. drag around its edge to roll. with the view focused, use arrow keys to turn and tilt, q and e to roll, or home to reset. use tab to focus a named locus and enter to visit it. rotation never changes your address.</p>
-</figure>
-</section>
-
-<section id="lateral-surface" class="lateral-surface" aria-labelledby="lateral-title">
-<div class="lateral-heading">
-<p class="section-label">same locus · four resolutions</p>
-<h2 id="lateral-title">Adresse → CCCC → Begriff → Frage</h2>
-</div>
-<div id="lateral-grid" class="lateral-grid"></div>
-</section>
-
-<section class="practice" aria-labelledby="practice-label">
-<h2 id="practice-label" class="section-label">position</h2>
-<p id="practice-copy" class="practice-copy">{{ROOT_POSITION}}</p>
-</section>
-
-<section id="research-field" class="research-field" aria-labelledby="research-title" hidden>
-<div class="research-heading"><div><p class="section-label">from /papers</p><h2 id="research-title" class="research-title">research in circulation.</h2></div><p id="papers-status" class="papers-status"></p></div>
-<div id="papers-groups" class="papers-groups"></div>
-</section>
-
-<details id="source-block" class="source-block" hidden><summary>the source here</summary><ul id="source-files"></ul></details>
-<noscript>
-<section class="noscript-philosophy">
-<h2>{{ROOT_TITLE}}</h2>
-<p>{{ROOT_MISSION}}</p>
-<p>{{ROOT_POSITION}}</p>
-<p>Die drehbare tetrahedrale Navigation und der Sprachwechsel benötigen JavaScript.</p>
-</section>
-</noscript>
-</main>
-<footer class="site-footer"><span>{{LOCATION}} <span class="footer-dot">·</span> {{FOOTER}}</span><span class="footer-signature">a living surface <span aria-hidden="true">↗</span></span></footer>
-<p id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
-</div>
-<script id="cambium-data" type="application/json">/*__DATA__*/</script>
-<script src="assets/address.js"></script>
-<script src="assets/navigation.js"></script>
-<script src="assets/view.js"></script>
-<script src="assets/papers-view.js"></script>
-<script src="assets/philosophy-view.js"></script>
-<script src="assets/app.js"></script>
-</body></html>
+<script id="root-projection" type="application/json">/*__ROOT_DATA__*/</script>
+<script src="assets/navigation-physiology.js"></script>
+<script src="assets/root-view.js"></script>
+</body>
+</html>
