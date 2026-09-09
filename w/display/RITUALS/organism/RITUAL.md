@@ -1,155 +1,114 @@
 ---
 name: display
-description: "Local ritual receptor for cambium's visitor-facing display organ: preserve its independent unsplit root, nested-whole encounter boundary, recursive page/address equivalence, turnable tetrahedral navigation surface, translation-independent semantic identity, lifecycle shell and outward membrane without inventing a second ontology."
-version: "1.2"
+description: "Local ritual receptor for cambium's visitor-facing Display organ: transduce admitted organism truth into an accessible perceptual membrane without inventing ontology, preserve Display's independent unsplit root, and let navigation depict only realized recursive structure."
+version: "1.3"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
 
-`display` is the visitor-facing organ of the surrounding `cambium` organism.
+`display` is the visitor-facing organ of the surrounding `cambium` repository organism. It owns **how admitted truth becomes perceptible**; it does not own the semantic constitution of the whole it depicts.
 
 ## boundary and identity
 
 - host whole: `cambium`
 - outer host locus: `w / expression`
-- host-side membrane: `../interface.md`
 - physical custody: `w/display/`
 - inner root: this directory
 - current inner phenotype: unsplit (`INDEX.yaml == {}`)
-- inner `_cambium.yaml`: absent until a complete internal CCCC split is actually earned
+- inner `_cambium.yaml`: absent until a complete Display-local CCCC split is earned
 
 Host `w ⟦ display:root ⟧` is a scope transition, not host `ww`.
 
-Enter shared root `RITUALS/`, then cambium root `RITUALS/`, then cross the explicit host↔display membrane and read this local receptor. Do not recreate `SKILLS/START_HERE` or a boot shim.
+## current public whole — main-root, not Philosophy
 
-## current root encounter occupant
+The public main page currently depicts the independently rooted Self-Similar Systems **main Drive root** through an admitted Display projection:
 
-The first public semantic whole is an intact independently re-enterable Philosophy organism:
+`main-root/_feed or authoritative root state → admission/transduction → w/display/main-root.json → public membrane`
 
-`display:root ⟦ philosophy:root ⟧`
+`main-root.json` is not semantic authority and does not make the main Drive root a descendant of Display or cambium. It is a bounded public projection whose current source identity is preserved explicitly. The authoritative root remains the independently rooted Drive organism.
 
-- host-side membrane: `philosophy.interface.md`
-- physical custody: `philosophy/`
-- Philosophy owns its own root split, shell, ritual and living content;
-- this root occupancy does **not** create `display:w` and does not split Display.
+Current admitted root constitution:
 
-Display owns how a whole becomes encounterable. Philosophy owns what Philosophy means.
+- `w · CREATE → Form`
+- `x · COPY → Continuity`
+- `z · CONTROL → Care`
+- `y · CULTIVATE → Inquiry`
 
-## invariant public page grammar
+Current intact outer placements are projected only as whole occupants: Morphogenetic Painting at Form, Ternary + Mnemos Autobiography at Continuity, Regeneration at Care, and Papers at Inquiry. Their interiors remain their own address spaces.
 
-There are no straggler pages outside organism topology. Every realized semantic address of the currently encountered whole is individually and directly encounterable.
+`Google AI Studio` remains a provider-constrained aperture/tree-eye rather than a semantic address. `muses` remains an opaque unmigrated whole. `legacy` remains unresolved root-stomach matter.
 
-For one realized locus, the invariant lateral projection is:
+The earlier Philosophy-root renderer is **superseded as the public main architecture**. Philosophy-era carriers may remain as historical repository tissue until separately metabolized/retired, but they are not the public root and must not drive the build.
 
-`address → CCCC aperture → locally earned semantic concept → encounter expression/question`
+## perceptual law — literal realized anatomy
 
-These are four resolutions of one locus, not four different nodes. The public membrane makes the relation visible so the recursive grammar organizes thought rather than hiding beneath the interface.
+The rendered body is a literal projection of realized structure only.
 
-When a realized locus differentiates, the same public grammar recurs at the finer addresses. When an independently rooted organ/organism occupies a locus, entering it crosses an explicit membrane and restarts semantic address space while retaining the same Display contract.
+- Never complete a recursive rank for visual symmetry.
+- If one branch has differentiated more deeply than its siblings, only that branch gains the corresponding geometry.
+- Potential descendants are not anatomy.
+- The big tetrahedral body is the current perceptual world and is directly draggable.
+- Rotation is view state only; release leaves the body where the visitor placed it.
+- Ambient edge/face/volume hit-testing or highlight fireworks are forbidden in the navigation view. Higher-rank relations may later receive deliberate content-specific views, but pointer crossing is not information.
 
-Occupant identity is not address identity: lawful cambial regrowth may change an occupant's placement without requiring redesign or re-identification of the occupant.
+## navigation physiology
 
-## invariant tetrahedral navigation object
+The canonical local navigation law is carried by `RITUALS/navigation/RITUAL.md` and the executable `navigation-physiology.js` witness.
 
-The semantic fourfold is also a persistent **physical navigation surface**.
+Two states are distinct:
 
-Wherever the visitor is, Display exposes the locally relevant realized tetrahedron as one turnable object:
+`LOOK HERE != GO HERE`
 
-- at a split whole, the object is that whole's four realized children;
-- at an unsplit leaf, the object remains the containing tetrahedron so the visitor can orient among sibling loci and return through the surrounding whole;
-- after deeper differentiation, the same operation recurs at the finer address;
-- after crossing an organ/organism membrane, address space resets but the same navigational object/gesture continues.
+- selecting a realized point in the minimap changes **VIEW** inside the same root page;
+- the background/body may smoothly zoom toward that real address;
+- **ENTER PAGE** is a separate deliberate commitment;
+- committed pages may later acquire unique artistic bodies and must not be predesigned merely because their addresses exist.
 
-The tetrahedron is analogous to a globe only in the sense that it is a manipulable orientation object. Its topology is tetrahedral and alien to ordinary page menus: turn it, inspect it from another side, then choose a locus to enter.
+The persistent minimap is global orientation only: realized structure + HERE + VIEW. It does not carry relation derivations or become a second knowledge object.
 
-**Rotation is view state, never address state.** Turning the object must not change semantic identity, current locus, root boundary or navigation history.
+Trackpad/touch rotation uses two separate velocity axes: horizontal control changes yaw only; vertical control changes pitch only; distance from midpoint sets speed; release returns that axis to zero without changing the other.
 
-The tetrahedral object and the lateral `address → CCCC → concept → question` surface are two perceptual projections of the same current frame. Hover/focus/selection should reveal that identity rather than create two competing navigation systems.
+## accessibility as primary interaction quality
 
-## translation / modality invariant
+The public membrane must remain low-friction under touch, trackpad, keyboard and reduced-motion conditions.
 
-Language is expression, never semantic address.
+- fullscreen/no-scroll body interaction may own touch dragging;
+- direct manipulation uses pointer capture;
+- realized minimap addresses have semantic keyboard-accessible equivalents;
+- no meaningful action may require hover precision;
+- reduced-motion preference is respected for nonessential transitions;
+- language changes expression rather than semantic address.
 
-Switching language must preserve:
-- current whole;
-- current address;
-- CCCC aperture;
-- local semantic relation;
-- tetrahedral camera/orientation state;
-- navigation state;
-- root/organ boundaries.
-
-Current Philosophy expression tissue supports German and English. Future languages or differently embodied communicative modalities may extend the same locus only when a truthful transduction exists; missing translation remains missing rather than invented.
-
-Therefore `/de/...` and `/en/...` must not become competing organism branches merely for presentation convenience. A language toggle changes expression in place.
-
-## living tissue
-
-Current display-owned tissue includes:
-- `content.json`
-- `papers.json`
-- `template.html`
-- `style.css`
-- `philosophy.css`
-- `papers.css`
-- `view.js`
-- `philosophy-view.js`
-- `papers-view.js`
-- `favicon.svg`
-- the explicit `philosophy.interface.md` boundary to the intact Philosophy root occupant.
-
-Implementation file count does not earn an internal Display split.
+Accessibility is not a fallback skin. It is part of the primary feel of the organism.
 
 ## lifecycle shell
 
 Display owns its own local shell:
-- `_stomach/` — unresolved visitor-facing nutrient.
-- `_feed/` — display's current source-owned self-presentation.
-- `_root/` — append-oriented HOME history for display acts only.
-- `_waste/` — locally retired material.
 
-These roles are not inherited from cambium host and never share folders with the host shell.
+- `_stomach/` — unresolved visitor-facing nutrient;
+- `_feed/` — current source-owned Display self-presentation;
+- `_root/` — append-oriented Display HOME history;
+- `_waste/` — retired Display-local material.
 
-HOME and feed obey the same invariant dance as every whole:
+The current public membrane is generated output, not `_feed` and not living semantic anatomy.
 
-`local act → witness → durable display HOME → asynchronous display _feed refresh`
+## build / outward membrane
 
-GitHub commits/workflows may carry this relation but are not the relation itself.
+`w/display/template.html` is the accepted WebGL main renderer. `w/display/main-root.json` is its admitted current root projection. `y/build.py` injects that projection into the self-contained membrane and writes `_site/index.html`.
 
-## source feeds and admission
+Canonical witness:
 
-`papers.json` remains living display tissue admitted from `/papers/_feed`; it is not a mirror, authority replacement, or permission to crawl papers interiors.
+```sh
+python3 y/build.py --artifact _site
+python3 y/check.py --artifact _site
+SITE_DIR=_site node y/test-address.cjs
+python3 y/build.py --artifact _site --check
+```
 
-A future refresh must preserve:
+A production change is not closed merely because the law was documented. When the user accepts a working renderer and requests it be backpropagated, the accepted implementation itself must become the built public membrane unless a concrete blocker prevents that mutation.
 
-`papers HOME → papers _feed → transport/admission → display metabolism → display tissue → display HOME → display _feed → public membrane`
+## closure
 
-Transport never makes arrival equal assimilation.
+A Display mutation closes when the public artifact visibly embodies the accepted interaction/visual state, its source projection remains bounded to actual organism truth, executable witnesses pass, durable Display HOME is appended, and `_feed` may then catch up mechanically.
 
-The current Philosophy `y / Becoming` encounter may expose the admitted papers projection as metabolized/public ground without making papers loci descendants of Philosophy. A later independently rooted `/papers` encounter remains a separate root crossing.
-
-## current unresolved nutrients
-
-`_stomach/` currently contains:
-- `INCOMING — cambium becoming.md`
-- `INCOMING — care propagates.md` — partially digested; only unresolved collaboration/immunity/transduction residue remains food;
-- `observations.md`
-
-The host's real `expression / continuity / orientation / renewal` anatomy is not display's visitor taxonomy. Display remains unsplit while its page grammar operates across independently rooted semantic wholes.
-
-## host interfaces
-
-Display may consume:
-- host `x/continuity.md`
-- host `z/` orientation/address/navigation tissue
-- host `y/` build/check/witness tissue
-
-Consumption across the membrane does not make those host organs display descendants.
-
-## outward membrane
-
-`_site/` is generated, disposable and noncanonical. Publication does not turn `_site` into `_feed`, and `_feed` does not itself authorize publication.
-
-The current renderer is source-driven from Philosophy's canonical `INDEX.yaml`, `_cambium.yaml`, root `encounter.json`, and address-local `content.json`. It renders Philosophy as the root encounter without copying Philosophy into Display's semantic anatomy. German/English expression is selected in place, while the same tetrahedral navigation object persists across root and locus views.
-
-Compression: **every lawful place can be a page; every page keeps a turnable tetrahedral orientation object; every locus exposes address → CCCC → concept → question; language changes expression rather than identity; nested wholes restart address without breaking encounter continuity.**
+Compression: **show the body that exists; make it beautiful enough to inhabit; let looking remain reversible and entering remain deliberate.**
