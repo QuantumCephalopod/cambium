@@ -151,28 +151,62 @@ def validate_root_projection(data):
     return data
 
 
+def validate_site_mounts(data):
+    if not isinstance(data, dict) or set(data) != {'version','scope','sites'}:
+        raise ValueError('site-mounts.json has an unexpected shape')
+    if data['version'] != 1 or data['scope'] != 'main-root' or not isinstance(data['sites'], list):
+        raise ValueError('site mount registry identity is invalid')
+    ids = set()
+    for site in data['sites']:
+        required = {'id','witnesses','interlocutors','shader','manifestation'}
+        if not isinstance(site, dict) or set(site) != required:
+            raise ValueError('site mount entry has unexpected fields')
+        if not isinstance(site['id'], str) or not site['id'] or site['id'] in ids:
+            raise ValueError('site mount identity missing or duplicated')
+        ids.add(site['id'])
+        if not isinstance(site['witnesses'], list) or not site['witnesses'] or not all(isinstance(x,str) for x in site['witnesses']):
+            raise ValueError('site mount needs raw witness strings')
+        if len(site['witnesses']) != len(site['interlocutors']):
+            raise ValueError('site mount witness/interlocutor arity mismatch')
+        if not isinstance(site['shader'], dict) or not isinstance(site['manifestation'], dict):
+            raise ValueError('site mount needs shader and manifestation contracts')
+    return data
+
+
 def root_projection():
     return validate_root_projection(json.loads((DISPLAY / 'main-root.json').read_text(encoding='utf-8')))
 
 
+def site_mounts():
+    return validate_site_mounts(json.loads((DISPLAY / 'site-mounts.json').read_text(encoding='utf-8')))
+
+
 def render():
     data = root_projection()
+    mounts = site_mounts()
     text = (DISPLAY / 'template.html').read_text(encoding='utf-8')
-    marker = '/*__ROOT_DATA__*/'
-    if text.count(marker) != 1:
-        raise ValueError('display template must contain exactly one root projection slot')
+    root_marker = '/*__ROOT_DATA__*/'
+    mount_marker = '/*__SITE_MOUNTS__*/'
+    if text.count(root_marker) != 1 or text.count(mount_marker) != 1:
+        raise ValueError('display template must contain exactly one root and site-mount projection slot')
     payload = json.dumps(data, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
-    text = text.replace(marker, payload)
-    if '/*__ROOT_DATA__*/' in text:
-        raise ValueError('unresolved root projection slot')
-    return '<!-- secreted from w/display/; public main depicts the admitted main-root projection. -->\n' + text
+    mount_payload = json.dumps(mounts, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
+    text = text.replace(root_marker, payload).replace(mount_marker, mount_payload)
+    if root_marker in text or mount_marker in text:
+        raise ValueError('unresolved display projection slot')
+    return '<!-- secreted from w/display/; public main depicts the admitted main-root projection through site-holon physiology. -->\n' + text
 
 
 def artifact_files():
     sources = {
         'assets/root-view.css': DISPLAY / 'root-view.css',
+        'assets/site-runtime.css': DISPLAY / 'site-runtime.css',
         'assets/root-view.js': DISPLAY / 'root-view.js',
         'assets/navigation-physiology.js': DISPLAY / 'navigation-physiology.js',
+        'assets/address.js': ROOT / 'z' / 'address.js',
+        'assets/site-holon.js': DISPLAY / 'site-holon.js',
+        'assets/site-fold.js': DISPLAY / 'site-fold.js',
+        'assets/site-runtime.js': DISPLAY / 'site-runtime.js',
         'assets/favicon.svg': DISPLAY / 'favicon.svg',
     }
     files = {'index.html': render().encode('utf-8'), '.nojekyll': b''}
@@ -219,7 +253,7 @@ def main():
     target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
         verify_artifact(target)
-        print('display membrane exactly matches the admitted main-root WebGL projection')
+        print('display membrane exactly matches the admitted main-root site-holon projection')
     else:
         write_artifact(target)
         size = sum(len(v) for v in artifact_files().values())

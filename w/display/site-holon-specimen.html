@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Display site-holon v0 specimen</title>
+<link rel="stylesheet" href="site-holon-specimen.css">
+</head>
+<body>
+<canvas id="locus-field" aria-hidden="true"></canvas>
+<main class="shell">
+  <header class="bar">
+    <div><strong>DISPLAY CELL v0</strong><span id="identity"></span></div>
+    <div id="locus"></div>
+  </header>
+  <section class="controls" aria-label="Relocation torture controls">
+    <button data-mount="x">mount x</button>
+    <button data-mount="xy">relocate xy</button>
+    <button data-mount="dual">coalesce xyw ~ xwy</button>
+    <button data-enter="xyw">enter via xyw</button>
+    <button data-enter="xwy">enter via xwy</button>
+  </section>
+  <section id="site" class="site single" aria-live="polite">
+    <article class="chamber chamber-a">
+      <div class="eyebrow">witness <b data-witness-label>xyw</b> · interlocutor A</div>
+      <h1>The same site survives the move.</h1>
+      <p>This chamber is ordinary DOM: text, links, structure, whatever a local site needs. It does not know where the site is mounted.</p>
+      <p class="signal">identity persists · locus places · witness approaches</p>
+    </article>
+    <article class="chamber chamber-b">
+      <div class="eyebrow">witness <b data-witness-label>xwy</b> · interlocutor B</div>
+      <canvas id="interlocutor-field" aria-label="Runnable shader interlocutor"></canvas>
+      <p class="signal">same locus · different active manifestation</p>
+    </article>
+  </section>
+  <footer><span id="entry"></span><span id="composition"></span></footer>
+</main>
+<script src="../../z/address.js"></script>
+<script src="site-holon.js"></script>
+<script src="site-holon-specimen.js"></script>
+</body>
+</html>

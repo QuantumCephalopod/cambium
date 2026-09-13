@@ -1,7 +1,7 @@
 ---
 name: display
-description: "Local ritual receptor for cambium's visitor-facing Display organ: transduce admitted organism truth into an accessible perceptual membrane without inventing ontology, preserve Display's independent unsplit root, and let navigation depict only realized recursive structure."
-version: "1.3"
+description: "Local ritual receptor for cambium's visitor-facing Display organ: transduce admitted organism truth into an accessible perceptual membrane without inventing ontology, preserve Display's independent unsplit root, realize sites through the rank-invariant site-holon primitive, and let navigation depict only realized recursive structure."
+version: "1.4"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -51,18 +51,34 @@ The rendered body is a literal projection of realized structure only.
 - Rotation is view state only; release leaves the body where the visitor placed it.
 - Ambient edge/face/volume hit-testing or highlight fireworks are forbidden in the navigation view. Higher-rank relations may later receive deliberate content-specific views, but pointer crossing is not information.
 
+## rank-invariant site primitive
+
+The canonical local site law is `RITUALS/site-holon/RITUAL.md`.
+
+Display does not treat a raw path as page identity. It distinguishes:
+
+`stable site identity != mounted locus != raw navigation witness`
+
+A site-holon remains viable when later organismic growth remounts it at a deeper locus. Reciprocal raw paths such as `xyw ~ xwy` resolve to one canonical locus while preserving both genealogical witnesses. When both witnesses carry active tissue, their interlocutors occupy two chambers of the same site: vertical split on wide viewports, horizontal split on tall viewports.
+
+Every site-holon carries one locus-shader protocol but may realize that shader completely differently. Local content may be text, media, DOM, WebGL/WebGPU, executable code, navigation or any lawful combination; the primitive preserves coherence without forcing one template.
+
+Transitions between arbitrary locally different sites close the visible membrane into a tetrahedral liminal state, swap the current mount while closed, then unfold the destination. The transition operates on the site membrane rather than requiring either site's inner implementation to know the other.
+
+The current main-root renderer is therefore **specimen zero**, not a privileged homepage architecture. It has not yet earned executable site-holon v0 conformance; the law is backpropagated first so actualization can be tested against a stable primitive rather than retrofitted after more special-case pages accumulate.
+
 ## navigation physiology
 
-The canonical local navigation law is carried by `RITUALS/navigation/RITUAL.md` and the executable `navigation-physiology.js` witness.
+The canonical interaction law is carried by `RITUALS/navigation/RITUAL.md`; quotient site identity and relocation law are carried by `RITUALS/site-holon/RITUAL.md`.
 
-Two states are distinct:
+Two states remain distinct:
 
 `LOOK HERE != GO HERE`
 
-- selecting a realized point in the minimap changes **VIEW** inside the same root page;
-- the background/body may smoothly zoom toward that real address;
-- **ENTER PAGE** is a separate deliberate commitment;
-- committed pages may later acquire unique artistic bodies and must not be predesigned merely because their addresses exist.
+- selecting realized geometry changes **VIEW** without changing the current mounted site;
+- the background/body may smoothly focus the selected locus;
+- **ENTER** is a separate deliberate commitment into the site-holon currently mounted at that locus;
+- raw traversal witness is preserved even when multiple witnesses coalesce to one locus.
 
 The persistent minimap is global orientation only: realized structure + HERE + VIEW. It does not carry relation derivations or become a second knowledge object.
 
@@ -74,9 +90,9 @@ The public membrane must remain low-friction under touch, trackpad, keyboard and
 
 - fullscreen/no-scroll body interaction may own touch dragging;
 - direct manipulation uses pointer capture;
-- realized minimap addresses have semantic keyboard-accessible equivalents;
+- realized minimap loci have semantic keyboard-accessible equivalents;
 - no meaningful action may require hover precision;
-- reduced-motion preference is respected for nonessential transitions;
+- reduced-motion preference is respected for nonessential transitions while preserving understandable navigation state;
 - language changes expression rather than semantic address.
 
 Accessibility is not a fallback skin. It is part of the primary feel of the organism.
@@ -94,9 +110,9 @@ The current public membrane is generated output, not `_feed` and not living sema
 
 ## build / outward membrane
 
-`w/display/template.html` is the accepted WebGL main renderer. `w/display/main-root.json` is its admitted current root projection. `y/build.py` injects that projection into the self-contained membrane and writes `_site/index.html`.
+`w/display/template.html` is the accepted current WebGL renderer. `w/display/main-root.json` is its admitted current root projection. `y/build.py` injects that projection into the self-contained membrane and writes `_site/index.html`.
 
-Canonical witness:
+Canonical current witness:
 
 ```sh
 python3 y/build.py --artifact _site
@@ -105,10 +121,12 @@ SITE_DIR=_site node y/test-address.cjs
 python3 y/build.py --artifact _site --check
 ```
 
-A production change is not closed merely because the law was documented. When the user accepts a working renderer and requests it be backpropagated, the accepted implementation itself must become the built public membrane unless a concrete blocker prevents that mutation.
+These checks witness the existing realized-only root membrane; they do **not** yet witness the newly earned site-holon primitive. Actualization must add executable quotient-locus, relocation, chamber and tetrahedral-closure tests before v0 conformance is claimed.
+
+A production change is not closed merely because law was documented. When a working primitive implementation is accepted and requested to be backpropagated, the accepted implementation itself must become the built public membrane unless a concrete blocker prevents that mutation.
 
 ## closure
 
-A Display mutation closes when the public artifact visibly embodies the accepted interaction/visual state, its source projection remains bounded to actual organism truth, executable witnesses pass, durable Display HOME is appended, and `_feed` may then catch up mechanically.
+A Display law mutation may earn HOME when reusable physiology has been clearly derived and its implementation debt is stated truthfully. A production implementation closes only when the public artifact visibly embodies the accepted state, executable witnesses pass, durable Display HOME is appended, and `_feed` may then catch up mechanically.
 
-Compression: **show the body that exists; make it beautiful enough to inhabit; let looking remain reversible and entering remain deliberate.**
+Compression: **show only realized body; mount sites by locus rather than confusing path with identity; preserve every lawful witness; let local expression vary wildly behind one viable membrane; fold closed to move, then unfold again.**
