@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for relocatable viable sites: separate identity from locus, quotient raw navigation witnesses without erasing genealogy, preserve witness-specific interlocutor chambers, require a locus-shader protocol, and transition arbitrary manifestations through tetrahedral closure."
 organism: display
 geometry: tetrahedral
-version: "0.1"
+version: "0.2"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -143,13 +143,34 @@ The primitive is not executable-closed until one specimen proves:
 
 ## Current implementation status
 
-`navigation-physiology.js` remains a valuable **pre-primitive witness** for realized-only geometry, inspect/commit separation and independent rotation controls. It currently resolves records by exact raw-path equality and therefore does **not yet** satisfy this site-holon law.
+`w/display/site-holon.js` is the first executable core. It delegates quotient identity to the canonical `z/address.js` carrier rather than inventing a Display-local geometry, registers stable site identities independently of mounts, remounts one identity across loci, preserves reciprocal witness chambers, and computes responsive one/two-chamber composition.
 
-The next actualization pressure is explicit:
+`w/display/site-holon.test.cjs` currently passes the core torture sequence:
 
-`raw path -> witness -> quotient locus -> mounted site identity -> chamber(s) -> manifestation`
+`x -> xy -> (xyw ~ xwy)`
 
-Do not claim executable site-holon v0 conformance until the tests above pass.
+while preserving the same site object and local state. It also proves `xyw` and `xwy` resolve to one locus while remaining different witnesses; wide two-chamber composition is vertical and tall composition is horizontal; distinct sites may carry distinct shader realizations through one primitive.
+
+`w/display/site-holon-specimen.html` + `.js` + `.css` are the first living browser cell. One interlocutor is ordinary DOM/text; the reciprocal interlocutor is a runnable WebGL field. The specimen can physically remount the same site identity across `x`, `xy`, and the coalesced reciprocal locus without rewriting either interlocutor.
+
+`navigation-physiology.js` remains a valuable **pre-primitive navigation witness** for realized-only geometry, inspect/commit separation and independent rotation controls. The production navigator still resolves records by exact raw-path equality and therefore is not yet wired through the site-holon registry.
+
+Current closure status:
+
+- relocation core: **PASS**;
+- reciprocal quotient locus: **PASS**;
+- witness-preserving two-chamber composition: **PASS**;
+- mixed DOM/WebGL local viability specimen: **PASS**;
+- browser-history witness retention inside specimen: **PASS**;
+- production navigation integration: **OPEN**;
+- canonical tetrahedral fold/unfold transition: **OPEN**;
+- live vascular receptor binding: **OPEN**.
+
+The next actualization pressure is therefore narrower than before:
+
+`production navigator -> witness/locus resolver -> site-holon registry -> mounted manifestation`
+
+followed by executable tetrahedral closure between two arbitrary site identities.
 
 ## Compression
 
