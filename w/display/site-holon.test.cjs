@@ -2,6 +2,7 @@
 'use strict';
 const assert=require('node:assert/strict');
 const H=require('./site-holon.js');
+const F=require('./site-fold.js');
 
 const a=H.resolvePath('xyw'), b=H.resolvePath('xwy');
 assert.equal(a.locus,b.locus,'reciprocal witnesses must coalesce');
@@ -35,11 +36,29 @@ assert.equal(wide.chamber.interlocutor.id,'text'); assert.equal(tall.chamber.int
 assert.equal(wide.composition.mode,'split'); assert.equal(wide.composition.axis,'vertical');
 assert.equal(tall.composition.mode,'split'); assert.equal(tall.composition.axis,'horizontal');
 
+const bus=H.createActivityBus(registry); let seen=null; bus.subscribe(e=>{seen=e;});
+const pulse=bus.receiveAt('xwy',{kind:'HOME',state:'READY',projectionChanged:true,semanticChanged:false,payload:{event:'demo'}});
+assert.equal(pulse.siteId,site.id,'activity must resolve through current mount to stable site identity');
+assert.equal(seen.siteId,site.id); assert.equal(bus.current(site.id).payload.event,'demo');
+registry.mount(site.id,[{witness:'z',interlocutor:{id:'moved-again'}}]);
+assert.throws(()=>bus.receiveAt('xwy',{kind:'HOME'}),/no mounted site/,'activity must not remain glued to obsolete locus');
+assert.equal(bus.receiveAt('z',{kind:'HOME'}).siteId,site.id,'activity must follow remounted identity');
+
 assert.throws(()=>registry.mount(site.id,[{witness:'x',interlocutor:{}},{witness:'y',interlocutor:{}}]),/exactly one quotient locus/);
 const siteB=H.defineSite({id:'site:beta',shader:{id:'shader:beta'}}); registry.register(siteB);
 assert.notEqual(site.shader.id,siteB.shader.id,'different sites may carry different locus shader realizations through one primitive');
-assert.throws(()=>registry.mount(siteB.id,[{witness:'xwy',interlocutor:{}}]),/already occupied/);
-registry.mount(siteB.id,[{witness:'z',interlocutor:{id:'beta'}}]);
-assert.equal(registry.resolve('z',{width:800,height:600}).site,siteB);
+assert.throws(()=>registry.mount(siteB.id,[{witness:'z',interlocutor:{}}]),/already occupied/);
+registry.mount(siteB.id,[{witness:'w',interlocutor:{id:'beta'}}]);
+assert.equal(registry.resolve('w',{width:800,height:600}).site,siteB);
 
-console.log(JSON.stringify({status:'pass',identity_locus_separate:true,reciprocal_coalescence:true,relocation:true,responsive_chambers:true},null,2));
+assert.deepEqual(F.sequence(),['open','closing','closed','opening','open'],'closure must expose one invariant transition sequence');
+
+console.log(JSON.stringify({
+  status:'pass',
+  identity_locus_separate:true,
+  reciprocal_coalescence:true,
+  relocation:true,
+  responsive_chambers:true,
+  activity_follows_identity:true,
+  tetrahedral_closure_sequence:true
+},null,2));
