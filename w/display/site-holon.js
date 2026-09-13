@@ -133,8 +133,55 @@
       return Object.freeze({site,siteId:id,locus:relation.locus,enteredThrough,chamber,chambers:relation.chambers,composition:composeChambers(relation.chambers,viewport)});
     }
 
-    return Object.freeze({register,mount,unmount,resolve,snapshot,getSite:id=>sites.get(id)||null,getMount:id=>mounts.get(id)||null});
+    return Object.freeze({
+      register,mount,unmount,resolve,snapshot,
+      getSite:id=>sites.get(id)||null,
+      getMount:id=>mounts.get(id)||null,
+      getSiteAtLocus:locus=>{const id=loci.get(locus);return id?sites.get(id)||null:null;}
+    });
   }
 
-  return Object.freeze({resolvePath, defineSite, composeChambers, createRegistry});
+  function createActivityBus(registry) {
+    if (!registry || typeof registry.getSite !== 'function') throw new TypeError('site registry required');
+    const latest = new Map();
+    const listeners = new Set();
+
+    function normalize(event) {
+      if (!event || typeof event !== 'object') throw new TypeError('activity event required');
+      const id = siteId(event.siteId);
+      if (!registry.getSite(id)) throw new Error('activity target is not a registered site: ' + id);
+      return Object.freeze({
+        siteId:id,
+        kind:String(event.kind || 'activity'),
+        state:String(event.state || 'READY'),
+        at:event.at || new Date().toISOString(),
+        projectionChanged:Boolean(event.projectionChanged),
+        semanticChanged:Boolean(event.semanticChanged),
+        payload:event.payload ?? null
+      });
+    }
+
+    function receive(event) {
+      const e = normalize(event);
+      latest.set(e.siteId, e);
+      for (const fn of listeners) fn(e);
+      return e;
+    }
+
+    function receiveAt(rawPath, event) {
+      const resolved = registry.resolve(rawPath);
+      if (!resolved) throw new Error('no mounted site at activity witness: ' + rawPath);
+      return receive({...event, siteId:resolved.siteId});
+    }
+
+    function subscribe(fn) {
+      if (typeof fn !== 'function') throw new TypeError('activity listener must be a function');
+      listeners.add(fn);
+      return () => listeners.delete(fn);
+    }
+
+    return Object.freeze({receive,receiveAt,subscribe,current:id=>latest.get(id)||null});
+  }
+
+  return Object.freeze({resolvePath, defineSite, composeChambers, createRegistry, createActivityBus});
 });
