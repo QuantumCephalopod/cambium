@@ -11,6 +11,7 @@ for(const p of [' a','wx.','a','<script>','w/x',undefined,12]){assert.throws(()=
 const deep='wxzy'.repeat(1024);eq(A.key(deep+'wx'),A.key(deep+'xw'));eq(A.relative(deep+'w',deep+'x',deep.length),[1,-1,0,0]);
 
 cp.execFileSync('node',[path.join(root,'w','display','navigation-physiology.test.cjs')],{stdio:'pipe'});checks++;
+cp.execFileSync('node',[path.join(root,'w','display','site-holon.test.cjs')],{stdio:'pipe'});checks++;
 
 const site=process.env.SITE_DIR?path.resolve(root,process.env.SITE_DIR):path.join(root,'_site');
 const html=fs.readFileSync(path.join(site,'index.html'),'utf8');
@@ -31,4 +32,4 @@ structure=N.collectStructure(clone);
 eq(structure.leaves.map(x=>x.path).sort(),['ww','wx','wy','wz','x','y','z']);
 ok(!structure.leaves.some(x=>['xx','yy','zz'].includes(x.path)),'unrealized sibling rank must not be fabricated');
 
-console.log(JSON.stringify({status:'pass',assertions:checks,public_root:'main-root',realized_only:true,inspect_commit:true},null,2));
+console.log(JSON.stringify({status:'pass',assertions:checks,public_root:'main-root',realized_only:true,inspect_commit:true,site_holon:true},null,2));
