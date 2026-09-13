@@ -3,21 +3,20 @@
   "constitution": null,
   "home": {
     "changed_scope": [
-      "w/display/site-holon.js now actualizes stable site identity separately from mounted quotient locus by delegating address identity to canonical z/address.js",
-      "one registered site identity can be remounted x -> xy -> xyw~xwy without rewriting the site object or losing its local state",
-      "reciprocal witnesses xyw and xwy now resolve to one locus while remaining distinct witness chambers with their own interlocutors",
-      "responsive chamber composition is executable: two populated reciprocal witnesses split vertically on wide viewports and horizontally on tall viewports; one populated witness remains one body",
-      "w/display/site-holon-specimen.html actualizes mixed local tissue in one cell: ordinary DOM/text interlocutor beside a runnable WebGL interlocutor",
-      "y/test-address.cjs now runs the site-holon torture witness so quotient/relocation/chamber regressions fail the existing address witness chain",
-      "site-holon ritual advanced to v0.2 and records production navigation integration, canonical tetrahedral fold/unfold, and live vascular binding as explicit remaining OPEN pressures"
+      "stable site identities are now mounted separately from loci through w/display/site-mounts.json and resolved by the production membrane after committed navigation",
+      "the generated membrane now carries canonical z/address.js plus site-holon.js so raw traversal remains witness while quotient identity determines locus",
+      "every currently mounted public site carries an explicit locus-shader contract and the runtime supplies a default live shader membrane without replacing the accepted global WebGL navigator",
+      "normal commit/return navigation now crosses a four-facet tetrahedral closure; the swap callback executes only in closed state before destination unfold",
+      "site-holon activity is now received against stable site identity through createActivityBus and SSSDisplayRuntime.receiveActivity / sss:activity, so later transport can push events without coupling them to permanent addresses",
+      "GitHub Actions passed build, structural body, address algebra, explicit tetrahedral closure, and exact membrane-byte witnesses"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · SITE-HOLON CORE ACTUALIZED"
+    "outcome": "PASS/EARNED · PRODUCTION SITE-HOLON PRIMITIVE V0"
   },
-  "observed_at_utc": "2026-09-13T15:36:49.152678Z",
+  "observed_at_utc": "2026-09-13T16:01:02.947869Z",
   "owner": "display",
   "phenotype": {},
-  "reflected_home_event": "display-site-holon-core-20260913T153605Z",
+  "reflected_home_event": "display-site-holon-production-v0-20260913T160100Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -29,7 +28,7 @@
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "76de60978aa3aec504d51ae1fe5594fc17d348cc85b6261364728f2c72bc2d0e"
+      "sha256": "2abf1e01fe096378f255695c3edbf2ecd36d70fdfbed544d51c78fc280df814f"
     }
   ],
   "shell": {
@@ -44,6 +43,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "993ee704d637a84aa1b8d85e21ed241b40248fec"
+    "source_revision": "e1c0333ccfa01a252948e40a39e16410b453f41e"
   }
 }
