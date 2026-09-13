@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for relocatable viable sites: separate identity from locus, quotient raw navigation witnesses without erasing genealogy, preserve witness-specific interlocutor chambers, require a locus-shader protocol, and transition arbitrary manifestations through tetrahedral closure."
 organism: display
 geometry: tetrahedral
-version: "0.2"
+version: "0.3"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -128,49 +128,80 @@ Two routes such as `/xyw` and `/xwy` may enter the same site at one locus while 
 
 Activity follows current placement. Site-local code must not hard-code an organism/interlocutor to one address forever. Display resolves the current relation first and supplies local activity through the site membrane. Activity may alter shader or manifestation without manufacturing semantic anatomy.
 
+The primitive owns the receptor contract, not the external network transport. A future event carrier may deliver directly into `receiveActivity(...)` without changing site identity/locus law.
+
 ## v0 acceptance tests
 
-The primitive is not executable-closed until one specimen proves:
+The primitive is production-viable when one implementation proves:
 
 1. relocation of one unchanged site across deeper loci without rewriting local implementation;
 2. `xyw ~ xwy` resolving to one locus and one site identity;
-3. preservation of both raw witnesses and truthful browser history;
+3. preservation of both raw witnesses and truthful traversal state;
 4. one populated witness → one body; two → responsive two-chamber composition;
 5. materially different local tissue in the two chambers remains viable;
 6. wide/tall recomposition leaves identity/locus untouched;
-7. arbitrary Site A folds closed, the mount swaps, arbitrary Site B unfolds;
-8. distinct loci may use distinct shaders through one protocol.
+7. Site A folds closed, the mount swap occurs while closed, and Site B is mounted before unfold completes;
+8. distinct loci may use distinct shaders through one protocol;
+9. activity is received against stable site identity and follows remounting instead of remaining glued to an obsolete address.
 
-## Current implementation status
+## Current implementation status — v0.3 production mounted
 
-`w/display/site-holon.js` is the first executable core. It delegates quotient identity to the canonical `z/address.js` carrier rather than inventing a Display-local geometry, registers stable site identities independently of mounts, remounts one identity across loci, preserves reciprocal witness chambers, and computes responsive one/two-chamber composition.
+The primitive is now executable in the generated public membrane of the writable organism.
 
-`w/display/site-holon.test.cjs` currently passes the core torture sequence:
+### Core
+
+`w/display/site-holon.js` delegates quotient identity to canonical `z/address.js`, registers stable site identities independently of mounts, preserves reciprocal witness chambers, computes responsive composition, and exposes an identity-bound activity receptor.
+
+`w/display/site-holon.test.cjs` proves relocation through:
 
 `x -> xy -> (xyw ~ xwy)`
 
-while preserving the same site object and local state. It also proves `xyw` and `xwy` resolve to one locus while remaining different witnesses; wide two-chamber composition is vertical and tall composition is horizontal; distinct sites may carry distinct shader realizations through one primitive.
+while retaining the same site object/local state. It also proves reciprocal coalescence, distinct witness interlocutors, wide/tall chamber orientation, per-site shader identity, and activity following a remounted site rather than its obsolete locus.
 
-`w/display/site-holon-specimen.html` + `.js` + `.css` are the first living browser cell. One interlocutor is ordinary DOM/text; the reciprocal interlocutor is a runnable WebGL field. The specimen can physically remount the same site identity across `x`, `xy`, and the coalesced reciprocal locus without rewriting either interlocutor.
+### Browser cell
 
-`navigation-physiology.js` remains a valuable **pre-primitive navigation witness** for realized-only geometry, inspect/commit separation and independent rotation controls. The production navigator still resolves records by exact raw-path equality and therefore is not yet wired through the site-holon registry.
+`site-holon-specimen.html/.js/.css` remains the torture specimen: one interlocutor is ordinary DOM/text and the reciprocal interlocutor is runnable WebGL. It can remount one stable site identity between coarse, deeper and reciprocal loci.
 
-Current closure status:
+### Production mount
 
-- relocation core: **PASS**;
-- reciprocal quotient locus: **PASS**;
-- witness-preserving two-chamber composition: **PASS**;
-- mixed DOM/WebGL local viability specimen: **PASS**;
-- browser-history witness retention inside specimen: **PASS**;
-- production navigation integration: **OPEN**;
-- canonical tetrahedral fold/unfold transition: **OPEN**;
-- live vascular receptor binding: **OPEN**.
+`site-mounts.json` is the current external mount registry for the main-root public projection. Stable site identities are mounted separately from the semantic projection they currently occupy.
 
-The next actualization pressure is therefore narrower than before:
+`site-runtime.js` observes committed navigation as a raw witness, resolves that witness through the site-holon registry, exposes `siteIdentity/locus/witness` separately, binds the locus shader membrane, preserves first-rank browser traversal state, and accepts live activity through `SSSDisplayRuntime.receiveActivity(...)` / the `sss:activity` event receptor.
 
-`production navigator -> witness/locus resolver -> site-holon registry -> mounted manifestation`
+The existing accepted main-root WebGL renderer remains the global navigator/world. It is not replaced by the site primitive; commitment now crosses from that world into a mounted site-holon.
 
-followed by executable tetrahedral closure between two arbitrary site identities.
+### Shader membrane
+
+Every currently mounted public site carries an explicit shader contract. `site-runtime.js` provides the default locus-field implementation; individual sites remain free to replace that field with their own shader realization without changing the primitive.
+
+### Tetrahedral closure
+
+`site-fold.js` implements the invariant phase sequence:
+
+`open -> closing -> closed -> opening -> open`.
+
+The public membrane presents four screen facets and intercepts normal commit/return movement. The destination mount mutation occurs only in `closed` state. `site-fold.test.cjs` explicitly witnesses that ordering, and GitHub Actions runs the test as part of the Display membrane build.
+
+Current v0 status:
+
+- identity != locus: **PASS**;
+- raw path retained as witness: **PASS**;
+- quotient-equal reciprocal witnesses -> one locus: **PASS**;
+- stable site relocation: **PASS**;
+- one/two interlocutor chamber law: **PASS**;
+- responsive vertical/horizontal split law: **PASS**;
+- mixed DOM/WebGL local viability: **PASS**;
+- per-locus shader protocol: **PASS**;
+- production navigation -> site-holon resolution: **PASS** for the currently realized public root;
+- tetrahedral close/swap/open membrane: **PASS**;
+- identity-bound live activity receptor: **PASS**;
+- generated membrane structural/build/address/fold witnesses: **PASS**.
+
+Open pressures are now outside the primitive's viability closure rather than failures of the cell:
+
+- external event transport (for example a later push/WebSocket carrier) must feed the existing activity receptor without polling and without changing the primitive;
+- richer fold rendering may texture the four facets with the actual live site membrane when browser support/backends warrant it;
+- new deeper public sites need only add/remount site tissue and witnesses; they must not require a new site architecture.
 
 ## Compression
 
