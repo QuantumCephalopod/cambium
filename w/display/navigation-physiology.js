@@ -15,9 +15,9 @@
     const m = Math.hypot(...v);
     return Object.freeze(v.map(n => n / m));
   }));
-  const AXIS_LATCH_MS = 520;
-  const AXIS_LATCH_EPS = .028;
-  const AXIS_LATCH_MIN = .07;
+  const AXIS_LATCH_MS = 420;
+  const AXIS_LATCH_EPS = .05;
+  const AXIS_LATCH_MIN = .06;
 
   const add = (a,b) => a.map((x,i) => x + b[i]);
   const mul = (a,s) => a.map(x => x * s);
@@ -84,11 +84,27 @@
     let page = '', view = '';
     const axes = {x:0, y:0};
     const axisGesture = {
-      x:{active:false,latched:false,lastValue:0,steadySince:0},
-      y:{active:false,latched:false,lastValue:0,steadySince:0}
+      x:{active:false,latched:false,lastValue:0,steadySince:0,timer:null},
+      y:{active:false,latched:false,lastValue:0,steadySince:0,timer:null}
     };
 
     function exists(path) { return !!addressRecord(structure, path); }
+    function cancelLatchTimer(g) {
+      if (g.timer !== null) {
+        clearTimeout(g.timer);
+        g.timer = null;
+      }
+    }
+    function armLatch(axis, g) {
+      cancelLatchTimer(g);
+      const steadySince = g.steadySince;
+      g.timer = setTimeout(() => {
+        g.timer = null;
+        if (!g.active || g.steadySince !== steadySince) return;
+        if (axisLatchReady(axes[axis], Date.now() - g.steadySince)) g.latched = true;
+      }, AXIS_LATCH_MS + 8);
+    }
+
     return Object.freeze({
       structure,
       get page(){ return page; },
@@ -116,22 +132,26 @@
           g.latched = false;
           g.lastValue = v;
           g.steadySince = now;
+          armLatch(axis, g);
         } else if (Math.abs(v - g.lastValue) > AXIS_LATCH_EPS) {
+          g.latched = false;
           g.lastValue = v;
           g.steadySince = now;
+          armLatch(axis, g);
         }
         axes[axis] = v;
       },
       releaseAxis(axis){
         if (!(axis in axes)) throw new Error('axis must be x or y');
         const g = axisGesture[axis];
+        cancelLatchTimer(g);
         if (!g.active) {
           if (!g.latched) axes[axis] = 0;
           return;
         }
         const stableFor = Date.now() - g.steadySince;
         g.active = false;
-        if (axisLatchReady(axes[axis], stableFor)) {
+        if (g.latched || axisLatchReady(axes[axis], stableFor)) {
           g.latched = true;
           return;
         }
