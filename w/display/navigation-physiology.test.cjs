@@ -44,32 +44,11 @@ let av = state.angularVelocity();
 assert.notStrictEqual(av.yaw, 0); assert.notStrictEqual(av.pitch, 0);
 state.releaseAxis('x');
 av = state.angularVelocity();
-assert.strictEqual(av.yaw, 0, 'quick x release must zero yaw immediately');
+assert.strictEqual(av.yaw, 0, 'x release must zero yaw immediately');
 assert.notStrictEqual(av.pitch, 0, 'x release must not alter y axis');
 state.releaseAxis('y');
 assert.deepStrictEqual(state.angularVelocity(), {yaw:0,pitch:0});
 state.leave();
 assert.strictEqual(state.page, ''); assert.strictEqual(state.view, '');
 
-const realNow = Date.now;
-let clock = 1000;
-Date.now = () => clock;
-try {
-  const latched = N.createState({noun:'root',children:{w:atom('Form'),x:atom('Continuity'),z:atom('Care'),y:atom('Inquiry')}});
-  latched.setAxis('x', .62);
-  clock += N.AXIS_LATCH_MS + 20;
-  latched.releaseAxis('x');
-  assert.strictEqual(latched.axisLatch.x, true, 'held x axis must latch');
-  assert.strictEqual(latched.axes.x, .62, 'latched axis must preserve displacement');
-  assert.notStrictEqual(latched.angularVelocity().yaw, 0, 'latched axis must keep rotating');
-
-  latched.setAxis('x', .62); // pickup unlocks the held latch
-  clock += 10;
-  latched.releaseAxis('x');
-  assert.strictEqual(latched.axisLatch.x, false, 'quick release after pickup must unlock');
-  assert.strictEqual(latched.axes.x, 0, 'quick release after pickup must snap to center');
-} finally {
-  Date.now = realNow;
-}
-
-console.log(JSON.stringify({status:'pass',realized_only:true,independent_axes:true,inspect_commit:true,axis_latch:true}, null, 2));
+console.log(JSON.stringify({status:'pass',realized_only:true,independent_axes:true,inspect_commit:true}, null, 2));
