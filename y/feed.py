@@ -22,6 +22,10 @@ import subprocess
 from build import load_yaml, validate_index, validate_cambium
 
 ROOT = Path(__file__).resolve().parent.parent
+HOME_REQUIRED = {
+    "event_id", "home_at_utc", "organism", "entrypoint", "outcome",
+    "changed_scope", "context", "kind", "delivery_state"
+}
 
 
 def git(*args: str) -> str:
@@ -79,15 +83,12 @@ def read_root_event(path: Path) -> dict:
     return data
 
 
-def read_home(path: Path) -> dict | None:
-    data = read_root_event(path)
-    if data.get("kind") != "HOME":
-        return None
-    required = {
-        "event_id", "home_at_utc", "organism", "entrypoint", "outcome",
-        "changed_scope", "context", "kind", "delivery_state"
-    }
-    missing = required - set(data)
+def missing_home_fields(data: dict) -> set[str]:
+    return HOME_REQUIRED - set(data)
+
+
+def validate_home(path: Path, data: dict) -> dict:
+    missing = missing_home_fields(data)
     if missing:
         raise ValueError(f"{path}: HOME missing {sorted(missing)}")
     return data
@@ -177,6 +178,11 @@ def write_feed(root: Path, home: dict, source_revision: str) -> Path | None:
     return out
 
 
+def home_order(item: tuple[Path, dict]) -> tuple[str, str]:
+    path, data = item
+    return (str(data.get("home_at_utc", "")), str(data.get("event_id", path.stem)))
+
+
 def main() -> None:
     ap = ArgumentParser()
     ap.add_argument("--before", default="")
@@ -188,14 +194,15 @@ def main() -> None:
         print("no new durable HOME pressure; feeds unchanged")
         return
 
+    # Feed projection is newest-HOME-per-organism, not an archival schema audit.
+    # Group first so an explicit later correction can supersede an older malformed HOME.
     grouped: dict[Path, list[tuple[Path, dict]]] = {}
     for path in root_events:
-        home = read_home(path)
-        if home is None:
+        data = read_root_event(path)
+        if data.get("kind") != "HOME":
             print(f"{path}: skipped non-HOME root ring")
             continue
-        root = organism_root(path)
-        grouped.setdefault(root, []).append((path, home))
+        grouped.setdefault(organism_root(path), []).append((path, data))
 
     if not grouped:
         print("no new durable HOME pressure; feeds unchanged")
@@ -203,8 +210,18 @@ def main() -> None:
 
     changed = []
     for root, items in grouped.items():
-        items.sort(key=lambda x: (x[1]["home_at_utc"], x[1]["event_id"]))
+        items.sort(key=home_order)
         path, home = items[-1]
+
+        for old_path, old_home in items[:-1]:
+            missing = missing_home_fields(old_home)
+            if missing:
+                print(
+                    f"{old_path}: skipped superseded malformed HOME missing "
+                    f"{sorted(missing)}; newer HOME for this organism is present"
+                )
+
+        validate_home(path, home)
         out = write_feed(root, home, args.after)
         if out is None:
             continue
