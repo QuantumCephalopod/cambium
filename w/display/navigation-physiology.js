@@ -78,6 +78,22 @@
     const axes = {x:0, y:0};
 
     function exists(path) { return !!addressRecord(structure, path); }
+    function cancelLatchTimer(g) {
+      if (g.timer !== null) {
+        clearTimeout(g.timer);
+        g.timer = null;
+      }
+    }
+    function armLatch(axis, g) {
+      cancelLatchTimer(g);
+      const steadySince = g.steadySince;
+      g.timer = setTimeout(() => {
+        g.timer = null;
+        if (!g.active || g.steadySince !== steadySince) return;
+        if (axisLatchReady(axes[axis], Date.now() - g.steadySince)) g.latched = true;
+      }, AXIS_LATCH_MS + 8);
+    }
+
     return Object.freeze({
       structure,
       get page(){ return page; },
