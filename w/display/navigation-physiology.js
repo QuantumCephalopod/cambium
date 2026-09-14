@@ -15,9 +15,6 @@
     const m = Math.hypot(...v);
     return Object.freeze(v.map(n => n / m));
   }));
-  const AXIS_LATCH_MS = 420;
-  const AXIS_LATCH_EPS = .05;
-  const AXIS_LATCH_MIN = .06;
 
   const add = (a,b) => a.map((x,i) => x + b[i]);
   const mul = (a,s) => a.map(x => x * s);
@@ -60,10 +57,6 @@
     return Math.sign(v) * Math.pow(n, 1.75) * max;
   }
 
-  function axisLatchReady(value, stableForMs, holdMs=AXIS_LATCH_MS, min=AXIS_LATCH_MIN) {
-    return Math.abs(Number(value) || 0) >= min && Number(stableForMs) >= holdMs;
-  }
-
   /* Axis pointer mapping is deliberately separable.
    * x reads only pointerX; y reads only pointerY.
    */
@@ -83,10 +76,6 @@
     const structure = collectStructure(rootNode);
     let page = '', view = '';
     const axes = {x:0, y:0};
-    const axisGesture = {
-      x:{active:false,latched:false,lastValue:0,steadySince:0,timer:null},
-      y:{active:false,latched:false,lastValue:0,steadySince:0,timer:null}
-    };
 
     function exists(path) { return !!addressRecord(structure, path); }
     function cancelLatchTimer(g) {
@@ -110,7 +99,6 @@
       get page(){ return page; },
       get view(){ return view; },
       get axes(){ return {...axes}; },
-      get axisLatch(){ return {x:axisGesture.x.latched,y:axisGesture.y.latched}; },
       inspect(path){
         if (!exists(path)) return false;
         view = path;
@@ -125,37 +113,10 @@
       leave(){ page = ''; view = ''; },
       setAxis(axis, value){
         if (!(axis in axes)) throw new Error('axis must be x or y');
-        const v = Math.max(-1, Math.min(1, Number(value) || 0));
-        const g = axisGesture[axis], now = Date.now();
-        if (!g.active) {
-          g.active = true;
-          g.latched = false;
-          g.lastValue = v;
-          g.steadySince = now;
-          armLatch(axis, g);
-        } else if (Math.abs(v - g.lastValue) > AXIS_LATCH_EPS) {
-          g.latched = false;
-          g.lastValue = v;
-          g.steadySince = now;
-          armLatch(axis, g);
-        }
-        axes[axis] = v;
+        axes[axis] = Math.max(-1, Math.min(1, Number(value) || 0));
       },
       releaseAxis(axis){
         if (!(axis in axes)) throw new Error('axis must be x or y');
-        const g = axisGesture[axis];
-        cancelLatchTimer(g);
-        if (!g.active) {
-          if (!g.latched) axes[axis] = 0;
-          return;
-        }
-        const stableFor = Date.now() - g.steadySince;
-        g.active = false;
-        if (g.latched || axisLatchReady(axes[axis], stableFor)) {
-          g.latched = true;
-          return;
-        }
-        g.latched = false;
         axes[axis] = 0;
       },
       angularVelocity(){ return {yaw:velocity(axes.x), pitch:velocity(axes.y)}; },
@@ -163,7 +124,6 @@
     });
   }
 
-  return Object.freeze({GENES, V0, AXIS_LATCH_MS, AXIS_LATCH_EPS, AXIS_LATCH_MIN,
-    hasFullSplit, splitTet, centroid, collectStructure, addressRecord, focusTarget,
-    velocity, axisLatchReady, axisValue, createState});
+  return Object.freeze({GENES, V0, hasFullSplit, splitTet, centroid, collectStructure,
+    addressRecord, focusTarget, velocity, axisValue, createState});
 });
