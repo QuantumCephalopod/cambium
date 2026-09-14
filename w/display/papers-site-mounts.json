@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "scope": "papers",
+  "sites": [
+    {
+      "id": "organism:papers",
+      "witnesses": [""],
+      "interlocutors": [
+        {"id": "papers:_feed", "kind": "projection"}
+      ],
+      "shader": {
+        "id": "shader:organism:papers",
+        "palette": [0.72, 0.78, 0.46]
+      },
+      "manifestation": {
+        "kind": "papers-feed",
+        "source": "papers/_feed"
+      }
+    }
+  ]
+}
