@@ -1,7 +1,7 @@
 (() => {
 'use strict';
-const H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold;
-if(!H||!F) throw new Error('site-holon runtime dependencies missing');
+const H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,N=globalThis.SSSDisplayNavigation;
+if(!H||!F||!N) throw new Error('site-holon runtime dependencies missing');
 const DATA=JSON.parse(document.getElementById('root-projection').textContent);
 const MOUNTS=JSON.parse(document.getElementById('site-mounts').textContent);
 const registry=H.createRegistry();
@@ -24,6 +24,10 @@ function routeState(){
   return {page,view};
 }
 function stateFor(witness){return registry.resolve(witness,{width:innerWidth,height:innerHeight});}
+function destinationFor(witness){const resolved=stateFor(witness),spec=resolved&&siteSpecs.get(resolved.siteId);return spec?.manifestation?.enter||null;}
+function crossMembrane(destination,witness){const event=new CustomEvent('sss:navigate',{cancelable:true,detail:{href:destination.href,siteId:destination.site_id,fromWitness:witness}});if(!dispatchEvent(event))return false;location.assign(destination.href);return true;}
+function encounterHandler(){const {page,view}=routeState();if(page||!view)return null;const destination=destinationFor(view);return destination?()=>crossMembrane(destination,view):null;}
+function reconcileEncounter(){const {page,view}=routeState();if(page||!view)return;const destination=destinationFor(view),copy=document.getElementById('page-copy');if(destination){const de=document.documentElement.lang==='de';commit.textContent=(de?'Organismus betreten · ':'enter organism · ')+(destination.label||destination.site_id);commit.classList.add('show');commit.onclick=()=>crossMembrane(destination,view);copy?.classList.add('has-commit');}else{commit.classList.remove('show');commit.onclick=null;copy?.classList.remove('has-commit');}}
 function showState(witness){
   const resolved=stateFor(witness);
   if(!resolved){stateEl.textContent=witness?'UNMOUNTED WITNESS · '+witness:'';return null;}
@@ -50,7 +54,7 @@ function syncFromNavigator(){
   }
   initial=false;
 }
-new MutationObserver(()=>queueMicrotask(syncFromNavigator)).observe(route,{childList:true,characterData:true,subtree:true});
+new MutationObserver(()=>queueMicrotask(()=>{syncFromNavigator();reconcileEncounter();})).observe(route,{childList:true,characterData:true,subtree:true});
 addEventListener('resize',()=>showState(currentWitness||''));
 
 function foldClick(element,getHandler){
@@ -61,7 +65,8 @@ function foldClick(element,getHandler){
     fold.swap(()=>handler.call(element));
   },true);
 }
-foldClick(commit,()=>commit.onclick);
+foldClick(commit,()=>{const {page,view}=routeState();if(!page&&view)return encounterHandler();return commit.onclick;});
+addEventListener('keydown',e=>{if(e.key!=='Enter'||e.metaKey||e.ctrlKey||e.altKey)return;const {page,view}=routeState();if(page||!view)return;e.preventDefault();e.stopImmediatePropagation();const handler=encounterHandler();if(handler&&!fold.busy)commit.click();},true);
 home.addEventListener('click',e=>{
   if(!currentWitness||fold.busy)return;
   const handler=commit.onclick;if(typeof handler!=='function')return;
@@ -82,6 +87,20 @@ addEventListener('popstate',e=>{
     if(target&&!goRootWitness(target)){handlingHistory=false;showState(currentWitness||'');}
   });
 });
+
+const AXIS_HOLD_MS=650,AXIS_STEADY_EPS=.035,AXIS_MIN_LATCH=.09;
+function bindAxisLatch(axis){
+  const el=document.getElementById('axis-'+axis);if(!el)return;let active=null,latched=false,ready=false,timer=null,last=0;
+  const value=e=>N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY);
+  const clear=()=>{if(timer!==null){clearTimeout(timer);timer=null}ready=false;delete el.dataset.latchReady};
+  const arm=v=>{clear();if(Math.abs(v)<AXIS_MIN_LATCH)return;const held=v;timer=setTimeout(()=>{timer=null;if(active===null||Math.abs(last-held)>AXIS_STEADY_EPS)return;ready=true;el.dataset.latchReady='true';},AXIS_HOLD_MS);};
+  el.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(latched){latched=false;el.dataset.latched='false';}active=e.pointerId;last=value(e);arm(last);},true);
+  el.addEventListener('pointermove',e=>{if(active!==e.pointerId)return;const v=value(e);if(Math.abs(v-last)>AXIS_STEADY_EPS)arm(v);last=v;},true);
+  el.addEventListener('pointerup',e=>{if(active!==e.pointerId)return;const keep=ready&&Math.abs(last)>=AXIS_MIN_LATCH;clear();if(keep){latched=true;el.dataset.latched='true';e.preventDefault();e.stopImmediatePropagation();if(el.hasPointerCapture(e.pointerId))el.releasePointerCapture(e.pointerId);}else{latched=false;el.dataset.latched='false';}active=null;},true);
+  el.addEventListener('pointercancel',e=>{if(active!==e.pointerId)return;clear();latched=false;el.dataset.latched='false';active=null;},true);
+  el.addEventListener('blur',e=>{if(latched)e.stopImmediatePropagation();},true);
+}
+bindAxisLatch('x');bindAxisLatch('y');
 
 activity.subscribe(e=>{
   const site=registry.getSite(e.siteId);if(site)site.state.activity=e;
@@ -106,5 +125,5 @@ if(gl){
   }
   requestAnimationFrame(frame);
 }
-syncFromNavigator();
+syncFromNavigator();reconcileEncounter();
 })();
