@@ -35,7 +35,11 @@
       "witnesses": ["y"],
       "interlocutors": [{"id": "main-root:y", "kind": "projection"}],
       "shader": {"id": "shader:sss:04", "palette": [0.62, 0.92, 0.42]},
-      "manifestation": {"kind": "projection", "source": "y"}
+      "manifestation": {
+        "kind": "projection",
+        "source": "y",
+        "enter": {"site_id": "organism:papers", "href": "papers/", "label": "Papers"}
+      }
     }
   ]
 }
