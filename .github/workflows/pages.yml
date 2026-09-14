@@ -90,6 +90,15 @@ jobs:
       - name: Verify membrane bytes
         run: python3 y/build.py --artifact _site --check
 
+      - name: Build Papers site-holon
+        run: python3 y/papers-site.py --artifact _site
+
+      - name: Witness Papers site-holon invariance
+        run: |
+          python3 y/papers-site.py --artifact _site --check
+          node --check w/display/papers-site-runtime.js
+          node w/display/papers-site.test.cjs
+
       - name: Configure GitHub Pages
         if: github.repository == 'self-similar-systems/cambium'
         uses: actions/configure-pages@v5
