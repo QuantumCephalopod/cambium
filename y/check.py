@@ -66,13 +66,17 @@ def main():
     check('interactive:true' in runtime and 'interactive:false' in runtime,'Philosophy/Papers background specialties collapsed')
     check('W.orientation' in fields,'interlocutor backgrounds do not share global orientation state')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'settle-to-lock exact axis behavior missing')
+    check('HOME_ORIENT' in world and 'qSlerp' in world and 'philosophy-swingback' in world,'Philosophy global-centroid swingback physiology missing')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
     check('W.setScope' in runtime and 'localScope' in holon,'scope restart is not runtime-mounted')
     check('new Set()' in holon and 'loci.get(key).add(id)' in holon,'locus cannot host multiple interlocutors')
     check('active.length === 2' in holon and "mode:'grid'" in holon,'multi-interlocutor composition law missing')
     check("data-aperture=\"closed\"" in actual and 'aria-controls="mini-pocket"' in actual,'global navigator is not aperture-owned')
+    check('class="shape-square"' in actual and 'class="shape-diamond"' in actual,'single/split aperture marker variants missing')
     check("dataset.aperture='open'" in aperture and "dataset.pinned" in aperture,'aperture open/pin state missing')
-    check('html[data-composition="split"] #mini' in aperture_css and 'clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)' in aperture_css,'split seam diamond aperture missing')
+    check('--trigger-shape-rotate:45deg' in aperture_css and '--pocket-open-clip:polygon(8% 14%,92% 14%,92% 86%,8% 86%)' in aperture_css,'split seam diamond-to-rect cavity law missing')
+    check('@keyframes aperture-shell-resolve' in aperture_css and '--shell-rotate-closed:45deg' in aperture_css,'split aperture resolve animation missing')
+    check('#mini-trigger .shape-diamond{display:none}' in aperture_css,'single encounter must default to square membrane port')
     check('#mini-pocket' in aperture_css and 'pointer-events:none' in aperture_css,'closed navigator still consumes interlocutor content interaction')
 
     for source in ('world-view.js','navigation-physiology.js','site-holon.js','site-fold.js','display-runtime-v2.js','locus-shader.js','interlocutor-philosophy.js','interlocutor-papers.js','navigation-aperture.js'):
@@ -81,6 +85,6 @@ def main():
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True);check(result.returncode==0,result.stderr or f'test failed {test}')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**__import__('os').environ,'SITE_DIR':str(artifact)},capture_output=True,text=True);check(result.returncode==0,result.stderr or 'address witness failed')
 
-    print(json.dumps({'status':'pass','checks':count,'display':'one persistent membrane','specimens':['organism:philosophy','organism:papers'],'navigation':'global minimap lives in membrane aperture / Philosophy adds background inspection','mounting':'page-organism identity independent of scoped locus','composition':'shared locus opens local worlds around one seam aperture','artifact':'single index.html'},indent=2))
+    print(json.dumps({'status':'pass','checks':count,'display':'one persistent membrane','specimens':['organism:philosophy','organism:papers'],'navigation':'single square membrane port / split seam diamond resolves to rect control cavity / Philosophy swingback','mounting':'page-organism identity independent of scoped locus','composition':'shared locus opens local worlds around one seam aperture','artifact':'single index.html'},indent=2))
 
 if __name__=='__main__':main()
