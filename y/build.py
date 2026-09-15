@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build one persistent public Display membrane with relocatable page-organism interlocutors."""
 from pathlib import Path
+from hashlib import sha256
 import argparse
 import json
 import shutil
@@ -74,7 +75,11 @@ def validate_index(index):
 
 
 def validate_cambium(c, label='_cambium.yaml'):
-    expected = {'4V': set(GENES), '6E': {'wx','wz','wy','xz','xy','zy'}, '4F': {'wxz','wxy','wzy','xzy'}}
+    expected = {
+        '4V': set(GENES),
+        '6E': {'wx','wz','wy','xz','xy','zy'},
+        '4F': {'wxz','wxy','wzy','xzy'},
+    }
     if set(c) != {'4V','6E','4F','1T'}:
         raise ValueError(f'{label} contains noncanonical fields')
     for rank, keys in expected.items():
@@ -188,72 +193,117 @@ def _enc(v):
     return json.dumps(v, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
 
 
+def asset_sources():
+    """One immutable membrane-generation asset set.
+
+    Keys are public names inside the bundle namespace. A generation changes whenever
+    any member byte changes, so HTML from one generation cannot load JS/CSS from another.
+    """
+    return {
+        'root-view.css': DISPLAY/'root-view.css',
+        'site-runtime.css': DISPLAY/'site-runtime.css',
+        'interlocutors.css': DISPLAY/'interlocutors.css',
+        'navigation-aperture.css': DISPLAY/'navigation-aperture.css',
+        'world-view.js': DISPLAY/'world-view.js',
+        'navigation-physiology.js': DISPLAY/'navigation-physiology.js',
+        'address.js': ROOT/'z'/'address.js',
+        'site-holon.js': DISPLAY/'site-holon.js',
+        'site-fold.js': DISPLAY/'site-fold.js',
+        'interlocutor-philosophy.js': DISPLAY/'interlocutor-philosophy.js',
+        'interlocutor-papers.js': DISPLAY/'interlocutor-papers.js',
+        'locus-shader.js': DISPLAY/'locus-shader.js',
+        'navigation-aperture.js': DISPLAY/'navigation-aperture.js',
+        'display-runtime-v2.js': DISPLAY/'display-runtime-v2.js',
+        'favicon.svg': DISPLAY/'favicon.svg',
+    }
+
+
+def asset_bundle_id():
+    h = sha256()
+    for name, source in sorted(asset_sources().items()):
+        if not source.is_file():
+            raise ValueError(f'missing membrane dependency: {source.relative_to(ROOT)}')
+        data = source.read_bytes()
+        h.update(name.encode('utf-8'))
+        h.update(b'\0')
+        h.update(data)
+        h.update(b'\0')
+    return h.hexdigest()[:16]
+
+
 def render():
-    text=(DISPLAY/'template.html').read_text(encoding='utf-8')
-    payloads={
+    text = (DISPLAY/'template.html').read_text(encoding='utf-8')
+    payloads = {
         '/*__ROOT_DATA__*/': root_projection(),
         '/*__PAPERS_DATA__*/': papers_projection(),
         '/*__SITE_MOUNTS__*/': site_mounts(),
     }
-    for marker,value in payloads.items():
+    for marker, value in payloads.items():
         if text.count(marker) != 1:
             raise ValueError(f'display template must contain exactly one {marker} slot')
-        text=text.replace(marker,_enc(value))
-    return '<!-- one persistent Display membrane; page-organisms are relocatable interlocutors mounted at recursive loci. -->\n'+text
+        text = text.replace(marker, _enc(value))
+
+    bundle = asset_bundle_id()
+    for name in asset_sources():
+        flat = f'assets/{name}'
+        if text.count(flat) != 1:
+            raise ValueError(f'display template must reference exactly one {flat}')
+        text = text.replace(flat, f'assets/{bundle}/{name}')
+
+    return (
+        f'<!-- membrane bundle {bundle}; one persistent Display generation; '
+        'page-organisms are relocatable interlocutors mounted at recursive loci. -->\n'
+        + text
+    )
 
 
 def artifact_files():
-    sources={
-        'assets/root-view.css':DISPLAY/'root-view.css',
-        'assets/site-runtime.css':DISPLAY/'site-runtime.css',
-        'assets/interlocutors.css':DISPLAY/'interlocutors.css',
-        'assets/navigation-aperture.css':DISPLAY/'navigation-aperture.css',
-        'assets/world-view.js':DISPLAY/'world-view.js',
-        'assets/navigation-physiology.js':DISPLAY/'navigation-physiology.js',
-        'assets/address.js':ROOT/'z'/'address.js',
-        'assets/site-holon.js':DISPLAY/'site-holon.js',
-        'assets/site-fold.js':DISPLAY/'site-fold.js',
-        'assets/interlocutor-philosophy.js':DISPLAY/'interlocutor-philosophy.js',
-        'assets/interlocutor-papers.js':DISPLAY/'interlocutor-papers.js',
-        'assets/locus-shader.js':DISPLAY/'locus-shader.js',
-        'assets/navigation-aperture.js':DISPLAY/'navigation-aperture.js',
-        'assets/display-runtime-v2.js':DISPLAY/'display-runtime-v2.js',
-        'assets/favicon.svg':DISPLAY/'favicon.svg',
-    }
-    files={'index.html':render().encode('utf-8'),'.nojekyll':b''}
-    for dest,source in sources.items():
-        if not source.is_file():
-            raise ValueError(f'missing membrane dependency: {source.relative_to(ROOT)}')
-        files[dest]=source.read_bytes()
+    bundle = asset_bundle_id()
+    files = {'index.html': render().encode('utf-8'), '.nojekyll': b''}
+    for name, source in asset_sources().items():
+        files[f'assets/{bundle}/{name}'] = source.read_bytes()
     return files
 
 
 def write_artifact(target):
-    target=target.resolve()
+    target = target.resolve()
     if target in (ROOT.resolve(), DISPLAY.resolve()):
         raise ValueError('artifact target must be outside living anatomy')
     if target.exists():
         shutil.rmtree(target) if target.is_dir() else target.unlink()
-    for rel,data in artifact_files().items():
-        path=target/rel; path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(data)
+    for rel, data in artifact_files().items():
+        path = target/rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
 
 
 def verify_artifact(target):
-    target=target.resolve(); expected=artifact_files()
-    if not target.is_dir(): raise ValueError(f'missing artifact directory: {target}')
-    actual={p.relative_to(target).as_posix():p.read_bytes() for p in target.rglob('*') if p.is_file()}
-    if set(actual)!=set(expected):
+    target = target.resolve()
+    expected = artifact_files()
+    if not target.is_dir():
+        raise ValueError(f'missing artifact directory: {target}')
+    actual = {p.relative_to(target).as_posix(): p.read_bytes() for p in target.rglob('*') if p.is_file()}
+    if set(actual) != set(expected):
         raise ValueError(f'artifact file-set mismatch: {sorted(set(actual)^set(expected))}')
-    for path,data in expected.items():
-        if actual[path]!=data: raise ValueError(f'stale artifact byte content: {path}')
+    for path, data in expected.items():
+        if actual[path] != data:
+            raise ValueError(f'stale artifact byte content: {path}')
 
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--artifact',type=Path,default=ROOT/'_site'); ap.add_argument('--check',action='store_true'); args=ap.parse_args()
-    target=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--artifact', type=Path, default=ROOT/'_site')
+    ap.add_argument('--check', action='store_true')
+    args = ap.parse_args()
+    target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
-        verify_artifact(target); print('display membrane exactly matches the two-specimen interlocutor projection')
+        verify_artifact(target)
+        print(f'display membrane exactly matches bundle {asset_bundle_id()}')
     else:
-        write_artifact(target); files=artifact_files(); print(f'built {target} ({sum(map(len,files.values()))} bytes across {len(files)} files)')
+        write_artifact(target)
+        files = artifact_files()
+        print(f'built {target} bundle={asset_bundle_id()} ({sum(map(len,files.values()))} bytes across {len(files)} files)')
 
-if __name__=='__main__': main()
+
+if __name__ == '__main__':
+    main()
