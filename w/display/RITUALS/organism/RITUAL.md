@@ -1,132 +1,127 @@
 ---
 name: display
-description: "Local ritual receptor for cambium's visitor-facing Display organ: transduce admitted organism truth into an accessible perceptual membrane without inventing ontology, preserve Display's independent unsplit root, realize sites through the rank-invariant site-holon primitive, and let navigation depict only realized recursive structure."
-version: "1.4"
+description: "Visitor-facing unsplit Display organ: one persistent recursive tetrahedral world and minimap in which the viewer witnesses relocatable page-organism interlocutors mounted at loci."
+version: "2.0"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
 
-`display` is the visitor-facing organ of the surrounding `cambium` repository organism. It owns **how admitted truth becomes perceptible**; it does not own the semantic constitution of the whole it depicts.
+`display` is the visitor-facing organ of `cambium`. It owns how admitted organism truth becomes perceptible; it does not own the semantic constitution of the independent organisms it depicts.
 
-## boundary and identity
+## Boundary
 
 - host whole: `cambium`
 - outer host locus: `w / expression`
 - physical custody: `w/display/`
 - inner root: this directory
-- current inner phenotype: unsplit (`INDEX.yaml == {}`)
-- inner `_cambium.yaml`: absent until a complete Display-local CCCC split is earned
+- Display phenotype remains unsplit: `INDEX.yaml == {}`
+- no Display-local `_cambium.yaml` exists until a complete local split is actually earned.
 
-Host `w ⟦ display:root ⟧` is a scope transition, not host `ww`.
+Host `w ⟦ display:root ⟧` is a membrane/scope transition, never fake host `ww`.
 
-## current public whole — main-root, not Philosophy
+## Persistent world
 
-The public main page currently depicts the independently rooted Self-Similar Systems **main Drive root** through an admitted Display projection:
+The public membrane is **one persistent Display document/runtime**, not a collection of unrelated page shells.
 
-`main-root/_feed or authoritative root state → admission/transduction → w/display/main-root.json → public membrane`
+Display keeps alive across every page-organism encounter:
 
-`main-root.json` is not semantic authority and does not make the main Drive root a descendant of Display or cambium. It is a bounded public projection whose current source identity is preserved explicitly. The authoritative root remains the independently rooted Drive organism.
+- the large realized tetrahedral world/background;
+- the global minimap/address navigator;
+- current recursive scope and VIEW;
+- the exact address/quotient geometry;
+- locus shader protocol;
+- tetrahedral fold/closure transition;
+- activity receptor and browser encounter/history body.
 
-Current admitted root constitution:
+Changing page-organism interlocutor changes local manifestation, not the existence of this global physiology.
 
-- `w · CREATE → Form`
-- `x · COPY → Continuity`
-- `z · CONTROL → Care`
-- `y · CULTIVATE → Inquiry`
+## Recursive address law
 
-Current intact outer placements are projected only as whole occupants: Morphogenetic Painting at Form, Ternary + Mnemos Autobiography at Continuity, Regeneration at Care, and Papers at Inquiry. Their interiors remain their own address spaces.
+Canonical geometry comes from `z/address.js` and `RITUALS/navigation/RITUAL.md`.
 
-`Google AI Studio` remains a provider-constrained aperture/tree-eye rather than a semantic address. `muses` remains an opaque unmigrated whole. `legacy` remains unresolved root-stomach matter.
+Every active organismic scope begins at local root `ε` and may realize the same `{w,x,z,y}` fourfold recursively without fixed depth.
 
-The earlier Philosophy-root renderer is **superseded as the public main architecture**. Philosophy-era carriers may remain as historical repository tissue until separately metabolized/retired, but they are not the public root and must not drive the build.
+Semantic place is quotient locus, not cell centroid. Only realized ranks appear.
 
-## perceptual law — literal realized anatomy
+Independent organism entry restarts the same address law locally:
 
-The rendered body is a literal projection of realized structure only.
+`main:y ⟦ papers:root ⟧`
 
-- Never complete a recursive rank for visual symmetry.
-- If one branch has differentiated more deeply than its siblings, only that branch gains the corresponding geometry.
-- Potential descendants are not anatomy.
-- The big tetrahedral body is the current perceptual world and is directly draggable.
-- Rotation is view state only; release leaves the body where the visitor placed it.
-- Ambient edge/face/volume hit-testing or highlight fireworks are forbidden in the navigation view. Higher-rank relations may later receive deliberate content-specific views, but pointer crossing is not information.
+not `main:yy`.
 
-## rank-invariant site primitive
+## Witness and interlocutors
 
-The canonical local site law is `RITUALS/site-holon/RITUAL.md`.
+Canonical encounter law is `RITUALS/site-holon/RITUAL.md`.
 
-Display does not treat a raw path as page identity. It distinguishes:
+- **Witness** = the viewer/person navigating Display.
+- **Address/path** = recursive route genealogy.
+- **Locus** = quotient place.
+- **Interlocutor** = stable page-organism mounted there.
 
-`stable site identity != mounted locus != raw navigation witness`
+One locus may host zero, one, or many interlocutors. Multiple interlocutors at one locus compose in one encounter rather than being displaced into invented geometry.
 
-A site-holon remains viable when later organismic growth remounts it at a deeper locus. Reciprocal raw paths such as `xyw ~ xwy` resolve to one canonical locus while preserving both genealogical witnesses. When both witnesses carry active tissue, their interlocutors occupy two chambers of the same site: vertical split on wide viewports, horizontal split on tall viewports.
+Interlocutor identity is independent of host locus. Remounting a page-organism must not require rewriting its local implementation.
 
-Every site-holon carries one locus-shader protocol but may realize that shader completely differently. Local content may be text, media, DOM, WebGL/WebGPU, executable code, navigation or any lawful combination; the primitive preserves coherence without forcing one template.
+## Current first two specimens
 
-Transitions between arbitrary locally different sites close the visible membrane into a tetrahedral liminal state, swap the current mount while closed, then unfold the destination. The transition operates on the site membrane rather than requiring either site's inner implementation to know the other.
+### `organism:philosophy`
 
-The current main-root renderer is therefore **specimen zero**, not a privileged homepage architecture. It has not yet earned executable site-holon v0 conformance; the law is backpropagated first so actualization can be tested against a stable primitive rather than retrofitted after more special-case pages accumulate.
+- initial landing/entry interlocutor;
+- currently mounted at `main:ε`;
+- uses the persistent global world/minimap;
+- locally adds direct inspection through the large background tetrahedral field;
+- dragging the large background changes orientation;
+- background selection changes VIEW only; commitment remains separate.
 
-## navigation physiology
+### `organism:papers`
 
-The canonical interaction law is carried by `RITUALS/navigation/RITUAL.md`; quotient site identity and relocation law are carried by `RITUALS/site-holon/RITUAL.md`.
+- independently rooted page-organism;
+- currently mounted at `main:y`;
+- entering it restarts at `papers:ε`;
+- uses the same persistent large world and global minimap;
+- does not inherit Philosophy's background-selection specialty;
+- its local locus selection therefore comes through the invariant global minimap.
 
-Two states remain distinct:
+These mounts are current environment, not identity. Papers must remain the same organism if remounted elsewhere.
 
-`LOOK HERE != GO HERE`
+## Public projections
 
-- selecting realized geometry changes **VIEW** without changing the current mounted site;
-- the background/body may smoothly focus the selected locus;
-- **ENTER** is a separate deliberate commitment into the site-holon currently mounted at that locus;
-- raw traversal witness is preserved even when multiple witnesses coalesce to one locus.
+The current bounded admitted projections are:
 
-The persistent minimap is global orientation only: realized structure + HERE + VIEW. It does not carry relation derivations or become a second knowledge object.
+- `main-root.json` — host/main recursive scope projection;
+- `papers.json` — Papers local public projection.
 
-Trackpad/touch rotation uses two separate velocity axes: horizontal control changes yaw only; vertical control changes pitch only; distance from midpoint sets speed; release returns that axis to zero without changing the other.
+Neither is semantic authority. Their source organisms remain authoritative outside Display.
 
-## accessibility as primary interaction quality
+## Manifestation freedom
 
-The public membrane must remain low-friction under touch, trackpad, keyboard and reduced-motion conditions.
+Page-organism manifestations may be radically different: text, images, lists, DOM, canvas, WebGL/WebGPU, video, sound, executable code or combinations.
 
-- fullscreen/no-scroll body interaction may own touch dragging;
-- direct manipulation uses pointer capture;
-- realized minimap loci have semantic keyboard-accessible equivalents;
-- no meaningful action may require hover precision;
-- reduced-motion preference is respected for nonessential transitions while preserving understandable navigation state;
-- language changes expression rather than semantic address.
+The freedom is local. It does not replace the global Display physiology.
 
-Accessibility is not a fallback skin. It is part of the primary feel of the organism.
+## Build boundary
 
-## lifecycle shell
+`y/build.py` must emit one public `index.html` carrying the persistent Display shell and the currently admitted interlocutor projections/assets.
 
-Display owns its own local shell:
+A page-organism must not require a second HTML document merely to be entered. Separate document routing is not the site-holon invariant.
 
-- `_stomach/` — unresolved visitor-facing nutrient;
-- `_feed/` — current source-owned Display self-presentation;
-- `_root/` — append-oriented Display HOME history;
-- `_waste/` — retired Display-local material.
+Old experiment carriers may remain as repository history/tissue until explicitly retired, but they must not enter the generated membrane once superseded.
 
-The current public membrane is generated output, not `_feed` and not living semantic anatomy.
+## Production acceptance
 
-## build / outward membrane
+A Display mutation closes only after:
 
-`w/display/template.html` is the accepted current WebGL renderer. `w/display/main-root.json` is its admitted current root projection. `y/build.py` injects that projection into the self-contained membrane and writes `_site/index.html`.
+1. structural/address/unit witnesses pass;
+2. the exact generated artifact is exercised in a real browser;
+3. Philosophy and Papers both work inside one persistent membrane;
+4. the global minimap survives both;
+5. Philosophy-only background inspection and Papers minimap-only inspection are empirically distinct;
+6. Papers can be remounted to another host locus without rewriting Papers;
+7. a shared locus can visibly compose multiple page-organisms;
+8. tetrahedral closure surrounds the actual encounter swap.
 
-Canonical current witness:
+CI success alone is not browser closure.
 
-```sh
-python3 y/build.py --artifact _site
-python3 y/check.py --artifact _site
-SITE_DIR=_site node y/test-address.cjs
-python3 y/build.py --artifact _site --check
-```
+## Compression
 
-These checks witness the existing realized-only root membrane; they do **not** yet witness the newly earned site-holon primitive. Actualization must add executable quotient-locus, relocation, chamber and tetrahedral-closure tests before v0 conformance is claimed.
-
-A production change is not closed merely because law was documented. When a working primitive implementation is accepted and requested to be backpropagated, the accepted implementation itself must become the built public membrane unless a concrete blocker prevents that mutation.
-
-## closure
-
-A Display law mutation may earn HOME when reusable physiology has been clearly derived and its implementation debt is stated truthfully. A production implementation closes only when the public artifact visibly embodies the accepted state, executable witnesses pass, durable Display HOME is appended, and `_feed` may then catch up mechanically.
-
-Compression: **show only realized body; mount sites by locus rather than confusing path with identity; preserve every lawful witness; let local expression vary wildly behind one viable membrane; fold closed to move, then unfold again.**
+**Display is one persistent infinitely recursive tetrahedral perceptual world. The viewer witnesses loci through address genealogy; loci host relocatable page-organism interlocutors; local manifestations vary, while navigation, minimap, shader protocol and closure remain invariant.**
