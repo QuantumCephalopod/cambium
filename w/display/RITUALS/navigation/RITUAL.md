@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology for one infinitely recursive tetrahedral address law, witnessed by the viewer and shared across relocatable page-organism interlocutors."
 organism: display
 geometry: tetrahedral
-version: "1.1"
+version: "1.2"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -61,7 +61,23 @@ It preserves the current active recursive scope, realized loci, VIEW, and recove
 
 The minimap is never replaced by a local page implementation.
 
-When several interlocutors are visible at one locus, the minimap belongs to neither chamber. It moves to the shared seam/center and remains the witness's global navigation organ.
+## Global Navigation Aperture — membrane space, never content space
+
+The global navigator does **not** reserve a permanent rectangle or corner inside any interlocutor's local content layout.
+
+It belongs to Display's membrane.
+
+- **single interlocutor** — the closed aperture is anchored to the outer Display membrane;
+- **shared-locus split** — the same aperture is anchored to the shared seam/junction between interlocutor worlds;
+- **larger composition** — the aperture belongs to the compositor junction, never to one chamber.
+
+The closed state leaves only a small persistent diamond/tetrahedral marker so the witness can discover the global navigator without sacrificing local layout real-estate.
+
+Pointer hover/proximity, keyboard focus or touch/tap may open the membrane into a symmetric **diamond pocket** revealing the global minimap and global orientation rails behind it. Click/tap may pin the aperture open; Escape or explicit unpin closes it.
+
+Opening/closing the aperture changes only Display membrane state. It does not create an address, move an interlocutor, change a locus, or alter page-organism identity.
+
+The aperture is therefore itself rank/locus invariant: when an interlocutor later moves left/right or to another address, its local layout does not need to know where the global navigation organ currently appears.
 
 ## Page-local background fields
 
@@ -122,6 +138,8 @@ Two interlocutors mean two full local worlds:
 
 The split/grid compositor must not turn them into floating page cards over one shared field and must not invent additional addresses.
 
+The global navigator aperture belongs to the seam between these worlds rather than stealing content space from either one.
+
 ## Transition
 
 Committed movement uses the invariant Display membrane:
@@ -134,6 +152,8 @@ The global Display shell, minimap, orientation state and encounter ancestry surv
 
 The same realized address structure must remain operable by pointer, keyboard, touch and reduced-motion paths. Hover may enhance but must not be the only route to any meaningful action.
 
+The Global Navigation Aperture must therefore open by keyboard focus and touch/tap as well as pointer hover, and its closed marker remains a semantic button rather than a hover-only target.
+
 ## Compression
 
-**One infinitely recursive tetrahedral law. The viewer is the witness. Path is genealogy, locus is place, interlocutors are what is encountered there. Every interlocutor carries its own identity-shaded local field; the global minimap and orientation always survive, and shared loci compose full local worlds rather than overlays.**
+**One infinitely recursive tetrahedral law. The viewer is the witness. Path is genealogy, locus is place, interlocutors are what is encountered there. Every interlocutor carries its own identity-shaded local field; global navigation lives in a membrane aperture that moves to the relevant seam without consuming interlocutor content space.**
