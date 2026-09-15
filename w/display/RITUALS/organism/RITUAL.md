@@ -1,7 +1,7 @@
 ---
 name: display
-description: "Visitor-facing unsplit Display organ: one persistent recursive tetrahedral world and minimap in which the viewer witnesses relocatable page-organism interlocutors mounted at loci."
-version: "2.0"
+description: "Visitor-facing unsplit Display organ: one persistent recursive navigation physiology in which the viewer witnesses relocatable page-organism interlocutors, each carrying its own local tetrahedral background and shader identity."
+version: "2.1"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -19,21 +19,37 @@ version: "2.0"
 
 Host `w ⟦ display:root ⟧` is a membrane/scope transition, never fake host `ww`.
 
-## Persistent world
+## Persistent global physiology
 
 The public membrane is **one persistent Display document/runtime**, not a collection of unrelated page shells.
 
 Display keeps alive across every page-organism encounter:
 
-- the large realized tetrahedral world/background;
-- the global minimap/address navigator;
-- current recursive scope and VIEW;
-- the exact address/quotient geometry;
-- locus shader protocol;
+- one infinitely recursive tetrahedral addressing law;
+- one global minimap/address navigator;
+- one global orientation state and x/y velocity controls;
+- current recursive scope, VIEW and recoverable encounter ancestry;
+- exact address/quotient geometry;
+- one shader protocol;
 - tetrahedral fold/closure transition;
 - activity receptor and browser encounter/history body.
 
-Changing page-organism interlocutor changes local manifestation, not the existence of this global physiology.
+Changing page-organism interlocutor changes local embodiment, not the existence of this global physiology.
+
+## Interlocutor-owned local worlds
+
+The background is not a universal Display wallpaper.
+
+Every interlocutor/page-organism brings its own:
+
+- local tetrahedral background/field;
+- shader identity;
+- local manifestation/tissue;
+- local interaction specialties.
+
+Shader belongs to interlocutor identity, not address placement. Remounting an interlocutor changes where it is encountered but preserves its shader/background embodiment unless that interlocutor itself changes.
+
+When several interlocutors share one locus, each keeps its own full local field. Split/grid composition places those local worlds beside one another; it does not reduce them to cards over one shared background.
 
 ## Recursive address law
 
@@ -62,27 +78,46 @@ One locus may host zero, one, or many interlocutors. Multiple interlocutors at o
 
 Interlocutor identity is independent of host locus. Remounting a page-organism must not require rewriting its local implementation.
 
+## Global minimap and split composition
+
+The global minimap remains available from every interlocutor.
+
+For a single interlocutor it stays in its ordinary global navigation position.
+
+For a two-interlocutor split it moves to the shared seam/center and belongs to neither side. The same global orientation controls drive both local backgrounds, so their tetrahedral fields rotate coherently while retaining distinct identity shaders.
+
+The minimap is therefore the invariant navigation organ across otherwise radically different page-organism embodiments.
+
 ## Current first two specimens
 
 ### `organism:philosophy`
 
 - initial landing/entry interlocutor;
 - currently mounted at `main:ε`;
-- uses the persistent global world/minimap;
-- locally adds direct inspection through the large background tetrahedral field;
-- dragging the large background changes orientation;
-- background selection changes VIEW only; commitment remains separate.
+- carries its own tetrahedral background and shader identity;
+- locally adds direct inspection through that background;
+- direct background drag updates the shared global orientation state;
+- background selection changes VIEW only; commitment remains separate;
+- the global minimap remains available in parallel.
 
 ### `organism:papers`
 
 - independently rooted page-organism;
 - currently mounted at `main:y`;
 - entering it restarts at `papers:ε`;
-- uses the same persistent large world and global minimap;
+- carries its own tetrahedral background and its own shader identity;
 - does not inherit Philosophy's background-selection specialty;
 - its local locus selection therefore comes through the invariant global minimap.
 
 These mounts are current environment, not identity. Papers must remain the same organism if remounted elsewhere.
+
+## Orientation latch behavior
+
+The global x/y rails control angular velocity.
+
+A pointer may drag either rail to **any** value. When pointer movement settles at that value for the settle interval, that exact value locks immediately and the active pointer session ends. Further movement of the still-held mouse cannot alter the locked value. A new pointer-down picks the control up again; a quick release before another settle returns the axis to zero.
+
+The lock is not an extreme-position gesture.
 
 ## Public projections
 
@@ -117,11 +152,14 @@ A Display mutation closes only after:
 4. the global minimap survives both;
 5. Philosophy-only background inspection and Papers minimap-only inspection are empirically distinct;
 6. Papers can be remounted to another host locus without rewriting Papers;
-7. a shared locus can visibly compose multiple page-organisms;
-8. tetrahedral closure surrounds the actual encounter swap.
+7. a shared locus visibly composes multiple page-organisms as full local worlds with their own backgrounds/shaders;
+8. the global minimap occupies the split seam/center;
+9. global orientation changes rotate every active local background coherently;
+10. a non-extreme axis value can settle-lock while the pointer is still held and remains unchanged by later pointer movement;
+11. tetrahedral closure surrounds the actual encounter swap.
 
 CI success alone is not browser closure.
 
 ## Compression
 
-**Display is one persistent infinitely recursive tetrahedral perceptual world. The viewer witnesses loci through address genealogy; loci host relocatable page-organism interlocutors; local manifestations vary, while navigation, minimap, shader protocol and closure remain invariant.**
+**Display is one persistent infinitely recursive navigation physiology. The viewer witnesses loci through address genealogy; loci host relocatable page-organism interlocutors; every interlocutor carries its own background, shader identity and manifestation, while minimap, orientation, closure and history remain globally invariant.**
