@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for relocatable page-organism interlocutors mounted at infinitely recursive tetrahedral loci while one viewer witnesses the encounter."
 organism: display
 geometry: tetrahedral
-version: "1.2"
+version: "1.3"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -99,13 +99,19 @@ The global minimap is Display membrane physiology, not interlocutor content.
 
 No page-organism may be forced to reserve a permanent corner, rectangle or padding region for the navigator merely because of its current left/right placement.
 
-Display therefore exposes the navigator through a **membrane aperture**:
+Display therefore exposes the navigator through one movable **membrane aperture**:
 
-- with one interlocutor, the aperture anchors to the outer Display membrane;
-- with two interlocutors, it anchors to the shared seam between their worlds;
+- with one interlocutor, the aperture anchors to the outer Display membrane as a small **square port**;
+- with two interlocutors, it anchors to the shared seam as a small **diamond threshold**;
 - with larger compositions, it belongs to the compositor junction rather than to any one chamber.
 
-The closed aperture leaves a small persistent diamond/tetrahedral marker. Pointer hover, keyboard focus or touch/tap opens a symmetric diamond pocket revealing the global minimap and orientation rails. The aperture may be pinned open, but its open state is still membrane state rather than page-organism state.
+In shared-locus composition the seam aperture performs a threshold transformation:
+
+`diamond -> bloom -> rectilinear control cavity`
+
+The aperture shell changes geometry while the global minimap and orthogonal x/y rails remain the stable control tissue revealed behind it. The transformation belongs to Display membrane physiology, not to either interlocutor.
+
+Pointer hover, keyboard focus or touch/tap may open the aperture. Click/tap may pin it open, but its open/pinned state is membrane state rather than page-organism state.
 
 Because the navigator occupies membrane space, relocation of an interlocutor from left to right or from one address to another never requires rewriting that interlocutor's local layout.
 
@@ -132,7 +138,7 @@ Different page-organisms may add local behavior without universalizing it.
 
 Current first specimens:
 
-- **Philosophy / landing** — `organism:philosophy`; its own background is additionally an interaction organ: direct drag may orient the shared orientation state and direct background selection may inspect loci without entering them.
+- **Philosophy / landing** — `organism:philosophy`; its own background is additionally an interaction organ: direct drag may orient the shared orientation state and direct background selection may inspect loci without entering them. After this local movement settles, Philosophy may smoothly reorient toward the canonical global-centroid framing so the whole realized structure naturally returns into view. Renewed manual/global-axis input cancels that swingback immediately.
 - **Papers** — `organism:papers`; brings its own tetrahedral background and shader but its background does not select loci. Papers navigation uses the invariant global minimap.
 
 The global minimap remains available from every interlocutor and every split composition through the membrane aperture.
@@ -193,13 +199,14 @@ A production implementation conforms when real browser contact proves at least:
 5. entering Papers restarts at `papers:ε`, not a concatenated host address;
 6. two page-organisms mounted at one locus render as one split encounter with two full local backgrounds, not overlay cards;
 7. each interlocutor preserves its own shader identity across relocation and split composition;
-8. the global navigation aperture occupies membrane space and moves from outer boundary to the shared split seam without consuming interlocutor content space;
-9. aperture hover/focus/tap opens one diamond pocket and pin/unpin does not alter locus or interlocutor identity;
-10. global orientation changes rotate all active interlocutor backgrounds coherently;
-11. an axis can latch at a non-extreme value by holding still and remains unchanged when the still-held pointer moves afterwards;
-12. the same Display shell survives source close, closed-state swap, and destination unfold;
-13. activity follows stable interlocutor identity.
+8. the global navigation aperture occupies membrane space and moves from an outer **square port** to the shared split seam without consuming interlocutor content space;
+9. shared-locus aperture opening begins as a diamond threshold and resolves into a rectilinear x/y control cavity;
+10. Philosophy background movement can settle into a smooth global-centroid swingback and renewed manual input cancels it;
+11. global orientation changes rotate all active interlocutor backgrounds coherently;
+12. an axis can latch at a non-extreme value by holding still and remains unchanged when the still-held pointer moves afterwards;
+13. the same Display shell survives source close, closed-state swap, and destination unfold;
+14. activity follows stable interlocutor identity.
 
 ## Compression
 
-**The witness navigates one invariant infinitely recursive tetrahedral law. Paths preserve genealogy; quotient determines locus; loci host zero or more relocatable interlocutor page-organisms. Each interlocutor carries its own background, shader identity and manifestation; the global navigator lives in Display membrane space and opens through the seam without stealing local layout.**
+**The witness navigates one invariant infinitely recursive tetrahedral law. Paths preserve genealogy; quotient determines locus; loci host zero or more relocatable interlocutor page-organisms. Each interlocutor carries its own background, shader identity and manifestation; the global navigator lives in Display membrane space as a square outer port or seam diamond that resolves into a rectilinear control cavity, while Philosophy may locally swing its field back toward the global whole.**
