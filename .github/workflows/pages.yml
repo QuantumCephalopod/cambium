@@ -71,6 +71,14 @@ jobs:
       - name: Verify membrane bytes
         run: python3 y/build.py --artifact _site --check
 
+      - name: Upload staging browser witness
+        if: github.repository == 'QuantumCephalopod/cambium'
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-display
+          path: _site
+          if-no-files-found: error
+
       - name: Configure GitHub Pages
         if: github.repository == 'self-similar-systems/cambium'
         uses: actions/configure-pages@v5
