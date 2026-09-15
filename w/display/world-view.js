@@ -20,9 +20,14 @@ function drawTwin(){
   const cells=[...STRUCT.leaves].sort((a,b)=>N.centroid(a.tet)[2]-N.centroid(b.tet)[2]);
   for(const cell of cells){const pts=cell.tet.map(miniProject);tc.strokeStyle='rgba(241,239,233,.15)';tc.lineWidth=1.35;for(const [a,b] of edgeIx){tc.beginPath();tc.moveTo(pts[a].x,pts[a].y);tc.lineTo(pts[b].x,pts[b].y);tc.stroke()}}
   for(const a of STRUCT.addresses){const p=miniProject(a.point),isView=nav.view===a.path,rad=Math.max(2.7,5.2-a.path.length*.55);tc.beginPath();tc.arc(p.x,p.y,rad,0,Math.PI*2);tc.fillStyle=isView?'rgba(255,255,255,.98)':'rgba(241,239,233,.34)';tc.fill();if(isView){tc.beginPath();tc.arc(p.x,p.y,rad+7,0,Math.PI*2);tc.strokeStyle='rgba(255,255,255,.68)';tc.stroke();tc.fillStyle='rgba(241,239,233,.72)';tc.font='16px ui-monospace,monospace';tc.fillText('VIEW '+a.path.toUpperCase(),p.x+rad+9,p.y+4)}}
+  /* ε is the global overview address, not a fifth tetrahedral vertex. Keep it
+   * navigable by drawing a distinct membrane-like square at the global centroid. */
+  const o=miniProject([0,0,0]),overview=nav.view==='';
+  tc.lineWidth=overview?2:1.25;tc.strokeStyle=overview?'rgba(255,255,255,.92)':'rgba(241,239,233,.38)';tc.strokeRect(o.x-5.5,o.y-5.5,11,11);
+  if(overview){tc.beginPath();tc.arc(o.x,o.y,12,0,Math.PI*2);tc.strokeStyle='rgba(255,255,255,.46)';tc.stroke();tc.fillStyle='rgba(241,239,233,.62)';tc.font='14px ui-monospace,monospace';tc.fillText('OVERVIEW',o.x+16,o.y+4)}
 }
 function twinPoint(e){const r=twin.getBoundingClientRect();return {x:(e.clientX-r.left)*twin.width/r.width,y:(e.clientY-r.top)*twin.height/r.height}}
-function hitAddress(x,y){let best=null;for(const a of STRUCT.addresses){const p=miniProject(a.point),d=Math.hypot(x-p.x,y-p.y),limit=Math.max(24,34-a.path.length*2);if(d<limit&&(!best||d<best.d))best={a,d}}return best?.a?.path||''}
+function hitAddress(x,y){let best=null;const o=miniProject([0,0,0]),od=Math.hypot(x-o.x,y-o.y);if(od<22)best={path:'',d:od};for(const a of STRUCT.addresses){const p=miniProject(a.point),d=Math.hypot(x-p.x,y-p.y),limit=Math.max(24,34-a.path.length*2);if(d<limit&&(!best||d<best.d))best={path:a.path,d}}return best?best.path:null}
 function emitView(source){if(!nav)return;route.textContent='SCOPE '+scopeId+':root · VIEW '+scopeId+':'+(nav.view||'root');miniState.textContent='scope '+scopeId+' · view '+(nav.view||'root');dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
 function emitOrientation(source='global'){dispatchEvent(new CustomEvent('sss:orientation',{detail:{orientation:[...orient],source}}))}
 const qDot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2]+a[3]*b[3];
@@ -38,7 +43,7 @@ function clearInspection(source='clear'){if(!nav)return;nav.clearInspection();em
 function setScope({id,projection:p}={}){if(!p?.root)throw new Error('scope projection required');scopeId=id||'scope';projection=p;nav=N.createState(p.root);STRUCT=nav.structure;clearSwingback();stopTween();emitView('scope');drawTwin();emitOrientation('scope')}
 function rotateBy(dx,dy,source='background'){clearSwingback();stopTween();orient=qNorm(qMul(qAxis([1,0,0],dy*.00325),qMul(qAxis([0,1,0],dx*.00325),orient)));drawTwin();emitOrientation(source);if(isPhilosophySource(source))scheduleSwingback(260)}
 
-twin.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;const p=twinPoint(e),path=hitAddress(p.x,p.y);if(path){inspect(path,'global-minimap');e.preventDefault()}});
+twin.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;const p=twinPoint(e),path=hitAddress(p.x,p.y);if(path!==null){if(path==='')clearInspection('global-minimap-overview');else inspect(path,'global-minimap');e.preventDefault()}});
 
 const axes={x:document.getElementById('axis-x'),y:document.getElementById('axis-y')};
 const AXIS_SETTLE_MS=520,AXIS_SETTLE_EPS=.018;
