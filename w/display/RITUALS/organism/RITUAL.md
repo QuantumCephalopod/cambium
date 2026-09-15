@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing unsplit Display organ: one persistent recursive navigation physiology in which the viewer witnesses relocatable page-organism interlocutors, each carrying its own local tetrahedral background and shader identity."
-version: "2.2"
+version: "2.3"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -82,13 +82,19 @@ Interlocutor identity is independent of host locus. Remounting a page-organism m
 
 The global minimap belongs to **Display membrane space**, not to any interlocutor's content layout.
 
-Display therefore exposes it through one movable aperture:
+Display exposes it through one movable aperture:
 
-- a single-interlocutor encounter anchors the closed aperture to the outer membrane;
-- a split encounter anchors it to the shared seam;
+- a single-interlocutor encounter anchors a small **square port** to the outer membrane;
+- a split encounter anchors a small **diamond threshold** to the shared seam;
 - larger compositions anchor it to the compositor junction.
 
-The closed state is only a small persistent diamond/tetrahedral marker. Hover/proximity, keyboard focus or touch/tap opens a symmetric diamond pocket revealing the global minimap and orientation rails. Click/tap may pin it open; Escape/unpin closes it.
+In split mode, opening performs one membrane animation:
+
+`diamond threshold -> bloom -> rectilinear control cavity`
+
+The aperture shell performs the transformation while the minimap and x/y rails are the stable control tissue revealed behind it.
+
+Hover/proximity, keyboard focus or touch/tap opens the aperture. Click/tap may pin it open; Escape/unpin closes it.
 
 No interlocutor has to keep bottom-left, bottom-right or any other permanent real-estate empty for the navigator. A page-organism can later move from left to right, or to another address entirely, without rewriting its local layout because the aperture belongs to Display rather than to the page-organism.
 
@@ -102,6 +108,8 @@ No interlocutor has to keep bottom-left, bottom-right or any other permanent rea
 - locally adds direct inspection through that background;
 - direct background drag updates the shared global orientation state;
 - background selection changes VIEW only; commitment remains separate;
+- after local background movement settles, Philosophy may smoothly reorient toward the canonical global-centroid framing so the whole realized structure returns into view;
+- renewed local or global-axis input cancels that swingback immediately;
 - the global navigator remains available through the Display aperture.
 
 ### `organism:papers`
@@ -164,15 +172,16 @@ A Display mutation closes only after:
 4. Philosophy-only background inspection and Papers minimap-only inspection are empirically distinct;
 5. Papers can be remounted to another host locus without rewriting Papers;
 6. a shared locus visibly composes multiple page-organisms as full local worlds with their own backgrounds/shaders;
-7. the global navigator aperture remains available in single mode without reserving interlocutor content space;
-8. the same aperture moves to the shared split seam and opens as a diamond pocket there;
+7. the global navigator aperture remains available in single mode as a square outer port without reserving interlocutor content space;
+8. the same aperture moves to the shared split seam as a diamond threshold and resolves into a rectilinear x/y control cavity;
 9. hover/focus/tap and pin/unpin work without changing locus or interlocutor identity;
 10. global orientation changes rotate every active local background coherently;
-11. a non-extreme axis value can settle-lock while the pointer is still held and remains unchanged by later pointer movement;
-12. tetrahedral closure surrounds the actual encounter swap.
+11. Philosophy local movement settles into a smooth global-centroid swingback that is cancelled by renewed user control;
+12. a non-extreme axis value can settle-lock while the pointer is still held and remains unchanged by later pointer movement;
+13. tetrahedral closure surrounds the actual encounter swap.
 
 CI success alone is not browser closure.
 
 ## Compression
 
-**Display is one persistent infinitely recursive navigation physiology. The viewer witnesses loci through address genealogy; loci host relocatable page-organism interlocutors; every interlocutor carries its own background, shader identity and manifestation, while the global navigator lives in membrane space and opens through the outer boundary or shared seam without stealing local layout.**
+**Display is one persistent infinitely recursive navigation physiology. The viewer witnesses loci through address genealogy; loci host relocatable page-organism interlocutors; every interlocutor carries its own background, shader identity and manifestation, while the global navigator lives in membrane space as a square outer port or seam diamond that resolves into a rectilinear control cavity, and Philosophy alone may gently swing its field back to the global whole.**
