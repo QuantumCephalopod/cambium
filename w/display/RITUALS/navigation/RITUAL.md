@@ -1,230 +1,178 @@
 ---
 name: navigation
-description: "Display-local navigation physiology: preserve one realized tetrahedral address net, let places remain literal loci on that net, resolve raw paths as witnesses rather than site identities, reveal deeper rank only through focused local explosion, separate inspection from commitment, and keep the global navigator precise, clickable and independently steerable."
+description: "Display-local navigation physiology for one infinitely recursive tetrahedral address law, witnessed by the viewer and shared across relocatable page-organism interlocutors."
 organism: display
 geometry: tetrahedral
-version: "0.3"
+version: "1.3"
 ---
 
 # NAVIGATION RITUAL — display local
 
-This ritual preserves the interaction and spatial grammar earned by direct use of the tetrahedral Display body. It governs **how a visitor sees, orients, focuses and commits movement**. It does not choose the semantic body being displayed, invent ontology, or replace an accepted material skin with a diagnostic rendering merely because geometry is being corrected.
+Navigation is the invariant perceptual relation between the **witness/viewer**, the infinitely recursive tetrahedral address law, and the page-organism interlocutors mounted at quotient loci.
 
-Canonical site identity / locus / witness / chamber physiology is owned by `../site-holon/RITUAL.md`.
+Canonical interlocutor/locus/shader law is carried by `../site-holon/RITUAL.md`.
 
-## 1 · One net, one realized body
+## One recursively self-similar address law
 
-Within one declared address space there is **one dense tetrahedral net and one realized Sierpiński tetrahedral body on that net**.
+Every organismic scope uses the same address alphabet `{w,x,z,y}` and may differentiate again without fixed depth.
 
-- A realized semantic place **is a vertex/locus of this body**. It is not the centroid of a tetrahedral cell.
-- Never place another miniature tetrahedron with its centroid at a semantic locus in order to depict the whole occupying that locus.
-- Never scatter occupants into invented micro-coordinates merely to reduce overlap. If several whole occupants share one lawful locus, they remain co-located until their own scope is entered or further structure is actually earned.
-- Never render a complete rank merely because recursive geometry could generate it. Potential addressability is not anatomy.
-- If one branch is deeper than its siblings, only its realized structure exists. Asymmetry is truthful morphology.
-- Geometry is rebuilt from current phenotype/address truth rather than from a global decorative depth, rank, subdivision count, packing algorithm, centroid layout, or symmetry completion.
+A semantic place is the exact tetrahedral **locus/vertex** represented by the address quotient. Cell centroids may be used only for camera framing or bookkeeping; they are never semantic places.
 
-Compression:
+Only realized structure is rendered. No global rank may be completed merely because recursion makes it possible.
 
-> **The place is the vertex. The organism is one net. Display may show only the structure that has actually been realized.**
+Self-continuation and reciprocal quotient relations preserve place identity, e.g. `point(x)=point(xx)` when `xx` is realized, and reciprocal addresses such as `xyw~xwy` share one locus while preserving distinct route genealogy.
 
-## 2 · Rank-local explosion — deeper structure is revealed, not spawned
+The invariant is the recursive law, not one globally shared background canvas. Each interlocutor may embody that same law in its own local tetrahedral field.
 
-Focusing a realized locus reveals the next realized rank **at that locus on the same address field**.
+## Rank-local opening
 
-- Navigation proceeds rank by rank. A focus operation does not dump the entire descendant subtree into the view at once.
-- If `x` is focused and its next split is realized, the existing `x` point persists as the self-continuation witness `xx`, while the other realized children `xw / xz / xy` become visible around it according to the inherited address geometry.
-- The self-continuation does not create a second point: `point(x) = point(xx)` under the router quotient when that witness exists.
-- Reciprocal/shared loci likewise follow the inherited quotient law; visual convenience must not manufacture another place.
-- A coarse representation becomes navigation wood when its finer split is shown; it does not become an independent floating object beside the finer rank.
-- Entering an independently rooted organ changes constitutive address space. The organ occupies the host locus as one whole; crossing the membrane restarts its local `w/x/z/y` semantics rather than concatenating a fake host path digit.
-- Perceptually, entering that whole may **open/explode the occupied host locus** and reveal the organ's realized local root on the same navigational field. That is a change of scope at one place, not a tiny tetrahedron deposited at that place.
+Opening/focusing a realized address reveals only its realized next rank in the active scope. It does not spawn a miniature tetrahedron as a second object at that point.
 
-Compression:
+Entering an independently rooted interlocutor changes scope at the host locus and restarts local addressing at `ε`:
 
-> **Focus opens a place. It does not add an object to the place.**
+`main:y -> ⟦ papers:root ⟧ -> papers:{w,x,z,y} -> ...`
 
-## 3 · Path, witness, locus and site are distinct
+not `main:yy`.
 
-Navigation begins with raw addresses but does not treat one raw spelling as canonical site identity.
+## Witness, route, locus, interlocutor
 
-- **raw path** — the literal traversal string;
-- **witness** — that raw path preserved as genealogy/evidence of how a locus was reached;
-- **locus** — the canonical place obtained under the inherited router quotient;
-- **site identity** — the stable site-holon currently mounted at that locus.
+- **Witness** — the viewer navigating the site.
+- **Address/path** — route genealogy through the recursive law.
+- **Locus** — quotient place reached by that address.
+- **Interlocutor** — page-organism mounted at that locus.
 
-For reciprocal witnesses such as `xyw ~ xwy`:
+Navigation resolves:
 
-- both raw paths remain truthful and independently navigable;
-- both resolve to the same locus;
-- neither spelling is privileged as the site's identity;
-- entering through one witness may orient/select its corresponding interlocutor chamber while remaining inside one canonical site-holon.
+`viewer -> address -> quotient locus -> 0..n interlocutors -> encounter`
 
-The required navigation resolution is:
+## LOOK HERE != GO HERE
 
-`raw path -> witness -> quotient locus -> mounted site identity -> chamber(s) -> manifestation`
+Inspection changes **VIEW** only.
 
-Browser history preserves the traversal actually taken even when another traversal reaches the same locus.
+Commit deliberately crosses into the page-organism encounter mounted at the selected locus.
 
-Compression:
+The witness must be able to inspect without accidental entry. Entry must be explicit.
 
-> **Path tells how I came. Locus tells where I am. Site identity tells what is here.**
+## Persistent global navigator
 
-## 4 · Inspect first, commit separately
+The small tetrahedral twin/minimap is the global address organ and remains available from every page-organism and every split encounter.
 
-Orientation and navigation are distinct acts.
+It preserves the current active recursive scope, realized loci, VIEW, and recoverable scope ancestry. Selecting a realized minimap target changes VIEW only.
 
-- **Inspect / VIEW** changes the visual focus inside the currently encountered site-holon.
-- **Commit / HERE** deliberately enters the stable site-holon mounted at the selected locus or crosses an independently rooted organ membrane.
-- Rotating either representation changes view state only.
-- Selecting a navigator address/locus changes VIEW only unless an explicit commit action is performed.
-- A committed transition must be deliberate enough that accidental trackpad/touch movement cannot trigger it.
-- The visible/history path preserves the witness sequence and membrane crossings taken to reach the current locus; ancestor steps remain recoverable.
-- Commit never rewrites site identity merely because the same site was remounted after a deeper split.
+The minimap is never replaced by a local page implementation.
 
-Invariant:
+## Global Navigation Aperture — membrane space, never content space
 
-`LOOK HERE != GO HERE`
+The global navigator does **not** reserve a permanent rectangle or corner inside any interlocutor's local content layout.
 
-## 5 · Tetrahedral transition membrane
+It belongs to Display's membrane.
 
-Committed movement between locally arbitrary sites uses the invariant closure law carried by `site-holon`:
+- **single interlocutor** — the aperture anchors to the outer Display membrane and its closed marker is a small **square port**;
+- **shared-locus split** — the same aperture anchors to the shared seam/junction and its closed marker becomes a **diamond**;
+- **larger composition** — the aperture belongs to the compositor junction, never to one chamber.
 
-`visible site -> four-facet fold -> tetrahedral closure -> locus/witness/mount swap -> four-facet unfold -> destination site`.
+In a split encounter the aperture opening is itself animated as a membrane transformation:
 
-Navigation owns **where and when** commitment happens. Site-holon physiology owns the membrane through which arbitrary local manifestations close and reopen. Neither destination nor source runtime needs to understand the other's internals.
+`closed diamond -> diamond bloom -> rectilinear control cavity`
 
-Reduced-motion realizations may simplify nonessential motion, but they must preserve legible departure, transition and arrival states rather than collapsing commitment into an unexplained content replacement.
+The opening shell resolves into a quader-like/rectilinear chamber suitable for the global minimap and the orthogonal x/y rails. The content behind the aperture remains stable while the aperture geometry performs the threshold transformation.
 
-## 6 · Large body — full material world, focused by optics
+Pointer hover/proximity, keyboard focus or touch/tap may open the aperture. Click/tap may pin it open; Escape or explicit unpin closes it.
 
-The large tetrahedral field is the primary perceptual body.
+Opening/closing the aperture changes only Display membrane state. It does not create an address, move an interlocutor, change a locus, or alter page-organism identity.
 
-- It remains the **whole tetrahedral world**, not a cropped rank diagram and not a wireframe-only replacement.
-- Pointer/touch press + drag may rotate the large body. Release leaves it exactly where placed; no forced inertia or snap is required.
-- The large navigation view performs no automatic edge/face/volume highlighting or semantic pointer hit-testing.
-- Focus should reduce clutter primarily through **attention optics** rather than by accumulating annotations or destroying the surrounding body.
-- Unfocused structure may remain visibly present but be pushed into extreme blur, depth-of-field haze, desaturation, dimming or equivalent background treatment. The focused rank/place remains legible and materially present.
-- Labels, telemetry, genealogy and other information should not accumulate globally merely because they are available. Prefer current-rank/focus-local revelation and explicit layers.
-- HOME/activity telemetry may modulate the material physiology of already-realized bodies, but it must not change address geometry or force persistent visual callouts.
+The aperture is therefore itself rank/locus invariant: when an interlocutor later moves left/right or to another address, its local layout does not need to know where the global navigation organ currently appears.
 
-### Material continuity
+## Page-local background fields
 
-Once a material/shader body has been accepted as the live public visual language, a topology/navigation repair must preserve that visual character unless the user explicitly accepts another skin.
+Each interlocutor carries its own local tetrahedral background together with its own shader identity.
 
-- Wireframe is a valid diagnostic/debug projection.
-- Wireframe is **not** a public fallback merely because the geometry implementation is simpler there.
-- Correcting spatial truth must not silently regress the accepted surface into a generic technical diagram.
+The background therefore belongs to page-organism identity rather than to address placement. Remounting an interlocutor must preserve its local background/shader embodiment.
 
-Compression:
+Local interlocutors may add extra interaction to their own field without universalizing that behavior.
 
-> **Keep the whole world present; make attention sharp and everything else recede. Geometry repair is not permission to drain the body of character.**
+Current specimens:
 
-## 7 · Navigator twin — global clickable address map
+- **Philosophy** — its local background is directly draggable for orientation and may select/inspect realized loci without entering them.
+- **Papers** — its local background is present and identity-shaded but is passive for locus selection. Papers uses the invariant global minimap.
 
-The small tetrahedron is the persistent **global orientation and address organ** for the current navigational universe.
+This difference is local behavior, not a difference in address geometry.
 
-It preserves:
+### Philosophy global-centroid swingback
 
-- the full realized global address net for the currently admitted organism map;
-- every realized navigable witness/locus needed for entry;
-- exact current `HERE` locus/site;
-- exact current `VIEW` locus when different;
-- the raw witness/rank/membrane sequence by which the current view was reached;
-- the same orientation state used to interpret the large body.
+Philosophy has one additional local orientation behavior because its large background is itself a navigation instrument.
 
-Interaction law:
+After direct Philosophy background movement or background-driven inspection settles, orientation may smoothly interpolate back toward the canonical **global-centroid framing** so the currently realized structure returns fully into view.
 
-- Pointer click/tap on a realized navigator target selects its locus for inspection while retaining the raw witness selected.
-- The navigator tetrahedron itself is **not mouse-drag rotated**; mouse interaction there is reserved for hitting addresses accurately.
-- On hover, pointer focus, or equivalent accessible intent, the navigator enlarges while remaining globally oriented so fine/deep addresses become easier to hit.
-- Enlargement changes only interaction scale, never address geometry.
-- Hover enlargement is convenience only; keyboard/touch alternatives must provide the same meaningful address access.
-- The navigator does not become a second knowledge object: no ambient 6E/4F/1T derivation overlays, content previews or semantic fireworks.
+The swingback is:
 
-When the organism grows asymmetrically, the navigator grows asymmetrically with it.
+- smooth rather than a snap;
+- delayed briefly after interaction;
+- cancelled immediately by renewed manual movement or global-axis input;
+- Philosophy-local rather than a universal page-organism rule.
 
-## 8 · Two independent velocity axes
+The goal is perceptual continuity: local exploration remains playful while the whole realized structure naturally re-enters the frame after the move.
 
-Fine navigator orientation uses **two separate velocity controllers**, one per axis.
+## Material continuity
 
-### Horizontal controller
-- one horizontal track and knob;
-- horizontal pointer displacement only;
-- controls yaw only;
-- orthogonal displacement is ignored.
+Each interlocutor's local field remains a material tetrahedral world rather than a card overlay on a universal wallpaper.
 
-### Vertical controller
-- one vertical track and knob;
-- vertical pointer displacement only;
-- controls pitch only;
-- orthogonal displacement is ignored.
+Focus should make non-focused structure recede optically rather than replacing the body with a diagram or cropping away recursive context.
 
-For each axis:
+Accepted material/shader character must survive topology/navigation corrections.
 
-- midpoint means zero velocity;
-- a small midpoint deadzone prevents accidental drift;
-- speed grows continuously/nonlinearly with distance from midpoint;
-- direction follows the side of midpoint;
-- release immediately returns that axis velocity to zero and the knob to center;
-- one controller never silently changes the other axis.
+## Global orientation controls
 
-This is a **velocity controller**, not a position scrubber and not a two-axis joystick.
+The global minimap has separate x/y velocity axes:
 
-## 9 · Accessibility and low-friction addressability
+- x affects yaw only;
+- y affects pitch only;
+- midpoint = zero;
+- displacement controls speed continuously;
+- one axis never mutates the other.
 
-The same structure must remain navigable without precision pointer control.
+The controls act on global orientation state. Every currently visible interlocutor field reads that same orientation, so a split encounter rotates all local tetrahedra coherently while preserving their distinct shaders and local geometry.
 
-- generous hit areas around realized navigator loci;
-- navigator magnification available through pointer focus and keyboard focus, not hover alone;
-- keyboard alternatives for locus inspection, ancestor return and axis rotation;
-- explicit focus states;
-- semantic accessible navigation independent of canvas pixels;
-- reduced-motion preference respected while keeping commitment state understandable;
-- fullscreen/no-scroll direct body manipulation must not fight document scrolling on touch devices;
-- no browser persistence is required merely to preserve state inside one encounter.
+### Settle-to-lock
 
-Accessibility is part of the primary interaction quality, not a fallback skin.
+Pointer latching is position-agnostic.
 
-## 10 · Regression wounds already metabolized
+- pull an axis to any desired value;
+- when pointer displacement settles sufficiently at that value for the settle interval, latch that exact value immediately;
+- latching ends/releases the active pointer session while preserving the velocity;
+- moving the still-held pointer afterwards must not alter the value;
+- pointer-up after latching leaves the value locked;
+- a new pointer-down picks the control up again;
+- a quick release before another settle returns that axis to zero.
 
-The following failures are load-bearing negative evidence:
+No extreme value is required to latch.
 
-- **centroid substitution** — using a cell centroid as the semantic place destroys the address geometry;
-- **tet-at-point substitution** — placing an additional tetrahedron around/at a locus falsely turns a whole occupant into a new geometric object;
-- **population packing** — spreading same-locus occupants into arbitrary visual positions invents addresses;
-- **subtree dumping** — revealing all descendants at once destroys the rank-by-rank navigation experience;
-- **raw-path page identity** — treating reciprocal witnesses as separate canonical pages erases quotient locus identity and prevents lawful chamber coalescence;
-- **global annotation accumulation** — retaining every label, relation, genealogy and pulse simultaneously makes the organism unreadable;
-- **wireframe regression** — fixing topology by discarding an accepted material/shader body loses perceptual continuity and character;
-- **navigator drag conflict** — using mouse drag both to orient the twin and to hit tiny addresses makes exact selection unnecessarily fragile.
+## Shared-locus encounters
 
-These are not failed history to repeat; they are constraints earned by contact with the live interface.
+When a selected locus carries multiple interlocutors, commitment opens all of them in the same encounter.
 
-## 11 · Implementation witness boundary
+Two interlocutors mean two full local worlds:
 
-`w/display/navigation-physiology.js` and its tests remain implementation witnesses, not semantic authority. Existing tests that rely on centroids may continue to use them for **camera framing, bounds or leaf bookkeeping**, but no such centroid may be treated as the canonical semantic address point.
+`left/right (or top/bottom) chamber = local background + local shader identity + local manifestation`
 
-The current JS still resolves navigation records by exact raw-path equality. Under the site-holon law this is known **pre-primitive implementation debt**. It remains trusted for realized-only geometry and interaction behavior but must not be cited as proof of quotient site identity.
+The split/grid compositor must not turn them into floating page cards over one shared field and must not invent additional addresses.
 
-The next executable witness must test at least:
+The global navigator aperture belongs to the seam between these worlds rather than stealing content space from either one.
 
-- semantic `place == address locus`, not cell centroid;
-- self-continuation point identity such as `point(x) == point(xx)` when `xx` is realized;
-- reciprocal `xyw ~ xwy` resolution to one locus while preserving both raw witnesses;
-- one stable mounted site identity surviving relocation after deeper differentiation;
-- one populated witness yielding one body and two populated reciprocal witnesses yielding responsive chambers;
-- rank-local reveal rather than subtree dumping;
-- independently rooted organ entry as a scope transition at one host locus;
-- same-locus occupant co-location until further lawful structure is entered;
-- global navigator address clickability and magnification without mouse-drag rotation;
-- full material body retained while unfocused structure is optically suppressed;
-- inspect versus commit and independent zero-on-release axis behavior;
-- tetrahedral closure between locally arbitrary site manifestations.
+## Transition
 
-## Closure
+Committed movement uses the invariant Display membrane:
 
-A navigation implementation conforms when a visitor can perceive one truthful tetrahedral body, use the global twin to select exact realized places, open those places rank by rank, preserve raw witnesses through quotient locus resolution, preserve site identity across remounting, keep membrane/address-space boundaries explicit, and deliberately commit movement without the interface inventing geometry.
+`visible encounter -> tetrahedral fold -> closed -> scope/locus/interlocutor swap -> unfold destination`.
 
-Compression:
+The global Display shell, minimap, orientation state and encounter ancestry survive the swap.
 
-> **One net. The place is the locus. Path is witness, not identity. Click the map to look. Open one rank at a time. Preserve the material skin. Fold closed to move. Enter only by deliberate commitment.**
+## Accessibility
+
+The same realized address structure must remain operable by pointer, keyboard, touch and reduced-motion paths. Hover may enhance but must not be the only route to any meaningful action.
+
+The Global Navigation Aperture must therefore open by keyboard focus and touch/tap as well as pointer hover, and its closed marker remains a semantic button rather than a hover-only target.
+
+## Compression
+
+**One infinitely recursive tetrahedral law. The viewer is the witness. Path is genealogy, locus is place, interlocutors are what is encountered there. Every interlocutor carries its own identity-shaded local field; global navigation lives in membrane space as a square outer port or seam diamond that resolves into a rectilinear control cavity, while Philosophy alone may gently swing its local camera back to the global whole.**
