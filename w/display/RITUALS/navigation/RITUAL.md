@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology for one infinitely recursive tetrahedral address law, witnessed by the viewer and shared across relocatable page-organism interlocutors."
 organism: display
 geometry: tetrahedral
-version: "1.2"
+version: "1.3"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -67,13 +67,17 @@ The global navigator does **not** reserve a permanent rectangle or corner inside
 
 It belongs to Display's membrane.
 
-- **single interlocutor** — the closed aperture is anchored to the outer Display membrane;
-- **shared-locus split** — the same aperture is anchored to the shared seam/junction between interlocutor worlds;
+- **single interlocutor** — the aperture anchors to the outer Display membrane and its closed marker is a small **square port**;
+- **shared-locus split** — the same aperture anchors to the shared seam/junction and its closed marker becomes a **diamond**;
 - **larger composition** — the aperture belongs to the compositor junction, never to one chamber.
 
-The closed state leaves only a small persistent diamond/tetrahedral marker so the witness can discover the global navigator without sacrificing local layout real-estate.
+In a split encounter the aperture opening is itself animated as a membrane transformation:
 
-Pointer hover/proximity, keyboard focus or touch/tap may open the membrane into a symmetric **diamond pocket** revealing the global minimap and global orientation rails behind it. Click/tap may pin the aperture open; Escape or explicit unpin closes it.
+`closed diamond -> diamond bloom -> rectilinear control cavity`
+
+The opening shell resolves into a quader-like/rectilinear chamber suitable for the global minimap and the orthogonal x/y rails. The content behind the aperture remains stable while the aperture geometry performs the threshold transformation.
+
+Pointer hover/proximity, keyboard focus or touch/tap may open the aperture. Click/tap may pin it open; Escape or explicit unpin closes it.
 
 Opening/closing the aperture changes only Display membrane state. It does not create an address, move an interlocutor, change a locus, or alter page-organism identity.
 
@@ -93,6 +97,21 @@ Current specimens:
 - **Papers** — its local background is present and identity-shaded but is passive for locus selection. Papers uses the invariant global minimap.
 
 This difference is local behavior, not a difference in address geometry.
+
+### Philosophy global-centroid swingback
+
+Philosophy has one additional local orientation behavior because its large background is itself a navigation instrument.
+
+After direct Philosophy background movement or background-driven inspection settles, orientation may smoothly interpolate back toward the canonical **global-centroid framing** so the currently realized structure returns fully into view.
+
+The swingback is:
+
+- smooth rather than a snap;
+- delayed briefly after interaction;
+- cancelled immediately by renewed manual movement or global-axis input;
+- Philosophy-local rather than a universal page-organism rule.
+
+The goal is perceptual continuity: local exploration remains playful while the whole realized structure naturally re-enters the frame after the move.
 
 ## Material continuity
 
@@ -156,4 +175,4 @@ The Global Navigation Aperture must therefore open by keyboard focus and touch/t
 
 ## Compression
 
-**One infinitely recursive tetrahedral law. The viewer is the witness. Path is genealogy, locus is place, interlocutors are what is encountered there. Every interlocutor carries its own identity-shaded local field; global navigation lives in a membrane aperture that moves to the relevant seam without consuming interlocutor content space.**
+**One infinitely recursive tetrahedral law. The viewer is the witness. Path is genealogy, locus is place, interlocutors are what is encountered there. Every interlocutor carries its own identity-shaded local field; global navigation lives in membrane space as a square outer port or seam diamond that resolves into a rectilinear control cavity, while Philosophy alone may gently swing its local camera back to the global whole.**
