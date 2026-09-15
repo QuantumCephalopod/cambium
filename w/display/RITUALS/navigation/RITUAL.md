@@ -1,18 +1,18 @@
 ---
 name: navigation
-description: "Display-local navigation physiology for one infinitely recursive tetrahedral address field, witnessed by the viewer and shared by all page-organism interlocutors."
+description: "Display-local navigation physiology for one infinitely recursive tetrahedral address law, witnessed by the viewer and shared across relocatable page-organism interlocutors."
 organism: display
 geometry: tetrahedral
-version: "1.0"
+version: "1.1"
 ---
 
 # NAVIGATION RITUAL — display local
 
-Navigation is the invariant perceptual relation between the **witness/viewer**, one realized recursive tetrahedral address field, and the page-organism interlocutors mounted at its loci.
+Navigation is the invariant perceptual relation between the **witness/viewer**, the infinitely recursive tetrahedral address law, and the page-organism interlocutors mounted at quotient loci.
 
-Canonical interlocutor/locus law is carried by `../site-holon/RITUAL.md`.
+Canonical interlocutor/locus/shader law is carried by `../site-holon/RITUAL.md`.
 
-## One recursively self-similar field
+## One recursively self-similar address law
 
 Every organismic scope uses the same address alphabet `{w,x,z,y}` and may differentiate again without fixed depth.
 
@@ -22,9 +22,11 @@ Only realized structure is rendered. No global rank may be completed merely beca
 
 Self-continuation and reciprocal quotient relations preserve place identity, e.g. `point(x)=point(xx)` when `xx` is realized, and reciprocal addresses such as `xyw~xwy` share one locus while preserving distinct route genealogy.
 
+The invariant is the recursive law, not one globally shared background canvas. Each interlocutor may embody that same law in its own local tetrahedral field.
+
 ## Rank-local opening
 
-Opening/focusing a realized address reveals only its realized next rank on the same field. It does not spawn a miniature tetrahedron as a second object at that point.
+Opening/focusing a realized address reveals only its realized next rank in the active scope. It does not spawn a miniature tetrahedron as a second object at that point.
 
 Entering an independently rooted interlocutor changes scope at the host locus and restarts local addressing at `ε`:
 
@@ -35,7 +37,7 @@ not `main:yy`.
 ## Witness, route, locus, interlocutor
 
 - **Witness** — the viewer navigating the site.
-- **Address/path** — route genealogy through the recursive field.
+- **Address/path** — route genealogy through the recursive law.
 - **Locus** — quotient place reached by that address.
 - **Interlocutor** — page-organism mounted at that locus.
 
@@ -53,44 +55,72 @@ The witness must be able to inspect without accidental entry. Entry must be expl
 
 ## Persistent global navigator
 
-The small tetrahedral twin/minimap is the global address organ and remains available from every page-organism.
+The small tetrahedral twin/minimap is the global address organ and remains available from every page-organism and every split encounter.
 
 It preserves the current active recursive scope, realized loci, VIEW, and recoverable scope ancestry. Selecting a realized minimap target changes VIEW only.
 
 The minimap is never replaced by a local page implementation.
 
-## Page-local navigation specialties
+When several interlocutors are visible at one locus, the minimap belongs to neither chamber. It moves to the shared seam/center and remains the witness's global navigation organ.
 
-Local interlocutors may add additional ways to choose VIEW without changing global navigation law.
+## Page-local background fields
+
+Each interlocutor carries its own local tetrahedral background together with its own shader identity.
+
+The background therefore belongs to page-organism identity rather than to address placement. Remounting an interlocutor must preserve its local background/shader embodiment.
+
+Local interlocutors may add extra interaction to their own field without universalizing that behavior.
 
 Current specimens:
 
-- **Philosophy** may inspect loci directly through the large background tetrahedral field. The large body remains draggable for orientation.
-- **Papers** does not inspect through the large background. It uses the invariant global minimap for locus selection.
+- **Philosophy** — its local background is directly draggable for orientation and may select/inspect realized loci without entering them.
+- **Papers** — its local background is present and identity-shaded but is passive for locus selection. Papers uses the invariant global minimap.
 
 This difference is local behavior, not a difference in address geometry.
 
-## Large body
+## Material continuity
 
-The large material tetrahedral body remains the whole current recursive world. Focus should make non-focused structure recede optically rather than replacing the body with a diagram or cropping away global context.
+Each interlocutor's local field remains a material tetrahedral world rather than a card overlay on a universal wallpaper.
+
+Focus should make non-focused structure recede optically rather than replacing the body with a diagram or cropping away recursive context.
 
 Accepted material/shader character must survive topology/navigation corrections.
 
-## Orientation controls
+## Global orientation controls
 
 The global minimap has separate x/y velocity axes:
 
 - x affects yaw only;
 - y affects pitch only;
 - midpoint = zero;
-- displacement controls speed;
+- displacement controls speed continuously;
 - one axis never mutates the other.
 
-A held axis may earn a latch only as an interaction behavior: when latched, its value freezes and the pointer session ends. Subsequent mouse movement must not continue changing the axis. Picking the latched knob up again and releasing quickly returns it to zero.
+The controls act on global orientation state. Every currently visible interlocutor field reads that same orientation, so a split encounter rotates all local tetrahedra coherently while preserving their distinct shaders and local geometry.
+
+### Settle-to-lock
+
+Pointer latching is position-agnostic.
+
+- pull an axis to any desired value;
+- when pointer displacement settles sufficiently at that value for the settle interval, latch that exact value immediately;
+- latching ends/releases the active pointer session while preserving the velocity;
+- moving the still-held pointer afterwards must not alter the value;
+- pointer-up after latching leaves the value locked;
+- a new pointer-down picks the control up again;
+- a quick release before another settle returns that axis to zero.
+
+No extreme value is required to latch.
 
 ## Shared-locus encounters
 
-When a selected locus carries multiple interlocutors, commitment opens all of them in the same encounter. The compositor may split/grid the visible interlocutor chambers without inventing additional addresses.
+When a selected locus carries multiple interlocutors, commitment opens all of them in the same encounter.
+
+Two interlocutors mean two full local worlds:
+
+`left/right (or top/bottom) chamber = local background + local shader identity + local manifestation`
+
+The split/grid compositor must not turn them into floating page cards over one shared field and must not invent additional addresses.
 
 ## Transition
 
@@ -98,7 +128,7 @@ Committed movement uses the invariant Display membrane:
 
 `visible encounter -> tetrahedral fold -> closed -> scope/locus/interlocutor swap -> unfold destination`.
 
-The global Display shell and minimap survive the swap.
+The global Display shell, minimap, orientation state and encounter ancestry survive the swap.
 
 ## Accessibility
 
@@ -106,4 +136,4 @@ The same realized address structure must remain operable by pointer, keyboard, t
 
 ## Compression
 
-**One infinitely recursive tetrahedral field. The viewer is the witness. Path is genealogy, locus is place, interlocutors are what is encountered there. The global minimap always survives; Philosophy adds background inspection locally; commitment folds closed before the encounter changes.**
+**One infinitely recursive tetrahedral law. The viewer is the witness. Path is genealogy, locus is place, interlocutors are what is encountered there. Every interlocutor carries its own identity-shaded local field; the global minimap and orientation always survive, and shared loci compose full local worlds rather than overlays.**
