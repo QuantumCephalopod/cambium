@@ -62,11 +62,13 @@
   }
 
   function locusKey(scope, locus) { return scopeId(scope)+'::'+locus; }
+  function addressKey(scope, rawAddress) { A.validate(rawAddress); return scopeId(scope)+'::address::'+rawAddress; }
 
   function createRegistry() {
     const interlocutors = new Map();
     const mounts = new Map();
     const loci = new Map();
+    const addresses = new Map();
 
     function register(interlocutor) {
       if (!interlocutor || typeof interlocutor !== 'object') throw new TypeError('interlocutor object required');
@@ -87,6 +89,8 @@
         set.delete(id);
         if (!set.size) loci.delete(key);
       }
+      const akey=addressKey(previous.scope, previous.rawAddress);
+      if (addresses.get(akey)===id) addresses.delete(akey);
       mounts.delete(id);
       return true;
     }
@@ -99,9 +103,15 @@
       const scope = scopeId(placement.scope || 'main');
       const rawAddress = placement.address ?? '';
       const route = resolveAddress(rawAddress);
+      const akey=addressKey(scope,rawAddress);
+      const occupied=addresses.get(akey);
+      if (occupied && occupied!==id) {
+        throw new Error('raw address already occupied; differentiate before mounting another interlocutor: '+scope+':'+(rawAddress||'overview'));
+      }
       detach(id);
       const relation = Object.freeze({siteId:id,interlocutorId:id,scope,rawAddress,address:route.address,locus:route.locus});
       mounts.set(id, relation);
+      addresses.set(akey,id);
       const key = locusKey(scope, route.locus);
       if (!loci.has(key)) loci.set(key, new Set());
       loci.get(key).add(id);
@@ -145,6 +155,7 @@
       getSite:id=>interlocutors.get(id)||null,
       getInterlocutor:id=>interlocutors.get(id)||null,
       getMount:id=>mounts.get(id)||null,
+      getAtAddress:(scope,rawAddress)=>interlocutors.get(addresses.get(addressKey(scope,rawAddress)))||null,
       getInterlocutorsAt:(scope,rawPath,viewport)=>resolve(scope,rawPath,viewport).interlocutors.map(x=>x.interlocutor)
     });
   }
