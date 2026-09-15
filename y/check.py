@@ -46,7 +46,7 @@ def main():
     paper=next(x for x in mounts['interlocutors'] if x['id']=='organism:papers')
     check(philosophy['manifestation']['background_inspect'] is True,'Philosophy lost background inspection specialty')
     check(paper['manifestation']['background_inspect'] is False,'Papers must not inherit Philosophy background inspection')
-    check(paper['local_scope']=='papers','Papers must restart at its independent local root')
+    check(paper['local_scope']=='papers','Papers must preserve its independent local root identity')
     check(philosophy['shader']['id']!=paper['shader']['id'],'shader identity must belong to interlocutor identity')
 
     build.verify_artifact(artifact)
@@ -77,13 +77,20 @@ def main():
 
     nav=(DISPLAY/'navigation-physiology.js').read_text(); world=(DISPLAY/'world-view.js').read_text(); runtime=(DISPLAY/'display-runtime-v2.js').read_text(); holon=(DISPLAY/'site-holon.js').read_text(); aperture=(DISPLAY/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'navigation-aperture.css').read_text(); fields=(DISPLAY/'locus-shader.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
+    check('center:[...record.center]' in nav,'camera focus is not the centroid of the selected recursive split-tet')
     check("twin.addEventListener('pointerdown'" in world,'global minimap navigation missing')
+    check("global-minimap-overview" in world and "strokeRect" in world,'global overview address is not visible/clickable in the minimap')
+    check("const GLOBAL_SCOPE='main'" in runtime and 'resolveGlobal' in runtime and 'registry.resolve(GLOBAL_SCOPE' in runtime,'global navigator is not pinned to the global host address space')
+    check('W.setScope({id:GLOBAL_SCOPE,projection:MAIN})' in runtime,'global navigator does not initialize from the global main projection')
+    check("const path=W.view||''" in runtime and 'resolveGlobal(path)' in runtime,'global overview cannot resolve its mounted interlocutor')
+    check("Papers.render({projection:PAPERS,path:''})" in runtime,'global navigator VIEW leaked into Papers-local navigation')
+    check("scopeId=r.interlocutors" not in runtime and "scopeId='papers'" not in runtime,'interlocutor entry still hijacks global navigator scope')
     check('interactive:true' in runtime and 'interactive:false' in runtime,'Philosophy/Papers background specialties collapsed')
     check('W.orientation' in fields,'interlocutor backgrounds do not share global orientation state')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'settle-to-lock exact axis behavior missing')
-    check('HOME_ORIENT' in world and 'qSlerp' in world and 'philosophy-swingback' in world,'Philosophy global-centroid swingback physiology missing')
+    check('HOME_ORIENT' in world and 'qSlerp' in world and 'philosophy-swingback' in world,'Philosophy orientation swingback physiology missing')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
-    check('W.setScope' in runtime and 'localScope' in holon,'scope restart is not runtime-mounted')
+    check('localScope' in holon,'interlocutor local root identity missing')
     check('new Set()' in holon and 'loci.get(key).add(id)' in holon,'locus cannot host multiple interlocutors')
     check('active.length === 2' in holon and "mode:'grid'" in holon,'multi-interlocutor composition law missing')
     check("data-aperture=\"closed\"" in actual and 'aria-controls="mini-pocket"' in actual,'global navigator is not aperture-owned')
@@ -107,9 +114,9 @@ def main():
         'status':'pass','checks':count,'display':'one persistent membrane',
         'bundle':bundle,'asset_generation':'one content-addressed namespace',
         'specimens':['organism:philosophy','organism:papers'],
-        'navigation':'single square membrane port / split seam diamond resolves to rect control cavity / Philosophy swingback',
-        'mounting':'page-organism identity independent of scoped locus',
-        'composition':'shared locus opens local worlds around one seam aperture',
+        'navigation':'global host navigator including ε overview persists across interlocutors / camera frames recursive split centroids / single square port / split seam control cavity',
+        'mounting':'page-organism identity and local root independent of global host locus',
+        'composition':'shared global locus opens local worlds around one seam aperture',
         'artifact':'single index.html'
     },indent=2))
 
