@@ -79,8 +79,10 @@ def main():
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not the centroid of the selected recursive split-tet')
     check("twin.addEventListener('pointerdown'" in world,'global minimap navigation missing')
+    check("global-minimap-overview" in world and "strokeRect" in world,'global overview address is not visible/clickable in the minimap')
     check("const GLOBAL_SCOPE='main'" in runtime and 'resolveGlobal' in runtime and 'registry.resolve(GLOBAL_SCOPE' in runtime,'global navigator is not pinned to the global host address space')
     check('W.setScope({id:GLOBAL_SCOPE,projection:MAIN})' in runtime,'global navigator does not initialize from the global main projection')
+    check("const path=W.view||''" in runtime and 'resolveGlobal(path)' in runtime,'global overview cannot resolve its mounted interlocutor')
     check("Papers.render({projection:PAPERS,path:''})" in runtime,'global navigator VIEW leaked into Papers-local navigation')
     check("scopeId=r.interlocutors" not in runtime and "scopeId='papers'" not in runtime,'interlocutor entry still hijacks global navigator scope')
     check('interactive:true' in runtime and 'interactive:false' in runtime,'Philosophy/Papers background specialties collapsed')
@@ -112,7 +114,7 @@ def main():
         'status':'pass','checks':count,'display':'one persistent membrane',
         'bundle':bundle,'asset_generation':'one content-addressed namespace',
         'specimens':['organism:philosophy','organism:papers'],
-        'navigation':'global host navigator persists across interlocutors / camera frames recursive split centroids / single square port / split seam control cavity',
+        'navigation':'global host navigator including ε overview persists across interlocutors / camera frames recursive split centroids / single square port / split seam control cavity',
         'mounting':'page-organism identity and local root independent of global host locus',
         'composition':'shared global locus opens local worlds around one seam aperture',
         'artifact':'single index.html'
