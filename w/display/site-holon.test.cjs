@@ -25,6 +25,13 @@ r=registry.resolve('main','y',{width:1200,height:700});
 assert.equal(r.interlocutors.length,1); assert.equal(r.interlocutors[0].interlocutor,papers);
 papers.state.visits++;
 
+assert.throws(
+  ()=>registry.mount(philosophy.id,{scope:'main',address:'y'}),
+  /differentiate before mounting another interlocutor/,
+  'two page-organisms may not pile onto one raw global address; split first'
+);
+assert.equal(registry.getAtAddress('main','y'),papers,'failed pile-up must preserve the original mount');
+
 registry.mount(papers.id,{scope:'main',address:'xyw'});
 registry.mount(philosophy.id,{scope:'main',address:'xwy'});
 const wide=registry.resolve('main','xyw',{width:1440,height:900});
@@ -36,9 +43,10 @@ assert.equal(tall.composition.mode,'split'); assert.equal(tall.composition.axis,
 assert.equal(registry.getInterlocutor(papers.id).state.visits,1,'relocation preserves page-organism local state');
 
 const third=H.defineInterlocutor({id:'organism:third',localScope:'third'}); registry.register(third);
-registry.mount(third.id,{scope:'main',address:'xyw'});
+assert.throws(()=>registry.mount(third.id,{scope:'main',address:'xyw'}),/differentiate/,'exact raw-address pile-up must be refused');
+registry.mount(third.id,{scope:'main',address:'xyww'});
 const many=registry.resolve('main','xyw',{width:1200,height:800});
-assert.equal(many.interlocutors.length,3,'one locus may host arbitrarily many page-organisms');
+assert.equal(many.interlocutors.length,3,'distinct recursive addresses may still quotient-coalesce at one locus');
 assert.equal(many.composition.mode,'grid');
 
 registry.mount(papers.id,{scope:'main',address:'z'});
@@ -59,7 +67,8 @@ console.log(JSON.stringify({
   recursive_address_quotient:true,
   identity_locus_separate:true,
   relocation:true,
-  many_interlocutors_per_locus:true,
+  preemptive_split_before_raw_address_pileup:true,
+  quotient_coalescence_composes_distinct_addresses:true,
   responsive_composition:true,
   activity_follows_identity:true,
   tetrahedral_closure_sequence:true
