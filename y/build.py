@@ -145,6 +145,7 @@ def artifact_files():
         'assets/root-view.css':DISPLAY/'root-view.css',
         'assets/site-runtime.css':DISPLAY/'site-runtime.css',
         'assets/interlocutors.css':DISPLAY/'interlocutors.css',
+        'assets/navigation-aperture.css':DISPLAY/'navigation-aperture.css',
         'assets/world-view.js':DISPLAY/'world-view.js',
         'assets/navigation-physiology.js':DISPLAY/'navigation-physiology.js',
         'assets/address.js':ROOT/'z'/'address.js',
@@ -153,6 +154,7 @@ def artifact_files():
         'assets/interlocutor-philosophy.js':DISPLAY/'interlocutor-philosophy.js',
         'assets/interlocutor-papers.js':DISPLAY/'interlocutor-papers.js',
         'assets/locus-shader.js':DISPLAY/'locus-shader.js',
+        'assets/navigation-aperture.js':DISPLAY/'navigation-aperture.js',
         'assets/display-runtime-v2.js':DISPLAY/'display-runtime-v2.js',
         'assets/favicon.svg':DISPLAY/'favicon.svg',
     }
