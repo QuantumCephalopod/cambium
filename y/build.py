@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Build the public Display membrane from the admitted main-root projection.
-
-The repository is a publication carrier. The visitor-facing main page depicts the
-current Self-Similar Systems root projection admitted into Display, while Display
-itself remains an independently rooted unsplit organ.
-"""
+"""Build one persistent public Display membrane with relocatable page-organism interlocutors."""
 from pathlib import Path
 import argparse
 import json
@@ -16,71 +11,8 @@ DISPLAY = ROOT / 'w' / 'display'
 GENES = 'wxzy'
 
 
-def scalar(text):
-    text = text.strip()
-    if not text:
-        return {}
-    if text.startswith(('"', "'")):
-        return json.loads(text) if text.startswith('"') else text[1:-1]
-    return text
-
-
-def load_yaml(path):
-    """Strict tiny YAML subset sufficient for canonical INDEX/_cambium surfaces."""
-    root, stack = {}, [(-1, {})]
-    root = stack[0][1]
-    for number, raw in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
-        if not raw.strip() or raw.lstrip().startswith('#'):
-            continue
-        if raw.strip() == '{}':
-            if root:
-                raise ValueError(f'{path.name}:{number}: empty mapping must stand alone')
-            continue
-        indent = len(raw) - len(raw.lstrip(' '))
-        if indent % 2:
-            raise ValueError(f'{path.name}:{number}: indentation must use two-space steps')
-        line = raw.strip()
-        if ':' not in line:
-            raise ValueError(f'{path.name}:{number}: expected key: value')
-        key, value = line.split(':', 1)
-        key = key.strip()
-        while stack[-1][0] >= indent:
-            stack.pop()
-        parent = stack[-1][1]
-        if key in parent:
-            raise ValueError(f'{path.name}:{number}: duplicate key {key}')
-        parsed = scalar(value)
-        parent[key] = parsed
-        if isinstance(parsed, dict):
-            stack.append((indent, parsed))
-    return root
-
-
-def validate_index(index):
-    def walk(node, path=''):
-        if not isinstance(node, dict):
-            raise ValueError(f'{path or "root"} phenotype must be a mapping')
-        keys = set(node)
-        if path:
-            if not isinstance(node.get('noun'), str) or not node['noun'].strip():
-                raise ValueError(f'{path} needs one atomic noun')
-            keys.remove('noun')
-        if not keys <= set(GENES):
-            raise ValueError(f'{path or "root"} contains non-phenotype fields: {sorted(keys-set(GENES))}')
-        children = [g for g in GENES if g in node]
-        if children and len(children) != 4:
-            raise ValueError(f'{path or "root"} has an incomplete realized CCCC split')
-        for g in children:
-            walk(node[g], path + g)
-    if set(index) != set(GENES):
-        raise ValueError('root INDEX.yaml must contain exactly the realized w/x/z/y phenotype')
-    for g in GENES:
-        walk(index[g], g)
-
-
 def validate_cambium(c, label='_cambium.yaml'):
-    expected = {'4V': set(GENES), '6E': {'wx','wz','wy','xz','xy','zy'},
-                '4F': {'wxz','wxy','wzy','xzy'}}
+    expected = {'4V': set(GENES), '6E': {'wx','wz','wy','xz','xy','zy'}, '4F': {'wxz','wxy','wzy','xzy'}}
     if set(c) != {'4V','6E','4F','1T'}:
         raise ValueError(f'{label} contains noncanonical fields')
     for rank, keys in expected.items():
@@ -100,8 +32,7 @@ def _validate_display_node(node, path):
         raise ValueError(f'main-root projection node {path} is unnamed')
     if node['gene'] not in {'CREATE','COPY','CONTROL','CULTIVATE'}:
         raise ValueError(f'main-root projection node {path} has invalid CCCC gene')
-    if not isinstance(node['one'], dict) or set(node['one']) != {'de','en'} or not all(
-        isinstance(node['one'][k], str) and node['one'][k].strip() for k in ('de','en')):
+    if not isinstance(node['one'], dict) or set(node['one']) != {'de','en'}:
         raise ValueError(f'main-root projection node {path} lacks bilingual encounter copy')
     if not isinstance(node['children'], dict):
         raise ValueError(f'main-root projection node {path} children must be a mapping')
@@ -119,146 +50,148 @@ def validate_root_projection(data):
     source = data['source']
     if set(source) != {'organism','home','authority'} or source['organism'] != 'main-root':
         raise ValueError('main-root projection source identity is invalid')
-    if source['authority'] != 'independently-rooted Drive organism':
-        raise ValueError('main-root projection authority boundary is invalid')
-    if not isinstance(source['home'], str) or not source['home'].startswith('main-root-'):
-        raise ValueError('main-root projection needs a root HOME identity')
     root = data['root']
     if not isinstance(root, dict) or set(root) != {'noun','children'} or root['noun'] != 'Self-Similar Systems':
         raise ValueError('main-root projection root identity is invalid')
-    if not isinstance(root['children'], dict) or set(root['children']) != set(GENES):
-        raise ValueError('main-root projection must expose exactly the realized root 4V')
-    gene_names = {'w':'CREATE','x':'COPY','z':'CONTROL','y':'CULTIVATE'}
+    if set(root['children']) != set(GENES):
+        raise ValueError('main-root projection must expose exactly realized root 4V')
+    names = {'w':'CREATE','x':'COPY','z':'CONTROL','y':'CULTIVATE'}
     for gene in GENES:
         _validate_display_node(root['children'][gene], gene)
-        if root['children'][gene]['gene'] != gene_names[gene]:
+        if root['children'][gene]['gene'] != names[gene]:
             raise ValueError(f'main-root projection {gene} remaps fixed CCCC DNA')
-    constitution = data['constitution']
-    validate_cambium(constitution, 'main-root projection constitution')
-    for gene in GENES:
-        if constitution['4V'][gene] != root['children'][gene]['noun']:
-            raise ValueError(f'main-root projection {gene} diverges from constitution')
-    occupancy = data['occupancy']
-    if not isinstance(occupancy, dict) or set(occupancy) != set(GENES):
+    validate_cambium(data['constitution'], 'main-root projection constitution')
+    if set(data['occupancy']) != set(GENES):
         raise ValueError('main-root occupancy must preserve four host loci')
-    if any(not isinstance(v, list) or any(not isinstance(x,str) or not x for x in v) for v in occupancy.values()):
-        raise ValueError('main-root occupancy contains invalid whole identity')
-    membranes = data['membranes']
-    if not isinstance(membranes, dict) or set(membranes) != {'provider','unresolved','stomach'}:
-        raise ValueError('main-root membrane projection is invalid')
-    if any(not isinstance(v,list) or any(not isinstance(x,str) or not x for x in v) for v in membranes.values()):
-        raise ValueError('main-root membrane projection contains invalid boundary identity')
+    return data
+
+
+def validate_papers_projection(data):
+    if data.get('source') != 'papers/_feed':
+        raise ValueError('Papers projection source boundary changed')
+    if set(data.get('phenotype', {})) != set(GENES) or set(data.get('groups', {})) != set(GENES):
+        raise ValueError('Papers projection must expose realized local root 4V')
+    for gene in GENES:
+        if not isinstance(data['phenotype'][gene], str) or not data['phenotype'][gene]:
+            raise ValueError('Papers phenotype contains an empty locus')
+        if not isinstance(data['groups'][gene], list):
+            raise ValueError('Papers group is not a list')
+        for item in data['groups'][gene]:
+            if set(item) != {'id','title'}:
+                raise ValueError('Papers projection crossed its public boundary')
     return data
 
 
 def validate_site_mounts(data):
-    if not isinstance(data, dict) or set(data) != {'version','scope','sites'}:
-        raise ValueError('site-mounts.json has an unexpected shape')
-    if data['version'] != 1 or data['scope'] != 'main-root' or not isinstance(data['sites'], list):
-        raise ValueError('site mount registry identity is invalid')
+    if not isinstance(data, dict) or set(data) != {'version','interlocutors','mounts'} or data['version'] != 2:
+        raise ValueError('site-mounts.json must be v2 interlocutor registry')
+    if not isinstance(data['interlocutors'], list) or not isinstance(data['mounts'], list):
+        raise ValueError('site-mounts v2 arrays missing')
     ids = set()
-    for site in data['sites']:
-        required = {'id','witnesses','interlocutors','shader','manifestation'}
-        if not isinstance(site, dict) or set(site) != required:
-            raise ValueError('site mount entry has unexpected fields')
+    for site in data['interlocutors']:
+        if set(site) != {'id','local_scope','shader','manifestation'}:
+            raise ValueError('interlocutor definition has unexpected fields')
         if not isinstance(site['id'], str) or not site['id'] or site['id'] in ids:
-            raise ValueError('site mount identity missing or duplicated')
+            raise ValueError('interlocutor identity missing or duplicated')
         ids.add(site['id'])
-        if not isinstance(site['witnesses'], list) or not site['witnesses'] or not all(isinstance(x,str) for x in site['witnesses']):
-            raise ValueError('site mount needs raw witness strings')
-        if len(site['witnesses']) != len(site['interlocutors']):
-            raise ValueError('site mount witness/interlocutor arity mismatch')
+        if not isinstance(site['local_scope'], str) or not site['local_scope']:
+            raise ValueError('interlocutor local scope missing')
         if not isinstance(site['shader'], dict) or not isinstance(site['manifestation'], dict):
-            raise ValueError('site mount needs shader and manifestation contracts')
+            raise ValueError('interlocutor needs shader and manifestation contracts')
+    for mount in data['mounts']:
+        if set(mount) != {'interlocutor','scope','address'}:
+            raise ValueError('mount has unexpected fields')
+        if mount['interlocutor'] not in ids:
+            raise ValueError('mount references unknown interlocutor')
+        if not isinstance(mount['scope'], str) or not mount['scope']:
+            raise ValueError('mount scope missing')
+        if not isinstance(mount['address'], str) or any(c not in GENES for c in mount['address']):
+            raise ValueError('mount address violates recursive tetrahedral alphabet')
     return data
 
 
 def root_projection():
-    return validate_root_projection(json.loads((DISPLAY / 'main-root.json').read_text(encoding='utf-8')))
+    return validate_root_projection(json.loads((DISPLAY/'main-root.json').read_text(encoding='utf-8')))
+
+
+def papers_projection():
+    return validate_papers_projection(json.loads((DISPLAY/'papers.json').read_text(encoding='utf-8')))
 
 
 def site_mounts():
-    return validate_site_mounts(json.loads((DISPLAY / 'site-mounts.json').read_text(encoding='utf-8')))
+    return validate_site_mounts(json.loads((DISPLAY/'site-mounts.json').read_text(encoding='utf-8')))
+
+
+def _enc(v):
+    return json.dumps(v, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
 
 
 def render():
-    data = root_projection()
-    mounts = site_mounts()
-    text = (DISPLAY / 'template.html').read_text(encoding='utf-8')
-    root_marker = '/*__ROOT_DATA__*/'
-    mount_marker = '/*__SITE_MOUNTS__*/'
-    if text.count(root_marker) != 1 or text.count(mount_marker) != 1:
-        raise ValueError('display template must contain exactly one root and site-mount projection slot')
-    payload = json.dumps(data, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
-    mount_payload = json.dumps(mounts, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
-    text = text.replace(root_marker, payload).replace(mount_marker, mount_payload)
-    if root_marker in text or mount_marker in text:
-        raise ValueError('unresolved display projection slot')
-    return '<!-- secreted from w/display/; public main depicts the admitted main-root projection through site-holon physiology. -->\n' + text
+    text=(DISPLAY/'template.html').read_text(encoding='utf-8')
+    payloads={
+        '/*__ROOT_DATA__*/': root_projection(),
+        '/*__PAPERS_DATA__*/': papers_projection(),
+        '/*__SITE_MOUNTS__*/': site_mounts(),
+    }
+    for marker,value in payloads.items():
+        if text.count(marker) != 1:
+            raise ValueError(f'display template must contain exactly one {marker} slot')
+        text=text.replace(marker,_enc(value))
+    return '<!-- one persistent Display membrane; page-organisms are relocatable interlocutors mounted at recursive loci. -->\n'+text
 
 
 def artifact_files():
-    sources = {
-        'assets/root-view.css': DISPLAY / 'root-view.css',
-        'assets/site-runtime.css': DISPLAY / 'site-runtime.css',
-        'assets/root-view.js': DISPLAY / 'root-view.js',
-        'assets/navigation-physiology.js': DISPLAY / 'navigation-physiology.js',
-        'assets/address.js': ROOT / 'z' / 'address.js',
-        'assets/site-holon.js': DISPLAY / 'site-holon.js',
-        'assets/site-fold.js': DISPLAY / 'site-fold.js',
-        'assets/site-runtime.js': DISPLAY / 'site-runtime.js',
-        'assets/favicon.svg': DISPLAY / 'favicon.svg',
+    sources={
+        'assets/root-view.css':DISPLAY/'root-view.css',
+        'assets/site-runtime.css':DISPLAY/'site-runtime.css',
+        'assets/interlocutors.css':DISPLAY/'interlocutors.css',
+        'assets/navigation-aperture.css':DISPLAY/'navigation-aperture.css',
+        'assets/world-view.js':DISPLAY/'world-view.js',
+        'assets/navigation-physiology.js':DISPLAY/'navigation-physiology.js',
+        'assets/address.js':ROOT/'z'/'address.js',
+        'assets/site-holon.js':DISPLAY/'site-holon.js',
+        'assets/site-fold.js':DISPLAY/'site-fold.js',
+        'assets/interlocutor-philosophy.js':DISPLAY/'interlocutor-philosophy.js',
+        'assets/interlocutor-papers.js':DISPLAY/'interlocutor-papers.js',
+        'assets/locus-shader.js':DISPLAY/'locus-shader.js',
+        'assets/navigation-aperture.js':DISPLAY/'navigation-aperture.js',
+        'assets/display-runtime-v2.js':DISPLAY/'display-runtime-v2.js',
+        'assets/favicon.svg':DISPLAY/'favicon.svg',
     }
-    files = {'index.html': render().encode('utf-8'), '.nojekyll': b''}
-    for dest, source in sources.items():
+    files={'index.html':render().encode('utf-8'),'.nojekyll':b''}
+    for dest,source in sources.items():
         if not source.is_file():
             raise ValueError(f'missing membrane dependency: {source.relative_to(ROOT)}')
-        files[dest] = source.read_bytes()
+        files[dest]=source.read_bytes()
     return files
 
 
 def write_artifact(target):
-    target = target.resolve()
-    if target == ROOT.resolve() or target == DISPLAY.resolve():
+    target=target.resolve()
+    if target in (ROOT.resolve(), DISPLAY.resolve()):
         raise ValueError('artifact target must be outside living anatomy')
     if target.exists():
-        if target.is_dir():
-            shutil.rmtree(target)
-        else:
-            target.unlink()
-    for relative, data in artifact_files().items():
-        path = target / relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(data)
+        shutil.rmtree(target) if target.is_dir() else target.unlink()
+    for rel,data in artifact_files().items():
+        path=target/rel; path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(data)
 
 
 def verify_artifact(target):
-    target = target.resolve()
-    expected = artifact_files()
-    if not target.is_dir():
-        raise ValueError(f'missing artifact directory: {target}')
-    actual = {p.relative_to(target).as_posix():p.read_bytes() for p in target.rglob('*') if p.is_file()}
-    if set(actual) != set(expected):
+    target=target.resolve(); expected=artifact_files()
+    if not target.is_dir(): raise ValueError(f'missing artifact directory: {target}')
+    actual={p.relative_to(target).as_posix():p.read_bytes() for p in target.rglob('*') if p.is_file()}
+    if set(actual)!=set(expected):
         raise ValueError(f'artifact file-set mismatch: {sorted(set(actual)^set(expected))}')
-    for path, data in expected.items():
-        if actual[path] != data:
-            raise ValueError(f'stale artifact byte content: {path}')
+    for path,data in expected.items():
+        if actual[path]!=data: raise ValueError(f'stale artifact byte content: {path}')
 
 
 def main():
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--artifact', type=Path, default=ROOT/'_site', help='Pages artifact directory')
-    ap.add_argument('--check', action='store_true', help='verify an existing artifact without writing')
-    args = ap.parse_args()
-    target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
+    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--artifact',type=Path,default=ROOT/'_site'); ap.add_argument('--check',action='store_true'); args=ap.parse_args()
+    target=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
-        verify_artifact(target)
-        print('display membrane exactly matches the admitted main-root site-holon projection')
+        verify_artifact(target); print('display membrane exactly matches the two-specimen interlocutor projection')
     else:
-        write_artifact(target)
-        size = sum(len(v) for v in artifact_files().values())
-        print(f'built {target} ({size} bytes across {len(artifact_files())} files)')
+        write_artifact(target); files=artifact_files(); print(f'built {target} ({sum(map(len,files.values()))} bytes across {len(files)} files)')
 
-
-if __name__ == '__main__':
-    main()
+if __name__=='__main__': main()

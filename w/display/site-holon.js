@@ -1,5 +1,6 @@
-/* Display site-holon primitive v0.
- * Stable site identity is mounted into quotient loci; raw paths remain witnesses.
+/* Display site-holon primitive v1.
+ * Page-organisms are stable interlocutors mounted into scoped quotient loci.
+ * The witness is the navigating viewer; raw addresses remain traversal/genealogy.
  */
 (function (root, factory) {
   'use strict';
@@ -15,143 +16,151 @@
     throw new Error('CambiumAddress quotient is required');
   }
 
-  const SITE_ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$/;
-
-  function siteId(value) {
-    if (typeof value !== 'string' || !SITE_ID.test(value)) throw new TypeError('site identity must be a stable literal id');
+  const ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$/;
+  function stableId(value, label='identity') {
+    if (typeof value !== 'string' || !ID.test(value)) throw new TypeError(label+' must be a stable literal id');
     return value;
   }
+  function scopeId(value) { return stableId(value, 'scope identity'); }
 
-  function resolvePath(rawPath) {
+  function resolveAddress(rawPath) {
     A.validate(rawPath);
-    const witness = A.stripSelf(rawPath);
+    const address = A.stripSelf(rawPath);
     return Object.freeze({
       rawPath,
-      witness,
+      address,
       locus: A.key(rawPath),
-      equivalentWitnesses: Object.freeze(A.witnesses(rawPath).slice())
+      equivalentAddresses: Object.freeze(A.witnesses(rawPath).slice())
     });
   }
 
-  function defineSite(spec) {
-    if (!spec || typeof spec !== 'object') throw new TypeError('site spec required');
-    const id = siteId(spec.id);
+  function defineInterlocutor(spec) {
+    if (!spec || typeof spec !== 'object') throw new TypeError('interlocutor spec required');
+    const id = stableId(spec.id, 'interlocutor identity');
+    const localScope = scopeId(spec.localScope || id);
     const state = spec.state && typeof spec.state === 'object' ? spec.state : {};
     return Object.freeze({
       id,
+      localScope,
       shader: spec.shader || null,
       manifestation: spec.manifestation || null,
       state
     });
   }
 
-  function composeChambers(chambers, viewport) {
-    const active = chambers.filter(c => c.interlocutor != null);
-    if (active.length <= 1) return Object.freeze({mode:'single',axis:null,active:Object.freeze(active.slice())});
-    if (active.length > 2) throw new RangeError('v0 site-holon supports at most two populated reciprocal witness chambers');
-    const width = Math.max(0, Number(viewport?.width) || 0);
-    const height = Math.max(0, Number(viewport?.height) || 0);
-    const axis = width >= height ? 'vertical' : 'horizontal';
-    return Object.freeze({mode:'split',axis,active:Object.freeze(active.slice())});
+  function composeInterlocutors(entries, viewport={width:0,height:0}) {
+    const active = Array.isArray(entries) ? entries.filter(Boolean) : [];
+    if (active.length <= 1) return Object.freeze({mode:'single',axis:null,columns:1,active:Object.freeze(active.slice())});
+    const width = Math.max(0, Number(viewport.width) || 0);
+    const height = Math.max(0, Number(viewport.height) || 0);
+    if (active.length === 2) {
+      const axis = width >= height ? 'vertical' : 'horizontal';
+      return Object.freeze({mode:'split',axis,columns:axis==='vertical'?2:1,active:Object.freeze(active.slice())});
+    }
+    const columns = Math.max(1, Math.ceil(Math.sqrt(active.length * Math.max(1,width) / Math.max(1,height))));
+    return Object.freeze({mode:'grid',axis:null,columns,active:Object.freeze(active.slice())});
   }
 
+  function locusKey(scope, locus) { return scopeId(scope)+'::'+locus; }
+
   function createRegistry() {
-    const sites = new Map();
+    const interlocutors = new Map();
     const mounts = new Map();
     const loci = new Map();
 
-    function register(site) {
-      if (!site || typeof site !== 'object') throw new TypeError('site object required');
-      siteId(site.id);
-      if (sites.has(site.id) && sites.get(site.id) !== site) throw new Error('site identity already registered: ' + site.id);
-      sites.set(site.id, site);
-      return site;
+    function register(interlocutor) {
+      if (!interlocutor || typeof interlocutor !== 'object') throw new TypeError('interlocutor object required');
+      stableId(interlocutor.id, 'interlocutor identity');
+      if (interlocutors.has(interlocutor.id) && interlocutors.get(interlocutor.id) !== interlocutor) {
+        throw new Error('interlocutor identity already registered: '+interlocutor.id);
+      }
+      interlocutors.set(interlocutor.id, interlocutor);
+      return interlocutor;
     }
 
-    function normalizeChamber(entry) {
-      if (!entry || typeof entry !== 'object') throw new TypeError('witness chamber required');
-      const r = resolvePath(entry.witness);
-      return Object.freeze({
-        rawWitness: entry.witness,
-        witness: r.witness,
-        locus: r.locus,
-        interlocutor: entry.interlocutor ?? null
-      });
-    }
-
-    function mount(id, entries) {
-      siteId(id);
-      const site = sites.get(id);
-      if (!site) throw new Error('unknown site identity: ' + id);
-      if (!Array.isArray(entries) || entries.length < 1) throw new TypeError('mount needs at least one witness');
-      const chambers = entries.map(normalizeChamber);
-      const locus = chambers[0].locus;
-      if (chambers.some(c => c.locus !== locus)) throw new Error('one site mount must occupy exactly one quotient locus');
-      const witnessNames = new Set(chambers.map(c => c.witness));
-      if (witnessNames.size !== chambers.length) throw new Error('duplicate witness chamber');
-      if (witnessNames.size > 2) throw new RangeError('v0 reciprocal locus supports at most two witness chambers');
-      const occupied = loci.get(locus);
-      if (occupied && occupied !== id) throw new Error('locus already occupied by another site identity: ' + locus);
+    function detach(id) {
       const previous = mounts.get(id);
-      if (previous) loci.delete(previous.locus);
-      const relation = Object.freeze({siteId:id,locus,chambers:Object.freeze(chambers)});
+      if (!previous) return false;
+      const key = locusKey(previous.scope, previous.locus);
+      const set = loci.get(key);
+      if (set) {
+        set.delete(id);
+        if (!set.size) loci.delete(key);
+      }
+      mounts.delete(id);
+      return true;
+    }
+
+    function mount(id, placement) {
+      stableId(id, 'interlocutor identity');
+      if (!interlocutors.has(id)) throw new Error('unknown interlocutor identity: '+id);
+      if (typeof placement === 'string') placement = {scope:'main', address:placement};
+      if (!placement || typeof placement !== 'object') throw new TypeError('mount placement required');
+      const scope = scopeId(placement.scope || 'main');
+      const rawAddress = placement.address ?? '';
+      const route = resolveAddress(rawAddress);
+      detach(id);
+      const relation = Object.freeze({siteId:id,interlocutorId:id,scope,rawAddress,address:route.address,locus:route.locus});
       mounts.set(id, relation);
-      loci.set(locus, id);
+      const key = locusKey(scope, route.locus);
+      if (!loci.has(key)) loci.set(key, new Set());
+      loci.get(key).add(id);
       return relation;
     }
 
-    function unmount(id) {
-      const relation = mounts.get(id);
-      if (!relation) return false;
-      mounts.delete(id); loci.delete(relation.locus); return true;
-    }
+    function unmount(id) { return detach(id); }
 
-    function resolve(rawPath, viewport={width:0,height:0}) {
-      const route = resolvePath(rawPath);
-      const id = loci.get(route.locus);
-      if (!id) return null;
-      const site = sites.get(id), relation = mounts.get(id);
-      const chamber = relation.chambers.find(c => c.witness === route.witness) || null;
-      return Object.freeze({
-        site,
+    function resolve(scope, rawPath, viewport={width:0,height:0}) {
+      scope = scopeId(scope);
+      const route = resolveAddress(rawPath);
+      const ids = Array.from(loci.get(locusKey(scope, route.locus)) || []);
+      const entries = ids.map(id => Object.freeze({
+        site:interlocutors.get(id),
         siteId:id,
-        locus:relation.locus,
+        interlocutor:interlocutors.get(id),
+        interlocutorId:id,
+        mount:mounts.get(id)
+      }));
+      return Object.freeze({
+        scope,
         rawPath:route.rawPath,
-        witness:route.witness,
-        enteredThrough:route.witness,
-        chamber,
-        chambers:relation.chambers,
-        composition:composeChambers(relation.chambers, viewport)
+        address:route.address,
+        locus:route.locus,
+        equivalentAddresses:route.equivalentAddresses,
+        interlocutors:Object.freeze(entries),
+        composition:composeInterlocutors(entries, viewport)
       });
     }
 
-    function snapshot(id, enteredThrough='', viewport={width:0,height:0}) {
-      siteId(id);
-      const site = sites.get(id), relation = mounts.get(id);
+    function snapshot(id, viewport={width:0,height:0}) {
+      stableId(id, 'interlocutor identity');
+      const site = interlocutors.get(id), relation = mounts.get(id);
       if (!site || !relation) return null;
-      const chamber = enteredThrough ? relation.chambers.find(c => c.witness === A.stripSelf(enteredThrough)) || null : null;
-      return Object.freeze({site,siteId:id,locus:relation.locus,enteredThrough,chamber,chambers:relation.chambers,composition:composeChambers(relation.chambers,viewport)});
+      const resolved = resolve(relation.scope, relation.rawAddress, viewport);
+      return Object.freeze({site,siteId:id,interlocutor:site,interlocutorId:id,mount:relation,scope:relation.scope,locus:relation.locus,composition:resolved.composition});
     }
 
     return Object.freeze({
       register,mount,unmount,resolve,snapshot,
-      getSite:id=>sites.get(id)||null,
+      getSite:id=>interlocutors.get(id)||null,
+      getInterlocutor:id=>interlocutors.get(id)||null,
       getMount:id=>mounts.get(id)||null,
-      getSiteAtLocus:locus=>{const id=loci.get(locus);return id?sites.get(id)||null:null;}
+      getInterlocutorsAt:(scope,rawPath,viewport)=>resolve(scope,rawPath,viewport).interlocutors.map(x=>x.interlocutor)
     });
   }
 
   function createActivityBus(registry) {
-    if (!registry || typeof registry.getSite !== 'function') throw new TypeError('site registry required');
+    if (!registry || typeof registry.getInterlocutor !== 'function') throw new TypeError('interlocutor registry required');
     const latest = new Map();
     const listeners = new Set();
 
     function normalize(event) {
       if (!event || typeof event !== 'object') throw new TypeError('activity event required');
-      const id = siteId(event.siteId);
-      if (!registry.getSite(id)) throw new Error('activity target is not a registered site: ' + id);
+      const id = stableId(event.siteId || event.interlocutorId, 'interlocutor identity');
+      if (!registry.getInterlocutor(id)) throw new Error('activity target is not registered: '+id);
       return Object.freeze({
         siteId:id,
+        interlocutorId:id,
         kind:String(event.kind || 'activity'),
         state:String(event.state || 'READY'),
         at:event.at || new Date().toISOString(),
@@ -163,15 +172,18 @@
 
     function receive(event) {
       const e = normalize(event);
-      latest.set(e.siteId, e);
+      latest.set(e.interlocutorId, e);
       for (const fn of listeners) fn(e);
       return e;
     }
 
-    function receiveAt(rawPath, event) {
-      const resolved = registry.resolve(rawPath);
-      if (!resolved) throw new Error('no mounted site at activity witness: ' + rawPath);
-      return receive({...event, siteId:resolved.siteId});
+    function receiveAt(scope, rawPath, event={}) {
+      const resolved = registry.resolve(scope, rawPath);
+      if (!resolved.interlocutors.length) throw new Error('no mounted interlocutor at locus');
+      const requested = event.siteId || event.interlocutorId;
+      if (requested) return receive({...event, siteId:requested});
+      if (resolved.interlocutors.length !== 1) throw new Error('activity locus is ambiguous; target one interlocutor identity');
+      return receive({...event, siteId:resolved.interlocutors[0].interlocutorId});
     }
 
     function subscribe(fn) {
@@ -183,5 +195,13 @@
     return Object.freeze({receive,receiveAt,subscribe,current:id=>latest.get(id)||null});
   }
 
-  return Object.freeze({resolvePath, defineSite, composeChambers, createRegistry, createActivityBus});
+  return Object.freeze({
+    resolveAddress,
+    resolvePath:resolveAddress,
+    defineInterlocutor,
+    defineSite:defineInterlocutor,
+    composeInterlocutors,
+    createRegistry,
+    createActivityBus
+  });
 });

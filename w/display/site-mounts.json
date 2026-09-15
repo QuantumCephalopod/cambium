@@ -1,45 +1,21 @@
 {
-  "version": 1,
-  "scope": "main-root",
-  "sites": [
+  "version": 2,
+  "interlocutors": [
     {
-      "id": "site:sss:root",
-      "witnesses": [""],
-      "interlocutors": [{"id": "main-root", "kind": "root"}],
-      "shader": {"id": "shader:sss:root", "palette": [0.28, 0.78, 0.92]},
-      "manifestation": {"kind": "root", "title": "Self-Similar Systems"}
+      "id": "organism:philosophy",
+      "local_scope": "main",
+      "shader": {"id": "shader:organism:philosophy", "palette": [0.28, 0.78, 0.92]},
+      "manifestation": {"kind": "philosophy", "background_inspect": true}
     },
     {
-      "id": "site:sss:01",
-      "witnesses": ["w"],
-      "interlocutors": [{"id": "main-root:w", "kind": "projection"}],
-      "shader": {"id": "shader:sss:01", "palette": [0.28, 0.78, 0.92]},
-      "manifestation": {"kind": "projection", "source": "w"}
-    },
-    {
-      "id": "site:sss:02",
-      "witnesses": ["x"],
-      "interlocutors": [{"id": "main-root:x", "kind": "projection"}],
-      "shader": {"id": "shader:sss:02", "palette": [0.47, 0.54, 0.94]},
-      "manifestation": {"kind": "projection", "source": "x"}
-    },
-    {
-      "id": "site:sss:03",
-      "witnesses": ["z"],
-      "interlocutors": [{"id": "main-root:z", "kind": "projection"}],
-      "shader": {"id": "shader:sss:03", "palette": [0.92, 0.48, 0.58]},
-      "manifestation": {"kind": "projection", "source": "z"}
-    },
-    {
-      "id": "site:sss:04",
-      "witnesses": ["y"],
-      "interlocutors": [{"id": "main-root:y", "kind": "projection"}],
-      "shader": {"id": "shader:sss:04", "palette": [0.62, 0.92, 0.42]},
-      "manifestation": {
-        "kind": "projection",
-        "source": "y",
-        "enter": {"site_id": "organism:papers", "href": "papers/", "label": "Papers"}
-      }
+      "id": "organism:papers",
+      "local_scope": "papers",
+      "shader": {"id": "shader:organism:papers", "palette": [0.62, 0.92, 0.42]},
+      "manifestation": {"kind": "papers", "background_inspect": false}
     }
+  ],
+  "mounts": [
+    {"interlocutor": "organism:philosophy", "scope": "main", "address": ""},
+    {"interlocutor": "organism:papers", "scope": "main", "address": "y"}
   ]
 }

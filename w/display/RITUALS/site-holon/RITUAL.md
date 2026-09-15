@@ -1,208 +1,212 @@
 ---
 name: site-holon
-description: "Rank-invariant Display primitive for relocatable viable sites: separate identity from locus, quotient raw navigation witnesses without erasing genealogy, preserve witness-specific interlocutor chambers, require a locus-shader protocol, and transition arbitrary manifestations through tetrahedral closure."
+description: "Rank-invariant Display primitive for relocatable page-organism interlocutors mounted at infinitely recursive tetrahedral loci while one viewer witnesses the encounter."
 organism: display
 geometry: tetrahedral
-version: "0.3"
+version: "1.3"
 ---
 
 # SITE-HOLON RITUAL — display local
 
-This ritual preserves the reusable site primitive of Display. It is not a page template and does not prescribe one visual composition. It defines the invariant outer physiology that lets radically different local sites remain one indefinitely growing organism.
+A site-holon is not a page template. It is the invariant relation between one navigating **witness**, an infinitely recursive tetrahedral **address law**, a quotient **locus**, and the **interlocutor page-organism(s)** mounted there.
 
-## Fundamental distinctions
+## Four distinctions
 
-- **Identity** — the continuing individual site-holon. `identity != locus`. It survives relocation caused by later differentiation.
-- **Locus** — the canonical place presently occupied inside one declared organismic address space. `locus != identity`.
-- **Witness** — a lawful raw genealogical navigation path resolving to a locus. It records how the locus was reached.
-- **Interlocutor** — the active local counterpart carried through one populated witness chamber: the tissue presently speaking, acting, showing or computing through that genealogy at the shared locus.
+- **Witness** — the viewer/person navigating the Display organism. There is one witness encounter even when several routes or interlocutors are involved.
+- **Address / path** — the raw recursive genealogy of movement through `{w,x,z,y}*`. Paths preserve how the witness approached; they are not identities.
+- **Locus** — the canonical tetrahedral place obtained from the address quotient. Reciprocal paths may name one locus without becoming the same genealogy.
+- **Interlocutor** — a stable page-organism encountered at a locus. Interlocutor identity is independent of placement and survives remounting.
 
-Distinct witnesses may coalesce without becoming identical histories. For the ordinary reciprocal case:
+Compression:
 
-`xyw ~ xwy`
+`witness navigates address -> quotient locus -> encounter 0..n interlocutors`
 
-therefore `witness(xyw) != witness(xwy)` while `locus(xyw) = locus(xwy)`.
+## Infinite recursive address law
 
-## Site-holon invariant
+Every declared organismic scope starts at local root `ε` and may realize the same fourfold again at arbitrary depth:
 
-Every viable site-holon provides:
+`ε -> {w,x,z,y} -> {ww,wx,wz,wy,...} -> ...`
 
-```text
-SITE-HOLON
-├── stable identity
-├── externally mounted locus
-├── lawful witness set
-├── witness chamber(s)
-│   └── interlocutor / local tissue
-├── locus shader
-├── local manifestation
-├── navigation apertures
-├── live activity receptor
-└── tetrahedral closure interface
-```
+Only realized anatomy is rendered. Potential recursion is addressability, not structure.
 
-The primitive governs this physiology, not the contents. Local manifestation may be text, images, video, sound, HTML/DOM, canvas, WebGL/WebGPU, runnable code, simulation, navigation only, independently rooted organs, or any lawful combination.
+An independently rooted interlocutor/page-organism occupying a host locus restarts the same address law at its own local root. Therefore:
+
+`main:y ⟦ papers:root ⟧`
+
+is lawful, while fake concatenation such as `main:yy` is not.
+
+## Locus / interlocutor law
+
+A locus may carry zero, one, or many interlocutors.
+
+- zero interlocutors -> no page-organism encounter is available there;
+- one interlocutor -> one undivided page-organism body;
+- two interlocutors -> one shared-locus encounter with responsive split composition;
+- more interlocutors -> lawful chamber/grid composition without inventing new addresses.
+
+Multiple raw addresses may resolve to the same locus. The paths remain genealogically distinct while all page-organisms mounted at that locus remain co-located.
+
+The registry relation is therefore conceptually:
+
+`interlocutor identity -> {host scope, mounted locus}`
+
+and
+
+`{host scope, locus} -> [interlocutor identities...]`
+
+not `one page == one raw URL/path`.
 
 ## Relocation law
 
-A site's absolute organism address is environment, not identity. Site-local implementation must not depend on one permanent raw path.
+Host placement is environment, not identity.
 
-Conceptually the surrounding organism mounts a site with current relation:
+A page-organism must remain viable when remounted:
 
-```text
-mount(siteIdentity, { locus, witnesses, enteredThrough, neighbors, children, activity })
-```
+`mount(Papers, main:y) -> mount(Papers, main:x) -> mount(Papers, main:xyw)`
 
-If growth later moves a site from `x` to `xy`, its mount changes while its identity and local tissue remain viable.
+without rewriting Papers' local manifestation, local state, local shader embodiment, or local recursive root.
 
 Growth should therefore be cheap:
 
-`differentiate -> recompute loci -> remount affected site-holons -> preserve identities and local tissue -> update connections`.
+`differentiate -> recompute loci -> remount affected interlocutors -> preserve page-organism identity and tissue`.
 
-## Quotient site law
+## Persistent Display physiology
 
-`path != site`.
+Page-organisms do not each own another website shell. Display owns one persistent **global navigation physiology**:
 
-Display inherits Cambium's router quotient; it does not invent a second address geometry. Raw paths remain genealogical witnesses while the quotient determines canonical locus. No chosen canonical serialization may erase or privilege one lawful witness.
+- one infinitely recursive tetrahedral addressing law reused in every scope;
+- one persistent global minimap/address navigator;
+- current scope/address/VIEW ancestry;
+- shared global orientation controls;
+- one tetrahedral closure transition;
+- one activity receptor contract;
+- one browser encounter/history body.
 
-Coalescence shares a place without erasing provenance or interlocutors.
+The **background is not a global wallpaper**. The background belongs to the interlocutor identity.
 
-## Chamber law
+Every active interlocutor brings:
 
-A merely possible reciprocal witness does not force an empty chamber.
+- its own local tetrahedral background/field;
+- its own stable shader embodiment;
+- its own local manifestation/tissue;
+- its own local specialties.
 
-- **one populated witness** → one undivided site body;
-- **two populated witnesses at one locus** → one site with two witness chambers.
+The global physiology survives every interlocutor change while local fields may differ radically.
 
-For the ordinary two-witness case, wide viewports split the site **vertically** (side-by-side); tall viewports split it **horizontally** (stacked). Responsive recomposition changes presentation only, never site identity, locus or witness identity.
+## Global Navigation Aperture
 
-Neither chamber is "the real page". Both are interlocutors of one locus.
+The global minimap is Display membrane physiology, not interlocutor content.
 
-## Locus shader invariant
+No page-organism may be forced to reserve a permanent corner, rectangle or padding region for the navigator merely because of its current left/right placement.
 
-Every site carries a locus shader as part of its membrane.
+Display therefore exposes the navigator through one movable **membrane aperture**:
 
-The invariant is not one universal shader implementation. It is one shader **protocol**, allowing every locus to earn its own field-language. A shader realization may respond to locus/site identity, witness/chamber state, active interlocutor, interaction, vascular activity, viewport, transition phase and time.
+- with one interlocutor, the aperture anchors to the outer Display membrane as a small **square port**;
+- with two interlocutors, it anchors to the shared seam as a small **diamond threshold**;
+- with larger compositions, it belongs to the compositor junction rather than to any one chamber.
 
-Thus: **one organism-wide shader protocol; arbitrarily many local shader embodiments.**
+In shared-locus composition the seam aperture performs a threshold transformation:
 
-DOM/CSS, canvas, HTML-in-canvas, WebGL, WebGPU or later rendering backends are implementation choices, not ontology.
+`diamond -> bloom -> rectilinear control cavity`
+
+The aperture shell changes geometry while the global minimap and orthogonal x/y rails remain the stable control tissue revealed behind it. The transformation belongs to Display membrane physiology, not to either interlocutor.
+
+Pointer hover, keyboard focus or touch/tap may open the aperture. Click/tap may pin it open, but its open/pinned state is membrane state rather than page-organism state.
+
+Because the navigator occupies membrane space, relocation of an interlocutor from left to right or from one address to another never requires rewriting that interlocutor's local layout.
+
+## Split encounter law
+
+A split encounter is not several page cards over one shared background.
+
+For two interlocutors at one locus:
+
+- the viewport splits into two full encounter chambers;
+- each chamber carries that interlocutor's own tetrahedral background;
+- each chamber carries that interlocutor's own shader identity;
+- each chamber carries that interlocutor's manifestation;
+- the global navigation aperture sits on the shared seam and belongs to neither side;
+- global orientation controls broadcast the same orientation change to every active background.
+
+Self-similarity therefore remains perceptible across the split: locally distinct fields rotate coherently because the witness is still operating one global navigation physiology.
+
+For more than two interlocutors the same law generalizes to a lawful chamber/grid composition without creating new loci.
+
+## Local specialties
+
+Different page-organisms may add local behavior without universalizing it.
+
+Current first specimens:
+
+- **Philosophy / landing** — `organism:philosophy`; its own background is additionally an interaction organ: direct drag may orient the shared orientation state and direct background selection may inspect loci without entering them. After this local movement settles, Philosophy may smoothly reorient toward the canonical global-centroid framing so the whole realized structure naturally returns into view. Renewed manual/global-axis input cancels that swingback immediately.
+- **Papers** — `organism:papers`; brings its own tetrahedral background and shader but its background does not select loci. Papers navigation uses the invariant global minimap.
+
+The global minimap remains available from every interlocutor and every split composition through the membrane aperture.
+
+## Shader identity law
+
+Shader is identity, not address.
+
+A shader embodiment belongs to the stable interlocutor/page-organism. Moving that interlocutor to another address or locus does not silently replace its shader.
+
+Therefore:
+
+`remount(interlocutor, newLocus) -> same interlocutor shader`
+
+Address/locus determines **where** the interlocutor is encountered. Shader identity determines **how that interlocutor's local field is embodied**.
+
+All interlocutors still participate in one organism-wide shader protocol so Display can mount, animate, pulse and compose arbitrary shader embodiments coherently.
+
+## Global orientation controls
+
+The minimap rails are global controls. Their value is angular velocity, not address.
+
+For pointer interaction:
+
+- drag a rail to any desired value;
+- when the pointer remains sufficiently still for the settle interval, that exact value latches immediately;
+- latching ends the active pointer session while preserving the chosen velocity;
+- moving the still-held mouse afterwards cannot change the latched value;
+- a new pointer-down picks the control back up;
+- a quick release before another settle returns that axis to zero.
+
+The lock is therefore **position-agnostic**: it does not require an extreme value.
+
+When several interlocutors are visible, one latched/global velocity rotates all their local tetrahedral backgrounds coherently.
 
 ## Tetrahedral closure transition
 
-Arbitrary sites transition through one invariant membrane operation:
+Committed movement between encounters uses one membrane operation:
 
-```text
-VISIBLE SITE MEMBRANE
-        ↓
-FOUR-FACET FOLD
-        ↓
-TETRAHEDRAL CLOSURE
-        ↓
-SAFE LOCUS / WITNESS / MOUNT SWAP
-        ↓
-FOUR-FACET UNFOLD
-        ↓
-NEXT SITE MEMBRANE
-```
+`visible encounter -> four-facet fold -> tetrahedral closure -> scope/locus/interlocutor swap while closed -> destination viable -> unfold`.
 
-The visible screen folds inward from four corners/facets into a tetrahedral liminal state. Exact rendering technique may evolve; the invariant is closure before the destination manifestation is exposed.
+The persistent Display document/shell remains alive. Document redirects are not the site-holon transition primitive.
 
-While closed, Display may unmount the old local runtime, resolve the destination witness and locus, resolve the mounted site identity, choose the relevant chamber, prepare local media/runtime, update history/activity bindings, and mount the destination. The destination unfolds only once viable.
+## Activity
 
-The closed tetrahedron is also the native loading/recovery state; arbitrary sites need no shared inner implementation to transition coherently.
+Activity targets stable interlocutor/page-organism identity, not a permanent address. Remounting an interlocutor must not break its activity receptor.
 
-## Navigation and history
+If a shared locus contains several interlocutors, an ambiguous locus-level activity event must identify which interlocutor it concerns rather than silently choosing one.
 
-Runtime navigation must preserve both canonical place and actual route. It distinguishes at least:
+## Acceptance witness
 
-`siteIdentity · locus · witness · enteredThrough`
+A production implementation conforms when real browser contact proves at least:
 
-rather than reducing identity to `page = rawPath`.
-
-Two routes such as `/xyw` and `/xwy` may enter the same site at one locus while preserving different entry witnesses. Browser history retains the traversal actually taken.
-
-`LOOK HERE != GO HERE` remains invariant: inspection focuses a realized locus; commitment crosses into the site mounted there.
-
-## Live activity
-
-Activity follows current placement. Site-local code must not hard-code an organism/interlocutor to one address forever. Display resolves the current relation first and supplies local activity through the site membrane. Activity may alter shader or manifestation without manufacturing semantic anatomy.
-
-The primitive owns the receptor contract, not the external network transport. A future event carrier may deliver directly into `receiveActivity(...)` without changing site identity/locus law.
-
-## v0 acceptance tests
-
-The primitive is production-viable when one implementation proves:
-
-1. relocation of one unchanged site across deeper loci without rewriting local implementation;
-2. `xyw ~ xwy` resolving to one locus and one site identity;
-3. preservation of both raw witnesses and truthful traversal state;
-4. one populated witness → one body; two → responsive two-chamber composition;
-5. materially different local tissue in the two chambers remains viable;
-6. wide/tall recomposition leaves identity/locus untouched;
-7. Site A folds closed, the mount swap occurs while closed, and Site B is mounted before unfold completes;
-8. distinct loci may use distinct shaders through one protocol;
-9. activity is received against stable site identity and follows remounting instead of remaining glued to an obsolete address.
-
-## Current implementation status — v0.3 production mounted
-
-The primitive is now executable in the generated public membrane of the writable organism.
-
-### Core
-
-`w/display/site-holon.js` delegates quotient identity to canonical `z/address.js`, registers stable site identities independently of mounts, preserves reciprocal witness chambers, computes responsive composition, and exposes an identity-bound activity receptor.
-
-`w/display/site-holon.test.cjs` proves relocation through:
-
-`x -> xy -> (xyw ~ xwy)`
-
-while retaining the same site object/local state. It also proves reciprocal coalescence, distinct witness interlocutors, wide/tall chamber orientation, per-site shader identity, and activity following a remounted site rather than its obsolete locus.
-
-### Browser cell
-
-`site-holon-specimen.html/.js/.css` remains the torture specimen: one interlocutor is ordinary DOM/text and the reciprocal interlocutor is runnable WebGL. It can remount one stable site identity between coarse, deeper and reciprocal loci.
-
-### Production mount
-
-`site-mounts.json` is the current external mount registry for the main-root public projection. Stable site identities are mounted separately from the semantic projection they currently occupy.
-
-`site-runtime.js` observes committed navigation as a raw witness, resolves that witness through the site-holon registry, exposes `siteIdentity/locus/witness` separately, binds the locus shader membrane, preserves first-rank browser traversal state, and accepts live activity through `SSSDisplayRuntime.receiveActivity(...)` / the `sss:activity` event receptor.
-
-The existing accepted main-root WebGL renderer remains the global navigator/world. It is not replaced by the site primitive; commitment now crosses from that world into a mounted site-holon.
-
-### Shader membrane
-
-Every currently mounted public site carries an explicit shader contract. `site-runtime.js` provides the default locus-field implementation; individual sites remain free to replace that field with their own shader realization without changing the primitive.
-
-### Tetrahedral closure
-
-`site-fold.js` implements the invariant phase sequence:
-
-`open -> closing -> closed -> opening -> open`.
-
-The public membrane presents four screen facets and intercepts normal commit/return movement. The destination mount mutation occurs only in `closed` state. `site-fold.test.cjs` explicitly witnesses that ordering, and GitHub Actions runs the test as part of the Display membrane build.
-
-Current v0 status:
-
-- identity != locus: **PASS**;
-- raw path retained as witness: **PASS**;
-- quotient-equal reciprocal witnesses -> one locus: **PASS**;
-- stable site relocation: **PASS**;
-- one/two interlocutor chamber law: **PASS**;
-- responsive vertical/horizontal split law: **PASS**;
-- mixed DOM/WebGL local viability: **PASS**;
-- per-locus shader protocol: **PASS**;
-- production navigation -> site-holon resolution: **PASS** for the currently realized public root;
-- tetrahedral close/swap/open membrane: **PASS**;
-- identity-bound live activity receptor: **PASS**;
-- generated membrane structural/build/address/fold witnesses: **PASS**.
-
-Open pressures are now outside the primitive's viability closure rather than failures of the cell:
-
-- external event transport (for example a later push/WebSocket carrier) must feed the existing activity receptor without polling and without changing the primitive;
-- richer fold rendering may texture the four facets with the actual live site membrane when browser support/backends warrant it;
-- new deeper public sites need only add/remount site tissue and witnesses; they must not require a new site architecture.
+1. exact recursive address geometry, including quotient-equal paths sharing one locus;
+2. one persistent global minimap across different page-organisms;
+3. Philosophy can inspect through its background while Papers cannot;
+4. Papers remains identical and viable after host-locus remounting with no Papers rewrite;
+5. entering Papers restarts at `papers:ε`, not a concatenated host address;
+6. two page-organisms mounted at one locus render as one split encounter with two full local backgrounds, not overlay cards;
+7. each interlocutor preserves its own shader identity across relocation and split composition;
+8. the global navigation aperture occupies membrane space and moves from an outer **square port** to the shared split seam without consuming interlocutor content space;
+9. shared-locus aperture opening begins as a diamond threshold and resolves into a rectilinear x/y control cavity;
+10. Philosophy background movement can settle into a smooth global-centroid swingback and renewed manual input cancels it;
+11. global orientation changes rotate all active interlocutor backgrounds coherently;
+12. an axis can latch at a non-extreme value by holding still and remains unchanged when the still-held pointer moves afterwards;
+13. the same Display shell survives source close, closed-state swap, and destination unfold;
+14. activity follows stable interlocutor identity.
 
 ## Compression
 
-**Identity persists. Locus places. Witnesses approach. Interlocutors speak. Chambers preserve genealogy. Shaders embody loci. Tetrahedral closure carries transition.**
+**The witness navigates one invariant infinitely recursive tetrahedral law. Paths preserve genealogy; quotient determines locus; loci host zero or more relocatable interlocutor page-organisms. Each interlocutor carries its own background, shader identity and manifestation; the global navigator lives in Display membrane space as a square outer port or seam diamond that resolves into a rectilinear control cavity, while Philosophy may locally swing its field back toward the global whole.**
