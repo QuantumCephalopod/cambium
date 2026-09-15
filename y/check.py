@@ -79,19 +79,24 @@ def main():
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not the centroid of the selected recursive split-tet')
     check("twin.addEventListener('pointerdown'" in world,'global minimap navigation missing')
-    check("global-minimap-overview" in world and "strokeRect" in world,'global overview address is not visible/clickable in the minimap')
+    check('GLOBAL_TARGETS' in world and 'for(const t of GLOBAL_TARGETS)' in world,'global minimap does not derive visible targets from mounted page-organisms')
+    check("sss:global-navigate" in world and 'requestGlobalTarget' in world,'global minimap still inspects Philosophy instead of requesting organism navigation')
+    check("targetPoint(t){return t.path===''?[0,0,0]" in world and 'strokeRect' in world,'Philosophy overview mount is not a distinct global-centroid target')
     check("const GLOBAL_SCOPE='main'" in runtime and 'resolveGlobal' in runtime and 'registry.resolve(GLOBAL_SCOPE' in runtime,'global navigator is not pinned to the global host address space')
     check('W.setScope({id:GLOBAL_SCOPE,projection:MAIN})' in runtime,'global navigator does not initialize from the global main projection')
-    check("const path=W.view||''" in runtime and 'resolveGlobal(path)' in runtime,'global overview cannot resolve its mounted interlocutor')
-    check("Papers.render({projection:PAPERS,path:''})" in runtime,'global navigator VIEW leaked into Papers-local navigation')
+    check('W.setGlobalTargets(globalTargets())' in runtime and 'W.setActiveGlobalAddress' in runtime,'runtime does not project global mount targets into the navigator')
+    check("addEventListener('sss:global-navigate'" in runtime and 'navigateGlobal' in runtime,'global navigator does not directly change the active page-organism encounter')
+    check("Papers.render({projection:PAPERS,path:''})" in runtime,'global navigator leaked into Papers-local navigation')
     check("scopeId=r.interlocutors" not in runtime and "scopeId='papers'" not in runtime,'interlocutor entry still hijacks global navigator scope')
+    check('raw address already occupied; differentiate before mounting another interlocutor' in holon,'raw-address pile-up is not rejected before preemptive differentiation')
+    check('getAtAddress' in holon,'registry cannot witness exact global address occupancy')
     check('interactive:true' in runtime and 'interactive:false' in runtime,'Philosophy/Papers background specialties collapsed')
     check('W.orientation' in fields,'interlocutor backgrounds do not share global orientation state')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'settle-to-lock exact axis behavior missing')
     check('HOME_ORIENT' in world and 'qSlerp' in world and 'philosophy-swingback' in world,'Philosophy orientation swingback physiology missing')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
     check('localScope' in holon,'interlocutor local root identity missing')
-    check('new Set()' in holon and 'loci.get(key).add(id)' in holon,'locus cannot host multiple interlocutors')
+    check('new Set()' in holon and 'loci.get(key).add(id)' in holon,'quotient locus cannot compose interlocutors from distinct addresses')
     check('active.length === 2' in holon and "mode:'grid'" in holon,'multi-interlocutor composition law missing')
     check("data-aperture=\"closed\"" in actual and 'aria-controls="mini-pocket"' in actual,'global navigator is not aperture-owned')
     check('class="shape-square"' in actual and 'class="shape-diamond"' in actual,'single/split aperture marker variants missing')
@@ -114,9 +119,9 @@ def main():
         'status':'pass','checks':count,'display':'one persistent membrane',
         'bundle':bundle,'asset_generation':'one content-addressed namespace',
         'specimens':['organism:philosophy','organism:papers'],
-        'navigation':'global host navigator including ε overview persists across interlocutors / camera frames recursive split centroids / single square port / split seam control cavity',
+        'navigation':'global minimap exposes mounted organism targets only and jumps directly between encounters / Philosophy background inspects realized addresses / camera frames recursive split centroids',
+        'placement':'exact raw-address pile-up forbidden; differentiate before adding another site; quotient-coalesced distinct addresses still compose',
         'mounting':'page-organism identity and local root independent of global host locus',
-        'composition':'shared global locus opens local worlds around one seam aperture',
         'artifact':'single index.html'
     },indent=2))
 
