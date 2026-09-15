@@ -2,7 +2,7 @@ name: display membrane
 
 on:
   push:
-    branches: [main, staging/display-two-specimen]
+    branches: [main, staging/display-two-specimen, hotfix/feed-build-compat]
   workflow_dispatch:
 
 permissions:
@@ -22,6 +22,9 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+
+      - name: Witness feed projector compatibility
+        run: python3 y/feed.py --before HEAD --after HEAD
 
       - name: Project local feeds from durable HOME
         if: github.event_name == 'push' && github.ref_name == 'main'

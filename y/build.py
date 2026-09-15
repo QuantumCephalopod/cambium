@@ -11,6 +11,68 @@ DISPLAY = ROOT / 'w' / 'display'
 GENES = 'wxzy'
 
 
+def scalar(text):
+    text = text.strip()
+    if not text:
+        return {}
+    if text.startswith(('"', "'")):
+        return json.loads(text) if text.startswith('"') else text[1:-1]
+    return text
+
+
+def load_yaml(path):
+    """Strict tiny YAML subset sufficient for canonical INDEX/_cambium surfaces."""
+    root, stack = {}, [(-1, {})]
+    root = stack[0][1]
+    for number, raw in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+        if not raw.strip() or raw.lstrip().startswith('#'):
+            continue
+        if raw.strip() == '{}':
+            if root:
+                raise ValueError(f'{path.name}:{number}: empty mapping must stand alone')
+            continue
+        indent = len(raw) - len(raw.lstrip(' '))
+        if indent % 2:
+            raise ValueError(f'{path.name}:{number}: indentation must use two-space steps')
+        line = raw.strip()
+        if ':' not in line:
+            raise ValueError(f'{path.name}:{number}: expected key: value')
+        key, value = line.split(':', 1)
+        key = key.strip()
+        while stack[-1][0] >= indent:
+            stack.pop()
+        parent = stack[-1][1]
+        if key in parent:
+            raise ValueError(f'{path.name}:{number}: duplicate key {key}')
+        parsed = scalar(value)
+        parent[key] = parsed
+        if isinstance(parsed, dict):
+            stack.append((indent, parsed))
+    return root
+
+
+def validate_index(index):
+    def walk(node, path=''):
+        if not isinstance(node, dict):
+            raise ValueError(f'{path or "root"} phenotype must be a mapping')
+        keys = set(node)
+        if path:
+            if not isinstance(node.get('noun'), str) or not node['noun'].strip():
+                raise ValueError(f'{path} needs one atomic noun')
+            keys.remove('noun')
+        if not keys <= set(GENES):
+            raise ValueError(f'{path or "root"} contains non-phenotype fields: {sorted(keys-set(GENES))}')
+        children = [g for g in GENES if g in node]
+        if children and len(children) != 4:
+            raise ValueError(f'{path or "root"} has an incomplete realized CCCC split')
+        for g in children:
+            walk(node[g], path + g)
+    if set(index) != set(GENES):
+        raise ValueError('root INDEX.yaml must contain exactly the realized w/x/z/y phenotype')
+    for g in GENES:
+        walk(index[g], g)
+
+
 def validate_cambium(c, label='_cambium.yaml'):
     expected = {'4V': set(GENES), '6E': {'wx','wz','wy','xz','xy','zy'}, '4F': {'wxz','wxy','wzy','xzy'}}
     if set(c) != {'4V','6E','4F','1T'}:
