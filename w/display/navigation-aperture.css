@@ -5,6 +5,16 @@
  */
 #mini{
   --aperture-size:336px;
+  --trigger-shape-inset:7px;
+  --trigger-shape-radius:7px;
+  --trigger-shape-rotate:0deg;
+  --trigger-shape-scale:1;
+  --pocket-closed-clip:polygon(50% 0,85% 15%,100% 50%,85% 85%,50% 100%,15% 85%,0 50%,15% 15%);
+  --pocket-open-clip:polygon(10% 8%,90% 8%,92% 10%,92% 90%,90% 92%,10% 92%,8% 90%,8% 10%);
+  --pocket-active-clip:var(--pocket-open-clip);
+  --pocket-origin:100% 50%;
+  --shell-rotate-closed:0deg;
+  --shell-rotate-open:0deg;
   position:fixed;
   z-index:40;
   width:var(--aperture-size);
@@ -33,12 +43,13 @@
 #mini-trigger::before{
   content:"";
   position:absolute;
-  inset:7px;
-  transform:rotate(45deg);
+  inset:var(--trigger-shape-inset);
+  transform:rotate(var(--trigger-shape-rotate)) scale(var(--trigger-shape-scale));
+  border-radius:var(--trigger-shape-radius);
   border:1px solid rgba(241,239,233,.34);
   background:rgba(5,7,10,.28);
   backdrop-filter:blur(8px);
-  transition:transform .22s ease,border-color .22s ease,background .22s ease;
+  transition:transform .22s ease,border-color .22s ease,background .22s ease,border-radius .22s ease;
 }
 #mini-trigger svg{
   position:relative;
@@ -48,41 +59,61 @@
   overflow:visible;
   filter:drop-shadow(0 1px 8px rgba(0,0,0,.72));
 }
+#mini-trigger .shape-diamond{display:none}
 #mini-trigger:hover::before,#mini-trigger:focus-visible::before,#mini[data-aperture="open"] #mini-trigger::before{
   border-color:rgba(241,239,233,.72);
   background:rgba(5,7,10,.62);
-  transform:rotate(45deg) scale(1.12);
+  transform:rotate(var(--trigger-shape-rotate)) scale(calc(var(--trigger-shape-scale) * 1.12));
 }
 #mini-trigger:focus-visible{filter:drop-shadow(0 0 10px rgba(255,255,255,.16))}
-
 #mini-pocket{
   position:absolute;
   inset:0;
   pointer-events:none;
   opacity:0;
   transform:scale(.055);
-  transform-origin:100% 50%;
-  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+  transform-origin:var(--pocket-origin);
+  clip-path:var(--pocket-closed-clip);
   background:linear-gradient(135deg,rgba(12,17,23,.96),rgba(4,7,11,.985));
   filter:drop-shadow(0 0 1px rgba(241,239,233,.66)) drop-shadow(0 18px 46px rgba(0,0,0,.46));
-  transition:transform .28s cubic-bezier(.2,.78,.18,1),opacity .18s ease;
+  transition:transform .32s cubic-bezier(.2,.78,.18,1),opacity .18s ease,clip-path .34s cubic-bezier(.22,.8,.18,1);
   isolation:isolate;
 }
-#mini-pocket::before{
+#mini-pocket::before,
+#mini-pocket::after{
   content:"";
   position:absolute;
   inset:2px;
-  clip-path:inherit;
+  pointer-events:none;
+}
+#mini-pocket::before{
+  clip-path:var(--pocket-active-clip);
   border:1px solid rgba(241,239,233,.14);
   background:
     linear-gradient(90deg,transparent 49.75%,rgba(241,239,233,.07) 50%,transparent 50.25%),
     linear-gradient(0deg,transparent 49.75%,rgba(241,239,233,.05) 50%,transparent 50.25%);
-  pointer-events:none;
+  transition:clip-path .34s cubic-bezier(.22,.8,.18,1),opacity .24s ease;
+}
+#mini-pocket::after{
+  inset:0;
+  clip-path:var(--pocket-active-clip);
+  border:1px solid rgba(241,239,233,.22);
+  transform:rotate(var(--shell-rotate-closed));
+  opacity:.92;
 }
 #mini[data-aperture="open"] #mini-pocket{
   opacity:1;
   transform:scale(1);
+  clip-path:var(--pocket-open-clip);
   pointer-events:auto;
+}
+#mini[data-aperture="open"] #mini-pocket::after{
+  animation:aperture-shell-resolve .42s cubic-bezier(.2,.82,.18,1) forwards;
+}
+@keyframes aperture-shell-resolve{
+  0%{transform:rotate(var(--shell-rotate-closed));opacity:.78}
+  45%{transform:rotate(calc((var(--shell-rotate-closed) + var(--shell-rotate-open)) / 2));opacity:.92}
+  100%{transform:rotate(var(--shell-rotate-open));opacity:1}
 }
 #mini[data-pinned="true"] #mini-trigger::after{
   content:"";
@@ -165,10 +196,14 @@
   color:rgba(241,239,233,.28);
   pointer-events:none;
 }
-
-/* Shared-locus encounters: the membrane aperture belongs to the seam itself. */
 html[data-composition="split"] #mini,
 html[data-composition="grid"] #mini{
+  --trigger-shape-radius:0;
+  --trigger-shape-rotate:45deg;
+  --pocket-origin:50% 50%;
+  --pocket-open-clip:polygon(8% 14%,92% 14%,92% 86%,8% 86%);
+  --shell-rotate-closed:45deg;
+  --shell-rotate-open:0deg;
   left:50%;
   top:50%;
   right:auto;
@@ -182,11 +217,11 @@ html[data-composition="grid"] #mini-trigger{
   right:auto;
   transform:translate(-50%,-50%);
 }
-html[data-composition="split"] #mini-pocket,
-html[data-composition="grid"] #mini-pocket{
-  transform-origin:50% 50%;
-}
-html[data-composition="split"][data-composition-axis="vertical"] #mini::before{
+html[data-composition="split"] #mini-trigger .shape-square,
+html[data-composition="grid"] #mini-trigger .shape-square{display:none}
+html[data-composition="split"] #mini-trigger .shape-diamond,
+html[data-composition="grid"] #mini-trigger .shape-diamond{display:block}
+html[data-composition="split"] #mini::before{
   content:"";
   position:absolute;
   z-index:-1;
@@ -199,18 +234,14 @@ html[data-composition="split"][data-composition-axis="vertical"] #mini::before{
   pointer-events:none;
 }
 html[data-composition="split"][data-composition-axis="horizontal"] #mini::before{
-  content:"";
-  position:absolute;
-  z-index:-1;
   top:50%;
   left:-120vw;
   right:-120vw;
+  bottom:auto;
+  width:auto;
   height:1px;
-  background:rgba(241,239,233,.12);
   transform:translateY(-.5px);
-  pointer-events:none;
 }
-
 @media(max-width:760px){
   #mini{--aperture-size:286px;bottom:-40px}
   #mini-core{width:204px;height:204px}
@@ -231,5 +262,5 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
   #mini #axis-y::before{left:14px}#mini #axis-y .knob{left:14px}
 }
 @media(prefers-reduced-motion:reduce){
-  #mini-pocket,#mini-trigger::before{transition-duration:.04s!important}
+  #mini-pocket,#mini-trigger::before,#mini-pocket::before,#mini-pocket::after{transition-duration:.04s!important;animation-duration:.04s!important}
 }
