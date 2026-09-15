@@ -1,5 +1,6 @@
 /* Display navigation physiology — one realized tetrahedral field, inspect != enter.
- * Semantic places are exact address loci; cell centroids are camera/bookkeeping only.
+ * Semantic places are exact address loci/vertices; camera focus is the centroid of
+ * the recursive split-tetrahedron anchored by the selected address.
  */
 (function (root, factory) {
   'use strict';
@@ -53,10 +54,16 @@
     return structure.addresses.find(a => a.path === path) || null;
   }
 
+  /* The address/locus remains a vertex. The camera instead frames the recursive
+   * tetrahedral cell rooted at that address. That keeps the selected continuation
+   * and its three peer directions perceptually co-equal rather than throwing the
+   * camera onto an outer vertex. Each additional address step halves the cell, so
+   * rank-local zoom compensates by 2^rank.
+   */
   function focusTarget(structure, path) {
     const record = addressRecord(structure, path);
     if (!record) return {center:[0,0,0], scale:1};
-    return {center:[...record.point], scale:Math.min(9, 1.02 * Math.pow(2, path.length))};
+    return {center:[...record.center], scale:Math.min(9, 1.02 * Math.pow(2, path.length))};
   }
 
   function velocity(value, max=.86, dead=.035) {

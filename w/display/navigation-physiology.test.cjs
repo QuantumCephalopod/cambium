@@ -14,6 +14,8 @@ for (const a of s.addresses) {
   assert.deepEqual(a.point,N.semanticPoint(a.path),'semantic place must equal exact recursive address locus');
 }
 assert.notDeepEqual(N.addressRecord(s,'w').point,N.addressRecord(s,'w').center,'semantic place must not regress to cell centroid');
+assert.deepEqual(N.focusTarget(s,'w').center,N.addressRecord(s,'w').center,'camera must frame the recursive split-tet centroid at w');
+assert.notDeepEqual(N.focusTarget(s,'w').center,N.addressRecord(s,'w').point,'camera framing must not target the outer semantic vertex');
 
 root.children.w = {noun:'Form',children:{w:atom('ww'),x:atom('wx'),z:atom('wz'),y:atom('wy')}};
 s = N.collectStructure(root);
@@ -21,6 +23,8 @@ assert.deepEqual(s.leaves.map(x=>x.path).sort(), ['ww','wx','wy','wz','x','y','z
 assert.ok(!s.leaves.some(x => ['xx','zz','yy'].includes(x.path)), 'coarse siblings must not be fabricated');
 assert.deepEqual(N.semanticPoint('w'),N.semanticPoint('ww'),'self-continuation must preserve the same point');
 assert.deepEqual(N.semanticPoint('xyw'),N.semanticPoint('xwy'),'reciprocal addresses must resolve to the same geometric locus');
+assert.deepEqual(N.focusTarget(s,'wx').center,N.addressRecord(s,'wx').center,'deeper focus must move to the centroid of the smaller recursive split-tet');
+assert.ok(N.focusTarget(s,'wx').scale>N.focusTarget(s,'w').scale,'deeper focus must compensate rank-local scale');
 
 const bounds = {left:100,top:100,width:200,height:200};
 const xA = N.axisValue('x', bounds, 160, 101);
@@ -37,6 +41,7 @@ const state = N.createState({noun:'root',children:{w:atom('Form'),x:atom('Contin
 assert.equal(state.view, '');
 assert.equal(state.inspect('x'), true);
 assert.equal(state.view, 'x');
+assert.deepEqual(state.target().center,N.focusTarget(state.structure,'x').center,'state target must use centroid camera framing');
 state.clearInspection(); assert.equal(state.view,'');
 state.setAxis('x', .7); state.setAxis('y', -.4);
 let av = state.angularVelocity();
@@ -48,4 +53,4 @@ assert.notEqual(av.pitch, 0, 'x release must not alter y axis');
 state.releaseAxis('y');
 assert.deepEqual(state.angularVelocity(), {yaw:0,pitch:0});
 
-console.log(JSON.stringify({status:'pass',realized_only:true,semantic_place_is_locus:true,recursive_quotient_geometry:true,independent_axes:true,inspect_without_commit:true}, null, 2));
+console.log(JSON.stringify({status:'pass',realized_only:true,semantic_place_is_locus:true,camera_focus_is_split_centroid:true,recursive_quotient_geometry:true,independent_axes:true,inspect_without_commit:true}, null, 2));
