@@ -32,15 +32,15 @@ function rotateBy(dx,dy,source='background'){orient=qNorm(qMul(qAxis([1,0,0],dy*
 twin.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;const p=twinPoint(e),path=hitAddress(p.x,p.y);if(path){inspect(path,'global-minimap');e.preventDefault()}});
 
 const axes={x:document.getElementById('axis-x'),y:document.getElementById('axis-y')};
-const AXIS_SETTLE_MS=520;
+const AXIS_SETTLE_MS=520,AXIS_SETTLE_EPS=.018;
 function paintAxis(axis){if(!nav)return;const el=axes[axis],v=nav.axes[axis],k=el.querySelector('.knob');el.setAttribute('aria-valuenow',String(Math.round(v*100)));if(axis==='x')k.style.left=(50+v*43)+'%';else k.style.top=(50-v*43)+'%'}
 function bindAxis(axis){
-  const el=axes[axis];let active=null,timer=null,latched=false;
+  const el=axes[axis];let active=null,timer=null,latched=false,lastValue=0;
   const clearTimer=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
-  const set=e=>{const v=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY);nav.setAxis(axis,v);paintAxis(axis)};
+  const sample=e=>{const v=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY),changed=Math.abs(v-lastValue)>AXIS_SETTLE_EPS;lastValue=v;nav.setAxis(axis,v);paintAxis(axis);return changed};
   const arm=()=>{clearTimer();if(active===null)return;timer=setTimeout(()=>{timer=null;if(active===null)return;const pid=active;active=null;latched=true;el.dataset.latched='true';try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}},AXIS_SETTLE_MS)};
-  el.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;clearTimer();if(latched){latched=false;el.dataset.latched='false'}active=e.pointerId;try{el.setPointerCapture(active)}catch(_){}set(e);arm();e.preventDefault()});
-  el.addEventListener('pointermove',e=>{if(active!==e.pointerId)return;set(e);arm();e.preventDefault()});
+  el.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;clearTimer();if(latched){latched=false;el.dataset.latched='false'}active=e.pointerId;try{el.setPointerCapture(active)}catch(_){}lastValue=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY);nav.setAxis(axis,lastValue);paintAxis(axis);arm();e.preventDefault()});
+  el.addEventListener('pointermove',e=>{if(active!==e.pointerId)return;if(sample(e))arm();e.preventDefault()});
   const release=e=>{if(active!==e.pointerId)return;clearTimer();const pid=active;active=null;nav.releaseAxis(axis);paintAxis(axis);try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}e.preventDefault()};
   el.addEventListener('pointerup',release);el.addEventListener('pointercancel',release);
   el.addEventListener('keydown',e=>{if(!nav)return;const valid=axis==='x'?['ArrowLeft','ArrowRight']:['ArrowUp','ArrowDown'];if(!valid.includes(e.key))return;e.preventDefault();const sign=(e.key==='ArrowRight'||e.key==='ArrowUp')?1:-1;nav.setAxis(axis,sign*(e.shiftKey?1:.52));paintAxis(axis)});
