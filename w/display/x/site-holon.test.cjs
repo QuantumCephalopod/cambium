@@ -2,7 +2,7 @@
 'use strict';
 const assert=require('node:assert/strict');
 const H=require('./site-holon.js');
-const F=require('./site-fold.js');
+const F=require('../z/site-fold.js');
 
 const a=H.resolveAddress('xyw'), b=H.resolveAddress('xwy');
 assert.equal(a.locus,b.locus,'reciprocal addresses must coalesce to one locus');
