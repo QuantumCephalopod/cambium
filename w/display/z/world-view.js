@@ -39,7 +39,7 @@ function drawTwin(){
 }
 function twinPoint(e){const r=twin.getBoundingClientRect();return {x:(e.clientX-r.left)*twin.width/r.width,y:(e.clientY-r.top)*twin.height/r.height}}
 function hitTarget(x,y){let best=null;for(const t of GLOBAL_TARGETS){const p=miniProject(targetPoint(t)),d=Math.hypot(x-p.x,y-p.y),limit=t.path===''?23:24;if(d<limit&&(!best||d<best.d))best={target:t,d}}return best?.target||null}
-function emitView(source){if(!nav)return;route.textContent='GLOBAL '+scopeId+':'+(activeGlobalAddress||'overview')+' · PHILOSOPHY VIEW '+(nav.view||'overview');miniState.textContent='global '+(activeGlobalAddress||'overview')+' · '+GLOBAL_TARGETS.length+' sites';dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
+function emitView(source){if(!nav)return;route.textContent='GLOBAL '+scopeId+':'+(activeGlobalAddress||'overview')+' · LOCAL VIEW '+(nav.view||'overview');miniState.textContent='global '+(activeGlobalAddress||'overview')+' · '+GLOBAL_TARGETS.length+' sites';dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
 function emitOrientation(source='global'){dispatchEvent(new CustomEvent('sss:orientation',{detail:{orientation:[...orient],source}}))}
 function inspect(path,source='philosophy-background'){if(!nav||!nav.inspect(path))return false;emitView(source);drawTwin();return true}
 function clearInspection(source='clear'){if(!nav)return;nav.clearInspection();emitView(source);drawTwin()}
