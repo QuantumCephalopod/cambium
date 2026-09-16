@@ -31,6 +31,29 @@ function publicPacket(body) {
   return body;
 }
 
+/* One HOME may be observed more than once while its source-owned _feed
+ * reconciles PENDING -> READY. Deduplication therefore applies to one
+ * concrete delivery phase/revision, not to HOME identity alone.
+ */
+function receiptKey(packet) {
+  const activity = packet.activity && typeof packet.activity === "object"
+    ? packet.activity
+    : {};
+  const feedState = String(activity.feed_state ?? activity.state ?? "");
+  const snapshotRevision = Object.prototype.hasOwnProperty.call(packet, "snapshot")
+    ? String(packet.projection_revision ?? "snapshot")
+    : "no-snapshot";
+  return [
+    packet.site_id,
+    packet.event_id,
+    packet.kind ?? "HOME",
+    packet.projection_revision ?? "",
+    packet.semantic_revision ?? "",
+    feedState,
+    snapshotRevision
+  ].join("\u001f");
+}
+
 export class LiveState extends DurableObject {
   async readState() {
     const [sites, lastEvent] = await Promise.all([
@@ -90,8 +113,14 @@ export class LiveState extends DurableObject {
       }
 
       const recent = (await this.ctx.storage.get("recent_events")) ?? [];
-      if (recent.includes(packet.event_id)) {
-        return json({ ok: true, deduped: true, event_id: packet.event_id });
+      const receipt = receiptKey(packet);
+      if (recent.includes(receipt)) {
+        return json({
+          ok: true,
+          deduped: true,
+          event_id: packet.event_id,
+          site_id: packet.site_id
+        });
       }
 
       const receivedAt = new Date().toISOString();
@@ -120,7 +149,7 @@ export class LiveState extends DurableObject {
       };
 
       sites[packet.site_id] = nextSite;
-      const nextRecent = [...recent, packet.event_id].slice(-256);
+      const nextRecent = [...recent, receipt].slice(-256);
       const lastEvent = {
         event_id: packet.event_id,
         site_id: packet.site_id,
