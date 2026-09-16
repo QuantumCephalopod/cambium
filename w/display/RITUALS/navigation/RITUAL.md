@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: one persistent global tetrahedral mount navigator plus Philosophy-local address inspection over the same realized geometry."
 organism: display
 geometry: tetrahedral
-version: "1.5"
+version: "1.6"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -111,6 +111,8 @@ The aperture rails are global angular-velocity controls:
 
 All active interlocutor fields read the same global orientation.
 
+Direct Philosophy background drag also updates this orientation. **The resulting orientation persists exactly where the witness leaves it; Display performs no automatic swingback or recenter after manual movement.** Reorientation happens only through subsequent witness input.
+
 ## Target-origin encounter transition
 
 Global movement uses the invariant Display membrane, but the transition is spatially tied to the chosen navigator target rather than collapsing generically into screen center.
@@ -125,4 +127,4 @@ The persistent Display shell, navigator, orientation and browser history survive
 
 ## Compression
 
-**Philosophy embodies the realized global tetrahedral address-space at overview. The global minimap shows only globally mounted page-organism encounters and clicking one moves directly there; Philosophy alone may inspect arbitrary realized addresses without moving. Every page-organism keeps a global mount, local worlds inherit global orientation only, camera focus centers the selected recursive split-tet, and encounter swaps close tetrahedrally onto the actual navigation target.**
+**Philosophy embodies the realized global tetrahedral address-space at overview. The global minimap shows only globally mounted page-organism encounters and clicking one moves directly there; Philosophy alone may inspect arbitrary realized addresses without moving. Every page-organism keeps a global mount, local worlds inherit global orientation only, manual orientation stays where the witness leaves it, camera focus centers the selected recursive split-tet, and encounter swaps close tetrahedrally onto the actual navigation target.**
