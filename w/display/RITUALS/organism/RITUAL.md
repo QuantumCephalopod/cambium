@@ -26,7 +26,7 @@ Display has differentiated into one complete local tetrahedral 4V:
 - `z · Orientation` — global address perception, navigator, camera, shared orientation and membrane movement;
 - `y · Population` — actual page-organisms physically admitted into global site-space.
 
-`INDEX.yaml` carries these four atomic nouns and `_cambium.yaml` closes their `4V/6E/4F/1T` relation. The `w/x/z/y` directories are material carrier vertices; cross-vertex closure tissue may remain at Display root when no single vertex owns it.
+`INDEX.yaml` carries these four atomic nouns and `_cambium.yaml` closes their `4V/6E/4F/1T` relation. The `w/x/z/y` directories carry all active functional tissue. After differentiation the Display root contains only canonical shell/receptors/constitution plus those four child addresses; there is no shared fifth functional layer.
 
 ## Population is the site-space membrane
 

@@ -307,19 +307,19 @@ def _slug(site_id):
 def asset_sources():
     """One immutable membrane-generation asset set, including identity-owned site tissue."""
     out = {
-        'root-view.css': DISPLAY/'root-view.css',
-        'site-runtime.css': DISPLAY/'site-runtime.css',
-        'interlocutors.css': DISPLAY/'interlocutors.css',
-        'navigation-aperture.css': DISPLAY/'navigation-aperture.css',
-        'world-view.js': DISPLAY/'world-view.js',
-        'navigation-physiology.js': DISPLAY/'navigation-physiology.js',
+        'root-view.css': DISPLAY/'w'/'root-view.css',
+        'site-runtime.css': DISPLAY/'z'/'site-runtime.css',
+        'interlocutors.css': DISPLAY/'w'/'interlocutors.css',
+        'navigation-aperture.css': DISPLAY/'z'/'navigation-aperture.css',
+        'world-view.js': DISPLAY/'z'/'world-view.js',
+        'navigation-physiology.js': DISPLAY/'z'/'navigation-physiology.js',
         'address.js': ROOT/'z'/'address.js',
-        'site-holon.js': DISPLAY/'site-holon.js',
-        'site-fold.js': DISPLAY/'site-fold.js',
-        'locus-shader.js': DISPLAY/'locus-shader.js',
-        'navigation-aperture.js': DISPLAY/'navigation-aperture.js',
-        'display-runtime-v2.js': DISPLAY/'display-runtime-v2.js',
-        'favicon.svg': DISPLAY/'favicon.svg',
+        'site-holon.js': DISPLAY/'x'/'site-holon.js',
+        'site-fold.js': DISPLAY/'z'/'site-fold.js',
+        'locus-shader.js': DISPLAY/'w'/'locus-shader.js',
+        'navigation-aperture.js': DISPLAY/'z'/'navigation-aperture.js',
+        'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
+        'favicon.svg': DISPLAY/'w'/'favicon.svg',
     }
     slugs = set()
     for site in discover_sites():
@@ -371,7 +371,7 @@ def _site_script_tags():
 
 
 def render():
-    text = (DISPLAY/'template.html').read_text(encoding='utf-8')
+    text = (DISPLAY/'w'/'template.html').read_text(encoding='utf-8')
     replacements = {
         '/*__INTERLOCUTOR_SURFACES__*/': _site_surfaces(),
         '/*__SITE_STYLES__*/': _site_style_links(),
