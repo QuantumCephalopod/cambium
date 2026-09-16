@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.1"
+version: "1.2"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -37,6 +37,18 @@ Canonical motion:
 `act -> witness -> durable HOME -> asynchronous _feed refresh -> return/circulation`
 
 HOME closes when source outcome and local `_root` event are durable. `_feed` catch-up is a separate mechanical consequence. GitHub Actions may actuate projection but do not decide semantic validity.
+
+## rank-invariant split and membrane law
+
+A realized `1→4` differentiation redistributes the whole body. Once a complete split is earned, all active functional tissue is carried into the four realized children. The differentiated root does not become a fifth functional bucket; it retains only canonical organism shell/receptors/constitution plus the four child addresses.
+
+A parent→child membrane restart is structural law expressed by anatomy and recursive scope, for example:
+
+`parent:w ⟦ child:ε ⟧`
+
+The restart must not be represented by a bespoke semantic file type that exists only at one boundary. One-off `interface.md`, `ROLE.md`, or similar marker files are not organism primitives unless the same receptor is rank-invariantly part of the organism law. Structure is witnessed by actual carried tissue together with `INDEX`, `_cambium`, lifecycle shell and RITUALS.
+
+This law applies recursively at arbitrary rank. Child-specific implementation details do not backpropagate merely because the child learned them; only distinctions that remain valid under rank substitution belong here.
 
 ## differentiated Display child organ
 
@@ -80,7 +92,8 @@ python3 y/build.py --artifact _site --check
 
 - Root `_stomach/launch.md` remains unresolved launch pressure.
 - Display-local nutrients remain owned by `w/display/_stomach/` until metabolized.
-- Completed metamorphosis pressure may be retired only after witnessed anatomy, durable Display HOME and feed return close its local cycle.
+- Completed child pressure may be retired only after witnessed anatomy, durable child HOME and feed return close its local cycle.
+- A child change backpropagates upward only when its witnessed consequence changes a rank-invariant parent distinction; implementation-local child detail remains local.
 
 ## closure
 
@@ -88,8 +101,9 @@ A cambium mutation closes only when:
 1. shared/root/local ritual law has earned the change;
 2. smallest affected dependency cone is mutated;
 3. current source state is witnessed;
-4. durable local HOME is appended in the mutated organism `_root`;
-5. `_feed` catch-up remains a separate mechanical consequence;
-6. build/address/browser witnesses pass when the public membrane is affected.
+4. a realized split has fully redistributed active tissue into its four children rather than retaining a hidden fifth root layer;
+5. durable local HOME is appended in the mutated organism `_root`;
+6. `_feed` catch-up remains a separate mechanical consequence;
+7. build/address/browser witnesses pass when the public membrane is affected.
 
-Compression: **same organism dance, recursively differentiated children, substrate mechanics beneath semantic law.**
+Compression: **same organism dance, whole-body recursive differentiation, structural membrane restart, substrate mechanics beneath semantic law.**
