@@ -4,10 +4,7 @@ on:
   push:
     branches: [staging/display-metamorphosis]
     paths:
-      - 'w/display/_root/**'
-      - 'w/display/_feed/**'
       - '.github/workflows/feed-staging-metamorphosis.yml'
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,16 +21,13 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Project Display feed from durable metamorphosis HOME
+      - name: Reproject Display feed with stable source revision
         run: |
           set -euo pipefail
-          python3 y/feed.py --before 88e6ebc7c36c8e11c22351f1b87d0f62e0d93308 --after HEAD
-          if [ -z "$(git status --porcelain -- w/display/_feed/current.json)" ]; then
-            echo "Display feed already current"
-            exit 0
-          fi
+          rm -f w/display/_feed/current.json
+          python3 y/feed.py --before 88e6ebc7c36c8e11c22351f1b87d0f62e0d93308 --after "${GITHUB_SHA}"
           git config user.name "cambium feed"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add w/display/_feed/current.json
-          git commit -m "feed: reflect Display metamorphosis HOME"
+          git commit -m "feed: pin Display HOME source revision"
           git push origin HEAD:staging/display-metamorphosis
