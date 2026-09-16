@@ -18,7 +18,7 @@ The global address alphabet is `{w,x,z,y}` recursively without fixed depth. Sema
 
 Camera focus is perceptual and distinct:
 
-`focus(path) = centroid(tet(path))`
+The membrane minimap is **not** a generic Philosophy VIEW selector.
 
 so each selected recursive cell is framed as one co-equal fourfold rather than throwing the witness onto an outer vertex.
 
