@@ -1,7 +1,67 @@
 [data-interlocutor="organism:papers"]{pointer-events:none}
-[data-interlocutor="organism:papers"] .interlocutor-background{pointer-events:none}
-[data-interlocutor="organism:papers"] .papers-content{pointer-events:auto;width:min(760px,calc(100% - 360px));padding:0 2px 8px}
-.papers-embedded-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}.papers-embedded-head .kicker{font:8px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(241,239,233,.42)}.papers-embedded-head h1{margin:3px 0 0;font:520 clamp(30px,4.2vw,62px)/.92 var(--sans);letter-spacing:-.06em}.papers-status{font:9px/1.4 var(--mono);letter-spacing:.04em;color:rgba(241,239,233,.52);text-align:right}
-.papers-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid rgba(241,239,233,.16);border-bottom:1px solid rgba(241,239,233,.16);background:linear-gradient(90deg,rgba(5,7,10,.14),rgba(5,7,10,.02))}
-.papers-group{min-width:0;padding:14px 15px 18px 0;opacity:.56;transition:opacity .18s ease}.papers-group:nth-child(even){padding-left:15px;border-left:1px solid rgba(241,239,233,.14)}.papers-group:nth-child(n+3){border-top:1px solid rgba(241,239,233,.14)}.papers-group.is-view{opacity:1}.papers-group-heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:10px}.papers-group-title{margin:0;font:520 16px/1.15 var(--sans);letter-spacing:-.03em}.papers-count{font:8px/1 var(--mono);color:rgba(170,255,229,.76)}.papers-list{list-style:none;margin:0;padding:0}.paper-item{display:grid;grid-template-columns:auto 1fr;gap:8px;padding:7px 0;border-top:1px solid rgba(241,239,233,.08)}.paper-id{font:8px/1.4 var(--mono);color:rgba(241,239,233,.46);white-space:nowrap}.paper-title{font-size:11px;line-height:1.38;color:rgba(241,239,233,.76);overflow-wrap:anywhere}
-@media(max-width:900px){[data-interlocutor="organism:papers"] .papers-content{width:calc(100% - 260px)}.papers-groups{grid-template-columns:1fr}.papers-group,.papers-group:nth-child(even){padding:12px 0 15px;border-left:0}.papers-group:nth-child(n+2){border-top:1px solid rgba(241,239,233,.12)}}
+[data-interlocutor="organism:papers"] .interlocutor-background{pointer-events:auto}
+[data-interlocutor="organism:papers"] .papers-content{position:absolute;inset:0;left:0;bottom:0;width:100%;height:100%;max-height:none;overflow:visible;padding:0;pointer-events:none;text-shadow:0 1px 18px rgba(0,0,0,.78)}
+
+.papers-hud{position:absolute;left:28px;top:82px;z-index:3;display:grid;gap:8px;pointer-events:none;color:rgba(241,239,233,.82)}
+.papers-hud-line{display:flex;align-items:baseline;gap:12px}
+.papers-hud-title{font:520 22px/1 var(--sans);letter-spacing:-.045em}
+.papers-hud-stat,.papers-hud-help,.papers-legend-item{font:8px/1.35 var(--mono);letter-spacing:.07em;color:rgba(241,239,233,.46)}
+.papers-legend{display:flex;align-items:center;gap:13px}
+.papers-legend-item{display:inline-flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.1em}
+.papers-hud-help{margin-left:3px;color:rgba(170,255,229,.48)}
+.papers-legend-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:rgba(199,238,228,.82);box-shadow:0 0 10px rgba(170,255,229,.18)}
+.papers-legend-diamond{display:inline-block;width:7px;height:7px;border:1px solid rgba(208,255,233,.9);transform:rotate(45deg)}
+
+[data-interlocutor="organism:papers"] .field-point-tooltip{position:absolute;z-index:5;width:min(250px,34vw);padding:8px 9px 9px;background:rgba(3,7,8,.88);border:1px solid rgba(191,255,232,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 34px rgba(0,0,0,.22);pointer-events:none;color:rgba(241,239,233,.82)}
+[data-interlocutor="organism:papers"] .field-point-tooltip[hidden]{display:none}
+.field-point-tooltip-id{display:block;font:7px/1.2 var(--mono);letter-spacing:.09em;color:rgba(170,255,229,.64);margin-bottom:3px}
+.field-point-tooltip-title{display:block;font:500 11px/1.25 var(--sans);letter-spacing:-.02em}
+.field-point-tooltip-meta{display:block;margin-top:4px;font:7px/1.3 var(--mono);letter-spacing:.04em;color:rgba(241,239,233,.38)}
+
+.papers-detail{position:absolute;left:28px;bottom:28px;z-index:6;width:min(500px,calc(100vw - 390px));max-height:min(60vh,670px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(170,255,229,.28) transparent;pointer-events:auto;background:linear-gradient(145deg,rgba(4,9,10,.94),rgba(4,7,9,.82));border:1px solid rgba(206,255,238,.18);box-shadow:0 24px 90px rgba(0,0,0,.36),inset 0 1px rgba(255,255,255,.025);backdrop-filter:blur(16px) saturate(.9);-webkit-backdrop-filter:blur(16px) saturate(.9);color:rgba(241,239,233,.82);padding:16px 17px 17px}
+.papers-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.papers-detail-identity{display:flex;align-items:baseline;gap:9px;min-width:0}
+.papers-detail-code{font:8px/1.2 var(--mono);letter-spacing:.1em;color:rgba(170,255,229,.76);white-space:nowrap}
+.papers-detail-locus{font:7px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(241,239,233,.38)}
+.papers-detail-close{appearance:none;border:0;background:transparent;color:rgba(241,239,233,.46);font:300 20px/1 var(--sans);padding:0 2px 4px;cursor:pointer}
+.papers-detail-close:hover{color:rgba(241,239,233,.96)}
+.papers-detail-title{margin:11px 24px 0 0;font:520 clamp(24px,2.7vw,38px)/.98 var(--sans);letter-spacing:-.055em;color:rgba(246,244,239,.96)}
+.papers-derived{margin-top:8px;font:7px/1 var(--mono);letter-spacing:.13em;color:rgba(170,255,229,.54)}
+
+.papers-detail-section{margin-top:17px;padding-top:13px;border-top:1px solid rgba(241,239,233,.10)}
+.papers-detail-kicker,.papers-detail-label{font:7px/1.25 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:rgba(241,239,233,.35)}
+.papers-original .papers-detail-kicker{color:rgba(170,255,229,.62)}
+.papers-source-credit{margin-top:8px;font:500 13px/1.38 var(--sans);letter-spacing:-.015em;color:rgba(241,239,233,.90)}
+.papers-source-type{margin:8px 0 0;font:8.5px/1.45 var(--mono);color:rgba(241,239,233,.44)}
+.papers-external-links{display:grid;gap:6px;margin-top:12px}
+.papers-external-link{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 9px;border:1px solid rgba(170,255,229,.15);background:rgba(170,255,229,.035);text-decoration:none;color:rgba(210,255,240,.82);font:8px/1.25 var(--mono);letter-spacing:.055em}
+.papers-external-link:hover{background:rgba(170,255,229,.09);border-color:rgba(170,255,229,.30);color:#effff8}
+.papers-external-arrow{font-size:11px}
+
+.papers-detail-row{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;align-items:start;margin-top:8px}
+.papers-detail-value{font:8px/1.45 var(--mono);color:rgba(241,239,233,.58);overflow-wrap:anywhere}
+.papers-metabolic-copy,.papers-boundary-copy{margin:10px 0 0;font:11px/1.55 var(--sans);letter-spacing:-.005em;color:rgba(241,239,233,.72)}
+.papers-boundary-copy{color:rgba(241,239,233,.56)}
+.papers-metabolism .papers-detail-kicker+.papers-detail-kicker{margin-top:14px}
+
+.papers-parents{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}
+.papers-parent{appearance:none;display:grid;gap:4px;text-align:left;padding:9px;border:1px solid rgba(241,239,233,.10);background:rgba(255,255,255,.025);cursor:pointer;color:inherit;min-width:0}
+.papers-parent:hover{border-color:rgba(170,255,229,.28);background:rgba(170,255,229,.06)}
+.papers-parent-id{font:7px/1.1 var(--mono);letter-spacing:.08em;color:rgba(170,255,229,.66)}
+.papers-parent-title{font:9px/1.25 var(--sans);letter-spacing:-.012em;color:rgba(241,239,233,.72);overflow-wrap:anywhere}
+
+[data-interlocutor="organism:papers"] .field-label{z-index:2;color:rgba(241,239,233,.62)}
+[data-interlocutor="organism:papers"] .field-label span{opacity:.38}
+[data-interlocutor="organism:papers"] .field-label b{font-weight:470}
+
+@media(max-width:900px){
+  .papers-detail{width:min(480px,calc(100vw - 270px));left:20px;bottom:22px}
+  .papers-hud{left:20px;top:76px}
+}
+@media(max-width:700px){
+  .papers-hud{left:16px;top:70px}.papers-hud-help{display:none}
+  .papers-detail{left:14px;right:14px;bottom:14px;width:auto;max-height:56vh;padding:14px}
+  .papers-parents{grid-template-columns:1fr}
+  .papers-detail-title{font-size:28px}
+  [data-interlocutor="organism:papers"] .field-point-tooltip{width:min(220px,58vw)}
+}
