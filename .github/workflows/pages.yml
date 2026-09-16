@@ -69,7 +69,7 @@ jobs:
         run: SITE_DIR=_site node y/test-address.cjs
 
       - name: Witness tetrahedral closure
-        run: node w/display/site-fold.test.cjs
+        run: node w/display/z/site-fold.test.cjs
 
       - name: Verify membrane bytes
         run: python3 y/build.py --artifact _site --check
