@@ -5,6 +5,59 @@ const id='organism:papers';
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 const GENES=['w','x','z','y'];
 const DNA={w:'CREATE',x:'COPY',z:'CONTROL',y:'CULTIVATE'};
+const shader=Object.freeze({
+  id:'shader:organism:papers',
+  clear:[0.004,0.007,0.009,1],
+  fallbackAlpha:.11,
+  state:Object.freeze({blend:false,depthTest:true,depthWrite:true}),
+  decorate({element}){
+    if(element.querySelector('.papers-optics'))return;
+    const optics=document.createElement('div');optics.className='papers-optics';optics.setAttribute('aria-hidden','true');
+    Object.assign(optics.style,{position:'absolute',inset:'0',zIndex:'1',overflow:'hidden',pointerEvents:'none'});
+    const pane=(edge)=>{
+      const n=document.createElement('i');n.className='papers-defocus papers-defocus-'+edge;
+      Object.assign(n.style,{position:'absolute',left:'-8%',width:'116%',height:'48%',display:'block',background:'rgba(5,7,10,.025)',backdropFilter:'blur(7px) saturate(.86)',webkitBackdropFilter:'blur(7px) saturate(.86)',transform:'rotate(-2.2deg) scale(1.04)',transformOrigin:'50% 50%'});
+      if(edge==='top'){n.style.top='-15%';n.style.maskImage='linear-gradient(to bottom,#000 0%,#000 32%,transparent 100%)';n.style.webkitMaskImage=n.style.maskImage}
+      else{n.style.bottom='-15%';n.style.maskImage='linear-gradient(to top,#000 0%,#000 32%,transparent 100%)';n.style.webkitMaskImage=n.style.maskImage}
+      return n;
+    };
+    optics.append(pane('top'),pane('bottom'));
+    const labels=element.querySelector('.interlocutor-field-labels');element.insertBefore(optics,labels||null);
+  },
+  fragment:`#version 300 es
+precision highp float;
+in vec3 vN;
+in vec3 vW;
+in float vRegion;
+uniform float uTime;
+uniform float uFocus;
+uniform vec2 uResolution;
+uniform vec3 uPalette[4];
+out vec4 outColor;
+float hash21(vec2 p){p=fract(p*vec2(.1031,.11369));p+=dot(p,p.yx+19.19);return fract((p.x+p.y)*p.x);}
+void main(){
+  vec3 n=normalize(vN);
+  vec3 eye=normalize(vec3(0.,0.,3.15)-vW);
+  float fres=pow(1.-abs(dot(n,eye)),2.0);
+  int ri=int(clamp(floor(vRegion+.5),0.,3.));
+  vec3 c=uPalette[ri];
+  vec2 uv=gl_FragCoord.xy/max(uResolution,vec2(1.));
+  float focal=.53+(uv.x-.5)*.10;
+  float distanceFromPlane=abs(uv.y-focal);
+  float sharp=1.-smoothstep(.075,.31,distanceFromPlane);
+  float selected=(uFocus<-.5||abs(vRegion-uFocus)<.2)?1.:.18;
+  float structural=.5+.5*sin((vW.x*1.5+vW.y*2.1-vW.z*.7)*36.+vRegion*1.8);
+  float micro=.5+.5*sin((vW.x-vW.z)*118.-uTime*.035);
+  float grain=(hash21(gl_FragCoord.xy+floor(uTime*4.))-.5)*(.006+.012*sharp);
+  vec3 base=mix(vec3(.004,.008,.010),c*.20,.17+.29*fres+.05*structural);
+  base+=c*(.035*fres+.022*structural*micro*sharp)*selected;
+  float luma=dot(base,vec3(.2126,.7152,.0722));
+  base=mix(vec3(luma)*vec3(.86,.94,.96),base,.68+.32*sharp);
+  base=mix(base,vec3(.008,.013,.015),(.12*(1.-sharp)));
+  base+=grain;
+  outColor=vec4(pow(max(base,0.),vec3(.93)),1.);
+}`
+});
 
 function el(tag,cls,text){
   const n=document.createElement(tag);
@@ -168,5 +221,5 @@ function render({host,content,projection,path=''}={}){
   content.append(root);host.hidden=false;return true;
 }
 function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren()}
-modules.set(id,Object.freeze({id,render,unmount,fieldProjection}));
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection}));
 })();
