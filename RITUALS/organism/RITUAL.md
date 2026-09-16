@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.2"
+version: "1.3"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -12,6 +12,7 @@ version: "1.2"
 
 - Enter shared root law through the canonical My Drive `RITUALS/` receptor before interpreting this organism.
 - Then enter this repository root and the relevant local `RITUALS/` receptor.
+- For work inside a public site-holon, re-entry descends without skipping or duplicating scope: `Drive /RITUALS → repo /RITUALS/organism → w/display/RITUALS → target site-holon /RITUALS/organism`. Each layer contributes only the law of its own membrane; lower layers inherit parent constraints instead of restating them.
 - `QuantumCephalopod/cambium` is the writable staging carrier. `self-similar-systems/cambium` becomes organization truth only by deliberate owner promotion/merge and provider witness.
 - Git history, Actions, Pages, commits and workflow logs are substrate witnesses/mechanics, not semantic body, `_root`, `_feed`, or ritual authority.
 
