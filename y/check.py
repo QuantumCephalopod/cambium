@@ -88,7 +88,7 @@ def main():
     check('interactive:true' in runtime and 'interactive:false' in runtime,'Philosophy/Papers background specialties collapsed')
     check('W.orientation' in fields,'interlocutor backgrounds do not share global orientation state')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'settle-to-lock exact axis behavior missing')
-    check('HOME_ORIENT' in world and 'qSlerp' in world and 'philosophy-swingback' in world,'Philosophy orientation swingback physiology missing')
+    check('philosophy-swingback' not in world and 'scheduleSwingback' not in world and 'qSlerp' not in world,'Philosophy background orientation must persist without automatic swingback')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
     check('localScope' in holon,'interlocutor local root identity missing')
     check('new Set()' in holon and 'loci.get(key).add(id)' in holon,'locus cannot host multiple interlocutors')
@@ -116,7 +116,7 @@ def main():
         'status':'pass','checks':count,'display':'one persistent membrane',
         'bundle':bundle,'asset_generation':'one content-addressed namespace',
         'specimens':['organism:philosophy','organism:papers'],
-        'navigation':'mounted site targets only / click directly swaps encounter / Philosophy retains local background inspection',
+        'navigation':'mounted site targets only / click directly swaps encounter / Philosophy retains local background inspection and persistent manual orientation',
         'transition':'four-facet target-origin tetrahedral iris',
         'mounting':'page-organism identity and local root independent of global host locus',
         'artifact':'single index.html'
