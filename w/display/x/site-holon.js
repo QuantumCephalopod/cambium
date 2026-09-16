@@ -5,7 +5,7 @@
 (function (root, factory) {
   'use strict';
   const address = (typeof module === 'object' && module.exports)
-    ? require('../../z/address.js')
+    ? require('../../../z/address.js')
     : root.CambiumAddress;
   const api = factory(address);
   if (typeof module === 'object' && module.exports) module.exports = api;

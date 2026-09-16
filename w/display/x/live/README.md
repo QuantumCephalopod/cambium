@@ -1,6 +1,6 @@
 # Display live nerve
 
-`w/display/live` is the canonical code for the `sss-live` Cloudflare Worker. Cloudflare is the execution substrate; GitHub is the source of truth for this code. No local checkout, local Node install, local Wrangler install, or local deployment step is part of the production architecture.
+`w/display/x/live` is the canonical code for the `sss-live` Cloudflare Worker. Cloudflare is the execution substrate; GitHub is the source of truth for this code. No local checkout, local Node install, local Wrangler install, or local deployment step is part of the production architecture.
 
 ## What this organ is
 
@@ -91,13 +91,13 @@ self-similar-systems/cambium:main
 GitHub Actions
         |
         | cloudflare/wrangler-action@v4
-        | workingDirectory = w/display/live
+        | workingDirectory = w/display/x/live
         | wrangler 4.131.1
         v
 Cloudflare Worker: sss-live
 ```
 
-The production workflow deploys when `main` changes under `w/display/live/**` or when the workflow itself changes. The Worker name in Cloudflare and `wrangler.jsonc` must remain `sss-live`.
+The production workflow deploys when `main` changes under `w/display/x/live/**` or when the workflow itself changes. The Worker name in Cloudflare and `wrangler.jsonc` must remain `sss-live`.
 
 ### Deployment credentials
 
