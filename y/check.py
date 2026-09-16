@@ -32,7 +32,10 @@ def main():
     index=build.load_yaml(DISPLAY/'INDEX.yaml'); build.validate_index(index)
     check({g:index[g]['noun'] for g in 'wxzy'}=={'w':'Embodiment','x':'Continuity','z':'Orientation','y':'Population'},'Display 4V phenotype changed')
     constitution=build.load_yaml(DISPLAY/'_cambium.yaml'); build.validate_cambium(constitution,'w/display/_cambium.yaml')
-    for gene in 'wxzy': check((DISPLAY/gene/'ROLE.md').is_file(),f'missing materialized Display vertex {gene}')
+    allowed_root={'INDEX.yaml','RITUALS','_cambium.yaml','_feed','_root','_stomach','_waste','w','x','z','y'}
+    check({p.name for p in DISPLAY.iterdir()}==allowed_root,'Display root retains noncanonical or active tissue')
+    check(not (ROOT/'w'/'interface.md').exists(),'ad-hoc w/interface.md membrane file returned')
+    for gene in 'wxzy': check((DISPLAY/gene).is_dir() and not (DISPLAY/gene/'ROLE.md').exists(),f'Display vertex {gene} is missing or still marker-only')
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
@@ -77,7 +80,7 @@ def main():
     bundle_dir=artifact/'assets'/bundle; check(bundle_dir.is_dir(),'content-addressed membrane bundle missing')
     check({q.name for q in bundle_dir.iterdir() if q.is_file()}==set(assets),'bundle file set diverges from tree-derived asset contract')
 
-    nav=(DISPLAY/'navigation-physiology.js').read_text(); world=(DISPLAY/'world-view.js').read_text(); runtime=(DISPLAY/'display-runtime-v2.js').read_text(); holon=(DISPLAY/'site-holon.js').read_text(); fold=(DISPLAY/'site-fold.js').read_text(); site_css=(DISPLAY/'site-runtime.css').read_text(); aperture=(DISPLAY/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'navigation-aperture.css').read_text(); fields=(DISPLAY/'locus-shader.js').read_text()
+    nav=(DISPLAY/'z'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not recursive split-tet centroid')
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
@@ -95,10 +98,10 @@ def main():
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
 
-    js_sources=['world-view.js','navigation-physiology.js','site-holon.js','site-fold.js','display-runtime-v2.js','locus-shader.js','navigation-aperture.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
+    js_sources=['z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','x/display-runtime-v2.js','w/locus-shader.js','z/navigation-aperture.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
     for source in js_sources:
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'JS syntax failure {source}')
-    for test in ('navigation-physiology.test.cjs','site-holon.test.cjs','site-fold.test.cjs'):
+    for test in ('z/navigation-physiology.test.cjs','x/site-holon.test.cjs','z/site-fold.test.cjs'):
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')

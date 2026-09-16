@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const assert = require('node:assert/strict');
-const A = require('../../z/address.js');
+const A = require('../../../z/address.js');
 const N = require('./navigation-physiology.js');
 
 const atom = noun => ({noun,children:{}});

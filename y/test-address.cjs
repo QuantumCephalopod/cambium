@@ -10,8 +10,8 @@ for(const [a,b] of [['wxz','xwz'],['wxzy','yzwx'],['wwx','wxx'],['wxzy','wxzz']]
 for(const p of [' a','wx.','a','<script>','w/x',undefined,12]){assert.throws(()=>A.validate(p));checks++;}
 const deep='wxzy'.repeat(1024);eq(A.key(deep+'wx'),A.key(deep+'xw'));eq(A.relative(deep+'w',deep+'x',deep.length),[1,-1,0,0]);
 
-cp.execFileSync('node',[path.join(root,'w','display','navigation-physiology.test.cjs')],{stdio:'pipe'});checks++;
-cp.execFileSync('node',[path.join(root,'w','display','site-holon.test.cjs')],{stdio:'pipe'});checks++;
+cp.execFileSync('node',[path.join(root,'w','display','z','navigation-physiology.test.cjs')],{stdio:'pipe'});checks++;
+cp.execFileSync('node',[path.join(root,'w','display','x','site-holon.test.cjs')],{stdio:'pipe'});checks++;
 
 const site=process.env.SITE_DIR?path.resolve(root,process.env.SITE_DIR):path.join(root,'_site');
 const html=fs.readFileSync(path.join(site,'index.html'),'utf8');
@@ -22,7 +22,7 @@ eq(Object.keys(projection.root.children).sort(),['w','x','y','z']);
 eq(['w','x','z','y'].map(g=>projection.root.children[g].noun),['Form','Continuity','Care','Inquiry']);
 const regMatch=html.match(/<script id="site-registry" type="application\/json">(.*?)<\/script>/s);ok(regMatch,'embedded tree-derived site registry missing');
 const registry=JSON.parse(regMatch[1]);eq(registry.source,'w/display/y tree');eq(new Set(registry.mounts.map(m=>m.address)),new Set(['','y']));
-const N=require(path.join(root,'w','display','navigation-physiology.js'));
+const N=require(path.join(root,'w','display','z','navigation-physiology.js'));
 let structure=N.collectStructure(projection.root);
 eq(structure.leaves.map(x=>x.path).sort(),['w','x','y','z']);
 ok(structure.leaves.every(x=>x.center.length===3&&x.center.every(Number.isFinite)),'all realized leaf centroids must be finite');
