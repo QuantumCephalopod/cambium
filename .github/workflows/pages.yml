@@ -2,7 +2,7 @@ name: display membrane
 
 on:
   push:
-    branches: [main, staging/display-two-specimen, hotfix/membrane-bundle-cache, staging/display-global-nav-centroid]
+    branches: [main, staging/display-two-specimen, hotfix/membrane-bundle-cache, staging/display-global-nav-centroid, staging/global-direct-nav-transition]
   workflow_dispatch:
 
 permissions:
