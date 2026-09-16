@@ -1,6 +1,6 @@
-/* Display site-holon primitive v1.
+/* Display site-holon primitive v2.
  * Page-organisms are stable interlocutors mounted into scoped quotient loci.
- * The witness is the navigating viewer; raw addresses remain traversal/genealogy.
+ * Raw address occupancy is unique; distinct genealogies may still coalesce by quotient.
  */
 (function (root, factory) {
   'use strict';
@@ -39,13 +39,7 @@
     const id = stableId(spec.id, 'interlocutor identity');
     const localScope = scopeId(spec.localScope || id);
     const state = spec.state && typeof spec.state === 'object' ? spec.state : {};
-    return Object.freeze({
-      id,
-      localScope,
-      shader: spec.shader || null,
-      manifestation: spec.manifestation || null,
-      state
-    });
+    return Object.freeze({id,localScope,shader:spec.shader||null,manifestation:spec.manifestation||null,state});
   }
 
   function composeInterlocutors(entries, viewport={width:0,height:0}) {
@@ -62,11 +56,13 @@
   }
 
   function locusKey(scope, locus) { return scopeId(scope)+'::'+locus; }
+  function rawKey(scope, rawAddress) { return scopeId(scope)+'::raw::'+rawAddress; }
 
   function createRegistry() {
     const interlocutors = new Map();
     const mounts = new Map();
     const loci = new Map();
+    const raws = new Map();
 
     function register(interlocutor) {
       if (!interlocutor || typeof interlocutor !== 'object') throw new TypeError('interlocutor object required');
@@ -87,6 +83,7 @@
         set.delete(id);
         if (!set.size) loci.delete(key);
       }
+      raws.delete(rawKey(previous.scope, previous.rawAddress));
       mounts.delete(id);
       return true;
     }
@@ -99,9 +96,13 @@
       const scope = scopeId(placement.scope || 'main');
       const rawAddress = placement.address ?? '';
       const route = resolveAddress(rawAddress);
+      const rk = rawKey(scope, rawAddress), occupant = raws.get(rk);
+      if (occupant && occupant !== id) {
+        throw new Error('raw address already occupied by '+occupant+'; differentiate before mounting '+id);
+      }
       detach(id);
       const relation = Object.freeze({siteId:id,interlocutorId:id,scope,rawAddress,address:route.address,locus:route.locus});
-      mounts.set(id, relation);
+      mounts.set(id, relation); raws.set(rk, id);
       const key = locusKey(scope, route.locus);
       if (!loci.has(key)) loci.set(key, new Set());
       loci.get(key).add(id);
@@ -114,22 +115,8 @@
       scope = scopeId(scope);
       const route = resolveAddress(rawPath);
       const ids = Array.from(loci.get(locusKey(scope, route.locus)) || []);
-      const entries = ids.map(id => Object.freeze({
-        site:interlocutors.get(id),
-        siteId:id,
-        interlocutor:interlocutors.get(id),
-        interlocutorId:id,
-        mount:mounts.get(id)
-      }));
-      return Object.freeze({
-        scope,
-        rawPath:route.rawPath,
-        address:route.address,
-        locus:route.locus,
-        equivalentAddresses:route.equivalentAddresses,
-        interlocutors:Object.freeze(entries),
-        composition:composeInterlocutors(entries, viewport)
-      });
+      const entries = ids.map(id => Object.freeze({site:interlocutors.get(id),siteId:id,interlocutor:interlocutors.get(id),interlocutorId:id,mount:mounts.get(id)}));
+      return Object.freeze({scope,rawPath:route.rawPath,address:route.address,locus:route.locus,equivalentAddresses:route.equivalentAddresses,interlocutors:Object.freeze(entries),composition:composeInterlocutors(entries, viewport)});
     }
 
     function snapshot(id, viewport={width:0,height:0}) {
@@ -145,6 +132,7 @@
       getSite:id=>interlocutors.get(id)||null,
       getInterlocutor:id=>interlocutors.get(id)||null,
       getMount:id=>mounts.get(id)||null,
+      getRawOccupant:(scope,rawAddress)=>raws.get(rawKey(scope,rawAddress))||null,
       getInterlocutorsAt:(scope,rawPath,viewport)=>resolve(scope,rawPath,viewport).interlocutors.map(x=>x.interlocutor)
     });
   }
@@ -158,50 +146,25 @@
       if (!event || typeof event !== 'object') throw new TypeError('activity event required');
       const id = stableId(event.siteId || event.interlocutorId, 'interlocutor identity');
       if (!registry.getInterlocutor(id)) throw new Error('activity target is not registered: '+id);
-      return Object.freeze({
-        siteId:id,
-        interlocutorId:id,
-        kind:String(event.kind || 'activity'),
-        state:String(event.state || 'READY'),
-        at:event.at || new Date().toISOString(),
-        projectionChanged:Boolean(event.projectionChanged),
-        semanticChanged:Boolean(event.semanticChanged),
-        payload:event.payload ?? null
-      });
+      return Object.freeze({siteId:id,interlocutorId:id,kind:String(event.kind||'activity'),state:String(event.state||'READY'),at:event.at||new Date().toISOString(),projectionChanged:Boolean(event.projectionChanged),semanticChanged:Boolean(event.semanticChanged),payload:event.payload??null});
     }
 
     function receive(event) {
-      const e = normalize(event);
-      latest.set(e.interlocutorId, e);
-      for (const fn of listeners) fn(e);
-      return e;
+      const e = normalize(event);latest.set(e.interlocutorId,e);for(const fn of listeners)fn(e);return e;
     }
 
     function receiveAt(scope, rawPath, event={}) {
       const resolved = registry.resolve(scope, rawPath);
       if (!resolved.interlocutors.length) throw new Error('no mounted interlocutor at locus');
       const requested = event.siteId || event.interlocutorId;
-      if (requested) return receive({...event, siteId:requested});
+      if (requested) return receive({...event,siteId:requested});
       if (resolved.interlocutors.length !== 1) throw new Error('activity locus is ambiguous; target one interlocutor identity');
-      return receive({...event, siteId:resolved.interlocutors[0].interlocutorId});
+      return receive({...event,siteId:resolved.interlocutors[0].interlocutorId});
     }
 
-    function subscribe(fn) {
-      if (typeof fn !== 'function') throw new TypeError('activity listener must be a function');
-      listeners.add(fn);
-      return () => listeners.delete(fn);
-    }
-
+    function subscribe(fn) {if(typeof fn!=='function')throw new TypeError('activity listener must be a function');listeners.add(fn);return()=>listeners.delete(fn)}
     return Object.freeze({receive,receiveAt,subscribe,current:id=>latest.get(id)||null});
   }
 
-  return Object.freeze({
-    resolveAddress,
-    resolvePath:resolveAddress,
-    defineInterlocutor,
-    defineSite:defineInterlocutor,
-    composeInterlocutors,
-    createRegistry,
-    createActivityBus
-  });
+  return Object.freeze({resolveAddress,resolvePath:resolveAddress,defineInterlocutor,defineSite:defineInterlocutor,composeInterlocutors,createRegistry,createActivityBus});
 });
