@@ -4,6 +4,13 @@
   "main": "src/index.js",
   "compatibility_date": "2026-09-13",
 
+  "routes": [
+    {
+      "pattern": "sss.saarland/__live/*",
+      "zone_name": "sss.saarland"
+    }
+  ],
+
   "durable_objects": {
     "bindings": [
       {
