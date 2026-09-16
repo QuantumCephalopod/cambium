@@ -1,128 +1,106 @@
 ---
 name: navigation
-description: "Display-local navigation physiology: one persistent global tetrahedral mount navigator plus Philosophy-local address inspection over the same realized geometry."
+description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "1.5"
+version: "2.0"
 ---
 
 # NAVIGATION RITUAL — display local
 
-Navigation is the invariant perceptual relation between the **witness/viewer**, one global infinitely recursive tetrahedral address organism, and the page-organism interlocutors mounted into it.
+Navigation relates the witness/viewer, one global recursive tetrahedral address field, and the autonomous site-holons physically populated into it.
 
-Canonical mount/locus/interlocutor law is carried by `../site-holon/RITUAL.md`.
+Canonical identity/locus/body law is carried by `../site-holon/RITUAL.md`.
 
-## One recursively self-similar global address organism
+## Global field
 
-The global address alphabet is `{w,x,z,y}` and may differentiate without fixed depth.
+The global address alphabet is `{w,x,z,y}` recursively without fixed depth. Semantic place is the exact quotient vertex/locus. Potential recursion is not fabricated anatomy.
 
-Semantic place is the exact tetrahedral **vertex/quotient locus**. Only realized anatomy exists perceptually; potential recursion is not fabricated structure.
-
-Self-continuation and quotient relations preserve place, e.g. `point(x)=point(xx)` when `xx` is realized, while distinct genealogies such as `xyw~xwy` may coalesce to one locus.
-
-## Philosophy is the address-space body
-
-`organism:philosophy` is mounted at global `ε / overview` and embodies the currently realized global tetrahedral address-space as its broad local world.
-
-Everything else is mounted **on that global address organism**: on its vertices, children, grandchildren, and so on.
-
-Philosophy may therefore expose all realized global geometry in its background even when most addresses carry no page-organism.
-
-## Global navigator = page-organism movement
+Camera focus is perceptual and distinct:
 
 The membrane minimap is **not** a generic Philosophy VIEW selector.
 
-It exposes only global loci that currently carry page-organism encounters. With the first two specimens this means exactly:
+so each selected recursive cell is framed as one co-equal fourfold rather than throwing the witness onto an outer vertex.
 
-- `ε / overview` -> `organism:philosophy`;
-- `y / Inquiry` -> `organism:papers`.
+## Population-derived target set
 
-Other realized Philosophy addresses may remain visible as geometry, but they are not navigator destinations until an interlocutor is globally mounted there.
+Display `y / Population` is the membrane into site-space:
 
-Navigator targets are named by the mounted interlocutor identity. With the current two specimens the visible labels are therefore `PHILOSOPHY` and `PAPERS`.
+`display:y ⟦ site-space:ε ⟧`
 
-Selecting a global navigator target performs the actual encounter transition immediately:
+The global minimap target set is derived from physical site-holon bodies discovered under `w/display/y/`. No page-organism body at an address means no global target there.
 
-`global target click -> mounted interlocutor(s) -> target-origin tetrahedral closure -> destination encounter`
+Current physical/semantic relation:
 
-There is no extra inspect/commit button in the global minimap path.
+- `w/display/y/philosophy/` -> site-space `ε` -> **PHILOSOPHY**;
+- `w/display/y/yy/papers/` -> site-space `y / Inquiry` -> **PAPERS**.
 
-## Philosophy background = inspect without moving
+The navigator labels targets by stable site identity/title, not by generic Philosophy vertex names.
 
-Philosophy has a different local specialty: its large background may inspect **any realized global address** without changing the active page-organism encounter.
+## Direct global movement
 
-Thus Philosophy can look at `w`, `wx`, or any other realized address while still remaining the active interlocutor at global overview.
+The global minimap is not a Philosophy VIEW selector.
 
-If the inspected address carries a page-organism, an explicit commit may open it. This preserves Philosophy's special ability to roam the address-space without immediately moving into every page.
+A target click performs the encounter transition immediately:
+
+`pointer target -> target-origin closure -> mounted encounter swap -> destination`
+
+There is no global inspect-then-commit step.
+
+## Philosophy background inspection
+
+Philosophy separately embodies the realized global address-space and may inspect any realized address locally without moving the active global encounter.
 
 Therefore:
 
-- **global minimap click** = direct movement between mounted page-organism encounters;
-- **Philosophy background selection** = inspect realized global geometry without moving.
+- global minimap = direct movement among physically populated site encounters;
+- Philosophy background = local inspection of realized global geometry.
 
-## Global address space and local organism space are distinct
+Manual background drag updates shared global orientation and remains exactly where the witness leaves it. No automatic swingback/recenter occurs.
 
-Every page-organism has a global mount and may simultaneously possess its own independently rooted local anatomy.
+## Global versus local organism space
+
+Each site-holon has a global Population address and may contain its own independent recursive anatomy.
 
 For Papers:
 
-`global main:y  ⟦ organism:papers local root papers:ε ⟧`
+`site-space:y ⟦ papers:ε ⟧`
 
-The global minimap remains `main:*` while Papers is active. Papers-local recursion never steals the global navigator.
+The global minimap stays global while Papers is active. Local page recursion never seizes it. The universal coupling between global navigation and visible local fields is shared orientation only.
 
-The only universal coupling between the global navigator and interlocutor-local tetrahedral fields is **orientation**. Global orientation controls rotate all visible local fields coherently; global address selection does not become local-field selection.
+## Raw address and quotient navigation
 
-## Camera focus = recursive split centroid
+Exact raw site addresses are unique occupancy slots. If pressure would add another direct site at the same raw address, that address must differentiate before admission.
 
-Semantic identity remains at the exact address vertex.
-
-Perceptual focus targets the **centroid of the recursive split-tetrahedron anchored by the selected address**:
-
-`focus(path) = centroid(tet(path))`
-
-So `w` frames the centroid of the rank-1 `w` cell; realized `wx` frames the centroid of the smaller `wx` cell.
-
-The selected continuation and its three siblings are therefore always framed as one co-equal fourfold. Camera centroid is presentation state only; mounts and locus identity remain vertex/quotient based.
+Distinct raw genealogies may quotient-coalesce onto one locus; the navigator then opens their composed encounter at that locus.
 
 ## Global Navigation Aperture
 
-The global navigator belongs to Display membrane space, never interlocutor content space.
+The global navigator belongs to Display membrane space, never interlocutor content:
 
 - single encounter -> square outer membrane port;
-- shared-locus split -> diamond threshold on the seam;
+- two coalesced interlocutors -> diamond threshold on shared seam;
 - larger composition -> compositor junction.
 
-Split opening is:
-
-`closed diamond -> bloom -> rectilinear control cavity`
-
-The minimap and x/y rails remain stable control tissue behind the transforming aperture.
+The opening shell may bloom into a rectilinear control cavity while minimap and x/y rails remain stable control tissue.
 
 ## Global orientation controls
 
-The aperture rails are global angular-velocity controls:
+The x/y rails are angular-velocity controls:
 
 - x controls yaw;
 - y controls pitch;
 - midpoint is zero;
-- settle-to-lock may occur at any value;
-- a latched value survives later motion of the still-held pointer;
-- new pointer-down picks it up again.
+- holding sufficiently still locks the exact current value;
+- a latched value is not altered by later movement of the still-held pointer;
+- a new pointer-down picks it up again.
 
-All active interlocutor fields read the same global orientation.
+Every visible interlocutor-local field reads the same global orientation.
 
-## Target-origin encounter transition
+## Target-origin closure
 
-Global movement uses the invariant Display membrane, but the transition is spatially tied to the chosen navigator target rather than collapsing generically into screen center.
-
-The clicked minimap target supplies the membrane origin. Four facets close from the viewport boundaries onto that point, the encounter swap occurs only under complete closure, and the facets then reverse to reveal the destination:
-
-`target click -> four boundary facets converge on target -> closed -> encounter swap -> facets open -> destination`
-
-Keyboard/direct non-pointer entry may use the viewport center as the neutral origin.
-
-The persistent Display shell, navigator, orientation and browser history survive the swap.
+Pointer navigation supplies the actual minimap target as membrane origin. Four facets converge on that point, encounter state changes only under full closure, then the destination is revealed by the inverse opening. Non-pointer/direct access may use viewport center as a neutral origin.
 
 ## Compression
 
-**Philosophy embodies the realized global tetrahedral address-space at overview. The global minimap shows only globally mounted page-organism encounters and clicking one moves directly there; Philosophy alone may inspect arbitrary realized addresses without moving. Every page-organism keeps a global mount, local worlds inherit global orientation only, camera focus centers the selected recursive split-tet, and encounter swaps close tetrahedrally onto the actual navigation target.**
+**The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target.**

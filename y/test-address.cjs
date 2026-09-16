@@ -15,11 +15,13 @@ cp.execFileSync('node',[path.join(root,'w','display','site-holon.test.cjs')],{st
 
 const site=process.env.SITE_DIR?path.resolve(root,process.env.SITE_DIR):path.join(root,'_site');
 const html=fs.readFileSync(path.join(site,'index.html'),'utf8');
-const match=html.match(/<script id="root-projection" type="application\/json">(.*?)<\/script>/s);ok(match,'embedded main-root projection missing');
-const projection=JSON.parse(match[1]);
+const projMatch=html.match(/<script id="site-projections" type="application\/json">(.*?)<\/script>/s);ok(projMatch,'embedded site projection map missing');
+const projections=JSON.parse(projMatch[1]);const projection=projections['organism:philosophy'];ok(projection,'Philosophy projection missing from tree-derived site map');
 eq(projection.source.organism,'main-root');
 eq(Object.keys(projection.root.children).sort(),['w','x','y','z']);
 eq(['w','x','z','y'].map(g=>projection.root.children[g].noun),['Form','Continuity','Care','Inquiry']);
+const regMatch=html.match(/<script id="site-registry" type="application\/json">(.*?)<\/script>/s);ok(regMatch,'embedded tree-derived site registry missing');
+const registry=JSON.parse(regMatch[1]);eq(registry.source,'w/display/y tree');eq(new Set(registry.mounts.map(m=>m.address)),new Set(['','y']));
 const N=require(path.join(root,'w','display','navigation-physiology.js'));
 let structure=N.collectStructure(projection.root);
 eq(structure.leaves.map(x=>x.path).sort(),['w','x','y','z']);
@@ -32,4 +34,4 @@ structure=N.collectStructure(clone);
 eq(structure.leaves.map(x=>x.path).sort(),['ww','wx','wy','wz','x','y','z']);
 ok(!structure.leaves.some(x=>['xx','yy','zz'].includes(x.path)),'unrealized sibling rank must not be fabricated');
 
-console.log(JSON.stringify({status:'pass',assertions:checks,public_root:'main-root',realized_only:true,inspect_commit:true,site_holon:true},null,2));
+console.log(JSON.stringify({status:'pass',assertions:checks,public_root:'organism:philosophy',tree_registry:true,realized_only:true,site_holon:true},null,2));
