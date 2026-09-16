@@ -93,7 +93,7 @@ function locus(projection,gene,path){
   const section=el('section','papers-locus');
   section.dataset.gene=gene;
   section.classList.toggle('is-view',path===gene);
-  const head=el('header','papers-locus-head');
+  const head=el('div','papers-locus-head');
   const identity=el('div','papers-locus-identity');
   identity.append(el('span','papers-locus-gene',gene),el('h2','papers-locus-name',projection.phenotype?.[gene]||gene),el('span','papers-locus-dna',DNA[gene]));
   const counts=el('div','papers-locus-counts');
@@ -123,7 +123,7 @@ function render({host,content,projection,path=''}={}){
   content.className='interlocutor-content papers-content';content.replaceChildren();
 
   const root=el('article','papers-feed');root.dataset.layer='all';
-  const mast=el('header','papers-mast');
+  const mast=el('div','papers-mast');
   const identity=el('div','papers-title-block');
   identity.append(el('div','papers-kicker','organism:papers · _feed'),el('h1','papers-title','Papers'),el('p','papers-subtitle','frozen boundary observation of a living research metabolism'));
   const pulse=el('div','papers-pulse');
