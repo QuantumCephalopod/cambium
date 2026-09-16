@@ -1,109 +1,93 @@
 ---
 name: site-holon
-description: "Rank-invariant Display primitive for relocatable page-organism interlocutors mounted at global tetrahedral loci while Philosophy embodies the address-space and the membrane navigator jumps directly between mounted encounters."
+description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "1.5"
+version: "2.0"
 ---
 
 # SITE-HOLON RITUAL — display local
 
-A site-holon is not a page template. It is the invariant relation between one navigating **witness**, one persistent global tetrahedral **address law**, a global quotient **locus**, and the stable **interlocutor page-organism(s)** mounted there.
+A site-holon is an autonomous interlocutor body encountered through Display Population. It is not a page template and not an address record.
 
 ## Four distinctions
 
-- **Witness** — the viewer/person navigating Display.
-- **Address / path** — raw recursive genealogy through `{w,x,z,y}*`; not identity.
+- **Witness** — viewer/person navigating Display.
+- **Address/path** — raw recursive genealogy through site-space `{w,x,z,y}*`.
 - **Locus** — canonical tetrahedral place obtained from the address quotient.
-- **Interlocutor** — stable page-organism encountered at a global locus; identity survives remounting.
+- **Interlocutor/site-holon** — stable locally autonomous body whose identity survives placement changes.
 
-`witness -> global address -> quotient locus -> mounted interlocutor encounter`
+`witness -> physical Population address -> quotient locus -> interlocutor encounter`
 
-## Global mount and local root are distinct
+## Physical body and global placement
 
-Every page-organism has a global host placement and may simultaneously possess its own independently rooted local anatomy.
+Display `y` is the membrane into site-space:
 
-For Papers:
+`display:y ⟦ site-space:ε ⟧`
 
-`mount(Papers, main:y)`
+A site-holon body directly under `w/display/y/` occupies site-space overview. A body inside physical folder `w/display/y/y<address>/` occupies semantic site-space `<address>`.
 
-while
+Current first bodies:
 
-`Papers local root = papers:ε`.
+- `w/display/y/philosophy/` -> `organism:philosophy @ ε`;
+- `w/display/y/yy/papers/` -> `organism:papers @ y`.
 
-Opening Papers does not transform the global navigator into `papers:*`. Global and local relations coexist.
+The outer first `y` belongs to Display Population and is stripped at the membrane.
 
-## Philosophy as encompassing global body
+## Body contract
 
-`organism:philosophy` is mounted at `main:ε / overview` and embodies the currently realized global tetrahedral address-space.
+A site-holon carries a `site.json` membrane declaration containing stable identity/title, local scope, shader identity, manifestation specialty, and paths to its body-local projection, renderer and style.
 
-Other page-organisms are mounted on that broad address-space. Realized global geometry may therefore exist without carrying a page-organism.
+Those body-local members travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
 
-## Global navigator target law
+A site may contain further local organism anatomy beyond the site membrane. Philosophy currently carries its own INDEX, `_cambium`, RITUALS and lifecycle shell inside its body.
 
-The global minimap exposes **mounted page-organism encounters only**.
+## Tree is mount truth
 
-It does not turn every realized Philosophy address into a navigation target.
+The Population tree is canonical for global placement. Build discovery derives a public registry from physical bodies; any emitted registry is a projection/cache, never separately authored semantic truth.
 
-With the current specimens its target set is exactly:
-
-- overview centroid -> `organism:philosophy`;
-- `y / Inquiry` -> `organism:papers`.
-
-A minimap click immediately performs the page-organism transition. It does not first alter Philosophy VIEW and then ask for a second commit elsewhere.
-
-Philosophy background inspection remains a separate local specialty and may inspect any realized global address without moving encounters.
+No empty address directory is admitted as a navigation target. No body means no site encounter at that raw address.
 
 ## Relocation law
 
 Host placement is environment, not identity.
 
-`mount(Papers, main:y) -> mount(Papers, main:x) -> mount(Papers, main:xyw)`
+Moving the entire body between lawful Population address folders must preserve every internal body byte and therefore preserve identity, shader, manifestation, projection boundary, local root, state/activity target and renderer behavior.
 
-must preserve Papers' manifestation, state, shader embodiment, activity identity and local root.
+Killer witness:
 
-## Interlocutor-owned local worlds
+`display/y/yy/papers/ -> display/y/yx/papers/`
 
-Each active interlocutor independently brings its own local tetrahedral field/background, shader identity, manifestation and local specialties.
+must change Papers global site address `y -> x` on rebuild with zero Papers-internal edits.
 
-The universal coupling between the global navigator and local fields is shared **orientation**, not shared address selection.
+## Exact raw occupancy versus quotient coalescence
 
-## Camera framing versus semantic place
+One exact raw site address may contain only one direct site-holon. Attempted raw pile-up is rejected before mutating the existing mount; pressure must differentiate that address first.
 
-Global semantic identity remains at the exact recursive vertex/quotient locus.
+Distinct raw addresses may still quotient-coalesce. Example genealogies such as `xyw` and `xwy` may resolve to one locus while remaining separately addressed bodies. Their encounter then composes as split/grid physiology.
 
-Display camera focus targets the centroid of the recursive tetrahedral cell anchored by the selected address. This keeps each rank framed as another co-equal fourfold without changing locus identity.
+## Local root law
 
-## Global Navigation Aperture
+Global site address and interlocutor-local recursive address are separate.
 
-The global minimap is Display membrane physiology, not interlocutor content.
+For Papers:
 
-- single encounter -> square outer membrane port;
-- two interlocutors -> diamond threshold on the shared seam;
-- larger composition -> compositor junction.
+`site-space:y ⟦ papers:ε ⟧`
 
-The minimap and x/y rails remain stable control tissue behind the aperture.
+Relocation changes the outer environment only. It may never rewrite Papers-local genealogy into fake concatenations such as `main:yy`.
 
-## Target-origin tetrahedral closure
+## Identity-owned embodiment
 
-A global navigator click provides the spatial origin of the encounter transition.
-
-Four membrane facets converge from the viewport boundaries onto that target, the mounted-locus/interlocutor swap occurs only under complete closure, and the facets reverse to reveal the destination.
-
-The persistent Display shell, navigator, orientation and browser history remain alive throughout.
-
-## Shader identity law
-
-Shader is identity, not address.
-
-`remount(interlocutor, newGlobalLocus) -> same interlocutor shader`
-
-Global address determines where an interlocutor is encountered. Shader identity determines how its local field is embodied.
+Shader/background/manifestation belong to stable interlocutor identity, not global address. All visible local fields inherit shared Display orientation, while page-specific navigation/interaction remains owned by the page-organism.
 
 ## Activity
 
-Activity targets stable interlocutor identity, not global address. Remounting must not break the activity receptor.
+Activity targets stable interlocutor identity, never global placement. Remounting must not break the receptor. If several separately addressed identities quotient-coalesce at one locus, locus-level activity is ambiguous and must target an identity explicitly.
+
+## Global navigation
+
+Only physically discovered site-holons become global minimap targets. Clicking one performs direct target-origin encounter movement. Philosophy's broad background inspection is a Philosophy-local specialty, not the site-holon primitive.
 
 ## Compression
 
-**The viewer navigates one global recursive tetrahedral address organism embodied broadly by Philosophy. Only loci carrying mounted page-organisms appear as global navigation targets, and clicking one moves directly into that encounter. Each interlocutor remains locally autonomous and relocatable, shares global orientation only, preserves identity-bound shader/state, and swaps under a target-origin tetrahedral membrane closure.**
+**A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal bytes determine identity and embodiment. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
