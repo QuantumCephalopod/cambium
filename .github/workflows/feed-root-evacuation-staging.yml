@@ -1,0 +1,31 @@
+name: temporary Display correction feed return
+
+on:
+  push:
+    branches: [staging/display-metamorphosis]
+    paths:
+      - '.github/workflows/feed-root-evacuation-staging.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  project:
+    if: github.repository == 'QuantumCephalopod/cambium'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Reflect correction HOME through canonical feed projector
+        run: |
+          set -euo pipefail
+          python3 y/feed.py \
+            --before d5e0031a09bbb4837733a3f16338da3e7e77719b \
+            --after c61e82f2888349a3d541c74b4f16f39f91875769
+          git diff --exit-code --quiet -- w/display/_feed/current.json && { echo 'feed already current'; exit 0; }
+          git config user.name 'cambium feed'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add w/display/_feed/current.json
+          git commit -m 'feed: reflect Display root evacuation HOME'
+          git push origin HEAD:staging/display-metamorphosis
