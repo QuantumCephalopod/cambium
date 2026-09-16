@@ -88,10 +88,17 @@ function externalLabel(url,index){
 function detailFor(projection,pointId){
   const base=identityFor(projection,pointId);if(!base)return null;
   if(base.kind==='source'){
+    const meta=projection?.source_meta?.[pointId];
+    if(Array.isArray(meta)){
+      const urls=Array.isArray(meta[2])?meta[2]:[];
+      return {...base,credit:meta[0]||'',metabolism:meta[1]||'tetrahedralized · 4V / 6E / 4F / 1T',externals:urls.map((url,i)=>({url,label:externalLabel(url,i)}))};
+    }
     const credit=projection?.authors?.[pointId]||'';
     const url=projection?.external?.[pointId]||'';
     return {...base,credit,metabolism:'tetrahedralized · 4V / 6E / 4F / 1T',externals:url?[{url,label:externalLabel(url,0)}]:[]};
   }
+  const meta=projection?.holon_meta?.[pointId];
+  if(Array.isArray(meta))return {...base,parents:meta[0]||[],metabolism:meta[1]||'recursive holon · 4V / 6E / 4F / 1T',feeling_signature:meta[2]||'',bound:meta[3]||''};
   return {...base,parents:projection?.parents?.[pointId]||[],metabolism:'recursive holon · 4V / 6E / 4F / 1T'};
 }
 
