@@ -75,16 +75,16 @@ def main():
     check(bundle_dir.is_dir(),'content-addressed membrane bundle directory missing')
     check({p.name for p in bundle_dir.iterdir() if p.is_file()}==set(build.asset_sources()),'bundle file set diverges from source contract')
 
-    nav=(DISPLAY/'navigation-physiology.js').read_text(); world=(DISPLAY/'world-view.js').read_text(); runtime=(DISPLAY/'display-runtime-v2.js').read_text(); holon=(DISPLAY/'site-holon.js').read_text(); aperture=(DISPLAY/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'navigation-aperture.css').read_text(); fields=(DISPLAY/'locus-shader.js').read_text()
+    nav=(DISPLAY/'navigation-physiology.js').read_text(); world=(DISPLAY/'world-view.js').read_text(); runtime=(DISPLAY/'display-runtime-v2.js').read_text(); holon=(DISPLAY/'site-holon.js').read_text(); fold=(DISPLAY/'site-fold.js').read_text(); site_css=(DISPLAY/'site-runtime.css').read_text(); aperture=(DISPLAY/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'navigation-aperture.css').read_text(); fields=(DISPLAY/'locus-shader.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not the centroid of the selected recursive split-tet')
-    check("twin.addEventListener('pointerdown'" in world,'global minimap navigation missing')
-    check("global-minimap-overview" in world and "strokeRect" in world,'global overview address is not visible/clickable in the minimap')
-    check("const GLOBAL_SCOPE='main'" in runtime and 'resolveGlobal' in runtime and 'registry.resolve(GLOBAL_SCOPE' in runtime,'global navigator is not pinned to the global host address space')
-    check('W.setScope({id:GLOBAL_SCOPE,projection:MAIN})' in runtime,'global navigator does not initialize from the global main projection')
-    check("const path=W.view||''" in runtime and 'resolveGlobal(path)' in runtime,'global overview cannot resolve its mounted interlocutor')
+    check('GLOBAL_TARGETS' in world and 'targetLabel' in world and 'hitTarget' in world,'global minimap is not restricted to mounted organism targets')
+    check("'PHILOSOPHY'" in world and "replace(/^organism:/,'')" in world,'global targets are not named by mounted page-organism identity')
+    check("sss:global-navigate" in world and "requestGlobalTarget(target,'global-minimap'" in world,'global minimap click does not request direct organism navigation')
+    check("const GLOBAL_SCOPE='main'" in runtime and 'globalTargets()' in runtime and 'registry.getMount(id)' in runtime,'global navigator targets are not derived from actual global mounts')
+    check("addEventListener('sss:global-navigate'" in runtime and 'navigateGlobal(e.detail.path' in runtime,'direct global navigation receptor missing')
+    check('W.setGlobalTargets(globalTargets())' in runtime and 'W.setActiveGlobalAddress' in runtime,'global navigator target set is not synchronized with mounts')
     check("Papers.render({projection:PAPERS,path:''})" in runtime,'global navigator VIEW leaked into Papers-local navigation')
-    check("scopeId=r.interlocutors" not in runtime and "scopeId='papers'" not in runtime,'interlocutor entry still hijacks global navigator scope')
     check('interactive:true' in runtime and 'interactive:false' in runtime,'Philosophy/Papers background specialties collapsed')
     check('W.orientation' in fields,'interlocutor backgrounds do not share global orientation state')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'settle-to-lock exact axis behavior missing')
@@ -100,6 +100,8 @@ def main():
     check('@keyframes aperture-shell-resolve' in aperture_css and '--shell-rotate-closed:45deg' in aperture_css,'split aperture resolve animation missing')
     check('#mini-trigger .shape-diamond{display:none}' in aperture_css,'single encounter must default to square membrane port')
     check('#mini-pocket' in aperture_css and 'pointer-events:none' in aperture_css,'closed navigator still consumes interlocutor content interaction')
+    check("context.origin" in fold and "--fold-x" in fold and "--fold-y" in fold,'site transition is not anchored to the chosen navigation target')
+    check("clip-path:polygon(0 0,100% 0,var(--fold-x) var(--fold-y))" in site_css and "translateY(-103%)" in site_css,'target-origin tetrahedral iris physiology missing')
 
     for source in ('world-view.js','navigation-physiology.js','site-holon.js','site-fold.js','display-runtime-v2.js','locus-shader.js','interlocutor-philosophy.js','interlocutor-papers.js','navigation-aperture.js'):
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True)
@@ -114,9 +116,9 @@ def main():
         'status':'pass','checks':count,'display':'one persistent membrane',
         'bundle':bundle,'asset_generation':'one content-addressed namespace',
         'specimens':['organism:philosophy','organism:papers'],
-        'navigation':'global host navigator including ε overview persists across interlocutors / camera frames recursive split centroids / single square port / split seam control cavity',
+        'navigation':'mounted site targets only / click directly swaps encounter / Philosophy retains local background inspection',
+        'transition':'four-facet target-origin tetrahedral iris',
         'mounting':'page-organism identity and local root independent of global host locus',
-        'composition':'shared global locus opens local worlds around one seam aperture',
         'artifact':'single index.html'
     },indent=2))
 
