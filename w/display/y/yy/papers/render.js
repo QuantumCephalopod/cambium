@@ -5,6 +5,7 @@ const id='organism:papers';
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 const GENES=['w','x','z','y'];
 const DNA={w:'CREATE',x:'COPY',z:'CONTROL',y:'CULTIVATE'};
+
 const shader=Object.freeze({
   id:'shader:organism:papers',
   clear:[0.004,0.007,0.009,1],
@@ -59,167 +60,144 @@ void main(){
 }`
 });
 
+let selectedId='';
+let renderContext=null;
+
 function el(tag,cls,text){
   const n=document.createElement(tag);
   if(cls)n.className=cls;
   if(text!==undefined)n.textContent=text;
   return n;
 }
-function rankOf(value){
-  const m=String(value||'').match(/^(\d+)H\./);
-  return m?`${m[1]}H`:'S';
+function locusName(projection,gene){return projection?.phenotype?.[gene]||gene}
+function rankOf(value){const m=String(value||'').match(/^(\d+)H\./);return m?`${m[1]}H`:'S'}
+function identityFor(projection,pointId){
+  for(const g of GENES){for(const item of projection?.groups?.[g]||[])if(item.id===pointId)return {id:item.id,title:item.title,locus:g,rank:'S',kind:'source'};for(const item of projection?.holons?.[g]||[])if(item.id===pointId)return {id:item.id,title:item.title,locus:g,rank:rankOf(item.id),kind:'holon'}}
+  return null;
 }
-function countAt(projection,gene,kind){
-  const rows=projection?.[kind]?.[gene];
-  return Array.isArray(rows)?rows.length:0;
+function externalLabel(url,index){
+  try{
+    const u=new URL(url),host=u.hostname.replace(/^www\./,'');
+    if(host==='doi.org')return 'DOI · published work';
+    if(host==='arxiv.org')return 'arXiv · source';
+    if(host==='github.com')return 'GitHub · upstream';
+    if(host.includes('w3.org'))return 'W3C · canonical source';
+    return `${host} · original source`;
+  }catch(_){return `original source ${index+1}`}
 }
-function timestamp(value){
-  return String(value||'').replace('T',' ').replace(/\.\d{3}Z$/,'Z');
+function detailFor(projection,pointId){
+  const base=identityFor(projection,pointId);if(!base)return null;
+  if(base.kind==='source'){
+    const credit=projection?.authors?.[pointId]||'';
+    const url=projection?.external?.[pointId]||'';
+    return {...base,credit,metabolism:'tetrahedralized · 4V / 6E / 4F / 1T',externals:url?[{url,label:externalLabel(url,0)}]:[]};
+  }
+  return {...base,parents:projection?.parents?.[pointId]||[],metabolism:'recursive holon · 4V / 6E / 4F / 1T'};
 }
-function metric(label,value,detail){
-  const n=el('div','papers-metric');
-  n.append(el('span','papers-metric-value',String(value)),el('span','papers-metric-label',label));
-  if(detail)n.append(el('span','papers-metric-detail',detail));
-  return n;
-}
-function specimen(item,kind){
-  const row=el('li',`papers-specimen papers-specimen-${kind}`);
-  const code=el('span','papers-specimen-id',item.id);
-  if(kind==='holon')code.dataset.rank=rankOf(item.id);
-  row.append(code,el('span','papers-specimen-title',item.title));
-  return row;
-}
-function layerBlock(label,items,kind){
-  const block=el('div',`papers-layer papers-layer-${kind}`);
-  const head=el('div','papers-layer-head');
-  head.append(el('span','papers-layer-name',label),el('span','papers-layer-count',String(items.length).padStart(2,'0')));
-  const list=el('ul','papers-specimens');
-  for(const item of items)list.append(specimen(item,kind));
-  if(!items.length)list.append(el('li','papers-empty','—'));
-  block.append(head,list);
-  return block;
-}
-function constitution(projection){
-  const c=projection.constitution||{};
-  const wrap=el('section','papers-constitution');
-  const top=el('div','papers-constitution-top');
-  top.append(el('span','papers-section-kicker','constitution'),el('strong','papers-metabolism',c['1T']||'Metabolism'));
-  wrap.append(top);
 
-  const vertices=el('div','papers-vertices');
+function allPoints(projection){
+  const points=[];
   for(const g of GENES){
-    const v=el('div','papers-vertex');
-    v.dataset.gene=g;
-    v.append(el('span','papers-vertex-gene',g),el('span','papers-vertex-name',c['4V']?.[g]||projection.phenotype?.[g]||g));
-    vertices.append(v);
+    for(const s of projection?.groups?.[g]||[])points.push(Object.freeze({id:s.id,gene:g,kind:'source',label:s.title,meta:`source · ${locusName(projection,g)}`}));
+    for(const h of projection?.holons?.[g]||[])points.push(Object.freeze({id:h.id,gene:g,kind:'holon',label:h.title,meta:`${rankOf(h.id)} holon · ${locusName(projection,g)}`}));
   }
-  wrap.append(vertices);
-
-  const relations=el('div','papers-relations');
-  const edges=el('div','papers-relation-line');
-  edges.append(el('span','papers-relation-rank','6E'));
-  for(const [key,name] of Object.entries(c['6E']||{}))edges.append(el('span','papers-relation',`${key} ${name}`));
-  const faces=el('div','papers-relation-line');
-  faces.append(el('span','papers-relation-rank','4F'));
-  for(const [key,name] of Object.entries(c['4F']||{}))faces.append(el('span','papers-relation',`${key} ${name}`));
-  relations.append(edges,faces);wrap.append(relations);
-  return wrap;
+  return points;
 }
-function controls(root){
-  const nav=el('div','papers-layer-controls');
-  nav.setAttribute('aria-label','Papers feed layer');
-  const options=[['all','BODY'],['sources','SOURCES'],['holons','HOLONS']];
-  for(const [value,label] of options){
-    const b=el('button','papers-layer-button',label);
-    b.type='button';b.dataset.layer=value;b.setAttribute('aria-pressed',value==='all'?'true':'false');
-    b.addEventListener('click',()=>{
-      root.dataset.layer=value;
-      for(const peer of nav.querySelectorAll('button'))peer.setAttribute('aria-pressed',String(peer===b));
-    });
-    nav.append(b);
-  }
-  return nav;
-}
-function locus(projection,gene,path){
-  const sources=Array.isArray(projection.groups?.[gene])?projection.groups[gene]:[];
-  const holons=Array.isArray(projection.holons?.[gene])?projection.holons[gene]:[];
-  const section=el('section','papers-locus');
-  section.dataset.gene=gene;
-  section.classList.toggle('is-view',path===gene);
-  const head=el('div','papers-locus-head');
-  const identity=el('div','papers-locus-identity');
-  identity.append(el('span','papers-locus-gene',gene),el('h2','papers-locus-name',projection.phenotype?.[gene]||gene),el('span','papers-locus-dna',DNA[gene]));
-  const counts=el('div','papers-locus-counts');
-  counts.append(el('span','',`${sources.length} S`),el('span','',`${holons.length} H`));
-  head.append(identity,counts);
-  const layers=el('div','papers-locus-layers');
-  layers.append(layerBlock('source boundary',sources,'source'),layerBlock('holon lineage',holons,'holon'));
-  section.append(head,layers);
-  return section;
-}
-
+function countAt(projection,gene,kind){const rows=projection?.[kind]?.[gene];return Array.isArray(rows)?rows.length:0}
 function fieldProjection(d){
   const children={};
   for(const g of GENES){
     const sources=countAt(d,g,'groups'),holons=countAt(d,g,'holons'),noun=d?.phenotype?.[g]||g;
-    children[g]={
-      noun,de:noun,en:noun,gene:DNA[g],
-      one:{de:`${sources} Quellenkörper · ${holons} Holons.`,en:`${sources} source bodies · ${holons} holons.`},
-      children:{}
-    };
+    children[g]={noun,de:noun,en:noun,gene:DNA[g],one:{de:`${sources} Quellen · ${holons} Holons.`,en:`${sources} sources · ${holons} holons.`},children:{}};
   }
-  return {source:{organism:'papers',home:d?.event_id||'papers'},root:{noun:'Papers',children},occupancy:{w:[],x:[],z:[],y:[]}};
+  return {source:{organism:'papers',home:d?.event_id||'papers'},root:{noun:'Papers',children},occupancy:{w:[],x:[],z:[],y:[]},points:allPoints(d)};
 }
+function sectionLabel(text){return el('div','papers-detail-kicker',text)}
+function row(label,value){
+  if(value===undefined||value===null||value==='')return null;
+  const n=el('div','papers-detail-row');n.append(el('span','papers-detail-label',label),el('span','papers-detail-value',String(value)));return n;
+}
+function safeBound(value){const s=String(value||'').trim();return s&&/[.!?…]$/.test(s)?s:''}
+function selectPoint(pointId){
+  const field=globalThis.SSSInterlocutorFields?.get(id);
+  if(field&&typeof field.selectPoint==='function')field.selectPoint(pointId,true);
+}
+function externalLink(item){
+  const a=el('a','papers-external-link');a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';
+  a.append(el('span','papers-external-label',item.label||'original source'),el('span','papers-external-arrow','↗'));
+  return a;
+}
+function sourceDetail(projection,d){
+  const panel=el('article','papers-detail papers-detail-source');panel.dataset.organismId=d.id;
+  const head=el('div','papers-detail-head');
+  const identity=el('div','papers-detail-identity');identity.append(el('span','papers-detail-code',d.id),el('span','papers-detail-locus',`${d.locus} · ${locusName(projection,d.locus)}`));
+  const close=el('button','papers-detail-close','×');close.type='button';close.setAttribute('aria-label','Close source');close.addEventListener('click',()=>selectPoint(''));
+  head.append(identity,close);panel.append(head,el('h1','papers-detail-title',d.title));
 
-function render({host,content,projection,path=''}={}){
+  const original=el('section','papers-detail-section papers-original');original.append(sectionLabel('ORIGINAL WORK'));
+  original.append(el('div','papers-source-credit',d.credit||'source credit unresolved'));
+  if(d.type)original.append(el('p','papers-source-type',d.type));
+  const links=el('div','papers-external-links');for(const item of d.externals||[])links.append(externalLink(item));
+  if(links.childElementCount)original.append(links);panel.append(original);
+
+  const metabolism=el('section','papers-detail-section papers-metabolism');metabolism.append(sectionLabel('PAPERS METABOLISM'));
+  const receipt=row('closure',d.metabolism);if(receipt)metabolism.append(receipt);
+  if(d.quickscope)metabolism.append(el('p','papers-metabolic-copy',d.quickscope));
+  if(d.boundary){metabolism.append(sectionLabel('EPISTEMIC BOUNDARY'),el('p','papers-boundary-copy',d.boundary))}
+  panel.append(metabolism);return panel;
+}
+function parentButton(parentId,projection){
+  const d=detailFor(projection,parentId),b=el('button','papers-parent');b.type='button';b.dataset.parentId=parentId;
+  b.append(el('span','papers-parent-id',parentId),el('span','papers-parent-title',d?.title||parentId));
+  b.addEventListener('click',()=>selectPoint(parentId));return b;
+}
+function holonDetail(projection,d){
+  const panel=el('article','papers-detail papers-detail-holon');panel.dataset.organismId=d.id;
+  const head=el('div','papers-detail-head');
+  const identity=el('div','papers-detail-identity');identity.append(el('span','papers-detail-code',d.id),el('span','papers-detail-locus',`${d.rank||rankOf(d.id)} · ${d.locus} · ${locusName(projection,d.locus)}`));
+  const close=el('button','papers-detail-close','×');close.type='button';close.setAttribute('aria-label','Close holon');close.addEventListener('click',()=>selectPoint(''));
+  head.append(identity,close);panel.append(head,el('h1','papers-detail-title',d.title),el('div','papers-derived','DERIVED INSIDE PAPERS'));
+
+  const metabolism=el('section','papers-detail-section papers-metabolism');metabolism.append(sectionLabel('PAPERS METABOLISM'));
+  const receipt=row('closure',d.metabolism);if(receipt)metabolism.append(receipt);
+  const feeling=row('feeling',d.feeling_signature);if(feeling)metabolism.append(feeling);
+  const bound=safeBound(d.bound);if(bound)metabolism.append(el('p','papers-metabolic-copy',bound));
+  panel.append(metabolism);
+
+  const lineage=el('section','papers-detail-section papers-lineage');lineage.append(sectionLabel('FOUR PARENTS'));
+  const parents=el('div','papers-parents');for(const parent of d.parents||[])parents.append(parentButton(parent,projection));lineage.append(parents);panel.append(lineage);
+  return panel;
+}
+function detailPanel(projection){
+  if(!selectedId)return null;
+  const d=detailFor(projection,selectedId);if(!d)return null;
+  return selectedId.startsWith('S.')?sourceDetail(projection,d):holonDetail(projection,d);
+}
+function hud(projection){
+  const p=projection.population||{},n=el('div','papers-hud');
+  const line=el('div','papers-hud-line');line.append(el('strong','papers-hud-title','Papers'),el('span','papers-hud-stat',`${p.registry_sources??0} sources · ${p.holons??0} holons`));
+  const legend=el('div','papers-legend');
+  const source=el('span','papers-legend-item');source.append(el('i','papers-legend-dot'),document.createTextNode(' source'));
+  const holon=el('span','papers-legend-item');holon.append(el('i','papers-legend-diamond'),document.createTextNode(' holon'));
+  legend.append(source,holon,el('span','papers-hud-help','hover · click to open'));
+  n.append(line,legend);return n;
+}
+function paintSelection(){
+  if(!renderContext)return;
+  const {content,projection}=renderContext;
+  const old=content.querySelector('.papers-detail');if(old)old.remove();
+  const panel=detailPanel(projection);if(panel)content.append(panel);
+}
+function activateFieldPoint({point}={}){
+  selectedId=point?.id||'';
+  paintSelection();
+}
+function render({host,content,projection}={}){
   if(!host||!content||!projection?.groups||!projection?.phenotype)return false;
-  content.className='interlocutor-content papers-content';content.replaceChildren();
-
-  const root=el('article','papers-feed');root.dataset.layer='all';
-  const mast=el('div','papers-mast');
-  const identity=el('div','papers-title-block');
-  identity.append(el('div','papers-kicker','organism:papers · _feed'),el('h1','papers-title','Papers'),el('p','papers-subtitle','frozen boundary observation of a living research metabolism'));
-  const pulse=el('div','papers-pulse');
-  pulse.append(el('span','papers-pulse-dot'),el('span','papers-pulse-state',projection.snapshot?.pulse_state||projection.refresh||'observed'));
-  mast.append(identity,pulse);root.append(mast);
-
-  const population=projection.population||{};
-  const metrics=el('section','papers-population');
-  metrics.append(
-    metric('FIELD SOURCES',population.registry_sources??'—','registry population'),
-    metric('BOUNDARY',population.boundary_sources??'—','resolved source bodies'),
-    metric('HOLONS',population.holons??'—','recursive organisms'),
-    metric('WOUNDED',population.wounded_sources??'—','paused sources')
-  );
-  root.append(metrics);
-
-  const temporal=el('section','papers-temporal');
-  const pulseTime=el('div','papers-time');pulseTime.append(el('span','papers-time-label','PULSE HOME'),el('span','papers-time-value',timestamp(projection.snapshot?.pulse_home_at_utc)));
-  const observeTime=el('div','papers-time');observeTime.append(el('span','papers-time-label','BODY OBSERVED'),el('span','papers-time-value',timestamp(projection.observed_at_utc)));
-  const uplink=el('div','papers-time papers-uplink');uplink.append(el('span','papers-time-label','UPLINK'),el('span','papers-time-value',projection.snapshot?.uplink||'—'));
-  temporal.append(pulseTime,observeTime,uplink);root.append(temporal);
-
-  root.append(constitution(projection));
-
-  const rankStrip=el('section','papers-ranks');
-  rankStrip.append(el('span','papers-section-kicker','holon ranks'));
-  for(const rank of ['1H','2H','3H','4H','5H'])rankStrip.append(metric(rank,projection.population?.ranks?.[rank]??0));
-  root.append(rankStrip);
-
-  const bodyHead=el('div','papers-body-head');
-  const bodyTitle=el('div');bodyTitle.append(el('span','papers-section-kicker','outer body'),el('strong','papers-body-title','realized feed tissue'));
-  bodyHead.append(bodyTitle,controls(root));root.append(bodyHead);
-
-  const loci=el('div','papers-loci');
-  for(const gene of GENES)loci.append(locus(projection,gene,path));
-  root.append(loci);
-
-  const foot=el('footer','papers-feed-foot');
-  foot.append(el('span','',projection.snapshot?.mode||'FROZEN FEED OBSERVATION'),el('span','',projection.boundary||''));
-  root.append(foot);
-
-  content.append(root);host.hidden=false;return true;
+  host.hidden=false;content.className='interlocutor-content papers-content';content.replaceChildren();
+  renderContext={host,content,projection};
+  content.append(hud(projection));paintSelection();return true;
 }
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren()}
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection}));
+function unmount({host,content}={}){renderContext=null;if(host)host.hidden=true;if(content)content.replaceChildren()}
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
 })();
