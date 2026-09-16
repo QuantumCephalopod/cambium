@@ -1,14 +1,22 @@
 #locus-stage{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0;transition:opacity .3s ease}
 html[data-site-entered="true"] #locus-stage{opacity:.68}
 #site-state{position:fixed;z-index:16;left:28px;top:92px;font:8px/1.45 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:rgba(241,239,233,.45);pointer-events:none}
-#tetra-fold{position:fixed;inset:0;z-index:100;pointer-events:none;background:#05070a}
+
+/* Site swap membrane. Four facets close from the screen boundary onto the
+ * global target that caused navigation, then reverse after the encounter swap. */
+#tetra-fold{--fold-x:50vw;--fold-y:50vh;position:fixed;inset:0;z-index:100;pointer-events:none;overflow:hidden;background:rgba(5,7,10,0);transition:background-color .14s ease}
 #tetra-fold[hidden]{display:none}
-.fold-facet{position:absolute;inset:0;background:rgba(18,24,31,.98);border:1px solid rgba(241,239,233,.22);transition:transform .52s ease,opacity .52s ease;transform-origin:50% 50%}
-.fold-facet:nth-child(1){clip-path:polygon(0 0,100% 0,50% 50%)}
-.fold-facet:nth-child(2){clip-path:polygon(100% 0,100% 100%,50% 50%)}
-.fold-facet:nth-child(3){clip-path:polygon(0 100%,100% 100%,50% 50%)}
-.fold-facet:nth-child(4){clip-path:polygon(0 0,50% 50%,0 100%)}
-#tetra-fold[data-fold="closing"] .fold-facet,#tetra-fold[data-fold="closed"] .fold-facet{transform:scale(.16);opacity:.92}
-#tetra-fold[data-fold="opening"] .fold-facet{transform:scale(1);opacity:1}
+#tetra-fold[data-fold="closed"]{background:rgba(5,7,10,1)}
+.fold-facet{position:absolute;inset:-1px;background:linear-gradient(145deg,rgba(15,21,28,.985),rgba(5,8,12,.995));border:1px solid rgba(241,239,233,.16);will-change:transform;transition:transform .38s cubic-bezier(.76,0,.24,1),filter .38s ease;filter:brightness(.94);backface-visibility:hidden}
+.fold-facet:nth-child(1){clip-path:polygon(0 0,100% 0,var(--fold-x) var(--fold-y));transform:translateY(-103%)}
+.fold-facet:nth-child(2){clip-path:polygon(100% 0,100% 100%,var(--fold-x) var(--fold-y));transform:translateX(103%)}
+.fold-facet:nth-child(3){clip-path:polygon(0 100%,100% 100%,var(--fold-x) var(--fold-y));transform:translateY(103%)}
+.fold-facet:nth-child(4){clip-path:polygon(0 0,var(--fold-x) var(--fold-y),0 100%);transform:translateX(-103%)}
+#tetra-fold[data-fold="closing"] .fold-facet,#tetra-fold[data-fold="closed"] .fold-facet{transform:translate(0,0);filter:brightness(1)}
+#tetra-fold[data-fold="opening"] .fold-facet:nth-child(1),#tetra-fold[data-fold="open"] .fold-facet:nth-child(1){transform:translateY(-103%)}
+#tetra-fold[data-fold="opening"] .fold-facet:nth-child(2),#tetra-fold[data-fold="open"] .fold-facet:nth-child(2){transform:translateX(103%)}
+#tetra-fold[data-fold="opening"] .fold-facet:nth-child(3),#tetra-fold[data-fold="open"] .fold-facet:nth-child(3){transform:translateY(103%)}
+#tetra-fold[data-fold="opening"] .fold-facet:nth-child(4),#tetra-fold[data-fold="open"] .fold-facet:nth-child(4){transform:translateX(-103%)}
+
 @media(max-width:760px){#site-state{left:18px;top:80px}}
-@media(prefers-reduced-motion:reduce){.fold-facet,#locus-stage{transition-duration:.04s!important}}
+@media(prefers-reduced-motion:reduce){.fold-facet,#locus-stage,#tetra-fold{transition-duration:.04s!important}}
