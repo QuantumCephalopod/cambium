@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.0"
+version: "2.1"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -40,7 +40,21 @@ A site-holon carries a `site.json` membrane declaration containing stable identi
 
 Those body-local members travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
 
-A site may contain further local organism anatomy beyond the site membrane. Philosophy currently carries its own INDEX, `_cambium`, RITUALS and lifecycle shell inside its body.
+A site may contain further local organism anatomy beyond the site membrane. Philosophy currently carries its own INDEX, `_cambium`, RITUALS and lifecycle shell inside its body; other sites may carry only the local tissue their own closure has earned.
+
+## Local sovereignty
+
+The site-holon owns its phenomenology and local behavior. Its projection boundary, renderer, style, shader/material field and local interaction may evolve independently of other sites while remaining coupled to Display's common tetrahedral body and orientation.
+
+The shared Display field may expose neutral geometric hooks—such as tetrahedral projection, point placement, hit testing, shared orientation or generic selection coupling—but the meaning of those hooks stays inside the site module. A generic hook must work for an arbitrary future site-holon without naming current specimens.
+
+Default locality rule:
+
+`pressure in one site -> mutate that site first`
+
+Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
+
+Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
 
 ## Tree is mount truth
 
@@ -52,7 +66,7 @@ No empty address directory is admitted as a navigation target. No body means no 
 
 Host placement is environment, not identity.
 
-Moving the entire body between lawful Population address folders must preserve every internal body byte and therefore preserve identity, shader, manifestation, projection boundary, local root, state/activity target and renderer behavior.
+Moving the entire body between lawful Population address folders must preserve every internal body byte and therefore preserve identity, shader, manifestation, projection boundary, local root, local interaction/state target and renderer behavior.
 
 Killer witness:
 
@@ -76,9 +90,13 @@ For Papers:
 
 Relocation changes the outer environment only. It may never rewrite Papers-local genealogy into fake concatenations such as `main:yy`.
 
+Local selection or traversal inside a site-holon likewise does not mutate its global mount or transfer the global navigator into local scope.
+
 ## Identity-owned embodiment
 
 Shader/background/manifestation belong to stable interlocutor identity, not global address. All visible local fields inherit shared Display orientation, while page-specific navigation/interaction remains owned by the page-organism.
+
+A site-local shader may change color, transparency, grain, blur, density or other material qualities without changing the shared tetrahedral topology. Local interaction may manipulate or populate that same body without replacing global orientation or global site navigation.
 
 ## Activity
 
@@ -88,6 +106,16 @@ Activity targets stable interlocutor identity, never global placement. Remountin
 
 Only physically discovered site-holons become global minimap targets. Clicking one performs direct target-origin encounter movement. Philosophy's broad background inspection is a Philosophy-local specialty, not the site-holon primitive.
 
+## Closure
+
+A site-holon change is accepted when:
+1. identity remains independent of global mount address;
+2. local projection/render/style/shader/interaction remain carried by the body;
+3. any new shared hook is specimen-agnostic and leaves local meaning in the site module;
+4. relocation still changes only environment, not body bytes;
+5. local traversal does not hijack global navigation or orientation law;
+6. public/browser witnesses exercise the actual generated body when visible behavior changes.
+
 ## Compression
 
-**A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal bytes determine identity and embodiment. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
+**A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal tissue determines identity, projection, phenomenology and local interaction. Display contributes one shared tetrahedral geometry/orientation law; each holon contributes its own skin and behavior. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
