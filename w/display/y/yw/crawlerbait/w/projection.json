@@ -1,15 +1,103 @@
 {
-  "source": "crawlerbait/x/state.json",
-  "updated_at": null,
-  "summary": {
-    "grown_routes": 0,
-    "unresolved_candidates": 0,
-    "observed_404": 0
-  },
   "policy": {
-    "min_404_requests": 2,
     "max_new_routes_per_tide": 4,
-    "max_total_routes": 128
+    "max_total_routes": 128,
+    "min_404_requests": 2
   },
-  "routes": []
+  "routes": [
+    {
+      "href": "/phpinfo/",
+      "last_observed_window": {
+        "end": "2026-09-15T19:48:40Z",
+        "start": "2026-09-14T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 16,
+      "path": "/phpinfo",
+      "sampled": true,
+      "signatures": [
+        {
+          "claimed_family": "Mozilla/5.0",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 16
+        }
+      ]
+    },
+    {
+      "href": "/api/env/",
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 8,
+      "path": "/api/env",
+      "sampled": true,
+      "signatures": [
+        {
+          "claimed_family": "Mozilla/5.0",
+          "id": "ef36427db1a56b35",
+          "observed_404": 8
+        }
+      ]
+    },
+    {
+      "href": "/feed/",
+      "last_observed_window": {
+        "end": "2026-09-17T19:37:40Z",
+        "start": "2026-09-16T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 6,
+      "path": "/feed",
+      "sampled": true,
+      "signatures": [
+        {
+          "claimed_family": "Mozilla/5.0",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 4
+        },
+        {
+          "claimed_family": "Mozilla/5.0",
+          "id": "844d88131e5b8739",
+          "observed_404": 2
+        }
+      ]
+    },
+    {
+      "href": "/wp-json/",
+      "last_observed_window": {
+        "end": "2026-09-17T19:37:40Z",
+        "start": "2026-09-16T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 6,
+      "path": "/wp-json",
+      "sampled": false,
+      "signatures": [
+        {
+          "claimed_family": "Mozilla/5.0",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 4
+        },
+        {
+          "claimed_family": "Mozilla/5.0",
+          "id": "0ae74ebdade6a927",
+          "observed_404": 1
+        },
+        {
+          "claimed_family": "Mozilla/5.0",
+          "id": "69afe5705b074643",
+          "observed_404": 1
+        }
+      ]
+    }
+  ],
+  "source": "crawlerbait/x/state.json",
+  "summary": {
+    "grown_routes": 4,
+    "observed_404": 36,
+    "unresolved_candidates": 11
+  },
+  "updated_at": "2026-09-17T19:37:40Z"
 }
