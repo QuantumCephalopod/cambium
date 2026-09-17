@@ -48,11 +48,29 @@ def main():
     check(by_id['organism:crawlerbait']['address']=='w','Crawlerbait must occupy site-space w / Form')
     check(by_id['organism:papers']['address']=='y','Papers must occupy site-space y')
     check(by_id['organism:philosophy']['site_dir']==DISPLAY/'y'/'philosophy','Philosophy physical body not at display/y/philosophy')
-    check(by_id['organism:crawlerbait']['site_dir']==DISPLAY/'y'/'yw'/'crawlerbait','Crawlerbait physical body not at display/y/yw/crawlerbait')
+    crawler=DISPLAY/'y'/'yw'/'crawlerbait'
+    check(by_id['organism:crawlerbait']['site_dir']==crawler,'Crawlerbait physical body not at display/y/yw/crawlerbait')
     check(by_id['organism:papers']['site_dir']==DISPLAY/'y'/'yy'/'papers','Papers physical body not at display/y/yy/papers')
     check((DISPLAY/'y'/'philosophy'/'INDEX.yaml').is_file(),'Philosophy local recursive body was not transplanted')
     check((DISPLAY/'y'/'philosophy'/'_cambium.yaml').is_file(),'Philosophy local constitution was not transplanted')
-    check((DISPLAY/'y'/'yw'/'crawlerbait'/'RITUALS'/'organism'/'RITUAL.md').is_file(),'Crawlerbait local receptor missing')
+
+    # Crawlerbait must be an actual independently re-enterable holon, not a loose site module.
+    cindex=build.load_yaml(crawler/'INDEX.yaml'); build.validate_index(cindex)
+    check({g:cindex[g]['noun'] for g in 'wxzy'}=={'w':'Sediment','x':'Continuity','z':'Boundary','y':'Adaptation'},'Crawlerbait local phenotype changed')
+    build.validate_cambium(build.load_yaml(crawler/'_cambium.yaml'),'crawlerbait/_cambium.yaml')
+    check((crawler/'RITUALS'/'organism'/'RITUAL.md').is_file(),'Crawlerbait local ritual receptor missing')
+    for shell in ('_stomach','_feed','_root','_waste'):
+        check((crawler/shell).is_dir(),f'Crawlerbait lifecycle shell missing {shell}')
+    for gene in 'wxzy':
+        check((crawler/gene).is_dir(),f'Crawlerbait realized child missing {gene}')
+    forbidden_loose={'bait','projection.json','render.js','style.css','tide.py'}
+    check(not ({p.name for p in crawler.iterdir()} & forbidden_loose),'Crawlerbait active tissue leaked into differentiated root')
+    check(by_id['organism:crawlerbait']['projection']=='w/projection.json' and by_id['organism:crawlerbait']['renderer']=='w/render.js' and by_id['organism:crawlerbait']['style']=='w/style.css','Crawlerbait site membrane does not point into embodied child tissue')
+    check((crawler/'x'/'state.json').is_file(),'Crawlerbait continuity state missing')
+    check((crawler/'z'/'policy.json').is_file(),'Crawlerbait boundary policy missing')
+    check((crawler/'y'/'tide.py').is_file(),'Crawlerbait adaptation tide missing')
+    check((crawler/'w'/'public'/'crawlerbait'/'index.html').is_file(),'Crawlerbait sediment public reef missing')
+
     registry=build.site_mounts()
     check(registry['version']==3 and registry['source']=='w/display/y tree','mount registry is not tree-derived')
     rel={(m['interlocutor'],m['scope'],m['address']) for m in registry['mounts']}
@@ -117,7 +135,7 @@ def main():
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')
-    result=subprocess.run(['python3',str(DISPLAY/'y'/'yw'/'crawlerbait'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
+    result=subprocess.run(['python3',str(crawler/'y'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
 
     print(json.dumps({
         'status':'pass','checks':count,'display_4V':{g:index[g]['noun'] for g in 'wxzy'},
@@ -125,7 +143,7 @@ def main():
         'sites':{s['id']:s['address'] or 'ε' for s in sites},
         'runtime':'generic identity modules; no specimen names in central runtime',
         'relocation':'whole Papers body moves by folder with zero internal edits',
-        'crawlerbait':'static public reef + bounded Cloudflare tide self-test',
+        'crawlerbait':'independently rooted 4V holon + lifecycle shell + static reef + bounded tide',
         'bundle':bundle,'artifact':'single Display index + identity-owned static site apertures'
     },indent=2))
 
