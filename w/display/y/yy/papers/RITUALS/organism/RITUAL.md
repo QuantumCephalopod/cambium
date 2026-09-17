@@ -28,7 +28,7 @@ Papers is globally mounted at site-space `y / Inquiry` while remaining locally r
 
 Its global mount is environment. Its public body, shader, local traversal and research projection belong to `organism:papers` identity and must survive lawful remounting unchanged.
 
-Current public carrier members are site-local projection, demand-loaded inquiry bodies, renderer, style, shader/interaction behavior and this ritual. Generic tetrahedral projection/orientation machinery remains Display-owned.
+Current public carrier members are site-local projection, admitted inquiry corpus, renderer, style, shader/interaction behavior and this ritual. Generic tetrahedral projection/orientation machinery remains Display-owned.
 
 ## Source of public truth
 
@@ -86,18 +86,19 @@ A selected Source may invert the question and illuminate public Holon descendant
 
 A relation or metabolite may temporarily focus its **earning body** by emphasizing exactly the involved parent branches. Visual focus does not mint a semantic edge or change specimen placement.
 
-## Demand-loaded depth
+## Selection-materialized depth
 
-The population projection remains the cheap current membrane. Deep inquiry tissue must not make every ordinary Papers encounter preload the complete research body.
+The population field remains the cheap encounter surface. Deep inquiry tissue is **materialized into the visible interface only after selection**; ordinary field rendering does not instantiate every organism's `6E / 4F / 1T` cards or metabolites at once.
 
-Site-local `inquiry/<public-id>.json` carriers may therefore expose an admitted Holon's readable public `6E / 4F / 1T`, removal witnesses, metabolites, and earning-body membership **on demand after selection**.
+The current membrane compiles the presently admitted inquiry corpus into the Papers-owned renderer because the generic Display build publishes declared renderer/style assets but does not package arbitrary site-local sidecar files. Structured `inquiry/<public-id>.json` files may coexist inside the Papers body as source-local projection tissue, but the current public artifact does not depend on browser fetches to those paths.
 
-This is a presentation optimization, not a second ontology:
+This is a presentation/carrier choice, not a second ontology:
 
 - identity, rank, placement and genealogy remain grounded in the normal Papers projection;
-- the inquiry carrier adds only source-owned public body tissue for the selected organism;
-- absence of an inquiry carrier remains explicit missing public projection and must never be filled by renderer inference;
-- future live transport may materialize the same bounded inquiry bodies at mirrored static addresses without changing the interaction law.
+- admitted inquiry tissue adds only source-owned public body content for the selected organism;
+- absence of admitted inquiry tissue remains explicit missing public projection and must never be filled by renderer inference;
+- a future Papers-local compiler or static-shadow carrier may externalize those same bounded bodies again without changing the interaction law;
+- visitor inquiry must remain static and must never actuate the authenticated update Worker.
 
 ## Local interaction and genealogy
 
@@ -206,4 +207,4 @@ A public Papers mutation closes when:
 
 ## Compression
 
-**Papers is a tetrahedral public inquiry field. Sources and Holons inhabit truthful local loci as selectable organisms; selecting a Holon opens its readable relational body, surviving metabolites and recursive ancestry in-place until source ground becomes visible. Selecting a Source may trace what grew from it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis, point grammar and local phenomenology. Depth is demand-loaded, source-owned and bounded; transport may evolve without turning the viewer into the actuator or the projection into authority.**
+**Papers is a tetrahedral public inquiry field. Sources and Holons inhabit truthful local loci as selectable organisms; selecting a Holon materializes its admitted relational body, surviving metabolites and recursive ancestry in-place until source ground becomes visible. Selecting a Source may trace what grew from it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis, point grammar and local phenomenology. Depth is selection-materialized, source-owned and bounded; transport may evolve without turning the viewer into the actuator or the projection into authority.**
