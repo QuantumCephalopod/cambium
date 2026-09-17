@@ -1,10 +1,10 @@
 ---
 name: papers
-description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, holon genealogy, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.0"
+description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
+version: "1.1"
 ---
 
-# PAPERS SITE-HOLON RITUAL — local public body
+# PAPERS SITE-HOLON RITUAL — local public inquiry body
 
 This ritual governs the **public Papers site-holon** at `w/display/y/yy/papers/`. It is not the independently rooted Drive `/papers` research organism and must not replace that organism's own constitution, metabolism or lifecycle law.
 
@@ -28,19 +28,23 @@ Papers is globally mounted at site-space `y / Inquiry` while remaining locally r
 
 Its global mount is environment. Its public body, shader, local traversal and research projection belong to `organism:papers` identity and must survive lawful remounting unchanged.
 
-Current public carrier members are site-local projection, renderer, style, shader/interaction behavior and this ritual. Generic tetrahedral projection/orientation machinery remains Display-owned.
+Current public carrier members are site-local projection, admitted inquiry corpus, renderer, style, shader/interaction behavior and this ritual. Generic tetrahedral projection/orientation machinery remains Display-owned.
 
 ## Source of public truth
 
 `projection.json` is a **public projection of Papers `_feed`**, not research authority and not a second hand-maintained database.
 
-Current frozen snapshots are legitimate bounded observations. Later live transport may replace the frozen carrier with the existing Cloudflare Worker state/watch path, but that changes transport only:
+Current frozen snapshots are legitimate bounded observations. A later event-driven live projection may replace or refresh the frozen carrier through the already-earned static shadow relation, but transport must remain outside organism meaning. Visitor reads must remain static/cacheable presentation reads; a browser refresh must not actuate the authenticated Drive→Worker write path.
 
-`frozen projection → live projection receptor`
+The intended live transport relation is therefore:
 
-must preserve the same Papers-local rendering/interaction contract. The Worker is circulation, never semantic authority.
+`Drive Papers HOME → authenticated write actuator → mirrored static shadow → visitor read`
 
-Do not expose private Drive identifiers merely to make live coupling easier.
+not:
+
+`visitor → Worker → Papers`.
+
+Transport evolution must preserve the same Papers-local rendering/interaction contract. Do not expose private Drive identifiers merely to make live coupling easier.
 
 ## Tetrahedral public body
 
@@ -62,6 +66,39 @@ Every public Source and Holon receives one selectable point inside its **true Pa
 - If finer recursive Papers addresses are later earned by the source organism, the public body may adopt them without changing specimen identity.
 
 A secondary list/search/accessibility projection may exist when useful, but it must not replace the tetrahedral population as the primary body or become a competing mount truth.
+
+## Inquiry — the local function
+
+Selection opens an **inquiry**, not merely a metadata card.
+
+For a selected Holon, the public body should make four kinds of question directly answerable from source-owned projected tissue:
+
+1. **WHOLE / `1T`** — what did these four parent organisms become together that no proper subset earns?
+2. **RELATIONS / `6E + 4F`** — what was earned pairwise and three-at-a-time, including bounded removal/necessity witnesses when admitted?
+3. **LINEAGE** — what complete recursive ancestry produced this organism, through parents, grandparents and deeper Holons down to original `S.*` source organisms?
+4. **METABOLITES** — what distinctions survived collapse as reusable wisdom, and what minimal edge/face/volume body earned each survivor?
+
+These are views into one metabolized body, not independent taxonomies.
+
+The public field itself is the inquiry instrument. When a Holon is selected, its actual recursive ancestry is illuminated **in the existing tetrahedral specimen field**. Do not replace the field with a generic tree layout. Immediate parents may be emphasized more strongly than deeper ancestry, but all recursive links must follow the actual Papers parent relation until source ground is reached.
+
+A selected Source may invert the question and illuminate public Holon descendants that grew from it: `Source → descendants`. This is the same genealogy read in the opposite direction, not a new relation.
+
+A relation or metabolite may temporarily focus its **earning body** by emphasizing exactly the involved parent branches. Visual focus does not mint a semantic edge or change specimen placement.
+
+## Selection-materialized depth
+
+The population field remains the cheap encounter surface. Deep inquiry tissue is **materialized into the visible interface only after selection**; ordinary field rendering does not instantiate every organism's `6E / 4F / 1T` cards or metabolites at once.
+
+The current membrane compiles the presently admitted inquiry corpus into the Papers-owned renderer because the generic Display build publishes declared renderer/style assets but does not package arbitrary site-local sidecar files. Structured `inquiry/<public-id>.json` files may coexist inside the Papers body as source-local projection tissue, but the current public artifact does not depend on browser fetches to those paths.
+
+This is a presentation/carrier choice, not a second ontology:
+
+- identity, rank, placement and genealogy remain grounded in the normal Papers projection;
+- admitted inquiry tissue adds only source-owned public body content for the selected organism;
+- absence of admitted inquiry tissue remains explicit missing public projection and must never be filled by renderer inference;
+- a future Papers-local compiler or static-shadow carrier may externalize those same bounded bodies again without changing the interaction law;
+- visitor inquiry must remain static and must never actuate the authenticated update Worker.
 
 ## Local interaction and genealogy
 
@@ -105,7 +142,16 @@ A Source detail may expose bounded public metabolites such as:
 
 These are **Papers' reading/metabolism of the Source** and must remain visually and semantically distinct from source attribution.
 
-A Holon detail may expose its own bounded metabolized body, rank, feeling/phenotype when public, and four-parent lineage.
+A Holon inquiry may expose:
+
+- canonical identity, rank and truthful Papers locus;
+- exactly four direct parents;
+- readable `6E / 4F / 1T` body;
+- rank/removal witnesses when publicly admitted;
+- surviving metabolites/invariants and their minimal earning bodies;
+- epistemic boundary;
+- public feeling/phenotype when present;
+- recursive ancestry illumination to source ground.
 
 Do not publish private nested-organ interiors merely because the public projection knows that an organism exists.
 
@@ -117,8 +163,9 @@ The public Papers projection may expose only tissue intentionally secreted throu
 - truthful root-locus placement;
 - source authorship/credit and public publication metadata;
 - canonical external public links;
-- bounded metabolized summaries, invariants and epistemic limits;
+- bounded metabolized summaries, `6E / 4F / 1T`, surviving invariants and epistemic limits;
 - Holon rank and parent genealogy;
+- metabolite earning-body membership when admitted;
 - intentionally public phenotype/feeling signals.
 
 It must not expose:
@@ -133,7 +180,7 @@ It must not expose:
 
 Papers owns its local shader, rendering language and interaction policy. It may become visually unlike Philosophy while preserving the same tetrahedral body and shared Display orientation.
 
-Current earned character is a dense research field with identity-owned material treatment and tilt-shift focus. These visual choices may evolve freely inside this site-holon.
+Current earned character is a dense research field with identity-owned material treatment and tilt-shift focus. Inquiry adds genealogy and earning-body emphasis **inside that same field** rather than replacing it with dashboard/tree phenomenology.
 
 Future Papers design work should default to Papers-local tissue. A design request is not by itself pressure to change Display architecture. Elevate only the smallest genuinely specimen-agnostic geometric hook that arbitrary site-holons require.
 
@@ -147,13 +194,17 @@ A public Papers mutation closes when:
 2. every public specimen appears inside its truthful Papers locus without invented semantic depth;
 3. Source and Holon identities remain stable under visual repacking;
 4. Holon parent links resolve through actual Papers genealogy;
-5. every published Source detail preserves truthful attribution and a canonical external origin or explicitly marks unresolved provenance;
-6. ORIGINAL WORK and PAPERS METABOLISM remain distinct;
-7. no private Drive/acquisition/carrier identifiers leak through the public membrane;
-8. local selection/traversal does not hijack global Display navigation or shared orientation;
-9. shader/render/interaction changes remain Papers-local unless a genuinely generic Display coupling is earned;
-10. the exact generated artifact is browser-witnessed for point selection, lineage traversal and external-source handoff when those surfaces change.
+5. a selected Holon's lineage can illuminate recursively through actual parents to source ground without replacing the tetrahedral field;
+6. readable `6E / 4F / 1T` and metabolites come only from admitted source-owned inquiry tissue and missing bodies remain explicit rather than inferred;
+7. metabolite/relation tracing emphasizes only the actual earning body and does not invent semantic placement;
+8. every published Source detail preserves truthful attribution and a canonical external origin or explicitly marks unresolved provenance;
+9. ORIGINAL WORK and PAPERS METABOLISM remain distinct;
+10. no private Drive/acquisition/carrier identifiers leak through the public membrane;
+11. local selection/traversal does not hijack global Display navigation or shared orientation;
+12. shader/render/interaction changes remain Papers-local unless a genuinely generic Display coupling is earned;
+13. visitor inquiry does not actuate the authenticated update Worker;
+14. the exact generated artifact is browser-witnessed for point selection, lineage traversal, relation/metabolite trace focus and external-source handoff when those surfaces change.
 
 ## Compression
 
-**Papers is a tetrahedral public research field, not an overlay list. Sources and Holons inhabit their truthful local loci as selectable organisms; Holons expose metabolized four-parent genealogy, Sources preserve original authorship and canonical external provenance, and Papers' own metabolism remains visibly separate. Display supplies the shared body and orientation; Papers owns the skin, point grammar and local interaction. Frozen or live feed transport may change without changing that organism contract.**
+**Papers is a tetrahedral public inquiry field. Sources and Holons inhabit truthful local loci as selectable organisms; selecting a Holon materializes its admitted relational body, surviving metabolites and recursive ancestry in-place until source ground becomes visible. Selecting a Source may trace what grew from it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis, point grammar and local phenomenology. Depth is selection-materialized, source-owned and bounded; transport may evolve without turning the viewer into the actuator or the projection into authority.**
