@@ -1,17 +1,20 @@
 {
+  "bait_space": "crawlerbait:w",
   "policy": {
+    "bait_addressing": "shortest unique prefix of stable path identity in tetrahedral bait-space",
     "growth_gate": "none",
     "observation_domain": "all Cloudflare 404 groups returned in each queried window",
     "public_namespace": "/crawlerbait/"
   },
   "routes": [
     {
+      "address": "xyyzy",
       "href": "/crawlerbait/bait/sitemap.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 51,
       "path": "/sitemap.xml",
       "path_shape_preserved": true,
@@ -40,12 +43,13 @@
       ]
     },
     {
+      "address": "zywxzw",
       "href": "/crawlerbait/bait/favicon.ico/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 44,
       "path": "/favicon.ico",
       "path_shape_preserved": true,
@@ -149,12 +153,13 @@
       ]
     },
     {
+      "address": "yxyyxw",
       "href": "/crawlerbait/bait/wp-login.php/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 41,
       "path": "/wp-login.php",
       "path_shape_preserved": true,
@@ -248,12 +253,13 @@
       ]
     },
     {
+      "address": "zzyzyy",
       "href": "/crawlerbait/receipt/aef81e7735de8f42b73e/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 29,
       "path": "/.env",
       "path_shape_preserved": false,
@@ -342,12 +348,13 @@
       ]
     },
     {
+      "address": "xxyy",
       "href": "/crawlerbait/receipt/5fd9259e90fc767bbddf/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 22,
       "path": "/postmark/.env",
       "path_shape_preserved": false,
@@ -366,12 +373,13 @@
       ]
     },
     {
+      "address": "xwxzw",
       "href": "/crawlerbait/receipt/46237bd90c824ac71e08/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 21,
       "path": "/.env.backup",
       "path_shape_preserved": false,
@@ -405,12 +413,13 @@
       ]
     },
     {
+      "address": "wzxzz",
       "href": "/crawlerbait/bait/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 21,
       "path": "/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -434,12 +443,13 @@
       ]
     },
     {
+      "address": "xwzxw",
       "href": "/crawlerbait/receipt/49072bb2685a4c01471d/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 20,
       "path": "/express/.env",
       "path_shape_preserved": false,
@@ -458,12 +468,13 @@
       ]
     },
     {
+      "address": "wzww",
       "href": "/crawlerbait/receipt/202848a338e2a8411edb/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 18,
       "path": "/cms/.env",
       "path_shape_preserved": false,
@@ -482,12 +493,13 @@
       ]
     },
     {
+      "address": "zzyzw",
       "href": "/crawlerbait/receipt/ae1b046309b61c9f5403/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 18,
       "path": "/elasticsearch/.env",
       "path_shape_preserved": false,
@@ -506,12 +518,13 @@
       ]
     },
     {
+      "address": "xywwyy",
       "href": "/crawlerbait/receipt/70f7afd583423b752edd/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 18,
       "path": "/mailjet/.env",
       "path_shape_preserved": false,
@@ -530,12 +543,13 @@
       ]
     },
     {
+      "address": "xxzzyy",
       "href": "/crawlerbait/receipt/5afe4938f7d04ba2476d/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 17,
       "path": "/lab/.env",
       "path_shape_preserved": false,
@@ -554,12 +568,13 @@
       ]
     },
     {
+      "address": "zzww",
       "href": "/crawlerbait/bait/wordpress/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 17,
       "path": "/wordpress/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -588,12 +603,13 @@
       ]
     },
     {
+      "address": "xzxzw",
       "href": "/crawlerbait/bait/xmlrpc.php/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 17,
       "path": "/xmlrpc.php",
       "path_shape_preserved": true,
@@ -637,12 +653,13 @@
       ]
     },
     {
+      "address": "yzzwzz",
       "href": "/crawlerbait/bait/cms/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 16,
       "path": "/cms/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -676,12 +693,13 @@
       ]
     },
     {
+      "address": "xxzzyw",
       "href": "/crawlerbait/receipt/5ac5643a22156fcbe040/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 16,
       "path": "/development/.env",
       "path_shape_preserved": false,
@@ -700,12 +718,13 @@
       ]
     },
     {
+      "address": "wywy",
       "href": "/crawlerbait/receipt/33a1afd24da4e606ce7e/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 16,
       "path": "/newsletter/.env",
       "path_shape_preserved": false,
@@ -724,12 +743,13 @@
       ]
     },
     {
+      "address": "yyww",
       "href": "/crawlerbait/bait/phpinfo/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 16,
       "path": "/phpinfo",
       "path_shape_preserved": true,
@@ -743,12 +763,13 @@
       ]
     },
     {
+      "address": "zzwxww",
       "href": "/crawlerbait/bait/site/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 16,
       "path": "/site/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -772,12 +793,13 @@
       ]
     },
     {
+      "address": "zzwz",
       "href": "/crawlerbait/receipt/a29d1f8ccacc51ac2e54/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 16,
       "path": "/v1/.env",
       "path_shape_preserved": false,
@@ -791,12 +813,13 @@
       ]
     },
     {
+      "address": "yyzwzyyx",
       "href": "/crawlerbait/receipt/f8bd9e65b618d21d6e75/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 15,
       "path": "/.env.save",
       "path_shape_preserved": false,
@@ -820,12 +843,13 @@
       ]
     },
     {
+      "address": "wyyz",
       "href": "/crawlerbait/receipt/3ec26e4f0817b37785cd/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 15,
       "path": "/.git/config",
       "path_shape_preserved": false,
@@ -879,12 +903,13 @@
       ]
     },
     {
+      "address": "wyxz",
       "href": "/crawlerbait/receipt/36de7f489df887c3e31f/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 15,
       "path": "/admin/.env",
       "path_shape_preserved": false,
@@ -903,12 +928,13 @@
       ]
     },
     {
+      "address": "wxzyy",
       "href": "/crawlerbait/receipt/1be4509071ea53617b7e/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 15,
       "path": "/src/.env",
       "path_shape_preserved": false,
@@ -927,12 +953,13 @@
       ]
     },
     {
+      "address": "xxwxz",
       "href": "/crawlerbait/bait/test/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 15,
       "path": "/test/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -961,12 +988,13 @@
       ]
     },
     {
+      "address": "wwywx",
       "href": "/crawlerbait/bait/web/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 15,
       "path": "/web/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -995,12 +1023,13 @@
       ]
     },
     {
+      "address": "xxxzy",
       "href": "/crawlerbait/receipt/56c2098c6a61c7ac0db8/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 14,
       "path": "/.env.preprod",
       "path_shape_preserved": false,
@@ -1019,12 +1048,13 @@
       ]
     },
     {
+      "address": "yyzwzw",
       "href": "/crawlerbait/bait/gcp-credentials.json/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 14,
       "path": "/gcp-credentials.json",
       "path_shape_preserved": true,
@@ -1048,12 +1078,13 @@
       ]
     },
     {
+      "address": "yyxzz",
       "href": "/crawlerbait/bait/info.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 14,
       "path": "/info.php",
       "path_shape_preserved": true,
@@ -1072,12 +1103,13 @@
       ]
     },
     {
+      "address": "xyxzy",
       "href": "/crawlerbait/receipt/76c104a7314c285b1e25/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 14,
       "path": "/symfony/.env",
       "path_shape_preserved": false,
@@ -1096,12 +1128,13 @@
       ]
     },
     {
+      "address": "wyyyw",
       "href": "/crawlerbait/bait/test.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 14,
       "path": "/test.php",
       "path_shape_preserved": true,
@@ -1120,12 +1153,13 @@
       ]
     },
     {
+      "address": "yzzwzw",
       "href": "/crawlerbait/receipt/e884c8b66a9cc0dbcd88/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 13,
       "path": "/.env.bak",
       "path_shape_preserved": false,
@@ -1154,12 +1188,13 @@
       ]
     },
     {
+      "address": "zzwyzx",
       "href": "/crawlerbait/receipt/a397c8c79032c8a19624/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 13,
       "path": "/.env.production",
       "path_shape_preserved": false,
@@ -1208,12 +1243,13 @@
       ]
     },
     {
+      "address": "wyyw",
       "href": "/crawlerbait/receipt/3c658e3b68f996f41891/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 13,
       "path": "/api/.env",
       "path_shape_preserved": false,
@@ -1252,12 +1288,13 @@
       ]
     },
     {
+      "address": "yzwyy",
       "href": "/crawlerbait/bait/sito/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 13,
       "path": "/sito/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -1286,12 +1323,13 @@
       ]
     },
     {
+      "address": "wyzwww",
       "href": "/crawlerbait/receipt/3807eb1255fb0315f3ff/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 12,
       "path": "/.env.old",
       "path_shape_preserved": false,
@@ -1320,12 +1358,13 @@
       ]
     },
     {
+      "address": "xxyxy",
       "href": "/crawlerbait/receipt/5df89d300eb37d420581/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 12,
       "path": "/api/v1/.env",
       "path_shape_preserved": false,
@@ -1344,12 +1383,13 @@
       ]
     },
     {
+      "address": "zxyw",
       "href": "/crawlerbait/receipt/9c0720be539cb7af2988/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 12,
       "path": "/build/.env",
       "path_shape_preserved": false,
@@ -1368,12 +1408,13 @@
       ]
     },
     {
+      "address": "zxxw",
       "href": "/crawlerbait/receipt/941093c05b7d1d412c0d/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 12,
       "path": "/core/app/.env",
       "path_shape_preserved": false,
@@ -1392,12 +1433,13 @@
       ]
     },
     {
+      "address": "xxxy",
       "href": "/crawlerbait/receipt/5776ea19ec2f88a0568f/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 12,
       "path": "/dev/.env",
       "path_shape_preserved": false,
@@ -1416,12 +1458,13 @@
       ]
     },
     {
+      "address": "wyzwwz",
       "href": "/crawlerbait/bait/dev/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 12,
       "path": "/dev/phpinfo.php",
       "path_shape_preserved": true,
@@ -1435,12 +1478,13 @@
       ]
     },
     {
+      "address": "yzwww",
       "href": "/crawlerbait/bait/news/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 12,
       "path": "/news/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -1464,12 +1508,13 @@
       ]
     },
     {
+      "address": "xzwyw",
       "href": "/crawlerbait/bait/old/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 12,
       "path": "/old/phpinfo.php",
       "path_shape_preserved": true,
@@ -1488,12 +1533,13 @@
       ]
     },
     {
+      "address": "xzzy",
       "href": "/crawlerbait/receipt/6b8d31708042410fc91a/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 12,
       "path": "/project/.env",
       "path_shape_preserved": false,
@@ -1512,12 +1558,13 @@
       ]
     },
     {
+      "address": "xxwxy",
       "href": "/crawlerbait/bait/server.key/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 12,
       "path": "/server.key",
       "path_shape_preserved": true,
@@ -1531,12 +1578,13 @@
       ]
     },
     {
+      "address": "ywwyz",
       "href": "/crawlerbait/bait/wp/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 12,
       "path": "/wp/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -1565,12 +1613,13 @@
       ]
     },
     {
+      "address": "yzzzy",
       "href": "/crawlerbait/bait/wp2/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 12,
       "path": "/wp2/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -1599,12 +1648,13 @@
       ]
     },
     {
+      "address": "yyzwzyyy",
       "href": "/crawlerbait/receipt/f8bf22cb3ab23601599b/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 11,
       "path": "/.env.example",
       "path_shape_preserved": false,
@@ -1623,12 +1673,13 @@
       ]
     },
     {
+      "address": "zzzxw",
       "href": "/crawlerbait/bait/_environment/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 11,
       "path": "/_environment",
       "path_shape_preserved": true,
@@ -1647,12 +1698,13 @@
       ]
     },
     {
+      "address": "xzxzz",
       "href": "/crawlerbait/receipt/66871996c0444a7924ed/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 11,
       "path": "/dist/.env",
       "path_shape_preserved": false,
@@ -1671,12 +1723,13 @@
       ]
     },
     {
+      "address": "xywww",
       "href": "/crawlerbait/receipt/70364e73db76a59a45f3/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 11,
       "path": "/node/.env",
       "path_shape_preserved": false,
@@ -1695,12 +1748,13 @@
       ]
     },
     {
+      "address": "zzxy",
       "href": "/crawlerbait/bait/service-account.json/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 11,
       "path": "/service-account.json",
       "path_shape_preserved": true,
@@ -1719,12 +1773,13 @@
       ]
     },
     {
+      "address": "zzwyw",
       "href": "/crawlerbait/bait/shop/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 11,
       "path": "/shop/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -1748,12 +1803,13 @@
       ]
     },
     {
+      "address": "yxzww",
       "href": "/crawlerbait/receipt/d80a28198e7c3b2ce080/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 11,
       "path": "/web/.env",
       "path_shape_preserved": false,
@@ -1772,12 +1828,13 @@
       ]
     },
     {
+      "address": "yxwzzyzy",
       "href": "/crawlerbait/receipt/d2bb9a1d734bed71f178/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 10,
       "path": "/.git/HEAD",
       "path_shape_preserved": false,
@@ -1801,12 +1858,13 @@
       ]
     },
     {
+      "address": "wzwz",
       "href": "/crawlerbait/bait/2019/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 10,
       "path": "/2019/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -1825,12 +1883,13 @@
       ]
     },
     {
+      "address": "yyyyx",
       "href": "/crawlerbait/receipt/ff5e493f42c864400b04/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/administrator/.env",
       "path_shape_preserved": false,
@@ -1849,12 +1908,13 @@
       ]
     },
     {
+      "address": "zzywz",
       "href": "/crawlerbait/receipt/ac85ff428095e734529d/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 10,
       "path": "/angular/.env",
       "path_shape_preserved": false,
@@ -1868,12 +1928,13 @@
       ]
     },
     {
+      "address": "yzyx",
       "href": "/crawlerbait/receipt/ed5496b345f09da42b4e/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 10,
       "path": "/ansible/.env",
       "path_shape_preserved": false,
@@ -1887,12 +1948,13 @@
       ]
     },
     {
+      "address": "wxyywy",
       "href": "/crawlerbait/receipt/1f33691c8ac9d0a671bb/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 10,
       "path": "/backups/.env",
       "path_shape_preserved": false,
@@ -1911,12 +1973,13 @@
       ]
     },
     {
+      "address": "zyzw",
       "href": "/crawlerbait/bait/blog/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 10,
       "path": "/blog/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -1940,12 +2003,13 @@
       ]
     },
     {
+      "address": "zyywx",
       "href": "/crawlerbait/receipt/bc5db18abd13734b66cf/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 10,
       "path": "/ci/.env",
       "path_shape_preserved": false,
@@ -1959,12 +2023,13 @@
       ]
     },
     {
+      "address": "zxww",
       "href": "/crawlerbait/receipt/90b830636acb1be7da7e/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 10,
       "path": "/dashboard/.env",
       "path_shape_preserved": false,
@@ -1978,12 +2043,13 @@
       ]
     },
     {
+      "address": "yzzzz",
       "href": "/crawlerbait/receipt/ea8dee5e05db30da0d14/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/graphql/.env",
       "path_shape_preserved": false,
@@ -2002,12 +2068,13 @@
       ]
     },
     {
+      "address": "wwwxw",
       "href": "/crawlerbait/receipt/011cb29d81f211dc2b68/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/next/.env",
       "path_shape_preserved": false,
@@ -2026,12 +2093,13 @@
       ]
     },
     {
+      "address": "wxzzzy",
       "href": "/crawlerbait/bait/secrets.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/secrets.json",
       "path_shape_preserved": true,
@@ -2050,12 +2118,13 @@
       ]
     },
     {
+      "address": "xyxyxy",
       "href": "/crawlerbait/receipt/777e785d116a3190d633/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/sendgrid/.env",
       "path_shape_preserved": false,
@@ -2079,12 +2148,13 @@
       ]
     },
     {
+      "address": "wxywz",
       "href": "/crawlerbait/receipt/1c93cc993f88cc4cce4f/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 10,
       "path": "/shop/.env",
       "path_shape_preserved": false,
@@ -2098,12 +2168,13 @@
       ]
     },
     {
+      "address": "xyyw",
       "href": "/crawlerbait/receipt/7c1195136f8398a9e2ba/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/sitemaps/.env",
       "path_shape_preserved": false,
@@ -2117,12 +2188,13 @@
       ]
     },
     {
+      "address": "yyyywz",
       "href": "/crawlerbait/receipt/ff20863a728d7192b873/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 10,
       "path": "/store/.env",
       "path_shape_preserved": false,
@@ -2136,12 +2208,13 @@
       ]
     },
     {
+      "address": "xxww",
       "href": "/crawlerbait/receipt/50cf9b8dd318b0ee2b1c/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 10,
       "path": "/terraform/.env",
       "path_shape_preserved": false,
@@ -2155,12 +2228,13 @@
       ]
     },
     {
+      "address": "wzzxzy",
       "href": "/crawlerbait/receipt/29be7b1a66888601f8fc/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/tools/.env",
       "path_shape_preserved": false,
@@ -2174,12 +2248,13 @@
       ]
     },
     {
+      "address": "zwzw",
       "href": "/crawlerbait/receipt/887cb9244069f23f855e/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 10,
       "path": "/wordpress/.env",
       "path_shape_preserved": false,
@@ -2193,12 +2268,13 @@
       ]
     },
     {
+      "address": "xwwxz",
       "href": "/crawlerbait/receipt/41bc8d05ec3b93405769/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 9,
       "path": "/.env.stage",
       "path_shape_preserved": false,
@@ -2217,12 +2293,13 @@
       ]
     },
     {
+      "address": "wzxyw",
       "href": "/crawlerbait/receipt/273c68db2803cfd6e1d2/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 9,
       "path": "/.env.staging",
       "path_shape_preserved": false,
@@ -2251,12 +2328,13 @@
       ]
     },
     {
+      "address": "yxwwy",
       "href": "/crawlerbait/receipt/d0f775cf96d71b1d76da/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 9,
       "path": "/.env.test",
       "path_shape_preserved": false,
@@ -2275,12 +2353,13 @@
       ]
     },
     {
+      "address": "yyxx",
       "href": "/crawlerbait/receipt/f5ea9883823ed16a0952/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 9,
       "path": "/assets/.env",
       "path_shape_preserved": false,
@@ -2299,12 +2378,13 @@
       ]
     },
     {
+      "address": "zywzyzz",
       "href": "/crawlerbait/bait/config.json/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 9,
       "path": "/config.json",
       "path_shape_preserved": true,
@@ -2338,12 +2418,13 @@
       ]
     },
     {
+      "address": "xxzyyy",
       "href": "/crawlerbait/receipt/5bff9580196b73efce85/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 9,
       "path": "/site/.env",
       "path_shape_preserved": false,
@@ -2362,12 +2443,13 @@
       ]
     },
     {
+      "address": "xzzz",
       "href": "/crawlerbait/bait/website/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 9,
       "path": "/website/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -2396,12 +2478,13 @@
       ]
     },
     {
+      "address": "zyyx",
       "href": "/crawlerbait/receipt/bd6715756e5c25735156/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/.aws/config",
       "path_shape_preserved": false,
@@ -2415,12 +2498,13 @@
       ]
     },
     {
+      "address": "yxyw",
       "href": "/crawlerbait/receipt/dca3f24e2bb7c842c1b4/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/.env.dist",
       "path_shape_preserved": false,
@@ -2434,12 +2518,13 @@
       ]
     },
     {
+      "address": "yxxzz",
       "href": "/crawlerbait/receipt/d6acfe32219429bb20e7/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 8,
       "path": "/.env.prod",
       "path_shape_preserved": false,
@@ -2463,12 +2548,13 @@
       ]
     },
     {
+      "address": "xxxxw",
       "href": "/crawlerbait/receipt/5500a5db656f35359257/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/.env.yml",
       "path_shape_preserved": false,
@@ -2482,12 +2568,13 @@
       ]
     },
     {
+      "address": "xyyzw",
       "href": "/crawlerbait/receipt/7e3b48c450fba277ee17/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/admin-panel/.env",
       "path_shape_preserved": false,
@@ -2501,12 +2588,13 @@
       ]
     },
     {
+      "address": "yzxzwz",
       "href": "/crawlerbait/bait/api/env/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/api/env",
       "path_shape_preserved": true,
@@ -2520,12 +2608,13 @@
       ]
     },
     {
+      "address": "zwzzw",
       "href": "/crawlerbait/bait/appsettings.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/appsettings.json",
       "path_shape_preserved": true,
@@ -2539,12 +2628,13 @@
       ]
     },
     {
+      "address": "zxzwx",
       "href": "/crawlerbait/receipt/985e82e17af8b4a9b50c/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/campaign/.env",
       "path_shape_preserved": false,
@@ -2558,12 +2648,13 @@
       ]
     },
     {
+      "address": "wxww",
       "href": "/crawlerbait/receipt/10cf07d2bb45328c3c21/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/cron/.env",
       "path_shape_preserved": false,
@@ -2577,12 +2668,13 @@
       ]
     },
     {
+      "address": "yxzwy",
       "href": "/crawlerbait/receipt/d8c5fc01c634b7a145b1/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/docker/.env",
       "path_shape_preserved": false,
@@ -2596,12 +2688,13 @@
       ]
     },
     {
+      "address": "xxxxz",
       "href": "/crawlerbait/bait/docs/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/docs/phpinfo.php",
       "path_shape_preserved": true,
@@ -2615,12 +2708,13 @@
       ]
     },
     {
+      "address": "yxzz",
       "href": "/crawlerbait/receipt/da632140527969196c09/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 8,
       "path": "/en/.env",
       "path_shape_preserved": false,
@@ -2639,12 +2733,13 @@
       ]
     },
     {
+      "address": "yzwyw",
       "href": "/crawlerbait/bait/env.js/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/env.js",
       "path_shape_preserved": true,
@@ -2658,12 +2753,13 @@
       ]
     },
     {
+      "address": "zxwy",
       "href": "/crawlerbait/bait/google-key.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/google-key.json",
       "path_shape_preserved": true,
@@ -2677,12 +2773,13 @@
       ]
     },
     {
+      "address": "xxzyz",
       "href": "/crawlerbait/receipt/5bb1481ff9a1a70809b9/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/infrastructure/.env",
       "path_shape_preserved": false,
@@ -2696,12 +2793,13 @@
       ]
     },
     {
+      "address": "zxzxyy",
       "href": "/crawlerbait/receipt/99f2ef956af3b92a60e5/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/joomla/.env",
       "path_shape_preserved": false,
@@ -2715,12 +2813,13 @@
       ]
     },
     {
+      "address": "zzyww",
       "href": "/crawlerbait/bait/keys.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/keys.json",
       "path_shape_preserved": true,
@@ -2734,12 +2833,13 @@
       ]
     },
     {
+      "address": "ywxwx",
       "href": "/crawlerbait/receipt/c464be2c35e41e0450fe/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/kubernetes/.env",
       "path_shape_preserved": false,
@@ -2753,12 +2853,13 @@
       ]
     },
     {
+      "address": "xxzyx",
       "href": "/crawlerbait/receipt/5b4a9d3f2712a1d079ee/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 8,
       "path": "/mailgun/.env",
       "path_shape_preserved": false,
@@ -2772,12 +2873,13 @@
       ]
     },
     {
+      "address": "yywzw",
       "href": "/crawlerbait/bait/phpinfo.php.bak/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/phpinfo.php.bak",
       "path_shape_preserved": true,
@@ -2791,12 +2893,13 @@
       ]
     },
     {
+      "address": "xwzz",
       "href": "/crawlerbait/bait/phpversion.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/phpversion.php",
       "path_shape_preserved": true,
@@ -2810,12 +2913,13 @@
       ]
     },
     {
+      "address": "yzzxz",
       "href": "/crawlerbait/receipt/e986d9a8713d4af4d188/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 8,
       "path": "/prod/.env",
       "path_shape_preserved": false,
@@ -2829,12 +2933,13 @@
       ]
     },
     {
+      "address": "xyzwy",
       "href": "/crawlerbait/receipt/78e7e8c1cc40e9eba183/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/resources/.env",
       "path_shape_preserved": false,
@@ -2848,12 +2953,13 @@
       ]
     },
     {
+      "address": "zxzxyw",
       "href": "/crawlerbait/receipt/99cfc4e8f171f2ebdc82/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 8,
       "path": "/smtp/.env",
       "path_shape_preserved": false,
@@ -2872,12 +2978,13 @@
       ]
     },
     {
+      "address": "xyxx",
       "href": "/crawlerbait/receipt/75ee17153df3d0dbe793/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 8,
       "path": "/temp/.env",
       "path_shape_preserved": false,
@@ -2891,12 +2998,13 @@
       ]
     },
     {
+      "address": "zwxyzx",
       "href": "/crawlerbait/receipt/8795fdc5c7343f78411d/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 8,
       "path": "/travis/.env",
       "path_shape_preserved": false,
@@ -2910,12 +3018,13 @@
       ]
     },
     {
+      "address": "wxzzzwyyy",
       "href": "/crawlerbait/receipt/1a8fcb54c8457aab1171/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/uat/.env",
       "path_shape_preserved": false,
@@ -2929,12 +3038,13 @@
       ]
     },
     {
+      "address": "ywxwz",
       "href": "/crawlerbait/receipt/c4890f073140850d4881/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/var/www/.env",
       "path_shape_preserved": false,
@@ -2948,12 +3058,13 @@
       ]
     },
     {
+      "address": "zyyz",
       "href": "/crawlerbait/bait/www/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 8,
       "path": "/www/phpinfo.php",
       "path_shape_preserved": true,
@@ -2967,12 +3078,13 @@
       ]
     },
     {
+      "address": "ywyz",
       "href": "/crawlerbait/receipt/ceb221ca10f5b573c09e/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 7,
       "path": "/.env.dev",
       "path_shape_preserved": false,
@@ -2996,12 +3108,13 @@
       ]
     },
     {
+      "address": "wwzyz",
       "href": "/crawlerbait/receipt/0bb869934ccc3c32135b/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 7,
       "path": "/.env.live",
       "path_shape_preserved": false,
@@ -3025,12 +3138,13 @@
       ]
     },
     {
+      "address": "zyzx",
       "href": "/crawlerbait/receipt/b9c24fc1b97f40588adf/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 7,
       "path": "/.env.local",
       "path_shape_preserved": false,
@@ -3054,12 +3168,13 @@
       ]
     },
     {
+      "address": "xwwyx",
       "href": "/crawlerbait/receipt/4379ee7559d68deac5f1/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 7,
       "path": "/.vscode/sftp.json",
       "path_shape_preserved": false,
@@ -3078,12 +3193,13 @@
       ]
     },
     {
+      "address": "zwwwyw",
       "href": "/crawlerbait/bait/2018/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 7,
       "path": "/2018/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -3097,12 +3213,13 @@
       ]
     },
     {
+      "address": "xzwz",
       "href": "/crawlerbait/receipt/6215588c522bb159cbce/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 7,
       "path": "/app/.env",
       "path_shape_preserved": false,
@@ -3131,12 +3248,13 @@
       ]
     },
     {
+      "address": "wwxy",
       "href": "/crawlerbait/bait/media/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T21:17:11Z",
-        "start": "2026-09-17T20:36:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 7,
       "path": "/media/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -3150,12 +3268,13 @@
       ]
     },
     {
+      "address": "wyxx",
       "href": "/crawlerbait/receipt/35538baaa54858783f94/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 7,
       "path": "/sender/.env",
       "path_shape_preserved": false,
@@ -3174,12 +3293,13 @@
       ]
     },
     {
+      "address": "ywyw",
       "href": "/crawlerbait/receipt/cc06f31dd451bf619feb/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 6,
       "path": "/.env.remote",
       "path_shape_preserved": false,
@@ -3193,12 +3313,13 @@
       ]
     },
     {
+      "address": "wwzwx",
       "href": "/crawlerbait/receipt/085730fd82acf2ace11c/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 6,
       "path": "/cakephp/.env",
       "path_shape_preserved": false,
@@ -3212,12 +3333,13 @@
       ]
     },
     {
+      "address": "zwxyzy",
       "href": "/crawlerbait/bait/cpanel/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 6,
       "path": "/cpanel/phpinfo.php",
       "path_shape_preserved": true,
@@ -3236,12 +3358,13 @@
       ]
     },
     {
+      "address": "ywyyzxw",
       "href": "/crawlerbait/receipt/cf92621b9e3f2982786a/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 6,
       "path": "/deploy/.env",
       "path_shape_preserved": false,
@@ -3255,12 +3378,13 @@
       ]
     },
     {
+      "address": "yyywwy",
       "href": "/crawlerbait/bait/feed/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 6,
       "path": "/feed/",
       "path_shape_preserved": true,
@@ -3279,12 +3403,13 @@
       ]
     },
     {
+      "address": "zyxx",
       "href": "/crawlerbait/bait/gcp-key.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 6,
       "path": "/gcp-key.json",
       "path_shape_preserved": true,
@@ -3298,12 +3423,13 @@
       ]
     },
     {
+      "address": "zxzy",
       "href": "/crawlerbait/bait/htdocs/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 6,
       "path": "/htdocs/phpinfo.php",
       "path_shape_preserved": true,
@@ -3317,12 +3443,13 @@
       ]
     },
     {
+      "address": "yyyyyx",
       "href": "/crawlerbait/bait/pi.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 6,
       "path": "/pi.php",
       "path_shape_preserved": true,
@@ -3341,12 +3468,13 @@
       ]
     },
     {
+      "address": "wzxzy",
       "href": "/crawlerbait/bait/pinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 6,
       "path": "/pinfo.php",
       "path_shape_preserved": true,
@@ -3360,12 +3488,13 @@
       ]
     },
     {
+      "address": "wzxyy",
       "href": "/crawlerbait/bait/test/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 6,
       "path": "/test/phpinfo.php",
       "path_shape_preserved": true,
@@ -3379,12 +3508,13 @@
       ]
     },
     {
+      "address": "zxwzyx",
       "href": "/crawlerbait/bait/wp-json/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 6,
       "path": "/wp-json/",
       "path_shape_preserved": true,
@@ -3408,12 +3538,13 @@
       ]
     },
     {
+      "address": "wxwzx",
       "href": "/crawlerbait/receipt/124d2598962516d623c1/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 5,
       "path": "/.env.sample",
       "path_shape_preserved": false,
@@ -3432,12 +3563,13 @@
       ]
     },
     {
+      "address": "zzzw",
       "href": "/crawlerbait/receipt/a84d8a774ade6d70daa0/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 5,
       "path": "/.env.swp",
       "path_shape_preserved": false,
@@ -3456,12 +3588,13 @@
       ]
     },
     {
+      "address": "xwxxz",
       "href": "/crawlerbait/receipt/45a8106651a0a44c3f11/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 5,
       "path": "/api/v2/.env",
       "path_shape_preserved": false,
@@ -3480,12 +3613,13 @@
       ]
     },
     {
+      "address": "wzzz",
       "href": "/crawlerbait/receipt/2aaa158af561315bc900/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 5,
       "path": "/config/.env",
       "path_shape_preserved": false,
@@ -3509,12 +3643,13 @@
       ]
     },
     {
+      "address": "zyzzxwy",
       "href": "/crawlerbait/receipt/ba4dceae169ec945c1e6/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 5,
       "path": "/github/.env",
       "path_shape_preserved": false,
@@ -3528,12 +3663,13 @@
       ]
     },
     {
+      "address": "zzxw",
       "href": "/crawlerbait/bait/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 5,
       "path": "/phpinfo.php",
       "path_shape_preserved": true,
@@ -3552,12 +3688,13 @@
       ]
     },
     {
+      "address": "wyzz",
       "href": "/crawlerbait/receipt/3a796c402edf54337ffb/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 5,
       "path": "/scripts/.env",
       "path_shape_preserved": false,
@@ -3571,12 +3708,13 @@
       ]
     },
     {
+      "address": "zxyy",
       "href": "/crawlerbait/receipt/9f8be2cd3d14d4c05416/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 5,
       "path": "/www/.env",
       "path_shape_preserved": false,
@@ -3590,12 +3728,13 @@
       ]
     },
     {
+      "address": "xwxw",
       "href": "/crawlerbait/receipt/4424df1cf14166f61944/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/.env.docker",
       "path_shape_preserved": false,
@@ -3614,12 +3753,13 @@
       ]
     },
     {
+      "address": "zzyzx",
       "href": "/crawlerbait/receipt/ae4cb14da8dffdd0fce5/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/.env.uat",
       "path_shape_preserved": false,
@@ -3633,12 +3773,13 @@
       ]
     },
     {
+      "address": "ywzw",
       "href": "/crawlerbait/receipt/c8b429a17a0f3584726a/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/.well-known/security.txt",
       "path_shape_preserved": false,
@@ -3652,12 +3793,13 @@
       ]
     },
     {
+      "address": "xwyx",
       "href": "/crawlerbait/bait/@vite/env/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/@vite/env",
       "path_shape_preserved": true,
@@ -3671,12 +3813,13 @@
       ]
     },
     {
+      "address": "xyyzz",
       "href": "/crawlerbait/bait/___proxy_subdomain_cpanel/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/___proxy_subdomain_cpanel",
       "path_shape_preserved": true,
@@ -3690,12 +3833,13 @@
       ]
     },
     {
+      "address": "wxxxzyyy",
       "href": "/crawlerbait/bait/___proxy_subdomain_whm/login/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/___proxy_subdomain_whm/login",
       "path_shape_preserved": true,
@@ -3709,12 +3853,13 @@
       ]
     },
     {
+      "address": "xyyxxz",
       "href": "/crawlerbait/bait/_phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/_phpinfo.php",
       "path_shape_preserved": true,
@@ -3728,12 +3873,13 @@
       ]
     },
     {
+      "address": "zxxyzx",
       "href": "/crawlerbait/bait/about/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/about",
       "path_shape_preserved": true,
@@ -3747,12 +3893,13 @@
       ]
     },
     {
+      "address": "xxwz",
       "href": "/crawlerbait/bait/actuator/env/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/actuator/env",
       "path_shape_preserved": true,
@@ -3766,12 +3913,13 @@
       ]
     },
     {
+      "address": "xwxzz",
       "href": "/crawlerbait/bait/actuator/heapdump/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 4,
       "path": "/actuator/heapdump",
       "path_shape_preserved": true,
@@ -3785,12 +3933,13 @@
       ]
     },
     {
+      "address": "wwzwz",
       "href": "/crawlerbait/bait/amplifyconfiguration.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 4,
       "path": "/amplifyconfiguration.json",
       "path_shape_preserved": true,
@@ -3804,12 +3953,13 @@
       ]
     },
     {
+      "address": "zxxyw",
       "href": "/crawlerbait/bait/backup.zip/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 4,
       "path": "/backup.zip",
       "path_shape_preserved": true,
@@ -3823,12 +3973,13 @@
       ]
     },
     {
+      "address": "yyyyyw",
       "href": "/crawlerbait/bait/cart.js/",
       "last_observed_window": {
-        "end": "2026-09-14T20:47:56Z",
-        "start": "2026-09-13T20:47:56Z"
+        "end": "2026-09-14T22:09:07Z",
+        "start": "2026-09-13T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 4,
       "path": "/cart.js",
       "path_shape_preserved": true,
@@ -3852,12 +4003,13 @@
       ]
     },
     {
+      "address": "yywzx",
       "href": "/crawlerbait/bait/config.xml/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 4,
       "path": "/config.xml",
       "path_shape_preserved": true,
@@ -3871,12 +4023,13 @@
       ]
     },
     {
+      "address": "wwywy",
       "href": "/crawlerbait/bait/console/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/console/",
       "path_shape_preserved": true,
@@ -3890,12 +4043,13 @@
       ]
     },
     {
+      "address": "ywyxw",
       "href": "/crawlerbait/receipt/cd21b2ba0c3191b0704a/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/core/Database/.env",
       "path_shape_preserved": false,
@@ -3914,12 +4068,13 @@
       ]
     },
     {
+      "address": "zywxzx",
       "href": "/crawlerbait/bait/css/support_parent.css/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 4,
       "path": "/css/support_parent.css",
       "path_shape_preserved": true,
@@ -3933,12 +4088,13 @@
       ]
     },
     {
+      "address": "wwxx",
       "href": "/crawlerbait/bait/debug/default/view/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/debug/default/view",
       "path_shape_preserved": true,
@@ -3952,12 +4108,13 @@
       ]
     },
     {
+      "address": "yxxx",
       "href": "/crawlerbait/bait/ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application",
       "path_shape_preserved": true,
@@ -3971,12 +4128,13 @@
       ]
     },
     {
+      "address": "xxzw",
       "href": "/crawlerbait/bait/firebase-key.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 4,
       "path": "/firebase-key.json",
       "path_shape_preserved": true,
@@ -3990,12 +4148,13 @@
       ]
     },
     {
+      "address": "xwwyz",
       "href": "/crawlerbait/receipt/43bb577a72550f9d8343/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 4,
       "path": "/htdocs/.env",
       "path_shape_preserved": false,
@@ -4009,12 +4168,13 @@
       ]
     },
     {
+      "address": "wxyywx",
       "href": "/crawlerbait/bait/js/qrcode_twint.js/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 4,
       "path": "/js/qrcode_twint.js",
       "path_shape_preserved": true,
@@ -4028,12 +4188,13 @@
       ]
     },
     {
+      "address": "ywyxy",
       "href": "/crawlerbait/bait/login.action/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/login.action",
       "path_shape_preserved": true,
@@ -4047,12 +4208,13 @@
       ]
     },
     {
+      "address": "zzwyy",
       "href": "/crawlerbait/receipt/a3e66663e2dcfdb690ed/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/mailing/.env",
       "path_shape_preserved": false,
@@ -4066,12 +4228,13 @@
       ]
     },
     {
+      "address": "xwwxx",
       "href": "/crawlerbait/bait/media/system/js/core.js/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 4,
       "path": "/media/system/js/core.js",
       "path_shape_preserved": true,
@@ -4090,12 +4253,13 @@
       ]
     },
     {
+      "address": "zyzzxwz",
       "href": "/crawlerbait/receipt/ba4b605ad55b5cabe57f/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/notify/.env",
       "path_shape_preserved": false,
@@ -4109,12 +4273,13 @@
       ]
     },
     {
+      "address": "zzwyzw",
       "href": "/crawlerbait/receipt/a38a0773b8cff6d6b5b2/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/nuxt/.env",
       "path_shape_preserved": false,
@@ -4128,12 +4293,13 @@
       ]
     },
     {
+      "address": "xzyw",
       "href": "/crawlerbait/receipt/6cf746da949d58c83955/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/public/.env",
       "path_shape_preserved": false,
@@ -4157,12 +4323,13 @@
       ]
     },
     {
+      "address": "wzxxzw",
       "href": "/crawlerbait/bait/public/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/public/phpinfo.php",
       "path_shape_preserved": true,
@@ -4176,12 +4343,13 @@
       ]
     },
     {
+      "address": "zwzx",
       "href": "/crawlerbait/bait/s/33e27393e2431313e2838313/_/;/META-INF/maven/com.atlassian.jira/jira-webapp-dist/pom.properties/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/s/33e27393e2431313e2838313/_/;/META-INF/maven/com.atlassian.jira/jira-webapp-dist/pom.properties",
       "path_shape_preserved": true,
@@ -4195,12 +4363,13 @@
       ]
     },
     {
+      "address": "ywxxw",
       "href": "/crawlerbait/bait/server/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/server",
       "path_shape_preserved": true,
@@ -4214,12 +4383,13 @@
       ]
     },
     {
+      "address": "yzzzx",
       "href": "/crawlerbait/bait/server-status/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/server-status",
       "path_shape_preserved": true,
@@ -4233,12 +4403,13 @@
       ]
     },
     {
+      "address": "yxzx",
       "href": "/crawlerbait/receipt/d9b00f587478dec27083/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/service/.env",
       "path_shape_preserved": false,
@@ -4252,12 +4423,13 @@
       ]
     },
     {
+      "address": "xyyy",
       "href": "/crawlerbait/bait/telescope/requests/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/telescope/requests",
       "path_shape_preserved": true,
@@ -4271,12 +4443,13 @@
       ]
     },
     {
+      "address": "zzzyxx",
       "href": "/crawlerbait/bait/trace.axd/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/trace.axd",
       "path_shape_preserved": true,
@@ -4290,12 +4463,13 @@
       ]
     },
     {
+      "address": "yzxzwx",
       "href": "/crawlerbait/bait/v2/_catalog/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/v2/_catalog",
       "path_shape_preserved": true,
@@ -4309,12 +4483,13 @@
       ]
     },
     {
+      "address": "wwwxx",
       "href": "/crawlerbait/receipt/0151780c15d45702ae9d/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 4,
       "path": "/wp/.env",
       "path_shape_preserved": false,
@@ -4328,12 +4503,13 @@
       ]
     },
     {
+      "address": "wzyyx",
       "href": "/crawlerbait/bait/wp1/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 4,
       "path": "/wp1/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -4352,12 +4528,13 @@
       ]
     },
     {
+      "address": "zyww",
       "href": "/crawlerbait/receipt/b0f72d8e03f4e2415c12/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 3,
       "path": "/.DS_Store",
       "path_shape_preserved": false,
@@ -4371,12 +4548,13 @@
       ]
     },
     {
+      "address": "ywww",
       "href": "/crawlerbait/receipt/c0c440edf0616e70222e/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/.env.development",
       "path_shape_preserved": false,
@@ -4395,12 +4573,13 @@
       ]
     },
     {
+      "address": "yxxzy",
       "href": "/crawlerbait/receipt/d6c157a7b396f45943e4/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/.ssh/id_ed25519",
       "path_shape_preserved": false,
@@ -4414,12 +4593,13 @@
       ]
     },
     {
+      "address": "xzyz",
       "href": "/crawlerbait/receipt/6eca2c923ad05fff3eba/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/.ssh/id_rsa",
       "path_shape_preserved": false,
@@ -4433,12 +4613,13 @@
       ]
     },
     {
+      "address": "wyzx",
       "href": "/crawlerbait/receipt/39873869b4098ae70839/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/.svn/wc.db",
       "path_shape_preserved": false,
@@ -4457,12 +4638,13 @@
       ]
     },
     {
+      "address": "yxyx",
       "href": "/crawlerbait/receipt/dd63766b3d19767f982f/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//assets/images/images/cache.php",
       "path_shape_preserved": false,
@@ -4476,12 +4658,13 @@
       ]
     },
     {
+      "address": "xwywyx",
       "href": "/crawlerbait/receipt/4cd9f78e5576c92aa271/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//blogs/media/media/cache.php",
       "path_shape_preserved": false,
@@ -4495,12 +4678,13 @@
       ]
     },
     {
+      "address": "wywx",
       "href": "/crawlerbait/receipt/3173a575e070b11c4089/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//cache/cache/cache.php",
       "path_shape_preserved": false,
@@ -4514,12 +4698,13 @@
       ]
     },
     {
+      "address": "yyzy",
       "href": "/crawlerbait/receipt/fb6838bb7c26574649fa/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//cgi-bin/cgi-bin/cgi-bin/cgi-bin/cache.php",
       "path_shape_preserved": false,
@@ -4533,12 +4718,13 @@
       ]
     },
     {
+      "address": "zzxx",
       "href": "/crawlerbait/receipt/a525a817312d4be4b5cc/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//images/images/cache.php",
       "path_shape_preserved": false,
@@ -4552,12 +4738,13 @@
       ]
     },
     {
+      "address": "wxxyx",
       "href": "/crawlerbait/receipt/176eea57282d3f51a076/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//images/images/images/cache.php",
       "path_shape_preserved": false,
@@ -4571,12 +4758,13 @@
       ]
     },
     {
+      "address": "zyxzxz",
       "href": "/crawlerbait/receipt/b66164f4c8996867b0cd/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//images/images/images/images/cache.php",
       "path_shape_preserved": false,
@@ -4590,12 +4778,13 @@
       ]
     },
     {
+      "address": "zwyy",
       "href": "/crawlerbait/receipt/8f252f2ac30bd4b82445/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//images/images/images/images/images/cache.php",
       "path_shape_preserved": false,
@@ -4609,12 +4798,13 @@
       ]
     },
     {
+      "address": "yyyywy",
       "href": "/crawlerbait/receipt/ff350abc785dc755016c/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//images/images/images/images/images/images/cache.php",
       "path_shape_preserved": false,
@@ -4628,12 +4818,13 @@
       ]
     },
     {
+      "address": "xwxy",
       "href": "/crawlerbait/receipt/471af497b537521e1468/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//images/images/images/images/images/images/images/cache.php",
       "path_shape_preserved": false,
@@ -4647,12 +4838,13 @@
       ]
     },
     {
+      "address": "ywxz",
       "href": "/crawlerbait/receipt/c64f58351747bee8bcd6/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//images/images/images/images/images/images/images/images/cache.php",
       "path_shape_preserved": false,
@@ -4666,12 +4858,13 @@
       ]
     },
     {
+      "address": "yyzz",
       "href": "/crawlerbait/receipt/fab3e1f767c904994892/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "//wp-content/plugins/plugins/cache.php",
       "path_shape_preserved": false,
@@ -4685,12 +4878,13 @@
       ]
     },
     {
+      "address": "yyywz",
       "href": "/crawlerbait/bait/2020/wp-includes/wlwmanifest.xml/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/2020/wp-includes/wlwmanifest.xml",
       "path_shape_preserved": true,
@@ -4709,12 +4903,13 @@
       ]
     },
     {
+      "address": "wwwy",
       "href": "/crawlerbait/bait/_vti_pvt/service.pwd/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/_vti_pvt/service.pwd",
       "path_shape_preserved": true,
@@ -4728,12 +4923,13 @@
       ]
     },
     {
+      "address": "wxyyy",
       "href": "/crawlerbait/receipt/1ffd9afa4ff51d558fbb/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 3,
       "path": "/backend/.env",
       "path_shape_preserved": false,
@@ -4752,12 +4948,13 @@
       ]
     },
     {
+      "address": "wzxwx",
       "href": "/crawlerbait/bait/backup.sql/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/backup.sql",
       "path_shape_preserved": true,
@@ -4771,12 +4968,13 @@
       ]
     },
     {
+      "address": "xzxy",
       "href": "/crawlerbait/bait/backup.tar.gz/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/backup.tar.gz",
       "path_shape_preserved": true,
@@ -4790,12 +4988,13 @@
       ]
     },
     {
+      "address": "xwzyx",
       "href": "/crawlerbait/receipt/4b4e62bfa5937c7b5059/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/core/.env",
       "path_shape_preserved": false,
@@ -4814,12 +5013,13 @@
       ]
     },
     {
+      "address": "ywxyyz",
       "href": "/crawlerbait/receipt/c7eb12f2c0db41fcc812/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/cronlab/.env",
       "path_shape_preserved": false,
@@ -4838,12 +5038,13 @@
       ]
     },
     {
+      "address": "wxwy",
       "href": "/crawlerbait/bait/database_backup.sql/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/database_backup.sql",
       "path_shape_preserved": true,
@@ -4857,12 +5058,13 @@
       ]
     },
     {
+      "address": "zxxz",
       "href": "/crawlerbait/bait/docker-compose.yml/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/docker-compose.yml",
       "path_shape_preserved": true,
@@ -4876,12 +5078,13 @@
       ]
     },
     {
+      "address": "wzyx",
       "href": "/crawlerbait/bait/dump.sql/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/dump.sql",
       "path_shape_preserved": true,
@@ -4895,12 +5098,13 @@
       ]
     },
     {
+      "address": "zwyxy",
       "href": "/crawlerbait/receipt/8dd66fb4e8d10d32f7c7/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 3,
       "path": "/functions/.env",
       "path_shape_preserved": false,
@@ -4914,12 +5118,13 @@
       ]
     },
     {
+      "address": "xxyxw",
       "href": "/crawlerbait/receipt/5d0546e241d3a49de98b/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/lib/.env",
       "path_shape_preserved": false,
@@ -4938,12 +5143,13 @@
       ]
     },
     {
+      "address": "ywxyyy",
       "href": "/crawlerbait/bait/mail/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/mail/phpinfo.php",
       "path_shape_preserved": true,
@@ -4962,12 +5168,13 @@
       ]
     },
     {
+      "address": "yzyyw",
       "href": "/crawlerbait/receipt/ef040eae929111cea041/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/sparkpost/.env",
       "path_shape_preserved": false,
@@ -4981,12 +5188,13 @@
       ]
     },
     {
+      "address": "xzyyw",
       "href": "/crawlerbait/bait/storage/logs/laravel.log/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/storage/logs/laravel.log",
       "path_shape_preserved": true,
@@ -5000,12 +5208,13 @@
       ]
     },
     {
+      "address": "wxwzy",
       "href": "/crawlerbait/receipt/12e1063037a0428b03f9/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/uploads/.env",
       "path_shape_preserved": false,
@@ -5024,12 +5233,13 @@
       ]
     },
     {
+      "address": "xyxyxx",
       "href": "/crawlerbait/bait/user_secrets.yml/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/user_secrets.yml",
       "path_shape_preserved": true,
@@ -5043,12 +5253,13 @@
       ]
     },
     {
+      "address": "zxzwy",
       "href": "/crawlerbait/receipt/98efe44415f801af70df/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/vendor/.env",
       "path_shape_preserved": false,
@@ -5067,12 +5278,13 @@
       ]
     },
     {
+      "address": "xxzyyw",
       "href": "/crawlerbait/bait/wp-admin/setup-config.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 3,
       "path": "/wp-admin/setup-config.php",
       "path_shape_preserved": true,
@@ -5086,12 +5298,13 @@
       ]
     },
     {
+      "address": "zzwxwz",
       "href": "/crawlerbait/bait/wp-includes/js/jquery/jquery.js/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 3,
       "path": "/wp-includes/js/jquery/jquery.js",
       "path_shape_preserved": true,
@@ -5105,12 +5318,13 @@
       ]
     },
     {
+      "address": "wwwzz",
       "href": "/crawlerbait/receipt/02b5f84eeada8b8c7cdd/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/.aws/credentials",
       "path_shape_preserved": false,
@@ -5124,12 +5338,13 @@
       ]
     },
     {
+      "address": "xywwyw",
       "href": "/crawlerbait/receipt/70ca8eb80ffbde2088a3/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 2,
       "path": "/.bash_history",
       "path_shape_preserved": false,
@@ -5143,12 +5358,13 @@
       ]
     },
     {
+      "address": "yzyyx",
       "href": "/crawlerbait/receipt/ef5bd797cd26faf9ea7e/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/.env.backup2",
       "path_shape_preserved": false,
@@ -5162,12 +5378,13 @@
       ]
     },
     {
+      "address": "xyxzx",
       "href": "/crawlerbait/receipt/7643d037b83b1eb93265/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/.npmrc",
       "path_shape_preserved": false,
@@ -5181,12 +5398,13 @@
       ]
     },
     {
+      "address": "xwywyw",
       "href": "/crawlerbait/bait/_profiler/phpinfo/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/_profiler/phpinfo",
       "path_shape_preserved": true,
@@ -5200,12 +5418,13 @@
       ]
     },
     {
+      "address": "xyyzx",
       "href": "/crawlerbait/bait/ads.txt/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 2,
       "path": "/ads.txt",
       "path_shape_preserved": true,
@@ -5224,12 +5443,13 @@
       ]
     },
     {
+      "address": "wzwy",
       "href": "/crawlerbait/receipt/234c4ad2d94b6550d001/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-13T20:47:56Z",
+      "materialized_at": "2026-09-13T22:09:07Z",
       "observed_404": 2,
       "path": "/application/.env",
       "path_shape_preserved": false,
@@ -5243,12 +5463,13 @@
       ]
     },
     {
+      "address": "wzxxzx",
       "href": "/crawlerbait/bait/assets/js/auth.js/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/assets/js/auth.js",
       "path_shape_preserved": true,
@@ -5262,12 +5483,13 @@
       ]
     },
     {
+      "address": "ywzx",
       "href": "/crawlerbait/receipt/c9ff4befb78aa68f18bc/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/backup/.env",
       "path_shape_preserved": false,
@@ -5281,12 +5503,13 @@
       ]
     },
     {
+      "address": "yzzxw",
       "href": "/crawlerbait/receipt/e9186ae330a383b32843/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/client/.env",
       "path_shape_preserved": false,
@@ -5305,12 +5528,13 @@
       ]
     },
     {
+      "address": "wwzzy",
       "href": "/crawlerbait/bait/config.js/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/config.js",
       "path_shape_preserved": true,
@@ -5324,12 +5548,13 @@
       ]
     },
     {
+      "address": "wzyw",
       "href": "/crawlerbait/bait/credentials.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/credentials.json",
       "path_shape_preserved": true,
@@ -5343,12 +5568,13 @@
       ]
     },
     {
+      "address": "yzwwz",
       "href": "/crawlerbait/receipt/e0a8866c6a1ccdc41636/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/crm/.env",
       "path_shape_preserved": false,
@@ -5362,12 +5588,13 @@
       ]
     },
     {
+      "address": "zzzyxz",
       "href": "/crawlerbait/receipt/ab6376aab1cbbd314c95/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/current/.env",
       "path_shape_preserved": false,
@@ -5381,12 +5608,13 @@
       ]
     },
     {
+      "address": "xxzzx",
       "href": "/crawlerbait/bait/database.sql/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 2,
       "path": "/database.sql",
       "path_shape_preserved": true,
@@ -5400,12 +5628,13 @@
       ]
     },
     {
+      "address": "yxxy",
       "href": "/crawlerbait/receipt/d7abacffc446f7a261e6/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/database/.env",
       "path_shape_preserved": false,
@@ -5424,12 +5653,13 @@
       ]
     },
     {
+      "address": "wzzy",
       "href": "/crawlerbait/receipt/2b07c95823a523a5b96d/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/drupal/.env",
       "path_shape_preserved": false,
@@ -5443,12 +5673,13 @@
       ]
     },
     {
+      "address": "zzzxz",
       "href": "/crawlerbait/receipt/a9933a82be7ea665f98f/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/email/.env",
       "path_shape_preserved": false,
@@ -5462,12 +5693,13 @@
       ]
     },
     {
+      "address": "yxwx",
       "href": "/crawlerbait/receipt/d13ab5dae5d7955ca0e6/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/erp/.env",
       "path_shape_preserved": false,
@@ -5481,12 +5713,13 @@
       ]
     },
     {
+      "address": "xyzww",
       "href": "/crawlerbait/bait/favicon.png/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/favicon.png",
       "path_shape_preserved": true,
@@ -5500,12 +5733,13 @@
       ]
     },
     {
+      "address": "zywxx",
       "href": "/crawlerbait/bait/hosting/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/hosting/phpinfo.php",
       "path_shape_preserved": true,
@@ -5519,12 +5753,13 @@
       ]
     },
     {
+      "address": "zzyzyw",
       "href": "/crawlerbait/bait/i.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/i.php",
       "path_shape_preserved": true,
@@ -5538,12 +5773,13 @@
       ]
     },
     {
+      "address": "ywxxz",
       "href": "/crawlerbait/bait/js/antibot-client.js/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/js/antibot-client.js",
       "path_shape_preserved": true,
@@ -5557,12 +5793,13 @@
       ]
     },
     {
+      "address": "wzxyz",
       "href": "/crawlerbait/bait/js/env.js/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/js/env.js",
       "path_shape_preserved": true,
@@ -5576,12 +5813,13 @@
       ]
     },
     {
+      "address": "yzyz",
       "href": "/crawlerbait/bait/js/twint_ch.js/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/js/twint_ch.js",
       "path_shape_preserved": true,
@@ -5595,12 +5833,13 @@
       ]
     },
     {
+      "address": "yyxzww",
       "href": "/crawlerbait/bait/keyfile.json/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/keyfile.json",
       "path_shape_preserved": true,
@@ -5619,12 +5858,13 @@
       ]
     },
     {
+      "address": "xxxzz",
       "href": "/crawlerbait/bait/licensor.js/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/licensor.js",
       "path_shape_preserved": true,
@@ -5638,12 +5878,13 @@
       ]
     },
     {
+      "address": "wwxw",
       "href": "/crawlerbait/receipt/0493345481ad1cce0474/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/live/.env",
       "path_shape_preserved": false,
@@ -5657,12 +5898,13 @@
       ]
     },
     {
+      "address": "yyywwx",
       "href": "/crawlerbait/receipt/fc10b7fd4d381a4277ca/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/magento/.env",
       "path_shape_preserved": false,
@@ -5676,12 +5918,13 @@
       ]
     },
     {
+      "address": "zwzzz",
       "href": "/crawlerbait/receipt/8ab3222e0244010bae12/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/mailer/.env",
       "path_shape_preserved": false,
@@ -5695,12 +5938,13 @@
       ]
     },
     {
+      "address": "ywzy",
       "href": "/crawlerbait/receipt/cbabb74bd23ff3734a86/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/microservice/.env",
       "path_shape_preserved": false,
@@ -5714,12 +5958,13 @@
       ]
     },
     {
+      "address": "zwzy",
       "href": "/crawlerbait/bait/php-info.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/php-info.php",
       "path_shape_preserved": true,
@@ -5733,12 +5978,13 @@
       ]
     },
     {
+      "address": "zwxw",
       "href": "/crawlerbait/receipt/8432e822d78216a6822b/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/portal/.env",
       "path_shape_preserved": false,
@@ -5752,12 +5998,13 @@
       ]
     },
     {
+      "address": "xwxzxy",
       "href": "/crawlerbait/receipt/467844c5e65593cac952/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/private/.env",
       "path_shape_preserved": false,
@@ -5771,12 +6018,13 @@
       ]
     },
     {
+      "address": "wzzw",
       "href": "/crawlerbait/receipt/28e001130ae31a150c72/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/public_html/.env",
       "path_shape_preserved": false,
@@ -5790,12 +6038,13 @@
       ]
     },
     {
+      "address": "yxyyxy",
       "href": "/crawlerbait/bait/public_html/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/public_html/phpinfo.php",
       "path_shape_preserved": true,
@@ -5809,12 +6058,13 @@
       ]
     },
     {
+      "address": "wxxyw",
       "href": "/crawlerbait/receipt/17289120143c48cb72c1/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/shared/.env",
       "path_shape_preserved": false,
@@ -5828,12 +6078,13 @@
       ]
     },
     {
+      "address": "xzwyy",
       "href": "/crawlerbait/receipt/63e0cbd8c87ec1e3d216/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/shopify/.env",
       "path_shape_preserved": false,
@@ -5847,12 +6098,13 @@
       ]
     },
     {
+      "address": "wxzzzwyyx",
       "href": "/crawlerbait/bait/smtp/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/smtp/phpinfo.php",
       "path_shape_preserved": true,
@@ -5866,12 +6118,13 @@
       ]
     },
     {
+      "address": "yzzwzy",
       "href": "/crawlerbait/bait/swagger.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/swagger.json",
       "path_shape_preserved": true,
@@ -5885,12 +6138,13 @@
       ]
     },
     {
+      "address": "zwxz",
       "href": "/crawlerbait/receipt/867550f1095d9ea983d3/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 2,
       "path": "/transactional/.env",
       "path_shape_preserved": false,
@@ -5904,12 +6158,13 @@
       ]
     },
     {
+      "address": "xywx",
       "href": "/crawlerbait/bait/uat/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 2,
       "path": "/uat/phpinfo.php",
       "path_shape_preserved": true,
@@ -5923,12 +6178,13 @@
       ]
     },
     {
+      "address": "zzyx",
       "href": "/crawlerbait/receipt/adfc525f62db14b6bd91/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 2,
       "path": "/var/www/html/.env",
       "path_shape_preserved": false,
@@ -5942,12 +6198,13 @@
       ]
     },
     {
+      "address": "wxywy",
       "href": "/crawlerbait/receipt/1ccecca2c51b0f91f56f/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/.env.php",
       "path_shape_preserved": false,
@@ -5961,12 +6218,13 @@
       ]
     },
     {
+      "address": "zxxyzz",
       "href": "/crawlerbait/receipt/97a4045a5cd9f696371a/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/.env.swo",
       "path_shape_preserved": false,
@@ -5980,12 +6238,13 @@
       ]
     },
     {
+      "address": "xzyyx",
       "href": "/crawlerbait/receipt/6f72c17e203141284a34/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/.env.template",
       "path_shape_preserved": false,
@@ -5999,12 +6258,13 @@
       ]
     },
     {
+      "address": "zyywy",
       "href": "/crawlerbait/receipt/bcf9f4a0a512e549570c/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 1,
       "path": "/.env.txt",
       "path_shape_preserved": false,
@@ -6018,12 +6278,13 @@
       ]
     },
     {
+      "address": "wwww",
       "href": "/crawlerbait/receipt/001d1d9d97f8ab3cec8c/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/.env.zip",
       "path_shape_preserved": false,
@@ -6037,12 +6298,13 @@
       ]
     },
     {
+      "address": "ywyyx",
       "href": "/crawlerbait/receipt/cf5f67b633918a8bfbe3/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/.env~",
       "path_shape_preserved": false,
@@ -6056,12 +6318,13 @@
       ]
     },
     {
+      "address": "yxwzzyzz",
       "href": "/crawlerbait/receipt/d2ba924d7de3e13230c8/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/.zshrc",
       "path_shape_preserved": false,
@@ -6075,12 +6338,13 @@
       ]
     },
     {
+      "address": "yyxy",
       "href": "/crawlerbait/bait/1H.2VF2/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/1H.2VF2",
       "path_shape_preserved": true,
@@ -6094,12 +6358,13 @@
       ]
     },
     {
+      "address": "yyxw",
       "href": "/crawlerbait/bait/1H.6Hlp/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/1H.6Hlp",
       "path_shape_preserved": true,
@@ -6113,12 +6378,13 @@
       ]
     },
     {
+      "address": "xwxzxz",
       "href": "/crawlerbait/bait/1H.DUwl/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/1H.DUwl",
       "path_shape_preserved": true,
@@ -6132,12 +6398,13 @@
       ]
     },
     {
+      "address": "zwwx",
       "href": "/crawlerbait/bait/1H.L4ld/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/1H.L4ld",
       "path_shape_preserved": true,
@@ -6151,12 +6418,13 @@
       ]
     },
     {
+      "address": "wyzy",
       "href": "/crawlerbait/bait/1H.hs7W/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/1H.hs7W",
       "path_shape_preserved": true,
@@ -6170,12 +6438,13 @@
       ]
     },
     {
+      "address": "zyxw",
       "href": "/crawlerbait/bait/1H.qI2L/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/1H.qI2L",
       "path_shape_preserved": true,
@@ -6189,12 +6458,13 @@
       ]
     },
     {
+      "address": "ywwyy",
       "href": "/crawlerbait/bait/1H.yac0/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/1H.yac0",
       "path_shape_preserved": true,
@@ -6208,12 +6478,13 @@
       ]
     },
     {
+      "address": "yxwwx",
       "href": "/crawlerbait/bait/2H.Dzmx/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/2H.Dzmx",
       "path_shape_preserved": true,
@@ -6227,12 +6498,13 @@
       ]
     },
     {
+      "address": "xzzw",
       "href": "/crawlerbait/bait/2H.H852/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/2H.H852",
       "path_shape_preserved": true,
@@ -6246,12 +6518,13 @@
       ]
     },
     {
+      "address": "wxxxzyyz",
       "href": "/crawlerbait/bait/2H.dxL5/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/2H.dxL5",
       "path_shape_preserved": true,
@@ -6265,12 +6538,13 @@
       ]
     },
     {
+      "address": "xyyxxx",
       "href": "/crawlerbait/bait/2H.kfmG/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/2H.kfmG",
       "path_shape_preserved": true,
@@ -6284,12 +6558,13 @@
       ]
     },
     {
+      "address": "wwwzw",
       "href": "/crawlerbait/bait/AGENTS.md/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/AGENTS.md",
       "path_shape_preserved": true,
@@ -6303,12 +6578,13 @@
       ]
     },
     {
+      "address": "wxzyx",
       "href": "/crawlerbait/bait/GEMINI.md/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/GEMINI.md",
       "path_shape_preserved": true,
@@ -6322,12 +6598,13 @@
       ]
     },
     {
+      "address": "wyyyy",
       "href": "/crawlerbait/bait/api/config/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/api/config",
       "path_shape_preserved": true,
@@ -6341,12 +6618,13 @@
       ]
     },
     {
+      "address": "xwzxz",
       "href": "/crawlerbait/receipt/49827d99afa5309f4c93/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/apps/.env",
       "path_shape_preserved": false,
@@ -6360,12 +6638,13 @@
       ]
     },
     {
+      "address": "zxyx",
       "href": "/crawlerbait/bait/assets/941b6cfddde2d886/locus-shader.js.map/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/assets/941b6cfddde2d886/locus-shader.js.map",
       "path_shape_preserved": true,
@@ -6379,12 +6658,13 @@
       ]
     },
     {
+      "address": "zywzyzw",
       "href": "/crawlerbait/receipt/b2e2830a40f5e54944ec/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/blog/.env",
       "path_shape_preserved": false,
@@ -6398,12 +6678,13 @@
       ]
     },
     {
+      "address": "zxwzyy",
       "href": "/crawlerbait/bait/config.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 1,
       "path": "/config.php",
       "path_shape_preserved": true,
@@ -6417,12 +6698,13 @@
       ]
     },
     {
+      "address": "wzzxzw",
       "href": "/crawlerbait/receipt/2986f678a5db27434db0/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/docs/.env",
       "path_shape_preserved": false,
@@ -6436,12 +6718,13 @@
       ]
     },
     {
+      "address": "wxzzw",
       "href": "/crawlerbait/bait/env/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/env",
       "path_shape_preserved": true,
@@ -6455,12 +6738,13 @@
       ]
     },
     {
+      "address": "wwzyy",
       "href": "/crawlerbait/bait/firebase-adminsdk.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/firebase-adminsdk.json",
       "path_shape_preserved": true,
@@ -6474,12 +6758,13 @@
       ]
     },
     {
+      "address": "yyxzwx",
       "href": "/crawlerbait/bait/includes/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/includes/phpinfo.php",
       "path_shape_preserved": true,
@@ -6493,12 +6778,13 @@
       ]
     },
     {
+      "address": "zxwzz",
       "href": "/crawlerbait/receipt/929e3be7d81c0f83bf54/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 1,
       "path": "/internal/.env",
       "path_shape_preserved": false,
@@ -6512,12 +6798,13 @@
       ]
     },
     {
+      "address": "ywyyzxx",
       "href": "/crawlerbait/bait/js/raif_ch.js/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/js/raif_ch.js",
       "path_shape_preserved": true,
@@ -6531,12 +6818,13 @@
       ]
     },
     {
+      "address": "xyzx",
       "href": "/crawlerbait/receipt/792fa580b048927b1e08/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/laravel/.env",
       "path_shape_preserved": false,
@@ -6550,12 +6838,13 @@
       ]
     },
     {
+      "address": "wwzzz",
       "href": "/crawlerbait/bait/license.txt/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 1,
       "path": "/license.txt",
       "path_shape_preserved": true,
@@ -6569,12 +6858,13 @@
       ]
     },
     {
+      "address": "zyxzxy",
       "href": "/crawlerbait/receipt/b672c99f1429b25aa8b8/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/main/.env",
       "path_shape_preserved": false,
@@ -6588,12 +6878,13 @@
       ]
     },
     {
+      "address": "zwyxx",
       "href": "/crawlerbait/bait/old_phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 1,
       "path": "/old_phpinfo.php",
       "path_shape_preserved": true,
@@ -6607,12 +6898,13 @@
       ]
     },
     {
+      "address": "yywxww",
       "href": "/crawlerbait/bait/papers/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/papers/",
       "path_shape_preserved": true,
@@ -6626,12 +6918,13 @@
       ]
     },
     {
+      "address": "zzxz",
       "href": "/crawlerbait/bait/papers/_feed/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/papers/_feed",
       "path_shape_preserved": true,
@@ -6645,12 +6938,13 @@
       ]
     },
     {
+      "address": "yyyz",
       "href": "/crawlerbait/receipt/fe05daf8407fdac4acde/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/sendgrid/api/.env",
       "path_shape_preserved": false,
@@ -6664,12 +6958,13 @@
       ]
     },
     {
+      "address": "xxxw",
       "href": "/crawlerbait/receipt/54554b038eab677020ee/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/server/.env",
       "path_shape_preserved": false,
@@ -6683,12 +6978,13 @@
       ]
     },
     {
+      "address": "wxxxzx",
       "href": "/crawlerbait/bait/service_account.json/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/service_account.json",
       "path_shape_preserved": true,
@@ -6702,12 +6998,13 @@
       ]
     },
     {
+      "address": "yywxwz",
       "href": "/crawlerbait/receipt/f12a79c34f2a79212ea4/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/sites/.env",
       "path_shape_preserved": false,
@@ -6721,12 +7018,13 @@
       ]
     },
     {
+      "address": "wzyyy",
       "href": "/crawlerbait/bait/static/style/protect/index.js/",
       "last_observed_window": {
-        "end": "2026-09-17T20:36:56Z",
-        "start": "2026-09-16T20:47:56Z"
+        "end": "2026-09-17T21:58:07Z",
+        "start": "2026-09-16T22:09:07Z"
       },
-      "materialized_at": "2026-09-17T20:36:56Z",
+      "materialized_at": "2026-09-17T21:58:07Z",
       "observed_404": 1,
       "path": "/static/style/protect/index.js",
       "path_shape_preserved": true,
@@ -6740,12 +7038,13 @@
       ]
     },
     {
+      "address": "xwxxw",
       "href": "/crawlerbait/receipt/450e48008d46f59e9e14/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/storage/.env",
       "path_shape_preserved": false,
@@ -6759,12 +7058,13 @@
       ]
     },
     {
+      "address": "wzxww",
       "href": "/crawlerbait/bait/tmp/phpinfo.php/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 1,
       "path": "/tmp/phpinfo.php",
       "path_shape_preserved": true,
@@ -6778,12 +7078,13 @@
       ]
     },
     {
+      "address": "xwzyw",
       "href": "/crawlerbait/receipt/4b21233dc5355eba236b/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/twilio/.env",
       "path_shape_preserved": false,
@@ -6797,12 +7098,13 @@
       ]
     },
     {
+      "address": "zwwwyy",
       "href": "/crawlerbait/receipt/80ff3f6e7fdb738d4e13/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/twilio/api/.env",
       "path_shape_preserved": false,
@@ -6816,12 +7118,13 @@
       ]
     },
     {
+      "address": "yzyw",
       "href": "/crawlerbait/receipt/ec74d7deb76747cc55e5/",
       "last_observed_window": {
-        "end": "2026-09-16T20:47:56Z",
-        "start": "2026-09-15T20:47:56Z"
+        "end": "2026-09-16T22:09:07Z",
+        "start": "2026-09-15T22:09:07Z"
       },
-      "materialized_at": "2026-09-16T20:47:56Z",
+      "materialized_at": "2026-09-16T22:09:07Z",
       "observed_404": 1,
       "path": "/twilio/config/.env",
       "path_shape_preserved": false,
@@ -6835,12 +7138,13 @@
       ]
     },
     {
+      "address": "wzyyw",
       "href": "/crawlerbait/bait/webroot/index.php/_environment/",
       "last_observed_window": {
-        "end": "2026-09-15T20:47:56Z",
-        "start": "2026-09-14T20:47:56Z"
+        "end": "2026-09-15T22:09:07Z",
+        "start": "2026-09-14T22:09:07Z"
       },
-      "materialized_at": "2026-09-15T20:47:56Z",
+      "materialized_at": "2026-09-15T22:09:07Z",
       "observed_404": 1,
       "path": "/webroot/index.php/_environment",
       "path_shape_preserved": true,
@@ -6854,12 +7158,13 @@
       ]
     },
     {
+      "address": "zyzzz",
       "href": "/crawlerbait/bait/wp-includes/css/buttons.css/",
       "last_observed_window": {
-        "end": "2026-09-14T20:47:56Z",
-        "start": "2026-09-13T20:47:56Z"
+        "end": "2026-09-14T22:09:07Z",
+        "start": "2026-09-13T22:09:07Z"
       },
-      "materialized_at": "2026-09-14T20:47:56Z",
+      "materialized_at": "2026-09-14T22:09:07Z",
       "observed_404": 1,
       "path": "/wp-includes/css/buttons.css",
       "path_shape_preserved": true,
@@ -6875,10 +7180,9 @@
   ],
   "source": "crawlerbait/x/state.json",
   "summary": {
-    "grown_routes": 303,
+    "baits": 303,
     "observed_404": 1928,
-    "observed_signatures": 90,
-    "unresolved_candidates": 0
+    "observed_signatures": 90
   },
-  "updated_at": "2026-09-17T21:17:11Z"
+  "updated_at": "2026-09-17T21:58:07Z"
 }

@@ -1,0 +1,40 @@
+{
+  "bait_address": "xyyzy",
+  "first_observed_window": {
+    "end": "2026-09-16T22:09:07Z",
+    "start": "2026-09-15T22:09:07Z"
+  },
+  "id": "7efd2a819481844ebcfd",
+  "last_observed_window": {
+    "end": "2026-09-17T21:58:07Z",
+    "start": "2026-09-16T22:09:07Z"
+  },
+  "materialized_at": "2026-09-16T22:09:07Z",
+  "observed_404": 51,
+  "observed_path": "/sitemap.xml",
+  "public_href": "/crawlerbait/bait/sitemap.xml/",
+  "sampled": true,
+  "signatures": [
+    {
+      "claimed_user_agent": "Go-http-client/1.1",
+      "id": "12bd583dd25b868e",
+      "observed_404": 44
+    },
+    {
+      "claimed_user_agent": "fasthttp",
+      "id": "839d98aac393eabe",
+      "observed_404": 4
+    },
+    {
+      "claimed_user_agent": "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)",
+      "id": "e4b041114023353d",
+      "observed_404": 2
+    },
+    {
+      "claimed_user_agent": "TrashHound-Wildcard-Resolver/1",
+      "id": "db52a23ed10c3ac5",
+      "observed_404": 1
+    }
+  ],
+  "version": 1
+}
