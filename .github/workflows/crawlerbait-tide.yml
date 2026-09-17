@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '17 */6 * * *'
   workflow_dispatch:
+    inputs:
+      full_history:
+        description: 'One-time: ingest the full retained Cloudflare Security Analytics history before normal tides'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -26,12 +32,19 @@ jobs:
         env:
           CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
           CLOUDFLARE_ZONE_TAG: ${{ secrets.CLOUDFLARE_ZONE_TAG }}
-        run: python3 w/display/y/yw/crawlerbait/y/tide.py --write
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.full_history }}" = "true" ]; then
+            python3 w/display/y/yw/crawlerbait/y/backfill.py --write
+          else
+            python3 w/display/y/yw/crawlerbait/y/tide.py --write
+          fi
 
       - name: Witness bounded tide and public membrane
         run: |
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/backfill.py --self-test
           python3 y/site-public.py --artifact _site
           python3 y/check.py --artifact _site
           SITE_DIR=_site node y/test-address.cjs
