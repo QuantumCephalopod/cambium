@@ -16,15 +16,20 @@ RESERVED_PREFIXES = ("assets/",)
 
 
 def site_public_files():
-    """Return root-relative public files carried by site-holons; reject collisions/escapes."""
+    """Return root-relative public files carried beside each holon's declared projection."""
     out = {}
     owners = {}
     for site in build.discover_sites():
-        root = site["site_dir"] / "public"
+        # Public secretion is body-local and follows the site's projection membrane.
+        # A root projection therefore looks beside itself; a differentiated holon may
+        # carry projection + public surface together in one local child without Display
+        # learning the child's semantic name or gene.
+        projection_parent = Path(site["projection"]).parent
+        root = site["site_dir"] / projection_parent / "public"
         if not root.exists():
             continue
         if not root.is_dir() or root.is_symlink():
-            raise ValueError(f'{site["site_dir"].relative_to(ROOT)}/public must be a real directory')
+            raise ValueError(f'{root.relative_to(ROOT)}/public must be a real directory')
         for source in sorted(root.rglob("*")):
             if source.is_dir():
                 continue
