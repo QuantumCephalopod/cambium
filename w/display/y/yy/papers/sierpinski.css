@@ -1,0 +1,12 @@
+[data-interlocutor="organism:papers"]{pointer-events:none;background:#020605}
+[data-interlocutor="organism:papers"] .interlocutor-background,[data-interlocutor="organism:papers"] .interlocutor-field-labels{opacity:0!important;pointer-events:none!important}
+[data-interlocutor="organism:papers"] .papers-content{position:absolute;inset:0;pointer-events:none}
+.papers-sierpinski-stage{position:absolute;inset:0;z-index:3;width:100%;height:100%;display:block;pointer-events:auto;touch-action:none;cursor:grab}
+.papers-sierpinski-stage:active{cursor:grabbing}
+.papers-sierpinski-hud{position:absolute;left:28px;top:82px;z-index:4;display:grid;gap:4px;pointer-events:none;text-shadow:0 1px 18px rgba(0,0,0,.82)}
+.papers-sierpinski-hud span{font:7px/1.2 var(--mono);letter-spacing:.14em;color:rgba(162,235,211,.42)}
+.papers-sierpinski-hud b{font:500 11px/1.25 var(--sans);letter-spacing:-.018em;color:rgba(236,245,238,.72)}
+.papers-sierpinski-hud small{font:7px/1.4 var(--mono);letter-spacing:.055em;color:rgba(236,245,238,.28)}
+.papers-sierpinski-label{position:absolute;left:50%;bottom:34px;z-index:4;max-width:min(620px,72vw);transform:translateX(-50%);pointer-events:none;text-align:center;font:500 13px/1.35 var(--sans);letter-spacing:-.015em;color:rgba(239,248,241,.76);text-shadow:0 2px 28px #000;opacity:0;transition:opacity .22s ease}
+.papers-sierpinski-label.show{opacity:1}
+@media(max-width:700px){.papers-sierpinski-hud{left:16px;top:70px}.papers-sierpinski-label{bottom:20px;max-width:84vw;font-size:11px}}
