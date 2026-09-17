@@ -139,9 +139,11 @@ def self_test():
     state, _ = T.assimilate(state, second, t0 + timedelta(hours=24), t0 + timedelta(hours=48), policy)
     assert set(state["routes"]) == {"/login", "/.env", "/assets/nope"}
     assert state["routes"]["/login"]["observed_404"] == 2
-    assert T.public_href("/.env").startswith("/crawlerbait/bait/")
+    assert T.public_href("/login") == "/crawlerbait/bait/login/"
+    assert T.public_href("/assets/nope") == "/crawlerbait/bait/assets/nope/"
+    assert T.public_href("/.env").startswith("/crawlerbait/receipt/")
     assert len(list(windows(t0, t0 + timedelta(hours=49), 24 * 3600))) == 3
-    print("PASS · retained history reseed preserves every returned 404 group across provider-sized chunks")
+    print("PASS · retained history reseed preserves every returned 404 group across provider-sized chunks inside Crawlerbait")
 
 
 def main():
