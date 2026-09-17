@@ -17,5 +17,12 @@
       "binding": "SHADOW",
       "bucket_name": "sss-shadow"
     }
+  ],
+
+  "exports": {
+    "LiveState": {
+      "type": "durable-object",
+      "state": "deleted"
+    }
   ]
 }
