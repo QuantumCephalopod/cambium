@@ -1,0 +1,50 @@
+.crawlerbait-content{
+  --crab:#ff7a45;
+  --foam:#d8e1df;
+  --deep:#071016;
+  --kelp:#84a49b;
+  position:absolute;
+  inset:0;
+  display:grid;
+  align-content:center;
+  justify-items:center;
+  padding:clamp(2.5rem,7vw,7rem);
+  pointer-events:none;
+  color:var(--foam);
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+.crawlerbait-panel{
+  width:min(880px,92vw);
+  max-height:min(68vh,720px);
+  overflow:auto;
+  pointer-events:auto;
+  padding:clamp(1.3rem,3vw,2.4rem);
+  border:1px solid color-mix(in srgb,var(--kelp) 52%,transparent);
+  background:color-mix(in srgb,var(--deep) 88%,transparent);
+  backdrop-filter:blur(10px);
+  clip-path:polygon(0 0,96% 0,100% 8%,100% 100%,4% 100%,0 92%);
+}
+.crawlerbait-panel::before{
+  content:"🦀  STATIC REEF · TIDE, NOT REAL-TIME";
+  display:block;
+  margin-bottom:1.2rem;
+  color:var(--crab);
+  font-size:.72rem;
+  letter-spacing:.16em;
+}
+.crawlerbait-panel h1{
+  margin:.15rem 0 .5rem;
+  font:600 clamp(2.1rem,6vw,5.6rem)/.9 ui-monospace,SFMono-Regular,Consolas,monospace;
+  letter-spacing:-.07em;
+  text-transform:uppercase;
+}
+.crawlerbait-panel p{max-width:68ch;color:color-mix(in srgb,var(--foam) 82%,var(--kelp));}
+.crawlerbait-stats{display:flex;flex-wrap:wrap;gap:.55rem 1.25rem;margin:1.4rem 0 1.1rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--kelp);}
+.crawlerbait-routes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin-top:1.2rem;}
+.crawlerbait-route{display:block;padding:.85rem 1rem;border:1px solid color-mix(in srgb,var(--crab) 34%,transparent);background:color-mix(in srgb,var(--deep) 70%,transparent);color:var(--foam);text-decoration:none;}
+.crawlerbait-route:hover,.crawlerbait-route:focus-visible{border-color:var(--crab);outline:none;}
+.crawlerbait-route code{display:block;color:var(--crab);font-size:.92rem;overflow-wrap:anywhere;}
+.crawlerbait-route small{display:block;margin-top:.4rem;color:var(--kelp);}
+.crawlerbait-empty{padding:1rem 0;color:var(--kelp);}
+.crawlerbait-machine{display:inline-block;margin-top:1.35rem;color:var(--crab);pointer-events:auto;}
+@media (max-width:560px){.crawlerbait-content{padding:1.2rem}.crawlerbait-panel{max-height:72vh}.crawlerbait-routes{grid-template-columns:1fr}}
