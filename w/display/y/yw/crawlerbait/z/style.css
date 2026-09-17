@@ -190,3 +190,34 @@
   .crawlerbait-note{display:none}
   .crawlerbait-signature-list{max-height:5rem}
 }
+
+[data-interlocutor="organism:crawlerbait"] .field-point-tooltip{
+  position:absolute;
+  z-index:12;
+  width:min(250px,42vw);
+  display:grid;
+  gap:.18rem;
+  padding:.48rem .56rem;
+  pointer-events:none;
+  border:1px solid color-mix(in srgb,var(--crab,#ff7a45) 48%,transparent);
+  background:rgba(5,14,19,.88);
+  backdrop-filter:blur(8px);
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  box-shadow:0 8px 28px rgba(0,0,0,.28);
+}
+[data-interlocutor="organism:crawlerbait"] .field-point-tooltip[hidden]{display:none}
+[data-interlocutor="organism:crawlerbait"] .field-point-tooltip-id{
+  color:var(--crab,#ff7a45);
+  font-size:.55rem;
+  letter-spacing:.08em;
+}
+[data-interlocutor="organism:crawlerbait"] .field-point-tooltip-title{
+  color:var(--foam,#d8e1df);
+  font-size:.68rem;
+  font-weight:500;
+  overflow-wrap:anywhere;
+}
+[data-interlocutor="organism:crawlerbait"] .field-point-tooltip-meta{
+  color:var(--kelp,#84a49b);
+  font-size:.55rem;
+}
