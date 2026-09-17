@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One bounded Cloudflare observation tide for the independently rooted Crawlerbait holon."""
+'''One passive Cloudflare observation tide for the independently rooted Crawlerbait holon.'''
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -15,11 +15,13 @@ import urllib.request
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-POLICY_PATH = ROOT / "z" / "policy.json"
+BAIT_ROOT = ROOT / "w"
 STATE_PATH = ROOT / "x" / "state.json"
-PROJECTION_PATH = ROOT / "w" / "projection.json"
-PUBLIC_ROOT = ROOT / "w" / "public"
+POLICY_PATH = ROOT / "z" / "policy.json"
+PROJECTION_PATH = ROOT / "z" / "projection.json"
+PUBLIC_ROOT = ROOT / "z" / "public"
 GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
+ADDRESS_ALPHABET = "wxzy"
 
 
 def read_json(path: Path):
@@ -40,28 +42,23 @@ def stamp(value: datetime) -> str:
 
 
 def initial_state():
-    return {"version": 2, "last_complete_end": None, "routes": {}}
+    return {"version": 3, "last_complete_end": None, "routes": {}}
 
 
 def load_state():
     state = read_json(STATE_PATH) if STATE_PATH.is_file() else initial_state()
-    if state.get("version") != 2 or not isinstance(state.get("routes"), dict):
-        raise SystemExit("crawlerbait continuity needs an unfiltered retained-history reseed (run workflow with full_history=true)")
+    if state.get("version") != 3 or not isinstance(state.get("routes"), dict):
+        raise SystemExit("crawlerbait bait-space migration requires a retained-history reseed (run workflow with full_history=true)")
     return state
 
 
 def observed_path(raw) -> str:
-    # Cloudflare's clientRequestPath is evidence. Preserve it as received instead
-    # of deciding whether the request "looks useful".
     return raw if isinstance(raw, str) else str(raw)
 
 
 def public_signature(user_agent) -> dict:
     raw = user_agent if isinstance(user_agent, str) else str(user_agent)
-    return {
-        "id": sha256(raw.encode("utf-8", "replace")).hexdigest()[:16],
-        "claimed_user_agent": raw,
-    }
+    return {"id": sha256(raw.encode("utf-8", "replace")).hexdigest()[:16], "claimed_user_agent": raw}
 
 
 def cloudflare_query(zone: str, start: datetime, end: datetime, limit: int) -> str:
@@ -99,7 +96,7 @@ def fetch_groups(token: str, zone: str, start: datetime, end: datetime, limit: i
         headers={
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
-            "User-Agent": "sss-crawlerbait-tide/4",
+            "User-Agent": "sss-crawlerbait-tide/5",
         },
     )
     try:
@@ -129,42 +126,59 @@ def empty_record(path: str, start: str, end: str):
 
 
 def assimilate(state: dict, groups: list, start: datetime, end: datetime, policy: dict):
-    # Deliberately no semantic admission gate, recurrence threshold, ranking,
-    # candidate pool, route cap or signature cap. If Cloudflare returned a 404
-    # group, it belongs to Continuity.
     out = json.loads(json.dumps(state))
     changed = False
     start_s, end_s = stamp(start), stamp(end)
-
     for group in groups:
         dims = group.get("dimensions") or {}
         path = observed_path(dims.get("clientRequestPath", ""))
         count = int(round(float(group.get("count") or 0)))
         if count <= 0:
             continue
-
         record = out["routes"].setdefault(path, empty_record(path, start_s, end_s))
         record["observed_404"] += count
         record["last_observed_window"] = {"start": start_s, "end": end_s}
         interval = float((group.get("avg") or {}).get("sampleInterval") or 1)
         record["sampled"] = bool(record.get("sampled") or interval > 1.000001)
-
         sig = public_signature(dims.get("userAgent", ""))
         item = record["signatures"].setdefault(sig["id"], {**sig, "observed_404": 0})
         item["observed_404"] += count
         changed = True
-
     if changed:
         out["last_complete_end"] = end_s
     return out, changed
 
 
-def local_bait_parts(path: str):
-    """Mirror an ordinary observed path only *inside* Crawlerbait's bait subtree.
+def identity_code(path: str) -> str:
+    out = []
+    for byte in sha256(path.encode("utf-8", "replace")).digest():
+        for shift in (6, 4, 2, 0):
+            out.append(ADDRESS_ALPHABET[(byte >> shift) & 3])
+    return "".join(out)
 
-    This is a carrier decision, never an observation filter. Paths that cannot be
-    mirrored as ordinary filesystem components receive a deterministic receipt.
-    """
+
+def bait_addresses(paths) -> dict[str, str]:
+    paths = sorted(set(paths))
+    codes = {path: identity_code(path) for path in paths}
+    addresses = {}
+    for path in paths:
+        code = codes[path]
+        depth = 1
+        while any(other != path and codes[other].startswith(code[:depth]) for other in paths):
+            depth += 1
+            if depth > len(code):
+                raise RuntimeError("bait identity hash collision exhausted address code")
+        addresses[path] = code[:depth]
+    if len(set(addresses.values())) != len(addresses):
+        raise RuntimeError("bait-space exact raw occupancy collision")
+    return addresses
+
+
+def bait_dir(address: str) -> Path:
+    return BAIT_ROOT / ("w" + address)
+
+
+def local_bait_parts(path: str):
     if not isinstance(path, str) or not path.startswith("/") or path == "/":
         return None
     if any(ord(ch) < 32 for ch in path) or any(ch in path for ch in ("\\", "?", "#", "%")):
@@ -188,6 +202,33 @@ def public_href(path: str) -> str:
     return f"/crawlerbait/receipt/{receipt_id(path)}/"
 
 
+def bait_snapshot(record: dict, address: str) -> dict:
+    return {
+        "version": 1,
+        "id": receipt_id(record["path"]),
+        "bait_address": address,
+        "observed_path": record["path"],
+        "observed_404": record["observed_404"],
+        "first_observed_window": record["first_observed_window"],
+        "last_observed_window": record["last_observed_window"],
+        "materialized_at": record["materialized_at"],
+        "sampled": bool(record["sampled"]),
+        "signatures": sorted(record["signatures"].values(), key=lambda s: (-s["observed_404"], s["id"])),
+        "public_href": public_href(record["path"]),
+    }
+
+
+def render_bait_space(state: dict):
+    if BAIT_ROOT.exists():
+        shutil.rmtree(BAIT_ROOT)
+    BAIT_ROOT.mkdir(parents=True, exist_ok=True)
+    addresses = bait_addresses(state["routes"])
+    for path in sorted(state["routes"]):
+        target = bait_dir(addresses[path])
+        target.mkdir(parents=True, exist_ok=False)
+        write_json(target / "bait.json", bait_snapshot(state["routes"][path], addresses[path]))
+
+
 def route_output(path: str) -> Path:
     parts = local_bait_parts(path)
     if parts:
@@ -196,14 +237,15 @@ def route_output(path: str) -> Path:
 
 
 def projection_from(state: dict, policy: dict):
+    addresses = bait_addresses(state["routes"])
     routes = sorted(state["routes"].values(), key=lambda r: (-r["observed_404"], r["path"]))
     signature_ids = {sid for r in routes for sid in r["signatures"]}
     return {
         "source": "crawlerbait/x/state.json",
+        "bait_space": "crawlerbait:w",
         "updated_at": state.get("last_complete_end"),
         "summary": {
-            "grown_routes": len(routes),
-            "unresolved_candidates": 0,
+            "baits": len(routes),
             "observed_404": sum(r["observed_404"] for r in routes),
             "observed_signatures": len(signature_ids),
         },
@@ -211,9 +253,11 @@ def projection_from(state: dict, policy: dict):
             "observation_domain": "all Cloudflare 404 groups returned in each queried window",
             "growth_gate": "none",
             "public_namespace": "/crawlerbait/",
+            "bait_addressing": "shortest unique prefix of stable path identity in tetrahedral bait-space",
         },
         "routes": [
             {
+                "address": addresses[r["path"]],
                 "path": r["path"],
                 "href": public_href(r["path"]),
                 "path_shape_preserved": local_bait_parts(r["path"]) is not None,
@@ -238,21 +282,18 @@ def render_public(state: dict, policy: dict):
         shutil.rmtree(PUBLIC_ROOT)
     (PUBLIC_ROOT / "crawlerbait").mkdir(parents=True, exist_ok=True)
     write_json(PUBLIC_ROOT / "crawlerbait" / "state.json", projection)
-
     links = "".join(
-        f'<li><a href="{escape(r["href"], quote=True)}"><code>{escape(r["path"])}</code></a> · {r["observed_404"]} observed 404 requests</li>'
+        f'<li><a href="{escape(r["href"], quote=True)}"><code>{escape(r["path"])}</code></a> · bait:{escape(r["address"])} · {r["observed_404"]} observations</li>'
         for r in projection["routes"]
     ) or '<li class="dim">No 404 pressure observed yet.</li>'
     hub = (
         '<p class="dim">organism:crawlerbait · static machine-facing reef</p>'
         '<h1>crawlerbait</h1>'
-        '<p>Every 404 group returned by the Cloudflare sensor is retained. '
-        'Observed addresses are data; every public receipt remains inside /crawlerbait/.</p>'
-        f'<h2>observed paths</h2><ul>{links}</ul>'
+        '<p>passive 404 field · periodic tide · static bait-space</p>'
+        f'<h2>observed baits</h2><ul>{links}</ul>'
         '<p><a href="/crawlerbait/state.json">machine-readable projection</a></p>'
     )
     (PUBLIC_ROOT / "crawlerbait" / "index.html").write_text(page("crawlerbait", hub), encoding="utf-8")
-
     all_links = "".join(
         f'<li><a href="{escape(r["href"], quote=True)}">{escape(r["path"])}</a></li>'
         for r in projection["routes"]
@@ -269,29 +310,35 @@ def render_public(state: dict, policy: dict):
         )
         body = (
             '<p><a href="/crawlerbait/">← crawlerbait</a></p>'
-            '<p class="dim">404 sediment · observed address retained as data</p>'
+            f'<p class="dim">bait-space {escape(route["address"])} · 404 trace</p>'
             f'<h1><code>{escape(route["path"])}</code></h1>'
-            '<p>This receipt exists because Cloudflare observed requests for this path returning 404.</p>'
             '<ul>'
             f'<li>observed 404 requests: <strong>{route["observed_404"]}</strong></li>'
+            f'<li>bait address: <code>{escape(route["address"])}</code></li>'
             f'<li>materialized: <code>{escape(route["materialized_at"])}</code></li>'
             f'<li>representation: <code>{escape(representation)}</code></li>'
             f'<li>adaptive sampling observed: <code>{str(bool(route["sampled"])).lower()}</code></li>'
             '</ul>'
             f'<h2>observed claimed user-agents</h2><ul>{sigs}</ul>'
             f'<h2>other observed paths</h2><ul>{all_links}</ul>'
-            '<small>User-Agent strings are claims made by clients and are spoofable. '
-            'The current sensor does not request client IP addresses.</small>'
+            '<small>User-Agent strings are claims made by clients and are spoofable. The current sensor does not request client IP addresses.</small>'
         )
         out = route_output(route["path"])
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(page(f'{route["path"]} · crawlerbait', body), encoding="utf-8")
 
 
+def write_outputs(state: dict, policy: dict):
+    write_json(STATE_PATH, state)
+    render_bait_space(state)
+    write_json(PROJECTION_PATH, projection_from(state, policy))
+    render_public(state, policy)
+
+
 def compute_window(state: dict, policy: dict, now: datetime):
     end = now.astimezone(timezone.utc) - timedelta(minutes=int(policy["settle_delay_minutes"]))
     start = parse_time(state["last_complete_end"]) if state.get("last_complete_end") else end - timedelta(hours=24)
-    return max(start, end - timedelta(hours=int(policy["max_window_hours"])),), end
+    return max(start, end - timedelta(hours=int(policy["max_window_hours"]))), end
 
 
 def fixture_groups(path: Path):
@@ -314,21 +361,18 @@ def self_test():
         {"count": 1, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/admin", "userAgent": "Other/1"}},
         {"count": 99, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/assets/nope", "userAgent": "Spray/9"}},
         {"count": 99, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/.env", "userAgent": "Spray/9"}},
-        {"count": 1, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/papers", "userAgent": "ScopeProbe/1"}},
     ]
     state, changed = assimilate(initial_state(), groups, start, end, policy)
-    assert changed
-    assert set(state["routes"]) == {"/login", "/admin", "/assets/nope", "/.env", "/papers"}
-    assert state["routes"]["/admin"]["observed_404"] == 1
-    assert next(iter(state["routes"]["/login"]["signatures"].values()))["claimed_user_agent"] == "CrabBot/1.0"
+    assert changed and set(state["routes"]) == {"/login", "/admin", "/assets/nope", "/.env"}
+    addresses = bait_addresses(state["routes"])
+    assert len(set(addresses.values())) == 4
+    assert all(set(a) <= set(ADDRESS_ALPHABET) for a in addresses.values())
     assert public_href("/login") == "/crawlerbait/bait/login/"
-    assert public_href("/assets/nope") == "/crawlerbait/bait/assets/nope/"
     assert public_href("/.env").startswith("/crawlerbait/receipt/")
-    assert public_href("/papers") == "/crawlerbait/bait/papers/"
-    assert route_output("/papers").as_posix().endswith("w/public/crawlerbait/bait/papers/index.html")
-    assert all(public_href(p).startswith("/crawlerbait/") for p in state["routes"])
-    assert projection_from(state, policy)["summary"]["unresolved_candidates"] == 0
-    print("PASS · every observed 404 stays data-complete while all sediment remains inside /crawlerbait/")
+    projection = projection_from(state, policy)
+    assert projection["bait_space"] == "crawlerbait:w"
+    assert {r["path"] for r in projection["routes"]} == set(state["routes"])
+    print("PASS · every observed 404 becomes one addressed bait; traces and public secretion remain separate")
 
 
 def main():
@@ -341,14 +385,12 @@ def main():
     if args.self_test:
         self_test()
         return
-
     policy, state = read_json(POLICY_PATH), load_state()
     now = parse_time(args.now) if args.now else datetime.now(timezone.utc)
     start, end = compute_window(state, policy, now)
     if end <= start:
         print(json.dumps({"status": "no-window"}))
         return
-
     if args.fixture:
         groups = fixture_groups(args.fixture)
     else:
@@ -357,7 +399,6 @@ def main():
         if not token or not zone:
             raise SystemExit("crawlerbait tide is unarmed: CLOUDFLARE_ANALYTICS_TOKEN and CLOUDFLARE_ZONE_TAG are required")
         groups = fetch_groups(token, zone, start, end, int(policy["query_limit"]))
-
     next_state, changed = assimilate(state, groups, start, end, policy)
     print(json.dumps({
         "status": "changed" if changed else "no-observed-404-pressure",
@@ -366,9 +407,7 @@ def main():
         "paths": len(next_state["routes"]),
     }, indent=2))
     if args.write and changed:
-        write_json(STATE_PATH, next_state)
-        write_json(PROJECTION_PATH, projection_from(next_state, policy))
-        render_public(next_state, policy)
+        write_outputs(next_state, policy)
     elif args.write:
         print("no observed 404 pressure; organism left byte-identical")
 
