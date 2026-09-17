@@ -1,6 +1,327 @@
 {
-  "version": 1,
-  "last_complete_end": null,
-  "candidates": {},
-  "routes": {}
+  "candidates": {
+    "/about": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/about",
+      "sampled": false,
+      "signatures": {
+        "86bad01b9f6cf979": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "86bad01b9f6cf979",
+          "observed_404": 4
+        }
+      }
+    },
+    "/actuator/env": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/actuator/env",
+      "sampled": false,
+      "signatures": {
+        "86bad01b9f6cf979": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "86bad01b9f6cf979",
+          "observed_404": 4
+        }
+      }
+    },
+    "/actuator/heapdump": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/actuator/heapdump",
+      "sampled": true,
+      "signatures": {
+        "12bd583dd25b868e": {
+          "claimed_family": "Go-http-client/1.1",
+          "id": "12bd583dd25b868e",
+          "observed_404": 4
+        }
+      }
+    },
+    "/api/config": {
+      "first_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 1,
+      "path": "/api/config",
+      "sampled": false,
+      "signatures": {
+        "9884896580bbd928": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "9884896580bbd928",
+          "observed_404": 1
+        }
+      }
+    },
+    "/console": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/console",
+      "sampled": false,
+      "signatures": {
+        "86bad01b9f6cf979": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "86bad01b9f6cf979",
+          "observed_404": 4
+        }
+      }
+    },
+    "/debug/default/view": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/debug/default/view",
+      "sampled": false,
+      "signatures": {
+        "86bad01b9f6cf979": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "86bad01b9f6cf979",
+          "observed_404": 4
+        }
+      }
+    },
+    "/env": {
+      "first_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 1,
+      "path": "/env",
+      "sampled": false,
+      "signatures": {
+        "e388d5dbd903223c": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "e388d5dbd903223c",
+          "observed_404": 1
+        }
+      }
+    },
+    "/papers": {
+      "first_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 1,
+      "path": "/papers",
+      "sampled": false,
+      "signatures": {
+        "ef705e4b52680b23": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "ef705e4b52680b23",
+          "observed_404": 1
+        }
+      }
+    },
+    "/server": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/server",
+      "sampled": false,
+      "signatures": {
+        "86bad01b9f6cf979": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "86bad01b9f6cf979",
+          "observed_404": 4
+        }
+      }
+    },
+    "/server-status": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/server-status",
+      "sampled": false,
+      "signatures": {
+        "86bad01b9f6cf979": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "86bad01b9f6cf979",
+          "observed_404": 4
+        }
+      }
+    },
+    "/telescope/requests": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "observed_404": 4,
+      "path": "/telescope/requests",
+      "sampled": false,
+      "signatures": {
+        "86bad01b9f6cf979": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "86bad01b9f6cf979",
+          "observed_404": 4
+        }
+      }
+    }
+  },
+  "last_complete_end": "2026-09-17T19:37:40Z",
+  "routes": {
+    "/api/env": {
+      "first_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-16T19:48:40Z",
+        "start": "2026-09-15T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 8,
+      "path": "/api/env",
+      "sampled": true,
+      "signatures": {
+        "ef36427db1a56b35": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "ef36427db1a56b35",
+          "observed_404": 8
+        }
+      }
+    },
+    "/feed": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-17T19:37:40Z",
+        "start": "2026-09-16T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 6,
+      "path": "/feed",
+      "sampled": true,
+      "signatures": {
+        "844d88131e5b8739": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "844d88131e5b8739",
+          "observed_404": 2
+        },
+        "e82f2e5be321b6f9": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 4
+        }
+      }
+    },
+    "/phpinfo": {
+      "first_observed_window": {
+        "end": "2026-09-15T19:48:40Z",
+        "start": "2026-09-14T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-15T19:48:40Z",
+        "start": "2026-09-14T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 16,
+      "path": "/phpinfo",
+      "sampled": true,
+      "signatures": {
+        "e82f2e5be321b6f9": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 16
+        }
+      }
+    },
+    "/wp-json": {
+      "first_observed_window": {
+        "end": "2026-09-14T19:48:40Z",
+        "start": "2026-09-13T19:48:40Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-17T19:37:40Z",
+        "start": "2026-09-16T19:48:40Z"
+      },
+      "materialized_at": "2026-09-17T19:37:40Z",
+      "observed_404": 6,
+      "path": "/wp-json",
+      "sampled": false,
+      "signatures": {
+        "0ae74ebdade6a927": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "0ae74ebdade6a927",
+          "observed_404": 1
+        },
+        "69afe5705b074643": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "69afe5705b074643",
+          "observed_404": 1
+        },
+        "e82f2e5be321b6f9": {
+          "claimed_family": "Mozilla/5.0",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 4
+        }
+      }
+    }
+  },
+  "version": 1
 }
