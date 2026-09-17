@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "source": "cloudflare:httpRequestsAdaptiveGroups",
+  "migration_baseline": {
+    "kind": "aggregate-checkpoint",
+    "path": "../checkpoint.json",
+    "through": "2026-09-17T21:58:07Z",
+    "note": "This was already-owned history before raw-window persistence existed. Preserve it for continuity."
+  },
+  "one_time_raw_history": {
+    "path": "../retained-bootstrap/",
+    "law": "During setup only, freeze every provider window still retained, seal once, then never refresh it."
+  },
+  "live_capture_law": "Each later capture file preserves the complete returned provider payload for exactly one newly queried time window, including empty windows. The cursor advances only after those bytes are written."
+}

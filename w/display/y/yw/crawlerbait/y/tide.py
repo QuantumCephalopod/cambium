@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''One passive Cloudflare observation tide for the independently rooted Crawlerbait holon.'''
+"""Metabolize already-captured local Traces into current Crawlerbait state, Baits and Membrane."""
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -8,19 +8,17 @@ from html import escape
 from pathlib import Path
 import argparse
 import json
-import os
 import shutil
-import urllib.error
-import urllib.request
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 BAIT_ROOT = ROOT / "w"
-STATE_PATH = ROOT / "x" / "state.json"
-POLICY_PATH = ROOT / "z" / "policy.json"
+TRACE_ROOT = ROOT / "x"
+STATE_PATH = TRACE_ROOT / "state.json"
+CHECKPOINT_PATH = TRACE_ROOT / "checkpoint.json"
+CAPTURE_ROOT = TRACE_ROOT / "captures"
 PROJECTION_PATH = ROOT / "z" / "projection.json"
 PUBLIC_ROOT = ROOT / "z" / "public"
-GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
 ADDRESS_ALPHABET = "wxzy"
 
 
@@ -41,15 +39,24 @@ def stamp(value: datetime) -> str:
     return value.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def initial_state():
-    return {"version": 3, "last_complete_end": None, "routes": {}}
+def initial_state(start: str | None = None):
+    return {"version": 4, "last_complete_end": start, "applied_capture_end": start, "routes": {}}
+
+
+def normalize_state(value: dict) -> dict:
+    if value.get("version") not in (3, 4) or not isinstance(value.get("routes"), dict):
+        raise ValueError("crawlerbait trace state must be generation 3 or 4")
+    out = json.loads(json.dumps(value))
+    out["version"] = 4
+    applied = out.get("applied_capture_end") or out.get("last_complete_end")
+    out["applied_capture_end"] = applied
+    return out
 
 
 def load_state():
-    state = read_json(STATE_PATH) if STATE_PATH.is_file() else initial_state()
-    if state.get("version") != 3 or not isinstance(state.get("routes"), dict):
-        raise SystemExit("crawlerbait bait-space migration requires a retained-history reseed (run workflow with full_history=true)")
-    return state
+    if not STATE_PATH.is_file():
+        raise SystemExit("crawlerbait derived trace state is missing")
+    return normalize_state(read_json(STATE_PATH))
 
 
 def observed_path(raw) -> str:
@@ -59,58 +66,6 @@ def observed_path(raw) -> str:
 def public_signature(user_agent) -> dict:
     raw = user_agent if isinstance(user_agent, str) else str(user_agent)
     return {"id": sha256(raw.encode("utf-8", "replace")).hexdigest()[:16], "claimed_user_agent": raw}
-
-
-def cloudflare_query(zone: str, start: datetime, end: datetime, limit: int) -> str:
-    if len(zone) != 32 or any(c not in "0123456789abcdefABCDEF" for c in zone):
-        raise ValueError("CLOUDFLARE_ZONE_TAG must be 32 hex characters")
-    return f'''{{
-  viewer {{
-    zones(filter: {{ zoneTag: "{zone}" }}) {{
-      groups: httpRequestsAdaptiveGroups(
-        filter: {{
-          datetime_geq: "{stamp(start)}"
-          datetime_lt: "{stamp(end)}"
-          requestSource: "eyeball"
-          edgeResponseStatus_geq: 404
-          edgeResponseStatus_lt: 405
-        }}
-        limit: {int(limit)}
-        orderBy: [count_DESC]
-      ) {{
-        count
-        avg {{ sampleInterval }}
-        dimensions {{ clientRequestPath userAgent }}
-      }}
-    }}
-  }}
-}}'''
-
-
-def fetch_groups(token: str, zone: str, start: datetime, end: datetime, limit: int):
-    body = json.dumps({"query": cloudflare_query(zone, start, end, limit)}).encode()
-    request = urllib.request.Request(
-        GRAPHQL_ENDPOINT,
-        data=body,
-        method="POST",
-        headers={
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json",
-            "User-Agent": "sss-crawlerbait-tide/5",
-        },
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=30) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", "replace")[:1000]
-        raise RuntimeError(f"Cloudflare GraphQL HTTP {exc.code}: {detail}") from exc
-    if payload.get("errors"):
-        raise RuntimeError("Cloudflare GraphQL error: " + json.dumps(payload["errors"], ensure_ascii=False)[:1500])
-    zones = payload.get("data", {}).get("viewer", {}).get("zones", [])
-    if len(zones) != 1 or not isinstance(zones[0].get("groups"), list):
-        raise RuntimeError("unexpected Cloudflare GraphQL response")
-    return zones[0]["groups"]
 
 
 def empty_record(path: str, start: str, end: str):
@@ -125,7 +80,7 @@ def empty_record(path: str, start: str, end: str):
     }
 
 
-def assimilate(state: dict, groups: list, start: datetime, end: datetime, policy: dict):
+def assimilate(state: dict, groups: list, start: datetime, end: datetime):
     out = json.loads(json.dumps(state))
     changed = False
     start_s, end_s = stamp(start), stamp(end)
@@ -144,9 +99,79 @@ def assimilate(state: dict, groups: list, start: datetime, end: datetime, policy
         item = record["signatures"].setdefault(sig["id"], {**sig, "observed_404": 0})
         item["observed_404"] += count
         changed = True
-    if changed:
-        out["last_complete_end"] = end_s
     return out, changed
+
+
+def capture_paths():
+    if not CAPTURE_ROOT.is_dir():
+        return []
+    return sorted(
+        p for p in CAPTURE_ROOT.iterdir()
+        if p.is_file() and p.name != "manifest.json" and p.name.endswith((".capture.json", ".json"))
+    )
+
+
+def capture_groups(value: dict) -> list:
+    if value.get("version") == 1 and isinstance(value.get("groups"), list):
+        return value["groups"]
+    if value.get("version") == 2 and isinstance(value.get("provider_response"), dict):
+        zones = value["provider_response"].get("data", {}).get("viewer", {}).get("zones", [])
+        if len(zones) == 1 and isinstance(zones[0].get("groups"), list):
+            return zones[0]["groups"]
+    raise RuntimeError("capture has no usable Cloudflare group payload")
+
+
+def load_capture(path: Path) -> dict:
+    value = read_json(path)
+    if value.get("source") != "cloudflare:httpRequestsAdaptiveGroups":
+        raise RuntimeError(f"invalid crawlerbait capture {path.name}")
+    window = value.get("window") or {}
+    if not isinstance(window.get("start"), str) or not isinstance(window.get("end"), str):
+        raise RuntimeError(f"capture {path.name} has no valid window")
+    capture_groups(value)
+    return value
+
+
+def apply_capture(state: dict, capture: dict):
+    out = normalize_state(state)
+    start = parse_time(capture["window"]["start"])
+    end = parse_time(capture["window"]["end"])
+    applied_s = out.get("applied_capture_end")
+    if not applied_s:
+        raise RuntimeError("derived state has no applied capture cursor")
+    applied = parse_time(applied_s)
+    if end <= applied:
+        return out, False
+    if start < applied < end:
+        raise RuntimeError("capture overlaps the applied cursor")
+    if start != applied:
+        raise RuntimeError(f"capture gap: state ends {stamp(applied)} but next capture starts {stamp(start)}")
+    out, _ = assimilate(out, capture_groups(capture), start, end)
+    out["version"] = 4
+    out["applied_capture_end"] = stamp(end)
+    out["last_complete_end"] = stamp(end)
+    return out, True
+
+
+def apply_pending(state: dict):
+    out = normalize_state(state)
+    applied_files = []
+    for path in capture_paths():
+        next_state, applied = apply_capture(out, load_capture(path))
+        if applied:
+            out = next_state
+            applied_files.append(path.name)
+    return out, applied_files
+
+
+def replay_from_checkpoint():
+    if not CHECKPOINT_PATH.is_file():
+        raise RuntimeError("crawlerbait local replay checkpoint is missing")
+    state = normalize_state(read_json(CHECKPOINT_PATH))
+    state["applied_capture_end"] = state.get("last_complete_end")
+    for path in capture_paths():
+        state, _ = apply_capture(state, load_capture(path))
+    return state
 
 
 def identity_code(path: str) -> str:
@@ -236,12 +261,13 @@ def route_output(path: str) -> Path:
     return PUBLIC_ROOT / "crawlerbait" / "receipt" / receipt_id(path) / "index.html"
 
 
-def projection_from(state: dict, policy: dict):
+def projection_from(state: dict):
     addresses = bait_addresses(state["routes"])
     routes = sorted(state["routes"].values(), key=lambda r: (-r["observed_404"], r["path"]))
     signature_ids = {sid for r in routes for sid in r["signatures"]}
     return {
         "source": "crawlerbait/x/state.json",
+        "trace_source": "crawlerbait/x/checkpoint.json + crawlerbait/x/captures/*.json",
         "bait_space": "crawlerbait:w",
         "updated_at": state.get("last_complete_end"),
         "summary": {
@@ -250,7 +276,7 @@ def projection_from(state: dict, policy: dict):
             "observed_signatures": len(signature_ids),
         },
         "policy": {
-            "observation_domain": "all Cloudflare 404 groups returned in each queried window",
+            "observation_domain": "all captured Cloudflare 404 groups",
             "growth_gate": "none",
             "public_namespace": "/crawlerbait/",
             "bait_addressing": "shortest unique prefix of stable path identity in tetrahedral bait-space",
@@ -276,8 +302,8 @@ def page(title: str, body: str) -> str:
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>{escape(title)}</title><link rel="alternate" type="application/json" href="/crawlerbait/state.json"><style>:root{{color-scheme:dark}}body{{max-width:760px;margin:7vh auto;padding:24px;font:16px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;background:#071016;color:#d8e1df}}a{{color:#ff8a5b}}code{{color:#ffd3c2}}.dim{{color:#8fa29e}}li{{margin:.45rem 0;overflow-wrap:anywhere}}</style></head><body>{body}</body></html>'''
 
 
-def render_public(state: dict, policy: dict):
-    projection = projection_from(state, policy)
+def render_public(state: dict):
+    projection = projection_from(state)
     if PUBLIC_ROOT.exists():
         shutil.rmtree(PUBLIC_ROOT)
     (PUBLIC_ROOT / "crawlerbait").mkdir(parents=True, exist_ok=True)
@@ -289,7 +315,7 @@ def render_public(state: dict, policy: dict):
     hub = (
         '<p class="dim">organism:crawlerbait · static machine-facing reef</p>'
         '<h1>crawlerbait</h1>'
-        '<p>passive 404 field · periodic tide · static bait-space</p>'
+        '<p>captured traces · local metabolism · static bait-space</p>'
         f'<h2>observed baits</h2><ul>{links}</ul>'
         '<p><a href="/crawlerbait/state.json">machine-readable projection</a></p>'
     )
@@ -310,7 +336,7 @@ def render_public(state: dict, policy: dict):
         )
         body = (
             '<p><a href="/crawlerbait/">← crawlerbait</a></p>'
-            f'<p class="dim">bait-space {escape(route["address"])} · 404 trace</p>'
+            f'<p class="dim">bait-space {escape(route["address"])} · captured 404 trace</p>'
             f'<h1><code>{escape(route["path"])}</code></h1>'
             '<ul>'
             f'<li>observed 404 requests: <strong>{route["observed_404"]}</strong></li>'
@@ -328,88 +354,66 @@ def render_public(state: dict, policy: dict):
         out.write_text(page(f'{route["path"]} · crawlerbait', body), encoding="utf-8")
 
 
-def write_outputs(state: dict, policy: dict):
+def write_outputs(state: dict):
     write_json(STATE_PATH, state)
     render_bait_space(state)
-    write_json(PROJECTION_PATH, projection_from(state, policy))
-    render_public(state, policy)
-
-
-def compute_window(state: dict, policy: dict, now: datetime):
-    end = now.astimezone(timezone.utc) - timedelta(minutes=int(policy["settle_delay_minutes"]))
-    start = parse_time(state["last_complete_end"]) if state.get("last_complete_end") else end - timedelta(hours=24)
-    return max(start, end - timedelta(hours=int(policy["max_window_hours"]))), end
-
-
-def fixture_groups(path: Path):
-    value = read_json(path)
-    if isinstance(value, list):
-        return value
-    zones = value.get("data", {}).get("viewer", {}).get("zones", [])
-    if len(zones) == 1 and isinstance(zones[0].get("groups"), list):
-        return zones[0]["groups"]
-    raise ValueError("fixture must be a group list or Cloudflare GraphQL response")
+    write_json(PROJECTION_PATH, projection_from(state))
+    render_public(state)
 
 
 def self_test():
-    policy = read_json(POLICY_PATH)
-    assert policy == {"version": 2, "settle_delay_minutes": 10, "max_window_hours": 24, "query_limit": 5000}
     start = datetime(2026, 9, 17, 0, 0, tzinfo=timezone.utc)
-    end = start + timedelta(hours=6)
-    groups = [
-        {"count": 3, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/login", "userAgent": "CrabBot/1.0"}},
-        {"count": 1, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/admin", "userAgent": "Other/1"}},
-        {"count": 99, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/assets/nope", "userAgent": "Spray/9"}},
-        {"count": 99, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/.env", "userAgent": "Spray/9"}},
-    ]
-    state, changed = assimilate(initial_state(), groups, start, end, policy)
-    assert changed and set(state["routes"]) == {"/login", "/admin", "/assets/nope", "/.env"}
+    middle = start + timedelta(hours=6)
+    end = middle + timedelta(hours=6)
+    state = initial_state(stamp(start))
+    first = {
+        "version": 1,
+        "source": "cloudflare:httpRequestsAdaptiveGroups",
+        "window": {"start": stamp(start), "end": stamp(middle)},
+        "groups": [
+            {"count": 3, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/login", "userAgent": "CrabBot/1.0"}},
+            {"count": 1, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/.env", "userAgent": "Spray/9"}},
+        ],
+    }
+    state, applied = apply_capture(state, first)
+    assert applied and state["applied_capture_end"] == stamp(middle)
+    empty = {
+        "version": 1,
+        "source": "cloudflare:httpRequestsAdaptiveGroups",
+        "window": {"start": stamp(middle), "end": stamp(end)},
+        "groups": [],
+    }
+    state, applied = apply_capture(state, empty)
+    assert applied and state["applied_capture_end"] == stamp(end)
+    assert set(state["routes"]) == {"/login", "/.env"}
     addresses = bait_addresses(state["routes"])
-    assert len(set(addresses.values())) == 4
-    assert all(set(a) <= set(ADDRESS_ALPHABET) for a in addresses.values())
+    assert len(set(addresses.values())) == 2
     assert public_href("/login") == "/crawlerbait/bait/login/"
     assert public_href("/.env").startswith("/crawlerbait/receipt/")
-    projection = projection_from(state, policy)
-    assert projection["bait_space"] == "crawlerbait:w"
-    assert {r["path"] for r in projection["routes"]} == set(state["routes"])
-    print("PASS · every observed 404 becomes one addressed bait; traces and public secretion remain separate")
+    print("PASS · tide consumes local captures only; empty windows advance continuity without touching Cloudflare")
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--write", action="store_true")
-    ap.add_argument("--fixture", type=Path)
-    ap.add_argument("--now")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
     if args.self_test:
         self_test()
         return
-    policy, state = read_json(POLICY_PATH), load_state()
-    now = parse_time(args.now) if args.now else datetime.now(timezone.utc)
-    start, end = compute_window(state, policy, now)
-    if end <= start:
-        print(json.dumps({"status": "no-window"}))
-        return
-    if args.fixture:
-        groups = fixture_groups(args.fixture)
-    else:
-        token = os.environ.get("CLOUDFLARE_ANALYTICS_TOKEN", "").strip()
-        zone = os.environ.get("CLOUDFLARE_ZONE_TAG", "").strip()
-        if not token or not zone:
-            raise SystemExit("crawlerbait tide is unarmed: CLOUDFLARE_ANALYTICS_TOKEN and CLOUDFLARE_ZONE_TAG are required")
-        groups = fetch_groups(token, zone, start, end, int(policy["query_limit"]))
-    next_state, changed = assimilate(state, groups, start, end, policy)
+
+    state = load_state()
+    next_state, applied_files = apply_pending(state)
     print(json.dumps({
-        "status": "changed" if changed else "no-observed-404-pressure",
-        "window": {"start": stamp(start), "end": stamp(end)},
-        "groups": len(groups),
+        "status": "metabolized" if applied_files else "no-pending-captures",
+        "captures": applied_files,
         "paths": len(next_state["routes"]),
+        "applied_capture_end": next_state.get("applied_capture_end"),
     }, indent=2))
-    if args.write and changed:
-        write_outputs(next_state, policy)
+    if args.write and applied_files:
+        write_outputs(next_state)
     elif args.write:
-        print("no observed 404 pressure; organism left byte-identical")
+        print("no local captures pending; downstream body left byte-identical")
 
 
 if __name__ == "__main__":
