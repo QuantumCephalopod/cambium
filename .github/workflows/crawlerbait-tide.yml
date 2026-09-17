@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       full_history:
-        description: 'One-time: ingest the full retained Cloudflare Security Analytics history before normal tides'
+        description: 'Rebuild Crawlerbait from the complete retained Cloudflare 404 history'
         required: false
         type: boolean
         default: false
@@ -42,10 +42,10 @@ jobs:
           import json, sys
           with open('w/display/y/yw/crawlerbait/x/state.json', encoding='utf-8') as f:
               state = json.load(f)
-          sys.exit(0 if state.get('last_complete_end') is None else 1)
+          sys.exit(0 if state.get('version') != 2 else 1)
           PY
           then
-            echo "initial retained-history backfill pending; ordinary tide skipped"
+            echo "unfiltered retained-history reseed pending; run manually with full_history=true"
             exit 0
           fi
           python3 w/display/y/yw/crawlerbait/y/tide.py --write
@@ -65,7 +65,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "$(git status --porcelain -- 'w/display/y/yw/crawlerbait')" ]; then
-            echo "no admitted crawler pressure; no commit"
+            echo "no observed crawler pressure; no commit"
             exit 0
           fi
           git config user.name "crawlerbait tide"
