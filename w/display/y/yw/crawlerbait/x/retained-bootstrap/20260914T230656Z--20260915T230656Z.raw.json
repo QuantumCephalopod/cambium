@@ -1,0 +1,1968 @@
+{
+  "captured_at": "2026-09-17T23:06:55Z",
+  "provider_response": {
+    "data": {
+      "viewer": {
+        "zones": [
+          {
+            "groups": [
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 16,
+                "dimensions": {
+                  "clientRequestPath": "/phpinfo",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 16,
+                "dimensions": {
+                  "clientRequestPath": "/cms/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/node/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/postmark/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/wordpress/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/dist/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/info.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/build/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/web/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/sitemaps/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 10
+                },
+                "count": 10,
+                "dimensions": {
+                  "clientRequestPath": "/server.key",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/mailjet/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/next/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/sendgrid/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/assets/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/dev/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/dev/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/.env.bak",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/v1/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/symfony/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/project/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/prod/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 8
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/express/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 8,
+                "dimensions": {
+                  "clientRequestPath": "/newsletter/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/test/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/src/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/en/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/deploy/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/temp/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/.env.remote",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/lab/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/pinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 6
+                },
+                "count": 6,
+                "dimensions": {
+                  "clientRequestPath": "/admin/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 5
+                },
+                "count": 5,
+                "dimensions": {
+                  "clientRequestPath": "/scripts/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 5
+                },
+                "count": 5,
+                "dimensions": {
+                  "clientRequestPath": "/www/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 5
+                },
+                "count": 5,
+                "dimensions": {
+                  "clientRequestPath": "/sender/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 5,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/api/v2/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/.env.uat",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/core/app/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/smtp/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/project/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/wp/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/public/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/mailgun/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/_phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/web/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/pi.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/.env.preprod",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/dev/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/nuxt/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/.env.sample",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/test.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/.env.backup",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/mailing/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/.env.dev",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/service/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/smtp/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 4
+                },
+                "count": 4,
+                "dimensions": {
+                  "clientRequestPath": "/notify/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 3
+                },
+                "count": 3,
+                "dimensions": {
+                  "clientRequestPath": "/.git/config",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 3
+                },
+                "count": 3,
+                "dimensions": {
+                  "clientRequestPath": "/.env.stage",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 3
+                },
+                "count": 3,
+                "dimensions": {
+                  "clientRequestPath": "/sparkpost/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 3,
+                "dimensions": {
+                  "clientRequestPath": "/favicon.ico",
+                  "userAgent": "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/config/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/current/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/shopify/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/symfony/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/favicon.ico",
+                  "userAgent": "Dalvik/2.1.0 (Linux; U; Android 9.0; ZTE BA520 Build/MRA58K)"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/administrator/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/old/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/transactional/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/private/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/portal/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/next/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/2020/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.staging",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/vendor/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/cpanel/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/mail/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.prod",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.example",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/_environment",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.live",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/uploads/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/api/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.docker",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/site/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/build/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.docker",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/lib/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/mailer/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/api/.env",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/pi.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/i.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/core/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/website/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/sender/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/drupal/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/live/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/graphql/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/sito/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/media/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/crm/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/microservice/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/magento/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/smtp/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/cpanel/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.local",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/email/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/wordpress/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/postmark/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/web/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/backup/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.save",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/public_html/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/hosting/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/news/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/mailjet/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/php-info.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/.env.development",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/core/Database/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/shared/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/tools/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/app/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/express/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/_profiler/phpinfo",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/core/Database/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/secrets.json",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp2/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.old",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.production",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/storage/logs/laravel.log",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-includes/js/jquery/jquery.js",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/user_secrets.yml",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sendgrid/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/license.txt",
+                  "userAgent": "python-requests/2.27.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/mail/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/backup.tar.gz",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/webroot/index.php/_environment",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.ssh/id_ed25519",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/phpinfo.php",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:118.0) Gecko/20100101 Firefox/118.0"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/news/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Version/17.0 Safari/605.1.15"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.svn/wc.db",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.zshrc",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sito/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/database_backup.sql",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.npmrc",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.staging",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/api/v2/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.vscode/sftp.json",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/heapdump",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; rv:143.0) Gecko/20100101 Firefox/143.0"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/tmp/phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/client/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.production",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.git/HEAD",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/cronlab/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/dump.sql",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.txt",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/old_phpinfo.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/node/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/2019/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/cms/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/backup.sql",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/docker-compose.yml",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.php",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/test/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/_vti_pvt/service.pwd",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/_environment",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/media/system/js/core.js",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/blog/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.backup",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/2018/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/api/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp2/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-admin/setup-config.php",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/internal/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/public/.env",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.ssh/id_rsa",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.xml",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/backup.zip",
+                  "userAgent": "Go-http-client/1.1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "purpose": "one-time retained-history raw freeze",
+  "query": {
+    "dataset": "httpRequestsAdaptiveGroups",
+    "edgeResponseStatus_geq": 404,
+    "edgeResponseStatus_lt": 405,
+    "groupBy": [
+      "clientRequestPath",
+      "userAgent"
+    ],
+    "limit": 5000,
+    "orderBy": [
+      "count_DESC"
+    ],
+    "requestSource": "eyeball"
+  },
+  "saturated_at_minimum_window": false,
+  "source": "cloudflare:httpRequestsAdaptiveGroups",
+  "version": 1,
+  "window": {
+    "end": "2026-09-15T23:06:56Z",
+    "start": "2026-09-14T23:06:56Z"
+  }
+}
