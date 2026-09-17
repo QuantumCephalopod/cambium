@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "source": "cloudflare:httpRequestsAdaptiveGroups",
+  "baseline": {
+    "kind": "aggregate-checkpoint",
+    "path": "../checkpoint.json",
+    "through": "2026-09-17T21:58:07Z",
+    "note": "The retained provider history had already been fetched and aggregated before immutable raw-window storage was introduced. Preserve this baseline; do not refetch old history merely to reconstruct raw responses."
+  },
+  "capture_law": "Each later JSON file is one immutable queried provider window, including empty windows, appended from cursor time forward."
+}
