@@ -1,192 +1,178 @@
 # Display live nerve
 
-`w/display/x/live` is the canonical code for the `sss-live` Cloudflare Worker. Cloudflare is the execution substrate; GitHub is the source of truth for this code. No local checkout, local Node install, local Wrangler install, or local deployment step is part of the production architecture.
+`w/display/x/live` is the canonical code for the `sss-live` Cloudflare Worker. Cloudflare is execution substrate; GitHub is source truth for this transport code. The Worker is not semantic authority and the user's local PC is not part of production physiology.
 
-## What this organ is
+## Current physiology
 
-The live nerve is the transport/memory layer between living organism state and the public Display membrane. It must not become a second semantic authority.
+The live nerve is deliberately one-way and change-driven:
 
 ```text
 Google Drive living organism
         |
-        | HOME + admitted public secretion
+        | durable HOME + admitted public secretion
+        | authenticated POST only when source state changes
         v
-Cloudflare sss-live Worker
+Cloudflare Worker: sss-live
         |
-        +-- LiveState Durable Object = current public memory
-        +-- hibernating WebSockets = push to open browsers
-        |
+        | R2 binding (no R2 credential in code)
         v
-sss.saarland Display membrane
+R2 bucket: sss-shadow
+        |
+        | ordinary static object delivery when public domain is enabled
+        v
+Display / browser
 ```
 
-The current public site itself remains a GitHub Pages artifact behind Cloudflare:
+Visitors do **not** call the Worker. There is no browser polling loop, public state endpoint or WebSocket watch channel. A page refresh must not execute `sss-live`.
+
+## R2 shadow-address law
+
+R2 is a co-addressed public/heavy-data shadow of site-space, not a second taxonomy. A public object belonging to a locus keeps the same relative address as that locus.
+
+Examples:
 
 ```text
-Internet
-  -> Cloudflare DNS/proxy
-  -> GitHub Pages origin
-  -> sss.saarland
+site-space / repo             R2 object key
+
+y/papers                     y/papers/current.json
+y/papers/foo                  y/papers/foo/image.webp
+y/project                     y/project/cover.webp
 ```
 
-The intended production route will intercept only `sss.saarland/__live/*` with `sss-live`; every other request continues to GitHub Pages. That route is **not mounted yet**.
+The carrier may differ; the address does not. Subdirectories such as `images/` or `data/` are introduced only when a local holon actually earns that differentiation.
 
-## Authority boundaries
-
-- **Drive** is authoritative for what a living research organism currently is.
-- **GitHub / cambium** is authoritative for Display anatomy, transport code, rituals and public build logic.
-- **Cloudflare** executes the live transport and keeps admitted current public state; it is not semantic source truth.
-- **GitHub Pages** serves the ordinary static Display membrane.
-- **The user's local PC is not part of this architecture.**
-
-Code changes alter how Display perceives/transports. Organism HOME changes alter what current admitted public state is perceived. A normal Papers heartbeat must never require a Git commit.
-
-## Runtime contract
-
-The Worker exposes three operations. The implementation accepts them both at the bare Worker paths and under the future `/__live/*` production route.
-
-- `GET /state` — return current admitted public state; optional `?site_id=...` narrows to one stable site identity.
-- `GET /watch` — open a hibernatable WebSocket, immediately receive current state, then receive later HOME events by push.
-- `POST /home` — receive one authenticated public HOME secretion.
-
-The Worker stores state by stable `site_id`, never by current locus/address. This preserves the site-holon invariant `identity != locus`: e.g. Papers remains `site_id = organism:papers` even if later growth remounts it from one locus to another.
-
-A HOME packet without `snapshot` still carries/broadcasts activity while preserving the previous snapshot. Event delivery is idempotent through a bounded ring of the most recent 256 `event_id` values.
-
-## Durable memory
-
-`wrangler.jsonc` declares one SQLite-backed Durable Object binding:
+Current admitted live mapping is intentionally narrow:
 
 ```text
-LIVE_STATE -> LiveState
+organism:papers -> y/papers/current.json
 ```
 
-`LiveState` currently persists:
+Any unregistered `site_id` is rejected rather than allowed to invent an R2 path.
 
-- `sites` — current public state keyed by stable `site_id`;
-- `last_event` — most recently accepted event summary;
-- `recent_events` — bounded deduplication ring.
+## Public surface
 
-WebSockets are accepted with the Durable Object hibernation API, allowing the object to sleep between events instead of requiring a polling process.
+Production Worker exposure is exactly:
 
-## Production deployment — canonical path
+```text
+POST https://sss.saarland/__live/home
+```
 
-Production deployment is **GitHub Actions**, not Cloudflare Workers Builds/Git integration.
+`wrangler.jsonc` disables the `workers.dev` entrance and mounts only that exact custom-domain route. Other `__live` paths are not part of the production contract.
 
-The direct Cloudflare Git-integration UI was intentionally abandoned after its GitHub-App handoff failed to complete the Worker↔repository build link reliably. The Cloudflare GitHub App may remain installed with access only to `self-similar-systems/cambium`, but it is not the canonical deployment mechanism and no re-entry should depend on it.
+`POST /__live/home` requires:
 
-Canonical production flow:
+```text
+Authorization: Bearer <HOME_SECRET>
+```
+
+`HOME_SECRET` exists only in the Cloudflare Worker secret store and the authorized Drive/Apps-Script producer. It must never appear in Git, R2, public JavaScript or receipts.
+
+The request body is bounded to 1 MiB, admits only a fixed field set, currently admits only `organism:papers`, and admits only `kind = HOME`.
+
+## R2 write semantics
+
+`wrangler.jsonc` binds:
+
+```text
+SHADOW -> R2 bucket sss-shadow
+```
+
+The Worker uses `head()` only to recognize an already-delivered concrete HOME/revision/feed phase, then `put()` only when the public object actually needs replacement. One source HOME may legitimately reconcile from `PENDING` to `READY`; those are distinct delivery phases of the same HOME identity.
+
+`y/papers/current.json` is replaced atomically as one current-state object. No event archive is generated by default, avoiding redundant writes and unbounded public history.
+
+The stored object is a public-safe envelope containing the admitted HOME/revision/activity state and, once the Papers projection is expanded, an optional admitted `snapshot`. Drive remains authority for what Papers is; R2 stores only what Papers deliberately secretes publicly.
+
+## Drive-side delivery
+
+The bound `/papers/_feed` Apps Script owns delivery. Its physiology is:
+
+```text
+Papers changes
+-> durable HOME
+-> local _feed refresh
+-> child→host UPLINK
+-> one public HOME secretion to sss-live
+-> R2 current object replacement if needed
+```
+
+Failed live delivery is kept in a bounded ScriptProperties outbox and creates only a temporary wound-only retry trigger. Successful delivery removes the parcel. An idle organism has no polling schedule.
+
+A visitor opening or refreshing the website never participates in this chain.
+
+## R2 public-read safety
+
+The bucket is private by default. Public object delivery, when enabled, uses the custom domain:
+
+```text
+assets.sss.saarland
+```
+
+The `r2.dev` public development URL remains disabled. Before the custom domain is enabled for production reads, install the intended cache/WAF/rate-limit shell. Public reads then go directly through the R2 custom domain and Cloudflare cache; they do not traverse `sss-live`.
+
+Emergency CUT:
+
+```text
+Cloudflare R2
+-> sss-shadow
+-> Custom Domains
+-> assets.sss.saarland
+-> Disable domain
+```
+
+This removes public read access while preserving the bucket and objects. Billing alerts are secondary witnesses, not a hard shutoff.
+
+## Production deployment
+
+Production Worker deployment remains GitHub Actions:
 
 ```text
 staging work
 QuantumCephalopod/cambium
         |
-        | deliberate merge
+        | deliberate promotion
         v
-production source
 self-similar-systems/cambium:main
         |
         | .github/workflows/cloudflare-live.yml
         v
-GitHub Actions
-        |
-        | cloudflare/wrangler-action@v4
-        | workingDirectory = w/display/x/live
-        | wrangler 4.131.1
+cloudflare/wrangler-action
         v
-Cloudflare Worker: sss-live
+sss-live
 ```
 
-The production workflow deploys when `main` changes under `w/display/x/live/**` or when the workflow itself changes. The Worker name in Cloudflare and `wrangler.jsonc` must remain `sss-live`.
+Only the canonical organization repository deploys the Worker. Staging does not double-deploy production infrastructure.
 
-### Deployment credentials
+Production Actions secrets remain:
 
-The **values are never committed**. Production repository Actions secrets are named:
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
 
-- `CLOUDFLARE_API_TOKEN` — Cloudflare API token with Worker-edit capability;
-- `CLOUDFLARE_ACCOUNT_ID` — Cloudflare account ID.
+R2 itself is accessed through the Worker binding; no S3/R2 access key is required by Worker code.
 
-These two secrets are sufficient for the GitHub Actions deployment path. Cloudflare R2/S3 credentials such as Access Key ID, Secret Access Key, or S3 endpoint are unrelated and must not be substituted for `CLOUDFLARE_API_TOKEN`.
+## Current boundary — 2026-09-17
 
-The first production deployment through this path succeeded in GitHub Actions run `34785905263`. Wrangler reported:
+Actualized before this R2 mutation:
 
-- `Created: LiveState`;
-- binding `env.LIVE_STATE (LiveState)`;
-- `Uploaded sss-live`;
-- Worker URL `https://sss-live.philipp-bartholomaeus.workers.dev`;
-- deployed Worker version `8612f637-e9b6-40cf-9ae7-b708ba1ad32c`.
+- `sss-live` deployment from the canonical organization repository is proven;
+- `HOME_SECRET` is installed on Worker and bound Papers Apps Script;
+- the exact `/__live/home` route has successfully accepted real Papers HOME delivery;
+- Drive-side outbox/retry physiology is installed and a repeated current HOME was correctly recognized as already delivered;
+- `sss-shadow` exists as a Standard R2 bucket;
+- `assets.sss.saarland` is attached but deliberately unpublished while safety controls are prepared;
+- the R2 public development URL is disabled;
+- non-zero billable-usage alerts are configured as anomaly witnesses.
 
-That run is the durable witness that GitHub -> Cloudflare deployment and Durable Object creation are operational.
+This mutation changes current public memory from Durable Object/browser-push physiology to one-way R2 shadow secretion. The old `/state` and `/watch` model is retired.
 
-## HOME authentication
+Acceptance witness for this mutation:
 
-`POST /home` is designed to require a Cloudflare runtime secret named:
-
-```text
-HOME_SECRET
-```
-
-The caller sends it as `Authorization: Bearer <secret>`. The value must live only in secret stores (Cloudflare runtime secret and the authorized Drive/Apps-Script side when that secretion path is actualized). It must never appear in Git, public browser JavaScript, a public snapshot, or a HOME receipt.
-
-`HOME_SECRET` is **not yet actualized** as of the first successful Worker deployment, so `/home` correctly remains unusable until that boundary is intentionally closed.
-
-## HOME packet
-
-Minimum authenticated packet:
-
-```json
-{
-  "event_id": "globally-stable-home-event-id",
-  "site_id": "organism:papers"
-}
-```
-
-Optional public fields include `kind`, `occurred_at`, `projection_revision`, `semantic_revision`, `activity`, and `snapshot`.
-
-Only already-admitted public state belongs in `snapshot`. Private Drive IDs, internal source URLs, credentials, private receipt paths, and non-public tissue must never cross this boundary.
-
-## Public-secretion law
-
-The intended physiology is event-driven, not polled:
-
-```text
-organism changes
--> durable HOME
--> local _feed refresh attempt
--> bounded UPLINK witness
--> admitted PUBLIC SECRETION
--> sss-live current state
--> push to connected browsers
-```
-
-Every meaningful HOME may emit one outward activity event. A new/replaced public snapshot is sent only when the admitted public projection actually changes. Delivery must be idempotent by `event_id`.
-
-The Drive/Apps-Script side must eventually maintain a tiny durable outbox: successful delivery removes the parcel; failed delivery leaves it pending and creates only a temporary retry trigger while wounded. Idle organisms must have no timer/polling loop.
-
-## Current boundary — 2026-09-13
-
-**PASS / actualized**
-
-- `sss.saarland` DNS/proxy is under Cloudflare while GitHub Pages remains the normal origin.
-- `sss-live` Worker exists and is reachable on `workers.dev`.
-- `LiveState` SQLite Durable Object exists.
-- `/state`, `/watch`, and authenticated `/home` transport code exists.
-- WebSocket hibernation is implemented.
-- state is keyed by stable site identity, not locus.
-- production GitHub Actions -> Wrangler -> Cloudflare deployment is proven successful.
-- deployment credentials are safely held as production repository Actions secrets.
-
-**OPEN / next tissue**
-
-1. create `HOME_SECRET` in Cloudflare and the authorized HOME producer;
-2. mount Worker route `sss.saarland/__live/*` while leaving all other traffic on GitHub Pages;
-3. connect the public Display runtime to `/__live/state` + `/__live/watch` and feed events into the existing identity-bound activity receptor;
-4. create the admitted Papers public projection from live Drive truth rather than `w/display/papers.json`;
-5. attach Papers HOME secretion with durable outbox/retry semantics;
-6. acceptance test: cause one real Papers heartbeat, perform no manual site/Git update, and observe `sss.saarland` change by itself.
-
-If that test requires a Git commit, manual JSON refresh, build button, reminder, or polling loop, the live physiology has failed.
+1. deploy the Worker with the `SHADOW -> sss-shadow` binding;
+2. run one current Papers synchronization or wait for the next genuine Papers HOME;
+3. observe exactly `y/papers/current.json` in the private bucket;
+4. repeat the same HOME and witness `deduped: true` without replacing the object;
+5. confirm no browser request is needed to create or update the object.
 
 ## Growth law
 
-This directory is infrastructure, not semantic anatomy. **Drive changes what an organism is; Git changes how Display perceives it; Cloudflare carries and remembers only admitted public secretion. Stable site identity is the vascular address; locus remains external placement.**
+This directory is infrastructure, not semantic anatomy. **Drive changes what an organism is; Git changes how Display transports/perceives it; R2 carries public/heavy state at the same site-space address. Writes happen from source change, reads are static, and carrier substrate never becomes ontology.**

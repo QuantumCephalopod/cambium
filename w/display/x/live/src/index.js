@@ -1,236 +1,156 @@
-import { DurableObject } from "cloudflare:workers";
-
 const JSON_HEADERS = Object.freeze({
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store"
 });
+const MAX_BODY_BYTES = 1024 * 1024;
+const EVENT_ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$/;
+const SHADOW_KEYS = Object.freeze({
+  "organism:papers": "y/papers/current.json"
+});
+const ALLOWED_FIELDS = new Set([
+  "event_id",
+  "site_id",
+  "kind",
+  "occurred_at",
+  "projection_revision",
+  "semantic_revision",
+  "activity",
+  "snapshot"
+]);
 
 function json(value, status = 200) {
-  return new Response(JSON.stringify(value), {
-    status,
-    headers: JSON_HEADERS
-  });
+  return new Response(JSON.stringify(value), { status, headers: JSON_HEADERS });
 }
 
-function livePath(pathname) {
-  if (pathname === "/__live") return "/";
-  if (pathname.startsWith("/__live/")) return pathname.slice("/__live".length);
-  return pathname;
+function optionalString(value, label, max = 256) {
+  if (value == null) return null;
+  if (typeof value !== "string" || value.length > max) {
+    throw new TypeError(`${label} must be a bounded string or null`);
+  }
+  return value;
+}
+
+function normalizeActivity(value) {
+  if (value == null) return null;
+  if (typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError("activity must be an object or null");
+  }
+  return {
+    state: optionalString(value.state, "activity.state", 64),
+    feed_state: optionalString(value.feed_state, "activity.feed_state", 64),
+    projection_changed: Boolean(value.projection_changed),
+    semantic_changed: Boolean(value.semantic_changed)
+  };
 }
 
 function publicPacket(body) {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     throw new TypeError("HOME packet must be an object");
   }
-  if (typeof body.event_id !== "string" || !body.event_id) {
-    throw new TypeError("event_id required");
+  for (const key of Object.keys(body)) {
+    if (!ALLOWED_FIELDS.has(key)) throw new TypeError(`unexpected HOME field: ${key}`);
   }
-  if (typeof body.site_id !== "string" || !body.site_id) {
-    throw new TypeError("site_id required");
+  if (typeof body.event_id !== "string" || !EVENT_ID.test(body.event_id)) {
+    throw new TypeError("event_id must be a stable literal id");
   }
-  return body;
+  if (typeof body.site_id !== "string" || !(body.site_id in SHADOW_KEYS)) {
+    throw new TypeError("site_id is not admitted to the public shadow");
+  }
+  const kind = body.kind ?? "HOME";
+  if (kind !== "HOME") throw new TypeError("only HOME secretion is admitted");
+  if (Object.prototype.hasOwnProperty.call(body, "snapshot")) {
+    if (!body.snapshot || typeof body.snapshot !== "object" || Array.isArray(body.snapshot)) {
+      throw new TypeError("snapshot must be an object when present");
+    }
+  }
+  return {
+    event_id: body.event_id,
+    site_id: body.site_id,
+    kind,
+    occurred_at: optionalString(body.occurred_at, "occurred_at", 64),
+    projection_revision: optionalString(body.projection_revision, "projection_revision", 128),
+    semantic_revision: optionalString(body.semantic_revision, "semantic_revision", 128),
+    activity: normalizeActivity(body.activity),
+    ...(Object.prototype.hasOwnProperty.call(body, "snapshot") ? { snapshot: body.snapshot } : {})
+  };
 }
 
-/* One HOME may be observed more than once while its source-owned _feed
- * reconciles PENDING -> READY. Deduplication therefore applies to one
- * concrete delivery phase/revision, not to HOME identity alone.
- */
 function receiptKey(packet) {
-  const activity = packet.activity && typeof packet.activity === "object"
-    ? packet.activity
-    : {};
-  const feedState = String(activity.feed_state ?? activity.state ?? "");
-  const snapshotRevision = Object.prototype.hasOwnProperty.call(packet, "snapshot")
-    ? String(packet.projection_revision ?? "snapshot")
-    : "no-snapshot";
   return [
     packet.site_id,
     packet.event_id,
-    packet.kind ?? "HOME",
     packet.projection_revision ?? "",
     packet.semantic_revision ?? "",
-    feedState,
-    snapshotRevision
+    packet.activity?.feed_state ?? packet.activity?.state ?? ""
   ].join("\u001f");
 }
 
-export class LiveState extends DurableObject {
-  async readState() {
-    const [sites, lastEvent] = await Promise.all([
-      this.ctx.storage.get("sites"),
-      this.ctx.storage.get("last_event")
-    ]);
-    return {
-      status: "alive",
-      organism: "sss-live",
-      sites: sites ?? {},
-      last_event: lastEvent ?? null
-    };
+async function readPacket(request) {
+  const declared = Number(request.headers.get("content-length") || 0);
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    throw Object.assign(new Error("HOME packet exceeds 1 MiB"), { status: 413 });
   }
-
-  async fetch(request) {
-    const url = new URL(request.url);
-    const path = livePath(url.pathname);
-
-    if (path === "/state" && request.method === "GET") {
-      const state = await this.readState();
-      const siteId = url.searchParams.get("site_id");
-      if (!siteId) return json(state);
-      return json({
-        status: "alive",
-        organism: "sss-live",
-        site: state.sites[siteId] ?? null,
-        last_event: state.last_event
-      });
-    }
-
-    if (path === "/watch" && request.method === "GET") {
-      if ((request.headers.get("Upgrade") || "").toLowerCase() !== "websocket") {
-        return new Response("Expected WebSocket", { status: 426 });
-      }
-
-      const pair = new WebSocketPair();
-      const [client, server] = Object.values(pair);
-      this.ctx.acceptWebSocket(server);
-
-      server.send(JSON.stringify({
-        type: "state",
-        data: await this.readState()
-      }));
-
-      return new Response(null, {
-        status: 101,
-        webSocket: client
-      });
-    }
-
-    if (path === "/home" && request.method === "POST") {
-      let packet;
-      try {
-        packet = publicPacket(await request.json());
-      } catch (error) {
-        return json({ ok: false, error: error.message }, 400);
-      }
-
-      const recent = (await this.ctx.storage.get("recent_events")) ?? [];
-      const receipt = receiptKey(packet);
-      if (recent.includes(receipt)) {
-        return json({
-          ok: true,
-          deduped: true,
-          event_id: packet.event_id,
-          site_id: packet.site_id
-        });
-      }
-
-      const receivedAt = new Date().toISOString();
-      const sites = (await this.ctx.storage.get("sites")) ?? {};
-      const previous = sites[packet.site_id] ?? {
-        site_id: packet.site_id,
-        snapshot: null,
-        last_event: null
-      };
-
-      const nextSite = {
-        ...previous,
-        site_id: packet.site_id,
-        snapshot: Object.prototype.hasOwnProperty.call(packet, "snapshot")
-          ? packet.snapshot
-          : previous.snapshot,
-        last_event: {
-          event_id: packet.event_id,
-          kind: packet.kind ?? "HOME",
-          occurred_at: packet.occurred_at ?? null,
-          projection_revision: packet.projection_revision ?? null,
-          semantic_revision: packet.semantic_revision ?? null,
-          activity: packet.activity ?? null,
-          received_at: receivedAt
-        }
-      };
-
-      sites[packet.site_id] = nextSite;
-      const nextRecent = [...recent, receipt].slice(-256);
-      const lastEvent = {
-        event_id: packet.event_id,
-        site_id: packet.site_id,
-        kind: packet.kind ?? "HOME",
-        received_at: receivedAt
-      };
-
-      await this.ctx.storage.put({
-        sites,
-        recent_events: nextRecent,
-        last_event: lastEvent
-      });
-
-      const message = JSON.stringify({
-        type: "home",
-        data: {
-          ...packet,
-          received_at: receivedAt
-        }
-      });
-
-      for (const socket of this.ctx.getWebSockets()) {
-        try {
-          socket.send(message);
-        } catch (_) {
-          // Broken sockets disappear from the hibernation set after disconnect.
-        }
-      }
-
-      return json({
-        ok: true,
-        deduped: false,
-        event_id: packet.event_id,
-        site_id: packet.site_id
-      });
-    }
-
-    return new Response("not found", { status: 404 });
+  const text = await request.text();
+  if (new TextEncoder().encode(text).byteLength > MAX_BODY_BYTES) {
+    throw Object.assign(new Error("HOME packet exceeds 1 MiB"), { status: 413 });
   }
-
-  async webSocketMessage(socket, message) {
-    if (message === "state") {
-      socket.send(JSON.stringify({
-        type: "state",
-        data: await this.readState()
-      }));
-    }
-  }
-
-  async webSocketClose(socket, code, reason) {
-    try {
-      socket.close(code, reason);
-    } catch (_) {}
-  }
-
-  async webSocketError() {
-    // The runtime owns reconnection; the browser may reconnect when desired.
-  }
+  let body;
+  try { body = JSON.parse(text); }
+  catch (_) { throw Object.assign(new Error("HOME packet must be JSON"), { status: 400 }); }
+  try { return publicPacket(body); }
+  catch (error) { throw Object.assign(error, { status: 400 }); }
 }
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const path = livePath(url.pathname);
+    if (url.pathname !== "/__live/home") return new Response("not found", { status: 404 });
+    if (request.method !== "POST") return new Response("method not allowed", { status: 405 });
 
-    if (path === "/home") {
-      if (request.method !== "POST") {
-        return new Response("method not allowed", { status: 405 });
-      }
-      const expected = env.HOME_SECRET;
-      const supplied = request.headers.get("Authorization");
-      if (!expected || supplied !== `Bearer ${expected}`) {
-        return new Response("unauthorized", { status: 401 });
-      }
+    const expected = env.HOME_SECRET;
+    const supplied = request.headers.get("Authorization");
+    if (!expected || supplied !== `Bearer ${expected}`) {
+      return new Response("unauthorized", { status: 401 });
     }
 
-    if (!["/state", "/watch", "/home"].includes(path)) {
-      return json({ status: "alive", organism: "sss-live" });
+    let packet;
+    try { packet = await readPacket(request); }
+    catch (error) { return json({ ok: false, error: error.message }, error.status || 400); }
+
+    const key = SHADOW_KEYS[packet.site_id];
+    const receipt = receiptKey(packet);
+    const current = await env.SHADOW.head(key);
+    if (current?.customMetadata?.receipt === receipt) {
+      return json({ ok: true, deduped: true, event_id: packet.event_id, site_id: packet.site_id, key });
     }
 
-    const live = env.LIVE_STATE.getByName("sss");
-    return live.fetch(request);
+    const receivedAt = new Date().toISOString();
+    const state = {
+      version: 1,
+      ...packet,
+      received_at: receivedAt
+    };
+
+    await env.SHADOW.put(key, JSON.stringify(state), {
+      httpMetadata: {
+        contentType: "application/json; charset=utf-8",
+        cacheControl: "public, max-age=300"
+      },
+      customMetadata: {
+        receipt,
+        site_id: packet.site_id,
+        event_id: packet.event_id,
+        projection_revision: packet.projection_revision ?? "",
+        semantic_revision: packet.semantic_revision ?? ""
+      }
+    });
+
+    return json({
+      ok: true,
+      deduped: false,
+      event_id: packet.event_id,
+      site_id: packet.site_id,
+      key
+    });
   }
 };

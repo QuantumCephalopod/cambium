@@ -3,27 +3,19 @@
   "name": "sss-live",
   "main": "src/index.js",
   "compatibility_date": "2026-09-13",
+  "workers_dev": false,
 
   "routes": [
     {
-      "pattern": "sss.saarland/__live/*",
+      "pattern": "sss.saarland/__live/home",
       "zone_name": "sss.saarland"
     }
   ],
 
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "LIVE_STATE",
-        "class_name": "LiveState"
-      }
-    ]
-  },
-
-  "exports": {
-    "LiveState": {
-      "type": "durable-object",
-      "storage": "sqlite"
+  "r2_buckets": [
+    {
+      "binding": "SHADOW",
+      "bucket_name": "sss-shadow"
     }
-  }
+  ]
 }
