@@ -85,15 +85,30 @@ def main():
     state_end=trace_state.get('applied_capture_end') or trace_state.get('last_complete_end')
     check(isinstance(checkpoint_end,str) and isinstance(cursor_end,str) and isinstance(state_end,str),'Crawlerbait trace cursors are not explicit')
     check(checkpoint_end<=state_end<=cursor_end,'Crawlerbait derived trace state escaped local capture/checkpoint interval')
-    captures=sorted(p for p in (crawler/'x'/'captures').glob('*.json') if p.name!='manifest.json')
+    captures=sorted(p for p in (crawler/'x'/'captures').iterdir() if p.is_file() and p.name!='manifest.json' and p.name.endswith(('.capture.json','.json')))
     expected=checkpoint_end
     for capture in captures:
         value=json.loads(capture.read_text(encoding='utf-8'))
         window=value.get('window') or {}
-        check(value.get('source')=='cloudflare:httpRequestsAdaptiveGroups' and isinstance(value.get('groups'),list),f'invalid raw capture {capture.name}')
+        groups=value.get('groups') if value.get('version')==1 else ((value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[{}])[0].get('groups') if ((value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones')) else None)
+        check(value.get('source')=='cloudflare:httpRequestsAdaptiveGroups' and isinstance(groups,list),f'invalid raw capture {capture.name}')
         check(window.get('start')==expected,f'Crawlerbait raw capture gap before {capture.name}')
         expected=window.get('end')
     check(expected==cursor_end,'Crawlerbait capture cursor is not exactly covered by immutable local windows')
+
+    retained=crawler/'x'/'retained-bootstrap'
+    if (retained/'seal.json').is_file():
+        seal=json.loads((retained/'seal.json').read_text(encoding='utf-8'))
+        check(seal.get('sealed') is True,'Crawlerbait retained-history archive is not sealed')
+        check((retained/'provider-settings.json').is_file(),'Crawlerbait retained-history provider settings missing')
+        files=seal.get('files')
+        check(isinstance(files,list) and files,'Crawlerbait retained-history seal has no raw files')
+        for name in files:
+            raw=retained/name
+            check(raw.is_file(),f'Crawlerbait retained-history raw file missing {name}')
+            value=json.loads(raw.read_text(encoding='utf-8'))
+            zones=(value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
+            check(value.get('source')=='cloudflare:httpRequestsAdaptiveGroups' and len(zones)==1 and isinstance(zones[0].get('groups'),list),f'invalid retained raw provider payload {name}')
     bait_dirs=[p for p in (crawler/'w').iterdir() if p.is_dir()]
     check(bool(bait_dirs),'Crawlerbait bait-space has no addressed bait body')
     for locus in bait_dirs:
