@@ -21,14 +21,6 @@ PROJECTION_PATH = ROOT / "w" / "projection.json"
 PUBLIC_ROOT = ROOT / "w" / "public"
 GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
 
-RESERVED_EXACT_PREFIXES = (
-    "/assets",
-    "/crawlerbait",
-    "/robots.txt",
-    "/sitemap.xml",
-    "/favicon.ico",
-)
-
 
 def read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
@@ -37,39 +29,6 @@ def read_json(path: Path):
 def write_json(path: Path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
-
-def population_root() -> Path:
-    """Locate the hosting Display Population without depending on crawlerbait depth."""
-    for ancestor in (ROOT, *ROOT.parents):
-        display = ancestor.parent
-        if (
-            ancestor.name == "y"
-            and display.name == "display"
-            and (display / "RITUALS" / "organism" / "RITUAL.md").is_file()
-        ):
-            return ancestor
-    raise RuntimeError("crawlerbait could not locate its Display Population host")
-
-
-def occupied_site_prefixes() -> tuple[str, ...]:
-    """Derive public site-scope collisions from the live Population tree.
-
-    This does not filter observations. It only prevents Crawlerbait's static
-    representation from claiming a path already owned by another Site-Holon.
-    """
-    prefixes = set()
-    for manifest in population_root().rglob("site.json"):
-        value = read_json(manifest)
-        scope = value.get("local_scope")
-        if isinstance(scope, str):
-            scope = scope.strip("/")
-            if scope:
-                prefixes.add("/" + scope)
-    return tuple(sorted(prefixes))
-
-
-OCCUPIED_SITE_PREFIXES = occupied_site_prefixes()
 
 
 def parse_time(value: str) -> datetime:
@@ -140,7 +99,7 @@ def fetch_groups(token: str, zone: str, start: datetime, end: datetime, limit: i
         headers={
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
-            "User-Agent": "sss-crawlerbait-tide/3",
+            "User-Agent": "sss-crawlerbait-tide/4",
         },
     )
     try:
@@ -200,20 +159,16 @@ def assimilate(state: dict, groups: list, start: datetime, end: datetime, policy
     return out, changed
 
 
-def exact_public_parts(path: str):
-    """Return exact static route parts when Pages can represent them without collision.
+def local_bait_parts(path: str):
+    """Mirror an ordinary observed path only *inside* Crawlerbait's bait subtree.
 
-    Failure here never drops evidence: it only changes public projection to the
-    crawlerbait-owned archival namespace.
+    This is a carrier decision, never an observation filter. Paths that cannot be
+    mirrored as ordinary filesystem components receive a deterministic receipt.
     """
     if not isinstance(path, str) or not path.startswith("/") or path == "/":
         return None
     if any(ord(ch) < 32 for ch in path) or any(ch in path for ch in ("\\", "?", "#", "%")):
         return None
-    for prefix in (*RESERVED_EXACT_PREFIXES, *OCCUPIED_SITE_PREFIXES):
-        if path == prefix or path.startswith(prefix + "/"):
-            return None
-
     parts = path.rstrip("/")[1:].split("/")
     if not parts or any(part in ("", ".", "..") or part.startswith(".") for part in parts):
         return None
@@ -227,17 +182,17 @@ def receipt_id(path: str) -> str:
 
 
 def public_href(path: str) -> str:
-    parts = exact_public_parts(path)
+    parts = local_bait_parts(path)
     if parts:
-        return "/" + "/".join(parts) + "/"
-    return f"/crawlerbait/bait/{receipt_id(path)}/"
+        return "/crawlerbait/bait/" + "/".join(parts) + "/"
+    return f"/crawlerbait/receipt/{receipt_id(path)}/"
 
 
 def route_output(path: str) -> Path:
-    parts = exact_public_parts(path)
+    parts = local_bait_parts(path)
     if parts:
-        return PUBLIC_ROOT.joinpath(*parts, "index.html")
-    return PUBLIC_ROOT / "crawlerbait" / "bait" / receipt_id(path) / "index.html"
+        return PUBLIC_ROOT / "crawlerbait" / "bait" / Path(*parts) / "index.html"
+    return PUBLIC_ROOT / "crawlerbait" / "receipt" / receipt_id(path) / "index.html"
 
 
 def projection_from(state: dict, policy: dict):
@@ -255,12 +210,13 @@ def projection_from(state: dict, policy: dict):
         "policy": {
             "observation_domain": "all Cloudflare 404 groups returned in each queried window",
             "growth_gate": "none",
+            "public_namespace": "/crawlerbait/",
         },
         "routes": [
             {
                 "path": r["path"],
                 "href": public_href(r["path"]),
-                "exact_href": exact_public_parts(r["path"]) is not None,
+                "path_shape_preserved": local_bait_parts(r["path"]) is not None,
                 "observed_404": r["observed_404"],
                 "materialized_at": r["materialized_at"],
                 "last_observed_window": r["last_observed_window"],
@@ -291,7 +247,7 @@ def render_public(state: dict, policy: dict):
         '<p class="dim">organism:crawlerbait · static machine-facing reef</p>'
         '<h1>crawlerbait</h1>'
         '<p>Every 404 group returned by the Cloudflare sensor is retained. '
-        'There is no recurrence threshold, ranking or growth budget.</p>'
+        'Observed addresses are data; every public receipt remains inside /crawlerbait/.</p>'
         f'<h2>observed paths</h2><ul>{links}</ul>'
         '<p><a href="/crawlerbait/state.json">machine-readable projection</a></p>'
     )
@@ -306,16 +262,20 @@ def render_public(state: dict, policy: dict):
             f'<li><code>{escape(s["claimed_user_agent"])}</code> · <code>{escape(s["id"])}</code> · {s["observed_404"]}</li>'
             for s in route["signatures"]
         ) or '<li class="dim">No retained signature.</li>'
-        exact = "exact requested path" if route["exact_href"] else "archival receipt; requested path cannot be emitted safely as a static Pages path"
+        representation = (
+            "crawlerbait-local bait path mirrors observed path shape"
+            if route["path_shape_preserved"]
+            else "crawlerbait-local deterministic receipt"
+        )
         body = (
             '<p><a href="/crawlerbait/">← crawlerbait</a></p>'
-            '<p class="dim">404 sediment · previously absent path</p>'
+            '<p class="dim">404 sediment · observed address retained as data</p>'
             f'<h1><code>{escape(route["path"])}</code></h1>'
             '<p>This receipt exists because Cloudflare observed requests for this path returning 404.</p>'
             '<ul>'
             f'<li>observed 404 requests: <strong>{route["observed_404"]}</strong></li>'
             f'<li>materialized: <code>{escape(route["materialized_at"])}</code></li>'
-            f'<li>projection: <code>{escape(exact)}</code></li>'
+            f'<li>representation: <code>{escape(representation)}</code></li>'
             f'<li>adaptive sampling observed: <code>{str(bool(route["sampled"])).lower()}</code></li>'
             '</ul>'
             f'<h2>observed claimed user-agents</h2><ul>{sigs}</ul>'
@@ -331,7 +291,7 @@ def render_public(state: dict, policy: dict):
 def compute_window(state: dict, policy: dict, now: datetime):
     end = now.astimezone(timezone.utc) - timedelta(minutes=int(policy["settle_delay_minutes"]))
     start = parse_time(state["last_complete_end"]) if state.get("last_complete_end") else end - timedelta(hours=24)
-    return max(start, end - timedelta(hours=int(policy["max_window_hours"]))), end
+    return max(start, end - timedelta(hours=int(policy["max_window_hours"])),), end
 
 
 def fixture_groups(path: Path):
@@ -361,13 +321,14 @@ def self_test():
     assert set(state["routes"]) == {"/login", "/admin", "/assets/nope", "/.env", "/papers"}
     assert state["routes"]["/admin"]["observed_404"] == 1
     assert next(iter(state["routes"]["/login"]["signatures"].values()))["claimed_user_agent"] == "CrabBot/1.0"
-    assert public_href("/login") == "/login/"
-    assert public_href("/assets/nope").startswith("/crawlerbait/bait/")
-    assert public_href("/.env").startswith("/crawlerbait/bait/")
-    assert public_href("/papers").startswith("/crawlerbait/bait/")
-    assert "/papers" in state["routes"]
+    assert public_href("/login") == "/crawlerbait/bait/login/"
+    assert public_href("/assets/nope") == "/crawlerbait/bait/assets/nope/"
+    assert public_href("/.env").startswith("/crawlerbait/receipt/")
+    assert public_href("/papers") == "/crawlerbait/bait/papers/"
+    assert route_output("/papers").as_posix().endswith("w/public/crawlerbait/bait/papers/index.html")
+    assert all(public_href(p).startswith("/crawlerbait/") for p in state["routes"])
     assert projection_from(state, policy)["summary"]["unresolved_candidates"] == 0
-    print("PASS · crawlerbait retains every observed 404 group; site-scope collisions only alter static representation")
+    print("PASS · every observed 404 stays data-complete while all sediment remains inside /crawlerbait/")
 
 
 def main():
