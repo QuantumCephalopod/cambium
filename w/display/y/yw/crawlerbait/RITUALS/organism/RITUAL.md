@@ -87,7 +87,21 @@ then
 
 The capture edge is persisted before downstream metabolism. If downstream processing fails, already-captured provider evidence remains durable and the next tide can retry locally without requesting the same window again.
 
-There is no normal full-history mode. The historical provider window was a one-time setup/bootstrap event and has already been consumed. Git history preserves the deleted bootstrap implementation; active physiology does not expose it as a recurring operation.
+### one-time retained-history freeze — setup aperture, not physiology
+
+During the present setup window only, while Cloudflare still retains historical analytics that will later expire, Crawlerbait must freeze **every still-retained provider response as raw as this API exposes it** into `x/retained-bootstrap/`.
+
+`y/bootstrap_once.py` and the manual `crawlerbait retained-history bootstrap ONCE` workflow exist only to close this historical custody gap. They:
+- query the complete provider-retained interval available at execution time;
+- preserve the full returned GraphQL payload for each leaf time window, not merely the downstream aggregate;
+- snapshot the provider retention/page/window settings used;
+- recursively split a time window when it hits the provider page ceiling so transport truncation is not silently accepted;
+- seal the archive once complete;
+- never refresh that archive later.
+
+This is deliberately **one-time setup**, because the provider deletes old history. After the seal exists, the temporary bootstrap aperture has finished its only job and should be removed from active workflow code. Future sensing is incremental only through `capture.py`.
+
+The already-owned pre-bootstrap aggregate checkpoint remains valuable because some oldest provider time may disappear before this raw freeze can recover it. The raw retained bootstrap is additional source evidence, not permission to discard earlier owned memory.
 
 Ordinary crawler reads remain static CDN/Pages traffic and invoke no Worker merely to announce presence.
 
@@ -107,13 +121,15 @@ This is why `/login`, `/.env`, `/wp-json`, etc. are never directory taxonomy ins
 A Crawlerbait change closes only when:
 1. root `w/x/z/y` still realize Baits / Traces / Membrane / Tide and root `4V/6E/4F/1T` remains closed;
 2. `w` contains only addressed bait bodies;
-3. provider windows already captured are durable local evidence and are never re-requested because downstream law changed;
-4. `x/state.json` remains explicitly derived from local checkpoint + captures;
-5. capture persists new raw windows/cursor before downstream metabolism can fail;
-6. `z` alone carries public/static/renderer membrane tissue;
-7. Cloudflare credentials never enter repository/public bytes;
-8. ordinary crawler reads remain static;
-9. bait identity survives bait-space relocation/deepening;
-10. exact build/address/tetrahedral/capture/replay/public witnesses pass.
+3. during setup, every provider window still retained is frozen once into the sealed raw retained-bootstrap before that history expires;
+4. after sealing, historical bootstrap is never refreshed or treated as recurring physiology;
+5. provider windows captured during normal operation are durable local evidence and are never re-requested because downstream law changed;
+6. `x/state.json` remains explicitly derived from owned local memory;
+7. capture persists new raw windows/cursor before downstream metabolism can fail;
+8. `z` alone carries public/static/renderer membrane tissue;
+9. Cloudflare credentials never enter repository/public bytes;
+10. ordinary crawler reads remain static;
+11. bait identity survives bait-space relocation/deepening;
+12. exact build/address/tetrahedral/bootstrap/capture/replay/public witnesses pass.
 
-Compression: **Cloudflare senses; Traces remembers. Capture new pressure once, own it locally, and let Baits/Membrane be replayable consequences of that owned memory.**
+Compression: **While the historical window still exists, freeze it raw once. Then Cloudflare only senses the future, Traces remembers locally, and every downstream reinterpretation replays owned evidence rather than refetching the past.**
