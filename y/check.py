@@ -21,13 +21,16 @@ class Page(html.parser.HTMLParser):
         if tag=='script':self.scripts.append(d)
         if tag=='link':self.links.append(d)
 
-def load_build():
-    p=ROOT/'y/build.py'; spec=importlib.util.spec_from_file_location('compose',p); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); return mod
+def load_module(path,name):
+    spec=importlib.util.spec_from_file_location(name,path); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); return mod
+
+def load_build(): return load_module(ROOT/'y/build.py','compose')
+def load_public(): return load_module(ROOT/'y/site-public.py','site_public')
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--artifact',type=Path,default=ROOT/'_site'); args=ap.parse_args()
     artifact=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
-    build=load_build()
+    build=load_build(); public=load_public()
 
     index=build.load_yaml(DISPLAY/'INDEX.yaml'); build.validate_index(index)
     check({g:index[g]['noun'] for g in 'wxzy'}=={'w':'Embodiment','x':'Continuity','z':'Orientation','y':'Population'},'Display 4V phenotype changed')
@@ -39,17 +42,39 @@ def main():
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
-    check(set(by_id)=={'organism:philosophy','organism:papers'},'unexpected first Population site set')
+    expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait'}
+    check(set(by_id)==expected_sites,'unexpected Population site set')
     check(by_id['organism:philosophy']['address']=='','Philosophy must occupy site-space overview')
+    check(by_id['organism:crawlerbait']['address']=='w','Crawlerbait must occupy site-space w / Form')
     check(by_id['organism:papers']['address']=='y','Papers must occupy site-space y')
     check(by_id['organism:philosophy']['site_dir']==DISPLAY/'y'/'philosophy','Philosophy physical body not at display/y/philosophy')
+    crawler=DISPLAY/'y'/'yw'/'crawlerbait'
+    check(by_id['organism:crawlerbait']['site_dir']==crawler,'Crawlerbait physical body not at display/y/yw/crawlerbait')
     check(by_id['organism:papers']['site_dir']==DISPLAY/'y'/'yy'/'papers','Papers physical body not at display/y/yy/papers')
     check((DISPLAY/'y'/'philosophy'/'INDEX.yaml').is_file(),'Philosophy local recursive body was not transplanted')
     check((DISPLAY/'y'/'philosophy'/'_cambium.yaml').is_file(),'Philosophy local constitution was not transplanted')
+
+    # Crawlerbait must be an actual independently re-enterable holon, not a loose site module.
+    cindex=build.load_yaml(crawler/'INDEX.yaml'); build.validate_index(cindex)
+    check({g:cindex[g]['noun'] for g in 'wxzy'}=={'w':'Sediment','x':'Continuity','z':'Boundary','y':'Adaptation'},'Crawlerbait local phenotype changed')
+    build.validate_cambium(build.load_yaml(crawler/'_cambium.yaml'),'crawlerbait/_cambium.yaml')
+    check((crawler/'RITUALS'/'organism'/'RITUAL.md').is_file(),'Crawlerbait local ritual receptor missing')
+    for shell in ('_stomach','_feed','_root','_waste'):
+        check((crawler/shell).is_dir(),f'Crawlerbait lifecycle shell missing {shell}')
+    for gene in 'wxzy':
+        check((crawler/gene).is_dir(),f'Crawlerbait realized child missing {gene}')
+    forbidden_loose={'bait','projection.json','render.js','style.css','tide.py'}
+    check(not ({p.name for p in crawler.iterdir()} & forbidden_loose),'Crawlerbait active tissue leaked into differentiated root')
+    check(by_id['organism:crawlerbait']['projection']=='w/projection.json' and by_id['organism:crawlerbait']['renderer']=='w/render.js' and by_id['organism:crawlerbait']['style']=='w/style.css','Crawlerbait site membrane does not point into embodied child tissue')
+    check((crawler/'x'/'state.json').is_file(),'Crawlerbait continuity state missing')
+    check((crawler/'z'/'policy.json').is_file(),'Crawlerbait boundary policy missing')
+    check((crawler/'y'/'tide.py').is_file(),'Crawlerbait adaptation tide missing')
+    check((crawler/'w'/'public'/'crawlerbait'/'index.html').is_file(),'Crawlerbait sediment public reef missing')
+
     registry=build.site_mounts()
     check(registry['version']==3 and registry['source']=='w/display/y tree','mount registry is not tree-derived')
     rel={(m['interlocutor'],m['scope'],m['address']) for m in registry['mounts']}
-    check(rel=={('organism:philosophy','main',''),('organism:papers','main','y')},'tree-derived mount relation changed')
+    check(rel=={('organism:philosophy','main',''),('organism:crawlerbait','main','w'),('organism:papers','main','y')},'tree-derived mount relation changed')
     check(build.root_projection()['source']['organism']=='main-root','Philosophy projection identity changed')
     check(build.papers_projection()['source']=='papers/_feed','Papers projection boundary changed')
 
@@ -60,14 +85,19 @@ def main():
     check('interlocutor-philosophy.js' not in assets and 'interlocutor-papers.js' not in assets,'flat interlocutor adapters remain public authority')
     check(any(k.startswith('site-organism-philosophy') for k in assets),'Philosophy identity-owned assets missing')
     check(any(k.startswith('site-organism-papers') for k in assets),'Papers identity-owned assets missing')
+    check(any(k.startswith('site-organism-crawlerbait') for k in assets),'Crawlerbait identity-owned assets missing')
 
-    build.verify_artifact(artifact)
+    public_files=public.site_public_files()
+    check('crawlerbait/index.html' in public_files and 'crawlerbait/state.json' in public_files,'Crawlerbait machine-facing static hub missing')
+    check(all(not p.startswith('assets/') and p not in {'index.html','.nojekyll','CNAME'} for p in public_files),'site public surface escaped reserved artifact namespace')
+    public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
     for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','commit','site-registry','site-projections','site-state','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
-    check(set(p.interlocutors)=={'organism:philosophy','organism:papers'},'generic site surfaces do not match discovered Population')
+    check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')
     check(not (artifact/'papers/index.html').exists(),'Papers regressed to a separate document/page')
+    check((artifact/'crawlerbait/index.html').is_file() and (artifact/'crawlerbait/state.json').is_file(),'Crawlerbait static reef was not secreted into artifact')
 
     bundle=build.asset_bundle_id(); prefix=f'assets/{bundle}/'
     srcs={s.get('src') for s in p.scripts if s.get('src')}; styles={d.get('href') for d in p.links if d.get('rel')=='stylesheet'}; icons={d.get('href') for d in p.links if d.get('rel')=='icon'}
@@ -86,7 +116,7 @@ def main():
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
     check('swingback' not in world.lower(),'automatic Philosophy swingback returned')
     check("document.getElementById('site-registry')" in runtime and "document.getElementById('site-projections')" in runtime,'runtime is not fed by tree-derived registry/projections')
-    check('organism:philosophy' not in runtime and 'organism:papers' not in runtime,'central runtime still names specimen identities')
+    check(all(name not in runtime for name in expected_sites),'central runtime still names specimen identities')
     check('SSSInterlocutorModules' in runtime and 'Modules.get(id)' in runtime,'generic interlocutor module registry missing')
     check('W.setGlobalTargets(globalTargets())' in runtime,'global navigator not synchronized from discovered mounts')
     check('raw address already occupied' in holon and 'getRawOccupant' in holon,'raw-address exclusion primitive missing')
@@ -105,6 +135,7 @@ def main():
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')
+    result=subprocess.run(['python3',str(crawler/'y'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
 
     print(json.dumps({
         'status':'pass','checks':count,'display_4V':{g:index[g]['noun'] for g in 'wxzy'},
@@ -112,7 +143,8 @@ def main():
         'sites':{s['id']:s['address'] or 'ε' for s in sites},
         'runtime':'generic identity modules; no specimen names in central runtime',
         'relocation':'whole Papers body moves by folder with zero internal edits',
-        'bundle':bundle,'artifact':'single index.html'
+        'crawlerbait':'independently rooted 4V holon + lifecycle shell + static reef + bounded tide',
+        'bundle':bundle,'artifact':'single Display index + identity-owned static site apertures'
     },indent=2))
 
 if __name__=='__main__': main()

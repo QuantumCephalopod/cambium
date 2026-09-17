@@ -41,6 +41,19 @@ void main(){
 }`
 });
 function nodeAt(root,path){let n=root;for(const g of path){n=n?.children?.[g];if(!n)return null}return n}
+function mountedOccupancy(path){
+  const el=document.getElementById('site-registry');
+  if(!el)return [];
+  let registry;
+  try{registry=JSON.parse(el.textContent)}catch(_){return []}
+  const titles=new Map((registry.interlocutors||[]).map(s=>[s.id,s.title||s.id.replace(/^organism:/,'')]));
+  return (registry.mounts||[])
+    .filter(m=>m.scope==='main'&&m.address===path&&m.interlocutor!==id)
+    .map(m=>titles.get(m.interlocutor)||m.interlocutor.replace(/^organism:/,''));
+}
+function occupancyAt(projection,path){
+  return [...new Set([...(projection.occupancy?.[path]||[]),...mountedOccupancy(path)])];
+}
 function render({host,content,projection,path='',language='en'}={}){
   if(!host||!content||!projection?.root)return false;
   const node=path?nodeAt(projection.root,path):projection.root;
@@ -49,7 +62,8 @@ function render({host,content,projection,path='',language='en'}={}){
   content.replaceChildren();
   const copy=document.createElement('section');copy.className=path?'':'root';
   if(path){
-    copy.innerHTML=`<div class="kicker">philosophy · inspect ${path}</div><h1>${node?.[language]||node?.noun||path}</h1><p>${node?.one?.[language]||''}${projection.occupancy?.[path]?.length?'<br><br>'+projection.occupancy[path].map(x=>'⟦ '+x+' : root ⟧').join('  '):''}</p>`;
+    const occupants=occupancyAt(projection,path);
+    copy.innerHTML=`<div class="kicker">philosophy · inspect ${path}</div><h1>${node?.[language]||node?.noun||path}</h1><p>${node?.one?.[language]||''}${occupants.length?'<br><br>'+occupants.map(x=>'⟦ '+x+' : root ⟧').join('  '):''}</p>`;
   }else{
     copy.innerHTML=`<div class="kicker">organism:philosophy · entry interlocutor</div><h1>Form · Continuity · Care · Inquiry</h1><p>${language==='de'?'Dieser Interlocutor bringt seinen eigenen tetrahedralen Hintergrund mit. Hier ist er zusätzlich ein lokales Inspektionsinstrument für den realisierten globalen Adressraum. Die globale Minimap bewegt direkt zwischen tatsächlichen Site-Holons.':'This interlocutor brings its own tetrahedral background. Here it is additionally a local inspection instrument for the realized global address-space. The global minimap moves directly between actual site-holons.'}</p>`;
   }

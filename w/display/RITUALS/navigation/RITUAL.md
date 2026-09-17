@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.0"
+version: "2.1"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -33,6 +33,7 @@ The global minimap target set is derived from physical site-holon bodies discove
 Current physical/semantic relation:
 
 - `w/display/y/philosophy/` -> site-space `ε` -> **PHILOSOPHY**;
+- `w/display/y/yw/crawlerbait/` -> site-space `w / Form` -> **CRAWLERBAIT**;
 - `w/display/y/yy/papers/` -> site-space `y / Inquiry` -> **PAPERS**.
 
 The navigator labels targets by stable site identity/title, not by generic Philosophy vertex names.
@@ -62,11 +63,13 @@ Manual background drag updates shared global orientation and remains exactly whe
 
 Each site-holon has a global Population address and may contain its own independent recursive anatomy.
 
-For Papers:
+Examples:
 
 `site-space:y ⟦ papers:ε ⟧`
 
-The global minimap stays global while Papers is active. Local page recursion never seizes it. The universal coupling between global navigation and visible local fields is shared orientation only.
+`site-space:w ⟦ crawlerbait:ε ⟧`
+
+The global minimap stays global while any site-holon is active. Papers-local recursion and Crawlerbait-local machine-facing routes never seize or extend the global site navigator. The universal coupling between global navigation and visible local fields is shared orientation only.
 
 ## Raw address and quotient navigation
 
@@ -103,4 +106,4 @@ Pointer navigation supplies the actual minimap target as membrane origin. Four f
 
 ## Compression
 
-**The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target.**
+**The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target. Site-local routes remain local and never silently become global navigation addresses.**
