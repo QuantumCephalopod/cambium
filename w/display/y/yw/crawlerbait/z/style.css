@@ -5,46 +5,188 @@
   --kelp:#84a49b;
   position:absolute;
   inset:0;
-  display:grid;
-  align-content:center;
-  justify-items:center;
-  padding:clamp(2.5rem,7vw,7rem);
   pointer-events:none;
   color:var(--foam);
   font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
 }
 .crawlerbait-panel{
-  width:min(880px,92vw);
-  max-height:min(68vh,720px);
+  position:absolute;
+  left:clamp(1rem,3vw,3rem);
+  bottom:clamp(1rem,3vw,3rem);
+  width:min(390px,calc(100vw - 2rem));
+  max-height:min(72vh,680px);
   overflow:auto;
   pointer-events:auto;
-  padding:clamp(1.3rem,3vw,2.4rem);
-  border:1px solid color-mix(in srgb,var(--kelp) 52%,transparent);
-  background:color-mix(in srgb,var(--deep) 88%,transparent);
-  backdrop-filter:blur(10px);
-  clip-path:polygon(0 0,96% 0,100% 8%,100% 100%,4% 100%,0 92%);
+  padding:1rem 1.05rem .9rem;
+  border:1px solid color-mix(in srgb,var(--kelp) 42%,transparent);
+  background:color-mix(in srgb,var(--deep) 78%,transparent);
+  backdrop-filter:blur(12px);
+  box-shadow:0 16px 44px rgba(0,0,0,.24);
+  clip-path:polygon(0 0,96% 0,100% 6%,100% 100%,4% 100%,0 94%);
 }
 .crawlerbait-panel::before{
-  content:"🦀  STATIC REEF · TIDE, NOT REAL-TIME";
+  content:"🦀  STATIC REEF · LOCAL TRACE MEMORY";
   display:block;
-  margin-bottom:1.2rem;
+  margin-bottom:.75rem;
   color:var(--crab);
-  font-size:.72rem;
-  letter-spacing:.16em;
+  font-size:.62rem;
+  letter-spacing:.14em;
 }
-.crawlerbait-panel h1{
-  margin:.15rem 0 .5rem;
-  font:600 clamp(2.1rem,6vw,5.6rem)/.9 ui-monospace,SFMono-Regular,Consolas,monospace;
-  letter-spacing:-.07em;
+.crawlerbait-title{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:1rem;
+  border-bottom:1px solid color-mix(in srgb,var(--kelp) 22%,transparent);
+  padding-bottom:.55rem;
+}
+.crawlerbait-title h1{
+  margin:0;
+  font:650 clamp(1.35rem,3vw,2.25rem)/.9 ui-monospace,SFMono-Regular,Consolas,monospace;
+  letter-spacing:-.06em;
   text-transform:uppercase;
 }
-.crawlerbait-panel p{max-width:68ch;color:color-mix(in srgb,var(--foam) 82%,var(--kelp));}
-.crawlerbait-stats{display:flex;flex-wrap:wrap;gap:.55rem 1.25rem;margin:1.4rem 0 1.1rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--kelp);}
-.crawlerbait-routes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin-top:1.2rem;}
-.crawlerbait-route{display:block;padding:.85rem 1rem;border:1px solid color-mix(in srgb,var(--crab) 34%,transparent);background:color-mix(in srgb,var(--deep) 70%,transparent);color:var(--foam);text-decoration:none;}
-.crawlerbait-route:hover,.crawlerbait-route:focus-visible{border-color:var(--crab);outline:none;}
-.crawlerbait-route code{display:block;color:var(--crab);font-size:.92rem;overflow-wrap:anywhere;}
-.crawlerbait-route small{display:block;margin-top:.4rem;color:var(--kelp);}
-.crawlerbait-empty{padding:1rem 0;color:var(--kelp);}
-.crawlerbait-machine{display:inline-block;margin-top:1.35rem;color:var(--crab);pointer-events:auto;}
-@media (max-width:560px){.crawlerbait-content{padding:1.2rem}.crawlerbait-panel{max-height:72vh}.crawlerbait-routes{grid-template-columns:1fr}}
+.crawlerbait-title span{
+  color:var(--kelp);
+  font-size:.63rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  text-align:right;
+}
+.crawlerbait-stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.35rem;
+  margin:.75rem 0 .65rem;
+}
+.crawlerbait-metric{
+  min-width:0;
+  display:grid;
+  gap:.08rem;
+}
+.crawlerbait-metric b{
+  color:var(--crab);
+  font-size:.88rem;
+  font-weight:600;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.crawlerbait-metric small{
+  color:var(--kelp);
+  font-size:.54rem;
+  line-height:1.1;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.crawlerbait-note{
+  margin:.55rem 0 .75rem;
+  color:color-mix(in srgb,var(--foam) 76%,var(--kelp));
+  font-size:.69rem;
+  line-height:1.45;
+}
+.crawlerbait-inspector{
+  min-height:7.6rem;
+  border-top:1px solid color-mix(in srgb,var(--crab) 24%,transparent);
+  border-bottom:1px solid color-mix(in srgb,var(--crab) 18%,transparent);
+  padding:.72rem 0;
+}
+.crawlerbait-inspector-empty{
+  min-height:6rem;
+  display:grid;
+  align-content:center;
+  gap:.35rem;
+  color:var(--kelp);
+}
+.crawlerbait-inspector-empty strong{
+  color:var(--foam);
+  font-size:.78rem;
+  font-weight:500;
+}
+.crawlerbait-inspector-empty span{font-size:.67rem;line-height:1.4}
+.crawlerbait-inspector-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.6rem;
+}
+.crawlerbait-address{
+  color:var(--crab);
+  font-size:.63rem;
+  letter-spacing:.08em;
+}
+.crawlerbait-receipt,.crawlerbait-foot a{
+  color:var(--crab);
+  text-decoration:none;
+  font-size:.61rem;
+}
+.crawlerbait-receipt:hover,.crawlerbait-receipt:focus-visible,
+.crawlerbait-foot a:hover,.crawlerbait-foot a:focus-visible{
+  text-decoration:underline;
+  outline:none;
+}
+.crawlerbait-path{
+  display:block;
+  margin:.55rem 0 .65rem;
+  color:var(--foam);
+  font-size:.96rem;
+  overflow-wrap:anywhere;
+}
+.crawlerbait-facts{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.45rem;
+}
+.crawlerbait-time{
+  display:grid;
+  gap:.12rem;
+  margin-top:.55rem;
+  color:var(--kelp);
+  font-size:.59rem;
+}
+.crawlerbait-signatures{margin-top:.7rem}
+.crawlerbait-signatures h3{
+  margin:0 0 .35rem;
+  color:var(--kelp);
+  font-size:.58rem;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+.crawlerbait-signature-list{
+  display:grid;
+  max-height:8.5rem;
+  overflow:auto;
+  gap:.24rem;
+}
+.crawlerbait-signature{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.7rem;
+  align-items:start;
+  font-size:.58rem;
+}
+.crawlerbait-signature code{
+  color:color-mix(in srgb,var(--foam) 84%,var(--kelp));
+  overflow-wrap:anywhere;
+}
+.crawlerbait-signature span{color:var(--crab)}
+.crawlerbait-none{color:var(--kelp);font-size:.6rem}
+.crawlerbait-foot{
+  display:flex;
+  justify-content:space-between;
+  gap:.8rem;
+  margin-top:.65rem;
+  color:var(--kelp);
+  font-size:.57rem;
+}
+@media (max-width:620px){
+  .crawlerbait-panel{
+    left:.75rem;
+    bottom:.75rem;
+    width:calc(100vw - 1.5rem);
+    max-height:46vh;
+  }
+  .crawlerbait-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .crawlerbait-note{display:none}
+  .crawlerbait-signature-list{max-height:5rem}
+}
