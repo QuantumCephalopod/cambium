@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Explicit retained-history reseed for the Crawlerbait Cloudflare tide."""
+'''Explicit retained-history reseed for the Crawlerbait Cloudflare tide.'''
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -54,7 +54,7 @@ def fetch_limits(token: str, zone: str):
         GRAPHQL_ENDPOINT,
         data=body,
         method="POST",
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json", "User-Agent": "sss-crawlerbait-backfill/2"},
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json", "User-Agent": "sss-crawlerbait-backfill/3"},
     )
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
@@ -88,16 +88,13 @@ def run_backfill(token: str, zone: str, now: datetime):
     policy = T.read_json(T.POLICY_PATH)
     original = T.read_json(T.STATE_PATH) if T.STATE_PATH.is_file() else None
     limits = fetch_limits(token, zone)
-
     now = now.astimezone(timezone.utc)
     end = now - timedelta(minutes=int(policy["settle_delay_minutes"]))
     start = now - timedelta(seconds=limits["notOlderThan"]) + timedelta(minutes=1)
     if end <= start:
         raise RuntimeError("Cloudflare retained-history window is empty")
-
     width = min(int(limits["maxDuration"]), int(policy["max_window_hours"]) * 3600)
     query_limit = min(int(policy["query_limit"]), int(limits["maxPageSize"]))
-
     state = T.initial_state()
     total_groups = 0
     queried = []
@@ -106,9 +103,6 @@ def run_backfill(token: str, zone: str, now: datetime):
         total_groups += len(groups)
         queried.append({"start": T.stamp(chunk_start), "end": T.stamp(chunk_end), "groups": len(groups)})
         state, _ = T.assimilate(state, groups, chunk_start, chunk_end, policy)
-
-    # The explicit reseed cursor advances across the complete queried retained
-    # window even when some chunks contain no 404 groups.
     state["last_complete_end"] = T.stamp(end)
     changed = state != original
     summary = {
@@ -137,13 +131,16 @@ def self_test():
     ]
     state, _ = T.assimilate(state, first, t0, t0 + timedelta(hours=24), policy)
     state, _ = T.assimilate(state, second, t0 + timedelta(hours=24), t0 + timedelta(hours=48), policy)
+    assert state["version"] == 3
     assert set(state["routes"]) == {"/login", "/.env", "/assets/nope"}
     assert state["routes"]["/login"]["observed_404"] == 2
+    addresses = T.bait_addresses(state["routes"])
+    assert len(set(addresses.values())) == len(addresses)
     assert T.public_href("/login") == "/crawlerbait/bait/login/"
     assert T.public_href("/assets/nope") == "/crawlerbait/bait/assets/nope/"
     assert T.public_href("/.env").startswith("/crawlerbait/receipt/")
     assert len(list(windows(t0, t0 + timedelta(hours=49), 24 * 3600))) == 3
-    print("PASS · retained history reseed preserves every returned 404 group across provider-sized chunks inside Crawlerbait")
+    print("PASS · retained history reseed rebuilds Traces, addressed Baits and Membrane from every returned 404 group")
 
 
 def main():
@@ -155,7 +152,6 @@ def main():
     if args.self_test:
         self_test()
         return
-
     token = os.environ.get("CLOUDFLARE_ANALYTICS_TOKEN", "").strip()
     zone = os.environ.get("CLOUDFLARE_ZONE_TAG", "").strip()
     if not token or not zone:
@@ -163,12 +159,8 @@ def main():
     now = T.parse_time(args.now) if args.now else datetime.now(timezone.utc)
     policy, state, changed, summary = run_backfill(token, zone, now)
     print(json.dumps(summary, indent=2))
-    if args.write and changed:
-        T.write_json(T.STATE_PATH, state)
-        T.write_json(T.PROJECTION_PATH, T.projection_from(state, policy))
-        T.render_public(state, policy)
-    elif args.write:
-        print("retained-history reseed is byte-identical; organism unchanged")
+    if args.write:
+        T.write_outputs(state, policy)
 
 
 if __name__ == "__main__":
