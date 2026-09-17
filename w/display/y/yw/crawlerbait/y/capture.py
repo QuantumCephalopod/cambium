@@ -65,7 +65,7 @@ def cloudflare_query(zone: str, start: datetime, end: datetime, limit: int) -> s
 }}'''
 
 
-def fetch_groups(token: str, zone: str, start: datetime, end: datetime, limit: int):
+def fetch_payload(token: str, zone: str, start: datetime, end: datetime, limit: int) -> dict:
     body = json.dumps({"query": cloudflare_query(zone, start, end, limit)}).encode()
     request = urllib.request.Request(
         GRAPHQL_ENDPOINT,
@@ -74,7 +74,7 @@ def fetch_groups(token: str, zone: str, start: datetime, end: datetime, limit: i
         headers={
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
-            "User-Agent": "sss-crawlerbait-capture/1",
+            "User-Agent": "sss-crawlerbait-capture/2",
         },
     )
     try:
@@ -85,6 +85,11 @@ def fetch_groups(token: str, zone: str, start: datetime, end: datetime, limit: i
         raise RuntimeError(f"Cloudflare GraphQL HTTP {exc.code}: {detail}") from exc
     if payload.get("errors"):
         raise RuntimeError("Cloudflare GraphQL error: " + json.dumps(payload["errors"], ensure_ascii=False)[:1500])
+    groups_from_payload(payload)
+    return payload
+
+
+def groups_from_payload(payload: dict) -> list:
     zones = payload.get("data", {}).get("viewer", {}).get("zones", [])
     if len(zones) != 1 or not isinstance(zones[0].get("groups"), list):
         raise RuntimeError("unexpected Cloudflare GraphQL response")
@@ -102,23 +107,34 @@ def windows(start: datetime, end: datetime, width_seconds: int):
 def capture_filename(start: datetime, end: datetime) -> str:
     def compact(value: datetime) -> str:
         return stamp(value).replace("-", "").replace(":", "")
-    return f"{compact(start)}--{compact(end)}.json"
+    return f"{compact(start)}--{compact(end)}.capture.json"
 
 
-def capture_payload(start: datetime, end: datetime, groups: list, captured_at: datetime) -> dict:
+def capture_payload(start: datetime, end: datetime, provider_response: dict, captured_at: datetime, limit: int) -> dict:
     return {
-        "version": 1,
+        "version": 2,
         "source": "cloudflare:httpRequestsAdaptiveGroups",
         "captured_at": stamp(captured_at),
         "window": {"start": stamp(start), "end": stamp(end)},
         "query": {
+            "dataset": "httpRequestsAdaptiveGroups",
             "requestSource": "eyeball",
             "edgeResponseStatus_geq": 404,
             "edgeResponseStatus_lt": 405,
             "groupBy": ["clientRequestPath", "userAgent"],
+            "orderBy": ["count_DESC"],
+            "limit": int(limit),
         },
-        "groups": groups,
+        "provider_response": provider_response,
     }
+
+
+def capture_groups(capture: dict) -> list:
+    if capture.get("version") == 1 and isinstance(capture.get("groups"), list):
+        return capture["groups"]
+    if capture.get("version") == 2 and isinstance(capture.get("provider_response"), dict):
+        return groups_from_payload(capture["provider_response"])
+    raise RuntimeError("unsupported crawlerbait capture schema")
 
 
 def persist_capture(payload: dict) -> tuple[Path, bool]:
@@ -139,12 +155,14 @@ def self_test():
     t0 = datetime(2026, 9, 17, 0, 0, tzinfo=timezone.utc)
     chunks = list(windows(t0, t0 + timedelta(hours=49), 24 * 3600))
     assert len(chunks) == 3
-    assert capture_filename(t0, t0 + timedelta(hours=6)) == "20260917T000000Z--20260917T060000Z.json"
-    payload = capture_payload(t0, t0 + timedelta(hours=6), [], t0 + timedelta(hours=7))
-    assert payload["groups"] == []
+    assert capture_filename(t0, t0 + timedelta(hours=6)) == "20260917T000000Z--20260917T060000Z.capture.json"
+    provider = {"data": {"viewer": {"zones": [{"groups": []}]}}}
+    payload = capture_payload(t0, t0 + timedelta(hours=6), provider, t0 + timedelta(hours=7), 5000)
+    assert capture_groups(payload) == []
+    assert payload["provider_response"] == provider
     assert payload["window"]["start"] == "2026-09-17T00:00:00Z"
     assert "Authorization" not in json.dumps(payload)
-    print("PASS · capture appends only new immutable provider windows and preserves empty windows as coverage")
+    print("PASS · capture preserves the complete returned provider payload for each new immutable window")
 
 
 def main():
@@ -180,9 +198,10 @@ def main():
     created = 0
     total_groups = 0
     for chunk_start, chunk_end in windows(start, end, width_seconds):
-        groups = fetch_groups(token, zone, chunk_start, chunk_end, limit)
+        provider = fetch_payload(token, zone, chunk_start, chunk_end, limit)
+        groups = groups_from_payload(provider)
         total_groups += len(groups)
-        payload = capture_payload(chunk_start, chunk_end, groups, now)
+        payload = capture_payload(chunk_start, chunk_end, provider, now, limit)
         item = {
             "start": stamp(chunk_start),
             "end": stamp(chunk_end),
