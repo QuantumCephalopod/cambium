@@ -39,6 +39,39 @@ def write_json(path: Path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def population_root() -> Path:
+    """Locate the hosting Display Population without depending on crawlerbait depth."""
+    for ancestor in (ROOT, *ROOT.parents):
+        display = ancestor.parent
+        if (
+            ancestor.name == "y"
+            and display.name == "display"
+            and (display / "RITUALS" / "organism" / "RITUAL.md").is_file()
+        ):
+            return ancestor
+    raise RuntimeError("crawlerbait could not locate its Display Population host")
+
+
+def occupied_site_prefixes() -> tuple[str, ...]:
+    """Derive public site-scope collisions from the live Population tree.
+
+    This does not filter observations. It only prevents Crawlerbait's static
+    representation from claiming a path already owned by another Site-Holon.
+    """
+    prefixes = set()
+    for manifest in population_root().rglob("site.json"):
+        value = read_json(manifest)
+        scope = value.get("local_scope")
+        if isinstance(scope, str):
+            scope = scope.strip("/")
+            if scope:
+                prefixes.add("/" + scope)
+    return tuple(sorted(prefixes))
+
+
+OCCUPIED_SITE_PREFIXES = occupied_site_prefixes()
+
+
 def parse_time(value: str) -> datetime:
     return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
 
@@ -177,7 +210,7 @@ def exact_public_parts(path: str):
         return None
     if any(ord(ch) < 32 for ch in path) or any(ch in path for ch in ("\\", "?", "#", "%")):
         return None
-    for prefix in RESERVED_EXACT_PREFIXES:
+    for prefix in (*RESERVED_EXACT_PREFIXES, *OCCUPIED_SITE_PREFIXES):
         if path == prefix or path.startswith(prefix + "/"):
             return None
 
@@ -321,17 +354,20 @@ def self_test():
         {"count": 1, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/admin", "userAgent": "Other/1"}},
         {"count": 99, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/assets/nope", "userAgent": "Spray/9"}},
         {"count": 99, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/.env", "userAgent": "Spray/9"}},
+        {"count": 1, "avg": {"sampleInterval": 1}, "dimensions": {"clientRequestPath": "/papers", "userAgent": "ScopeProbe/1"}},
     ]
     state, changed = assimilate(initial_state(), groups, start, end, policy)
     assert changed
-    assert set(state["routes"]) == {"/login", "/admin", "/assets/nope", "/.env"}
+    assert set(state["routes"]) == {"/login", "/admin", "/assets/nope", "/.env", "/papers"}
     assert state["routes"]["/admin"]["observed_404"] == 1
     assert next(iter(state["routes"]["/login"]["signatures"].values()))["claimed_user_agent"] == "CrabBot/1.0"
     assert public_href("/login") == "/login/"
     assert public_href("/assets/nope").startswith("/crawlerbait/bait/")
     assert public_href("/.env").startswith("/crawlerbait/bait/")
+    assert public_href("/papers").startswith("/crawlerbait/bait/")
+    assert "/papers" in state["routes"]
     assert projection_from(state, policy)["summary"]["unresolved_candidates"] == 0
-    print("PASS · crawlerbait retains every observed 404 group; only static representation is substrate-bounded")
+    print("PASS · crawlerbait retains every observed 404 group; site-scope collisions only alter static representation")
 
 
 def main():
