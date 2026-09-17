@@ -56,7 +56,7 @@ def main():
 
     # Crawlerbait must be an actual independently re-enterable holon, not a loose site module.
     cindex=build.load_yaml(crawler/'INDEX.yaml'); build.validate_index(cindex)
-    check({g:cindex[g]['noun'] for g in 'wxzy'}=={'w':'Sediment','x':'Continuity','z':'Boundary','y':'Adaptation'},'Crawlerbait local phenotype changed')
+    check({g:cindex[g]['noun'] for g in 'wxzy'}=={'w':'Baits','x':'Traces','z':'Membrane','y':'Tide'},'Crawlerbait local phenotype changed')
     build.validate_cambium(build.load_yaml(crawler/'_cambium.yaml'),'crawlerbait/_cambium.yaml')
     check((crawler/'RITUALS'/'organism'/'RITUAL.md').is_file(),'Crawlerbait local ritual receptor missing')
     for shell in ('_stomach','_feed','_root','_waste'):
@@ -65,11 +65,16 @@ def main():
         check((crawler/gene).is_dir(),f'Crawlerbait realized child missing {gene}')
     forbidden_loose={'bait','projection.json','render.js','style.css','tide.py'}
     check(not ({p.name for p in crawler.iterdir()} & forbidden_loose),'Crawlerbait active tissue leaked into differentiated root')
-    check(by_id['organism:crawlerbait']['projection']=='w/projection.json' and by_id['organism:crawlerbait']['renderer']=='w/render.js' and by_id['organism:crawlerbait']['style']=='w/style.css','Crawlerbait site membrane does not point into embodied child tissue')
-    check((crawler/'x'/'state.json').is_file(),'Crawlerbait continuity state missing')
-    check((crawler/'z'/'policy.json').is_file(),'Crawlerbait boundary policy missing')
-    check((crawler/'y'/'tide.py').is_file(),'Crawlerbait adaptation tide missing')
-    check((crawler/'w'/'public'/'crawlerbait'/'index.html').is_file(),'Crawlerbait sediment public reef missing')
+    check(by_id['organism:crawlerbait']['projection']=='z/projection.json' and by_id['organism:crawlerbait']['renderer']=='z/render.js' and by_id['organism:crawlerbait']['style']=='z/style.css','Crawlerbait site membrane does not point into Membrane tissue')
+    check((crawler/'x'/'state.json').is_file(),'Crawlerbait trace state missing')
+    check((crawler/'z'/'policy.json').is_file(),'Crawlerbait membrane policy missing')
+    check((crawler/'y'/'tide.py').is_file(),'Crawlerbait tide missing')
+    check((crawler/'z'/'public'/'crawlerbait'/'index.html').is_file(),'Crawlerbait membrane public reef missing')
+    bait_dirs=[p for p in (crawler/'w').iterdir() if p.is_dir()]
+    check(bool(bait_dirs),'Crawlerbait bait-space has no addressed bait body')
+    for locus in bait_dirs:
+        check(len(locus.name)>1 and locus.name[0]=='w' and set(locus.name[1:])<=set('wxzy'),f'Crawlerbait bait-space carrier is not a raw tetrahedral address: {locus.name}')
+        check({p.name for p in locus.iterdir()}=={'bait.json'},f'Crawlerbait bait-space locus {locus.name} contains non-bait tissue')
 
     registry=build.site_mounts()
     check(registry['version']==3 and registry['source']=='w/display/y tree','mount registry is not tree-derived')
@@ -143,7 +148,7 @@ def main():
         'sites':{s['id']:s['address'] or 'ε' for s in sites},
         'runtime':'generic identity modules; no specimen names in central runtime',
         'relocation':'whole Papers body moves by folder with zero internal edits',
-        'crawlerbait':'independently rooted 4V holon + lifecycle shell + static reef + bounded tide',
+        'crawlerbait':'independently rooted Baits/Traces/Membrane/Tide holon + same-type bait-space + static reef',
         'bundle':bundle,'artifact':'single Display index + identity-owned static site apertures'
     },indent=2))
 

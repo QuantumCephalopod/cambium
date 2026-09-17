@@ -42,15 +42,15 @@ jobs:
           import json, sys
           with open('w/display/y/yw/crawlerbait/x/state.json', encoding='utf-8') as f:
               state = json.load(f)
-          sys.exit(0 if state.get('version') != 2 else 1)
+          sys.exit(0 if state.get('version') != 3 else 1)
           PY
           then
-            echo "unfiltered retained-history reseed pending; run manually with full_history=true"
+            echo "bait-space reseed pending; run manually with full_history=true"
             exit 0
           fi
           python3 w/display/y/yw/crawlerbait/y/tide.py --write
 
-      - name: Witness bounded tide and public membrane
+      - name: Witness tide and public membrane
         run: |
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
@@ -61,7 +61,7 @@ jobs:
           node w/display/z/site-fold.test.cjs
           python3 y/site-public.py --artifact _site --check
 
-      - name: Persist sediment only when bytes changed
+      - name: Persist Crawlerbait only when bytes changed
         run: |
           set -euo pipefail
           if [ -z "$(git status --porcelain -- 'w/display/y/yw/crawlerbait')" ]; then
@@ -70,11 +70,12 @@ jobs:
           fi
           git config user.name "crawlerbait tide"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- 'w/display/y/yw/crawlerbait/x/state.json' \
-                     'w/display/y/yw/crawlerbait/w/projection.json' \
-                     'w/display/y/yw/crawlerbait/w/public'
+          git add -- 'w/display/y/yw/crawlerbait/w' \
+                     'w/display/y/yw/crawlerbait/x/state.json' \
+                     'w/display/y/yw/crawlerbait/z/projection.json' \
+                     'w/display/y/yw/crawlerbait/z/public'
           if git diff --cached --quiet; then
-            echo "no canonical crawlerbait sediment changed"
+            echo "no canonical crawlerbait body changed"
             exit 0
           fi
           git commit -m "crawlerbait: sediment Cloudflare tide"

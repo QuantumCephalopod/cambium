@@ -5,10 +5,10 @@ const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModu
 const FIELD_ROOT=Object.freeze({
   noun:'Crawlerbait',
   children:Object.freeze({
-    w:Object.freeze({noun:'Sediment',de:'Sediment',en:'Sediment',gene:'CREATE',children:Object.freeze({})}),
-    x:Object.freeze({noun:'Continuity',de:'Kontinuität',en:'Continuity',gene:'COPY',children:Object.freeze({})}),
-    z:Object.freeze({noun:'Boundary',de:'Grenze',en:'Boundary',gene:'CONTROL',children:Object.freeze({})}),
-    y:Object.freeze({noun:'Adaptation',de:'Anpassung',en:'Adaptation',gene:'CULTIVATE',children:Object.freeze({})})
+    w:Object.freeze({noun:'Baits',de:'Köder',en:'Baits',gene:'CREATE',children:Object.freeze({})}),
+    x:Object.freeze({noun:'Traces',de:'Spuren',en:'Traces',gene:'COPY',children:Object.freeze({})}),
+    z:Object.freeze({noun:'Membrane',de:'Membran',en:'Membrane',gene:'CONTROL',children:Object.freeze({})}),
+    y:Object.freeze({noun:'Tide',de:'Tide',en:'Tide',gene:'CULTIVATE',children:Object.freeze({})})
   })
 });
 const shader=Object.freeze({
@@ -54,26 +54,23 @@ function render({host,content,projection}={}){
   content.replaceChildren();
   const panel=el('section','crawlerbait-panel');
   panel.append(el('h1','', 'Crawlerbait'));
-  panel.append(el('p','', 'The web touches us and we grow. Cloudflare listens at the membrane; a bounded tide later turns recurring 404 pressure into static bait. Nothing executes merely because a crawler reads it.'));
+  panel.append(el('p','', 'passive 404 field · periodic tide · static bait-space'));
   const stats=el('div','crawlerbait-stats');
-  stats.append(el('span','',`${projection.summary.grown_routes} grown routes`));
-  stats.append(el('span','',`${projection.summary.unresolved_candidates} unresolved candidates`));
-  stats.append(el('span','',`${projection.summary.observed_404} sedimented 404 observations`));
+  stats.append(el('span','',`${projection.summary.baits ?? projection.routes?.length ?? 0} baits`));
+  stats.append(el('span','',`${projection.summary.observed_signatures ?? 0} claimed identities`));
+  stats.append(el('span','',`${projection.summary.observed_404 ?? 0} observations`));
   stats.append(el('span','',projection.updated_at?`tide ${projection.updated_at}`:'tide not armed yet'));
   panel.append(stats);
   const reef=el('div','crawlerbait-routes');
-  if(!projection.routes?.length){
-    reef.append(el('div','crawlerbait-empty','The pots are empty. Good. Put them in the ocean.'));
-  }else{
-    for(const route of projection.routes){
-      const a=el('a','crawlerbait-route');a.href=route.href;
-      a.append(el('code','',route.path));
-      a.append(el('small','',`${route.observed_404} prior 404 observations · ${route.signatures?.length||0} retained signatures`));
-      reef.append(a);
-    }
+  for(const route of projection.routes||[]){
+    const a=el('a','crawlerbait-route');a.href=route.href;
+    a.append(el('code','',`${route.address ?? '?'} · ${route.path}`));
+    a.append(el('small','',`${route.observed_404} observations · ${route.signatures?.length||0} claimed identities`));
+    reef.append(a);
   }
+  if(!projection.routes?.length)reef.append(el('div','crawlerbait-empty','no observed baits'));
   panel.append(reef);
-  const machine=el('a','crawlerbait-machine','machine-readable static reef →');machine.href='/crawlerbait/';
+  const machine=el('a','crawlerbait-machine','machine-readable reef →');machine.href='/crawlerbait/';
   panel.append(machine);
   content.append(panel);
   return true;
