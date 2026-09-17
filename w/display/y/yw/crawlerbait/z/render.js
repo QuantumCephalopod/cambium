@@ -90,7 +90,7 @@ function baitTree(routes){
       children
     };
   }
-  return freezeNode(branch(''));
+  return branch('');
 }
 function fieldProjection(projection={}){
   const routes=Array.isArray(projection.routes)?projection.routes:[];
