@@ -2,6 +2,15 @@
 'use strict';
 const id='organism:crawlerbait';
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
+const FIELD_ROOT=Object.freeze({
+  noun:'Crawlerbait',
+  children:Object.freeze({
+    w:Object.freeze({noun:'Sediment',de:'Sediment',en:'Sediment',gene:'CREATE',children:Object.freeze({})}),
+    x:Object.freeze({noun:'Continuity',de:'Kontinuität',en:'Continuity',gene:'COPY',children:Object.freeze({})}),
+    z:Object.freeze({noun:'Boundary',de:'Grenze',en:'Boundary',gene:'CONTROL',children:Object.freeze({})}),
+    y:Object.freeze({noun:'Adaptation',de:'Anpassung',en:'Adaptation',gene:'CULTIVATE',children:Object.freeze({})})
+  })
+});
 const shader=Object.freeze({
   id:'shader:organism:crawlerbait',
   clear:[0.004,0.012,0.018,1],
@@ -70,5 +79,6 @@ function render({host,content,projection}={}){
   return true;
 }
 function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren()}
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection:projection=>projection}));
+function fieldProjection(){return Object.freeze({root:FIELD_ROOT})}
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection}));
 })();
