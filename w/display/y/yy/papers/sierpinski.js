@@ -7,22 +7,17 @@ const N=globalThis.SSSDisplayNavigation||null;
 const W=globalThis.SSSWorldView||null;
 const GENES=['w','x','z','y'];
 const DNA={w:'CREATE',x:'COPY',z:'CONTROL',y:'CULTIVATE'};
-const GENE_INDEX={w:0,x:1,z:2,y:3};
-const PALETTE={
-  w:[.34,.78,.64],
-  x:[.42,.82,.88],
-  z:[.78,.78,.60],
-  y:[.52,.93,.48]
-};
+const PALETTE={w:[.34,.78,.64],x:[.42,.82,.88],z:[.78,.78,.60],y:[.52,.93,.48]};
 
 /*
- * Papers render law:
- * - every organism is always one canonical tetrahedral body;
- * - distance may collapse it perceptually to a particle, never ontologically;
- * - an nH Holon recursively contains exactly four parent bodies;
- * - selection moves that existing body to the global centroid while the camera
- *   dollies inward; no replacement/detail model is spawned;
- * - recursive detail is resolved only while it is large enough on screen.
+ * Papers render law
+ * -----------------
+ * Every public organism is always one canonical tetrahedral body.
+ * Distance may collapse the body perceptually to a particle; it never changes
+ * the body's ontology. An nH Holon is the recursive 4-way composition of its
+ * actual four parents. Selection does not spawn a detail representation: the
+ * selected instance itself moves to the global centroid while the camera
+ * dollies inward. Recursive detail is revealed only when screen scale earns it.
  */
 
 const NODE_SCALE=.032;
@@ -35,6 +30,9 @@ const MAX_DEPTH=8;
 const FACE=[[0,2,1],[0,1,3],[0,3,2],[1,2,3]];
 const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 
+/* Generic Display still instantiates one field surface for every interlocutor.
+ * Papers owns its specimen body, so the shared surface is made transparent and
+ * carries no point population. */
 const shader=Object.freeze({
   id:'shader:organism:papers',
   clear:[0,0,0,0],
@@ -51,10 +49,9 @@ let state=null;
 function clamp(x,a=0,b=1){return Math.max(a,Math.min(b,x))}
 function mix(a,b,t){return a+(b-a)*t}
 function mix3(a,b,t){return a.map((v,i)=>mix(v,b[i],t))}
-function smooth(t){t=clamp(t);return t*t*(3.-2.*t)}
+function smooth(t){t=clamp(t);return t*t*(3-2*t)}
 function add(a,b){return a.map((v,i)=>v+b[i])}
 function mul(a,s){return a.map(v=>v*s)}
-function centroid(tet){return tet.reduce((s,p)=>add(s,p),[0,0,0]).map(v=>v/4)}
 function hash32(text){let h=2166136261>>>0;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)>>>0}h^=h>>>16;h=Math.imul(h,0x7feb352d)>>>0;h^=h>>>15;h=Math.imul(h,0x846ca68b)>>>0;h^=h>>>16;return h>>>0}
 function random01(text,salt){return (hash32(text+'·'+salt)+1)/4294967297}
 function qMul(a,b){const[w,x,y,z]=a,[v,i,j,k]=b;return [w*v-x*i-y*j-z*k,w*i+x*v+y*k-z*j,w*j-x*k+y*v+z*i,w*k+x*j-y*i+z*v]}
@@ -73,9 +70,6 @@ function fieldProjection(d){
     const noun=locusName(d,g);
     children[g]={noun,de:noun,en:noun,gene:DNA[g],one:{de:`${sources} Quellen · ${holons} Holons.`,en:`${sources} sources · ${holons} holons.`},children:{}};
   }
-  /* Generic Display still receives the truthful four-locus body, but Papers owns
-   * its specimen rendering. Empty points prevent the shared POINTS program from
-   * creating a competing particle ontology. */
   return {source:{organism:'papers',home:d?.event_id||'papers'},root:{noun:'Papers',children},occupancy:{w:[],x:[],z:[],y:[]},points:[]};
 }
 
@@ -95,7 +89,6 @@ function parentIndex(projection){
   }
   return out;
 }
-
 function pointInTet(tet,spec){
   let weights=[0,1,2,3].map(i=>-Math.log(Math.max(1e-7,random01(spec.id,i))));
   const s=weights.reduce((a,b)=>a+b,0);weights=weights.map(v=>v/s);
@@ -103,16 +96,14 @@ function pointInTet(tet,spec){
   return [0,1,2].map(k=>weights.reduce((sum,w,i)=>sum+w*tet[i][k],0));
 }
 function buildRecords(projection,fieldRoot){
-  if(!N)return [];
   const structure=N.collectStructure(fieldRoot),byGene=new Map();
   for(const g of GENES){
     const cell=structure.leaves.find(c=>c.path===g)||structure.leaves.find(c=>c.path?.startsWith(g));
     if(cell)byGene.set(g,cell);
   }
-  const ids=identityIndex(projection),records=[];
-  for(const entity of ids.values()){
-    const cell=byGene.get(entity.gene);if(!cell)continue;
-    records.push({...entity,world:pointInTet(cell.tet,entity)});
+  const identities=identityIndex(projection),records=[];
+  for(const entity of identities.values()){
+    const cell=byGene.get(entity.gene);if(cell)records.push({...entity,world:pointInTet(cell.tet,entity)});
   }
   return {records,structure};
 }
@@ -163,7 +154,8 @@ void main(){outColor=vColor;}`;
   function flatten(instances){const out=[];for(const x of instances)out.push(x.center[0],x.center[1],x.center[2],x.scale,x.color[0],x.color[1],x.color[2],x.color[3]);return out}
   function bindInstances(geometry,data){
     gl.bindVertexArray(geometry.vao);gl.bindBuffer(gl.ARRAY_BUFFER,instanceBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.DYNAMIC_DRAW);
-    const stride=32;gl.enableVertexAttribArray(loc.center);gl.vertexAttribPointer(loc.center,3,gl.FLOAT,false,stride,0);gl.vertexAttribDivisor(loc.center,1);
+    const stride=32;
+    gl.enableVertexAttribArray(loc.center);gl.vertexAttribPointer(loc.center,3,gl.FLOAT,false,stride,0);gl.vertexAttribDivisor(loc.center,1);
     gl.enableVertexAttribArray(loc.scale);gl.vertexAttribPointer(loc.scale,1,gl.FLOAT,false,stride,12);gl.vertexAttribDivisor(loc.scale,1);
     gl.enableVertexAttribArray(loc.color);gl.vertexAttribPointer(loc.color,4,gl.FLOAT,false,stride,16);gl.vertexAttribDivisor(loc.color,1);
   }
@@ -183,17 +175,14 @@ function makeStage(host){
   const label=document.createElement('div');label.className='papers-sierpinski-label';host.append(label);
   return {canvas,hud,label};
 }
-
 function resizeCanvas(canvas){
   const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.6),w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));
   if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
-  return {rect:r,d,w,h};
+  return {rect:r,w,h};
 }
 function projectedPixels(scale,cameraZ,height){return (scale/cameraZ)*(height/2)/Math.tan(FOV/2)*2}
-
 function childBodies(current){
-  const ps=state.parents.get(current.id)||[];
-  if(ps.length!==4)return [];
+  const ps=state.parents.get(current.id)||[];if(ps.length!==4)return [];
   return ps.map((pid,i)=>({id:pid,center:mul(state.renderer.V0[i],current.scale*.5),scale:current.scale*.5}));
 }
 function collectLeaves(id,center,scale,cameraZ,height,out,depth=0){
@@ -202,60 +191,93 @@ function collectLeaves(id,center,scale,cameraZ,height,out,depth=0){
   for(let i=0;i<4;i++)collectLeaves(ps[i],add(center,mul(state.renderer.V0[i],scale*.5)),scale*.5,cameraZ,height,out,depth+1);
 }
 function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+r[0]*f/z,y:height/2-r[1]*f/z,z:r[2]}}
-
-function outerCells(){
-  return GENES.map((g,i)=>{const p=PALETTE[g];return {center:mul(state.renderer.V0[i],.5),scale:.5,color:[p[0]*.45,p[1]*.45,p[2]*.45,.045]}});
-}
+function outerCells(){return GENES.map((g,i)=>{const p=PALETTE[g];return {center:mul(state.renderer.V0[i],.5),scale:.5,color:[p[0]*.45,p[1]*.45,p[2]*.45,.045]}})}
 function populationInstances(fade=1){
   const out=[];for(const rec of state.records){if(rec.id===state.current?.id)continue;const p=PALETTE[rec.gene]||PALETTE.x;out.push({center:rec.world,scale:NODE_SCALE,color:[p[0],p[1],p[2],(.12+(rec.kind==='holon'?.055:0))*fade]})}return out;
 }
 
+function setLabel(id){const d=state.identities.get(id);state.label.textContent=`${id} · ${d?.title||id}`;state.label.classList.add('show')}
 function openGlobal(id,now=performance.now()){
   const rec=state.recordById.get(id);if(!rec)return false;
-  state.stack=[];state.current={id,scale:NODE_SCALE,start:[...rec.world],cameraFrom:FAR_Z,cameraTo:MACRO_Z};state.localQ=[...W.orientation];state.transition=0;state.closing=false;state.transitionStart=now;state.label.textContent=`${id} · ${rec.title}`;state.label.classList.add('show');return true;
+  state.stack=[];
+  state.current={id,scale:NODE_SCALE,sourceLocal:[...rec.world],entryWorld:null,cameraFrom:FAR_Z,cameraTo:MACRO_Z,globalSource:true};
+  state.localQ=[...W.orientation];state.transition=0;state.closing=false;state.transitionStart=now;setLabel(id);return true;
 }
 function descend(child,now=performance.now()){
-  if(!state.current)return false;const kids=childBodies(state.current),hit=kids.find(x=>x.id===child);if(!hit)return false;
+  if(!state.current)return false;const hit=childBodies(state.current).find(x=>x.id===child);if(!hit)return false;
   state.stack.push({id:state.current.id,scale:state.current.scale,camera:state.current.cameraTo});
-  state.current={id:child,scale:hit.scale,start:qRot(state.localQ,hit.center),cameraFrom:state.stack.at(-1).camera,cameraTo:state.stack.at(-1).camera*.5};
-  state.transition=0;state.closing=false;state.transitionStart=now;const d=state.identities.get(child);state.label.textContent=`${child} · ${d?.title||child}`;return true;
+  const entryWorld=add(currentTranslation(),qRot(state.localQ,hit.center));
+  state.current={id:child,scale:hit.scale,sourceLocal:null,entryWorld,cameraFrom:cameraZ(),cameraTo:state.stack.at(-1).camera*.5,globalSource:false};
+  state.transition=0;state.closing=false;state.transitionStart=now;setLabel(child);return true;
 }
-function closeGlobal(now=performance.now()){
-  if(!state.current)return;state.closing=true;state.transitionStart=now;
+function ascend(now=performance.now()){
+  if(!state.current||!state.stack.length)return false;
+  const parent=state.stack.pop(),fromCamera=cameraZ();
+  state.current={id:parent.id,scale:parent.scale,sourceLocal:null,entryWorld:[0,0,0],cameraFrom:fromCamera,cameraTo:parent.camera,globalSource:false};
+  state.transition=0;state.closing=false;state.transitionStart=now;setLabel(parent.id);return true;
+}
+function closeOrAscend(now=performance.now()){
+  if(!state.current)return;if(state.stack.length){ascend(now);return}state.closing=true;state.transitionStart=now;
 }
 function updateTransition(now){
   if(!state.current)return;const t=smooth(clamp((now-state.transitionStart)/OPEN_MS));state.transition=state.closing?1-t:t;
   if(state.closing&&t>=1){state.current=null;state.stack=[];state.transition=0;state.closing=false;state.label.classList.remove('show')}
 }
 function cameraZ(){if(!state.current)return FAR_Z;return mix(state.current.cameraFrom,state.current.cameraTo,state.transition)}
-function currentTranslation(){if(!state.current)return [0,0,0];return mix3(state.current.start,[0,0,0],state.transition)}
+function currentTranslation(){
+  if(!state.current)return [0,0,0];
+  const start=state.current.globalSource?qRot(W.orientation,state.current.sourceLocal):state.current.entryWorld;
+  return mix3(start,[0,0,0],state.transition);
+}
 
 function draw(now){
   if(!state||!state.mounted){if(state)state.raf=requestAnimationFrame(draw);return}
-  updateTransition(now);const {gl}=state.renderer,{rect,d,w,h}=resizeCanvas(state.canvas),cam=cameraZ(),proj=perspective(FOV,w/h,Math.max(.0008,cam*.015),12),view=lookAt([0,0,cam],[0,0,0],[0,1,0]);
+  updateTransition(now);const {gl}=state.renderer,{rect,w,h}=resizeCanvas(state.canvas),cam=cameraZ(),proj=perspective(FOV,w/h,Math.max(.0008,cam*.015),12),view=lookAt([0,0,cam],[0,0,0],[0,1,0]);
   gl.viewport(0,0,w,h);gl.clearColor(.003,.006,.006,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  /* The outer body is the rank-1 Sierpiński shell itself: four corner tetrahedra
+   * around the permanent central void. Global navigation keeps rotating it even
+   * while inquiry is open. */
   state.renderer.draw(outerCells(),W.orientation,[0,0,0],proj,view,{faces:true});
-  const fade=state.current?Math.pow(1-state.transition,2):1;state.renderer.draw(populationInstances(fade),W.orientation,[0,0,0],proj,view,{faces:true});
+  const fade=!state.current?1:(state.stack.length?0:Math.pow(1-state.transition,2));
+  state.renderer.draw(populationInstances(fade),W.orientation,[0,0,0],proj,view,{faces:true});
   if(state.current){
     const tree=[];collectLeaves(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree);for(const x of tree)x.color[3]*=.3+.7*state.transition;
     const translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
     state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,.82]}],state.localQ,translate,proj,view,{faces:false});
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  state.hud.innerHTML=state.current?`<span>INQUIRY</span><b>${state.current.id}</b><small>drag body · touch parent · empty space returns</small>`:`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>drag field · touch an organism</small>`;
+  state.hud.innerHTML=state.current?`<span>INQUIRY</span><b>${state.current.id}</b><small>drag body · touch parent · empty space ascends</small>`:`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>drag field · touch an organism</small>`;
   state.raf=requestAnimationFrame(draw);
 }
 
 function hitGlobal(x,y,width,height){let best=null;for(const rec of state.records){const p=projectPoint(rec.world,W.orientation,FAR_Z,width,height),dist=Math.hypot(x-p.x,y-p.y);if(dist<15&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
-function hitChild(x,y,width,height){if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation();let best=null;for(const child of childBodies(state.current)){const p=projectPoint(add(child.center,qRot([state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]],translate)),state.localQ,cam,width,height),dist=Math.hypot(x-p.x,y-p.y);if(dist<34&&(!best||dist<best.dist))best={id:child.id,dist}}return best?.id||''}
+function hitChild(x,y,width,height){
+  if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
+  /* projectPoint rotates its input before perspective. Pull the world translation
+   * back into the local frame so child + inverse(q)*translation maps to the exact
+   * q(child)+translation transform used by the renderer. */
+  for(const child of childBodies(state.current)){
+    const local=add(child.center,qRot(inv,translate)),p=projectPoint(local,state.localQ,cam,width,height),dist=Math.hypot(x-p.x,y-p.y);
+    if(dist<34&&(!best||dist<best.dist))best={id:child.id,dist};
+  }
+  return best?.id||'';
+}
 
 function attachInput(){
   const canvas=state.canvas;
   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;state.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
   canvas.addEventListener('pointermove',e=>{const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){if(state.current)state.localQ=rotateQ(state.localQ,dx,dy);else W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
-  const end=e=>{const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}if(!p.moved){const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(state.current){const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeGlobal()}else{const target=hitGlobal(x,y,r.width,r.height);if(target)openGlobal(target)}}e.preventDefault()};
+  const end=e=>{
+    const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
+    if(!p.moved){
+      const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+      if(state.current){const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}
+      else{const target=hitGlobal(x,y,r.width,r.height);if(target)openGlobal(target)}
+    }
+    e.preventDefault();
+  };
   canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
-  addEventListener('keydown',e=>{if(e.key==='Escape'&&state?.current){e.preventDefault();closeGlobal()}});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&state?.current){e.preventDefault();closeOrAscend()}});
 }
 
 function initialize(host,projection){
