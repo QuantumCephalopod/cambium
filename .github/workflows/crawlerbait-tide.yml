@@ -36,9 +36,19 @@ jobs:
           set -euo pipefail
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.full_history }}" = "true" ]; then
             python3 w/display/y/yw/crawlerbait/y/backfill.py --write
-          else
-            python3 w/display/y/yw/crawlerbait/y/tide.py --write
+            exit 0
           fi
+          if python3 - <<'PY'
+          import json, sys
+          with open('w/display/y/yw/crawlerbait/x/state.json', encoding='utf-8') as f:
+              state = json.load(f)
+          sys.exit(0 if state.get('last_complete_end') is None else 1)
+          PY
+          then
+            echo "initial retained-history backfill pending; ordinary tide skipped"
+            exit 0
+          fi
+          python3 w/display/y/yw/crawlerbait/y/tide.py --write
 
       - name: Witness bounded tide and public membrane
         run: |
