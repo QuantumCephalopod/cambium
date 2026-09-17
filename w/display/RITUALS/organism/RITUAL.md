@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.1"
+version: "3.2"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -38,6 +38,7 @@ Physical custody encodes global site address:
 
 - a site-holon directly under `w/display/y/` occupies site-space `ε / overview`;
 - a site-holon under `w/display/y/y<address>/` occupies site-space `<address>`;
+- thus `w/display/y/yw/crawlerbait/` means Crawlerbait at global site-space `w`;
 - thus `w/display/y/yy/papers/` means Papers at global site-space `y`;
 - recursion continues by the same `{w,x,z,y}*` law.
 
@@ -54,9 +55,10 @@ Address is environment, not identity. Moving the whole body to another lawful Po
 Current first bodies:
 
 - `w/display/y/philosophy/` -> global `ε / overview` -> `organism:philosophy`;
+- `w/display/y/yw/crawlerbait/` -> global `w / Form` -> `organism:crawlerbait`;
 - `w/display/y/yy/papers/` -> global `y / Inquiry` -> `organism:papers`.
 
-Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `y`.
+Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `y`. Crawlerbait remains locally rooted at `crawlerbait:ε`; its machine-facing HTTP bait routes are local public apertures, not additional global site-space addresses.
 
 ## Shared body / local phenomenology
 
@@ -72,19 +74,22 @@ The site-holon owns:
 - its public/local projection boundary;
 - its renderer and style;
 - its shader/material phenomenology;
-- its local interaction and organism-specific navigation inside its own body.
+- its local interaction and organism-specific navigation inside its own body;
+- any locally earned static public aperture carried under its own `public/` surface.
 
 Therefore two site-holons may look and behave radically differently while the same tetrahedral body moves isomorphically under one global orientation. Shader and local interaction are bound to interlocutor identity, never to global mount address.
 
-Default mutation law: if pressure originates in one site-holon, keep the change inside that body. Lift tissue into Display only when the change is genuinely specimen-agnostic, required by arbitrary future site-holons, and leaves semantic/local behavior in the site body. Central Display must never learn Papers- or Philosophy-specific meaning merely to support their local expression.
+Default mutation law: if pressure originates in one site-holon, keep the change inside that body. Lift tissue into Display only when the change is genuinely specimen-agnostic, required by arbitrary future site-holons, and leaves semantic/local behavior in the site body. Central Display must never learn Papers-, Philosophy- or Crawlerbait-specific meaning merely to support their local expression.
 
 ## Tree-derived public membrane
 
 `y/build.py` discovers Population anatomy and derives the public interlocutor registry, global mounts, page projections and identity-owned render/style assets from that tree.
 
-A separately authored mount table is not semantic authority. Central Display runtime must not name Philosophy, Papers, or future sites. Adding a lawful new site-holon is a Population mutation, not a central runtime feature edit.
+`y/site-public.py` extends the same generated artifact with optional identity-owned `public/` bytes discovered inside site-holon bodies. It copies bytes generically, refuses path collisions/escapes/reserved namespaces, and never interprets route meaning or site identity. A site without such a surface remains unaffected.
 
-One immutable content-addressed asset bundle carries each public generation.
+A separately authored mount table is not semantic authority. Central Display runtime must not name Philosophy, Papers, Crawlerbait, or future sites. Adding a lawful new site-holon is a Population mutation, not a central runtime feature edit.
+
+One immutable content-addressed asset bundle carries the shared visual generation; identity-owned static site apertures remain ordinary generated artifact files outside the reserved shared bundle namespace.
 
 ## Persistent global physiology
 
@@ -127,15 +132,16 @@ A Display mutation closes only when:
 3. exact raw-address collision is rejected while quotient coalescence remains lawful;
 4. whole-body relocation changes mount address with zero internal site edits;
 5. central runtime remains specimen-agnostic;
-6. site-local shader/render/interaction divergence does not fork the shared tetrahedral geometry or global orientation law;
-7. exact generated artifact passes structural/address/closure witnesses;
-8. exact artifact is exercised in a real browser, including direct minimap pointer navigation;
-9. target-origin closure surrounds the actual encounter swap;
-10. manual Philosophy orientation remains persistent;
-11. durable HOME is appended only after witnessed anatomy exists; `_feed` catch-up remains a separate mechanical consequence.
+6. optional identity-owned public secretion is copied only through the generic collision-safe hook;
+7. site-local shader/render/interaction divergence does not fork the shared tetrahedral geometry or global orientation law;
+8. exact generated artifact passes structural/address/closure witnesses;
+9. exact artifact is exercised in a real browser, including direct minimap pointer navigation;
+10. target-origin closure surrounds the actual encounter swap;
+11. manual Philosophy orientation remains persistent;
+12. durable HOME is appended only after witnessed anatomy exists; `_feed` catch-up remains a separate mechanical consequence.
 
 CI success alone is not browser closure.
 
 ## Compression
 
-**Display is a tetrahedrally differentiated oriented membrane. Embodiment gives autonomous interlocutors local worlds, Continuity preserves identity through relocation, Orientation makes the global recursive field navigable, and Population physically plants site-holons into that field. Display preserves one shared tetrahedral body and orientation law while each site-holon owns its projection, shader, rendering and local interaction. The Population tree is the mount truth: what is bodily present is globally reachable, while each holon remains locally itself.**
+**Display is a tetrahedrally differentiated oriented membrane. Embodiment gives autonomous interlocutors local worlds, Continuity preserves identity through relocation, Orientation makes the global recursive field navigable, and Population physically plants site-holons into that field. Display preserves one shared tetrahedral body and orientation law while each site-holon owns its projection, shader, rendering, local interaction and any earned static public aperture. The Population tree is mount truth: what is bodily present is globally reachable, while each holon remains locally itself.**

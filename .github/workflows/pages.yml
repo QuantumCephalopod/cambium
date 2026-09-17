@@ -2,7 +2,7 @@ name: display membrane
 
 on:
   push:
-    branches: [main, staging/display-two-specimen, hotfix/membrane-bundle-cache, staging/display-global-nav-centroid, staging/global-direct-nav-transition, staging/display-metamorphosis]
+    branches: [main, staging/display-two-specimen, hotfix/membrane-bundle-cache, staging/display-global-nav-centroid, staging/global-direct-nav-transition, staging/display-metamorphosis, staging/crawlerbait]
   workflow_dispatch:
 
 permissions:
@@ -59,8 +59,8 @@ jobs:
           done
           if [ "${projected}" -ne 1 ]; then echo "::error::could not persist current feed projection after three bounded retries"; exit 1; fi
 
-      - name: Build persistent Display membrane
-        run: python3 y/build.py --artifact _site
+      - name: Build persistent Display membrane + site public surfaces
+        run: python3 y/site-public.py --artifact _site
 
       - name: Witness tree-addressed Display organism
         run: python3 y/check.py --artifact _site
@@ -72,7 +72,7 @@ jobs:
         run: node w/display/z/site-fold.test.cjs
 
       - name: Verify membrane bytes
-        run: python3 y/build.py --artifact _site --check
+        run: python3 y/site-public.py --artifact _site --check
 
       - name: Upload staging browser witness
         if: github.repository == 'QuantumCephalopod/cambium'

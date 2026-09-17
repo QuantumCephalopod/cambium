@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.1"
+version: "2.2"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -30,6 +30,7 @@ A site-holon body directly under `w/display/y/` occupies site-space overview. A 
 Current first bodies:
 
 - `w/display/y/philosophy/` -> `organism:philosophy @ ε`;
+- `w/display/y/yw/crawlerbait/` -> `organism:crawlerbait @ w`;
 - `w/display/y/yy/papers/` -> `organism:papers @ y`.
 
 The outer first `y` belongs to Display Population and is stripped at the membrane.
@@ -41,6 +42,19 @@ A site-holon carries a `site.json` membrane declaration containing stable identi
 Those body-local members travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
 
 A site may contain further local organism anatomy beyond the site membrane. Philosophy currently carries its own INDEX, `_cambium`, RITUALS and lifecycle shell inside its body; other sites may carry only the local tissue their own closure has earned.
+
+### Identity-owned static public aperture
+
+A site-holon may additionally carry a local `public/` subtree when its own closure requires ordinary root-relative HTTP files beyond the shared single-page Display membrane. This is an **optional identity-owned secretion surface**, not a new required site-holon organ and not global semantic anatomy.
+
+The generic publication layer may copy those bytes into the generated Pages artifact only under a specimen-agnostic contract:
+- preserve paths exactly relative to the site's `public/` root;
+- reject traversal, symlinks and escapes from the site body;
+- reject collisions between site-holons and with Display-owned artifact paths/namespaces;
+- never interpret route meaning or branch on site identity;
+- a site without `public/` pays no cost and gains no synthetic surface.
+
+Crawlerbait first earns this hook for static machine-facing routes while its visual interlocutor remains inside the shared Display body. The reusable invariant is only **identity-owned static secretion with collision refusal**; crawler semantics remain Crawlerbait-local.
 
 ## Local sovereignty
 
@@ -88,7 +102,11 @@ For Papers:
 
 `site-space:y ⟦ papers:ε ⟧`
 
-Relocation changes the outer environment only. It may never rewrite Papers-local genealogy into fake concatenations such as `main:yy`.
+For Crawlerbait:
+
+`site-space:w ⟦ crawlerbait:ε ⟧`
+
+Relocation changes the outer environment only. It may never rewrite a site's local genealogy into fake concatenations such as `main:yy`.
 
 Local selection or traversal inside a site-holon likewise does not mutate its global mount or transfer the global navigator into local scope.
 
@@ -112,10 +130,11 @@ A site-holon change is accepted when:
 1. identity remains independent of global mount address;
 2. local projection/render/style/shader/interaction remain carried by the body;
 3. any new shared hook is specimen-agnostic and leaves local meaning in the site module;
-4. relocation still changes only environment, not body bytes;
-5. local traversal does not hijack global navigation or orientation law;
-6. public/browser witnesses exercise the actual generated body when visible behavior changes.
+4. optional static public secretion remains identity-owned, bounded and collision-safe;
+5. relocation still changes only environment, not body bytes;
+6. local traversal does not hijack global navigation or orientation law;
+7. public/browser witnesses exercise the actual generated body when visible behavior changes.
 
 ## Compression
 
-**A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal tissue determines identity, projection, phenomenology and local interaction. Display contributes one shared tetrahedral geometry/orientation law; each holon contributes its own skin and behavior. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
+**A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal tissue determines identity, projection, phenomenology, local interaction and any earned static public aperture. Display contributes one shared tetrahedral geometry/orientation law and specimen-agnostic publication hooks; each holon contributes its own skin and behavior. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
