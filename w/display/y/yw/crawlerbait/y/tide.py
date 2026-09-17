@@ -105,18 +105,30 @@ def assimilate(state: dict, groups: list, start: datetime, end: datetime):
 def capture_paths():
     if not CAPTURE_ROOT.is_dir():
         return []
-    return sorted(p for p in CAPTURE_ROOT.glob("*.json") if p.name != "manifest.json")
+    return sorted(
+        p for p in CAPTURE_ROOT.iterdir()
+        if p.is_file() and p.name != "manifest.json" and p.name.endswith((".capture.json", ".json"))
+    )
+
+
+def capture_groups(value: dict) -> list:
+    if value.get("version") == 1 and isinstance(value.get("groups"), list):
+        return value["groups"]
+    if value.get("version") == 2 and isinstance(value.get("provider_response"), dict):
+        zones = value["provider_response"].get("data", {}).get("viewer", {}).get("zones", [])
+        if len(zones) == 1 and isinstance(zones[0].get("groups"), list):
+            return zones[0]["groups"]
+    raise RuntimeError("capture has no usable Cloudflare group payload")
 
 
 def load_capture(path: Path) -> dict:
     value = read_json(path)
-    if value.get("version") != 1 or value.get("source") != "cloudflare:httpRequestsAdaptiveGroups":
+    if value.get("source") != "cloudflare:httpRequestsAdaptiveGroups":
         raise RuntimeError(f"invalid crawlerbait capture {path.name}")
     window = value.get("window") or {}
     if not isinstance(window.get("start"), str) or not isinstance(window.get("end"), str):
         raise RuntimeError(f"capture {path.name} has no valid window")
-    if not isinstance(value.get("groups"), list):
-        raise RuntimeError(f"capture {path.name} has no group list")
+    capture_groups(value)
     return value
 
 
@@ -134,7 +146,7 @@ def apply_capture(state: dict, capture: dict):
         raise RuntimeError("capture overlaps the applied cursor")
     if start != applied:
         raise RuntimeError(f"capture gap: state ends {stamp(applied)} but next capture starts {stamp(start)}")
-    out, _ = assimilate(out, capture["groups"], start, end)
+    out, _ = assimilate(out, capture_groups(capture), start, end)
     out["version"] = 4
     out["applied_capture_end"] = stamp(end)
     out["last_complete_end"] = stamp(end)
