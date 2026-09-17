@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.3"
+version: "1.4"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -70,7 +70,7 @@ Display `y / Population` is itself a membrane into global page-organism site-spa
 
 `display:y ⟦ site-space:ε ⟧`
 
-Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current first population includes Philosophy at site-space overview and Papers at site-space `y / Inquiry`.
+Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current first population includes Philosophy at site-space overview, Crawlerbait at site-space `w / Form`, and Papers at site-space `y / Inquiry`.
 
 Host continuity/orientation/renewal remain host interfaces across the Display boundary; they do not become Display child vertices merely because similar functional relations recur locally.
 
@@ -78,21 +78,24 @@ Host continuity/orientation/renewal remain host interfaces across the Display bo
 
 `_site/` is ephemeral secreted Pages artifact, never anatomy and never `_feed`.
 
-Mechanical witness path remains:
+The base Display membrane remains generated from Population anatomy. Site-holons may additionally carry an optional identity-owned `public/` subtree when locally earned. The generic `y/site-public.py` wrapper combines those static bytes with the base membrane while refusing path escape, symlinks, reserved Display namespaces and cross-site collisions. The wrapper transports bytes only; it never interprets site-local route meaning.
+
+Mechanical witness path for the complete current public artifact is:
 
 ```sh
-python3 y/build.py --artifact _site
+python3 y/site-public.py --artifact _site
 python3 y/check.py --artifact _site
 SITE_DIR=_site node y/test-address.cjs
-python3 y/build.py --artifact _site --check
+python3 y/site-public.py --artifact _site --check
 ```
 
-`.github/workflows/pages.yml` is substrate circulation only. The build derives the public Display registry from living Population anatomy. Only the canonical organization repository may deploy Pages.
+`.github/workflows/pages.yml` is substrate circulation only. The build derives the public Display registry from living Population anatomy and any optional site-owned static apertures from their local bodies. Only the canonical organization repository may deploy Pages.
 
 ## current living pressure
 
 - Root `_stomach/launch.md` remains unresolved launch pressure.
 - Display-local nutrients remain owned by `w/display/_stomach/` until metabolized.
+- Crawlerbait's Cloudflare tide remains Crawlerbait-local physiology; provider credentials remain outside repository/public bytes.
 - Completed child pressure may be retired only after witnessed anatomy, durable child HOME and feed return close its local cycle.
 - A child change backpropagates upward only when its witnessed consequence changes a rank-invariant parent distinction; implementation-local child detail remains local.
 
@@ -103,8 +106,9 @@ A cambium mutation closes only when:
 2. smallest affected dependency cone is mutated;
 3. current source state is witnessed;
 4. a realized split has fully redistributed active tissue into its four children rather than retaining a hidden fifth root layer;
-5. durable local HOME is appended in the mutated organism `_root`;
+5. durable local HOME is appended in the mutated organism `_root` when the mutation is an organism-owned organic act;
 6. `_feed` catch-up remains a separate mechanical consequence;
-7. build/address/browser witnesses pass when the public membrane is affected.
+7. optional site-owned public secretion remains bounded by generic collision-safe publication law;
+8. build/address/browser witnesses pass when the public membrane is affected.
 
-Compression: **same organism dance, whole-body recursive differentiation, structural membrane restart, substrate mechanics beneath semantic law.**
+Compression: **same organism dance, whole-body recursive differentiation, structural membrane restart, identity-owned site secretion through generic transport, substrate mechanics beneath semantic law.**

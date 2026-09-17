@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "min_404_requests": 2,
+  "max_new_routes_per_tide": 4,
+  "max_total_routes": 128,
+  "max_candidates": 256,
+  "max_signatures_per_path": 8,
+  "max_path_length": 96,
+  "max_depth": 3,
+  "reserved_prefixes": [
+    "/assets",
+    "/crawlerbait",
+    "/robots.txt",
+    "/sitemap.xml",
+    "/favicon.ico"
+  ],
+  "bootstrap_hours": 24,
+  "settle_delay_minutes": 10,
+  "max_window_hours": 24,
+  "query_limit": 5000
+}
