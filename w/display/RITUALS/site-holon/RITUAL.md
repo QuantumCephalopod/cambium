@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.2"
+version: "2.3"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -69,6 +69,21 @@ Default locality rule:
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
+
+## Global occupied-region / safe-area contract
+
+Display owns persistent global membrane surfaces such as orientation/status/navigation controls. A site-holon owns its local phenomenology and may not be forced to copy Display-specific pixel offsets or learn the identities of neighboring/current sites merely to avoid those global surfaces.
+
+Display therefore exposes one **specimen-agnostic occupied-region / safe-area contract** to every site-holon render:
+- global Display surfaces declare their current occupied screen regions;
+- Display derives the current viewport-relative occupied rectangles and conservative edge insets from those actual surfaces;
+- the same contract is available as neutral render-context data and CSS safe-area variables;
+- current/future site-holons may use the exact occupied rectangles, conservative insets, or generic safe anchors according to their own local phenomenology;
+- central Display must never branch on site identity to decide these regions;
+- one site's typography, HUD, inquiry grammar, overlays, panels or other presentation choices remain site-local and are not promoted merely because they must coexist spatially with the Display membrane;
+- concrete pixel sizes, responsive breakpoints and visual spacing are implementation/witness details, not semantic site anatomy.
+
+The invariant is **spatial membrane coexistence without sovereignty collapse**: Display states what global screen space it currently occupies; autonomous site-holons decide how their own presentation inhabits what remains.
 
 ## Tree is mount truth
 
@@ -138,3 +153,8 @@ A site-holon change is accepted when:
 ## Compression
 
 **A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal tissue determines identity, projection, phenomenology, local interaction and any earned static public aperture. Display contributes one shared tetrahedral geometry/orientation law and specimen-agnostic publication hooks; each holon contributes its own skin and behavior. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
+
+
+## Living provenance
+
+Version 2.3 global occupied-region correction (2026-09-18): a cooked cross-site collision pressure earned one specimen-agnostic Display safe-area contract. Global membrane surfaces expose their actual occupied rectangles plus derived conservative insets to every site render and as CSS variables; site-local presentation remains identity-owned, central Display does not branch on specimen identity, and concrete pixels remain implementation rather than ontology.

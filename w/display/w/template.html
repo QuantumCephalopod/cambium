@@ -12,25 +12,28 @@
 <link rel="stylesheet" href="assets/interlocutors.css">
 <link rel="stylesheet" href="assets/navigation-aperture.css">
 /*__SITE_STYLES__*/
+<link rel="stylesheet" href="assets/display-safe-area.css">
 </head>
 <body>
 <a class="sr-only skip" href="#mini-trigger">skip to global navigation</a>
 <div id="noise" aria-hidden="true"></div><div id="veil" aria-hidden="true"></div>
-<header>
+<header data-display-occupancy="top">
   <button id="root-home" class="brand" type="button" aria-label="Return to global overview"><i></i><span>self-similar systems</span></button>
   <div class="lang" role="group" aria-label="Display / Sprache / language"><label class="inverse-control" title="Invert global colors"><input id="inverse-mode" type="checkbox" aria-label="Invert global colors"><span aria-hidden="true">◐</span></label><span>·</span><button data-lang="de" aria-pressed="false">DE</button><span>/</span><button data-lang="en" aria-pressed="true">EN</button></div>
 </header>
-<div id="route-mark">GLOBAL main:overview</div>
-<div id="status">persistent recursive display field</div>
-<div id="site-state" aria-live="polite"></div>
+<div id="display-membrane-status" data-display-occupancy="top">
+  <div id="route-mark">GLOBAL main:overview</div>
+  <div id="status">persistent recursive display field</div>
+  <div id="site-state" aria-live="polite"></div>
+</div>
 
 <main id="interlocutor-stage" data-composition="single" aria-live="polite">
 /*__INTERLOCUTOR_SURFACES__*/
 </main>
 
-<button id="commit" type="button" aria-live="polite"></button>
+<button id="commit" type="button" aria-live="polite" data-display-occupancy="left bottom"></button>
 <aside id="mini" data-aperture="closed" data-pinned="false" aria-label="Global navigation aperture">
-  <button id="mini-trigger" type="button" aria-expanded="false" aria-controls="mini-pocket" aria-label="Open global tetrahedral navigator">
+  <button id="mini-trigger" data-display-occupancy="right bottom" type="button" aria-expanded="false" aria-controls="mini-pocket" aria-label="Open global tetrahedral navigator">
     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2">
       <path class="shape-square" d="M4 4h16v16H4Z"/>
       <path class="shape-diamond" d="M12 2.5 21.5 12 12 21.5 2.5 12Z"/>
@@ -38,7 +41,7 @@
       <path d="M12 6.5 12 12.3M6.8 15.7 12 12.3 17.2 15.7" opacity=".72"/>
     </svg>
   </button>
-  <div id="mini-pocket" aria-hidden="true">
+  <div id="mini-pocket" data-display-occupancy="right bottom" aria-hidden="true">
     <div id="mini-core">
       <div id="mini-title">global orientation · minimap</div>
       <div id="mini-state">global overview</div>
@@ -58,6 +61,7 @@
 <script src="assets/navigation-physiology.js"></script>
 <script src="assets/world-view.js"></script>
 <script src="assets/locus-shader.js"></script>
+<script src="assets/display-safe-area.js"></script>
 /*__SITE_SCRIPTS__*/
 <script src="assets/navigation-aperture.js"></script>
 <script src="assets/display-runtime-v2.js"></script>
