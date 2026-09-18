@@ -392,9 +392,9 @@ def render():
         # web traffic, including paths such as /assets/root-view.css; those bytes
         # must never be mistaken for Display template asset references.
         pattern = re.compile(
-            r'(?P<attr>\\b(?:href|src)=)(?P<quote>["\\\'])'
+            r"(?P<attr>\b(?:href|src)=)(?P<quote>['\"])"
             + re.escape(flat)
-            + r'(?P=quote)'
+            + r"(?P=quote)"
         )
         matches = list(pattern.finditer(text))
         if len(matches) != 1:
