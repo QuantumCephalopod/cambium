@@ -30,15 +30,16 @@ function assertClosedSplits(node,address=''){
   for(const gene of ['w','x','z','y'])assertClosedSplits(children[gene],address+gene);
 }
 
-assertClosedSplits(field.root.children.w,'w');
+assertClosedSplits(field.root,'');
 for(const route of projection.routes){
   assert(/^[wxzy]+$/.test(route.address),`invalid bait address ${route.address}`);
   const point=field.points.find(p=>p.address===route.address);
   assert(point,`missing point for bait:${route.address}`);
-  assert.strictEqual(point.path,'w'+route.address,`point escaped real bait cell ${route.address}`);
+  assert.strictEqual(point.path,route.address,`point escaped real bait cell ${route.address}`);
   assert.strictEqual(point.label,route.path,`point label diverged from observed path ${route.path}`);
-  const node=nodeAt(field.root,'w'+route.address);
-  assert(node&&node.bait===true,`real bait anatomy missing at w${route.address}`);
+  const node=nodeAt(field.root,route.address);
+  assert(node&&node.bait===true,`real bait anatomy missing at ${route.address}`);
   assert.strictEqual(node.address,route.address,`bait anatomy address mismatch ${route.address}`);
 }
-console.log(`PASS · ${projection.routes.length} baits render from their real recursive w-addresses`);
+assert(!field.root.children?.x?.gene&&!field.root.children?.z?.gene&&!field.root.children?.y?.gene,'Crawlerbait root anatomy leaked into bait-space field');
+console.log(`PASS · ${projection.routes.length} baits render as the complete background from bait-space ε`);
