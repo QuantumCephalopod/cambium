@@ -99,9 +99,9 @@ def main():
         expected=window.get('end')
     check(cursor.get('legacy_404_last_capture_end')==expected,'legacy 404 cursor diverged from preserved captures')
 
-    raw=sorted((crawler/'x'/'captures').glob('*.traffic.json'))
+    raw_captures=sorted((crawler/'x'/'captures').glob('*.traffic.json'))
     raw_expected=None
-    for capture in raw:
+    for capture in raw_captures:
         value=json.loads(capture.read_text(encoding='utf-8'))
         window=value.get('window') or {}
         zones=(value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
@@ -110,7 +110,7 @@ def main():
         if raw_expected is not None:
             check(window.get('start')==raw_expected,f'Crawlerbait raw traffic gap before {capture.name}')
         raw_expected=window.get('end')
-    if raw:
+    if raw_captures:
         check(cursor.get('raw_last_capture_end')==raw_expected,'raw traffic cursor is not exactly covered by immutable captures')
         check(trace_state.get('version')==5 and trace_state.get('raw_capture_end')==raw_expected,'derived whole-traffic state is stale')
         check((crawler/'z'/'public'/'crawlerbait'/'traffic.json').is_file(),'public raw traffic manifest missing')
@@ -155,7 +155,7 @@ def main():
 
     public_files=public.site_public_files()
     check('crawlerbait/index.html' in public_files and 'crawlerbait/state.json' in public_files,'Crawlerbait machine-facing static hub missing')
-    if raw:
+    if raw_captures:
         check('crawlerbait/traffic.json' in public_files,'Crawlerbait public raw-traffic manifest missing')
     check(all(not p.startswith('assets/') and p not in {'index.html','.nojekyll','CNAME'} for p in public_files),'site public surface escaped reserved artifact namespace')
     public.verify_artifact(artifact)
