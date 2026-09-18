@@ -174,26 +174,46 @@ def replay_from_checkpoint():
     return state
 
 
-def identity_code(path: str) -> str:
+def identity_block(path: str, block: int) -> str:
+    raw = path.encode("utf-8", "replace")
+    # Block zero is byte-for-byte the original addressing law, preserving every
+    # existing bait address. Further blocks extend the same identity into an
+    # address stream with no terminal configured depth.
+    digest = sha256(raw).digest() if block == 0 else sha256(
+        raw + b"\x00crawlerbait-address-v1\x00" + str(block).encode("ascii")
+    ).digest()
     out = []
-    for byte in sha256(path.encode("utf-8", "replace")).digest():
+    for byte in digest:
         for shift in (6, 4, 2, 0):
             out.append(ADDRESS_ALPHABET[(byte >> shift) & 3])
     return "".join(out)
 
 
+def identity_prefix(path: str, length: int) -> str:
+    if length < 1:
+        return ""
+    block_width = 128
+    blocks = (length + block_width - 1) // block_width
+    return "".join(identity_block(path, block) for block in range(blocks))[:length]
+
+
 def bait_addresses(paths) -> dict[str, str]:
     paths = sorted(set(paths))
-    codes = {path: identity_code(path) for path in paths}
     addresses = {}
+    prefix_cache = {}
+
+    def prefix(path: str, depth: int) -> str:
+        key = (path, depth)
+        if key not in prefix_cache:
+            prefix_cache[key] = identity_prefix(path, depth)
+        return prefix_cache[key]
+
     for path in paths:
-        code = codes[path]
         depth = 1
-        while any(other != path and codes[other].startswith(code[:depth]) for other in paths):
+        while any(other != path and prefix(other, depth) == prefix(path, depth) for other in paths):
             depth += 1
-            if depth > len(code):
-                raise RuntimeError("bait identity hash collision exhausted address code")
-        addresses[path] = code[:depth]
+        addresses[path] = prefix(path, depth)
+
     if len(set(addresses.values())) != len(addresses):
         raise RuntimeError("bait-space exact raw occupancy collision")
     return addresses
@@ -279,7 +299,7 @@ def projection_from(state: dict):
             "observation_domain": "all captured Cloudflare 404 groups",
             "growth_gate": "none",
             "public_namespace": "/crawlerbait/",
-            "bait_addressing": "shortest unique prefix of stable path identity in tetrahedral bait-space",
+            "bait_addressing": "shortest unique prefix of an unbounded stable path-identity stream in tetrahedral bait-space",
         },
         "routes": [
             {
@@ -388,6 +408,14 @@ def self_test():
     assert set(state["routes"]) == {"/login", "/.env"}
     addresses = bait_addresses(state["routes"])
     assert len(set(addresses.values())) == 2
+    legacy = "".join(
+        ADDRESS_ALPHABET[(byte >> shift) & 3]
+        for byte in sha256("/login".encode("utf-8")).digest()
+        for shift in (6, 4, 2, 0)
+    )
+    assert identity_prefix("/login", 128) == legacy
+    assert len(identity_prefix("/login", 513)) == 513
+    assert set(identity_prefix("/login", 513)) <= set(ADDRESS_ALPHABET)
     assert public_href("/login") == "/crawlerbait/bait/login/"
     assert public_href("/.env").startswith("/crawlerbait/receipt/")
     print("PASS · tide consumes local captures only; empty windows advance continuity without touching Cloudflare")
