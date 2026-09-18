@@ -1,0 +1,2276 @@
+{
+  "captured_at": "2026-09-18T11:23:56Z",
+  "provider_response": {
+    "data": {
+      "viewer": {
+        "zones": [
+          {
+            "groups": [
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/api/session/properties",
+                  "userAgent": "metabase-cve-2026-72898-detect/1.0 (benign detection probes only)"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/secrets.yml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/wp-json/oembed/1.0/embed",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 2
+                },
+                "count": 2,
+                "dimensions": {
+                  "clientRequestPath": "/service-account-credentials.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/app/google-services.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.docker/config.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/s3cmd.ini",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/www/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/database/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/tests/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/secret_token.rb",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/backup/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/app/settings.py",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/_config.yml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/env.js",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.azure-pipelines.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.boto",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/includes/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/settings.php.dist",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/web/settings/settings.py",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/storage/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.backup",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/StudioServer/.git/config",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/blog/",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/Properties/launchSettings.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/development/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/oauth-credentials.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/search/token.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/xmlrpc.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/conf/settings.xml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.properties.bak",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/xmlrpc.php",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/configprops",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/host.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/authentication/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/env/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/backups/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/access_tokens.db",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/bitbucket-pipelines.yml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/settings.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/admin/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config/database.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/tmp/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/loggingConfig",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.wget-hsts",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/mappings",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.dockercfg",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/NuGet.Config",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config/storage.yml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.php.old",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.mysql_history",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sites/default/settings.php.save",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/src/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/files/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/parameters.yml.dist",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/loggers",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/db/schema.rb",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.sqlite_history",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/app/etc/local.xml.additional",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/blog/robots.txt",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/app/etc/local.xml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/settings.php.bak",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.pgpass",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/settings.xml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.gitlab-ci.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/httpexchanges",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.bak",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/docs/postman.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//wp-content/plugins/plugins/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/Server/.git/config",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/test/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.aws/credentials",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/credentials.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/configs/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/artemis/actuator/env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.aws/config",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.zsh_history",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.php.bak",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/env.development.js",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/schema.rb",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/postman_collection.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/storage/ovh-backups.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.yaml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/backup/ovh-backups.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.netrc",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/token.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/serviceAccountCredentials.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/credentials.db",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.irb_history",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/credentials",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/collections/postman.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.staging",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/oauth/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/configuration/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/env.dev.js",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.git-credentials",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.config/sftp.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp/",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/readme.html",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/dev/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/include/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/secrets/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/lib/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/_netrc",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/django/settings.py",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/administrator/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.local",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/settings.php.save",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/db/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/azure-pipelines.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//blogs/media/media/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/site/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.old",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/parameters.yml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config/settings.yml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-includes/wlwmanifest.xml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/caches",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.settings.php.swp",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/logs/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/app/config/parameters.yml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/user_secrets.yml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.config.php.swp",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.msmtprc",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sites/default/settings.local.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//images/images/images/images/images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.php.dist",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.credentials",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sites/default/settings.php.orig",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/database_credentials.inc",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/client_secrets.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/vendors/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/license.txt",
+                  "userAgent": "python-requests/2.27.1"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//cgi-bin/cgi-bin/cgi-bin/cgi-bin/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/temp/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config/initializers/secret_token.rb",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//images/images/images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/staging/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.prisma/schema.prisma",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sites/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.production",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.php.txt",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/production/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//images/images/images/images/images/images/images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.config/gcloud/configurations/config_default",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/schema.prisma",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sendgrid.env",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/web/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config/secrets.yml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/logfile",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/keycloak.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.development",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.node_repl_history",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.wgetrc",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.config/gcloud/access_tokens.db",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.circleci/ssh-config",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//images/images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/application.yaml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/core-cloud-config.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/psql_history",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/user_secrets.yml.old",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wp-login.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/keys/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.pry_history",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//images/images/images/images/images/images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/settings.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.psql_history",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.nuget/nuget.config",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/startup",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/redmine/config/settings.yml",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/secrets.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//cache/cache/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//images/images/images/images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.postgresql_history",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.properties",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.nuget/packages.config",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.my.cnf",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/ovh-backups.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "//assets/images/images/cache.php",
+                  "userAgent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.config/gcloud/credentials.db",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/data/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/assets/other/service-account-credentials.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config.php.save",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/test/config/secrets.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/auth/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/api/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.gitlab-ci/variables.yml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/secret/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/secure/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/assets/auth.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/prod/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/gitlab-ci.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/env-config.js",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/__ENV.js",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/cache/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/node_repl_history",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/postman.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/wordpress/",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/vendor/auth.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/config/ovh-backups.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.sh_history",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/deployment-config.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/httptrace",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.env.save",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/google-services.json",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/actuator/beans",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sites/default/settings.php.old",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.composer-auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/redmine/config/initializers/secret_token.rb",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.circleci/config.yml",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.s3cfg",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/docker-compose.yaml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.gem/credentials",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/assets/credentials.json",
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/library/auth.json",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/sites/default/settings.php",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/.gem/credentials.yaml",
+                  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              },
+              {
+                "avg": {
+                  "sampleInterval": 1
+                },
+                "count": 1,
+                "dimensions": {
+                  "clientRequestPath": "/settings.php.old",
+                  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": null
+  },
+  "query": {
+    "dataset": "httpRequestsAdaptiveGroups",
+    "edgeResponseStatus_geq": 404,
+    "edgeResponseStatus_lt": 405,
+    "groupBy": [
+      "clientRequestPath",
+      "userAgent"
+    ],
+    "limit": 5000,
+    "orderBy": [
+      "count_DESC"
+    ],
+    "requestSource": "eyeball"
+  },
+  "source": "cloudflare:httpRequestsAdaptiveGroups",
+  "version": 2,
+  "window": {
+    "end": "2026-09-18T11:13:56Z",
+    "start": "2026-09-18T04:40:48Z"
+  }
+}
