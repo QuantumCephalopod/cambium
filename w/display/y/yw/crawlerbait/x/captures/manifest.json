@@ -1,15 +1,13 @@
 {
-  "version": 2,
-  "source": "cloudflare:httpRequestsAdaptiveGroups",
-  "migration_baseline": {
-    "kind": "aggregate-checkpoint",
-    "path": "../checkpoint.json",
-    "through": "2026-09-17T21:58:07Z",
-    "note": "This was already-owned history before raw-window persistence existed. Preserve it for continuity."
-  },
-  "one_time_raw_history": {
-    "path": "../retained-bootstrap/",
-    "law": "During setup only, freeze every provider window still retained, seal once, then never refresh it."
-  },
-  "live_capture_law": "Each later capture file preserves the complete returned provider payload for exactly one newly queried time window, including empty windows. The cursor advances only after those bytes are written."
+  "version": 3,
+  "canonical_source": "cloudflare:httpRequestsAdaptive",
+  "canonical_capture_law": "Every future tide stores all provider-advertised raw HTTP event fields with time bounds only; no semantic traffic filter is permitted.",
+  "public_law": "Canonical raw traffic captures are ordinary public Crawlerbait Traces in this public repository and are linked from /crawlerbait/traffic.json.",
+  "bootstrap_law": "When the raw cursor is uninitialized, capture begins at the live provider retention boundary and freezes everything still available before advancing incrementally.",
+  "legacy_404_evidence": {
+    "checkpoint": "../checkpoint.json",
+    "captures": "*.capture.json",
+    "retained_bootstrap": "../retained-bootstrap/",
+    "law": "Preserve as partial historical 404 evidence only. Never extend it and never mix its counts with canonical raw-request counts."
+  }
 }
