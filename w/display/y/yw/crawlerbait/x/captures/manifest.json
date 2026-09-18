@@ -1,13 +1,25 @@
 {
-  "version": 3,
+  "version": 4,
   "canonical_source": "cloudflare:httpRequestsAdaptive",
-  "canonical_capture_law": "Every future tide stores all provider-advertised raw HTTP event fields with time bounds only; no semantic traffic filter is permitted.",
-  "public_law": "Canonical raw traffic captures are ordinary public Crawlerbait Traces in this public repository and are linked from /crawlerbait/traffic.json.",
-  "bootstrap_law": "When the raw cursor is uninitialized, capture begins at the live provider retention boundary and freezes everything still available before advancing incrementally.",
+  "canonical_capture_law": "Every future tide requests all provider-advertised HTTP event fields with time bounds only. Before any event is persisted publicly, literal clientIP is replaced by stable HMAC-SHA256 clientIPIdentity; every other captured provider field remains unchanged.",
+  "identity_law": {
+    "input": "canonical clientIP",
+    "published_field": "clientIPIdentity",
+    "scheme": "hmac-sha256",
+    "domain": "crawlerbait:clientIP:v1",
+    "key_epoch": "v1",
+    "key_custody": "GitHub Actions secret CRAWLERBAIT_ID_KEY; never repository bytes",
+    "key_format": "64 hexadecimal characters / 32 random bytes",
+    "equality_preserved_within_key_epoch": true,
+    "literal_ip_persisted": false,
+    "rotation_law": "A changed key with the same epoch is a continuity error and capture must fail."
+  },
+  "public_law": "Canonical traffic captures are ordinary public Crawlerbait Traces in this public repository and are linked from /crawlerbait/traffic.json.",
+  "bootstrap_law": "When the canonical raw cursor is uninitialized, capture begins at the live provider retention boundary and freezes everything still available before advancing incrementally.",
   "legacy_404_evidence": {
     "checkpoint": "../checkpoint.json",
     "captures": "*.capture.json",
     "retained_bootstrap": "../retained-bootstrap/",
-    "law": "Preserve as partial historical 404 evidence only. Never extend it and never mix its counts with canonical raw-request counts."
+    "law": "Preserve as partial historical 404 evidence only. Never extend it and never mix its counts with canonical whole-web-traffic request counts."
   }
 }
