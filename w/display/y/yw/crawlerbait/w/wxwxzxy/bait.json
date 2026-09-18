@@ -1,25 +1,17 @@
 {
   "bait_address": "xwxzxy",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "467844c5e65593cac952",
-  "last_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 2,
-  "observed_path": "/private/.env",
-  "public_href": "/crawlerbait/receipt/467844c5e65593cac952/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "28e19718e8682b7b",
-      "observed_404": 2
+      "events": 1,
+      "id": "86aff9f491f46896f57e08b1"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "467844c5e65593cac952",
+  "last_seen": "2026-09-15T22:09:07Z",
+  "legacy_404_observations": 2,
+  "observed_path": "/private/.env",
+  "public_href": "/crawlerbait/receipt/467844c5e65593cac952/",
+  "raw_requests": 1,
+  "version": 2
 }

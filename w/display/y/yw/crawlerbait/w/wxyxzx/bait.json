@@ -1,25 +1,29 @@
 {
   "bait_address": "xyxzx",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "7643d037b83b1eb93265",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 2,
-  "observed_path": "/.npmrc",
-  "public_href": "/crawlerbait/receipt/7643d037b83b1eb93265/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Go-http-client/1.1",
-      "id": "12bd583dd25b868e",
-      "observed_404": 2
+      "events": 1,
+      "id": "0104e73d30bc89711a380790"
+    },
+    {
+      "events": 1,
+      "id": "36fd8a32fdc9c57868031f76"
+    },
+    {
+      "events": 1,
+      "id": "c64d8808da7a3a90132f0c79"
+    },
+    {
+      "events": 1,
+      "id": "f4e6f9376e16550bf32aaa47"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "7643d037b83b1eb93265",
+  "last_seen": "2026-09-18T14:34:41Z",
+  "legacy_404_observations": 2,
+  "observed_path": "/.npmrc",
+  "public_href": "/crawlerbait/receipt/7643d037b83b1eb93265/",
+  "raw_requests": 4,
+  "version": 2
 }

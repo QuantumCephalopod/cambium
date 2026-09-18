@@ -1,25 +1,17 @@
 {
   "bait_address": "zwxzw",
-  "first_observed_window": {
-    "end": "2026-09-18T04:40:48Z",
-    "start": "2026-09-17T21:58:07Z"
-  },
-  "id": "860a4befb6a2a75aab79",
-  "last_observed_window": {
-    "end": "2026-09-18T04:40:48Z",
-    "start": "2026-09-17T21:58:07Z"
-  },
-  "materialized_at": "2026-09-18T04:40:48Z",
-  "observed_404": 1,
-  "observed_path": "/installer-backup.php",
-  "public_href": "/crawlerbait/bait/installer-backup.php/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0",
-      "id": "b8fc39beb09122ed",
-      "observed_404": 1
+      "events": 1,
+      "id": "9bce585d8a36ba195de0cee8"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-17T21:58:07Z",
+  "id": "860a4befb6a2a75aab79",
+  "last_seen": "2026-09-18T04:40:48Z",
+  "legacy_404_observations": 1,
+  "observed_path": "/installer-backup.php",
+  "public_href": "/crawlerbait/bait/installer-backup.php/",
+  "raw_requests": 1,
+  "version": 2
 }

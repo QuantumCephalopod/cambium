@@ -1,25 +1,33 @@
 {
   "bait_address": "zwwwyw",
-  "first_observed_window": {
-    "end": "2026-09-14T22:09:07Z",
-    "start": "2026-09-13T22:09:07Z"
-  },
-  "id": "80cad2f682024f3186b5",
-  "last_observed_window": {
-    "end": "2026-09-17T21:58:07Z",
-    "start": "2026-09-16T22:09:07Z"
-  },
-  "materialized_at": "2026-09-14T22:09:07Z",
-  "observed_404": 7,
-  "observed_path": "/2018/wp-includes/wlwmanifest.xml",
-  "public_href": "/crawlerbait/bait/2018/wp-includes/wlwmanifest.xml/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
-      "id": "6651c93be752de4f",
-      "observed_404": 7
+      "events": 2,
+      "id": "5c16e615f6f6cc9dd13529a9"
+    },
+    {
+      "events": 2,
+      "id": "9ad246cdbe1794c9d24a14ef"
+    },
+    {
+      "events": 1,
+      "id": "07e42fdb7244689838a544f0"
+    },
+    {
+      "events": 1,
+      "id": "6ee372e89254cf90f7d9bb0e"
+    },
+    {
+      "events": 1,
+      "id": "a41a2f8e5822ec99b9bf58db"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-13T22:09:07Z",
+  "id": "80cad2f682024f3186b5",
+  "last_seen": "2026-09-18T10:10:16Z",
+  "legacy_404_observations": 7,
+  "observed_path": "/2018/wp-includes/wlwmanifest.xml",
+  "public_href": "/crawlerbait/bait/2018/wp-includes/wlwmanifest.xml/",
+  "raw_requests": 7,
+  "version": 2
 }

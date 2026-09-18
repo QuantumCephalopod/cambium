@@ -1,25 +1,21 @@
 {
   "bait_address": "wwwxxx",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "0151780c15d45702ae9d",
-  "last_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 4,
-  "observed_path": "/wp/.env",
-  "public_href": "/crawlerbait/receipt/0151780c15d45702ae9d/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "28e19718e8682b7b",
-      "observed_404": 4
+      "events": 1,
+      "id": "86aff9f491f46896f57e08b1"
+    },
+    {
+      "events": 1,
+      "id": "9caebc8cb7405cb1b57a7cc4"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "0151780c15d45702ae9d",
+  "last_seen": "2026-09-18T06:23:37Z",
+  "legacy_404_observations": 4,
+  "observed_path": "/wp/.env",
+  "public_href": "/crawlerbait/receipt/0151780c15d45702ae9d/",
+  "raw_requests": 2,
+  "version": 2
 }

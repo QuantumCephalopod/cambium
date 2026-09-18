@@ -1,25 +1,21 @@
 {
   "bait_address": "yxwzxy",
-  "first_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "id": "d27089e0a5ebb4f44d64",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-18T11:13:56Z",
-  "observed_404": 1,
-  "observed_path": "/actuator/loggers",
-  "public_href": "/crawlerbait/bait/actuator/loggers/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "069245a268913b99",
-      "observed_404": 1
+      "events": 1,
+      "id": "1a3e38f4a76b50490c8ff869"
+    },
+    {
+      "events": 1,
+      "id": "f4e6f9376e16550bf32aaa47"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-18T04:40:48Z",
+  "id": "d27089e0a5ebb4f44d64",
+  "last_seen": "2026-09-18T14:34:42Z",
+  "legacy_404_observations": 1,
+  "observed_path": "/actuator/loggers",
+  "public_href": "/crawlerbait/bait/actuator/loggers/",
+  "raw_requests": 2,
+  "version": 2
 }

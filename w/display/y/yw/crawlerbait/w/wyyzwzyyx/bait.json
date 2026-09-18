@@ -1,40 +1,33 @@
 {
   "bait_address": "yyzwzyyx",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "f8bd9e65b618d21d6e75",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 16,
-  "observed_path": "/.env.save",
-  "public_href": "/crawlerbait/receipt/f8bd9e65b618d21d6e75/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "e82f2e5be321b6f9",
-      "observed_404": 10
+      "events": 2,
+      "id": "1a3e38f4a76b50490c8ff869"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko, Yokohama Institute of Information Security  https://www.iisec.ac.jp) Chrome/124.0.0.0 Safari/537.36",
-      "id": "e388d5dbd903223c",
-      "observed_404": 4
+      "events": 2,
+      "id": "286270ec09895b1d29f191c9"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "1bcc9eae1df41fe3",
-      "observed_404": 1
+      "events": 1,
+      "id": "2ba10259206cfa8421357e62"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-      "id": "b44a6c9762bb8aaf",
-      "observed_404": 1
+      "events": 1,
+      "id": "4334098c576d39dad9f41ca1"
+    },
+    {
+      "events": 1,
+      "id": "56a0b2585a235f5f3718785c"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "f8bd9e65b618d21d6e75",
+  "last_seen": "2026-09-18T14:34:40Z",
+  "legacy_404_observations": 16,
+  "observed_path": "/.env.save",
+  "public_href": "/crawlerbait/receipt/f8bd9e65b618d21d6e75/",
+  "raw_requests": 7,
+  "version": 2
 }

@@ -1,25 +1,21 @@
 {
   "bait_address": "zwwxy",
-  "first_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "id": "81f153da1412ddc983a6",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-18T11:13:56Z",
-  "observed_404": 1,
-  "observed_path": "/backup/ovh-backups.json",
-  "public_href": "/crawlerbait/bait/backup/ovh-backups.json/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "069245a268913b99",
-      "observed_404": 1
+      "events": 1,
+      "id": "e019286b412c9a77014debaf"
+    },
+    {
+      "events": 1,
+      "id": "f4e6f9376e16550bf32aaa47"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-18T04:40:48Z",
+  "id": "81f153da1412ddc983a6",
+  "last_seen": "2026-09-18T14:34:41Z",
+  "legacy_404_observations": 1,
+  "observed_path": "/backup/ovh-backups.json",
+  "public_href": "/crawlerbait/bait/backup/ovh-backups.json/",
+  "raw_requests": 2,
+  "version": 2
 }

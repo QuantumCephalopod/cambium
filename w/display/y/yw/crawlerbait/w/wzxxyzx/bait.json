@@ -1,25 +1,33 @@
 {
   "bait_address": "zxxyzx",
-  "first_observed_window": {
-    "end": "2026-09-13T22:09:07Z",
-    "start": "2026-09-12T22:09:07Z"
-  },
-  "id": "979bddc4a8caafdda413",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-13T22:09:07Z",
-  "observed_404": 4,
-  "observed_path": "/about",
-  "public_href": "/crawlerbait/bait/about/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
-      "id": "86bad01b9f6cf979",
-      "observed_404": 4
+      "events": 3,
+      "id": "03a07f9126efeb059e294371"
+    },
+    {
+      "events": 1,
+      "id": "132f0b9b4317376b09a43a2d"
+    },
+    {
+      "events": 1,
+      "id": "6d945ae1f2be2a07b279d7dd"
+    },
+    {
+      "events": 1,
+      "id": "75d11e08e062a0761eca20dd"
+    },
+    {
+      "events": 1,
+      "id": "8da1b7571f38a87ca057b0b7"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-12T22:09:07Z",
+  "id": "979bddc4a8caafdda413",
+  "last_seen": "2026-09-17T09:31:04Z",
+  "legacy_404_observations": 4,
+  "observed_path": "/about",
+  "public_href": "/crawlerbait/bait/about/",
+  "raw_requests": 7,
+  "version": 2
 }

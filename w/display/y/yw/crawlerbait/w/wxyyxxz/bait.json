@@ -1,25 +1,21 @@
 {
   "bait_address": "xyyxxz",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "7d6ba8f42c81dbf4f8d5",
-  "last_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 4,
-  "observed_path": "/_phpinfo.php",
-  "public_href": "/crawlerbait/bait/_phpinfo.php/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "e82f2e5be321b6f9",
-      "observed_404": 4
+      "events": 1,
+      "id": "56a0b2585a235f5f3718785c"
+    },
+    {
+      "events": 1,
+      "id": "86aff9f491f46896f57e08b1"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "7d6ba8f42c81dbf4f8d5",
+  "last_seen": "2026-09-15T22:09:07Z",
+  "legacy_404_observations": 4,
+  "observed_path": "/_phpinfo.php",
+  "public_href": "/crawlerbait/bait/_phpinfo.php/",
+  "raw_requests": 2,
+  "version": 2
 }

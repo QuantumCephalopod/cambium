@@ -1,30 +1,29 @@
 {
   "bait_address": "xwwxx",
-  "first_observed_window": {
-    "end": "2026-09-14T22:09:07Z",
-    "start": "2026-09-13T22:09:07Z"
-  },
-  "id": "415b1cf2f73e34b88451",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-14T22:09:07Z",
-  "observed_404": 4,
-  "observed_path": "/media/system/js/core.js",
-  "public_href": "/crawlerbait/bait/media/system/js/core.js/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
-      "id": "3388af34949d733e",
-      "observed_404": 3
+      "events": 2,
+      "id": "cf693b5e8b763b516a39244f"
     },
     {
-      "claimed_user_agent": "Go-http-client/1.1",
-      "id": "12bd583dd25b868e",
-      "observed_404": 1
+      "events": 1,
+      "id": "12f1bfd8e8d95041294ee75e"
+    },
+    {
+      "events": 1,
+      "id": "6a094db29bd13fae99cdbedb"
+    },
+    {
+      "events": 1,
+      "id": "deba87393e8fbeffa7f1b6bb"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-13T22:09:07Z",
+  "id": "415b1cf2f73e34b88451",
+  "last_seen": "2026-09-16T22:09:07Z",
+  "legacy_404_observations": 4,
+  "observed_path": "/media/system/js/core.js",
+  "public_href": "/crawlerbait/bait/media/system/js/core.js/",
+  "raw_requests": 5,
+  "version": 2
 }

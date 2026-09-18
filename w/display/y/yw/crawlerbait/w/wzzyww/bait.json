@@ -1,25 +1,17 @@
 {
   "bait_address": "zzyww",
-  "first_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "id": "ac1c8497c117520986c9",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-16T22:09:07Z",
-  "observed_404": 8,
-  "observed_path": "/keys.json",
-  "public_href": "/crawlerbait/bait/keys.json/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)",
-      "id": "d5aa28a733e7026d",
-      "observed_404": 8
+      "events": 1,
+      "id": "7ea25d201d71ea08d6b957c9"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-15T22:09:07Z",
+  "id": "ac1c8497c117520986c9",
+  "last_seen": "2026-09-16T22:09:07Z",
+  "legacy_404_observations": 8,
+  "observed_path": "/keys.json",
+  "public_href": "/crawlerbait/bait/keys.json/",
+  "raw_requests": 1,
+  "version": 2
 }

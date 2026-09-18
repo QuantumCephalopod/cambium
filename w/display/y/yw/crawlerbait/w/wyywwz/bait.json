@@ -1,25 +1,29 @@
 {
   "bait_address": "yywwz",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "f08a63ae4ed4732ad9b5",
-  "last_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 16,
-  "observed_path": "/phpinfo",
-  "public_href": "/crawlerbait/bait/phpinfo/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "e82f2e5be321b6f9",
-      "observed_404": 16
+      "events": 1,
+      "id": "56a0b2585a235f5f3718785c"
+    },
+    {
+      "events": 1,
+      "id": "86aff9f491f46896f57e08b1"
+    },
+    {
+      "events": 1,
+      "id": "b8e94502f406c555b279bbcc"
+    },
+    {
+      "events": 1,
+      "id": "ee4ef907877be5b8b8d75e04"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T21:16:29Z",
+  "id": "f08a63ae4ed4732ad9b5",
+  "last_seen": "2026-09-15T22:09:07Z",
+  "legacy_404_observations": 16,
+  "observed_path": "/phpinfo",
+  "public_href": "/crawlerbait/bait/phpinfo/",
+  "raw_requests": 4,
+  "version": 2
 }

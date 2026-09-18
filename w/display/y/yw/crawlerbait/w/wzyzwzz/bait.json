@@ -1,35 +1,33 @@
 {
   "bait_address": "zyzwzz",
-  "first_observed_window": {
-    "end": "2026-09-14T22:09:07Z",
-    "start": "2026-09-13T22:09:07Z"
-  },
-  "id": "b8a3c574e196566c06a7",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-14T22:09:07Z",
-  "observed_404": 10,
-  "observed_path": "/blog/wp-includes/wlwmanifest.xml",
-  "public_href": "/crawlerbait/bait/blog/wp-includes/wlwmanifest.xml/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
-      "id": "6651c93be752de4f",
-      "observed_404": 7
+      "events": 2,
+      "id": "5c16e615f6f6cc9dd13529a9"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0 Safari/537.36",
-      "id": "2460c2f8c7fb5c8a",
-      "observed_404": 2
+      "events": 1,
+      "id": "191568e0b84f33658151bf24"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
-      "id": "5a1fc776b0312aa8",
-      "observed_404": 1
+      "events": 1,
+      "id": "9ad246cdbe1794c9d24a14ef"
+    },
+    {
+      "events": 1,
+      "id": "a41a2f8e5822ec99b9bf58db"
+    },
+    {
+      "events": 1,
+      "id": "c9e2c463deab079492838534"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-13T22:09:07Z",
+  "id": "b8a3c574e196566c06a7",
+  "last_seen": "2026-09-16T22:09:07Z",
+  "legacy_404_observations": 10,
+  "observed_path": "/blog/wp-includes/wlwmanifest.xml",
+  "public_href": "/crawlerbait/bait/blog/wp-includes/wlwmanifest.xml/",
+  "raw_requests": 6,
+  "version": 2
 }

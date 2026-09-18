@@ -1,25 +1,21 @@
 {
   "bait_address": "yxzwy",
-  "first_observed_window": {
-    "end": "2026-09-17T21:58:07Z",
-    "start": "2026-09-16T22:09:07Z"
-  },
-  "id": "d8c5fc01c634b7a145b1",
-  "last_observed_window": {
-    "end": "2026-09-17T21:58:07Z",
-    "start": "2026-09-16T22:09:07Z"
-  },
-  "materialized_at": "2026-09-17T21:58:07Z",
-  "observed_404": 8,
-  "observed_path": "/docker/.env",
-  "public_href": "/crawlerbait/receipt/d8c5fc01c634b7a145b1/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "28e19718e8682b7b",
-      "observed_404": 8
+      "events": 1,
+      "id": "ee4ef907877be5b8b8d75e04"
+    },
+    {
+      "events": 1,
+      "id": "f4e19f99714bc3f6185650e9"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T21:16:19Z",
+  "id": "d8c5fc01c634b7a145b1",
+  "last_seen": "2026-09-17T21:58:07Z",
+  "legacy_404_observations": 8,
+  "observed_path": "/docker/.env",
+  "public_href": "/crawlerbait/receipt/d8c5fc01c634b7a145b1/",
+  "raw_requests": 2,
+  "version": 2
 }

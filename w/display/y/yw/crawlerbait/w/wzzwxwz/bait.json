@@ -1,25 +1,25 @@
 {
   "bait_address": "zzwxwz",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "a1270007036f5b9497b1",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 3,
-  "observed_path": "/wp-includes/js/jquery/jquery.js",
-  "public_href": "/crawlerbait/bait/wp-includes/js/jquery/jquery.js/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
-      "id": "3388af34949d733e",
-      "observed_404": 3
+      "events": 2,
+      "id": "cf693b5e8b763b516a39244f"
+    },
+    {
+      "events": 1,
+      "id": "12f1bfd8e8d95041294ee75e"
+    },
+    {
+      "events": 1,
+      "id": "6a094db29bd13fae99cdbedb"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "a1270007036f5b9497b1",
+  "last_seen": "2026-09-16T22:09:07Z",
+  "legacy_404_observations": 3,
+  "observed_path": "/wp-includes/js/jquery/jquery.js",
+  "public_href": "/crawlerbait/bait/wp-includes/js/jquery/jquery.js/",
+  "raw_requests": 4,
+  "version": 2
 }
