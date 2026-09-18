@@ -35,6 +35,8 @@ A bait at local bait-space address `<a>` is carried at:
 
 The outer `w` is the Crawlerbait CREATE vertex and is stripped at the bait-space membrane. One exact raw bait-space address may contain one bait. Bait identity is the observed HTTP path, not its current bait-space placement. Placement is deterministic nonsemantic geometry derived from stable path identity; address collisions differentiate deeper until exact occupancy is unique.
 
+The address stream has **no terminal configured depth**. Its first 128 quaternary characters preserve the original SHA-256-derived carrier exactly; if pressure ever exhausts that prefix, additional deterministic hash blocks extend the same identity stream without moving any already-distinguished shallower bait. At every finite population size there remain deeper unoccupied addresses, so growth never closes bait-space by capacity.
+
 Each bait locus contains only its `bait.json` body. Renderer, stylesheet, public secretion, acquisition and tide machinery do not belong in `w`.
 
 ## x · Traces — provider evidence becomes owned memory
@@ -112,7 +114,8 @@ The same-type population law is intentionally the same family of relation used b
 - exact raw addresses exclude pile-up;
 - pressure differentiates a colliding address deeper rather than inventing a named bucket;
 - address is geometric genealogy, not a category label;
-- projection/visualization may read the actual address tree instead of reconstructing synthetic point placement.
+- projection/visualization reads the actual address tree instead of reconstructing synthetic point placement;
+- Crawlerbait's background field is the bait-space itself, rooted at `crawlerbait:w ⟦ bait-space:ε ⟧`; Traces, Membrane and Tide remain organism anatomy but do not occupy that local visualization field.
 
 This is why `/login`, `/.env`, `/wp-json`, etc. are never directory taxonomy inside the canonical body. They remain bait identity fields in `bait.json`; the physical tree is recursive bait-space.
 
@@ -130,6 +133,8 @@ A Crawlerbait change closes only when:
 9. Cloudflare credentials never enter repository/public bytes;
 10. ordinary crawler reads remain static;
 11. bait identity survives bait-space relocation/deepening;
-12. exact build/address/tetrahedral/bootstrap/capture/replay/public witnesses pass.
+12. the bait-space address carrier has no terminal configured depth and preserves all existing prefixes while extending deeper on demand;
+13. the local background visualizes only bait-space anatomy, never the sibling Traces/Membrane/Tide vertices;
+14. exact build/address/tetrahedral/bootstrap/capture/replay/public witnesses pass.
 
-Compression: **While the historical window still exists, freeze it raw once. Then Cloudflare only senses the future, Traces remembers locally, and every downstream reinterpretation replays owned evidence rather than refetching the past.**
+Compression: **While the historical window still exists, freeze it raw once. Then Cloudflare only senses the future, Traces remembers locally, and an unbounded bait-space grows deeper forever as finite pressure arrives; the visible background is that bait-space itself.**
