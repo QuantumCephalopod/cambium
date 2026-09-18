@@ -3,7 +3,7 @@
 const id='organism:crawlerbait';
 const GENES=Object.freeze(['w','x','z','y']);
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
-let inspectorHost=null,selectedAddress='';
+let inspectorHost=null,selectedAddress='',crawlerById=new Map();
 
 const shader=Object.freeze({
   id:'shader:organism:crawlerbait',
@@ -99,7 +99,7 @@ function fieldProjection(projection={}){
       path:route.address,
       kind:'bait',
       label:route.path,
-      meta:`${route.address} · ${route.observed_404} observations · ${route.signatures?.length||0} claimed UAs`,
+      meta:`${route.address} · ${route.raw_requests ?? route.observed_404 ?? 0} requests · ${(route.crawlers?.length ?? route.signatures?.length ?? 0)} beings`,
       address:route.address,
       route
     }));
@@ -134,31 +134,45 @@ function renderInspector(route){
   const title=el('code','crawlerbait-path',route.path);
   inspectorHost.append(title);
 
+  const raw=route.raw_requests ?? route.observed_404 ?? 0;
+  const beings=route.crawlers||[];
+  const legacy=route.legacy_404_observations||0;
   const facts=el('div','crawlerbait-facts');
   facts.append(
-    metric('observations',route.observed_404),
-    metric('claimed UAs',route.signatures?.length||0),
-    metric('sampled',route.sampled?'yes':'no')
+    metric('raw requests',raw),
+    metric('beings',beings.length || route.signatures?.length || 0),
+    metric('legacy 404',legacy)
   );
   inspectorHost.append(facts);
 
   const time=el('div','crawlerbait-time');
   time.append(
-    el('span','',`first materialized · ${prettyTime(route.materialized_at)}`),
-    el('span','',`last window · ${prettyTime(route.last_observed_window?.end)}`)
+    el('span','',`first seen · ${prettyTime(route.first_seen || route.materialized_at)}`),
+    el('span','',`last seen · ${prettyTime(route.last_seen || route.last_observed_window?.end)}`)
   );
   inspectorHost.append(time);
 
   const signatures=el('div','crawlerbait-signatures');
-  signatures.append(el('h3','', 'claimed user-agents'));
+  signatures.append(el('h3','', 'traffic beings'));
   const list=el('div','crawlerbait-signature-list');
-  for(const sig of route.signatures||[]){
-    const row=el('div','crawlerbait-signature');
-    row.append(el('code','',sig.claimed_user_agent||'∅'));
-    row.append(el('span','',String(sig.observed_404)));
-    list.append(row);
+  if(beings.length){
+    for(const item of beings){
+      const being=crawlerById.get(item.id)||{};
+      const row=el('div','crawlerbait-signature');
+      row.append(el('code','',being.network_identity||item.id||'∅'));
+      row.append(el('code','',being.user_agent||''));
+      row.append(el('span','',String(item.events||0)));
+      list.append(row);
+    }
+  }else{
+    for(const sig of route.signatures||[]){
+      const row=el('div','crawlerbait-signature');
+      row.append(el('code','',sig.claimed_user_agent||'∅'));
+      row.append(el('span','',String(sig.observed_404)));
+      list.append(row);
+    }
   }
-  if(!(route.signatures||[]).length)list.append(el('span','crawlerbait-none','no retained user-agent claim'));
+  if(!beings.length && !(route.signatures||[]).length)list.append(el('span','crawlerbait-none','no observed traffic being'));
   signatures.append(list);
   inspectorHost.append(signatures);
 }
@@ -174,18 +188,19 @@ function render({host,content,projection}={}){
   panel.append(title);
 
   const routes=projection.routes||[];
+  crawlerById=new Map((projection.crawlers||[]).map(c=>[c.id,c]));
   const depths=routes.map(r=>String(r.address||'').length).filter(Boolean);
   const stats=el('div','crawlerbait-stats');
   stats.append(
     metric('baits',projection.summary.baits ?? routes.length),
-    metric('observations',projection.summary.observed_404 ?? 0),
-    metric('claimed UAs',projection.summary.observed_signatures ?? 0),
+    metric('web requests',projection.summary.web_requests ?? projection.summary.observed_404 ?? 0),
+    metric('beings',projection.summary.crawlers ?? projection.summary.observed_signatures ?? 0),
     metric('max depth',depths.length?Math.max(...depths):0)
   );
   panel.append(stats);
 
   const note=el('p','crawlerbait-note',
-    'Every luminous point is one real bait body. Its position comes from the actual recursive w-address, not a synthetic layout.'
+    'Every luminous point is one real bait body. Whole web traffic feeds the public beings that touch these recursive loci through time.'
   );
   panel.append(note);
 
@@ -211,7 +226,7 @@ function activateFieldPoint({point}={}){
 function unmount({host,content}={}){
   if(host)host.hidden=true;
   if(content)content.replaceChildren();
-  inspectorHost=null;
+  inspectorHost=null;crawlerById=new Map();
 }
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
 })();
