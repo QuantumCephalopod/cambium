@@ -174,10 +174,16 @@ def dataset_record_type(introspection_body: dict, dataset: str) -> tuple[dict[st
     matches = []
     for type_name, type_def in types.items():
         for field in type_def.get("fields") or []:
-            if field.get("name") == dataset:
-                result_type = named_type(field.get("type"))
-                if result_type:
-                    matches.append((type_name, result_type))
+            if field.get("name") != dataset:
+                continue
+            # The Settings type also has a field named after the dataset. The
+            # queryable zone dataset is the one carrying transport arguments.
+            arg_names = {arg.get("name") for arg in (field.get("args") or [])}
+            if not ({"filter", "limit"} & arg_names):
+                continue
+            result_type = named_type(field.get("type"))
+            if result_type:
+                matches.append((type_name, result_type))
     result_types = sorted({result for _, result in matches})
     if len(result_types) != 1:
         raise RuntimeError(
@@ -428,7 +434,9 @@ def self_test() -> None:
     assert slices == [["datetime", "rayName", "a", "b"], ["datetime", "rayName", "c", "d"]]
     fake_schema = {
         "data": {"__schema": {"types": [
-            {"name": "Zone", "fields": [{"name": "httpRequestsAdaptive", "type": {"kind": "LIST", "ofType": {"kind": "OBJECT", "name": "Request"}}}]},
+            {"name": "Zone", "fields": [{"name": "httpRequestsAdaptive", "args": [{"name": "filter"}, {"name": "limit"}], "type": {"kind": "LIST", "ofType": {"kind": "OBJECT", "name": "Request"}}}]},
+            {"name": "ZoneSettings", "fields": [{"name": "httpRequestsAdaptive", "args": [], "type": {"kind": "OBJECT", "name": "Settings"}}]},
+            {"name": "Settings", "fields": [{"name": "availableFields", "args": [], "type": {"kind": "LIST", "ofType": {"kind": "SCALAR", "name": "String"}}}]},
             {"name": "Request", "fields": [
                 {"name": "datetime", "type": {"kind": "SCALAR", "name": "DateTime"}},
                 {"name": "clientIP", "type": {"kind": "SCALAR", "name": "String"}},
