@@ -387,9 +387,23 @@ def render():
     bundle = asset_bundle_id()
     for name in asset_sources():
         flat = f'assets/{name}'
-        if text.count(flat) != 1:
+        # Asset rewriting is an HTML-reference operation, not a free-text
+        # substitution. Site projections intentionally contain arbitrary observed
+        # web traffic, including paths such as /assets/root-view.css; those bytes
+        # must never be mistaken for Display template asset references.
+        pattern = re.compile(
+            r'(?P<attr>\\b(?:href|src)=)(?P<quote>["\\\'])'
+            + re.escape(flat)
+            + r'(?P=quote)'
+        )
+        matches = list(pattern.finditer(text))
+        if len(matches) != 1:
             raise ValueError(f'display template must reference exactly one {flat}')
-        text = text.replace(flat, f'assets/{bundle}/{name}')
+        text = pattern.sub(
+            lambda m: f'{m.group("attr")}{m.group("quote")}assets/{bundle}/{name}{m.group("quote")}',
+            text,
+            count=1,
+        )
 
     return (
         f'<!-- membrane bundle {bundle}; tree-addressed Display generation; '
