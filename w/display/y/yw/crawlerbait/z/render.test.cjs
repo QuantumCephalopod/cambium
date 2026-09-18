@@ -41,5 +41,6 @@ for(const route of projection.routes){
   assert(node&&node.bait===true,`real bait anatomy missing at ${route.address}`);
   assert.strictEqual(node.address,route.address,`bait anatomy address mismatch ${route.address}`);
 }
-assert(!field.root.children?.x?.gene&&!field.root.children?.z?.gene&&!field.root.children?.y?.gene,'Crawlerbait root anatomy leaked into bait-space field');
+assert.strictEqual(field.root.noun,'Baits','field root must be bait-space ε, not Crawlerbait root anatomy');
+assert(!['Traces','Membrane','Tide'].includes(field.root.children?.w?.noun),'non-bait root anatomy leaked into bait-space field');
 console.log(`PASS · ${projection.routes.length} baits render as the complete background from bait-space ε`);
