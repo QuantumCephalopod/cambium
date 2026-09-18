@@ -352,8 +352,16 @@ def freeze_graphql(token: str, zone: str, now: datetime, cfg: dict,
     max_fields = int(cfg["maxNumberOfFields"])
     limit = int(cfg["maxPageSize"])
     retained = int(cfg["notOlderThan"])
-    end = now - timedelta(minutes=5)
-    start = now - timedelta(seconds=retained) + timedelta(seconds=1)
+
+    # Retention is evaluated by Cloudflare at request time. Discovery/schema work
+    # can take several seconds, so using the process-start timestamp makes the
+    # oldest query stale before it is sent. Re-sample the clock immediately
+    # before acquisition. GraphQL timestamps are second-resolution; +2 seconds is
+    # the smallest guard that remains strictly inside the moving boundary after
+    # truncating microseconds.
+    acquisition_now = datetime.now(timezone.utc)
+    end = acquisition_now.replace(microsecond=0)
+    start = (acquisition_now - timedelta(seconds=retained) + timedelta(seconds=2)).replace(microsecond=0)
     leaves = []
     cursor = start
     while cursor < end:
@@ -367,6 +375,7 @@ def freeze_graphql(token: str, zone: str, now: datetime, cfg: dict,
         "semantic_filters": [],
         "transport_filter": "datetime range only",
         "retained_window": {"start": stamp(start), "end": stamp(end)},
+        "retention_boundary_guard_seconds": 2,
         "available_fields": fields,
         "record_type": record_type,
         "resolved_field_paths": resolved,
@@ -377,6 +386,52 @@ def freeze_graphql(token: str, zone: str, now: datetime, cfg: dict,
         "leaves": leaves,
         "saturated_one_second_leaves": bad,
         "complete_within_provider_surface": not bad,
+    }
+
+
+def logpull_request(token: str, zone: str, start: datetime, end: datetime, fields: list[str]):
+    params = urllib.parse.urlencode({
+        "start": stamp(start), "end": stamp(end),
+        "fields": ",".join(fields), "timestamps": "rfc3339",
+    })
+    return request_bytes(f"{API}/zones/{zone}/logs/received?{params}", token, timeout=120)
+
+
+def discover_logpull_start(token: str, zone: str, end: datetime, fields: list[str]) -> tuple[datetime | None, dict]:
+    """Find the oldest currently accepted Logpull time to one-second resolution.
+
+    Cloudflare documents 3–7 days of retention, but the exact retained depth is
+    provider/account state. We discover the live boundary instead of silently
+    assuming seven days.
+    """
+    low = end - timedelta(days=7)
+    high = end - timedelta(seconds=1)
+    first_status, first_raw, _ = logpull_request(token, zone, low, min(low + timedelta(seconds=1), end), fields)
+    if first_status < 400:
+        return low, {"oldest_probe_status": first_status, "boundary_discovery": "full documented 7d accepted"}
+
+    newest_status, newest_raw, _ = logpull_request(token, zone, high, end, fields)
+    if newest_status >= 400:
+        return None, {
+            "oldest_probe_status": first_status,
+            "newest_probe_status": newest_status,
+            "reason": "Logpull fields endpoint exists but retained data endpoint is not currently readable",
+            "provider_body": newest_raw.decode("utf-8", "replace")[:1200],
+        }
+
+    # Monotone search: too-old windows fail, sufficiently recent windows pass.
+    while (high - low).total_seconds() > 1:
+        mid = low + (high - low) / 2
+        mid = mid.replace(microsecond=0)
+        status, _, _ = logpull_request(token, zone, mid, min(mid + timedelta(seconds=1), end), fields)
+        if status < 400:
+            high = mid
+        else:
+            low = mid + timedelta(seconds=1)
+    return high, {
+        "oldest_probe_status": first_status,
+        "newest_probe_status": newest_status,
+        "boundary_discovery": "binary-searched live Logpull retention boundary",
     }
 
 
@@ -392,22 +447,27 @@ def freeze_logpull(token: str, zone: str, now: datetime, out: Path, write: bool)
     if not fields:
         return {"available": False, "probe_http_status": 200, "reason": "Logpull field list empty"}
 
-    end = now - timedelta(minutes=5)
-    start = now - timedelta(days=7) + timedelta(seconds=1)
+    end = datetime.now(timezone.utc).replace(microsecond=0)
+    start, boundary = discover_logpull_start(token, zone, end, fields)
+    if start is None:
+        return {
+            "available": False,
+            "probe_http_status": 200,
+            **boundary,
+        }
+
     cursor = start
     files = []
     while cursor < end:
         stop = min(end, cursor + timedelta(hours=1))
-        params = urllib.parse.urlencode({
-            "start": stamp(cursor), "end": stamp(stop),
-            "fields": ",".join(fields), "timestamps": "rfc3339",
-        })
-        status, raw, headers = request_bytes(f"{API}/zones/{zone}/logs/received?{params}", token, timeout=120)
+        status, raw, headers = logpull_request(token, zone, cursor, stop, fields)
         if status >= 400:
             return {
-                "available": False, "probe_http_status": 200,
-                "reason": f"Logpull data request failed HTTP {status}",
+                "available": True,
+                "complete_within_provider_surface": False,
+                "reason": f"Logpull became unreadable during acquisition HTTP {status}",
                 "failed_window": {"start": stamp(cursor), "end": stamp(stop)},
+                "boundary_discovery": boundary,
             }
         name = f"{compact(cursor)}--{compact(stop)}.ndjson"
         path = out / "logpull-http-requests" / name
@@ -421,9 +481,10 @@ def freeze_logpull(token: str, zone: str, now: datetime, out: Path, write: bool)
         "source": "cloudflare:logpull:/logs/received",
         "rawness": "edge HTTP request logs",
         "semantic_filters": [],
-        "transport_filter": "datetime range only",
+        "transport_filter": "received-time range only",
         "fields": fields,
         "retained_window": {"start": stamp(start), "end": stamp(end)},
+        "boundary_discovery": boundary,
         "files": files,
         "complete_within_provider_surface": True,
     }
@@ -479,7 +540,11 @@ def self_test() -> None:
     assert "httpRequestsAdaptive" in q and "clientIP" in q
     assert "edgeResponseStatus" not in q and "requestSource" not in q
     assert "datetime_geq" in q and "datetime_lt" in q
-    print("PASS · provider-raw exporter has no semantic traffic filter and covers all provider-advertised fields")
+    fixed = datetime(2026, 9, 18, 12, 0, 0, 900000, tzinfo=timezone.utc)
+    retained = 2678400
+    guarded = (fixed - timedelta(seconds=retained) + timedelta(seconds=2)).replace(microsecond=0)
+    assert (fixed - guarded).total_seconds() < retained
+    print("PASS · provider-raw exporter has no semantic traffic filter, covers all provider-advertised fields, and stays inside moving retention")
 
 
 def main() -> None:
