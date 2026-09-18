@@ -1,5 +1,6 @@
 {
-  "last_complete_end": "2026-09-17T21:58:07Z",
+  "applied_capture_end": "2026-09-18T04:40:48Z",
+  "last_complete_end": "2026-09-18T04:40:48Z",
   "routes": {
     "/.DS_Store": {
       "first_observed_window": {
@@ -28,17 +29,22 @@
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 8,
+      "observed_404": 16,
       "path": "/.aws/config",
       "sampled": true,
       "signatures": {
         "4bcb7dc92f967162": {
           "claimed_user_agent": "Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)",
           "id": "4bcb7dc92f967162",
+          "observed_404": 8
+        },
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
           "observed_404": 8
         }
       }
@@ -49,14 +55,19 @@
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 2,
+      "observed_404": 3,
       "path": "/.aws/credentials",
       "sampled": true,
       "signatures": {
+        "1c28d4a85dae1d4d": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:1.9.6.20) Gecko/ Firefox/3.8",
+          "id": "1c28d4a85dae1d4d",
+          "observed_404": 1
+        },
         "b846b5f8099aa856": {
           "claimed_user_agent": "CCBot/2.0 (https://commoncrawl.org/faq/)",
           "id": "b846b5f8099aa856",
@@ -85,17 +96,38 @@
         }
       }
     },
+    "/.docker/.env": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 21,
+      "path": "/.docker/.env",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 21
+        }
+      }
+    },
     "/.env": {
       "first_observed_window": {
         "end": "2026-09-13T22:09:07Z",
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 29,
+      "observed_404": 32,
       "path": "/.env",
       "sampled": true,
       "signatures": {
@@ -107,7 +139,7 @@
         "18abf52b73d0b891": {
           "claimed_user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
           "id": "18abf52b73d0b891",
-          "observed_404": 1
+          "observed_404": 3
         },
         "262a1b6b7aa01040": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15",
@@ -133,6 +165,11 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
           "observed_404": 4
+        },
+        "6bb0cb050cd37058": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh, Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6.1 Safari/605.1.15",
+          "id": "6bb0cb050cd37058",
+          "observed_404": 1
         },
         "86bad01b9f6cf979": {
           "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
@@ -249,11 +286,11 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 13,
+      "observed_404": 14,
       "path": "/.env.bak",
       "sampled": true,
       "signatures": {
@@ -265,6 +302,11 @@
         "63279522febcf553": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
+          "observed_404": 1
+        },
+        "8979f3a3f93c3644": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+          "id": "8979f3a3f93c3644",
           "observed_404": 1
         },
         "e388d5dbd903223c": {
@@ -507,6 +549,27 @@
         }
       }
     },
+    "/.env.openai": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 3,
+      "path": "/.env.openai",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 3
+        }
+      }
+    },
     "/.env.php": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -591,11 +654,11 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 13,
+      "observed_404": 14,
       "path": "/.env.production",
       "sampled": true,
       "signatures": {
@@ -622,6 +685,11 @@
         "5e07c5aedf11e3af": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0",
           "id": "5e07c5aedf11e3af",
+          "observed_404": 1
+        },
+        "b02ba977fabd2018": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0.1 Safari/605.1.15",
+          "id": "b02ba977fabd2018",
           "observed_404": 1
         },
         "b44a6c9762bb8aaf": {
@@ -986,11 +1054,11 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 10,
+      "observed_404": 12,
       "path": "/.git/HEAD",
       "sampled": true,
       "signatures": {
@@ -1002,7 +1070,7 @@
         "63279522febcf553": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
-          "observed_404": 2
+          "observed_404": 4
         },
         "e388d5dbd903223c": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko, Yokohama Institute of Information Security  https://www.iisec.ac.jp) Chrome/124.0.0.0 Safari/537.36",
@@ -1069,6 +1137,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 3
+        }
+      }
+    },
+    "/.git/info/exclude": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 8,
+      "path": "/.git/info/exclude",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 8
         }
       }
     },
@@ -1806,6 +1895,27 @@
         }
       }
     },
+    "/AGENT.md": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 2,
+      "path": "/AGENT.md",
+      "sampled": true,
+      "signatures": {
+        "7384978e4831b7ba": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0",
+          "id": "7384978e4831b7ba",
+          "observed_404": 2
+        }
+      }
+    },
     "/AGENTS.md": {
       "first_observed_window": {
         "end": "2026-09-17T21:58:07Z",
@@ -1833,18 +1943,44 @@
         "start": "2026-09-16T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-17T21:58:07Z",
-      "observed_404": 1,
+      "observed_404": 3,
       "path": "/GEMINI.md",
-      "sampled": false,
+      "sampled": true,
       "signatures": {
+        "1f46fe443ab7eb21": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "id": "1f46fe443ab7eb21",
+          "observed_404": 2
+        },
         "3c168cb7ea94874d": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0",
           "id": "3c168cb7ea94874d",
           "observed_404": 1
+        }
+      }
+    },
+    "/Vagrantfile": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 7,
+      "path": "/Vagrantfile",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 7
         }
       }
     },
@@ -2095,11 +2231,11 @@
         "start": "2026-09-14T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-15T22:09:07Z",
-      "observed_404": 10,
+      "observed_404": 31,
       "path": "/administrator/.env",
       "sampled": true,
       "signatures": {
@@ -2107,6 +2243,11 @@
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
           "observed_404": 2
+        },
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 21
         },
         "e82f2e5be321b6f9": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
@@ -2204,6 +2345,27 @@
         }
       }
     },
+    "/api-backend/.env": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 7,
+      "path": "/api-backend/.env",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 7
+        }
+      }
+    },
     "/api/.env": {
       "first_observed_window": {
         "end": "2026-09-13T22:09:07Z",
@@ -2268,6 +2430,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
           "id": "9884896580bbd928",
           "observed_404": 1
+        }
+      }
+    },
+    "/api/config/constants.js": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 24,
+      "path": "/api/config/constants.js",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 24
         }
       }
     },
@@ -2407,18 +2590,39 @@
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 1,
+      "observed_404": 25,
       "path": "/apps/.env",
-      "sampled": false,
+      "sampled": true,
       "signatures": {
         "63279522febcf553": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
-          "observed_404": 1
+          "observed_404": 25
+        }
+      }
+    },
+    "/appsettings.Test.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 6,
+      "path": "/appsettings.Test.json",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 6
         }
       }
     },
@@ -2511,20 +2715,93 @@
         }
       }
     },
+    "/aws.env": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/aws.env",
+      "sampled": false,
+      "signatures": {
+        "28e19718e8682b7b": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          "id": "28e19718e8682b7b",
+          "observed_404": 1
+        }
+      }
+    },
+    "/aws_s3_config.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 24,
+      "path": "/aws_s3_config.json",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 24
+        }
+      }
+    },
+    "/back/.env": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 24,
+      "path": "/back/.env",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 24
+        }
+      }
+    },
     "/backend/.env": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 7,
       "path": "/backend/.env",
-      "sampled": false,
+      "sampled": true,
       "signatures": {
+        "5221caaec1b6d192": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15",
+          "id": "5221caaec1b6d192",
+          "observed_404": 1
+        },
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 3
+        },
         "b44a6c9762bb8aaf": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
           "id": "b44a6c9762bb8aaf",
@@ -2618,6 +2895,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
           "observed_404": 2
+        }
+      }
+    },
+    "/backup/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/backup/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/backup/wp-admin/setup-config.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/backup/wp-admin/setup-config.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
         }
       }
     },
@@ -2939,18 +3258,23 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 9,
+      "observed_404": 11,
       "path": "/config.json",
-      "sampled": false,
+      "sampled": true,
       "signatures": {
         "3c168cb7ea94874d": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0",
           "id": "3c168cb7ea94874d",
           "observed_404": 1
+        },
+        "7384978e4831b7ba": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0",
+          "id": "7384978e4831b7ba",
+          "observed_404": 2
         },
         "86bad01b9f6cf979": {
           "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
@@ -3044,6 +3368,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 2
+        }
+      }
+    },
+    "/config/aws.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 24,
+      "path": "/config/aws.json",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 24
+        }
+      }
+    },
+    "/config/parameters.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 8,
+      "path": "/config/parameters.yml",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 8
         }
       }
     },
@@ -3410,6 +3776,27 @@
           "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
           "id": "86bad01b9f6cf979",
           "observed_404": 4
+        }
+      }
+    },
+    "/demo/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/demo/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
         }
       }
     },
@@ -4294,14 +4681,19 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 14,
+      "observed_404": 38,
       "path": "/info.php",
       "sampled": true,
       "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 24
+        },
         "86bad01b9f6cf979": {
           "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
           "id": "86bad01b9f6cf979",
@@ -4332,6 +4724,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 8
+        }
+      }
+    },
+    "/installer-backup.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/installer-backup.php",
+      "sampled": false,
+      "signatures": {
+        "b8fc39beb09122ed": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0",
+          "id": "b8fc39beb09122ed",
+          "observed_404": 1
+        }
+      }
+    },
+    "/installer.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/installer.php",
+      "sampled": false,
+      "signatures": {
+        "387ae7aef0ff2cb8": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+          "id": "387ae7aef0ff2cb8",
+          "observed_404": 1
         }
       }
     },
@@ -5083,6 +5517,27 @@
         }
       }
     },
+    "/old/": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/old/",
+      "sampled": false,
+      "signatures": {
+        "387ae7aef0ff2cb8": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+          "id": "387ae7aef0ff2cb8",
+          "observed_404": 1
+        }
+      }
+    },
     "/old/phpinfo.php": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -5106,6 +5561,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 10
+        }
+      }
+    },
+    "/old/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/old/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/old/wp-admin/setup-config.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/old/wp-admin/setup-config.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
         }
       }
     },
@@ -5577,6 +6074,27 @@
           "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
           "id": "86bad01b9f6cf979",
           "observed_404": 4
+        }
+      }
+    },
+    "/s3.properties": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 24,
+      "path": "/s3.properties",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 24
         }
       }
     },
@@ -6216,6 +6734,48 @@
         }
       }
     },
+    "/staging/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/staging/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/staging/wp-admin/setup-config.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/staging/wp-admin/setup-config.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
     "/static/style/protect/index.js": {
       "first_observed_window": {
         "end": "2026-09-17T21:58:07Z",
@@ -6454,6 +7014,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 6
+        }
+      }
+    },
+    "/test/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/test/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
         }
       }
     },
@@ -6979,6 +7560,27 @@
         }
       }
     },
+    "/wordpress/": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wordpress/",
+      "sampled": false,
+      "signatures": {
+        "652d8048e7af3558": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Debian; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0",
+          "id": "652d8048e7af3558",
+          "observed_404": 1
+        }
+      }
+    },
     "/wordpress/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -6997,6 +7599,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 10
+        }
+      }
+    },
+    "/wordpress/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wordpress/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/wordpress/wp-admin/setup-config.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wordpress/wp-admin/setup-config.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
         }
       }
     },
@@ -7036,17 +7680,80 @@
         }
       }
     },
+    "/wordpress1/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wordpress1/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/wordpress1/wp-admin/setup-config.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wordpress1/wp-admin/setup-config.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
     "/wp-admin/setup-config.php": {
       "first_observed_window": {
         "end": "2026-09-14T22:09:07Z",
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "/wp-admin/setup-config.php",
       "sampled": false,
       "signatures": {
@@ -7054,6 +7761,32 @@
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
           "observed_404": 3
+        },
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/wp-content/mysql.sql": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 21,
+      "path": "/wp-content/mysql.sql",
+      "sampled": true,
+      "signatures": {
+        "63279522febcf553": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "id": "63279522febcf553",
+          "observed_404": 21
         }
       }
     },
@@ -7167,18 +7900,18 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 41,
+      "observed_404": 43,
       "path": "/wp-login.php",
       "sampled": false,
       "signatures": {
         "1066b48224bb188c": {
           "claimed_user_agent": "Mozilla/5.0",
           "id": "1066b48224bb188c",
-          "observed_404": 17
+          "observed_404": 18
         },
         "160d1f1bdca347d5": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/129.0.0.0 Safari/537.36",
@@ -7204,6 +7937,11 @@
           "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
           "id": "4be9abaa5e0bad99",
           "observed_404": 2
+        },
+        "4dc509febd7e0f3d": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
+          "id": "4dc509febd7e0f3d",
+          "observed_404": 1
         },
         "615fce795c02806e": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -7280,6 +8018,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
           "observed_404": 4
+        }
+      }
+    },
+    "/wp/wp-admin/install.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wp/wp-admin/install.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/wp/wp-admin/setup-config.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T04:40:48Z",
+        "start": "2026-09-17T21:58:07Z"
+      },
+      "materialized_at": "2026-09-18T04:40:48Z",
+      "observed_404": 1,
+      "path": "/wp/wp-admin/setup-config.php",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
         }
       }
     },
@@ -7475,5 +8255,5 @@
       }
     }
   },
-  "version": 3
+  "version": 4
 }
