@@ -221,3 +221,10 @@
   color:var(--kelp,#84a49b);
   font-size:.55rem;
 }
+
+[data-interlocutor="organism:crawlerbait"] .field-label b{display:none}
+[data-interlocutor="organism:crawlerbait"] .field-label span{
+  opacity:.72;
+  color:var(--kelp,#84a49b);
+  font-size:9px;
+}
