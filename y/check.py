@@ -74,10 +74,8 @@ def main():
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
     check((crawler/'y'/'tide.py').is_file(),'Crawlerbait local tide missing')
     check((crawler/'y'/'replay.py').is_file(),'Crawlerbait local replay missing')
-    check((crawler/'y'/'provider_raw_once.py').is_file(),'Crawlerbait provider-raw repair aperture missing')
-    check((crawler/'z'/'provider-raw-public.pem').is_file(),'Crawlerbait provider-raw public custody key missing')
-    check(not (crawler/'x'/'provider-raw').exists(),'private provider-raw plaintext leaked into public Traces')
-    check(not (ROOT/'_private').exists(),'private provider-raw plaintext leaked into repository root')
+    check(not (crawler/'y'/'provider_raw_once.py').exists(),'obsolete one-time provider-raw freezer still exists')
+    check(not (crawler/'z'/'provider-raw-public.pem').exists(),'obsolete provider-raw encryption key still exists')
     check(not (crawler/'y'/'backfill.py').exists(),'Crawlerbait historical backfill remains active physiology')
     check((crawler/'z'/'public'/'crawlerbait'/'index.html').is_file(),'Crawlerbait membrane public reef missing')
 
@@ -85,20 +83,40 @@ def main():
     cursor=json.loads((crawler/'x'/'cursor.json').read_text(encoding='utf-8'))
     trace_state=json.loads((crawler/'x'/'state.json').read_text(encoding='utf-8'))
     checkpoint_end=checkpoint.get('last_complete_end')
-    cursor_end=cursor.get('last_capture_end')
-    state_end=trace_state.get('applied_capture_end') or trace_state.get('last_complete_end')
-    check(isinstance(checkpoint_end,str) and isinstance(cursor_end,str) and isinstance(state_end,str),'Crawlerbait trace cursors are not explicit')
-    check(checkpoint_end<=state_end<=cursor_end,'Crawlerbait derived trace state escaped local capture/checkpoint interval')
-    captures=sorted(p for p in (crawler/'x'/'captures').iterdir() if p.is_file() and p.name!='manifest.json' and p.name.endswith(('.capture.json','.json')))
+    check(isinstance(checkpoint_end,str),'Crawlerbait legacy checkpoint has no explicit end')
+    check(cursor.get('version')==2 and cursor.get('source')=='cloudflare:httpRequestsAdaptive','Crawlerbait cursor is not canonical raw-traffic generation 2')
+
+    legacy=sorted((crawler/'x'/'captures').glob('*.capture.json'))
     expected=checkpoint_end
-    for capture in captures:
+    for capture in legacy:
         value=json.loads(capture.read_text(encoding='utf-8'))
         window=value.get('window') or {}
-        groups=value.get('groups') if value.get('version')==1 else ((value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[{}])[0].get('groups') if ((value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones')) else None)
-        check(value.get('source')=='cloudflare:httpRequestsAdaptiveGroups' and isinstance(groups,list),f'invalid raw capture {capture.name}')
-        check(window.get('start')==expected,f'Crawlerbait raw capture gap before {capture.name}')
+        provider=(value.get('provider_response') or {})
+        zones=provider.get('data',{}).get('viewer',{}).get('zones',[])
+        groups=value.get('groups') if value.get('version')==1 else (zones[0].get('groups') if len(zones)==1 else None)
+        check(value.get('source')=='cloudflare:httpRequestsAdaptiveGroups' and isinstance(groups,list),f'invalid legacy 404 capture {capture.name}')
+        check(window.get('start')==expected,f'Crawlerbait legacy 404 gap before {capture.name}')
         expected=window.get('end')
-    check(expected==cursor_end,'Crawlerbait capture cursor is not exactly covered by immutable local windows')
+    check(cursor.get('legacy_404_last_capture_end')==expected,'legacy 404 cursor diverged from preserved captures')
+
+    raw=sorted((crawler/'x'/'captures').glob('*.traffic.json'))
+    raw_expected=None
+    for capture in raw:
+        value=json.loads(capture.read_text(encoding='utf-8'))
+        window=value.get('window') or {}
+        zones=(value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
+        records=zones[0].get('records') if len(zones)==1 else None
+        check(value.get('version')==3 and value.get('source')=='cloudflare:httpRequestsAdaptive' and value.get('semantic_filters')==[] and isinstance(records,list),f'invalid whole-traffic capture {capture.name}')
+        if raw_expected is not None:
+            check(window.get('start')==raw_expected,f'Crawlerbait raw traffic gap before {capture.name}')
+        raw_expected=window.get('end')
+    if raw:
+        check(cursor.get('raw_last_capture_end')==raw_expected,'raw traffic cursor is not exactly covered by immutable captures')
+        check(trace_state.get('version')==5 and trace_state.get('raw_capture_end')==raw_expected,'derived whole-traffic state is stale')
+        check((crawler/'z'/'public'/'crawlerbait'/'traffic.json').is_file(),'public raw traffic manifest missing')
+    else:
+        check(cursor.get('raw_last_capture_end') is None,'raw cursor advanced without any canonical raw capture')
+        check(trace_state.get('version') in (4,5),'transitional trace state has unknown generation')
 
     retained=crawler/'x'/'retained-bootstrap'
     if (retained/'seal.json').is_file():
@@ -137,6 +155,8 @@ def main():
 
     public_files=public.site_public_files()
     check('crawlerbait/index.html' in public_files and 'crawlerbait/state.json' in public_files,'Crawlerbait machine-facing static hub missing')
+    if raw:
+        check('crawlerbait/traffic.json' in public_files,'Crawlerbait public raw-traffic manifest missing')
     check(all(not p.startswith('assets/') and p not in {'index.html','.nojekyll','CNAME'} for p in public_files),'site public surface escaped reserved artifact namespace')
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
@@ -187,7 +207,6 @@ def main():
     result=subprocess.run(['python3',str(crawler/'y'/'capture.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait capture self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'replay.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait replay self-test failed')
-    result=subprocess.run(['python3',str(crawler/'y'/'provider_raw_once.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait provider-raw self-test failed')
     result=subprocess.run(['node',str(crawler/'z'/'render.test.cjs')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait visualization witness failed')
 
     print(json.dumps({
