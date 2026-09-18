@@ -1,6 +1,6 @@
 {
-  "applied_capture_end": "2026-09-18T04:40:48Z",
-  "last_complete_end": "2026-09-18T04:40:48Z",
+  "applied_capture_end": "2026-09-18T11:13:56Z",
+  "last_complete_end": "2026-09-18T11:13:56Z",
   "routes": {
     "/.DS_Store": {
       "first_observed_window": {
@@ -23,17 +23,38 @@
         }
       }
     },
+    "/.auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/.aws/config": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-18T04:40:48Z",
-        "start": "2026-09-17T21:58:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 16,
+      "observed_404": 17,
       "path": "/.aws/config",
       "sampled": true,
       "signatures": {
@@ -41,6 +62,11 @@
           "claimed_user_agent": "Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)",
           "id": "4bcb7dc92f967162",
           "observed_404": 8
+        },
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         },
         "63279522febcf553": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -55,14 +81,19 @@
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-18T04:40:48Z",
-        "start": "2026-09-17T21:58:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "/.aws/credentials",
       "sampled": true,
       "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        },
         "1c28d4a85dae1d4d": {
           "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:1.9.6.20) Gecko/ Firefox/3.8",
           "id": "1c28d4a85dae1d4d",
@@ -72,6 +103,27 @@
           "claimed_user_agent": "CCBot/2.0 (https://commoncrawl.org/faq/)",
           "id": "b846b5f8099aa856",
           "observed_404": 2
+        }
+      }
+    },
+    "/.azure-pipelines.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.azure-pipelines.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -96,6 +148,216 @@
         }
       }
     },
+    "/.boto": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.boto",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.circleci/config.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.circleci/config.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.circleci/ssh-config": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.circleci/ssh-config",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.composer-auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.composer-auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.config.php.swp": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.config.php.swp",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.config/gcloud/access_tokens.db": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.config/gcloud/access_tokens.db",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.config/gcloud/configurations/config_default": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.config/gcloud/configurations/config_default",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.config/gcloud/credentials.db": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.config/gcloud/credentials.db",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.config/sftp.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.config/sftp.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.credentials": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.credentials",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/.docker/.env": {
       "first_observed_window": {
         "end": "2026-09-18T04:40:48Z",
@@ -114,6 +376,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
           "observed_404": 21
+        }
+      }
+    },
+    "/.docker/config.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.docker/config.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.dockercfg": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.dockercfg",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -224,11 +528,11 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 21,
+      "observed_404": 22,
       "path": "/.env.backup",
       "sampled": true,
       "signatures": {
@@ -236,6 +540,11 @@
           "claimed_user_agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
           "id": "043937ea8abaea32",
           "observed_404": 8
+        },
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         },
         "28e19718e8682b7b": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
@@ -286,14 +595,19 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-18T04:40:48Z",
-        "start": "2026-09-17T21:58:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 14,
+      "observed_404": 15,
       "path": "/.env.bak",
       "sampled": true,
       "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        },
         "28e19718e8682b7b": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
@@ -358,11 +672,11 @@
         "start": "2026-09-14T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-15T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "/.env.development",
       "sampled": true,
       "signatures": {
@@ -370,6 +684,11 @@
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
           "observed_404": 2
+        },
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         },
         "b44a6c9762bb8aaf": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
@@ -488,11 +807,11 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 7,
+      "observed_404": 8,
       "path": "/.env.local",
       "sampled": true,
       "signatures": {
@@ -500,6 +819,11 @@
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
           "observed_404": 3
+        },
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         },
         "63279522febcf553": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -519,14 +843,19 @@
         "start": "2026-09-14T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-15T22:09:07Z",
-      "observed_404": 12,
+      "observed_404": 13,
       "path": "/.env.old",
       "sampled": true,
       "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        },
         "28e19718e8682b7b": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
@@ -654,14 +983,19 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-18T04:40:48Z",
-        "start": "2026-09-17T21:58:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 14,
+      "observed_404": 15,
       "path": "/.env.production",
       "sampled": true,
       "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        },
         "12bd583dd25b868e": {
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
@@ -762,14 +1096,19 @@
         "start": "2026-09-14T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-15T22:09:07Z",
-      "observed_404": 15,
+      "observed_404": 16,
       "path": "/.env.save",
       "sampled": true,
       "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        },
         "b44a6c9762bb8aaf": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
           "id": "b44a6c9762bb8aaf",
@@ -819,17 +1158,22 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 9,
+      "observed_404": 10,
       "path": "/.env.staging",
       "sampled": true,
       "signatures": {
         "28e19718e8682b7b": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
+          "observed_404": 1
+        },
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
           "observed_404": 1
         },
         "63279522febcf553": {
@@ -1048,6 +1392,69 @@
         }
       }
     },
+    "/.gem/credentials": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.gem/credentials",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.gem/credentials.yaml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.gem/credentials.yaml",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.git-credentials": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.git-credentials",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/.git/HEAD": {
       "first_observed_window": {
         "end": "2026-09-13T22:09:07Z",
@@ -1161,6 +1568,174 @@
         }
       }
     },
+    "/.gitlab-ci.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.gitlab-ci.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.gitlab-ci/variables.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.gitlab-ci/variables.yml",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.irb_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.irb_history",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.msmtprc": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.msmtprc",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.my.cnf": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.my.cnf",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.mysql_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.mysql_history",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.netrc": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.netrc",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.node_repl_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.node_repl_history",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/.npmrc": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -1179,6 +1754,237 @@
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
           "observed_404": 2
+        }
+      }
+    },
+    "/.nuget/nuget.config": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.nuget/nuget.config",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.nuget/packages.config": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.nuget/packages.config",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.pgpass": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.pgpass",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.postgresql_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.postgresql_history",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.prisma/schema.prisma": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.prisma/schema.prisma",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.pry_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.pry_history",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.psql_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.psql_history",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.s3cfg": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.s3cfg",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.settings.php.swp": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.settings.php.swp",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.sh_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.sh_history",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.sqlite_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.sqlite_history",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -1297,6 +2103,69 @@
         }
       }
     },
+    "/.wget-hsts": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.wget-hsts",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.wgetrc": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.wgetrc",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/.zsh_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/.zsh_history",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/.zshrc": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -1324,18 +2193,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//assets/images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1345,18 +2214,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//blogs/media/media/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1366,18 +2235,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//cache/cache/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1387,18 +2256,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//cgi-bin/cgi-bin/cgi-bin/cgi-bin/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1408,18 +2277,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1429,18 +2298,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//images/images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1450,18 +2319,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//images/images/images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1471,18 +2340,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//images/images/images/images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1492,18 +2361,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//images/images/images/images/images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1513,18 +2382,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//images/images/images/images/images/images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1534,18 +2403,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//images/images/images/images/images/images/images/images/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1555,18 +2424,18 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "//wp-content/plugins/plugins/cache.php",
       "sampled": false,
       "signatures": {
         "9219a56a94233bae": {
           "claimed_user_agent": "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36",
           "id": "9219a56a94233bae",
-          "observed_404": 3
+          "observed_404": 4
         }
       }
     },
@@ -1963,6 +2832,90 @@
         }
       }
     },
+    "/NuGet.Config": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/NuGet.Config",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/Properties/launchSettings.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/Properties/launchSettings.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/Server/.git/config": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/Server/.git/config",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/StudioServer/.git/config": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/StudioServer/.git/config",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/Vagrantfile": {
       "first_observed_window": {
         "end": "2026-09-18T04:40:48Z",
@@ -1981,6 +2934,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
           "observed_404": 7
+        }
+      }
+    },
+    "/__ENV.js": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/__ENV.js",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -2026,6 +3000,27 @@
         }
       }
     },
+    "/_config.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/_config.yml",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/_environment": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -2049,6 +3044,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 2
+        }
+      }
+    },
+    "/_netrc": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/_netrc",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -2136,6 +3152,90 @@
         }
       }
     },
+    "/access_tokens.db": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/access_tokens.db",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/beans": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/beans",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/caches": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/caches",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/configprops": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/configprops",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/actuator/env": {
       "first_observed_window": {
         "end": "2026-09-13T22:09:07Z",
@@ -2175,6 +3275,153 @@
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
           "observed_404": 4
+        }
+      }
+    },
+    "/actuator/httpexchanges": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/httpexchanges",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/httptrace": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/httptrace",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/logfile": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/logfile",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/loggers": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/loggers",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/loggingConfig": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/loggingConfig",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/mappings": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/mappings",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/actuator/startup": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/actuator/startup",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -2225,6 +3472,27 @@
         }
       }
     },
+    "/admin/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/admin/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/administrator/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -2253,6 +3521,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 8
+        }
+      }
+    },
+    "/administrator/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/administrator/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -2412,6 +3701,27 @@
         }
       }
     },
+    "/api/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/api/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/api/config": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -2472,6 +3782,27 @@
           "claimed_user_agent": "Mozilla/5.0 (compatible; OAI-SearchBot/1.3; +https://openai.com/searchbot)",
           "id": "ef36427db1a56b35",
           "observed_404": 8
+        }
+      }
+    },
+    "/api/session/properties": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 2,
+      "path": "/api/session/properties",
+      "sampled": false,
+      "signatures": {
+        "94f8f3c436dfb937": {
+          "claimed_user_agent": "metabase-cve-2026-72898-detect/1.0 (benign detection probes only)",
+          "id": "94f8f3c436dfb937",
+          "observed_404": 2
         }
       }
     },
@@ -2563,6 +3894,132 @@
         }
       }
     },
+    "/app/config/parameters.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/app/config/parameters.yml",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/app/etc/local.xml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/app/etc/local.xml",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/app/etc/local.xml.additional": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/app/etc/local.xml.additional",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/app/google-services.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/app/google-services.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/app/settings.py": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/app/settings.py",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/application.yaml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/application.yaml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/application/.env": {
       "first_observed_window": {
         "end": "2026-09-13T22:09:07Z",
@@ -2647,6 +4104,27 @@
         }
       }
     },
+    "/artemis/actuator/env": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/artemis/actuator/env",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/assets/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -2694,6 +4172,48 @@
         }
       }
     },
+    "/assets/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/assets/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/assets/credentials.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/assets/credentials.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/assets/js/auth.js": {
       "first_observed_window": {
         "end": "2026-09-17T21:58:07Z",
@@ -2712,6 +4232,90 @@
           "claimed_user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
           "id": "1f2be583cbe98967",
           "observed_404": 2
+        }
+      }
+    },
+    "/assets/other/service-account-credentials.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/assets/other/service-account-credentials.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/auth/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/auth/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/authentication/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/authentication/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -2754,6 +4358,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
           "observed_404": 24
+        }
+      }
+    },
+    "/azure-pipelines.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/azure-pipelines.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -2898,6 +4523,48 @@
         }
       }
     },
+    "/backup/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/backup/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/backup/ovh-backups.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/backup/ovh-backups.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/backup/wp-admin/install.php": {
       "first_observed_window": {
         "end": "2026-09-18T04:40:48Z",
@@ -2966,6 +4633,69 @@
         }
       }
     },
+    "/backups/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/backups/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/bitbucket-pipelines.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/bitbucket-pipelines.yml",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/blog/": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/blog/",
+      "sampled": false,
+      "signatures": {
+        "e82f2e5be321b6f9": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 1
+        }
+      }
+    },
     "/blog/.env": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -2983,6 +4713,27 @@
         "63279522febcf553": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
+          "observed_404": 1
+        }
+      }
+    },
+    "/blog/robots.txt": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/blog/robots.txt",
+      "sampled": false,
+      "signatures": {
+        "e82f2e5be321b6f9": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          "id": "e82f2e5be321b6f9",
           "observed_404": 1
         }
       }
@@ -3041,6 +4792,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 10
+        }
+      }
+    },
+    "/cache/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/cache/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -3164,6 +4936,27 @@
         }
       }
     },
+    "/client_secrets.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/client_secrets.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/cms/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -3227,6 +5020,48 @@
         "844d88131e5b8739": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
           "id": "844d88131e5b8739",
+          "observed_404": 1
+        }
+      }
+    },
+    "/collections/postman.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/collections/postman.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/conf/settings.xml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/conf/settings.xml",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
           "observed_404": 1
         }
       }
@@ -3319,6 +5154,153 @@
         }
       }
     },
+    "/config.php.bak": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.php.bak",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config.php.dist": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.php.dist",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config.php.old": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.php.old",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config.php.save": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.php.save",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config.php.txt": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.php.txt",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config.properties": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.properties",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config.properties.bak": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.properties.bak",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/config.xml": {
       "first_observed_window": {
         "end": "2026-09-14T22:09:07Z",
@@ -3337,6 +5319,48 @@
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
           "observed_404": 4
+        }
+      }
+    },
+    "/config.yaml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.yaml",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -3371,6 +5395,27 @@
         }
       }
     },
+    "/config/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/config/aws.json": {
       "first_observed_window": {
         "end": "2026-09-18T04:40:48Z",
@@ -3389,6 +5434,69 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           "id": "63279522febcf553",
           "observed_404": 24
+        }
+      }
+    },
+    "/config/database.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config/database.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config/initializers/secret_token.rb": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config/initializers/secret_token.rb",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config/ovh-backups.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config/ovh-backups.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -3413,6 +5521,111 @@
         }
       }
     },
+    "/config/secrets.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config/secrets.yml",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config/settings.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config/settings.yml",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/config/storage.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/config/storage.yml",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/configs/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/configs/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/configuration/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/configuration/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/console/": {
       "first_observed_window": {
         "end": "2026-09-13T22:09:07Z",
@@ -3431,6 +5644,27 @@
           "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
           "id": "86bad01b9f6cf979",
           "observed_404": 4
+        }
+      }
+    },
+    "/core-cloud-config.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/core-cloud-config.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -3538,20 +5772,67 @@
         }
       }
     },
+    "/credentials": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/credentials",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/credentials.db": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/credentials.db",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/credentials.json": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 2,
+      "observed_404": 3,
       "path": "/credentials.json",
       "sampled": true,
       "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        },
         "e4b041114023353d": {
           "claimed_user_agent": "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)",
           "id": "e4b041114023353d",
@@ -3690,6 +5971,27 @@
         }
       }
     },
+    "/data/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/data/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/database.sql": {
       "first_observed_window": {
         "end": "2026-09-14T22:09:07Z",
@@ -3737,6 +6039,27 @@
         }
       }
     },
+    "/database/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/database/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/database_backup.sql": {
       "first_observed_window": {
         "end": "2026-09-14T22:09:07Z",
@@ -3755,6 +6078,69 @@
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
           "observed_404": 3
+        }
+      }
+    },
+    "/database_credentials.inc": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/database_credentials.inc",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/db/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/db/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/db/schema.rb": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/db/schema.rb",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -3821,6 +6207,27 @@
         }
       }
     },
+    "/deployment-config.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/deployment-config.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/dev/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -3844,6 +6251,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 8
+        }
+      }
+    },
+    "/dev/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/dev/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -3894,6 +6322,27 @@
         }
       }
     },
+    "/development/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/development/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/dist/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -3917,6 +6366,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 10
+        }
+      }
+    },
+    "/django/settings.py": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/django/settings.py",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/docker-compose.yaml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/docker-compose.yaml",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -4001,6 +6492,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 8
+        }
+      }
+    },
+    "/docs/postman.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/docs/postman.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -4161,24 +6673,113 @@
         }
       }
     },
+    "/env-config.js": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/env-config.js",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/env.dev.js": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/env.dev.js",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/env.development.js": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/env.development.js",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/env.js": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
         "start": "2026-09-15T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-16T22:09:07Z",
-      "observed_404": 8,
+      "observed_404": 9,
       "path": "/env.js",
       "sampled": true,
       "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        },
         "bcc5778863bbab1d": {
           "claimed_user_agent": "Mozilla/5.0 (compatible; Google-CloudVertexBot; +https://cloud.google.com/vertex-ai-bot)",
           "id": "bcc5778863bbab1d",
           "observed_404": 8
+        }
+      }
+    },
+    "/env/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/env/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -4387,6 +6988,27 @@
         }
       }
     },
+    "/files/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/files/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/firebase-adminsdk.json": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -4523,6 +7145,27 @@
         }
       }
     },
+    "/gitlab-ci.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/gitlab-ci.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/google-key.json": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -4541,6 +7184,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 8
+        }
+      }
+    },
+    "/google-services.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/google-services.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -4567,6 +7231,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 8
+        }
+      }
+    },
+    "/host.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/host.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -4651,6 +7336,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
           "observed_404": 2
+        }
+      }
+    },
+    "/include/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/include/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/includes/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/includes/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -4916,6 +7643,27 @@
         }
       }
     },
+    "/keycloak.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/keycloak.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/keyfile.json": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -4960,6 +7708,27 @@
           "claimed_user_agent": "Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)",
           "id": "d5aa28a733e7026d",
           "observed_404": 8
+        }
+      }
+    },
+    "/keys/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/keys/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -5057,24 +7826,66 @@
         }
       }
     },
+    "/lib/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/lib/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/library/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/library/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/license.txt": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
         "start": "2026-09-14T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-15T22:09:07Z",
-        "start": "2026-09-14T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-15T22:09:07Z",
-      "observed_404": 1,
+      "observed_404": 2,
       "path": "/license.txt",
       "sampled": false,
       "signatures": {
         "bd478bf278869436": {
           "claimed_user_agent": "python-requests/2.27.1",
           "id": "bd478bf278869436",
-          "observed_404": 1
+          "observed_404": 2
         }
       }
     },
@@ -5138,6 +7949,27 @@
           "claimed_user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
           "id": "86bad01b9f6cf979",
           "observed_404": 4
+        }
+      }
+    },
+    "/logs/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/logs/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -5475,6 +8307,27 @@
         }
       }
     },
+    "/node_repl_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/node_repl_history",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/notify/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -5514,6 +8367,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "28e19718e8682b7b",
           "observed_404": 4
+        }
+      }
+    },
+    "/oauth-credentials.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/oauth-credentials.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/oauth/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/oauth/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -5627,6 +8522,27 @@
         }
       }
     },
+    "/ovh-backups.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/ovh-backups.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/papers/": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -5665,6 +8581,48 @@
         "2fa4da16e22c7271": {
           "claimed_user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Mobile/15E148 Safari/604.1",
           "id": "2fa4da16e22c7271",
+          "observed_404": 1
+        }
+      }
+    },
+    "/parameters.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/parameters.yml",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/parameters.yml.dist": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/parameters.yml.dist",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
           "observed_404": 1
         }
       }
@@ -5847,6 +8805,48 @@
         }
       }
     },
+    "/postman.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/postman.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/postman_collection.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/postman_collection.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/postmark/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -5915,6 +8915,48 @@
         }
       }
     },
+    "/prod/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/prod/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/production/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/production/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/project/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -5938,6 +8980,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 8
+        }
+      }
+    },
+    "/psql_history": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/psql_history",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -6035,6 +9098,69 @@
         }
       }
     },
+    "/readme.html": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/readme.html",
+      "sampled": false,
+      "signatures": {
+        "53304b2e8c092ed6": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+          "id": "53304b2e8c092ed6",
+          "observed_404": 1
+        }
+      }
+    },
+    "/redmine/config/initializers/secret_token.rb": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/redmine/config/initializers/secret_token.rb",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/redmine/config/settings.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/redmine/config/settings.yml",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/resources/.env": {
       "first_observed_window": {
         "end": "2026-09-17T21:58:07Z",
@@ -6098,6 +9224,69 @@
         }
       }
     },
+    "/s3cmd.ini": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/s3cmd.ini",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/schema.prisma": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/schema.prisma",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/schema.rb": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/schema.rb",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/scripts/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -6119,20 +9308,88 @@
         }
       }
     },
+    "/search/token.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/search/token.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/secret/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/secret/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/secret_token.rb": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/secret_token.rb",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/secrets.json": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
         "start": "2026-09-14T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-15T22:09:07Z",
-      "observed_404": 10,
+      "observed_404": 11,
       "path": "/secrets.json",
       "sampled": true,
       "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        },
         "12bd583dd25b868e": {
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
@@ -6142,6 +9399,69 @@
           "claimed_user_agent": "Mozilla/5.0 (compatible; Google-CloudVertexBot; +https://cloud.google.com/vertex-ai-bot)",
           "id": "bcc5778863bbab1d",
           "observed_404": 8
+        }
+      }
+    },
+    "/secrets.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 2,
+      "path": "/secrets.yml",
+      "sampled": true,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 2
+        }
+      }
+    },
+    "/secrets/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/secrets/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/secure/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/secure/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -6168,6 +9488,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 5
+        }
+      }
+    },
+    "/sendgrid.env": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/sendgrid.env",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -6307,6 +9648,27 @@
         }
       }
     },
+    "/service-account-credentials.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 2,
+      "path": "/service-account-credentials.json",
+      "sampled": true,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 2
+        }
+      }
+    },
     "/service-account.json": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -6354,6 +9716,27 @@
         }
       }
     },
+    "/serviceAccountCredentials.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/serviceAccountCredentials.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/service_account.json": {
       "first_observed_window": {
         "end": "2026-09-16T22:09:07Z",
@@ -6371,6 +9754,153 @@
         "37f8b8b52d72d4d7": {
           "claimed_user_agent": "Mozilla/5.0 (compatible; DeepSeekBot/1.0; +https://www.deepseek.com/bot)",
           "id": "37f8b8b52d72d4d7",
+          "observed_404": 1
+        }
+      }
+    },
+    "/settings.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/settings.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/settings.php.bak": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/settings.php.bak",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/settings.php.dist": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/settings.php.dist",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/settings.php.old": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/settings.php.old",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/settings.php.save": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/settings.php.save",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/settings.xml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/settings.xml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/settings.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/settings.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
           "observed_404": 1
         }
       }
@@ -6495,6 +10025,27 @@
         }
       }
     },
+    "/site/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/site/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/site/wp-includes/wlwmanifest.xml": {
       "first_observed_window": {
         "end": "2026-09-14T22:09:07Z",
@@ -6600,6 +10151,132 @@
         "b44a6c9762bb8aaf": {
           "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
           "id": "b44a6c9762bb8aaf",
+          "observed_404": 1
+        }
+      }
+    },
+    "/sites/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/sites/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/sites/default/settings.local.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/sites/default/settings.local.php",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/sites/default/settings.php": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/sites/default/settings.php",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/sites/default/settings.php.old": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/sites/default/settings.php.old",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/sites/default/settings.php.orig": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/sites/default/settings.php.orig",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/sites/default/settings.php.save": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/sites/default/settings.php.save",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
           "observed_404": 1
         }
       }
@@ -6734,6 +10411,48 @@
         }
       }
     },
+    "/src/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/src/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/staging/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/staging/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/staging/wp-admin/install.php": {
       "first_observed_window": {
         "end": "2026-09-18T04:40:48Z",
@@ -6818,6 +10537,27 @@
         }
       }
     },
+    "/storage/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/storage/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/storage/logs/laravel.log": {
       "first_observed_window": {
         "end": "2026-09-14T22:09:07Z",
@@ -6836,6 +10576,27 @@
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
           "observed_404": 3
+        }
+      }
+    },
+    "/storage/ovh-backups.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/storage/ovh-backups.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -6949,6 +10710,27 @@
         }
       }
     },
+    "/temp/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/temp/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/terraform/.env": {
       "first_observed_window": {
         "end": "2026-09-17T21:58:07Z",
@@ -6993,6 +10775,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 10
+        }
+      }
+    },
+    "/test/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/test/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/test/config/secrets.yml": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/test/config/secrets.yml",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
         }
       }
     },
@@ -7074,6 +10898,48 @@
         }
       }
     },
+    "/tests/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/tests/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/tmp/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/tmp/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
     "/tmp/phpinfo.php": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -7091,6 +10957,27 @@
         "e82f2e5be321b6f9": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
+          "observed_404": 1
+        }
+      }
+    },
+    "/token.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/token.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
           "observed_404": 1
         }
       }
@@ -7316,11 +11203,11 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-16T22:09:07Z",
-        "start": "2026-09-15T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 3,
+      "observed_404": 4,
       "path": "/user_secrets.yml",
       "sampled": false,
       "signatures": {
@@ -7328,6 +11215,32 @@
           "claimed_user_agent": "Go-http-client/1.1",
           "id": "12bd583dd25b868e",
           "observed_404": 3
+        },
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
+    "/user_secrets.yml.old": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/user_secrets.yml.old",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
         }
       }
     },
@@ -7441,6 +11354,48 @@
         }
       }
     },
+    "/vendor/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/vendor/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
+    "/vendors/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/vendors/auth.json",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
+        }
+      }
+    },
     "/web/.env": {
       "first_observed_window": {
         "end": "2026-09-15T22:09:07Z",
@@ -7464,6 +11419,48 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 10
+        }
+      }
+    },
+    "/web/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/web/auth.json",
+      "sampled": false,
+      "signatures": {
+        "069245a268913b99": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "069245a268913b99",
+          "observed_404": 1
+        }
+      }
+    },
+    "/web/settings/settings.py": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/web/settings/settings.py",
+      "sampled": false,
+      "signatures": {
+        "1bcc9eae1df41fe3": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "1bcc9eae1df41fe3",
+          "observed_404": 1
         }
       }
     },
@@ -7566,17 +11563,22 @@
         "start": "2026-09-17T21:58:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-18T04:40:48Z",
-        "start": "2026-09-17T21:58:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-18T04:40:48Z",
-      "observed_404": 1,
+      "observed_404": 2,
       "path": "/wordpress/",
       "sampled": false,
       "signatures": {
         "652d8048e7af3558": {
           "claimed_user_agent": "Mozilla/5.0 (X11; Debian; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0",
           "id": "652d8048e7af3558",
+          "observed_404": 1
+        },
+        "e82f2e5be321b6f9": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          "id": "e82f2e5be321b6f9",
           "observed_404": 1
         }
       }
@@ -7838,11 +11840,11 @@
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 21,
+      "observed_404": 22,
       "path": "/wp-includes/wlwmanifest.xml",
       "sampled": true,
       "signatures": {
@@ -7854,6 +11856,11 @@
         "2460c2f8c7fb5c8a": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0 Safari/537.36",
           "id": "2460c2f8c7fb5c8a",
+          "observed_404": 1
+        },
+        "5a1fc776b0312aa8": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
+          "id": "5a1fc776b0312aa8",
           "observed_404": 1
         },
         "6651c93be752de4f": {
@@ -7894,17 +11901,38 @@
         }
       }
     },
+    "/wp-json/oembed/1.0/embed": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 2,
+      "path": "/wp-json/oembed/1.0/embed",
+      "sampled": true,
+      "signatures": {
+        "5a1fc776b0312aa8": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
+          "id": "5a1fc776b0312aa8",
+          "observed_404": 2
+        }
+      }
+    },
     "/wp-login.php": {
       "first_observed_window": {
         "end": "2026-09-13T22:09:07Z",
         "start": "2026-09-12T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-18T04:40:48Z",
-        "start": "2026-09-17T21:58:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-13T22:09:07Z",
-      "observed_404": 43,
+      "observed_404": 46,
       "path": "/wp-login.php",
       "sampled": false,
       "signatures": {
@@ -7933,6 +11961,11 @@
           "id": "40b58db0069d1a73",
           "observed_404": 1
         },
+        "40cebaa508b0943e": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15",
+          "id": "40cebaa508b0943e",
+          "observed_404": 1
+        },
         "4be9abaa5e0bad99": {
           "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
           "id": "4be9abaa5e0bad99",
@@ -7941,6 +11974,11 @@
         "4dc509febd7e0f3d": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
           "id": "4dc509febd7e0f3d",
+          "observed_404": 1
+        },
+        "4ebc200fdd5d30ae": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+          "id": "4ebc200fdd5d30ae",
           "observed_404": 1
         },
         "615fce795c02806e": {
@@ -7988,6 +12026,11 @@
           "id": "d6bd836be3bdee15",
           "observed_404": 1
         },
+        "d971fa71a0442bb9": {
+          "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+          "id": "d971fa71a0442bb9",
+          "observed_404": 1
+        },
         "d9e6a968bb7bddc8": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
           "id": "d9e6a968bb7bddc8",
@@ -7997,6 +12040,27 @@
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
           "observed_404": 4
+        }
+      }
+    },
+    "/wp/": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/wp/",
+      "sampled": false,
+      "signatures": {
+        "e82f2e5be321b6f9": {
+          "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          "id": "e82f2e5be321b6f9",
+          "observed_404": 1
         }
       }
     },
@@ -8182,6 +12246,27 @@
         }
       }
     },
+    "/www/auth.json": {
+      "first_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "last_observed_window": {
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
+      },
+      "materialized_at": "2026-09-18T11:13:56Z",
+      "observed_404": 1,
+      "path": "/www/auth.json",
+      "sampled": false,
+      "signatures": {
+        "552a40ba9aa4108e": {
+          "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+          "id": "552a40ba9aa4108e",
+          "observed_404": 1
+        }
+      }
+    },
     "/www/phpinfo.php": {
       "first_observed_window": {
         "end": "2026-09-17T21:58:07Z",
@@ -8209,11 +12294,11 @@
         "start": "2026-09-13T22:09:07Z"
       },
       "last_observed_window": {
-        "end": "2026-09-17T21:58:07Z",
-        "start": "2026-09-16T22:09:07Z"
+        "end": "2026-09-18T11:13:56Z",
+        "start": "2026-09-18T04:40:48Z"
       },
       "materialized_at": "2026-09-14T22:09:07Z",
-      "observed_404": 17,
+      "observed_404": 19,
       "path": "/xmlrpc.php",
       "sampled": true,
       "signatures": {
@@ -8230,7 +12315,7 @@
         "5a1fc776b0312aa8": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36",
           "id": "5a1fc776b0312aa8",
-          "observed_404": 1
+          "observed_404": 2
         },
         "6651c93be752de4f": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
@@ -8250,7 +12335,7 @@
         "e82f2e5be321b6f9": {
           "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
           "id": "e82f2e5be321b6f9",
-          "observed_404": 4
+          "observed_404": 5
         }
       }
     }
