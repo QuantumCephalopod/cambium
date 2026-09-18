@@ -141,7 +141,7 @@ def chunks(values: list[str], n: int) -> list[list[str]]:
 
 
 def field_slices(fields: list[str], max_fields: int) -> list[list[str]]:
-    """Cover every available field while respecting the provider field-count limit."""
+    """Cover every provider-advertised leaf field while respecting its field-count limit."""
     ordered = list(dict.fromkeys(fields))
     anchors = [f for f in ("datetime", "rayName") if f in ordered]
     rest = [f for f in ordered if f not in anchors]
@@ -151,13 +151,112 @@ def field_slices(fields: list[str], max_fields: int) -> list[list[str]]:
     return [anchors + part for part in chunks(rest, payload_width)] or [anchors]
 
 
-def raw_query(zone: str, start: datetime, end: datetime, limit: int, fields: list[str]) -> str:
-    selection = " ".join(fields)
+def named_type(type_ref: dict | None) -> str | None:
+    current = type_ref or {}
+    while current:
+        if current.get("name"):
+            return current["name"]
+        current = current.get("ofType") or {}
+    return None
+
+
+def schema_types(introspection_body: dict) -> dict[str, dict]:
+    types = introspection_body.get("data", {}).get("__schema", {}).get("types", [])
+    return {
+        t["name"]: t
+        for t in types
+        if isinstance(t, dict) and isinstance(t.get("name"), str)
+    }
+
+
+def dataset_record_type(introspection_body: dict, dataset: str) -> tuple[dict[str, dict], str]:
+    types = schema_types(introspection_body)
+    matches = []
+    for type_name, type_def in types.items():
+        for field in type_def.get("fields") or []:
+            if field.get("name") != dataset:
+                continue
+            # The Settings type also has a field named after the dataset. The
+            # queryable zone dataset is the one carrying transport arguments.
+            arg_names = {arg.get("name") for arg in (field.get("args") or [])}
+            if not ({"filter", "limit"} & arg_names):
+                continue
+            result_type = named_type(field.get("type"))
+            if result_type:
+                matches.append((type_name, result_type))
+    result_types = sorted({result for _, result in matches})
+    if len(result_types) != 1:
+        raise RuntimeError(
+            f"could not resolve one GraphQL record type for {dataset}: {matches}"
+        )
+    return types, result_types[0]
+
+
+def type_fields(types: dict[str, dict], type_name: str) -> dict[str, dict]:
+    value = types.get(type_name) or {}
+    return {
+        f["name"]: f
+        for f in value.get("fields") or []
+        if isinstance(f, dict) and isinstance(f.get("name"), str)
+    }
+
+
+def resolve_available_field(types: dict[str, dict], root_type: str, advertised: str) -> list[str]:
+    """Resolve Settings' underscore path (for example parent_child) into GraphQL nesting."""
+    direct = type_fields(types, root_type)
+    if advertised in direct:
+        return [advertised]
+
+    # Settings flattens nested paths with underscores. Field names can themselves
+    # contain underscores, so choose the longest schema-valid parent prefix and
+    # recurse rather than blindly splitting at the first underscore.
+    candidates = sorted(
+        (name for name in direct if advertised.startswith(name + "_")),
+        key=len,
+        reverse=True,
+    )
+    for parent in candidates:
+        child_type = named_type(direct[parent].get("type"))
+        if not child_type:
+            continue
+        remainder = advertised[len(parent) + 1:]
+        try:
+            return [parent] + resolve_available_field(types, child_type, remainder)
+        except RuntimeError:
+            pass
+    raise RuntimeError(
+        f'provider advertised field "{advertised}" but GraphQL introspection cannot resolve it from {root_type}'
+    )
+
+
+def selection_tree(paths: list[list[str]]) -> dict:
+    tree = {}
+    for path in paths:
+        cursor = tree
+        for part in path:
+            cursor = cursor.setdefault(part, {})
+    return tree
+
+
+def render_selection(tree: dict) -> str:
+    parts = []
+    for name in sorted(tree):
+        children = tree[name]
+        parts.append(name if not children else f"{name} {{ {render_selection(children)} }}")
+    return " ".join(parts)
+
+
+def graphql_selection(types: dict[str, dict], root_type: str, advertised_fields: list[str]) -> str:
+    paths = [resolve_available_field(types, root_type, field) for field in advertised_fields]
+    return render_selection(selection_tree(paths))
+
+
+def raw_query(zone: str, start: datetime, end: datetime, limit: int, selection: str) -> str:
     return (
         '{ viewer { zones(filter: { zoneTag: "' + zone + '" }) { '
         'records: httpRequestsAdaptive('
         'filter: { datetime_geq: "' + stamp(start) + '" datetime_lt: "' + stamp(end) + '" } '
-        'limit: ' + str(int(limit)) + ' orderBy: [datetime_ASC]) { ' + selection + ' }'
+        'limit: ' + str(int(limit)) + ') { ' + selection + ' }'
         ' } } }'
     )
 
@@ -175,15 +274,17 @@ def compact(value: datetime) -> str:
 
 def freeze_graphql_leaf(token: str, zone: str, start: datetime, end: datetime,
                         fields: list[str], max_fields: int, limit: int,
+                        schema: dict[str, dict], record_type: str,
                         out: Path, write: bool) -> list[dict]:
     slices = field_slices(fields, max_fields)
-    fetched: list[tuple[list[str], dict, list]] = []
+    fetched: list[tuple[list[str], str, dict, list]] = []
     saturated = False
     for subset in slices:
-        response = graphql(token, raw_query(zone, start, end, limit, subset))["body"]
+        selection = graphql_selection(schema, record_type, subset)
+        response = graphql(token, raw_query(zone, start, end, limit, selection))["body"]
         records = gql_records(response)
         saturated = saturated or len(records) >= limit
-        fetched.append((subset, response, records))
+        fetched.append((subset, selection, response, records))
 
     duration = int((end - start).total_seconds())
     if saturated and duration > 1:
@@ -191,14 +292,14 @@ def freeze_graphql_leaf(token: str, zone: str, start: datetime, end: datetime,
         if not start < mid < end:
             raise RuntimeError("cannot bisect saturated raw HTTP window")
         return (
-            freeze_graphql_leaf(token, zone, start, mid, fields, max_fields, limit, out, write)
-            + freeze_graphql_leaf(token, zone, mid, end, fields, max_fields, limit, out, write)
+            freeze_graphql_leaf(token, zone, start, mid, fields, max_fields, limit, schema, record_type, out, write)
+            + freeze_graphql_leaf(token, zone, mid, end, fields, max_fields, limit, schema, record_type, out, write)
         )
 
     base = f"{compact(start)}--{compact(end)}"
     files = []
     counts = []
-    for index, (subset, response, records) in enumerate(fetched):
+    for index, (subset, selection, response, records) in enumerate(fetched):
         name = f"{base}.fields-{index:03d}.json"
         path = out / "graphql-httpRequestsAdaptive" / name
         carrier = {
@@ -206,7 +307,8 @@ def freeze_graphql_leaf(token: str, zone: str, start: datetime, end: datetime,
             "source": "cloudflare:graphql:httpRequestsAdaptive",
             "purpose": "provider-raw HTTP event freeze; no semantic traffic filters",
             "window": {"start": stamp(start), "end": stamp(end)},
-            "fields": subset,
+            "advertised_fields": subset,
+            "graphql_selection": selection,
             "provider_response": response,
         }
         if write:
@@ -222,8 +324,13 @@ def freeze_graphql_leaf(token: str, zone: str, start: datetime, end: datetime,
     }]
 
 
-def freeze_graphql(token: str, zone: str, now: datetime, cfg: dict, out: Path, write: bool) -> dict:
+def freeze_graphql(token: str, zone: str, now: datetime, cfg: dict,
+                   introspection_body: dict, out: Path, write: bool) -> dict:
     fields = list(cfg["availableFields"])
+    schema, record_type = dataset_record_type(introspection_body, "httpRequestsAdaptive")
+    # Resolve every field before requesting history. Any provider/settings↔schema
+    # mismatch is a hard completeness failure; nothing is silently omitted.
+    resolved = {field: resolve_available_field(schema, record_type, field) for field in fields}
     max_duration = int(cfg["maxDuration"])
     max_fields = int(cfg["maxNumberOfFields"])
     limit = int(cfg["maxPageSize"])
@@ -234,7 +341,7 @@ def freeze_graphql(token: str, zone: str, now: datetime, cfg: dict, out: Path, w
     cursor = start
     while cursor < end:
         stop = min(end, cursor + timedelta(seconds=max_duration))
-        leaves.extend(freeze_graphql_leaf(token, zone, cursor, stop, fields, max_fields, limit, out, write))
+        leaves.extend(freeze_graphql_leaf(token, zone, cursor, stop, fields, max_fields, limit, schema, record_type, out, write))
         cursor = stop
     bad = [leaf for leaf in leaves if leaf["saturated_at_one_second"]]
     return {
@@ -244,6 +351,8 @@ def freeze_graphql(token: str, zone: str, now: datetime, cfg: dict, out: Path, w
         "transport_filter": "datetime range only",
         "retained_window": {"start": stamp(start), "end": stamp(end)},
         "available_fields": fields,
+        "record_type": record_type,
+        "resolved_field_paths": resolved,
         "provider_limits": {
             "maxDuration": max_duration, "maxNumberOfFields": max_fields,
             "maxPageSize": limit, "notOlderThan": retained,
@@ -323,7 +432,24 @@ def self_test() -> None:
     fields = ["a", "datetime", "b", "rayName", "c", "d"]
     slices = field_slices(fields, 4)
     assert slices == [["datetime", "rayName", "a", "b"], ["datetime", "rayName", "c", "d"]]
-    q = raw_query("0" * 32, datetime(2026, 9, 18, tzinfo=timezone.utc), datetime(2026, 9, 18, 1, tzinfo=timezone.utc), 10000, ["datetime", "clientIP"])
+    fake_schema = {
+        "data": {"__schema": {"types": [
+            {"name": "Zone", "fields": [{"name": "httpRequestsAdaptive", "args": [{"name": "filter"}, {"name": "limit"}], "type": {"kind": "LIST", "ofType": {"kind": "OBJECT", "name": "Request"}}}]},
+            {"name": "ZoneSettings", "fields": [{"name": "httpRequestsAdaptive", "args": [], "type": {"kind": "OBJECT", "name": "Settings"}}]},
+            {"name": "Settings", "fields": [{"name": "availableFields", "args": [], "type": {"kind": "LIST", "ofType": {"kind": "SCALAR", "name": "String"}}}]},
+            {"name": "Request", "fields": [
+                {"name": "datetime", "type": {"kind": "SCALAR", "name": "DateTime"}},
+                {"name": "clientIP", "type": {"kind": "SCALAR", "name": "String"}},
+                {"name": "nestedThing", "type": {"kind": "OBJECT", "name": "NestedThing"}}
+            ]},
+            {"name": "NestedThing", "fields": [{"name": "score", "type": {"kind": "SCALAR", "name": "Int"}}]}
+        ]}}
+    }
+    types, record_type = dataset_record_type(fake_schema, "httpRequestsAdaptive")
+    assert resolve_available_field(types, record_type, "nestedThing_score") == ["nestedThing", "score"]
+    selection = graphql_selection(types, record_type, ["datetime", "clientIP", "nestedThing_score"])
+    assert "nestedThing { score }" in selection
+    q = raw_query("0" * 32, datetime(2026, 9, 18, tzinfo=timezone.utc), datetime(2026, 9, 18, 1, tzinfo=timezone.utc), 10000, selection)
     assert "httpRequestsAdaptive" in q and "clientIP" in q
     assert "edgeResponseStatus" not in q and "requestSource" not in q
     assert "datetime_geq" in q and "datetime_lt" in q
@@ -363,7 +489,7 @@ def main() -> None:
         write_json(out / "discovery" / "graphql-httpRequestsAdaptive-settings.json", settings)
     probes = probe_log_surfaces(token, zone, out, args.write)
 
-    graphql_raw = freeze_graphql(token, zone, now, cfg, out, args.write)
+    graphql_raw = freeze_graphql(token, zone, now, cfg, introspection["body"], out, args.write)
     logpull = freeze_logpull(token, zone, now, out, args.write)
 
     manifest = {
