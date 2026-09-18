@@ -71,6 +71,16 @@ def main():
     check((crawler/'x'/'cursor.json').is_file(),'Crawlerbait capture cursor missing')
     check((crawler/'x'/'captures'/'manifest.json').is_file(),'Crawlerbait capture manifest missing')
     check((crawler/'z'/'policy.json').is_file(),'Crawlerbait membrane policy missing')
+    policy=json.loads((crawler/'z'/'policy.json').read_text(encoding='utf-8'))
+    ip_identity=policy.get('client_ip_identity') or {}
+    check(
+        ip_identity.get('scheme')=='hmac-sha256'
+        and ip_identity.get('domain')=='crawlerbait:clientIP:v1'
+        and ip_identity.get('key_epoch')=='v1'
+        and ip_identity.get('published_field')=='clientIPIdentity'
+        and ip_identity.get('literal_ip_persisted') is False,
+        'Crawlerbait clientIP identity policy drifted'
+    )
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
     check((crawler/'y'/'tide.py').is_file(),'Crawlerbait local tide missing')
     check((crawler/'y'/'replay.py').is_file(),'Crawlerbait local replay missing')
@@ -101,16 +111,43 @@ def main():
 
     raw_captures=sorted((crawler/'x'/'captures').glob('*.traffic.json'))
     raw_expected=None
+    identity_fingerprints=set()
     for capture in raw_captures:
         value=json.loads(capture.read_text(encoding='utf-8'))
         window=value.get('window') or {}
-        zones=(value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
+        zones=(value.get('published_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
         records=zones[0].get('records') if len(zones)==1 else None
-        check(value.get('version')==3 and value.get('source')=='cloudflare:httpRequestsAdaptive' and value.get('semantic_filters')==[] and isinstance(records,list),f'invalid whole-traffic capture {capture.name}')
+        transform=(value.get('publication_transform') or {}).get('clientIP') or {}
+        check(
+            value.get('version')==4
+            and value.get('source')=='cloudflare:httpRequestsAdaptive'
+            and value.get('semantic_filters')==[]
+            and isinstance(records,list),
+            f'invalid whole-traffic capture {capture.name}'
+        )
+        check(
+            transform.get('scheme')=='hmac-sha256'
+            and transform.get('domain')=='crawlerbait:clientIP:v1'
+            and transform.get('key_epoch')=='v1'
+            and transform.get('published_field')=='clientIPIdentity'
+            and transform.get('literal_persisted') is False
+            and transform.get('equality_preserved_within_key_epoch') is True,
+            f'invalid clientIP identity transform in {capture.name}'
+        )
+        fingerprint=transform.get('key_fingerprint')
+        check(isinstance(fingerprint,str) and len(fingerprint)==16,f'missing identity-key fingerprint in {capture.name}')
+        identity_fingerprints.add(fingerprint)
+        if 'clientIP' in (value.get('advertised_fields') or []):
+            for index,record in enumerate(records):
+                check('clientIP' not in record,f'literal clientIP persisted in {capture.name} record {index}')
+                check('clientIPIdentity' in record,f'clientIPIdentity missing in {capture.name} record {index}')
         if raw_expected is not None:
             check(window.get('start')==raw_expected,f'Crawlerbait raw traffic gap before {capture.name}')
         raw_expected=window.get('end')
     if raw_captures:
+        check(len(identity_fingerprints)==1,'multiple HMAC key fingerprints split one raw identity epoch')
+        cursor_identity=(cursor.get('identity') or {}).get('clientIP') or {}
+        check(cursor_identity.get('key_fingerprint') in identity_fingerprints,'cursor identity key diverged from raw captures')
         check(cursor.get('raw_last_capture_end')==raw_expected,'raw traffic cursor is not exactly covered by immutable captures')
         check(trace_state.get('version')==5 and trace_state.get('raw_capture_end')==raw_expected,'derived whole-traffic state is stale')
         check((crawler/'z'/'public'/'crawlerbait'/'traffic.json').is_file(),'public raw traffic manifest missing')
