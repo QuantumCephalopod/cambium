@@ -1,0 +1,88 @@
+name: crawlerbait provider-raw freeze ONCE
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'w/display/y/yw/crawlerbait/y/provider_raw_once.py'
+      - 'w/display/y/yw/crawlerbait/z/provider-raw-public.pem'
+      - '.github/workflows/crawlerbait-provider-raw-once.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: crawlerbait-provider-raw-once-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  freeze:
+    if: github.repository == 'self-similar-systems/cambium'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reacquire canonical cambium
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Witness raw-freezer law
+        run: |
+          set -euo pipefail
+          python3 w/display/y/yw/crawlerbait/y/provider_raw_once.py --self-test
+
+      - name: Freeze every raw HTTP surface Cloudflare exposes now
+        env:
+          CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
+          CLOUDFLARE_ZONE_TAG: ${{ secrets.CLOUDFLARE_ZONE_TAG }}
+        run: |
+          set -euo pipefail
+          rm -rf _private _encrypted
+          python3 w/display/y/yw/crawlerbait/y/provider_raw_once.py             --write             --output _private/crawlerbait-provider-raw
+
+      - name: Encrypt before artifact custody
+        run: |
+          set -euo pipefail
+          test -f _private/crawlerbait-provider-raw/MANIFEST.json
+          test -f _private/crawlerbait-provider-raw/SHA256-INVENTORY.json
+
+          tar -C _private -czf /tmp/crawlerbait-provider-raw.tar.gz crawlerbait-provider-raw
+          openssl rand -hex 32 > /tmp/archive-passphrase.txt
+
+          openssl enc -aes-256-cbc -md sha256 -pbkdf2 -iter 200000 -salt             -in /tmp/crawlerbait-provider-raw.tar.gz             -out /tmp/crawlerbait-provider-raw.tar.gz.enc             -pass file:/tmp/archive-passphrase.txt
+
+          openssl pkeyutl -encrypt -pubin             -inkey w/display/y/yw/crawlerbait/z/provider-raw-public.pem             -in /tmp/archive-passphrase.txt             -out /tmp/archive-passphrase.rsa
+
+          mkdir -p _encrypted
+          mv /tmp/crawlerbait-provider-raw.tar.gz.enc _encrypted/
+          mv /tmp/archive-passphrase.rsa _encrypted/
+          sha256sum _encrypted/crawlerbait-provider-raw.tar.gz.enc > _encrypted/SHA256SUMS.txt
+
+          cat > _encrypted/DECRYPT.txt <<'EOF'
+          The RSA private key is held separately in private Drive custody.
+
+          openssl pkeyutl -decrypt \
+            -inkey private.pem \
+            -in archive-passphrase.rsa \
+            -out archive-passphrase.txt
+
+          openssl enc -d -aes-256-cbc -md sha256 -pbkdf2 -iter 200000 \
+            -in crawlerbait-provider-raw.tar.gz.enc \
+            -out crawlerbait-provider-raw.tar.gz \
+            -pass file:archive-passphrase.txt
+          EOF
+
+          rm -rf _private
+          rm -f /tmp/crawlerbait-provider-raw.tar.gz /tmp/archive-passphrase.txt
+          test ! -e _private
+          test -s _encrypted/crawlerbait-provider-raw.tar.gz.enc
+          test -s _encrypted/archive-passphrase.rsa
+
+      - name: Upload ciphertext only
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawlerbait-provider-raw-${{ github.run_id }}
+          path: _encrypted/
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error

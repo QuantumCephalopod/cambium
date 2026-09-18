@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve a same-type bait population, durable captured traces, a bounded passive membrane and periodic local tide without heuristic ecological filtering or repeated provider-history fetches."
-version: "4.1"
+version: "4.2"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -46,14 +46,14 @@ Cloudflare is a sensor, not Crawlerbait's memory.
 `x` separates three distinct trace roles:
 
 - `checkpoint.json` — the one migration baseline containing all already-assimilated history that had been fetched before immutable raw capture storage existed;
-- `captures/*.json` — immutable provider windows captured after that baseline, including empty windows so coverage itself is explicit evidence;
+- `captures/*.json` — immutable **filtered 404 aggregate** provider windows captured after that baseline for the existing bait-metabolism pipeline, including empty windows so coverage itself is explicit evidence;
 - `state.json` — derived current longitudinal aggregate used by Baits and Membrane; it may be regenerated locally from checkpoint + captures.
 
 `x/cursor.json` records only the end of provider time already captured. Acquisition begins exactly there and never intentionally re-queries older windows merely because downstream processing changes.
 
 The migration checkpoint is deliberately honest: the earlier full-history fetch was already metabolized before raw-window persistence existed, so its exact pre-aggregation response cannot be reconstructed without wastefully asking the provider again. We preserve that already-owned aggregate as the fixed baseline and capture raw windows from that point forward. Do not refetch old provider history solely to make the past look more raw.
 
-There is no relevance filter, recurrence threshold, ranking, shortlist or route/signature budget. User-Agent strings remain client claims, not authenticated identities. The current sensor does not request client IP addresses.
+There is no relevance filter, recurrence threshold, ranking, shortlist or route/signature budget inside the existing 404 bait-metabolism stream. User-Agent strings remain client claims, not authenticated identities. That legacy stream intentionally contains only the fields its old query asked for and **must not be called provider-raw evidence**.
 
 The bait body and trace memory are related but not identical:
 - `w` answers *what bait exists and where it lives in bait-space*;
@@ -89,21 +89,35 @@ then
 
 The capture edge is persisted before downstream metabolism. If downstream processing fails, already-captured provider evidence remains durable and the next tide can retry locally without requesting the same window again.
 
-### one-time retained-history freeze — setup aperture, not physiology
+### retained 404 aggregate freeze — historical evidence, not provider-raw
 
-During the present setup window only, while Cloudflare still retains historical analytics that will later expire, Crawlerbait must freeze **every still-retained provider response as raw as this API exposes it** into `x/retained-bootstrap/`.
+The sealed `x/retained-bootstrap/` archive is retained permanently, but its meaning is narrower than previously named. It preserves every byte returned by one historical **filtered analytics query**:
 
-`y/bootstrap_once.py` and the manual `crawlerbait retained-history bootstrap ONCE` workflow exist only to close this historical custody gap. They:
-- query the complete provider-retained interval available at execution time;
-- preserve the full returned GraphQL payload for each leaf time window, not merely the downstream aggregate;
-- snapshot the provider retention/page/window settings used;
-- recursively split a time window when it hits the provider page ceiling so transport truncation is not silently accepted;
-- seal the archive once complete;
-- never refresh that archive later.
+`httpRequestsAdaptiveGroups · requestSource=eyeball · status=404 · groupBy(path,userAgent)`.
 
-This is deliberately **one-time setup**, because the provider deletes old history. After the seal exists, the temporary bootstrap aperture has finished its only job and should be removed from active workflow code. Future sensing is incremental only through `capture.py`.
+That archive is valuable immutable evidence of the bait stream, but it is **not** “all Cloudflare raw data” and must never again be described that way. The completeness claim applies only to the responses of that exact query over the retained interval that existed when it was sealed.
 
-The already-owned pre-bootstrap aggregate checkpoint remains valuable because some oldest provider time may disappear before this raw freeze can recover it. The raw retained bootstrap is additional source evidence, not permission to discard earlier owned memory.
+### one-time provider-raw repair — complete accessible HTTP-event surface
+
+While provider retention still contains data that was omitted by the earlier narrow query, Crawlerbait opens one bounded repair aperture: `y/provider_raw_once.py` plus the `crawlerbait provider-raw freeze ONCE` workflow.
+
+For this repair, **provider-raw** means:
+
+> every raw HTTP-request field and event surface Cloudflare exposes to this exact zone/token/plan within its still-retained history, with no Crawlerbait relevance/status/source/path/UA filter.
+
+The repair must:
+- snapshot GraphQL schema discovery and the live `httpRequestsAdaptive` Settings node before acquisition;
+- request every field named by provider `availableFields`, respecting only provider `maxNumberOfFields`, `maxPageSize`, `maxDuration` and `notOlderThan`;
+- query `httpRequestsAdaptive` with **time bounds only** and recursively split saturated time windows rather than accepting silent page truncation;
+- probe Logpull, Log Explorer and Logpush HTTP-request field surfaces and preserve those provider responses as evidence of what this token/plan did or did not expose;
+- when Logpull is available, request **all listed fields**, no `count`, no `sample`, and only transport time-window parameters;
+- preserve provider responses verbatim. Field slicing caused by a provider field-count limit is transport partitioning, not semantic selection;
+- record all provider/plan/sampling/retention limits explicitly in the archive manifest;
+- fail rather than claim completeness if a one-second GraphQL window still saturates the provider page ceiling.
+
+True raw HTTP evidence may contain client IPs, query strings, TLS/security fingerprints or other sensitive material. Therefore its plaintext **must never enter this public Git repository or public membrane**. The one-time runner encrypts the complete private archive before artifact custody; the decryption private key is held separately in private Drive custody. Only privacy-safe derived organism projections may later return to the public body.
+
+The old 404 checkpoint/captures/retained-bootstrap remain valid evidence for the already-grown bait physiology. Provider-raw repair augments source custody; it does not retroactively rename or discard those earlier tissues.
 
 Ordinary crawler reads remain static CDN/Pages traffic and invoke no Worker merely to announce presence.
 
@@ -124,17 +138,18 @@ This is why `/login`, `/.env`, `/wp-json`, etc. are never directory taxonomy ins
 A Crawlerbait change closes only when:
 1. root `w/x/z/y` still realize Baits / Traces / Membrane / Tide and root `4V/6E/4F/1T` remains closed;
 2. `w` contains only addressed bait bodies;
-3. during setup, every provider window still retained is frozen once into the sealed raw retained-bootstrap before that history expires;
-4. after sealing, historical bootstrap is never refreshed or treated as recurring physiology;
-5. provider windows captured during normal operation are durable local evidence and are never re-requested because downstream law changed;
-6. `x/state.json` remains explicitly derived from owned local memory;
-7. capture persists new raw windows/cursor before downstream metabolism can fail;
-8. `z` alone carries public/static/renderer membrane tissue;
-9. Cloudflare credentials never enter repository/public bytes;
-10. ordinary crawler reads remain static;
-11. bait identity survives bait-space relocation/deepening;
-12. the bait-space address carrier has no terminal configured depth and preserves all existing prefixes while extending deeper on demand;
-13. the local background visualizes only bait-space anatomy, never the sibling Traces/Membrane/Tide vertices;
-14. exact build/address/tetrahedral/bootstrap/capture/replay/public witnesses pass.
+3. the sealed `x/retained-bootstrap` is named truthfully as a complete freeze of its old filtered 404 aggregate query, not as provider-raw HTTP history;
+4. while the repair aperture is active, every raw HTTP-request field/event surface exposed to this zone/token is discovered and frozen without semantic traffic filters before retained history expires;
+5. provider-raw plaintext never enters the public repository or membrane; private evidence is encrypted before external artifact custody and its private key remains separate;
+6. provider windows captured during normal operation are durable local evidence and are never re-requested because downstream law changed;
+7. `x/state.json` remains explicitly derived from owned local memory;
+8. capture persists new filtered bait-stream windows/cursor before downstream metabolism can fail;
+9. `z` alone carries public/static/renderer membrane tissue plus the provider-raw **public** encryption key; no private key or plaintext raw event archive may enter the tree;
+10. Cloudflare credentials never enter repository/public bytes;
+11. ordinary crawler reads remain static;
+12. bait identity survives bait-space relocation/deepening;
+13. the bait-space address carrier has no terminal configured depth and preserves all existing prefixes while extending deeper on demand;
+14. the local background visualizes only bait-space anatomy, never the sibling Traces/Membrane/Tide vertices;
+15. exact build/address/tetrahedral/provider-raw/capture/replay/public witnesses pass.
 
-Compression: **While the historical window still exists, freeze it raw once. Then Cloudflare only senses the future, Traces remembers locally, and an unbounded bait-space grows deeper forever as finite pressure arrives; the visible background is that bait-space itself.**
+Compression: **Own the provider evidence before interpretation: the old 404 archive is exactly what its filtered query returned; provider-raw means the entire accessible raw HTTP-event surface with no semantic traffic filter, held privately. Then interpretation may grow Baits, Crawlers and timelines without asking Cloudflare to remember our past for us.**
