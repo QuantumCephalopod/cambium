@@ -138,9 +138,9 @@ def main():
         check(isinstance(fingerprint,str) and len(fingerprint)==16,f'missing identity-key fingerprint in {capture.name}')
         identity_fingerprints.add(fingerprint)
         if 'clientIP' in (value.get('advertised_fields') or []):
-            for index,record in enumerate(records):
-                check('clientIP' not in record,f'literal clientIP persisted in {capture.name} record {index}')
-                check('clientIPIdentity' in record,f'clientIPIdentity missing in {capture.name} record {index}')
+            for record_index,record in enumerate(records):
+                check('clientIP' not in record,f'literal clientIP persisted in {capture.name} record {record_index}')
+                check('clientIPIdentity' in record,f'clientIPIdentity missing in {capture.name} record {record_index}')
         if raw_expected is not None:
             check(window.get('start')==raw_expected,f'Crawlerbait raw traffic gap before {capture.name}')
         raw_expected=window.get('end')
