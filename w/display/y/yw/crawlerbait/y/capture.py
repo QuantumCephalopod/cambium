@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Capture every newly available Cloudflare raw HTTP event into durable public Traces."""
+"""Capture whole Cloudflare HTTP events into public Traces with stable keyed IP identity."""
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import argparse
+import hashlib
+import hmac
+import ipaddress
 import json
 import os
 import urllib.error
@@ -16,6 +19,10 @@ POLICY_PATH = ROOT / "z" / "policy.json"
 CURSOR_PATH = ROOT / "x" / "cursor.json"
 CAPTURE_ROOT = ROOT / "x" / "captures"
 GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
+IDENTITY_SCHEME = "hmac-sha256"
+IDENTITY_DOMAIN = "crawlerbait:clientIP:v1"
+IDENTITY_KEY_EPOCH = "v1"
+IDENTITY_PUBLISHED_FIELD = "clientIPIdentity"
 
 
 def read_json(path: Path):
@@ -37,6 +44,48 @@ def stamp(value: datetime) -> str:
 
 def valid_zone(zone: str) -> bool:
     return len(zone) == 32 and all(c in "0123456789abcdefABCDEF" for c in zone)
+
+
+def identity_key(value: str) -> bytes:
+    raw = value.strip()
+    if len(raw) != 64 or any(ch not in "0123456789abcdefABCDEF" for ch in raw):
+        raise ValueError("CRAWLERBAIT_ID_KEY must be exactly 64 hexadecimal characters (32 random bytes)")
+    return bytes.fromhex(raw)
+
+
+def identity_key_fingerprint(key: bytes) -> str:
+    return hashlib.sha256(key).hexdigest()[:16]
+
+
+def canonical_ip(value) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    try:
+        return ipaddress.ip_address(raw).compressed
+    except ValueError as exc:
+        raise RuntimeError(f"Cloudflare returned an invalid clientIP value: {raw!r}") from exc
+
+
+def client_ip_identity(key: bytes, value) -> str | None:
+    canonical = canonical_ip(value)
+    if not canonical:
+        return None
+    digest = hmac.new(
+        key,
+        (IDENTITY_DOMAIN + "\x00" + canonical).encode("utf-8"),
+        hashlib.sha256,
+    ).hexdigest()
+    return f"ip:{IDENTITY_KEY_EPOCH}:{digest}"
+
+
+def publish_provider_response(provider_response: dict, key: bytes) -> dict:
+    published = json.loads(json.dumps(provider_response))
+    for record in records_from_payload(published):
+        if "clientIP" in record:
+            literal = record.pop("clientIP")
+            record[IDENTITY_PUBLISHED_FIELD] = client_ip_identity(key, literal)
+    return published
 
 
 def graphql(token: str, query: str, variables: dict | None = None) -> dict:
@@ -214,18 +263,34 @@ def capture_filename(start: datetime, end: datetime) -> str:
     return f"{compact(start)}--{compact(end)}.traffic.json"
 
 
-def capture_payload(start: datetime, end: datetime, provider_response: dict, captured_at: datetime,
-                    advertised_fields: list[str], selection: str) -> dict:
+def capture_payload(start: datetime, end: datetime, published_response: dict, captured_at: datetime,
+                    advertised_fields: list[str], selection: str, key_fingerprint: str) -> dict:
+    published_fields = [
+        IDENTITY_PUBLISHED_FIELD if field == "clientIP" else field
+        for field in advertised_fields
+    ]
     return {
-        "version": 3,
+        "version": 4,
         "source": "cloudflare:httpRequestsAdaptive",
         "captured_at": stamp(captured_at),
         "window": {"start": stamp(start), "end": stamp(end)},
         "semantic_filters": [],
         "transport_filter": "datetime range only",
         "advertised_fields": advertised_fields,
+        "published_fields": published_fields,
         "graphql_selection": selection,
-        "provider_response": provider_response,
+        "publication_transform": {
+            "clientIP": {
+                "published_field": IDENTITY_PUBLISHED_FIELD,
+                "scheme": IDENTITY_SCHEME,
+                "domain": IDENTITY_DOMAIN,
+                "key_epoch": IDENTITY_KEY_EPOCH,
+                "key_fingerprint": key_fingerprint,
+                "literal_persisted": False,
+                "equality_preserved_within_key_epoch": True,
+            }
+        },
+        "published_response": published_response,
     }
 
 
@@ -244,19 +309,21 @@ def persist_capture(value: dict) -> tuple[Path, bool]:
 
 
 def freeze_window(token: str, zone: str, start: datetime, end: datetime, limit: int,
-                  fields: list[str], selection: str, captured_at: datetime, write: bool) -> list[dict]:
+                  fields: list[str], selection: str, captured_at: datetime, write: bool,
+                  key: bytes, key_fingerprint: str) -> list[dict]:
     provider = graphql(token, raw_query(zone, start, end, limit, selection))
     records = records_from_payload(provider)
     duration = int((end - start).total_seconds())
     if len(records) >= limit and duration > 1:
         mid = start + timedelta(seconds=max(1, duration // 2))
         return (
-            freeze_window(token, zone, start, mid, limit, fields, selection, captured_at, write)
-            + freeze_window(token, zone, mid, end, limit, fields, selection, captured_at, write)
+            freeze_window(token, zone, start, mid, limit, fields, selection, captured_at, write, key, key_fingerprint)
+            + freeze_window(token, zone, mid, end, limit, fields, selection, captured_at, write, key, key_fingerprint)
         )
     if len(records) >= limit:
         raise RuntimeError("raw provider page remains saturated at one-second resolution")
-    value = capture_payload(start, end, provider, captured_at, fields, selection)
+    published = publish_provider_response(provider, key)
+    value = capture_payload(start, end, published, captured_at, fields, selection, key_fingerprint)
     created = False
     if write:
         _, created = persist_capture(value)
@@ -298,17 +365,41 @@ def self_test():
     types, record_type = dataset_record_type(fake)
     assert resolve_available_field(types, record_type, "nested_score") == ["nested", "score"]
     selection = render_selection(selection_tree([
-        resolve_available_field(types, record_type, f)
-        for f in ("datetime", "clientIP", "nested_score")
+        resolve_available_field(types, record_type, field)
+        for field in ("datetime", "clientIP", "nested_score")
     ]))
     assert "nested { score }" in selection
+
+    key = identity_key("01" * 32)
+    same_a = client_ip_identity(key, "203.0.113.7")
+    same_b = client_ip_identity(key, "203.0.113.7")
+    other = client_ip_identity(key, "203.0.113.8")
+    assert same_a == same_b and same_a != other
+    assert client_ip_identity(key, "2001:0db8::1") == client_ip_identity(key, "2001:db8:0:0:0:0:0:1")
+    assert "203.0.113.7" not in same_a
+
+    provider = {"data": {"viewer": {"zones": [{"records": [{
+        "datetime": "2026-09-18T00:00:01Z",
+        "clientIP": "203.0.113.7",
+        "nested": {"score": 2},
+    }]}]}}}
+    published = publish_provider_response(provider, key)
+    record = records_from_payload(published)[0]
+    assert "clientIP" not in record
+    assert record["clientIPIdentity"] == same_a
+    assert records_from_payload(provider)[0]["clientIP"] == "203.0.113.7"
+
     t0 = datetime(2026, 9, 18, 0, 0, tzinfo=timezone.utc)
-    payload = {"data": {"viewer": {"zones": [{"records": []}]}}}
-    cap = capture_payload(t0, t0 + timedelta(hours=1), payload, t0, ["datetime"], "datetime")
+    cap = capture_payload(
+        t0, t0 + timedelta(hours=1), published, t0,
+        ["datetime", "clientIP", "nested_score"], selection, identity_key_fingerprint(key),
+    )
     assert cap["semantic_filters"] == []
-    assert records_from_payload(payload) == []
-    assert capture_filename(t0, t0 + timedelta(hours=1)).endswith(".traffic.json")
-    print("PASS · capture asks for every provider-advertised raw HTTP field with time bounds only")
+    assert cap["version"] == 4
+    assert cap["publication_transform"]["clientIP"]["literal_persisted"] is False
+    assert "clientIPIdentity" in cap["published_fields"]
+    assert "clientIP" not in records_from_payload(cap["published_response"])[0]
+    print("PASS · whole provider events persist publicly with stable HMAC network identity and no literal clientIP")
 
 
 def main():
@@ -323,11 +414,25 @@ def main():
 
     token = os.environ.get("CLOUDFLARE_ANALYTICS_TOKEN", "").strip()
     zone = os.environ.get("CLOUDFLARE_ZONE_TAG", "").strip()
-    if not token or not zone:
-        raise SystemExit("crawlerbait capture is unarmed: CLOUDFLARE_ANALYTICS_TOKEN and CLOUDFLARE_ZONE_TAG are required")
+    identity_secret = os.environ.get("CRAWLERBAIT_ID_KEY", "").strip()
+    if not token or not zone or not identity_secret:
+        raise SystemExit(
+            "crawlerbait capture is unarmed: CLOUDFLARE_ANALYTICS_TOKEN, "
+            "CLOUDFLARE_ZONE_TAG and CRAWLERBAIT_ID_KEY are required"
+        )
+    try:
+        key = identity_key(identity_secret)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
+    key_fingerprint = identity_key_fingerprint(key)
 
     policy = read_json(POLICY_PATH)
     cursor = read_json(CURSOR_PATH)
+    previous_identity = (cursor.get("identity") or {}).get("key_fingerprint")
+    if previous_identity and previous_identity != key_fingerprint:
+        raise SystemExit(
+            "CRAWLERBAIT_ID_KEY changed while key_epoch is still v1; refusing to sever longitudinal identity"
+        )
     now = parse_time(args.now) if args.now else datetime.now(timezone.utc)
 
     settings_payload = graphql(token, SETTINGS_QUERY, {"zoneTag": zone})
@@ -366,7 +471,12 @@ def main():
     pointer = start
     while pointer < end:
         stop = min(end, pointer + timedelta(seconds=width_seconds))
-        leaves.extend(freeze_window(token, zone, pointer, stop, limit, fields, selection, acquisition_now, args.write))
+        leaves.extend(
+            freeze_window(
+                token, zone, pointer, stop, limit, fields, selection,
+                acquisition_now, args.write, key, key_fingerprint,
+            )
+        )
         pointer = stop
 
     if args.write:
@@ -377,6 +487,15 @@ def main():
             "legacy_404_last_capture_end": cursor.get("legacy_404_last_capture_end")
                 or cursor.get("last_capture_end"),
             "provider_available_fields": fields,
+            "identity": {
+                "clientIP": {
+                    "published_field": IDENTITY_PUBLISHED_FIELD,
+                    "scheme": IDENTITY_SCHEME,
+                    "domain": IDENTITY_DOMAIN,
+                    "key_epoch": IDENTITY_KEY_EPOCH,
+                    "key_fingerprint": key_fingerprint,
+                }
+            },
             "provider_limits": {
                 "maxDuration": int(cfg["maxDuration"]),
                 "maxNumberOfFields": max_fields,
