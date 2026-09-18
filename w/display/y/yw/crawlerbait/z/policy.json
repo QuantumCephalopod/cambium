@@ -1,6 +1,13 @@
 {
-  "version": 2,
+  "version": 4,
   "settle_delay_minutes": 10,
   "max_window_hours": 24,
-  "query_limit": 5000
+  "client_ip_identity": {
+    "scheme": "hmac-sha256",
+    "domain": "crawlerbait:clientIP:v1",
+    "key_epoch": "v1",
+    "published_field": "clientIPIdentity",
+    "literal_ip_persisted": false,
+    "equality_preserved_within_key_epoch": true
+  }
 }

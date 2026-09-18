@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
-description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve a same-type bait population, durable captured traces, a bounded passive membrane and periodic local tide without heuristic ecological filtering or repeated provider-history fetches."
-version: "4.2"
+description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve public whole-web-traffic traces, a same-type bait population, stable traffic beings, and periodic field-complete acquisition without semantic filtering."
+version: "4.4"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -14,142 +14,164 @@ Global placement is environment:
 
 Its current root constitution is:
 
-- `w · Baits / CREATE` — durable same-type crawlerbait bodies;
-- `x · Traces / COPY` — durable captured provider evidence plus derived longitudinal trace state;
-- `z · Membrane / CONTROL` — sensing/public/credential boundary;
-- `y · Tide / CULTIVATE` — periodic acquisition of only new pressure and local downstream regrowth.
+- `w · Baits / CREATE` — durable same-type path bodies in unbounded bait-space;
+- `x · Traces / COPY` — durable public whole-web-traffic evidence plus replayable derived state;
+- `z · Membrane / CONTROL` — public embodiment and the narrow capture-time secret boundary;
+- `y · Tide / CULTIVATE` — periodic acquisition of every new HTTP event/field the provider exposes.
 
 `INDEX.yaml` names these four current vertex wholes and root `_cambium.yaml` carries their exact `4V / 6E / 4F / 1T` closure.
 
-## w · Baits — same-type population membrane
+## w · Baits — path identity in unbounded same-type space
 
-`w` is exclusively the Bait population.
-
-Crossing the vertex restarts a separate same-type geometric address space:
+Crossing `w` restarts a separate same-type geometric address space:
 
 `crawlerbait:w ⟦ bait-space:ε ⟧`
 
-A bait at local bait-space address `<a>` is carried at:
+A bait at local address `<a>` is carried at:
 
 `crawlerbait/w/w<a>/bait.json`
 
-The outer `w` is the Crawlerbait CREATE vertex and is stripped at the bait-space membrane. One exact raw bait-space address may contain one bait. Bait identity is the observed HTTP path, not its current bait-space placement. Placement is deterministic nonsemantic geometry derived from stable path identity; address collisions differentiate deeper until exact occupancy is unique.
+Bait identity is the observed HTTP path, never the folder address. Exact raw addresses exclude pile-up; collisions differentiate deeper. The deterministic address stream has no terminal configured depth. Its first 128 quaternary characters remain byte-for-byte compatible with the original SHA-256 carrier; later deterministic blocks extend only when deeper distinction is required.
 
-The address stream has **no terminal configured depth**. Its first 128 quaternary characters preserve the original SHA-256-derived carrier exactly; if pressure ever exhausts that prefix, additional deterministic hash blocks extend the same identity stream without moving any already-distinguished shallower bait. At every finite population size there remain deeper unoccupied addresses, so growth never closes bait-space by capacity.
+At every finite population size deeper unoccupied addresses remain. New traffic can therefore keep differentiating bait-space without a capacity ceiling.
 
-Each bait locus contains only its `bait.json` body. Renderer, stylesheet, public secretion, acquisition and tide machinery do not belong in `w`.
+## x · Traces — glasshouse whole-web-traffic record
 
-## x · Traces — provider evidence becomes owned memory
+Cloudflare is a sensor. Crawlerbait owns the observations it has captured.
 
-Cloudflare is a sensor, not Crawlerbait's memory.
+The canonical live source is:
 
-`x` separates three distinct trace roles:
+`cloudflare:httpRequestsAdaptive`
 
-- `checkpoint.json` — the one migration baseline containing all already-assimilated history that had been fetched before immutable raw capture storage existed;
-- `captures/*.json` — immutable **filtered 404 aggregate** provider windows captured after that baseline for the existing bait-metabolism pipeline, including empty windows so coverage itself is explicit evidence;
-- `state.json` — derived current longitudinal aggregate used by Baits and Membrane; it may be regenerated locally from checkpoint + captures.
+Every live capture requests every field Cloudflare advertises to this zone/token at that moment. The query uses only provider-required datetime bounds; Crawlerbait adds no status, source, path, User-Agent, bot, relevance, human/bot or identity filter.
 
-`x/cursor.json` records only the end of provider time already captured. Acquisition begins exactly there and never intentionally re-queries older windows merely because downstream processing changes.
+Before public persistence, exactly one provider field crosses a stable keyed identity transform:
 
-The migration checkpoint is deliberately honest: the earlier full-history fetch was already metabolized before raw-window persistence existed, so its exact pre-aggregation response cannot be reconstructed without wastefully asking the provider again. We preserve that already-owned aggregate as the fixed baseline and capture raw windows from that point forward. Do not refetch old provider history solely to make the past look more raw.
+`clientIP → clientIPIdentity = HMAC-SHA256(K_v1, "crawlerbait:clientIP:v1\0" + canonical(clientIP))`
 
-There is no relevance filter, recurrence threshold, ranking, shortlist or route/signature budget inside the existing 404 bait-metabolism stream. User-Agent strings remain client claims, not authenticated identities. That legacy stream intentionally contains only the fields its old query asked for and **must not be called provider-raw evidence**.
+where `K_v1` is the persistent GitHub Actions secret `CRAWLERBAIT_ID_KEY`.
 
-The bait body and trace memory are related but not identical:
-- `w` answers *what bait exists and where it lives in bait-space*;
-- `x` answers *what evidence Crawlerbait already owns and what current trace state follows from it*.
+The transform law is intentionally narrow:
+- the literal `clientIP` exists only inside the capture runner long enough to compute the identity and is not persisted;
+- equal canonical IPs under the same key epoch produce exactly equal `clientIPIdentity` values, including months later;
+- different IPs are not intentionally coalesced;
+- the transform is one-way HMAC, not reversible encryption;
+- every other captured provider field — datetime, path, query, User-Agent, session hash, ASN, country, device, status, security/bot metadata and any future provider-advertised field — remains public as captured;
+- a key fingerprint is persisted so accidental secret rotation can be detected without exposing the key;
+- changing the secret while remaining in key epoch `v1` is a continuity error and capture must stop rather than silently remint all beings.
 
-## z · Membrane — bounded sensing and outward embodiment
+The resulting `x/captures/*.traffic.json` files are ordinary public project tissue. They are field-complete provider events **except for this explicit deterministic IP representation**. The membrane links them from `/crawlerbait/traffic.json`.
 
-`z` owns the site-holon membrane implementation:
-- `policy.json` — capture-window mechanics only;
-- `projection.json` — derived Display-facing view;
-- `render.js` / `style.css` — Crawlerbait phenomenology;
-- `public/` — generated crawler-facing static secretion.
+`x/cursor.json` records the end of provider time already owned plus the identity-key fingerprint. If the canonical cursor is still uninitialized, the next tide begins at the live provider retention boundary and freezes everything still available before switching to incremental acquisition.
 
-Crawlerbait never writes public bait pages at global root paths such as `/login` or `/papers`. Every outward route remains under `/crawlerbait/*`.
+Older material is preserved truthfully but is not extended:
+- `checkpoint.json`, `*.capture.json`, and `retained-bootstrap/` are historical filtered 404 aggregate evidence;
+- their counts remain distinct as `legacy_404_observations`;
+- they are never presented as whole-web-traffic and never added to canonical request counts.
 
-Observed path is evidence. Public representation is a separate membrane consequence. When an observed path can be mirrored as ordinary static components, the public receipt uses `/crawlerbait/bait/<observed-shape>/`; otherwise it uses `/crawlerbait/receipt/<stable-id>/`. Representation differences never erase observation.
+`x/state.json` is derived and replayable. Public traffic captures are source evidence; state is current metabolism.
 
-## y · Tide — acquire once, metabolize locally forever
+## traffic beings — stable relation without literal IP publication
 
-`y/capture.py` performs provider acquisition. It queries only the interval after `x/cursor.json`, partitions a missed interval into bounded windows, and appends one immutable capture file per queried window. It never mutates Baits or Membrane.
+Crawlerbait does not require request order to create a moving being.
 
-`y/tide.py` performs ordinary downstream metabolism. It reads already-captured local windows, advances `x/state.json`, and regenerates `w · Baits` plus `z · Membrane`. It performs zero provider calls.
+For the current public trace surface:
+- one stable **network identity** is `clientIPIdentity`;
+- one current **traffic being** is the exact tuple `clientIPIdentity + userAgent`;
+- its Crawlerbait being ID is a deterministic hash of that tuple.
 
-`y/replay.py` rebuilds downstream state entirely from the fixed local checkpoint plus immutable captures. It is the normal response to a later processing/addressing/rendering-law change. Replay performs zero provider calls.
+The HMAC key is needed only when fresh provider events cross the capture membrane. Historical public events already carry the stable network identity, so later metabolism/replay compares those tokens directly and never needs to decrypt or recover an IP.
 
-Canonical motion is therefore two explicit edges:
+Every canonical event is an encounter between:
+- one traffic being;
+- one bait/path;
+- one time.
 
-`Cloudflare NEW window → x/captures + x/cursor`
+Within any chosen time window, the being's available body/territory is the set of baits it touched inside that window. No historical A→B→C traversal is invented.
+
+The derived state preserves:
+- Baits;
+- stable traffic beings;
+- time-stamped being↔bait encounters;
+- direct source-file/index witnesses back to the exact public capture record;
+- provider fields needed for later alternative readings without deciding in advance which patterns matter.
+
+## z · Membrane — public means public
+
+Crawlerbait exists to make web traffic publicly encounterable.
+
+The membrane publishes:
+- `/crawlerbait/state.json` — current Baits, traffic beings and encounter relation;
+- `/crawlerbait/traffic.json` — manifest linking the exact public capture files and declaring the IP transform;
+- path/receipt pages under `/crawlerbait/*`;
+- the Display projection/renderer that visualizes the same living body.
+
+There is no private raw-data branch, encrypted archive physiology or privacy-safe derivative ontology inside Crawlerbait. The narrow secret boundary exists only so literal IP can become a stable longitudinal public identity before persistence.
+
+Two secrets remain non-public because they authorize/define future capture:
+- Cloudflare acquisition credentials;
+- `CRAWLERBAIT_ID_KEY`.
+
+Captured observations themselves are public. Query strings and other attacker-controlled request material remain part of the observed public trace rather than being silently truncated or sanitized by a hidden relevance policy.
+
+Observed HTTP paths never become canonical folder taxonomy. They remain bait identity fields whose bodies inhabit tetrahedral address-space.
+
+## y · Tide — one physiology, one data law
+
+`y/capture.py` performs the only recurring provider acquisition.
+
+Each run:
+1. reacquires Cloudflare's live `httpRequestsAdaptive` settings and available fields;
+2. resolves all advertised fields against the live GraphQL schema;
+3. reacquires the stable `CRAWLERBAIT_ID_KEY` from GitHub Actions;
+4. refuses to continue if its key fingerprint would silently break the current identity epoch;
+5. captures only not-yet-owned provider time;
+6. replaces literal `clientIP` with stable `clientIPIdentity` before any capture file is written;
+7. preserves every other returned event/field with no semantic filter;
+8. recursively subdivides saturated provider windows rather than accepting page truncation;
+9. writes public captures and cursor before downstream metabolism.
+
+`y/tide.py` performs zero provider calls and needs no identity secret. It rebuilds current Baits, traffic beings, encounters and public membrane from owned local evidence.
+
+`y/replay.py` likewise performs zero provider calls and proves the same body can be regenerated entirely from local Traces.
+
+Canonical motion:
+
+`Cloudflare NEW whole event → capture-time HMAC(clientIP) → x/captures/*.traffic.json + x/cursor`
 
 then
 
-`local Traces → x/state → w Baits → z Membrane`
+`owned public Traces → x/state → w Baits + traffic beings/encounters → z public Membrane`
 
-The capture edge is persisted before downstream metabolism. If downstream processing fails, already-captured provider evidence remains durable and the next tide can retry locally without requesting the same window again.
-
-### retained 404 aggregate freeze — historical evidence, not provider-raw
-
-The sealed `x/retained-bootstrap/` archive is retained permanently, but its meaning is narrower than previously named. It preserves every byte returned by one historical **filtered analytics query**:
-
-`httpRequestsAdaptiveGroups · requestSource=eyeball · status=404 · groupBy(path,userAgent)`.
-
-That archive is valuable immutable evidence of the bait stream, but it is **not** “all Cloudflare raw data” and must never again be described that way. The completeness claim applies only to the responses of that exact query over the retained interval that existed when it was sealed.
-
-### one-time provider-raw repair — complete accessible HTTP-event surface
-
-While provider retention still contains data that was omitted by the earlier narrow query, Crawlerbait opens one bounded repair aperture: `y/provider_raw_once.py` plus the `crawlerbait provider-raw freeze ONCE` workflow.
-
-For this repair, **provider-raw** means:
-
-> every raw HTTP-request field and event surface Cloudflare exposes to this exact zone/token/plan within its still-retained history, with no Crawlerbait relevance/status/source/path/UA filter.
-
-The repair must:
-- snapshot GraphQL schema discovery and the live `httpRequestsAdaptive` Settings node before acquisition;
-- request every field named by provider `availableFields`, respecting only provider `maxNumberOfFields`, `maxPageSize`, `maxDuration` and `notOlderThan`;
-- query `httpRequestsAdaptive` with **time bounds only** and recursively split saturated time windows rather than accepting silent page truncation;
-- probe Logpull, Log Explorer and Logpush HTTP-request field surfaces and preserve those provider responses as evidence of what this token/plan did or did not expose;
-- when Logpull is available, request **all listed fields**, no `count`, no `sample`, and only transport time-window parameters;
-- preserve provider responses verbatim. Field slicing caused by a provider field-count limit is transport partitioning, not semantic selection;
-- record all provider/plan/sampling/retention limits explicitly in the archive manifest;
-- fail rather than claim completeness if a one-second GraphQL window still saturates the provider page ceiling.
-
-True raw HTTP evidence may contain client IPs, query strings, TLS/security fingerprints or other sensitive material. Therefore its plaintext **must never enter this public Git repository or public membrane**. The one-time runner encrypts the complete private archive before artifact custody; the decryption private key is held separately in private Drive custody. Only privacy-safe derived organism projections may later return to the public body.
-
-The old 404 checkpoint/captures/retained-bootstrap remain valid evidence for the already-grown bait physiology. Provider-raw repair augments source custody; it does not retroactively rename or discard those earlier tissues.
-
-Ordinary crawler reads remain static CDN/Pages traffic and invoke no Worker merely to announce presence.
+The scheduled tide runs every six hours. A change to capture/metabolism law also earns one immediate main-branch tide so the body need not wait for the next clock edge.
 
 ## address-space invariants
 
-The same-type population law is intentionally the same family of relation used by Display Population:
 - occupant identity is independent of address;
 - exact raw addresses exclude pile-up;
-- pressure differentiates a colliding address deeper rather than inventing a named bucket;
-- address is geometric genealogy, not a category label;
-- projection/visualization reads the actual address tree instead of reconstructing synthetic point placement;
-- Crawlerbait's background field is the bait-space itself, rooted at `crawlerbait:w ⟦ bait-space:ε ⟧`; Traces, Membrane and Tide remain organism anatomy but do not occupy that local visualization field.
-
-This is why `/login`, `/.env`, `/wp-json`, etc. are never directory taxonomy inside the canonical body. They remain bait identity fields in `bait.json`; the physical tree is recursive bait-space.
+- pressure differentiates colliding addresses deeper;
+- address is geometric genealogy, not category;
+- the visible background is the bait-space itself;
+- Traces, Membrane and Tide remain sibling organism anatomy, not fake background vertices;
+- traffic beings are not Baits: Baits are loci; beings are recurring observed identities whose encounters span loci through time.
 
 ## closure
 
 A Crawlerbait change closes only when:
 1. root `w/x/z/y` still realize Baits / Traces / Membrane / Tide and root `4V/6E/4F/1T` remains closed;
 2. `w` contains only addressed bait bodies;
-3. the sealed `x/retained-bootstrap` is named truthfully as a complete freeze of its old filtered 404 aggregate query, not as provider-raw HTTP history;
-4. while the repair aperture is active, every raw HTTP-request field/event surface exposed to this zone/token is discovered and frozen without semantic traffic filters before retained history expires;
-5. provider-raw plaintext never enters the public repository or membrane; private evidence is encrypted before external artifact custody and its private key remains separate;
-6. provider windows captured during normal operation are durable local evidence and are never re-requested because downstream law changed;
-7. `x/state.json` remains explicitly derived from owned local memory;
-8. capture persists new filtered bait-stream windows/cursor before downstream metabolism can fail;
-9. `z` alone carries public/static/renderer membrane tissue plus the provider-raw **public** encryption key; no private key or plaintext raw event archive may enter the tree;
-10. Cloudflare credentials never enter repository/public bytes;
-11. ordinary crawler reads remain static;
-12. bait identity survives bait-space relocation/deepening;
-13. the bait-space address carrier has no terminal configured depth and preserves all existing prefixes while extending deeper on demand;
-14. the local background visualizes only bait-space anatomy, never the sibling Traces/Membrane/Tide vertices;
-15. exact build/address/tetrahedral/provider-raw/capture/replay/public witnesses pass.
+3. future acquisition uses `httpRequestsAdaptive` and every provider-advertised field with datetime bounds only;
+4. literal `clientIP` never persists, while stable `clientIPIdentity` preserves equality across time under the same v1 secret;
+5. accidental HMAC-key rotation is detected and refused rather than silently breaking longitudinal identity;
+6. every non-IP provider field remains public and untruncated by Crawlerbait semantics;
+7. public provider windows persist before downstream metabolism;
+8. historical 404 evidence remains explicitly separate and is never extended;
+9. `x/state.json` is replayable from owned public Traces without provider access or the HMAC key;
+10. traffic-being identity is `clientIPIdentity + userAgent`, with no invented traversal order;
+11. the public membrane exposes current state plus direct access to the public capture files and their transform declaration;
+12. provider credentials and `CRAWLERBAIT_ID_KEY` never enter repository/public bytes;
+13. bait identity survives address deepening;
+14. bait-space retains no terminal configured depth;
+15. exact build/address/tetrahedral/capture/replay/public witnesses pass.
 
-Compression: **Own the provider evidence before interpretation: the old 404 archive is exactly what its filtered query returned; provider-raw means the entire accessible raw HTTP-event surface with no semantic traffic filter, held privately. Then interpretation may grow Baits, Crawlers and timelines without asking Cloudflare to remember our past for us.**
+Compression: **All web traffic becomes public living matter. Literal IP crosses one stable keyed membrane into a durable equality-preserving network identity; everything else remains glasshouse-visible, and the same Tide keeps that relation alive across time.**
