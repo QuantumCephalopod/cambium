@@ -170,26 +170,43 @@ def schema_types(introspection_body: dict) -> dict[str, dict]:
 
 
 def dataset_record_type(introspection_body: dict, dataset: str) -> tuple[dict[str, dict], str]:
+    """Resolve the dataset type through the actual viewer -> zones query path.
+
+    Cloudflare exposes similarly named datasets under multiple parents (for
+    example account and zone). Searching the whole schema by field name is
+    ambiguous; the acquisition query is explicitly viewer.zones(...), so the
+    schema witness must follow that same path.
+    """
     types = schema_types(introspection_body)
-    matches = []
-    for type_name, type_def in types.items():
-        for field in type_def.get("fields") or []:
-            if field.get("name") != dataset:
-                continue
-            # The Settings type also has a field named after the dataset. The
-            # queryable zone dataset is the one carrying transport arguments.
-            arg_names = {arg.get("name") for arg in (field.get("args") or [])}
-            if not ({"filter", "limit"} & arg_names):
-                continue
-            result_type = named_type(field.get("type"))
-            if result_type:
-                matches.append((type_name, result_type))
-    result_types = sorted({result for _, result in matches})
-    if len(result_types) != 1:
-        raise RuntimeError(
-            f"could not resolve one GraphQL record type for {dataset}: {matches}"
-        )
-    return types, result_types[0]
+    query_name = introspection_body.get("data", {}).get("__schema", {}).get("queryType", {}).get("name")
+    if not query_name:
+        raise RuntimeError("GraphQL introspection omitted queryType")
+
+    query = type_fields(types, query_name)
+    viewer_field = query.get("viewer")
+    if not viewer_field:
+        raise RuntimeError(f"GraphQL query type {query_name} has no viewer field")
+    viewer_type = named_type(viewer_field.get("type"))
+    if not viewer_type:
+        raise RuntimeError("could not resolve viewer GraphQL type")
+
+    viewer = type_fields(types, viewer_type)
+    zones_field = viewer.get("zones")
+    if not zones_field:
+        raise RuntimeError(f"GraphQL viewer type {viewer_type} has no zones field")
+    zone_type = named_type(zones_field.get("type"))
+    if not zone_type:
+        raise RuntimeError("could not resolve zone GraphQL type")
+
+    zone = type_fields(types, zone_type)
+    dataset_field = zone.get(dataset)
+    if not dataset_field:
+        raise RuntimeError(f"GraphQL zone type {zone_type} has no {dataset} field")
+    record_type = named_type(dataset_field.get("type"))
+    if not record_type:
+        raise RuntimeError(f"could not resolve record type for zone.{dataset}")
+
+    return types, record_type
 
 
 def type_fields(types: dict[str, dict], type_name: str) -> dict[str, dict]:
@@ -433,10 +450,19 @@ def self_test() -> None:
     slices = field_slices(fields, 4)
     assert slices == [["datetime", "rayName", "a", "b"], ["datetime", "rayName", "c", "d"]]
     fake_schema = {
-        "data": {"__schema": {"types": [
+        "data": {"__schema": {
+            "queryType": {"name": "Query"},
+            "types": [
+            {"name": "Query", "fields": [{"name": "viewer", "args": [], "type": {"kind": "OBJECT", "name": "Viewer"}}]},
+            {"name": "Viewer", "fields": [
+                {"name": "zones", "args": [{"name": "filter"}], "type": {"kind": "LIST", "ofType": {"kind": "OBJECT", "name": "Zone"}}},
+                {"name": "accounts", "args": [{"name": "filter"}], "type": {"kind": "LIST", "ofType": {"kind": "OBJECT", "name": "Account"}}}
+            ]},
             {"name": "Zone", "fields": [{"name": "httpRequestsAdaptive", "args": [{"name": "filter"}, {"name": "limit"}], "type": {"kind": "LIST", "ofType": {"kind": "OBJECT", "name": "Request"}}}]},
+            {"name": "Account", "fields": [{"name": "httpRequestsAdaptive", "args": [{"name": "filter"}, {"name": "limit"}], "type": {"kind": "LIST", "ofType": {"kind": "OBJECT", "name": "AccountRequest"}}}]},
             {"name": "ZoneSettings", "fields": [{"name": "httpRequestsAdaptive", "args": [], "type": {"kind": "OBJECT", "name": "Settings"}}]},
             {"name": "Settings", "fields": [{"name": "availableFields", "args": [], "type": {"kind": "LIST", "ofType": {"kind": "SCALAR", "name": "String"}}}]},
+            {"name": "AccountRequest", "fields": [{"name": "accountOnly", "type": {"kind": "SCALAR", "name": "String"}}]},
             {"name": "Request", "fields": [
                 {"name": "datetime", "type": {"kind": "SCALAR", "name": "DateTime"}},
                 {"name": "clientIP", "type": {"kind": "SCALAR", "name": "String"}},
