@@ -74,6 +74,10 @@ def main():
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
     check((crawler/'y'/'tide.py').is_file(),'Crawlerbait local tide missing')
     check((crawler/'y'/'replay.py').is_file(),'Crawlerbait local replay missing')
+    check((crawler/'y'/'provider_raw_once.py').is_file(),'Crawlerbait provider-raw repair aperture missing')
+    check((crawler/'z'/'provider-raw-public.pem').is_file(),'Crawlerbait provider-raw public custody key missing')
+    check(not (crawler/'x'/'provider-raw').exists(),'private provider-raw plaintext leaked into public Traces')
+    check(not (ROOT/'_private').exists(),'private provider-raw plaintext leaked into repository root')
     check(not (crawler/'y'/'backfill.py').exists(),'Crawlerbait historical backfill remains active physiology')
     check((crawler/'z'/'public'/'crawlerbait'/'index.html').is_file(),'Crawlerbait membrane public reef missing')
 
@@ -183,6 +187,7 @@ def main():
     result=subprocess.run(['python3',str(crawler/'y'/'capture.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait capture self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'replay.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait replay self-test failed')
+    result=subprocess.run(['python3',str(crawler/'y'/'provider_raw_once.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait provider-raw self-test failed')
     result=subprocess.run(['node',str(crawler/'z'/'render.test.cjs')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait visualization witness failed')
 
     print(json.dumps({
