@@ -1,25 +1,29 @@
 {
   "bait_address": "zxxywx",
-  "first_observed_window": {
-    "end": "2026-09-14T22:09:07Z",
-    "start": "2026-09-13T22:09:07Z"
-  },
-  "id": "971e61c28ff9d3ddfc07",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-14T22:09:07Z",
-  "observed_404": 4,
-  "observed_path": "/backup.zip",
-  "public_href": "/crawlerbait/bait/backup.zip/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Go-http-client/1.1",
-      "id": "12bd583dd25b868e",
-      "observed_404": 4
+      "events": 1,
+      "id": "0104e73d30bc89711a380790"
+    },
+    {
+      "events": 1,
+      "id": "36fd8a32fdc9c57868031f76"
+    },
+    {
+      "events": 1,
+      "id": "4d88f626bf238bd9d8028449"
+    },
+    {
+      "events": 1,
+      "id": "c64d8808da7a3a90132f0c79"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-13T22:09:07Z",
+  "id": "971e61c28ff9d3ddfc07",
+  "last_seen": "2026-09-17T20:47:01Z",
+  "legacy_404_observations": 4,
+  "observed_path": "/backup.zip",
+  "public_href": "/crawlerbait/bait/backup.zip/",
+  "raw_requests": 4,
+  "version": 2
 }

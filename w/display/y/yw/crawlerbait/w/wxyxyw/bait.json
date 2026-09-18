@@ -1,25 +1,17 @@
 {
   "bait_address": "xyxyw",
-  "first_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "id": "771d685fb399c1ad5b5d",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-18T11:13:56Z",
-  "observed_404": 1,
-  "observed_path": "/env.dev.js",
-  "public_href": "/crawlerbait/bait/env.dev.js/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "069245a268913b99",
-      "observed_404": 1
+      "events": 2,
+      "id": "f4e6f9376e16550bf32aaa47"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-18T04:40:48Z",
+  "id": "771d685fb399c1ad5b5d",
+  "last_seen": "2026-09-18T14:35:07Z",
+  "legacy_404_observations": 1,
+  "observed_path": "/env.dev.js",
+  "public_href": "/crawlerbait/bait/env.dev.js/",
+  "raw_requests": 2,
+  "version": 2
 }

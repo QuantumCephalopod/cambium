@@ -1,25 +1,21 @@
 {
   "bait_address": "zwzzw",
-  "first_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "id": "8a0b1852fc2be645a82e",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-16T22:09:07Z",
-  "observed_404": 8,
-  "observed_path": "/appsettings.json",
-  "public_href": "/crawlerbait/bait/appsettings.json/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (compatible; DeepSeekBot/1.0; +https://www.deepseek.com/bot)",
-      "id": "37f8b8b52d72d4d7",
-      "observed_404": 8
+      "events": 1,
+      "id": "1a3e38f4a76b50490c8ff869"
+    },
+    {
+      "events": 1,
+      "id": "f14e75e42309aafb16152c79"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-15T22:09:07Z",
+  "id": "8a0b1852fc2be645a82e",
+  "last_seen": "2026-09-18T14:34:39Z",
+  "legacy_404_observations": 8,
+  "observed_path": "/appsettings.json",
+  "public_href": "/crawlerbait/bait/appsettings.json/",
+  "raw_requests": 2,
+  "version": 2
 }

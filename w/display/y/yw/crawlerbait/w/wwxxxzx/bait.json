@@ -1,25 +1,17 @@
 {
   "bait_address": "wxxxzx",
-  "first_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "id": "159468828cf8cc39637c",
-  "last_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "materialized_at": "2026-09-16T22:09:07Z",
-  "observed_404": 1,
-  "observed_path": "/service_account.json",
-  "public_href": "/crawlerbait/bait/service_account.json/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (compatible; DeepSeekBot/1.0; +https://www.deepseek.com/bot)",
-      "id": "37f8b8b52d72d4d7",
-      "observed_404": 1
+      "events": 1,
+      "id": "f14e75e42309aafb16152c79"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-15T22:09:07Z",
+  "id": "159468828cf8cc39637c",
+  "last_seen": "2026-09-16T22:09:07Z",
+  "legacy_404_observations": 1,
+  "observed_path": "/service_account.json",
+  "public_href": "/crawlerbait/bait/service_account.json/",
+  "raw_requests": 1,
+  "version": 2
 }

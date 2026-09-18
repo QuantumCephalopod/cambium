@@ -1,35 +1,29 @@
 {
   "bait_address": "yyyyyw",
-  "first_observed_window": {
-    "end": "2026-09-14T22:09:07Z",
-    "start": "2026-09-13T22:09:07Z"
-  },
-  "id": "ffca204a36d2cb84d6c4",
-  "last_observed_window": {
-    "end": "2026-09-14T22:09:07Z",
-    "start": "2026-09-13T22:09:07Z"
-  },
-  "materialized_at": "2026-09-14T22:09:07Z",
-  "observed_404": 4,
-  "observed_path": "/cart.js",
-  "public_href": "/crawlerbait/bait/cart.js/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:141.0) Gecko/20100101 Firefox/141.0",
-      "id": "d6126ba58bb36722",
-      "observed_404": 2
+      "events": 1,
+      "id": "47398ac85194408f7c62311f"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-      "id": "9559d1e35f81d505",
-      "observed_404": 1
+      "events": 1,
+      "id": "497cbe896f6b67c757b9b76c"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0",
-      "id": "e240edd2834ba034",
-      "observed_404": 1
+      "events": 1,
+      "id": "56b50dcbb75cc3bdc73ee105"
+    },
+    {
+      "events": 1,
+      "id": "e9c47c4955aaccab912e6823"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-13T22:09:07Z",
+  "id": "ffca204a36d2cb84d6c4",
+  "last_seen": "2026-09-14T22:09:07Z",
+  "legacy_404_observations": 4,
+  "observed_path": "/cart.js",
+  "public_href": "/crawlerbait/bait/cart.js/",
+  "raw_requests": 4,
+  "version": 2
 }

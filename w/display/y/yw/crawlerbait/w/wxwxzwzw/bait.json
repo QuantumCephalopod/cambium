@@ -1,50 +1,41 @@
 {
   "bait_address": "xwxzwzw",
-  "first_observed_window": {
-    "end": "2026-09-13T22:09:07Z",
-    "start": "2026-09-12T22:09:07Z"
-  },
-  "id": "46237bd90c824ac71e08",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-13T22:09:07Z",
-  "observed_404": 22,
-  "observed_path": "/.env.backup",
-  "public_href": "/crawlerbait/receipt/46237bd90c824ac71e08/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
-      "id": "043937ea8abaea32",
-      "observed_404": 8
+      "events": 3,
+      "id": "286270ec09895b1d29f191c9"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "28e19718e8682b7b",
-      "observed_404": 4
+      "events": 2,
+      "id": "86aff9f491f46896f57e08b1"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko, Yokohama Institute of Information Security  https://www.iisec.ac.jp) Chrome/124.0.0.0 Safari/537.36",
-      "id": "e388d5dbd903223c",
-      "observed_404": 4
+      "events": 1,
+      "id": "1a3e38f4a76b50490c8ff869"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "e82f2e5be321b6f9",
-      "observed_404": 4
+      "events": 1,
+      "id": "2ba10259206cfa8421357e62"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "1bcc9eae1df41fe3",
-      "observed_404": 1
+      "events": 1,
+      "id": "2cdd4e4904b032537212a13b"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-      "id": "b44a6c9762bb8aaf",
-      "observed_404": 1
+      "events": 1,
+      "id": "4334098c576d39dad9f41ca1"
+    },
+    {
+      "events": 1,
+      "id": "56a0b2585a235f5f3718785c"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-12T22:09:07Z",
+  "id": "46237bd90c824ac71e08",
+  "last_seen": "2026-09-18T11:13:56Z",
+  "legacy_404_observations": 22,
+  "observed_path": "/.env.backup",
+  "public_href": "/crawlerbait/receipt/46237bd90c824ac71e08/",
+  "raw_requests": 10,
+  "version": 2
 }

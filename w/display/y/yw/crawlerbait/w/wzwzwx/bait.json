@@ -1,25 +1,17 @@
 {
   "bait_address": "zwzwx",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "887cb9244069f23f855e",
-  "last_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 10,
-  "observed_path": "/wordpress/.env",
-  "public_href": "/crawlerbait/receipt/887cb9244069f23f855e/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "e82f2e5be321b6f9",
-      "observed_404": 10
+      "events": 1,
+      "id": "b8e94502f406c555b279bbcc"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "887cb9244069f23f855e",
+  "last_seen": "2026-09-15T22:09:07Z",
+  "legacy_404_observations": 10,
+  "observed_path": "/wordpress/.env",
+  "public_href": "/crawlerbait/receipt/887cb9244069f23f855e/",
+  "raw_requests": 1,
+  "version": 2
 }

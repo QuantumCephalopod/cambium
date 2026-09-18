@@ -1,25 +1,21 @@
 {
   "bait_address": "ywyzzx",
-  "first_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "id": "ce9bc04b9c8e7bd309de",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-18T11:13:56Z",
-  "observed_404": 2,
-  "observed_path": "/service-account-credentials.json",
-  "public_href": "/crawlerbait/bait/service-account-credentials.json/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "552a40ba9aa4108e",
-      "observed_404": 2
+      "events": 1,
+      "id": "e019286b412c9a77014debaf"
+    },
+    {
+      "events": 1,
+      "id": "f4e6f9376e16550bf32aaa47"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-18T04:40:48Z",
+  "id": "ce9bc04b9c8e7bd309de",
+  "last_seen": "2026-09-18T14:35:16Z",
+  "legacy_404_observations": 2,
+  "observed_path": "/service-account-credentials.json",
+  "public_href": "/crawlerbait/bait/service-account-credentials.json/",
+  "raw_requests": 2,
+  "version": 2
 }

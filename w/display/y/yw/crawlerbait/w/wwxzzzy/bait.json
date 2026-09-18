@@ -1,35 +1,37 @@
 {
   "bait_address": "wxzzzy",
-  "first_observed_window": {
-    "end": "2026-09-15T22:09:07Z",
-    "start": "2026-09-14T22:09:07Z"
-  },
-  "id": "1abd330c58113f23df40",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-15T22:09:07Z",
-  "observed_404": 11,
-  "observed_path": "/secrets.json",
-  "public_href": "/crawlerbait/bait/secrets.json/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (compatible; Google-CloudVertexBot; +https://cloud.google.com/vertex-ai-bot)",
-      "id": "bcc5778863bbab1d",
-      "observed_404": 8
+      "events": 1,
+      "id": "0104e73d30bc89711a380790"
     },
     {
-      "claimed_user_agent": "Go-http-client/1.1",
-      "id": "12bd583dd25b868e",
-      "observed_404": 2
+      "events": 1,
+      "id": "36fd8a32fdc9c57868031f76"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "069245a268913b99",
-      "observed_404": 1
+      "events": 1,
+      "id": "c64d8808da7a3a90132f0c79"
+    },
+    {
+      "events": 1,
+      "id": "e019286b412c9a77014debaf"
+    },
+    {
+      "events": 1,
+      "id": "ed67b4e52ea0a45bb9223d4e"
+    },
+    {
+      "events": 1,
+      "id": "f4e6f9376e16550bf32aaa47"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-14T22:09:07Z",
+  "id": "1abd330c58113f23df40",
+  "last_seen": "2026-09-18T14:35:17Z",
+  "legacy_404_observations": 11,
+  "observed_path": "/secrets.json",
+  "public_href": "/crawlerbait/bait/secrets.json/",
+  "raw_requests": 6,
+  "version": 2
 }

@@ -1,70 +1,73 @@
 {
   "bait_address": "zzwyzx",
-  "first_observed_window": {
-    "end": "2026-09-13T22:09:07Z",
-    "start": "2026-09-12T22:09:07Z"
-  },
-  "id": "a397c8c79032c8a19624",
-  "last_observed_window": {
-    "end": "2026-09-18T11:13:56Z",
-    "start": "2026-09-18T04:40:48Z"
-  },
-  "materialized_at": "2026-09-13T22:09:07Z",
-  "observed_404": 15,
-  "observed_path": "/.env.production",
-  "public_href": "/crawlerbait/receipt/a397c8c79032c8a19624/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko, Yokohama Institute of Information Security  https://www.iisec.ac.jp) Chrome/124.0.0.0 Safari/537.36",
-      "id": "e388d5dbd903223c",
-      "observed_404": 4
+      "events": 2,
+      "id": "286270ec09895b1d29f191c9"
     },
     {
-      "claimed_user_agent": "Go-http-client/1.1",
-      "id": "12bd583dd25b868e",
-      "observed_404": 3
+      "events": 1,
+      "id": "0104e73d30bc89711a380790"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-      "id": "069245a268913b99",
-      "observed_404": 1
+      "events": 1,
+      "id": "2ba10259206cfa8421357e62"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
-      "id": "18abf52b73d0b891",
-      "observed_404": 1
+      "events": 1,
+      "id": "36fd8a32fdc9c57868031f76"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "28e19718e8682b7b",
-      "observed_404": 1
+      "events": 1,
+      "id": "3a21700accb87d06fc2ead1e"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0",
-      "id": "3c168cb7ea94874d",
-      "observed_404": 1
+      "events": 1,
+      "id": "4d88f626bf238bd9d8028449"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0",
-      "id": "5e07c5aedf11e3af",
-      "observed_404": 1
+      "events": 1,
+      "id": "5c3d62783b53c82e358ee3b6"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0.1 Safari/605.1.15",
-      "id": "b02ba977fabd2018",
-      "observed_404": 1
+      "events": 1,
+      "id": "61eeb93e79122892e8a98c6e"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-      "id": "b44a6c9762bb8aaf",
-      "observed_404": 1
+      "events": 1,
+      "id": "86aff9f491f46896f57e08b1"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15",
-      "id": "f37d3b53238b181a",
-      "observed_404": 1
+      "events": 1,
+      "id": "c2692de6938b0985e4ab69a7"
+    },
+    {
+      "events": 1,
+      "id": "c64d8808da7a3a90132f0c79"
+    },
+    {
+      "events": 1,
+      "id": "e019286b412c9a77014debaf"
+    },
+    {
+      "events": 1,
+      "id": "f4e19f99714bc3f6185650e9"
+    },
+    {
+      "events": 1,
+      "id": "f4e6f9376e16550bf32aaa47"
+    },
+    {
+      "events": 1,
+      "id": "ff73e9d9462d1630ff2b0afe"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-12T22:09:07Z",
+  "id": "a397c8c79032c8a19624",
+  "last_seen": "2026-09-18T14:34:40Z",
+  "legacy_404_observations": 15,
+  "observed_path": "/.env.production",
+  "public_href": "/crawlerbait/receipt/a397c8c79032c8a19624/",
+  "raw_requests": 16,
+  "version": 2
 }

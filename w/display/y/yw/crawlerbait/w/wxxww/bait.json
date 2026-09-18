@@ -1,25 +1,17 @@
 {
   "bait_address": "xxww",
-  "first_observed_window": {
-    "end": "2026-09-17T21:58:07Z",
-    "start": "2026-09-16T22:09:07Z"
-  },
-  "id": "50cf9b8dd318b0ee2b1c",
-  "last_observed_window": {
-    "end": "2026-09-17T21:58:07Z",
-    "start": "2026-09-16T22:09:07Z"
-  },
-  "materialized_at": "2026-09-17T21:58:07Z",
-  "observed_404": 10,
-  "observed_path": "/terraform/.env",
-  "public_href": "/crawlerbait/receipt/50cf9b8dd318b0ee2b1c/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "id": "28e19718e8682b7b",
-      "observed_404": 10
+      "events": 1,
+      "id": "f4e19f99714bc3f6185650e9"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-16T22:09:07Z",
+  "id": "50cf9b8dd318b0ee2b1c",
+  "last_seen": "2026-09-17T21:58:07Z",
+  "legacy_404_observations": 10,
+  "observed_path": "/terraform/.env",
+  "public_href": "/crawlerbait/receipt/50cf9b8dd318b0ee2b1c/",
+  "raw_requests": 1,
+  "version": 2
 }

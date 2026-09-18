@@ -1,25 +1,17 @@
 {
   "bait_address": "wwwzw",
-  "first_observed_window": {
-    "end": "2026-09-17T21:58:07Z",
-    "start": "2026-09-16T22:09:07Z"
-  },
-  "id": "020085a5fe6aa4186935",
-  "last_observed_window": {
-    "end": "2026-09-17T21:58:07Z",
-    "start": "2026-09-16T22:09:07Z"
-  },
-  "materialized_at": "2026-09-17T21:58:07Z",
-  "observed_404": 1,
-  "observed_path": "/AGENTS.md",
-  "public_href": "/crawlerbait/bait/AGENTS.md/",
-  "sampled": false,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
-      "id": "ccb11ace79735729",
-      "observed_404": 1
+      "events": 1,
+      "id": "1dd33e365692dcbb206dde9f"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-16T22:09:07Z",
+  "id": "020085a5fe6aa4186935",
+  "last_seen": "2026-09-17T21:58:07Z",
+  "legacy_404_observations": 1,
+  "observed_path": "/AGENTS.md",
+  "public_href": "/crawlerbait/bait/AGENTS.md/",
+  "raw_requests": 1,
+  "version": 2
 }

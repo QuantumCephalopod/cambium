@@ -1,35 +1,37 @@
 {
   "bait_address": "yxwzzyzy",
-  "first_observed_window": {
-    "end": "2026-09-13T22:09:07Z",
-    "start": "2026-09-12T22:09:07Z"
-  },
-  "id": "d2bb9a1d734bed71f178",
-  "last_observed_window": {
-    "end": "2026-09-18T04:40:48Z",
-    "start": "2026-09-17T21:58:07Z"
-  },
-  "materialized_at": "2026-09-13T22:09:07Z",
-  "observed_404": 12,
-  "observed_path": "/.git/HEAD",
-  "public_href": "/crawlerbait/receipt/d2bb9a1d734bed71f178/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Go-http-client/1.1",
-      "id": "12bd583dd25b868e",
-      "observed_404": 4
+      "events": 4,
+      "id": "dbf5fa6e9a57a0105c8b4e5d"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-      "id": "63279522febcf553",
-      "observed_404": 4
+      "events": 3,
+      "id": "286270ec09895b1d29f191c9"
     },
     {
-      "claimed_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko, Yokohama Institute of Information Security  https://www.iisec.ac.jp) Chrome/124.0.0.0 Safari/537.36",
-      "id": "e388d5dbd903223c",
-      "observed_404": 4
+      "events": 1,
+      "id": "0104e73d30bc89711a380790"
+    },
+    {
+      "events": 1,
+      "id": "36fd8a32fdc9c57868031f76"
+    },
+    {
+      "events": 1,
+      "id": "4d88f626bf238bd9d8028449"
+    },
+    {
+      "events": 1,
+      "id": "c64d8808da7a3a90132f0c79"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-12T22:09:07Z",
+  "id": "d2bb9a1d734bed71f178",
+  "last_seen": "2026-09-18T04:40:48Z",
+  "legacy_404_observations": 12,
+  "observed_path": "/.git/HEAD",
+  "public_href": "/crawlerbait/receipt/d2bb9a1d734bed71f178/",
+  "raw_requests": 11,
+  "version": 2
 }

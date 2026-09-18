@@ -1,25 +1,25 @@
 {
   "bait_address": "xwzxz",
-  "first_observed_window": {
-    "end": "2026-09-16T22:09:07Z",
-    "start": "2026-09-15T22:09:07Z"
-  },
-  "id": "49827d99afa5309f4c93",
-  "last_observed_window": {
-    "end": "2026-09-18T04:40:48Z",
-    "start": "2026-09-17T21:58:07Z"
-  },
-  "materialized_at": "2026-09-16T22:09:07Z",
-  "observed_404": 25,
-  "observed_path": "/apps/.env",
-  "public_href": "/crawlerbait/receipt/49827d99afa5309f4c93/",
-  "sampled": true,
-  "signatures": [
+  "crawlers": [
     {
-      "claimed_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-      "id": "63279522febcf553",
-      "observed_404": 25
+      "events": 1,
+      "id": "0d0cb5f6916abec3f1d1eb1b"
+    },
+    {
+      "events": 1,
+      "id": "854319a811e948eb6526304a"
+    },
+    {
+      "events": 1,
+      "id": "9caebc8cb7405cb1b57a7cc4"
     }
   ],
-  "version": 1
+  "first_seen": "2026-09-15T22:09:07Z",
+  "id": "49827d99afa5309f4c93",
+  "last_seen": "2026-09-18T08:06:49Z",
+  "legacy_404_observations": 25,
+  "observed_path": "/apps/.env",
+  "public_href": "/crawlerbait/receipt/49827d99afa5309f4c93/",
+  "raw_requests": 3,
+  "version": 2
 }
