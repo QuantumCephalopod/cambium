@@ -105,29 +105,31 @@ def replay_legacy():
     return state
 
 
-# --- canonical raw web-traffic evidence ----------------------------------------------
+# --- canonical public whole-web-traffic evidence -------------------------------------
 
 def raw_capture_paths():
     return sorted(CAPTURE_ROOT.glob("*.traffic.json")) if CAPTURE_ROOT.is_dir() else []
 
 
 def raw_records(value: dict) -> list:
-    if value.get("version") != 3 or value.get("source") != "cloudflare:httpRequestsAdaptive":
-        raise RuntimeError("invalid raw traffic capture")
-    provider = value.get("provider_response") or {}
+    if value.get("version") != 4 or value.get("source") != "cloudflare:httpRequestsAdaptive":
+        raise RuntimeError("invalid public traffic capture")
+    provider = value.get("published_response") or {}
     zones = provider.get("data", {}).get("viewer", {}).get("zones", [])
     if len(zones) != 1 or not isinstance(zones[0].get("records"), list):
-        raise RuntimeError("raw traffic capture has no records payload")
+        raise RuntimeError("public traffic capture has no records payload")
     return zones[0]["records"]
 
 
 def traffic_identity(record: dict) -> dict:
-    ip = str(record.get("clientIP") or "")
+    network = str(record.get("clientIPIdentity") or "")
+    if not network:
+        raise RuntimeError("public traffic event is missing stable clientIPIdentity")
     ua = str(record.get("userAgent") or "")
-    basis = (ip + "\x00" + ua).encode("utf-8", "replace")
+    basis = (network + "\x00" + ua).encode("utf-8", "replace")
     return {
         "id": sha256(basis).hexdigest()[:24],
-        "client_ip": ip,
+        "network_identity": network,
         "user_agent": ua,
     }
 
@@ -369,7 +371,8 @@ def projection_from(state: dict):
         "policy": {
             "observation_domain": "all captured Cloudflare httpRequestsAdaptive web traffic",
             "semantic_filters": [],
-            "traffic_identity": "exact clientIP + userAgent tuple",
+            "traffic_identity": "stable HMAC(clientIP) + exact userAgent tuple",
+            "network_identity": "clientIPIdentity = HMAC-SHA256(secret, canonical clientIP); literal clientIP never persists",
             "growth_gate": "none",
             "public_namespace": "/crawlerbait/",
             "bait_addressing": "shortest unique prefix of an unbounded stable path-identity stream in tetrahedral bait-space",
@@ -416,7 +419,14 @@ def raw_public_manifest():
     return {
         "source": "crawlerbait/x/captures/*.traffic.json",
         "semantic_filters": [],
-        "fields": "every field Cloudflare advertised to the live httpRequestsAdaptive sensor at capture time",
+        "fields": "every field Cloudflare advertised at capture time; literal clientIP is replaced before persistence by stable clientIPIdentity",
+        "client_ip_publication": {
+            "scheme": "hmac-sha256",
+            "domain": "crawlerbait:clientIP:v1",
+            "key_epoch": "v1",
+            "equality_preserved": True,
+            "literal_ip_persisted": False,
+        },
         "files": files,
     }
 
@@ -451,7 +461,7 @@ def render_public(state: dict):
     by_id = {c["id"]: c for c in projection["crawlers"]}
     for route in projection["routes"]:
         beings = "".join(
-            f'<li><code>{escape(by_id[item["id"]]["client_ip"])}</code> · '
+            f'<li><code>{escape(by_id[item["id"]]["network_identity"])}</code> · '
             f'<code>{escape(by_id[item["id"]]["user_agent"])}</code> · '
             f'{item["events"]} events · <code>{escape(item["id"])}</code></li>'
             for item in route["crawlers"]
@@ -468,7 +478,7 @@ def render_public(state: dict):
             f'<li>last seen: <code>{escape(str(route["last_seen"] or "—"))}</code></li>'
             '</ul>'
             f'<h2>traffic beings observed here</h2><ul>{beings}</ul>'
-            '<p><a href="/crawlerbait/traffic.json">exact raw capture files ↗</a></p>'
+            '<p><a href="/crawlerbait/traffic.json">field-complete public traffic captures ↗</a></p>'
         )
         parts = local_bait_parts(route["path"])
         out = root / "bait" / Path(*parts) / "index.html" if parts else root / "receipt" / receipt_id(route["path"]) / "index.html"
@@ -496,7 +506,7 @@ def self_test():
     }
     r1 = {
         "datetime": "2026-09-18T00:01:00Z",
-        "clientIP": "203.0.113.7",
+        "clientIPIdentity": "ip:v1:1111111111111111111111111111111111111111111111111111111111111111",
         "userAgent": "Crab/1",
         "clientRequestPath": "/a",
         "clientRequestQuery": "",
@@ -521,7 +531,7 @@ def self_test():
     )
     assert identity_prefix("/a", 128) == legacy
     assert len(identity_prefix("/a", 513)) == 513
-    print("PASS · tide makes exact IP+UA traffic beings span every bait they touched; no event ordering is invented")
+    print("PASS · tide makes stable network-identity+UA beings span every bait they touched; no event ordering is invented")
 
 
 def main():
