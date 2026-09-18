@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.2"
+version: "3.3"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -98,6 +98,7 @@ Display keeps alive across every encounter:
 - one global infinitely recursive tetrahedral address field embodied broadly by Philosophy;
 - one global navigator containing physically present site-holon encounters only;
 - shared global orientation state and x/y controls;
+- default-true site-holon background drag with an identity-local explicit-false opt-out;
 - exact address/quotient geometry;
 - recursive split-cell centroid camera framing;
 - target-origin tetrahedral closure transition;
@@ -145,3 +146,5 @@ CI success alone is not browser closure.
 ## Compression
 
 **Display is a tetrahedrally differentiated oriented membrane. Embodiment gives autonomous interlocutors local worlds, Continuity preserves identity through relocation, Orientation makes the global recursive field navigable, and Population physically plants site-holons into that field. Display preserves one shared tetrahedral body and orientation law while each site-holon owns its projection, shader, rendering, local interaction and any earned static public aperture. The Population tree is mount truth: what is bodily present is globally reachable, while each holon remains locally itself.**
+
+Version 3.3 background-orientation interaction correction (2026-09-18): the already-shared orientation field now owns default background drag across arbitrary site-holons. Local membranes may opt out with explicit false without changing global navigator orientation, site identity, geometry, inspection capability or locally owned interaction.

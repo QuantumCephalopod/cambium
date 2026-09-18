@@ -39,7 +39,9 @@
     const id = stableId(spec.id, 'interlocutor identity');
     const localScope = scopeId(spec.localScope || id);
     const state = spec.state && typeof spec.state === 'object' ? spec.state : {};
-    return Object.freeze({id,localScope,shader:spec.shader||null,manifestation:spec.manifestation||null,state});
+    const rawManifestation=spec.manifestation&&typeof spec.manifestation==='object'?spec.manifestation:{};
+    const manifestation=Object.freeze({...rawManifestation,background_drag:rawManifestation.background_drag!==false});
+    return Object.freeze({id,localScope,shader:spec.shader||null,manifestation,state});
   }
 
   function composeInterlocutors(entries, viewport={width:0,height:0}) {

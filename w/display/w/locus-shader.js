@@ -98,7 +98,7 @@ function fieldPointRecords(structure,projection){
   }
   return out;
 }
-function create({id,element,canvas,labelHost,projection,palette,shader,interactive=false,localScope}){
+function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope}){
   if(!element||!canvas||!projection?.root)throw new Error('interlocutor field surface incomplete: '+id);
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
@@ -219,31 +219,36 @@ function create({id,element,canvas,labelHost,projection,palette,shader,interacti
     updateLabels();requestAnimationFrame(draw)
   }
   const hasPoints=pointRecords.length>0;
-  if(interactive||hasPoints){
+  canvas.dataset.backgroundDrag=draggable?'true':'false';
+  if(draggable||inspectable||hasPoints){
     canvas.style.pointerEvents='auto';
+    canvas.style.cursor=draggable?'grab':'default';
     canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;down={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
     canvas.addEventListener('pointermove',e=>{
       const r=canvas.getBoundingClientRect();
-      if(down&&down.id===e.pointerId&&interactive){
-        const dx=e.clientX-down.x,dy=e.clientY-down.y;if(Math.hypot(dx,dy)>2)down.moved=true;if(down.moved){setHover('');updateTooltip(null,r)}
-        W.rotateBy(dx,dy,'interlocutor:'+id);down.x=e.clientX;down.y=e.clientY;e.preventDefault();return;
+      if(down&&down.id===e.pointerId){
+        const dx=e.clientX-down.x,dy=e.clientY-down.y;
+        if(Math.hypot(dx,dy)>2)down.moved=true;
+        if(down.moved){setHover('');updateTooltip(null,r)}
+        if(draggable){W.rotateBy(dx,dy,'interlocutor:'+id);down.x=e.clientX;down.y=e.clientY;e.preventDefault();return}
+        if(down.moved){e.preventDefault();return}
       }
-      if(!down&&hasPoints){const hp=hitPoint(e.clientX-r.left,e.clientY-r.top,r);setHover(hp?.rec.spec.id||'');updateTooltip(hp,r);canvas.style.cursor=hp?'pointer':(interactive?'grab':'default')}
+      if(!down&&hasPoints){const hp=hitPoint(e.clientX-r.left,e.clientY-r.top,r);setHover(hp?.rec.spec.id||'');updateTooltip(hp,r);canvas.style.cursor=hp?'pointer':(draggable?'grab':'default')}
     });
-    canvas.addEventListener('pointerleave',()=>{if(!down){setHover('');if(tooltip)tooltip.hidden=true}});
+    canvas.addEventListener('pointerleave',()=>{if(!down){setHover('');if(tooltip)tooltip.hidden=true;canvas.style.cursor=draggable?'grab':'default'}});
     const end=e=>{
       if(!down||down.id!==e.pointerId)return;const wasMoved=down.moved;down=null;try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId)}catch(_){}
       if(!wasMoved){
         const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,hp=hasPoints?hitPoint(x,y,r):null;
-        if(hp)selectPoint(hp.rec.spec.id,true);else if(interactive){const path=hit(x,y,r);if(path)W.inspect(path,'background:'+id)}
+        if(hp)selectPoint(hp.rec.spec.id,true);else if(inspectable){const path=hit(x,y,r);if(path)W.inspect(path,'background:'+id)}
       }
-      e.preventDefault()
+      canvas.style.cursor=draggable?'grab':'default';e.preventDefault()
     };
     canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
   }else canvas.style.pointerEvents='none';
   requestAnimationFrame(draw);
   api=Object.freeze({
-    id,shaderId:shader.id,element,canvas,projection,palette,interactive,localScope,
+    id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
     selectPoint,get selectedPointId(){return selectedPointId},
     get points(){return pointRecords.map(p=>p.spec)},
     pulse(){element.dataset.pulse='true';setTimeout(()=>delete element.dataset.pulse,500)}

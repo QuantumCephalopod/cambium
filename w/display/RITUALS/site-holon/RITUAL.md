@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.3"
+version: "2.4"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -69,6 +69,21 @@ Default locality rule:
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
+
+## Global background-drag default
+
+Background tetrahedral orientation is a shared Display interaction, not a specimen-specific feature and not a consequence of local inspection capability.
+
+The site-holon manifestation contract therefore carries one toggle:
+- absent `background_drag` = **true** by default;
+- `background_drag: true` = the site's background tetrahedral field participates in shared Display drag/orientation;
+- `background_drag: false` = that site locally opts out of background drag only.
+
+This toggle is independent of `background_inspect`. A site may be draggable without exposing Philosophy-style address inspection, inspectable while also draggable, or explicitly non-draggable while retaining point selection and other local interactions. The opt-out never disables the global navigator's x/y orientation controls and never changes site identity, address, geometry or local semantic interaction.
+
+Custom site renderers that replace the shared background canvas receive the same effective boolean through the generic render contract and must apply it only to background/global orientation drag. Site-local body manipulation remains locally owned.
+
+The invariant is **shared orientation by default, local refusal by explicit false**.
 
 ## Global occupied-region / safe-area contract
 
@@ -158,3 +173,5 @@ A site-holon change is accepted when:
 ## Living provenance
 
 Version 2.3 global occupied-region correction (2026-09-18): a cooked cross-site collision pressure earned one specimen-agnostic Display safe-area contract. Global membrane surfaces expose their actual occupied rectangles plus derived conservative insets to every site render and as CSS variables; site-local presentation remains identity-owned, central Display does not branch on specimen identity, and concrete pixels remain implementation rather than ontology.
+
+Version 2.4 global background-drag correction (2026-09-18): background tetrahedral drag became a default-true Display/site-holon invariant independent of background inspection. New site-holons inherit shared drag/orientation without local enabling code; an explicit local `background_drag: false` opts out only that site while global navigator orientation and local semantic interaction remain intact. Custom renderers receive the same effective toggle through the generic render contract.

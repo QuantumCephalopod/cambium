@@ -32,7 +32,7 @@ const commit=document.getElementById('commit'),home=document.getElementById('roo
 const fieldById=new Map();
 for(const [id,surface] of surfaces){
   const spec=specs.get(id),fieldProjection=surface.module.fieldProjection?surface.module.fieldProjection(surface.projection):surface.projection;
-  fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,interactive:Boolean(spec.manifestation?.background_inspect),localScope:spec.local_scope}));
+  fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope}));
 }
 let activeIds=[...ROOT_IDS],activeAddress='',stack=[],pending=null,restoring=false;
 function sameIds(a,b){return a.length===b.length&&a.every((x,i)=>x===b[i])}
@@ -58,7 +58,7 @@ function render(path=W.view){
   for(const id of activeIds){
     const s=surfaces.get(id),spec=specs.get(id);if(!s||!spec)continue;
     const localPath=spec.manifestation?.background_inspect?(path||''):'';
-    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot()});
+    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false});
   }
   composition();Safe.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');

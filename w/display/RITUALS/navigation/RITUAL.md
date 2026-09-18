@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.1"
+version: "2.2"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -57,7 +57,9 @@ Therefore:
 - global minimap = direct movement among physically populated site encounters;
 - Philosophy background = local inspection of realized global geometry.
 
-Manual background drag updates shared global orientation and remains exactly where the witness leaves it. No automatic swingback/recenter occurs.
+Philosophy's address inspection remains local, but **background drag is no longer Philosophy-specific**. Every site-holon inherits shared background drag/orientation by default; a site may explicitly opt out with local `background_drag: false`. The toggle is independent of inspection and never disables the global navigator's x/y rails.
+
+When enabled, manual background drag updates shared global orientation and remains exactly where the witness leaves it. No automatic swingback/recenter occurs.
 
 ## Global versus local organism space
 
@@ -107,3 +109,5 @@ Pointer navigation supplies the actual minimap target as membrane origin. Four f
 ## Compression
 
 **The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target. Site-local routes remain local and never silently become global navigation addresses.**
+
+Version 2.2 default background-drag correction (2026-09-18): shared background drag/orientation is now a Display-global site-holon default rather than a Philosophy/Papers special case. The site membrane may explicitly disable only its own background drag with `background_drag: false`; Philosophy-style inspection and global navigator controls remain separate capabilities.

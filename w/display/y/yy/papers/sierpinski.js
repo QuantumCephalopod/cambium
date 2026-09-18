@@ -246,7 +246,7 @@ function draw(now){
     state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,.82]}],state.localQ,translate,proj,view,{faces:false});
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  state.hud.innerHTML=state.current?`<span>INQUIRY</span><b>${state.current.id}</b><small>drag body · touch parent · empty space ascends</small>`:`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>drag field · touch an organism</small>`;
+  state.hud.innerHTML=state.current?`<span>INQUIRY</span><b>${state.current.id}</b><small>drag body · touch parent · empty space ascends</small>`:`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch an organism</small>`;
   state.raf=requestAnimationFrame(draw);
 }
 
@@ -266,7 +266,7 @@ function hitChild(x,y,width,height){
 function attachInput(){
   const canvas=state.canvas;
   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;state.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
-  canvas.addEventListener('pointermove',e=>{const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){if(state.current)state.localQ=rotateQ(state.localQ,dx,dy);else W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
+  canvas.addEventListener('pointermove',e=>{const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){if(state.current)state.localQ=rotateQ(state.localQ,dx,dy);else if(state.backgroundDrag)W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
   const end=e=>{
     const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
     if(!p.moved){
@@ -280,19 +280,20 @@ function attachInput(){
   addEventListener('keydown',e=>{if(e.key==='Escape'&&state?.current){e.preventDefault();closeOrAscend()}});
 }
 
-function initialize(host,projection){
+function initialize(host,projection,backgroundDrag=true){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
-  state={host,projection,canvas:stage.canvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0};
+  state={host,projection,canvas:stage.canvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false};
+  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';
   attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
 
-function render({host,content,projection}={}){
+function render({host,content,projection,backgroundDrag=true}={}){
   if(!host||!content||!projection?.groups||!projection?.phenotype||!N||!W)return false;
   host.hidden=false;content.replaceChildren();content.className='interlocutor-content papers-content';
   const shared=host.querySelector('.interlocutor-background');if(shared){shared.style.opacity='0';shared.style.pointerEvents='none'}
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
-  if(!state||state.host!==host)initialize(host,projection);else{state.projection=projection;state.mounted=true;state.canvas.hidden=false;state.hud.hidden=false;state.label.hidden=false}
+  if(!state||state.host!==host)initialize(host,projection,backgroundDrag);else{state.projection=projection;state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.hud.hidden=false;state.label.hidden=false}
   return true;
 }
 function unmount({host,content}={}){if(state){state.mounted=false;state.canvas.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}

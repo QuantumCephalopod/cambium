@@ -1,0 +1,69 @@
+{
+  "event_id": "display-global-background-drag-default-20260918T223105Z",
+  "home_at_utc": "2026-09-18T22:31:05Z",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "metabolize-global-background-drag-default",
+  "outcome": "PASS/EARNED · BACKGROUND DRAG IS DEFAULT-TRUE DISPLAY INVARIANT WITH LOCAL FALSE OPT-OUT",
+  "changed_scope": [
+    "site-holon manifestation now derives background_drag=true when absent",
+    "background_drag is independent of background_inspect",
+    "shared Display field uses background_drag for global orientation drag while inspection remains separately gated",
+    "custom site renderers receive the same generic backgroundDrag boolean",
+    "Philosophy no longer owns a local CSS drag special-case",
+    "Papers custom recursive renderer now obeys the same backgroundDrag contract for global-field drag while retaining local inquiry-body drag",
+    "Crawlerbait is explicitly background_drag=true for direct experiential testing",
+    "Display organism/site-holon/navigation RITUALS advanced to 3.3 / 2.4 / 2.2",
+    "no Display INDEX/_cambium change and no host-level semantic change"
+  ],
+  "context": {
+    "source_nutrient": "w/display/_stomach/NUTRIENT__default-background-drag-toggle__20260918.md",
+    "nutrient_blob_sha": "c89a647149a7b73509b06504552d45d95242591d",
+    "commits": {
+      "encounter_refinement": "0ad27c2a25f1d071365cd1e87098ff953f6d0d42",
+      "generic_contract": "1d25864592bb0c0dc4c316ba0f2a7cc315ef4b53",
+      "site_and_ritual_application": "83930e75aaf9c5bcfaa4fb3e83a75e073081cd80"
+    },
+    "structural_witness": {
+      "workflow_run": 35400973082,
+      "conclusion": "success",
+      "staging_artifact_id": 10570935668,
+      "staging_artifact_digest": "sha256:3659615d0bd18ee6dbd1bb70c87e16b17ba193109a53a5505bfe52eae0224fa1",
+      "explicit_false_unit_witness": true
+    },
+    "browser_witness": {
+      "carrier": "exact workflow staging artifact, assets temporarily inlined only to bypass runtime localhost/file URL restrictions",
+      "viewport": "1440x1000",
+      "webgl2": {
+        "philosophy": true,
+        "papers": true,
+        "crawlerbait": true
+      },
+      "orientation_delta": {
+        "philosophy": 0.2393504519828053,
+        "papers": 0.20725044377702914,
+        "crawlerbait": 0.21758320148972546
+      },
+      "manifestations": {
+        "philosophy": {
+          "background_inspect": true,
+          "background_drag": true
+        },
+        "papers": {
+          "background_inspect": false,
+          "background_drag": true
+        },
+        "crawlerbait": {
+          "background_inspect": false,
+          "background_drag": true
+        }
+      },
+      "browser_errors": 0
+    },
+    "invariant": "shared background orientation by default; local refusal only by explicit false; inspection and local body interaction remain separate capabilities",
+    "structural_growth": false,
+    "parent_uplink_required": false
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}

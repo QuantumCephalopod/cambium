@@ -195,9 +195,22 @@ def _validate_site_manifest(site_dir, data):
     if not isinstance(palette, list) or len(palette) != 3 or any(not isinstance(v, (int,float)) for v in palette):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: shader palette must contain three numbers')
     manifestation = data['manifestation']
-    if not isinstance(manifestation, dict) or set(manifestation) != {'background_inspect'} or not isinstance(manifestation['background_inspect'], bool):
+    allowed_manifestation = {'background_inspect','background_drag'}
+    if (
+        not isinstance(manifestation, dict)
+        or 'background_inspect' not in manifestation
+        or not set(manifestation) <= allowed_manifestation
+        or not isinstance(manifestation['background_inspect'], bool)
+        or ('background_drag' in manifestation and not isinstance(manifestation['background_drag'], bool))
+    ):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid manifestation contract')
-    return data
+    return {
+        **data,
+        'manifestation': {
+            **manifestation,
+            'background_drag': manifestation.get('background_drag', True),
+        },
+    }
 
 
 def discover_sites():
