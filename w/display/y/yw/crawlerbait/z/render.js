@@ -159,7 +159,7 @@ function renderInspector(route){
     for(const item of beings){
       const being=crawlerById.get(item.id)||{};
       const row=el('div','crawlerbait-signature');
-      row.append(el('code','',being.client_ip||item.id||'∅'));
+      row.append(el('code','',being.network_identity||item.id||'∅'));
       row.append(el('code','',being.user_agent||''));
       row.append(el('span','',String(item.events||0)));
       list.append(row);
