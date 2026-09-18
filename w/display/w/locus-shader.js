@@ -88,9 +88,12 @@ function fieldPointRecords(structure,projection){
   }
   const seen=new Set(),out=[];
   for(const raw of specs){
-    if(!raw||typeof raw.id!=='string'||seen.has(raw.id)||!geneIndex.hasOwnProperty(raw.gene))continue;
-    const cell=byGene.get(raw.gene);if(!cell)continue;seen.add(raw.id);
-    const spec=Object.freeze({...raw});
+    if(!raw||typeof raw.id!=='string'||seen.has(raw.id))continue;
+    const addressed=typeof raw.path==='string'&&raw.path?N.addressRecord(structure,raw.path):null;
+    const gene=addressed?.path?.[0]||raw.gene;
+    if(!geneIndex.hasOwnProperty(gene))continue;
+    const cell=addressed||byGene.get(gene);if(!cell)continue;seen.add(raw.id);
+    const spec=Object.freeze({...raw,gene});
     out.push({spec,world:pointInTet(cell.tet,spec)});
   }
   return out;
