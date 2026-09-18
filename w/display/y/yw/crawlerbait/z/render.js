@@ -3,11 +3,7 @@
 const id='organism:crawlerbait';
 const GENES=Object.freeze(['w','x','z','y']);
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
-const EMPTY_NODE=Object.freeze({noun:'open',de:'offen',en:'open',children:Object.freeze({})});
-const TRACE_NODE=Object.freeze({noun:'Traces',de:'Spuren',en:'Traces',gene:'COPY',children:Object.freeze({})});
-const MEMBRANE_NODE=Object.freeze({noun:'Membrane',de:'Membran',en:'Membrane',gene:'CONTROL',children:Object.freeze({})});
-const TIDE_NODE=Object.freeze({noun:'Tide',de:'Tide',en:'Tide',gene:'CULTIVATE',children:Object.freeze({})});
-let activeProjection=null,inspectorHost=null,selectedAddress='';
+let inspectorHost=null,selectedAddress='';
 
 const shader=Object.freeze({
   id:'shader:organism:crawlerbait',
@@ -83,10 +79,10 @@ function baitTree(routes){
     const children={};
     for(const g of GENES)children[g]=branch(prefix+g);
     return {
-      noun:prefix?'Bait branch':'Baits',
-      de:prefix?'Köderzweig':'Köder',
-      en:prefix?'Bait branch':'Baits',
-      gene:prefix?'CREATE':'CREATE',
+      noun:prefix||'Baits',
+      de:prefix||'Köder',
+      en:prefix||'Baits',
+      gene:'CREATE',
       children
     };
   }
@@ -94,21 +90,13 @@ function baitTree(routes){
 }
 function fieldProjection(projection={}){
   const routes=Array.isArray(projection.routes)?projection.routes:[];
-  const root=freezeNode({
-    noun:'Crawlerbait',
-    children:{
-      w:baitTree(routes),
-      x:{...TRACE_NODE},
-      z:{...MEMBRANE_NODE},
-      y:{...TIDE_NODE}
-    }
-  });
+  const root=freezeNode(baitTree(routes));
   const points=routes
     .filter(route=>route&&typeof route.address==='string'&&/^[wxzy]+$/.test(route.address))
     .map(route=>Object.freeze({
       id:`bait:${route.address}`,
-      gene:'w',
-      path:`w${route.address}`,
+      gene:route.address[0],
+      path:route.address,
       kind:'bait',
       label:route.path,
       meta:`${route.address} · ${route.observed_404} observations · ${route.signatures?.length||0} claimed UAs`,
@@ -176,7 +164,6 @@ function renderInspector(route){
 }
 function render({host,content,projection}={}){
   if(!host||!content||!projection?.summary)return false;
-  activeProjection=projection;
   host.hidden=false;
   content.className='interlocutor-content crawlerbait-content';
   content.replaceChildren();
