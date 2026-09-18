@@ -311,6 +311,7 @@ def asset_sources():
         'site-runtime.css': DISPLAY/'z'/'site-runtime.css',
         'interlocutors.css': DISPLAY/'w'/'interlocutors.css',
         'navigation-aperture.css': DISPLAY/'z'/'navigation-aperture.css',
+        'display-safe-area.css': DISPLAY/'z'/'display-safe-area.css',
         'world-view.js': DISPLAY/'z'/'world-view.js',
         'navigation-physiology.js': DISPLAY/'z'/'navigation-physiology.js',
         'address.js': ROOT/'z'/'address.js',
@@ -318,6 +319,7 @@ def asset_sources():
         'site-fold.js': DISPLAY/'z'/'site-fold.js',
         'locus-shader.js': DISPLAY/'w'/'locus-shader.js',
         'navigation-aperture.js': DISPLAY/'z'/'navigation-aperture.js',
+        'display-safe-area.js': DISPLAY/'z'/'display-safe-area.js',
         'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
         'favicon.svg': DISPLAY/'w'/'favicon.svg',
     }

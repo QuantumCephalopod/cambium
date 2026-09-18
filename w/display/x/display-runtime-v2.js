@@ -1,8 +1,8 @@
 (() => {
 'use strict';
-const H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields;
+const H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea;
 const Modules=globalThis.SSSInterlocutorModules;
-if(!H||!F||!W||!Fields||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
+if(!H||!F||!W||!Fields||!Safe||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
 const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
 const PROJECTIONS=JSON.parse(document.getElementById('site-projections').textContent);
 const GLOBAL_SCOPE='main';
@@ -58,9 +58,9 @@ function render(path=W.view){
   for(const id of activeIds){
     const s=surfaces.get(id),spec=specs.get(id);if(!s||!spec)continue;
     const localPath=spec.manifestation?.background_inspect?(path||''):'';
-    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null});
+    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot()});
   }
-  composition();
+  composition();Safe.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
   stateEl.textContent='WITNESS viewer · global '+GLOBAL_SCOPE+':'+(activeAddress||'overview')+' · local '+local+' · '+activeIds.join(' + ');
   document.documentElement.dataset.scope=GLOBAL_SCOPE;
@@ -100,7 +100,7 @@ function leave(push=true){
 }
 addEventListener('sss:view',e=>{if(e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'');reconcile()});
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
-addEventListener('sss:language',()=>{render(W.view);reconcile()});addEventListener('resize',()=>composition());
+addEventListener('sss:language',()=>{render(W.view);reconcile()});addEventListener('resize',()=>{Safe.refresh();composition()});
 commit.addEventListener('click',e=>{if(!pending||fold.busy)return;e.preventDefault();const p=pending;fold.swap(()=>enter(p.resolved,p.path),{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:p.path})});
 home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else setLocalView('','home')});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Enter'&&pending&&!fold.busy){e.preventDefault();commit.click()}else if(e.key==='Escape'){e.preventDefault();if(stack.length)leave();else home.click()}});
@@ -108,7 +108,7 @@ activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(
 function receiveActivity(event){return activity.receive(event)}
 addEventListener('sss:activity',e=>{if(e.detail)receiveActivity(e.detail)});
 addEventListener('popstate',e=>{if(!e.state)return;restoring=true;try{activeIds=e.state.activeIds||[...ROOT_IDS];activeAddress=e.state.activeAddress||'';stack=e.state.stack||[];syncGlobalNavigator();if(inspectCapable(activeIds)&&e.state.localView)W.inspect(e.state.localView,'history');else W.clearInspection('history');render(W.view);reconcile()}finally{restoring=false}});
-W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlobalNavigator();history.replaceState(snap(),'','#'+GLOBAL_SCOPE+':overview');render('');reconcile();
+Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlobalNavigator();history.replaceState(snap(),'','#'+GLOBAL_SCOPE+':overview');render('');reconcile();
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);reconcile();return relation}
 globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),remount,get state(){return snap()},get fields(){return fieldById},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();

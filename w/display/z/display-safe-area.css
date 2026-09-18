@@ -1,0 +1,24 @@
+:root{--display-safe-top:0px;--display-safe-right:0px;--display-safe-bottom:0px;--display-safe-left:0px}
+
+/* One Display-owned status rail. Its physical size is measured by
+ * display-safe-area.js; local sites receive the measured contract rather than
+ * copying pixel offsets or learning current specimen identities.
+ */
+#display-membrane-status{position:fixed;z-index:16;left:28px;right:28px;top:56px;display:grid;grid-template-columns:max-content max-content minmax(0,1fr);gap:14px;align-items:baseline;pointer-events:none;min-width:0}
+#display-membrane-status #route-mark,#display-membrane-status #status,#display-membrane-status #site-state{position:static;left:auto;right:auto;top:auto;bottom:auto;transform:none;min-width:0}
+#display-membrane-status #route-mark{white-space:nowrap}
+#display-membrane-status #status{white-space:nowrap}
+#display-membrane-status #site-state{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Generic opt-in anchors for any autonomous site-holon. They are contract
+ * surfaces only; Display never names or interprets the site using them.
+ */
+[data-display-safe-anchor="top-left"]{top:var(--display-safe-top)!important;left:var(--display-safe-left)!important}
+[data-display-safe-anchor="top-right"]{top:var(--display-safe-top)!important;right:var(--display-safe-right)!important}
+[data-display-safe-anchor="bottom-left"]{bottom:var(--display-safe-bottom)!important;left:var(--display-safe-left)!important}
+[data-display-safe-anchor="bottom-right"]{bottom:var(--display-safe-bottom)!important;right:var(--display-safe-right)!important}
+
+@media(max-width:760px){
+  #display-membrane-status{left:18px;right:18px;top:47px;grid-template-columns:max-content minmax(0,1fr);gap:9px}
+  #display-membrane-status #status{display:none}
+}

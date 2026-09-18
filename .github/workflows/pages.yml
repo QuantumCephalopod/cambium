@@ -67,6 +67,10 @@ jobs:
         if: github.ref_name == 'main'
         run: python3 y/readme.py --check
 
+      - name: Witness repository projection
+        if: github.ref_name == 'main'
+        run: python3 y/readme.py --check
+
       - name: Build persistent Display membrane + site public surfaces
         run: python3 y/site-public.py --artifact _site
 

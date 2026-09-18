@@ -198,7 +198,7 @@ def main():
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
-    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','commit','site-registry','site-projections','site-state','tetra-fold','interlocutor-stage'):
+    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','commit','site-registry','site-projections','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
     check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')
     check(not (artifact/'papers/index.html').exists(),'Papers regressed to a separate document/page')
@@ -215,13 +215,16 @@ def main():
     bundle_dir=artifact/'assets'/bundle; check(bundle_dir.is_dir(),'content-addressed membrane bundle missing')
     check({q.name for q in bundle_dir.iterdir() if q.is_file()}==set(assets),'bundle file set diverges from tree-derived asset contract')
 
-    nav=(DISPLAY/'z'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text()
+    nav=(DISPLAY/'z'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not recursive split-tet centroid')
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
     check('swingback' not in world.lower(),'automatic Philosophy swingback returned')
     check("document.getElementById('site-registry')" in runtime and "document.getElementById('site-projections')" in runtime,'runtime is not fed by tree-derived registry/projections')
     check(all(name not in runtime for name in expected_sites),'central runtime still names specimen identities')
+    check(all(name not in safe for name in expected_sites),'safe-area contract still names specimen identities')
+    check('SSSDisplaySafeArea' in runtime and 'safeArea:Safe.snapshot()' in runtime,'site modules do not receive the Display safe-area contract')
+    check('data-display-occupancy="top"' in actual and 'display-membrane-status' in actual,'global membrane occupancy surface missing')
     check('SSSInterlocutorModules' in runtime and 'Modules.get(id)' in runtime,'generic interlocutor module registry missing')
     check('W.setGlobalTargets(globalTargets())' in runtime,'global navigator not synchronized from discovered mounts')
     check('raw address already occupied' in holon and 'getRawOccupant' in holon,'raw-address exclusion primitive missing')
@@ -234,10 +237,10 @@ def main():
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
 
-    js_sources=['z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','x/display-runtime-v2.js','w/locus-shader.js','z/navigation-aperture.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
+    js_sources=['z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','x/display-runtime-v2.js','w/locus-shader.js','z/navigation-aperture.js','z/display-safe-area.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
     for source in js_sources:
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'JS syntax failure {source}')
-    for test in ('z/navigation-physiology.test.cjs','x/site-holon.test.cjs','z/site-fold.test.cjs'):
+    for test in ('z/navigation-physiology.test.cjs','x/site-holon.test.cjs','z/site-fold.test.cjs','z/display-safe-area.test.cjs'):
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')

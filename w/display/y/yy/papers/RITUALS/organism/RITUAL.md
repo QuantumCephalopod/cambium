@@ -1,6 +1,6 @@
 ---
 name: papers
-description: "Local ritual receptor for the public Papers site-holon: preserve its recursive tetrahedral organism field, source authorship/provenance, inquiry lineage, metabolized relational bodies, identity-owned rendering/interaction and private-to-public feed boundary."
+description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
 version: "1.2"
 ---
 
@@ -57,15 +57,14 @@ The local root body remains the realized four-locus Sierpiński tetrahedral stru
 - `z · Governance`
 - `y · Evolution`
 
-Every public Source and Holon is rendered from **one canonical tetrahedral primitive**.
+Every living Papers identity — `S.*` and `nH` — is one canonical tetrahedral organism inside its **true Papers root locus**. The packed point is an encounter/LOD proxy for that organism, never a different body-kind.
 
-- A distant organism may become perceptually point-like because its tetrahedron occupies only a few pixels; this is loss of visual resolution, not a different body-kind.
-- Source and Holon bodies use the same outer primitive and the same world-size law. Rank does not mean physical importance or larger body size.
-- A Source is the evidential rank-0 tetrahedral organism admitted by Papers metabolism.
-- A `1H` Holon is four Source organisms composing one larger tetrahedral body.
-- An `nH` Holon is exactly four `(n−1)H` parent organisms composing the next recursive Sierpiński body.
-- Recursive composition follows the actual four-parent Papers genealogy. Visual recursion must never invent a parent, deduplicate a birth or infer ancestry from proximity.
-- Rank therefore appears as **genealogical resolution/depth**, not size or status.
+- `S.*` already exists only after Drive Papers has tetrahedralized one external source into internal `4V / 6E / 4F / 1T`; its four vertices are metabolized source-body partitions, not four Papers parent organisms.
+- `nH` has the same tetrahedral geometric species while adding recursive Papers ancestry: exactly four same-rank Papers organisms are its direct parent vertices.
+- Distance and density may collapse either kind to a point proxy; selection/scale reveal already-earned structure rather than switching morphology.
+- A specimen's exact position *inside* its locus is deterministic perceptual packing only; it is not an invented recursive semantic address.
+- Do not derive ontology from hashes, screen coordinates, depth, point spacing, rank labels or shader state.
+- If finer recursive Papers addresses are later earned by the source organism, the public body may adopt them without changing organism identity.
 
 A specimen's global position inside its truthful Papers locus remains deterministic perceptual packing only; it is not an invented recursive semantic address. Do not derive ontology from hashes, screen coordinates, depth, packing or shader state.
 
@@ -73,23 +72,20 @@ A specimen's global position inside its truthful Papers locus remains determinis
 
 Selection opens an **inquiry by scale transition**.
 
-A selected organism must not be replaced by a separate detail model or spawned duplicate. The exact tetrahedral instance already visible in the global field is carried toward the global centroid while the viewer dollies physically inward.
+For a selected Papers organism, the public body should keep the same tetrahedral inquiry grammar and make four kinds of question directly answerable from source-owned projected tissue:
 
-At the inquiry boundary:
+1. **WHOLE / `1T`** — what does this complete four-body closure earn that no proper subset earns?
+2. **RELATIONS / `6E + 4F`** — what was earned pairwise and three-at-a-time, including bounded removal/necessity witnesses when admitted?
+3. **GROUND / LINEAGE** — for `nH`, what recursive four-parent ancestry produced this organism down to `S.*` source ground; for `S.*`, what four internal source-body partitions ground the closure and what external work/provenance supplied that pre-Papers source?
+4. **METABOLITES** — what distinctions survived collapse as reusable wisdom, and what minimal vertex/edge/face/volume body earned each survivor?
 
-- selected-organism centroid and global-field centroid coincide;
-- the global Sierpiński shell remains the surrounding body and continues to obey global Display orientation/navigation;
-- the selected organism becomes the locally manipulable body without inheriting subsequent global rotation;
-- drag in global view rotates the global Papers body;
-- drag during inquiry rotates the focused organism;
-- touching one of a Holon's four parent tetrahedra descends one recursive scale;
-- empty-space / escape ascends one recursive scale and eventually returns the organism to its **current live global position**, including any global rotation accumulated while inquiry was open.
+For `S.*`, local `w/x/z/y` vertices, edges, faces and volume are the organism's own tetrahedralized source body. They must never be rewritten as four Papers parent organisms. Original authorship, DOI/publisher/repository identity and canonical public origin are outward provenance relations from that tetrahedral body, not a morphology switch.
 
 The hand therefore learns one grammar: **drag the body whose scale you currently inhabit**.
 
 ## Perceptual LOD is genealogical resolution
 
-Recursive detail is resolved only when it earns enough projected screen area to be perceptible.
+A selected Source may additionally invert Papers genealogy and illuminate public Holon descendants that grew from it: `Source → descendants`. This is the same cross-organism lineage read in the opposite direction, not a replacement for the Source's own internal tetrahedral inquiry and not a new relation.
 
 This is not a conventional low-poly/high-poly substitution. The outer tetrahedron and its recursively resolved parent bodies are the same organism at different perceptual resolutions.
 
@@ -102,7 +98,9 @@ The renderer may therefore:
 
 This law is intentionally GPU-native: one canonical tetra mesh may be instanced through arbitrarily deep recursive transforms. Computation should scale with **currently visible resolution**, not with the theoretical `4^n` depth of every organism in the field.
 
-Depth-of-field, material response and other phenomenology may strengthen the felt scale transition, but they may not substitute a different model for the selected organism.
+For a public `S.*` inquiry body, the projection contract is the same rank grammar as any Papers organism but with source-local membership: optional bounded `vertices` name the four metabolized source-body partitions; `edges`, `faces`, `volume` and `metabolites` refer to those local members/addresses. A Source payload must not fabricate Papers-parent identities. Public summaries/spans remain bounded by the membrane; canonical external origin is linked outward rather than republishing the procured carrier.
+
+This is a presentation/carrier choice, not a second ontology:
 
 ## Inquiry — the epistemic function
 
@@ -123,11 +121,9 @@ Genealogical inquiry remains recursive:
 
 A selected Source may invert the relation and reveal what later Holons grew from it. This is the same lineage read upward, not a new invented graph.
 
-## Admitted readable tissue
+`Source → admitted internal 4V/6E/4F/1T inquiry → original authorship/provenance + canonical external origin`
 
-Readable `6E / 4F / 1T`, removal witnesses, metabolites and epistemic boundaries must come only from source-owned public projection tissue. Missing public tissue remains missing; the renderer must never synthesize a plausible relation merely because the geometry contains an edge or face.
-
-Structured `inquiry/<public-id>.json` files may coexist inside the site-holon as projected tissue even when the current public renderer has not yet attached all of them to geometry. Future static-shadow or Papers-local compilation may change their carrier without changing the inquiry law.
+The end of a local lineage is therefore a real external paper/article/standard/repository/primary source, not an SSS-owned copy pretending to be the original work. Crossing to that origin is an outward provenance handoff from the still-tetrahedral `S.*` organism; the handoff does not replace its body.
 
 ## Authorship and provenance
 
@@ -142,7 +138,28 @@ For every public Source encounter:
 - never imply SSS authored or owns a foreign Source merely because Papers metabolized it;
 - never fabricate missing author metadata.
 
-A procured private carrier proves evidential availability to Papers; it does not grant permission to republish that carrier publicly.
+When admitted source inquiry tissue is available, a Source detail may expose through the same tetrahedral inquiry grammar:
+
+- its internal `4V` source-body partitions;
+- its `6E / 4F / 1T` closure/compression;
+- surviving invariants/metabolites and their minimal earning bodies;
+- epistemic boundary/refusals;
+- source state/phenotype when intentionally public.
+
+These are **Papers' reading/metabolism of the Source** and must remain visually and semantically distinct from source attribution. Metadata-only display is therefore a bounded projection gap when internal source inquiry tissue is absent, not the terminal morphology of `S.*`.
+
+A Holon inquiry may expose:
+
+- canonical identity, rank and truthful Papers locus;
+- exactly four direct parents;
+- readable `6E / 4F / 1T` body;
+- rank/removal witnesses when publicly admitted;
+- surviving metabolites/invariants and their minimal earning bodies;
+- epistemic boundary;
+- public feeling/phenotype when present;
+- recursive ancestry illumination to source ground.
+
+Do not publish private nested-organ interiors merely because the public projection knows that an organism exists.
 
 ## Public membrane
 
@@ -173,20 +190,24 @@ This is the guardrail: **shape is conserved; phenomenology and living use are lo
 
 A public Papers mutation closes when:
 
-1. Drive Papers remains semantic/source authority and the public projection remains bounded;
-2. every visible Source/Holon is the canonical tetrahedral primitive rather than a point/diamond substitute;
-3. all global specimens obey one world-size law independent of rank;
-4. recursive Holon geometry follows exactly the four-parent Papers genealogy;
-5. selection visibly preserves one continuous organism instance from global position to centroid macro view;
-6. the camera scale transition reveals recursive detail without spawning/replacing the organism;
-7. the global shell continues to obey global orientation while local drag controls only the inquiry body;
-8. descending/ascending preserves identity and returns bodies to their current lawful context;
-9. recursive rendering is LOD-bounded by visible scale rather than blindly expanding all `4^n` descendants;
-10. readable relations/metabolites come only from admitted Papers tissue and remain attached to their actual geometric earning body;
-11. no private carrier identifiers cross the public membrane;
-12. visitor inquiry never actuates the authenticated update Worker;
-13. the exact generated artifact is browser-witnessed for global drag, specimen selection, centroid transition, local drag, at least one recursive descent and return.
+1. Drive Papers remains source authority and the public projection remains derived/bounded;
+2. every public specimen appears inside its truthful Papers locus without invented semantic depth;
+3. `S.*` and `nH` remain the same tetrahedral geometric species; point/LOD collapse never becomes a body-kind distinction;
+4. Source inquiry keeps internal source-body `4V` distinct from Holon parent-organism genealogy and treats external provenance as an outward handoff;
+5. Source and Holon identities remain stable under visual repacking;
+6. Holon parent links resolve through actual Papers genealogy;
+7. a selected Holon's lineage can illuminate recursively through actual parents to source ground without replacing the tetrahedral field;
+8. a selected Source can reveal admitted internal `4V / 6E / 4F / 1T` and metabolites without inventing parent organisms; missing internal source tissue remains an explicit projection gap;
+9. readable `6E / 4F / 1T` and metabolites come only from admitted source-owned inquiry tissue and missing bodies remain explicit rather than inferred;
+10. metabolite/relation tracing emphasizes only the actual earning body and does not invent semantic placement;
+11. every published Source detail preserves truthful attribution and a canonical external origin or explicitly marks unresolved provenance;
+12. ORIGINAL WORK and PAPERS METABOLISM remain distinct;
+13. no private Drive/acquisition/carrier identifiers leak through the public membrane;
+14. local selection/traversal does not hijack global Display navigation or shared orientation;
+15. shader/render/interaction changes remain Papers-local unless a genuinely generic Display coupling is earned;
+16. visitor inquiry does not actuate the authenticated update Worker;
+17. the exact generated artifact is browser-witnessed for point selection, lineage traversal, relation/metabolite trace focus and external-source handoff when those surfaces change.
 
 ## Compression
 
-**Papers is a scale-continuous recursive tetrahedral inquiry field. Every Source and Holon is always the same canonical tetrahedral body; distance changes perceptual resolution, never ontology. Holon rank is actual four-parent Sierpiński depth. Selection carries the existing organism to the shared centroid while the viewer enters macro scale; global navigation keeps the surrounding body moving and local drag manipulates the body being inquired into. LOD is genealogical resolution, and readable wisdom attaches to the edges, faces, volume and metabolites that actually earned it.**
+**Papers is a tetrahedral public inquiry field. Every living `S.*` and `nH` is the same canonical tetrahedral geometric species; rank changes genealogy, not morphology, and point packing is only encounter/LOD. Selection materializes already-earned source-owned structure in-place: `S.*` opens its internal source-body `4V / 6E / 4F / 1T` and metabolites when admitted, while `nH` opens its four-parent relational body and recursive ancestry. Provenance exits outward from the Source organism without replacing it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis and local phenomenology. Transport may evolve without turning the viewer into the actuator or the projection into authority.**
