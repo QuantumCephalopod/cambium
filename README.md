@@ -36,6 +36,7 @@ This README is a derived GitHub-facing projection of the living repository anato
 | site-space | interlocutor | identity |
 |---|---|---|
 | `ε` | Philosophy | `organism:philosophy` |
+| `w` | Crawlerbait | `organism:crawlerbait` |
 | `y` | Papers | `organism:papers` |
 
 The physical `w/display/y/` population anatomy is mount truth. Each site-holon remains independently rooted behind the Display membrane.
