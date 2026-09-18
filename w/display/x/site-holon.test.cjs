@@ -13,6 +13,10 @@ assert.equal(H.resolveAddress('xyww').locus,a.locus,'terminal self continuation 
 const registry=H.createRegistry();
 const philosophy=H.defineInterlocutor({id:'organism:philosophy',localScope:'main',shader:{id:'shader:philosophy'},manifestation:{background_inspect:true},state:{visits:0}});
 const papers=H.defineInterlocutor({id:'organism:papers',localScope:'papers',shader:{id:'shader:papers'},manifestation:{background_inspect:false},state:{visits:0}});
+const optOut=H.defineInterlocutor({id:'organism:opt-out',localScope:'opt-out',manifestation:{background_inspect:false,background_drag:false}});
+assert.equal(philosophy.manifestation.background_drag,true,'background drag must default true');
+assert.equal(papers.manifestation.background_drag,true,'default must not depend on background inspection');
+assert.equal(optOut.manifestation.background_drag,false,'site-local false must disable the global default');
 registry.register(philosophy); registry.register(papers);
 
 registry.mount(philosophy.id,{scope:'main',address:''});
@@ -61,5 +65,6 @@ console.log(JSON.stringify({
   status:'pass',viewer_is_witness:true,recursive_address_quotient:true,
   identity_locus_separate:true,relocation:true,raw_address_exclusion:true,
   quotient_coalescence:true,responsive_composition:true,activity_follows_identity:true,
+  background_drag_default_true:true,background_drag_local_opt_out:true,
   tetrahedral_closure_sequence:true
 },null,2));
