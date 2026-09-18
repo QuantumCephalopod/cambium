@@ -165,6 +165,7 @@ def main():
     check('W.setGlobalTargets(globalTargets())' in runtime,'global navigator not synchronized from discovered mounts')
     check('raw address already occupied' in holon and 'getRawOccupant' in holon,'raw-address exclusion primitive missing')
     check('W.orientation' in fields,'interlocutor backgrounds do not share global orientation')
+    check("N.addressRecord(structure,raw.path)" in fields,'field points cannot inhabit exact recursive address cells')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'exact settle-to-lock behavior missing')
     check('context.origin' in fold and '--fold-x' in fold and '--fold-y' in fold,'transition is not anchored to chosen target')
     check('clip-path:polygon(0 0,100% 0,var(--fold-x) var(--fold-y))' in site_css,'target-origin tetrahedral iris missing')
@@ -182,6 +183,7 @@ def main():
     result=subprocess.run(['python3',str(crawler/'y'/'capture.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait capture self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'replay.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait replay self-test failed')
+    result=subprocess.run(['node',str(crawler/'z'/'render.test.cjs')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait visualization witness failed')
 
     print(json.dumps({
         'status':'pass','checks':count,'display_4V':{g:index[g]['noun'] for g in 'wxzy'},
