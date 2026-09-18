@@ -1,6 +1,14 @@
 name: crawlerbait tide
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'w/display/y/yw/crawlerbait/y/capture.py'
+      - 'w/display/y/yw/crawlerbait/y/tide.py'
+      - 'w/display/y/yw/crawlerbait/y/replay.py'
+      - 'w/display/y/yw/crawlerbait/x/captures/manifest.json'
+      - 'w/display/y/yw/crawlerbait/z/policy.json'
   schedule:
     - cron: '17 */6 * * *'
   workflow_dispatch: {}
@@ -22,7 +30,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Capture only new Cloudflare pressure
+      - name: Capture every new raw Cloudflare HTTP event
         env:
           CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
           CLOUDFLARE_ZONE_TAG: ${{ secrets.CLOUDFLARE_ZONE_TAG }}
@@ -30,12 +38,12 @@ jobs:
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/capture.py --write
 
-      - name: Witness capture law
+      - name: Witness raw capture law
         run: |
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
 
-      - name: Persist raw Traces before downstream metabolism
+      - name: Persist public raw Traces before downstream metabolism
         run: |
           set -euo pipefail
           if [ -z "$(git status --porcelain -- 'w/display/y/yw/crawlerbait/x/captures' 'w/display/y/yw/crawlerbait/x/cursor.json')" ]; then
@@ -43,20 +51,19 @@ jobs:
           else
             git config user.name "crawlerbait tide"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -- 'w/display/y/yw/crawlerbait/x/captures' \
-                       'w/display/y/yw/crawlerbait/x/cursor.json'
-            git commit -m "crawlerbait: capture Cloudflare trace window"
+            git add -- 'w/display/y/yw/crawlerbait/x/captures'                        'w/display/y/yw/crawlerbait/x/cursor.json'
+            git commit -m "crawlerbait: capture public raw web traffic"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
           fi
 
-      - name: Metabolize owned local Traces
+      - name: Metabolize owned web traffic
         run: |
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/tide.py --write
 
-      - name: Witness tide replay and public membrane
+      - name: Witness replay and public membrane
         run: |
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
@@ -76,15 +83,12 @@ jobs:
           fi
           git config user.name "crawlerbait tide"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- 'w/display/y/yw/crawlerbait/w' \
-                     'w/display/y/yw/crawlerbait/x/state.json' \
-                     'w/display/y/yw/crawlerbait/z/projection.json' \
-                     'w/display/y/yw/crawlerbait/z/public'
+          git add -- 'w/display/y/yw/crawlerbait/w'                      'w/display/y/yw/crawlerbait/x/state.json'                      'w/display/y/yw/crawlerbait/z/projection.json'                      'w/display/y/yw/crawlerbait/z/public'
           if git diff --cached --quiet; then
             echo "no derived Crawlerbait body changed"
             exit 0
           fi
-          git commit -m "crawlerbait: metabolize captured traces"
+          git commit -m "crawlerbait: embody public web traffic"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
