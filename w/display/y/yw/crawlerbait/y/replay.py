@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild Crawlerbait downstream state entirely from local checkpoint + immutable captures."""
+"""Rebuild Crawlerbait entirely from owned legacy evidence + immutable raw traffic captures."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -21,11 +21,12 @@ T = load_tide()
 
 
 def self_test():
-    state = T.replay_from_checkpoint()
-    checkpoint = T.normalize_state(T.read_json(T.CHECKPOINT_PATH))
-    assert set(checkpoint["routes"]).issubset(set(state["routes"]))
-    assert state["version"] == 4
-    print("PASS · replay rebuilds downstream Crawlerbait state from local Traces without provider access")
+    state = T.rebuild_state()
+    legacy = T.replay_legacy()
+    assert set(legacy["routes"]).issubset(set(state["routes"]))
+    assert state["version"] == 5
+    assert state["raw_requests"] == len(state["encounters"])
+    print("PASS · replay rebuilds public web-traffic state locally with zero provider calls")
 
 
 def main():
@@ -37,11 +38,13 @@ def main():
         self_test()
         return
 
-    state = T.replay_from_checkpoint()
+    state = T.rebuild_state()
     print(json.dumps({
         "status": "replayed-local-traces",
-        "paths": len(state["routes"]),
-        "applied_capture_end": state.get("applied_capture_end"),
+        "raw_requests": state["raw_requests"],
+        "crawlers": len(state["crawlers"]),
+        "baits": len(state["routes"]),
+        "raw_capture_end": state.get("raw_capture_end"),
         "provider_calls": 0,
     }, indent=2))
     if args.write:
