@@ -71,3 +71,34 @@ The currently deployed-source Worker implementation in `w/display/x/live/src/ind
 - The foreign response carrier has finished its local semantic duty and may retire after reference closure.
 - The remaining implementation pressure crosses the explicit Papers→Display membrane as a bounded request: evolve the shared live nerve generically so it can realize opaque acknowledged-base state transitions without learning Papers-specific semantics.
 - The original circulation nutrient remains OPEN until the end-to-end exit witness closes: real changed-unit delivery, unchanged-HOME no-rich-write, retry dedupe, stale-base refusal, full-snapshot recovery, and deployed static visitor read without write actuation.
+
+
+## metabolic pass — 2026-09-19 · destination live nerve materialized
+
+### earned / supersession
+- Display returned HOME `display-live-acked-delta-20260919T210040Z` and materially closed the previously identified destination-side transport wound on staging.
+- The shared live nerve now accepts the already-earned Papers contract generically: ordinary rich HOME circulation is `base_public_revision → target_public_revision` keyed delta; full reconciliation is recovery-class physiology only.
+- Public-unit keys and values remain opaque to Display transport. No Papers Source/Holon/Inquiry semantics were promoted into the shared Worker.
+- Deterministic revision law is now explicit and mechanically witnessed:
+  - `unit_revision = sha256(canonical-json(unit.value))`
+  - `public_revision = sha256(canonical-json(sorted [[unit_key, unit_revision], ...]))`
+- Activity-only HOME performs no rich R2 write; a legacy rich v1 shadow likewise survives metadata-only traffic unchanged.
+- Stale base returns `REBASE_REQUIRED` without overwrite; retrying an already-reached target dedupes.
+- R2 replacement is guarded by the ETag observed during the preceding read, so a concurrent stale writer cannot silently overwrite a newer materialized state.
+- A permanent regression witness at `w/display/x/live/test.mjs` exercises bootstrap reconciliation, activity-only preservation, valid delta, retry dedupe, stale-base refusal, recovery, legacy preservation, concurrent ETag race refusal and bad-unit rejection.
+- GitHub Actions provider witness `display live nerve` run `35469101959` completed SUCCESS against staging commit `a20e50501661fd043cccebb760fcb2547b219775`; test job succeeded and deployment was correctly skipped in the non-canonical staging repository.
+
+### superseded wound
+The prior destination incompatibility recorded in the previous pass is now **SUPERSEDED ON STAGING**. It remains historically true of the older Worker implementation but is no longer the current staging state.
+
+### still OPEN
+The circulation nutrient itself does **not** close yet because source→destination→visitor production physiology still lacks end-to-end witness:
+- the bound Drive `/papers` Apps-Script producer must emit the accepted delta/reconcile grammar from its own Worker-ACKNOWLEDGED ledger;
+- canonical `self-similar-systems/cambium:main` has not yet been deliberately promoted with the new live nerve;
+- the production Worker has not yet been redeployed with that mutation;
+- no real changed-unit source packet has yet reached the new Worker/R2 contract;
+- unchanged-HOME no-rich-write, retry dedupe, stale-base refusal and full-reconcile recovery still need production/end-to-end witness;
+- the deployed visitor surface still needs to read the resulting static shadow without actuating the authenticated write path.
+
+### bounded next move
+Return the exact accepted destination packet/revision contract to Drive `/papers/_stomach`. Source Papers owns whether and how its bound producer evolves. display.papers keeps this master circulation nutrient OPEN until source-side production and real end-to-end circulation close the exit condition.
