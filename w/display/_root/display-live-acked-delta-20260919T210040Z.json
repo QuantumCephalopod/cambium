@@ -1,0 +1,48 @@
+{
+  "event_id": "display-live-acked-delta-20260919T210040Z",
+  "parent_event_id": "display-retire-inspect-enter-commit-20260919T000643Z",
+  "home_at_utc": "2026-09-19T21:00:40Z",
+  "organism": "display",
+  "entrypoint": "w/display",
+  "outcome": "PASS/EARNED · ACKNOWLEDGED-BASE LIVE SHADOW TRANSITIONS MATERIALIZED · PRODUCTION DEPLOY DEFERRED",
+  "changed_scope": [
+    "w/display/x/live/src/index.js now materializes opaque keyed public units behind deterministic sha256 revisions",
+    "normal rich HOME transport now requires base_public_revision → target_public_revision guarded delta application",
+    "activity-only HOME performs no rich R2 replacement and cannot strip an already-rich current object",
+    "legacy v1 rich shadows survive metadata-only traffic and require explicit reconciliation before rich delta",
+    "full reconcile is reserved for bootstrap / REBASE_REQUIRED recovery / integrity repair",
+    "R2 writes use conditional onlyIf with current ETag (or If-None-Match:* on first materialization) so stale concurrent writers cannot silently overwrite",
+    "w/display/x/live/test.mjs permanently witnesses bootstrap, activity-only preservation, delta, retry dedupe, stale-base refusal, recovery, legacy preservation, ETag race refusal and bad-unit rejection",
+    ".github/workflows/cloudflare-live.yml now gates canonical deployment on the regression witness and prevents fork/branch deploy",
+    "child request from display.papers completed its local duty and retired source-faithfully to Display _waste",
+    "no Display INDEX/_cambium, Population, navigation, geometry, site-holon semantic body, or host cambium semantic mutation"
+  ],
+  "context": {
+    "source_child_home": "display-papers-delta-circulation-assimilation-20260919T203300Z",
+    "source_request": "w/display/_waste/metabolized-request__papers-acknowledged-delta-live-nerve__20260919.md",
+    "live_nerve_commit_under_test": "a20e50501661fd043cccebb760fcb2547b219775",
+    "provider_witness": {
+      "workflow": "display live nerve",
+      "run_id": 35469101959,
+      "conclusion": "success",
+      "completed_at_utc": "2026-09-19T21:00:40Z",
+      "test_job": "success",
+      "deploy_job": "skipped"
+    },
+    "revision_law": {
+      "unit": "sha256(canonical-json(public-unit-value))",
+      "public_state": "sha256(canonical-json(sorted [unit-key, unit-revision] ledger))"
+    },
+    "remaining_external_closure": [
+      "source /papers producer must emit the accepted delta/reconcile packet grammar from its Worker-ACKNOWLEDGED base",
+      "one real changed-unit delivery must reach deployed canonical Worker/R2",
+      "unchanged-HOME no-rich-write must be witnessed against deployed Worker",
+      "retry dedupe and stale-base REBASE_REQUIRED must be witnessed end-to-end",
+      "full reconciliation recovery must establish a valid acknowledged base",
+      "deployed visitor surface must read the static shadow without actuating authenticated writes"
+    ],
+    "production_state": "UNCHANGED — self-similar-systems/cambium canonical Worker has not been promoted/deployed by this act"
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}
