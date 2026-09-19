@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.3"
+version: "1.4"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -202,6 +202,21 @@ A Holon's permanent recursive center void is the lawful perceptual site for **me
 
 The light is therefore not decorative bloom and not a second ontology. It is Papers-local phenomenology attached to the same recursive organism body already earned by genealogy.
 
+### Metabolight text
+
+When the public projection actually carries a Holon's crystallized wisdom/metabolite text, the active Holon may make that same admitted text readable **at its own central metabolight**.
+
+- Papers truth determines what is said; presentation never synthesizes replacement wisdom.
+- the current Holon's projected metabolight center determines where readable text belongs;
+- selection and scale reveal admitted text; they do not create new semantic content;
+- missing public wisdom remains projection absence and produces no fabricated sentence;
+- inactive/nested metabolights remain light-only unless a later earned inquiry law says otherwise;
+- text should spatially inhabit the light's local field rather than returning to a detached metadata panel;
+- line breaking/measurement and Canvas/WebGL glyph machinery are implementation carriers, not Papers ontology;
+- the current V1 carrier may use pinned Pretext plus a transparent Papers-local Canvas2D ink plane while Display remains entirely unaware of either implementation.
+
+The native relation is **truth → metabolight anchor → spatial layout → readable ink**. The library carrying layout may later change without changing that relation.
+
 ## Phenomenology and design freedom
 
 Papers owns its local material language, recursive specimen rendering and interaction policy. Philosophy and other site-holons must not be changed merely to make Papers aesthetically convenient.
@@ -239,3 +254,5 @@ A public Papers mutation closes when:
 **Papers is a tetrahedral public inquiry field. Every living `S.*` and `nH` is the same canonical tetrahedral geometric species; rank changes genealogy, not morphology, and point packing is only encounter/LOD. Selection materializes already-earned source-owned structure in-place: `S.*` opens its internal source-body `4V / 6E / 4F / 1T` and metabolites when admitted, while `nH` opens its four-parent relational body and recursive ancestry. Provenance exits outward from the Source organism without replacing it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis and local phenomenology. Transport may evolve without turning the viewer into the actuator or the projection into authority.**
 
 Version 1.3 luminous recursive-scale correction (2026-09-19): Papers now anchors local visual scale to `S.*` as the minimum Papers-organism quantum. Rank `nH` is rendered at `2^n` linear S-scale so complete ancestry contains `4^n` S quanta without rescaling S itself. Holon center voids carry recursive metabolight; nested Holons retain smaller lights and visible Sources carry faint quantum embers. V1 baseline luminosity is rank-driven, while already-admitted public wisdom may boost it; missing wisdom tissue remains projection absence rather than evidence of no metabolites.
+
+Version 1.4 metabolight-text correction (2026-09-19): already-public Holon wisdom may now become readable at the active Holon's own projected metabolight instead of in a detached metadata panel. Selection/scale only reveal admitted text; absent public wisdom renders no invented sentence. Text layout remains Papers-local implementation—currently pinned Pretext 0.0.9 feeding a transparent Canvas2D ink plane—and does not alter genealogy, S scale, Display geometry or semantic authority.

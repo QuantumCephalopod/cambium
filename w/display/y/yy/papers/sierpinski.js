@@ -29,6 +29,9 @@ const FOV=Math.PI/3.3;
 const LOD_PX=7;
 const OPEN_MS=900;
 const MAX_DEPTH=8;
+const PRETEXT_VERSION='0.0.9';
+const PRETEXT_PATH='papers-pretext-0.0.9/layout.js';
+const WISDOM_MAX_WIDTH=680;
 const FACE=[[0,2,1],[0,1,3],[0,3,2],[1,2,3]];
 const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 
@@ -47,6 +50,26 @@ void main(){outColor=vec4(0.0);}`
 });
 
 let state=null;
+let pretextModule=null;
+let pretextPromise=null;
+
+function pretextURL(){return new URL(PRETEXT_PATH,document.baseURI).href}
+function ensurePretext(){
+  if(pretextModule)return Promise.resolve(pretextModule);
+  if(!pretextPromise){
+    pretextPromise=import(pretextURL()).then(m=>{
+      for(const name of ['prepareWithSegments','layoutNextLineRange','materializeLineRange'])if(typeof m[name]!=='function')throw new Error(`Pretext ${PRETEXT_VERSION} missing ${name}`);
+      pretextModule=m;
+      if(state){state.pretextStatus='ready';state.textCanvas.dataset.pretextStatus='ready'}
+      return m;
+    }).catch(err=>{
+      if(state){state.pretextStatus='error';state.textCanvas.dataset.pretextStatus='error'}
+      console.error('Papers Pretext load failed',err);
+      return null;
+    });
+  }
+  return pretextPromise;
+}
 
 function clamp(x,a=0,b=1){return Math.max(a,Math.min(b,x))}
 function mix(a,b,t){return a+(b-a)*t}
@@ -81,10 +104,10 @@ function fieldProjection(d){
 function identityIndex(projection){
   const out=new Map();
   for(const g of GENES){
-    for(const x of projection?.groups?.[g]||[])out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'source',rank:'S',publicWisdom:false});
+    for(const x of projection?.groups?.[g]||[])out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'source',rank:'S',publicWisdom:false,wisdom:''});
     for(const x of projection?.holons?.[g]||[]){
-      const meta=projection?.holon_meta?.[x.id],wisdom=Array.isArray(meta)&&typeof meta[3]==='string'&&meta[3].trim().length>0;
-      out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'holon',rank:rankOf(x.id),publicWisdom:wisdom});
+      const meta=projection?.holon_meta?.[x.id],wisdom=Array.isArray(meta)&&typeof meta[3]==='string'?meta[3].trim():'';
+      out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'holon',rank:rankOf(x.id),publicWisdom:Boolean(wisdom),wisdom});
     }
   }
   return out;
@@ -230,14 +253,21 @@ void main(){
 
 function makeStage(host){
   const canvas=document.createElement('canvas');canvas.className='papers-sierpinski-stage';canvas.setAttribute('aria-label','Papers recursive tetrahedral inquiry field');host.append(canvas);
+  const textCanvas=document.createElement('canvas');textCanvas.className='papers-wisdom-stage';textCanvas.setAttribute('aria-label','Papers active metabolight wisdom');textCanvas.dataset.pretextVersion=PRETEXT_VERSION;host.append(textCanvas);
   const hud=document.createElement('div');hud.className='papers-sierpinski-hud';host.append(hud);
   const label=document.createElement('div');label.className='papers-sierpinski-label';host.append(label);
-  return {canvas,hud,label};
+  return {canvas,textCanvas,hud,label};
 }
 function resizeCanvas(canvas){
   const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.6),w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));
   if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
-  return {rect:r,w,h};
+  return {rect:r,d,w,h};
+}
+function resizeWisdomCanvas(canvas,rect){
+  const d=Math.min(devicePixelRatio||1,1.6),w=Math.max(1,Math.round(rect.width*d)),h=Math.max(1,Math.round(rect.height*d));
+  if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
+  const ctx=canvas.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,rect.width,rect.height);
+  return {ctx,d};
 }
 function projectedPixels(scale,cameraZ,height){return (scale/cameraZ)*(height/2)/Math.tan(FOV/2)*2}
 function childBodies(current){
@@ -262,6 +292,45 @@ function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
   for(let i=0;i<4;i++)collectBody(ps[i],add(center,mul(state.renderer.V0[i],scale*.5)),scale*.5,cameraZ,height,leaves,lights,depth+1);
 }
 function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+r[0]*f/z,y:height/2-r[1]*f/z,z:r[2]}}
+function projectWorldPoint(p,cameraZ,width,height){const z=cameraZ-p[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+p[0]*f/z,y:height/2-p[1]*f/z,z:p[2]}}
+function wisdomFont(width){return width<700?'500 11px system-ui, -apple-system, "Segoe UI", sans-serif':'500 13px system-ui, -apple-system, "Segoe UI", sans-serif'}
+function wisdomLineHeight(width){return width<700?17:20}
+function preparedWisdom(entity,font){
+  if(!pretextModule||!entity?.wisdom)return null;
+  const key=`${entity.id}\u0000${font}\u0000${entity.wisdom}`;
+  if(state.wisdomPrepared?.key!==key)state.wisdomPrepared={key,prepared:pretextModule.prepareWithSegments(entity.wisdom,font)};
+  return state.wisdomPrepared.prepared;
+}
+function drawWisdom(rect,cam,translate,activeLight){
+  const {ctx}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null;
+  canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;delete canvas.dataset.wisdomAnchorX;delete canvas.dataset.wisdomAnchorY;delete canvas.dataset.wisdomRadius;
+  if(!state.current||!entity?.wisdom){canvas.dataset.wisdomState=state.current?'missing':'inactive';return}
+  if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
+  const alpha=smooth(clamp((state.transition-.56)/.34));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';return}
+  const anchor=projectWorldPoint(translate,cam,rect.width,rect.height),font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),prepared=preparedWisdom(entity,font);if(!prepared)return;
+  const width=Math.min(WISDOM_MAX_WIDTH,Math.max(250,rect.width*(rect.width<700 ? .88 : .66))),half=width/2;
+  const centerX=clamp(anchor.x,half+16,rect.width-half-16),x0=centerX-half,x1=centerX+half,radius=clamp((activeLight?.size||32)*.78+24,44,86),gap=14;
+  const rows=rect.width<700?12:14,top=clamp(anchor.y-(rows*.5)*lineHeight,58,Math.max(58,rect.height-rows*lineHeight-28));
+  let cursor={segmentIndex:0,graphemeIndex:0},lineCount=0,finished=false;
+  ctx.font=font;ctx.textBaseline='middle';ctx.fillStyle=`rgba(239,246,235,${(.80*alpha).toFixed(3)})`;ctx.shadowColor=`rgba(223,255,208,${(.20*alpha).toFixed(3)})`;ctx.shadowBlur=10;
+  outer: for(let row=0;row<rows;row++){
+    const y=top+(row+.5)*lineHeight,dy=y-anchor.y,slots=[];
+    if(Math.abs(dy)<radius){
+      const dx=Math.sqrt(Math.max(0,radius*radius-dy*dy)),leftEnd=anchor.x-dx-gap,rightStart=anchor.x+dx+gap;
+      if(leftEnd-x0>72)slots.push({x:x0,width:leftEnd-x0,align:'right'});
+      if(x1-rightStart>72)slots.push({x:rightStart,width:x1-rightStart,align:'left'});
+      if(!slots.length)continue;
+    }else slots.push({x:x0,width:x1-x0,align:'center'});
+    for(const slot of slots){
+      const range=pretextModule.layoutNextLineRange(prepared,cursor,slot.width);if(range===null){finished=true;break outer}
+      const line=pretextModule.materializeLineRange(prepared,range);let x=slot.x;if(slot.align==='right')x=slot.x+slot.width-line.width;else if(slot.align==='center')x=slot.x+(slot.width-line.width)/2;
+      ctx.fillText(line.text,x,y);cursor=range.end;lineCount++;
+    }
+  }
+  if(!finished&&pretextModule.layoutNextLineRange(prepared,cursor,width)===null)finished=true;
+  canvas.dataset.wisdomState='visible';canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.wisdomComplete=finished?'true':'false';
+  canvas.dataset.wisdomAnchorX=anchor.x.toFixed(2);canvas.dataset.wisdomAnchorY=anchor.y.toFixed(2);canvas.dataset.wisdomRadius=radius.toFixed(2);
+}
 function outerCells(){return GENES.map((g,i)=>{const p=PALETTE[g];return {center:mul(state.renderer.V0[i],.5),scale:.5,color:[p[0]*.45,p[1]*.45,p[2]*.45,.045]}})}
 function populationInstances(fade=1){
   const out=[];for(const rec of state.records){if(rec.id===state.current?.id)continue;const p=PALETTE[rec.gene]||PALETTE.x;out.push({center:rec.world,scale:NODE_SCALE,color:[p[0],p[1],p[2],(.12+(rec.kind==='holon'?.055:0))*fade]})}return out;
@@ -316,15 +385,16 @@ function draw(now){
   const fade=!state.current?1:(state.stack.length?0:Math.pow(1-state.transition,2));
   state.renderer.draw(populationInstances(fade),W.orientation,[0,0,0],proj,view,{faces:true});
   state.renderer.drawLights(populationLights(fade),W.orientation,[0,0,0],proj,view,now*.001,d);
-  let lightCount=0,quantumCount=0;
+  let lightCount=0,quantumCount=0,activeLight=null,translate=[0,0,0];
   if(state.current){
     const tree=[],lights=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,lights);for(const x of tree)x.color[3]*=.3+.7*state.transition;for(const x of lights)x.color[3]*=.25+.75*state.transition;
-    const translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
+    translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
     state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,.82]}],state.localQ,translate,proj,view,{faces:false});
     state.renderer.drawLights(lights,state.localQ,translate,proj,view,now*.001,d);
-    lightCount=lights.filter(x=>x.kind==='metabolight').length;quantumCount=lights.filter(x=>x.kind==='quantum').length;
+    lightCount=lights.filter(x=>x.kind==='metabolight').length;quantumCount=lights.filter(x=>x.kind==='quantum').length;activeLight=lights.find(x=>x.id===state.current.id&&x.kind==='metabolight')||null;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
+  drawWisdom(rect,cam,translate,activeLight);
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;state.hud.innerHTML=`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch an organism</small>`};
@@ -364,9 +434,9 @@ function attachInput(){
 function initialize(host,projection,backgroundDrag=true){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
-  state={host,projection,canvas:stage.canvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false};
-  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);
-  attachInput();state.raf=requestAnimationFrame(draw);return state;
+  state={host,projection,canvas:stage.canvas,textCanvas:stage.textCanvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null};
+  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.textCanvas.dataset.pretextStatus=state.pretextStatus;
+  ensurePretext();attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
 
 function render({host,content,projection,backgroundDrag=true}={}){
@@ -374,10 +444,10 @@ function render({host,content,projection,backgroundDrag=true}={}){
   host.hidden=false;content.replaceChildren();content.className='interlocutor-content papers-content';
   const shared=host.querySelector('.interlocutor-background');if(shared){shared.style.opacity='0';shared.style.pointerEvents='none'}
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
-  if(!state||state.host!==host)initialize(host,projection,backgroundDrag);else{state.projection=projection;state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.hud.hidden=false;state.label.hidden=false}
+  if(!state||state.host!==host)initialize(host,projection,backgroundDrag);else{state.projection=projection;state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.textCanvas.hidden=false;state.hud.hidden=false;state.label.hidden=false}
   return true;
 }
-function unmount({host,content}={}){if(state){state.mounted=false;state.canvas.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
+function unmount({host,content}={}){if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
 function activateFieldPoint(){}
 
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
