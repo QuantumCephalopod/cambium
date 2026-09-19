@@ -20,8 +20,10 @@ const PALETTE={w:[.34,.78,.64],x:[.42,.82,.88],z:[.78,.78,.60],y:[.52,.93,.48]};
  * dollies inward. Recursive detail is revealed only when screen scale earns it.
  */
 
-const NODE_SCALE=.032; // distant encounter proxy only
-const S_QUANTUM_SCALE=.0045; // smallest Papers organism body
+const S_QUANTUM_SCALE=.0045; // smallest Papers organism body in canonical root units
+const ROOT_FIELD_DESKTOP=1.75;
+const ROOT_FIELD_MOBILE=1.42;
+const ROOT_FIELD_BREAKPOINT=560;
 const MACRO_FILL=.285;
 const MIN_MACRO_Z=.014;
 const FAR_Z=3.2;
@@ -105,6 +107,9 @@ function locusName(projection,gene){return projection?.phenotype?.[gene]||gene}
 function rankOf(value){const m=String(value||'').match(/^(\d+)H\./);return m?`${m[1]}H`:'S'}
 function rankNumber(value){const m=String(value||'').match(/^(\d+)H(?:\.|$)/);return m?Number(m[1]):0}
 function bodyScaleFor(entity){return S_QUANTUM_SCALE*Math.pow(2,rankNumber(entity?.rank))}
+function rootFieldScale(width){return width<ROOT_FIELD_BREAKPOINT?ROOT_FIELD_MOBILE:ROOT_FIELD_DESKTOP}
+function overviewCenterFor(entity,width){return mul(entity.world,rootFieldScale(width))}
+function overviewBodyScaleFor(entity,width){return bodyScaleFor(entity)*rootFieldScale(width)}
 function cameraForScale(scale){return Math.max(MIN_MACRO_Z,scale/MACRO_FILL)}
 function fieldProjection(d){
   const children={};
@@ -377,20 +382,28 @@ function drawWisdom(rect,cam,translate,activeLight){
   canvas.dataset.wisdomState='visible';canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.wisdomComplete=finished?'true':'false';
   canvas.dataset.wisdomAnchorX=anchor.x.toFixed(2);canvas.dataset.wisdomAnchorY=anchor.y.toFixed(2);canvas.dataset.wisdomRadius=radius.toFixed(2);
 }
-function outerCells(){return GENES.map((g,i)=>{const p=PALETTE[g];return {center:mul(state.renderer.V0[i],.5),scale:.5,color:[p[0]*.45,p[1]*.45,p[2]*.45,.045]}})}
-function populationInstances(fade=1){
-  const out=[];for(const rec of state.records){if(rec.id===state.current?.id)continue;const p=PALETTE[rec.gene]||PALETTE.x;out.push({center:rec.world,scale:NODE_SCALE,color:[p[0],p[1],p[2],(.12+(rec.kind==='holon'?.055:0))*fade]})}return out;
+function outerCells(width){
+  const rootScale=rootFieldScale(width);
+  return GENES.map((g,i)=>{const p=PALETTE[g];return {center:mul(state.renderer.V0[i],.5*rootScale),scale:.5*rootScale,color:[p[0]*.45,p[1]*.45,p[2]*.45,.045]}});
 }
-function populationLights(fade=1){
-  const out=[];for(const rec of state.records){if(rec.id===state.current?.id)continue;const rank=rankNumber(rec.rank),pal=PALETTE[rec.gene]||PALETTE.x,target=rec.kind==='source'?[.80,1,.90]:[1,.86,.55],c=mix3(pal,target,rec.publicWisdom ? .55 : .34);out.push({center:rec.world,size:(rec.kind==='source'?3.2:4.4+rank*.7),color:[...c,(rec.kind==='source' ? .10 : .12+rank*.018+(rec.publicWisdom ? .05 : 0))*fade],phase:random01(rec.id,'fieldlight')*Math.PI*2})}return out;
+function populationBodies(width,height,fade=1){
+  const leaves=[],lights=[];
+  for(const rec of state.records){
+    if(rec.id===state.current?.id)continue;
+    collectBody(rec.id,overviewCenterFor(rec,width),overviewBodyScaleFor(rec,width),FAR_Z,height,leaves,lights);
+  }
+  for(const x of leaves)x.color[3]*=fade;
+  for(const x of lights)x.color[3]*=fade;
+  return {leaves,lights};
 }
 
 function setLabel(id){const d=state.identities.get(id);state.label.textContent=`${id} · ${d?.title||id}`;state.label.classList.add('show')}
-function openGlobal(id,now=performance.now()){
+function openGlobal(id,width,now=performance.now()){
   const rec=state.recordById.get(id);if(!rec)return false;
-  const scale=bodyScaleFor(rec);
+  const overviewWidth=Number(width)||state?.canvas?.getBoundingClientRect().width||innerWidth;
+  const scale=overviewBodyScaleFor(rec,overviewWidth);
   state.stack=[];
-  state.current={id,scale,sourceLocal:[...rec.world],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
+  state.current={id,scale,sourceLocal:[...overviewCenterFor(rec,overviewWidth)],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
   state.localQ=[...W.orientation];state.transition=0;state.closing=false;state.transitionStart=now;setLabel(id);return true;
 }
 function descend(child,now=performance.now()){
@@ -427,10 +440,10 @@ function draw(now){
   /* The outer body is the rank-1 Sierpiński shell itself: four corner tetrahedra
    * around the permanent central void. Global navigation keeps rotating it even
    * while inquiry is open. */
-  state.renderer.draw(outerCells(),W.orientation,[0,0,0],proj,view,{faces:true});
-  const fade=!state.current?1:(state.stack.length?0:Math.pow(1-state.transition,2));
-  state.renderer.draw(populationInstances(fade),W.orientation,[0,0,0],proj,view,{faces:true});
-  state.renderer.drawLights(populationLights(fade),W.orientation,[0,0,0],proj,view,now*.001,d);
+  state.renderer.draw(outerCells(rect.width),W.orientation,[0,0,0],proj,view,{faces:true});
+  const fade=!state.current?1:(state.stack.length?0:Math.pow(1-state.transition,2)),population=populationBodies(rect.width,rect.height,fade);
+  state.renderer.draw(population.leaves,W.orientation,[0,0,0],proj,view,{faces:true});
+  state.renderer.drawLights(population.lights,W.orientation,[0,0,0],proj,view,now*.001,d);
   let lightCount=0,quantumCount=0,activeLight=null,translate=[0,0,0];
   if(state.current){
     const tree=[],lights=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,lights);for(const x of tree)x.color[3]*=.3+.7*state.transition;for(const x of lights)x.color[3]*=.25+.75*state.transition;
@@ -441,13 +454,13 @@ function draw(now){
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
   drawWisdom(rect,cam,translate,activeLight);
-  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
+  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;state.hud.innerHTML=`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch an organism</small>`};
   state.raf=requestAnimationFrame(draw);
 }
 
-function hitGlobal(x,y,width,height){let best=null;for(const rec of state.records){const p=projectPoint(rec.world,W.orientation,FAR_Z,width,height),dist=Math.hypot(x-p.x,y-p.y);if(dist<15&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
+function hitGlobal(x,y,width,height){let best=null;for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width),W.orientation,FAR_Z,width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),FAR_Z,height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
 function hitChild(x,y,width,height){
   if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
   /* projectPoint rotates its input before perspective. Pull the world translation
@@ -469,7 +482,7 @@ function attachInput(){
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
       if(state.current){const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}
-      else{const target=hitGlobal(x,y,r.width,r.height);if(target)openGlobal(target)}
+      else{const target=hitGlobal(x,y,r.width,r.height);if(target)openGlobal(target,r.width)}
     }
     e.preventDefault();
   };
