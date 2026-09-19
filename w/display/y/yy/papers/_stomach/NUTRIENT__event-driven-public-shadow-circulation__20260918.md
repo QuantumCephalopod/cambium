@@ -137,3 +137,31 @@ This ordering pressure belongs to Display/shared transport, not Papers inquiry s
 - No Papers receptor, geometry, renderer, shader, genealogy, public content body, `INDEX.yaml`, or `_cambium.yaml` change is warranted.
 - The returned Drive response has completed its local semantic duty once this source readiness + ordering consequence is incorporated here.
 - The master circulation nutrient remains OPEN until canonical destination deployment + bound source runtime + actual R2 delivery + static visitor read close end-to-end.
+
+
+## metabolic pass — 2026-09-19 · canonical promotion prepared, provider authority blocked
+
+### earned
+- Display returned HOME `display-canonical-live-promotion-blocked-20260919T214100Z`.
+- Canonical promotion was reduced to exactly four generic live-nerve carriers and no unrelated staging history.
+- A surgical fork branch was rooted directly at the checked canonical parent `5c6978a19ded9b406e27e34f9d81fc0bb5224b3b`.
+- Prepared promotion commit `48cc52b7bbbf52b6afa6a09d39dbf5fd74eeedee` changes exactly:
+  - `w/display/x/live/src/index.js`
+  - `w/display/x/live/test.mjs`
+  - `w/display/x/live/README.md`
+  - `.github/workflows/cloudflare-live.yml`
+- GitHub Actions run `35471086651` passed the exact prepared commit; test SUCCESS, deploy SKIPPED outside canonical main.
+
+### exact unresolved blocker
+The current GitHub integration has read access but no upstream mutation authority for `self-similar-systems/cambium`.
+- upstream branch/ref creation → HTTP 403 `Resource not accessible by integration`;
+- upstream pull-request creation from the prepared fork branch → the same HTTP 403.
+
+No canonical ref, PR, commit, Worker deployment or production state changed.
+
+### assimilation
+- This is provider-access pressure only; it does not alter Papers inquiry semantics or the earned acknowledged-base circulation contract.
+- The Display response carrier may retire after this exact blocker + resumption witness is incorporated.
+- The master circulation nutrient remains OPEN.
+- Safe resumption requires re-reading canonical `main` before using the prepared commit; do not assume the checked parent remains current.
+- Once canonical write/PR authority exists, reconcile only the four affected live-nerve carriers, require canonical test + actual deploy success, and only then proceed to bound source-runtime deployment and end-to-end circulation witnesses.
