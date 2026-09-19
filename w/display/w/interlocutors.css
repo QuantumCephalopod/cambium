@@ -15,8 +15,6 @@ html[data-composition="split"][data-composition-axis="vertical"] .interlocutor+.
 html[data-composition="split"][data-composition-axis="horizontal"] .interlocutor+.interlocutor{border-top:1px solid rgba(241,239,233,.17)}
 html[data-composition="split"] .interlocutor-content{left:20px;bottom:24px;width:calc(100% - 40px);max-height:65%}
 html[data-composition="split"] #mini{left:50%;right:auto;transform:translateX(-50%);z-index:30}
-html[data-composition="split"] #commit{left:50%;transform:translateX(-50%);z-index:31}
-html[data-composition="split"] #commit.show{transform:translateX(-50%)}
 html[data-composition="split"] #site-state{left:50%;transform:translateX(-50%);text-align:center}
 html[data-composition="split"] header{z-index:32}
 .interlocutor[data-pulse="true"]::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 80px rgba(255,255,255,.07);z-index:4}

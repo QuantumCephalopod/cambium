@@ -1,3 +1,9 @@
 [data-interlocutor="organism:philosophy"]{pointer-events:none}
 [data-interlocutor="organism:philosophy"] .philosophy-content{pointer-events:none}
 [data-interlocutor="organism:philosophy"] .philosophy-content>section{position:relative;width:100%}
+.philosophy-global-sites{position:absolute;inset:0;z-index:5;pointer-events:none}
+.philosophy-global-site{position:absolute;transform:translate(-50%,-50%);display:grid;gap:3px;justify-items:center;pointer-events:auto;cursor:pointer;padding:5px 7px;border:0;background:rgba(4,8,12,.34);backdrop-filter:blur(6px);color:rgba(241,239,233,.78);text-shadow:0 1px 12px #000;transition:opacity .14s ease,background .14s ease}
+.philosophy-global-site small{font:7px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(170,255,229,.54)}
+.philosophy-global-site span{font:500 9px/1 var(--mono);letter-spacing:.055em;white-space:nowrap}
+.philosophy-global-site:hover,.philosophy-global-site:focus-visible{outline:1px solid rgba(170,255,229,.42);background:rgba(9,18,22,.72);color:#fff}
+.philosophy-global-site[data-active="true"] span{color:rgba(202,255,237,.96)}
