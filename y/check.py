@@ -74,6 +74,8 @@ def main():
     check((crawler/'x'/'cursor.json').is_file(),'Crawlerbait capture cursor missing')
     check((crawler/'x'/'captures'/'manifest.json').is_file(),'Crawlerbait capture manifest missing')
     check((crawler/'z'/'policy.json').is_file(),'Crawlerbait membrane policy missing')
+    crawler_style=(crawler/'z'/'style.css').read_text(encoding='utf-8')
+    check('var(--display-safe-top)' in crawler_style,'Crawlerbait local panel does not consume Display safe-area contract')
     policy=json.loads((crawler/'z'/'policy.json').read_text(encoding='utf-8'))
     ip_identity=policy.get('client_ip_identity') or {}
     check(
@@ -242,6 +244,9 @@ def main():
     check("data-aperture=\"closed\"" in actual and "dataset.aperture='open'" in aperture,'global navigator is not aperture-owned')
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
+    papers_sierpinski=(DISPLAY/'y'/'yy'/'papers'/'sierpinski.js').read_text(encoding='utf-8')
+    check('S_QUANTUM_SCALE' in papers_sierpinski and 'bodyScaleFor' in papers_sierpinski and 'Math.pow(2,rankNumber' in papers_sierpinski,'Papers visual scale is not anchored to S quantum')
+    check('drawLights' in papers_sierpinski and 'metabolight' in papers_sierpinski and 'quantumEmberCount' in papers_sierpinski,'Papers metabolight/quantum-emission witness missing')
     check("getElementById('commit')" not in runtime and 'pending=' not in runtime,'obsolete inspect→commit staging remains in Display runtime')
     check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')

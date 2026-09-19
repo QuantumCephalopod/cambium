@@ -14,7 +14,7 @@
   left:clamp(1rem,3vw,3rem);
   bottom:clamp(1rem,3vw,3rem);
   width:min(390px,calc(100vw - 2rem));
-  max-height:min(72vh,680px);
+  max-height:min(72vh,680px,calc(100vh - var(--display-safe-top) - clamp(1rem,3vw,3rem) - 8px));
   overflow:auto;
   pointer-events:auto;
   padding:1rem 1.05rem .9rem;
@@ -184,7 +184,7 @@
     left:.75rem;
     bottom:.75rem;
     width:calc(100vw - 1.5rem);
-    max-height:46vh;
+    max-height:min(46vh,calc(100vh - var(--display-safe-top) - .75rem - 8px));
   }
   .crawlerbait-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .crawlerbait-note{display:none}
