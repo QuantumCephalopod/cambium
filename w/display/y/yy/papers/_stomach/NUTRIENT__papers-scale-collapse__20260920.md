@@ -157,3 +157,79 @@ A lawful repair should first decide and witness:
 - whether macro inquiry may keep camera normalization as an inspection affordance without erasing the overview's cross-rank scale truth.
 
 The static-shadow freshness wound remains independent.
+
+
+## repair pass — 2026-09-20 · recursive overview scale materialized
+
+### ACT / EARNED
+
+The diagnosed scale relation has now been materialized in the Papers renderer without opacity retuning.
+
+#### shared encounter scale restored
+The custom Papers root field now uses the same viewport-dependent root scale family as the generic Display field:
+- desktop: 1.75
+- narrow/mobile: 1.42
+
+The four outer Sierpiński corner bodies are translated and scaled by that same root factor, so Papers no longer enters the local view as a 1.0-scale body beside generic ~1.75-scale site-holons.
+
+#### fixed overview NODE_SCALE removed
+The uniform `NODE_SCALE=.032` proxy has been removed.
+
+Overview intrinsic scale is now:
+
+`overview_scale(entity) = root_field_scale × S_QUANTUM_SCALE × 2^rank`
+
+with `S_QUANTUM_SCALE=.0045`.
+
+Therefore Source remains the minimum quantum and each higher Holon rank carries the already-earned 2× linear / 4× quantum-count recurrence.
+
+#### overview itself now uses recursive genealogical LOD
+The overview no longer draws one unrelated same-size tetrahedron for every identity.
+
+For every visible Papers organism it now invokes the existing `collectBody(...)` recursion at that organism's truthful overview scale:
+- if projected size is below LOD threshold, one collapsed tetrahedral proxy is drawn;
+- if projected size earns more resolution, the body resolves into its actual four parents at half scale;
+- that recursion continues only while screen resolution earns it, bounded by the existing LOD/depth law;
+- Source ground terminates recursion.
+
+Thus the same recursive body law now governs both overview and inquiry; selection no longer switches from a flat point population into a different morphology.
+
+#### transition/hit relation repaired with the same geometry
+Overview centers are scaled with the root field.
+Hit radius is derived from projected intrinsic body size with bounded minimum/maximum reach.
+Opening a body now starts from the exact scaled overview center and overview body scale, so the selected body's transition does not jump from an unrelated proxy geometry.
+
+#### macro inquiry intentionally conserved
+The selected-body camera still scales proportionally with body scale.
+
+This keeps macro inquiry readable and preserves the already-working recursive parent geometry. The overview now carries cross-rank absolute scale truth; macro inquiry remains a normalized inspection affordance.
+
+### WITNESS
+Exact staged implementation:
+- `w/display/y/yy/papers/sierpinski.js`
+- `y/check.py` now permanently rejects return of fixed `NODE_SCALE` overview physiology and requires shared root-scale + S-anchored recursive overview LOD.
+
+Provider witness:
+- workflow: `display membrane`
+- run: `35475404443`
+- head: `7db1e23c20f199645c59b3d75e66f4c0814e791f`
+- build: SUCCESS
+- persistent Display membrane build: SUCCESS
+- tree-addressed organism witness: SUCCESS
+- address algebra: SUCCESS
+- tetrahedral closure: SUCCESS
+- exact membrane-byte verification: SUCCESS
+- staging artifact upload: SUCCESS
+
+### conserved boundaries
+- no opacity/material tuning;
+- no Papers receptor semantic change;
+- no source/Holon identity or genealogy mutation;
+- no macro camera-law change;
+- no Drive source-body mutation;
+- no public-shadow freshness mutation.
+
+### still OPEN
+A real browser image of the repaired artifact remains necessary to close the perceptual acceptance of this nutrient.
+
+The independent live-shadow freshness wound also remains: the currently committed static shadow is still the older 154-organism body and is not repaired by this scale act.
