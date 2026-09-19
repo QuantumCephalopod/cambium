@@ -31,3 +31,20 @@ Questions to metabolize:
 No implementation change is authorized by this nutrient yet.
 
 The next act should derive a coherent perceptual north star and a small set of invariant experiential relations from the already-earned Papers ontology before translating them back into renderer behavior.
+
+
+## added encounter pressure — overview should explain Papers through its living pumps
+
+When no organism is selected, the Papers overview should carry an actual explanation of what Papers is.
+
+The desired form is **four visually legible phases**, not a detached help panel or arbitrary four-step infographic.
+
+Those four phases must be derived from the current living Drive `/papers` pump physiology:
+- reacquire the actual current pumps and their local receptor entrypoints;
+- understand what each pump contributes to the organism's temporal life;
+- determine whether the current pump body genuinely collapses into four public-facing phases;
+- preserve meaningful distinctions if pump count and explanatory phase count are not identical.
+
+The visual explanation should coexist with the living overview body and eventually help a visitor understand why Sources enter, how matter is prepared/metabolized, how relational organisms grow, and how the body continues — but these are hypotheses until checked against the live pumps.
+
+No explanatory copy or four-phase visual grammar should be fixed before that reacquisition.
