@@ -102,3 +102,38 @@ The circulation nutrient itself does **not** close yet because source→destinat
 
 ### bounded next move
 Return the exact accepted destination packet/revision contract to Drive `/papers/_stomach`. Source Papers owns whether and how its bound producer evolves. display.papers keeps this master circulation nutrient OPEN until source-side production and real end-to-end circulation close the exit condition.
+
+
+## metabolic pass — 2026-09-19 · source mirror ready, deployment order exposed
+
+### earned
+- Drive `/papers` returned HOME `papers-public-delta-source-mirror-20260919T212254Z`.
+- The source-owned raw `_feed.gs` mirror was evolved **in place** on stable Drive ID `1rKA3vxriCOYSWWu4-ubVTcYZqZyxIqWr` and byte-witnessed after replacement: 49,032 bytes, SHA-256 `b6132f3ca7e516b9d8dbf3c81eab5da163ca097359f2a6aa3307394b81d0f361`.
+- Current source membership is now explicitly registry-grounded: 102 canonical Sources, 65 canonical Holons, 65 Inquiry bodies; current Inquiry projection is 51 COMPLETE / 14 PARTIAL.
+- Source public state is represented by stable `root`, `source:<S.*>`, `holon:<nH.*>`, and `inquiry:<nH.*>` units. Missing Inquiry is an explicit PARTIAL/PENDING unit, never an implicit delete.
+- Source ACK state is compact: one acknowledged public revision plus per-unit revisions only. Rich values remain in source-owned Body + Inquiry; failed delivery stores only a retry marker and reacquires current state instead of replaying stale rich packet bytes.
+- Current complete reconciliation is 983,982 bytes under the existing 1,048,576-byte destination packet bound. The producer blocks explicitly rather than truncating if a future recovery reconciliation grows beyond that bound.
+- The source mirror passed syntax + local source-circulation regression tests for initial reconcile, ACK adoption, activity-only no-rich transition, changed-state delta, corrupt-ledger recovery, explicit pending Inquiry and small retry-marker custody.
+- Source HOME/feed is closed and current: Pulse reflects the source HOME, refresh is ACKNOWLEDGED, Body carries the same event, Inquiry is READY, UPLINK is READY, and the old bound live runtime returned only `LIVE_DEDUPED`.
+
+### exact remaining boundary
+The raw Drive source mirror is **not** the container-bound Apps-Script runtime. The connected substrate currently exposes no lawful mutation/deployment action for that bound project. Therefore:
+- source mirror = EVOLVED + WITNESSED;
+- bound source runtime = UNCHANGED / DEPLOYMENT OPEN;
+- Display staging destination = EVOLVED + WITNESSED;
+- canonical production Worker = UNCHANGED / PROMOTION OPEN.
+
+### ordering consequence
+The newly evolved source must **not** be deployed against the old production Worker. Safe order is destination first:
+1. deliberately promote the already-tested generic Display live nerve into canonical production;
+2. witness the canonical Worker deployment;
+3. only then paste/deploy the evolved source mirror into the bound `/papers/_feed` Apps-Script runtime;
+4. bootstrap/reconcile the Worker-ACKNOWLEDGED base;
+5. exercise real changed-unit / activity-only / retry / stale-base / recovery / visitor-read witnesses.
+
+This ordering pressure belongs to Display/shared transport, not Papers inquiry semantics.
+
+### assimilation
+- No Papers receptor, geometry, renderer, shader, genealogy, public content body, `INDEX.yaml`, or `_cambium.yaml` change is warranted.
+- The returned Drive response has completed its local semantic duty once this source readiness + ordering consequence is incorporated here.
+- The master circulation nutrient remains OPEN until canonical destination deployment + bound source runtime + actual R2 delivery + static visitor read close end-to-end.
