@@ -33,3 +33,127 @@ Do not treat darkness alone as the explanation if geometry itself is underscaled
 ## boundary
 
 This nutrient requests diagnosis first. It does not yet authorize a guessed visual retune or arbitrary multiplier. Compare current code and actual site-holon scale contracts, then identify the smallest violated relation before mutation.
+
+
+## diagnostic pass — 2026-09-20 · scale relation located
+
+### PASS / EARNED — root body is underscaled relative to the shared site-holon field
+
+The Papers custom renderer hides the generic shared field surface and draws its own full-screen WebGL stage. CSS is not shrinking the canvas: `.papers-sierpinski-stage` is absolute `inset:0; width:100%; height:100%`.
+
+The scale mismatch is inside the renderer.
+
+Generic Display field rendering uses the same camera depth and essentially the same FOV as Papers, but applies a root model scale of approximately `1.75 * target.scale`.
+
+Papers instead draws its custom outer Sierpiński shell at intrinsic overall scale `1.0`:
+- each corner cell is centered at `V0[i] * .5`;
+- each corner tetrahedron has `scale: .5`;
+- together they reconstruct one canonical tetrahedron of overall linear scale 1.
+
+At root view, with the same `camZ = 3.2` / `FAR_Z = 3.2` and same FOV family, Papers therefore occupies only about `1 / 1.75 = 57%` of the generic site-holon linear encounter scale before any shader-opacity effect.
+
+This directly explains why the Papers tetrahedral field appears materially smaller than the other site-holons.
+
+### PASS / EARNED — the S-quantum recursive rank law is implemented only after selection, not in the overview population
+
+The local receptor already contains the intended rule:
+- `S` is the minimum Papers organism quantum;
+- rank `nH` has linear scale `2^n` in S-units.
+
+The renderer contains the matching intrinsic function:
+
+`bodyScaleFor(entity) = S_QUANTUM_SCALE * 2^rank`
+
+with `S_QUANTUM_SCALE = .0045`.
+
+But this intrinsic scale is used only when an organism is opened/selected.
+
+In the overview field, every Source and every Holon is instead rendered through one fixed proxy:
+
+`NODE_SCALE = .032`
+
+`populationInstances(...) → scale: NODE_SCALE`
+
+Rank affects only the tiny glow size/intensity there, not the tetrahedral body scale.
+
+So the overview collapses the intended scale ratios completely:
+- `S`: intrinsic .0045
+- `1H`: .009
+- `2H`: .018
+- `3H`: .036
+- `4H`: .072
+- `5H`: .144
+
+but every overview body is .032.
+
+The intended `S → 5H` linear ratio is 32×; the current overview renders it as 1×.
+
+This is not merely a shader problem. The recursive scale law is genuinely absent from the overview embodiment.
+
+### CONDITIONAL / CURRENTLY CORRECT — selected-body recursion exists
+
+Once an organism is selected, the renderer does use the earned recursive geometry:
+- selected rank uses `bodyScaleFor(...)`;
+- its four direct parents occupy the four tetrahedral corners at half the parent's linear scale;
+- recursive descent repeats the same half-scale relation;
+- `collectBody(...)` reveals the true ancestry until source ground / LOD cutoff.
+
+So the recursive law is not missing everywhere. It is currently confined to inquiry mode.
+
+### CHALLENGE — selected camera also hides absolute rank scale perceptually
+
+The selected camera is chosen approximately as:
+
+`cameraZ = bodyScale / MACRO_FILL`
+
+so larger intrinsic ranks are moved proportionally farther from the camera.
+
+This preserves internal geometry but makes opened organisms fill roughly the same screen fraction. Therefore absolute rank size is deliberately normalized away in macro inquiry.
+
+That can remain a lawful inquiry-camera choice, but it means the overview is the only place where the cross-rank size relation could currently be perceived — and the overview is exactly where fixed `NODE_SCALE` erases it.
+
+### PASS / SEPARATE WOUND — screenshot is also showing an older static population
+
+The screenshot says `154 tetrahedral organisms`.
+
+That exactly matches the current committed static Papers shadow:
+- 95 Sources
+- 59 Holons
+- total 154
+
+The newer Drive Papers source body witnessed during the live-circulation work contains:
+- 102 Sources
+- 65 Holons
+- total 167
+
+Therefore the screenshot is using the static `papers-shadow/current.json` population rather than the newer source body.
+
+This is a freshness/circulation wound, separate from the scale bug. Fixing scale alone will not update the population count.
+
+### visibility amplifier, not primary cause
+
+Papers further suppresses itself visually:
+- outer shell alpha ≈ .045;
+- overview Source tetra alpha ≈ .12;
+- overview Holon tetra alpha ≈ .175;
+- Source field lights ≈ .10 alpha.
+
+These values compound the invisibility, but they do not explain the smaller geometry. The root-scale mismatch and fixed-rank proxy are upstream causes.
+
+### smallest violated relations
+
+1. **site-holon encounter scale:** Papers bypasses the generic field and fails to inherit/reproduce the generic root framing scale;
+2. **Papers overview embodiment:** all ranks collapse to one fixed tetrahedral proxy instead of preserving S-anchored recursive size through lawful LOD;
+3. **freshness:** the current browser population is still the 154-organism static shadow.
+
+### repair pressure — still OPEN
+
+Do not patch opacity first.
+
+A lawful repair should first decide and witness:
+- one Papers-local root field scale aligned with the shared site-holon encounter scale;
+- a rank-aware overview LOD in which `S` remains the minimum quantum and `nH` derives from `2^n` scale rather than fixed `NODE_SCALE`;
+- whether distant high-rank bodies render as scaled collapsed tetrahedra or bounded recursive shells, while preserving GPU-visible-resolution cost;
+- whether macro inquiry may keep camera normalization as an inspection affordance without erasing the overview's cross-rank scale truth.
+
+The static-shadow freshness wound remains independent.
