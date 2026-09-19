@@ -139,3 +139,100 @@ The phases are cyclical rather than a one-way pipeline:
 Anabolism changes the living body; the changed body is exactly what the next Accumulation heartbeat reacquires, so new growth changes what Papers can notice and what it becomes curious about next.
 
 Do not map these four temporal phases onto Papers' four root loci merely because both sets have cardinality four. Root loci are spatial/semantic anatomy; pumps are recurrent temporal physiology.
+
+
+## cook pass — 2026-09-20 · living overview physiology materialized
+
+### earned perceptual law
+The north star is now assimilated into the local Papers receptor as organism law:
+- Papers is encountered as **organ → tissue → cell**, not as a node graph;
+- Source/Holon/collapsed particle/resolved recursive body are one tetrahedral material family at different scale/coherence;
+- higher rank means more recursive living matter held together, not merely brighter/larger iconography;
+- cavities/voids are interior space of the body;
+- metabolight is condensed yield inside an earning body, never a replacement sprite;
+- selection is scale passage inside one continuing world;
+- the four temporal pump phases remain distinct from the four spatial root loci.
+
+Local receptor advanced to v1.5.
+
+### materialized overview physiology
+
+When no organism is selected, the central Papers void now hosts a small living explanatory body rather than a detached help panel.
+
+It cycles through the four live pump-derived phases:
+
+1. **QUESTION** — current body develops one bounded appetite;
+2. **PREPARE** — arrived matter is recognized/folded toward a truthful receptor;
+3. **METABOLIZE** — one complete outside work closes into one living Source quantum;
+4. **GROW** — four living same-rank bodies may close into one larger Holon while parents remain alive.
+
+The visual demonstration is made from simplex/tetrahedral matter itself:
+- QUESTION sends one small tetrahedral pulse outward from an existing body;
+- PREPARE draws drifting fragments into an organized four-part configuration;
+- METABOLIZE closes the configuration into one tetrahedral Source with central condensation;
+- GROW keeps four parent bodies visible while a larger enclosing body and metabolight emerge.
+
+The phase copy is deliberately concise explanatory tissue. Pinned Pretext remains dedicated to selected source-owned metabolight wisdom and is not repurposed as the physics engine.
+
+### recursive motion law
+
+Overview bodies now have bounded organic movement without invented semantic subdivision.
+
+For every organism, multiple deterministic packing points are derived **inside its currently realized tetrahedral chamber**. Motion interpolates only between those in-chamber points.
+
+Therefore:
+- motion remains perceptual packing, not semantic address;
+- current flat chambers may move without pretending to contain a deeper split;
+- if Cambium later earns a new subdivision, the same law rebinds to the new realized child cells automatically;
+- no current root-locus names or rank depths are hard-coded into the movement law.
+
+### scale-passage background
+
+The prior Papers scale is no longer forced to opacity zero when inquiry opens.
+
+During scale passage:
+- previous-scale tissue remains faintly present;
+- deeper inquiry keeps an even fainter global field;
+- the background continues using the same global orientation and organic overview motion.
+
+This preserves the intended distant-tissue / asteroid-belt scale witness without introducing a second scene.
+
+### provider witness
+
+Staging head under witness:
+`37abaae9c372a579106f1107cdcbfda357d99792`
+
+GitHub Actions:
+- workflow: `display membrane`
+- run: `35477447036`
+- conclusion: **SUCCESS**
+- persistent Display membrane build: SUCCESS
+- tree-addressed Display organism: SUCCESS
+- address algebra: SUCCESS
+- tetrahedral closure: SUCCESS
+- exact membrane bytes: SUCCESS
+- staging browser artifact upload: SUCCESS
+
+A permanent repository witness now guards:
+- four overview phase identities;
+- current-cell-derived bounded motion anchors;
+- persistent previous-scale background matter;
+- simplex embodiment of the central physiology;
+- existing S-quantum/rank-recursive scale law.
+
+### conserved boundaries
+- no Source/Holon identity, rank, genealogy or semantic placement changed;
+- no Drive /papers source-body mutation;
+- no mapping of pump phases onto Genesis/Continuity/Governance/Evolution;
+- no change to selected Wisdom content or Pretext semantic authority;
+- no public-shadow freshness repair folded into this act.
+
+### still OPEN
+
+Perceptual acceptance remains browser-owned:
+- Does the overview actually read as one living body explaining itself?
+- Does the central physiology remain subordinate to the surrounding organ rather than becoming a dashboard?
+- Does the previous scale read as distant continuing matter during zoom?
+- Is the motion alive enough to convey tissue without becoming particle noise?
+
+The independent 154→current-source freshness wound also remains separate.
