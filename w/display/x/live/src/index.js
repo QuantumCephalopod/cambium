@@ -4,6 +4,8 @@ const JSON_HEADERS = Object.freeze({
 });
 const MAX_BODY_BYTES = 1024 * 1024;
 const EVENT_ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$/;
+const UNIT_KEY = /^[A-Za-z0-9][A-Za-z0-9:._/-]{0,240}$/;
+const REVISION = /^sha256:[a-f0-9]{64}$/;
 const SHADOW_KEYS = Object.freeze({
   "organism:papers": "y/papers/current.json"
 });
@@ -15,7 +17,8 @@ const ALLOWED_FIELDS = new Set([
   "projection_revision",
   "semantic_revision",
   "activity",
-  "snapshot"
+  "delta",
+  "reconcile"
 ]);
 
 function json(value, status = 200) {
@@ -43,12 +46,101 @@ function normalizeActivity(value) {
   };
 }
 
+function requiredRevision(value, label) {
+  if (typeof value !== "string" || !REVISION.test(value)) {
+    throw new TypeError(label + " must be a sha256 revision");
+  }
+  return value;
+}
+
+function normalizeUnitKey(value, label) {
+  if (typeof value !== "string" || !UNIT_KEY.test(value)) {
+    throw new TypeError(label + " must be a bounded opaque unit key");
+  }
+  return value;
+}
+
+function normalizeUnit(value, label) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError(label + " must be an object");
+  }
+  for (const key of Object.keys(value)) {
+    if (key !== "revision" && key !== "value") {
+      throw new TypeError(label + " contains an unexpected field");
+    }
+  }
+  if (!Object.prototype.hasOwnProperty.call(value, "value")) {
+    throw new TypeError(label + ".value is required");
+  }
+  return {
+    revision: requiredRevision(value.revision, label + ".revision"),
+    value: value.value
+  };
+}
+
+function normalizeUnits(value, label) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError(label + " must be an object keyed by public unit id");
+  }
+  const units = Object.create(null);
+  for (const [rawKey, rawUnit] of Object.entries(value)) {
+    const key = normalizeUnitKey(rawKey, label + " key");
+    units[key] = normalizeUnit(rawUnit, label + "." + key);
+  }
+  return units;
+}
+
+function normalizeDelta(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError("delta must be an object");
+  }
+  const allowed = new Set(["base_public_revision", "target_public_revision", "upserts", "deletes"]);
+  for (const key of Object.keys(value)) {
+    if (!allowed.has(key)) throw new TypeError("unexpected delta field: " + key);
+  }
+  const deletes = value.deletes ?? [];
+  if (!Array.isArray(deletes)) throw new TypeError("delta.deletes must be an array");
+  const normalizedDeletes = deletes.map((key, index) => normalizeUnitKey(key, "delta.deletes[" + index + "]"));
+  if (new Set(normalizedDeletes).size !== normalizedDeletes.length) {
+    throw new TypeError("delta.deletes contains duplicate keys");
+  }
+  const upserts = normalizeUnits(value.upserts ?? {}, "delta.upserts");
+  for (const key of normalizedDeletes) {
+    if (Object.prototype.hasOwnProperty.call(upserts, key)) {
+      throw new TypeError("delta key cannot be both upserted and deleted: " + key);
+    }
+  }
+  if (Object.keys(upserts).length === 0 && normalizedDeletes.length === 0) {
+    throw new TypeError("delta must change at least one public unit");
+  }
+  return {
+    base_public_revision: requiredRevision(value.base_public_revision, "delta.base_public_revision"),
+    target_public_revision: requiredRevision(value.target_public_revision, "delta.target_public_revision"),
+    upserts,
+    deletes: normalizedDeletes
+  };
+}
+
+function normalizeReconcile(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError("reconcile must be an object");
+  }
+  const allowed = new Set(["target_public_revision", "units"]);
+  for (const key of Object.keys(value)) {
+    if (!allowed.has(key)) throw new TypeError("unexpected reconcile field: " + key);
+  }
+  return {
+    target_public_revision: requiredRevision(value.target_public_revision, "reconcile.target_public_revision"),
+    units: normalizeUnits(value.units ?? {}, "reconcile.units")
+  };
+}
+
 function publicPacket(body) {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     throw new TypeError("HOME packet must be an object");
   }
   for (const key of Object.keys(body)) {
-    if (!ALLOWED_FIELDS.has(key)) throw new TypeError(`unexpected HOME field: ${key}`);
+    if (!ALLOWED_FIELDS.has(key)) throw new TypeError("unexpected HOME field: " + key);
   }
   if (typeof body.event_id !== "string" || !EVENT_ID.test(body.event_id)) {
     throw new TypeError("event_id must be a stable literal id");
@@ -58,10 +150,8 @@ function publicPacket(body) {
   }
   const kind = body.kind ?? "HOME";
   if (kind !== "HOME") throw new TypeError("only HOME secretion is admitted");
-  if (Object.prototype.hasOwnProperty.call(body, "snapshot")) {
-    if (!body.snapshot || typeof body.snapshot !== "object" || Array.isArray(body.snapshot)) {
-      throw new TypeError("snapshot must be an object when present");
-    }
+  if (body.delta != null && body.reconcile != null) {
+    throw new TypeError("HOME packet may carry delta or reconcile, not both");
   }
   return {
     event_id: body.event_id,
@@ -71,18 +161,227 @@ function publicPacket(body) {
     projection_revision: optionalString(body.projection_revision, "projection_revision", 128),
     semantic_revision: optionalString(body.semantic_revision, "semantic_revision", 128),
     activity: normalizeActivity(body.activity),
-    ...(Object.prototype.hasOwnProperty.call(body, "snapshot") ? { snapshot: body.snapshot } : {})
+    delta: body.delta == null ? null : normalizeDelta(body.delta),
+    reconcile: body.reconcile == null ? null : normalizeReconcile(body.reconcile)
   };
 }
 
-function receiptKey(packet) {
-  return [
-    packet.site_id,
-    packet.event_id,
-    packet.projection_revision ?? "",
-    packet.semantic_revision ?? "",
-    packet.activity?.feed_state ?? packet.activity?.state ?? ""
-  ].join("\u001f");
+function canonicalJson(value) {
+  if (value === null || typeof value === "string" || typeof value === "boolean") {
+    return JSON.stringify(value);
+  }
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) throw new TypeError("public unit contains a non-finite number");
+    return JSON.stringify(value);
+  }
+  if (Array.isArray(value)) {
+    return "[" + value.map((item) => canonicalJson(item)).join(",") + "]";
+  }
+  if (value && typeof value === "object") {
+    return "{" + Object.keys(value).sort().map((key) => JSON.stringify(key) + ":" + canonicalJson(value[key])).join(",") + "}";
+  }
+  throw new TypeError("public unit contains an unsupported JSON value");
+}
+
+async function sha256Revision(text) {
+  const bytes = new TextEncoder().encode(text);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const hex = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return "sha256:" + hex;
+}
+
+async function valueRevision(value) {
+  return sha256Revision(canonicalJson(value));
+}
+
+async function stateRevision(units) {
+  const ledger = Object.keys(units).sort().map((key) => [key, units[key].revision]);
+  return sha256Revision(canonicalJson(ledger));
+}
+
+async function verifyUnits(units, label) {
+  for (const key of Object.keys(units)) {
+    const expected = await valueRevision(units[key].value);
+    if (units[key].revision !== expected) {
+      throw new TypeError(label + "." + key + ".revision does not match its canonical public value");
+    }
+  }
+}
+
+function cloneUnits(units) {
+  const cloned = Object.create(null);
+  for (const [key, unit] of Object.entries(units)) {
+    cloned[key] = { revision: unit.revision, value: unit.value };
+  }
+  return cloned;
+}
+
+function isV2State(value, siteId) {
+  return Boolean(
+    value && typeof value === "object" && !Array.isArray(value) &&
+    value.version === 2 && value.site_id === siteId && REVISION.test(value.public_revision || "") &&
+    value.units && typeof value.units === "object" && !Array.isArray(value.units)
+  );
+}
+
+async function readCurrent(bucket, key, siteId) {
+  const object = await bucket.get(key);
+  if (!object) return { object: null, state: null, legacy: false };
+  let parsed = null;
+  try { parsed = JSON.parse(await object.text()); }
+  catch (_) { return { object, state: null, legacy: true }; }
+  if (!isV2State(parsed, siteId)) return { object, state: null, legacy: true };
+  return { object, state: parsed, legacy: false };
+}
+
+function writeCondition(currentObject) {
+  if (currentObject) return { etagMatches: currentObject.etag };
+  const headers = new Headers();
+  headers.set("If-None-Match", "*");
+  return headers;
+}
+
+function responseContext(packet, key, extra = {}) {
+  return {
+    event_id: packet.event_id,
+    site_id: packet.site_id,
+    key,
+    ...extra
+  };
+}
+
+async function writeState(env, key, packet, units, publicRevision, currentObject, mode) {
+  const state = {
+    version: 2,
+    site_id: packet.site_id,
+    public_revision: publicRevision,
+    units,
+    last_event: {
+      event_id: packet.event_id,
+      kind: packet.kind,
+      occurred_at: packet.occurred_at,
+      projection_revision: packet.projection_revision,
+      semantic_revision: packet.semantic_revision,
+      activity: packet.activity
+    },
+    materialized_at: new Date().toISOString()
+  };
+  const stored = await env.SHADOW.put(key, JSON.stringify(state), {
+    onlyIf: writeCondition(currentObject),
+    httpMetadata: {
+      contentType: "application/json; charset=utf-8",
+      cacheControl: "public, max-age=300"
+    },
+    customMetadata: {
+      site_id: packet.site_id,
+      event_id: packet.event_id,
+      public_revision: publicRevision,
+      mode
+    }
+  });
+  return { stored, state };
+}
+
+async function concurrentResult(env, key, packet, targetRevision) {
+  const latest = await readCurrent(env.SHADOW, key, packet.site_id);
+  const actual = latest.state?.public_revision ?? null;
+  if (actual && actual === targetRevision) {
+    return json(responseContext(packet, key, {
+      ok: true,
+      deduped: true,
+      public_revision: actual,
+      rich_write: false,
+      concurrent: true
+    }));
+  }
+  return json(responseContext(packet, key, {
+    ok: false,
+    error: "REBASE_REQUIRED",
+    actual_public_revision: actual,
+    legacy_current: latest.legacy
+  }), 409);
+}
+
+async function applyDelta(env, key, packet, current) {
+  const delta = packet.delta;
+  if (!current.state) {
+    return json(responseContext(packet, key, {
+      ok: false,
+      error: "REBASE_REQUIRED",
+      actual_public_revision: null,
+      legacy_current: current.legacy
+    }), 409);
+  }
+  if (current.state.public_revision === delta.target_public_revision) {
+    return json(responseContext(packet, key, {
+      ok: true,
+      deduped: true,
+      public_revision: delta.target_public_revision,
+      rich_write: false
+    }));
+  }
+  if (current.state.public_revision !== delta.base_public_revision) {
+    return json(responseContext(packet, key, {
+      ok: false,
+      error: "REBASE_REQUIRED",
+      actual_public_revision: current.state.public_revision
+    }), 409);
+  }
+
+  await verifyUnits(delta.upserts, "delta.upserts");
+  const units = cloneUnits(current.state.units);
+  for (const keyToDelete of delta.deletes) delete units[keyToDelete];
+  for (const [unitKey, unit] of Object.entries(delta.upserts)) units[unitKey] = unit;
+  const computed = await stateRevision(units);
+  if (computed !== delta.target_public_revision) {
+    return json(responseContext(packet, key, {
+      ok: false,
+      error: "TARGET_REVISION_MISMATCH",
+      computed_public_revision: computed,
+      target_public_revision: delta.target_public_revision
+    }), 400);
+  }
+
+  const written = await writeState(env, key, packet, units, computed, current.object, "delta");
+  if (!written.stored) return concurrentResult(env, key, packet, delta.target_public_revision);
+  return json(responseContext(packet, key, {
+    ok: true,
+    deduped: false,
+    public_revision: computed,
+    rich_write: true,
+    mode: "delta"
+  }));
+}
+
+async function applyReconcile(env, key, packet, current) {
+  const reconcile = packet.reconcile;
+  if (current.state?.public_revision === reconcile.target_public_revision) {
+    return json(responseContext(packet, key, {
+      ok: true,
+      deduped: true,
+      public_revision: reconcile.target_public_revision,
+      rich_write: false
+    }));
+  }
+  await verifyUnits(reconcile.units, "reconcile.units");
+  const computed = await stateRevision(reconcile.units);
+  if (computed !== reconcile.target_public_revision) {
+    return json(responseContext(packet, key, {
+      ok: false,
+      error: "TARGET_REVISION_MISMATCH",
+      computed_public_revision: computed,
+      target_public_revision: reconcile.target_public_revision
+    }), 400);
+  }
+  const written = await writeState(env, key, packet, reconcile.units, computed, current.object, "reconcile");
+  if (!written.stored) return concurrentResult(env, key, packet, reconcile.target_public_revision);
+  return json(responseContext(packet, key, {
+    ok: true,
+    deduped: false,
+    public_revision: computed,
+    rich_write: true,
+    mode: "reconcile"
+  }));
 }
 
 async function readPacket(request) {
@@ -101,6 +400,14 @@ async function readPacket(request) {
   catch (error) { throw Object.assign(error, { status: 400 }); }
 }
 
+export {
+  canonicalJson,
+  publicPacket,
+  readCurrent,
+  stateRevision,
+  valueRevision
+};
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -118,39 +425,24 @@ export default {
     catch (error) { return json({ ok: false, error: error.message }, error.status || 400); }
 
     const key = SHADOW_KEYS[packet.site_id];
-    const receipt = receiptKey(packet);
-    const current = await env.SHADOW.head(key);
-    if (current?.customMetadata?.receipt === receipt) {
-      return json({ ok: true, deduped: true, event_id: packet.event_id, site_id: packet.site_id, key });
+    try {
+      const current = await readCurrent(env.SHADOW, key, packet.site_id);
+
+      if (packet.reconcile) return await applyReconcile(env, key, packet, current);
+      if (packet.delta) return await applyDelta(env, key, packet, current);
+
+      return json(responseContext(packet, key, {
+        ok: true,
+        activity_only: true,
+        rich_write: false,
+        public_revision: current.state?.public_revision ?? null,
+        legacy_current: current.legacy
+      }));
+    } catch (error) {
+      return json(responseContext(packet, key, {
+        ok: false,
+        error: error?.message || "live shadow mutation failed"
+      }), error instanceof TypeError ? 400 : (error?.status || 500));
     }
-
-    const receivedAt = new Date().toISOString();
-    const state = {
-      version: 1,
-      ...packet,
-      received_at: receivedAt
-    };
-
-    await env.SHADOW.put(key, JSON.stringify(state), {
-      httpMetadata: {
-        contentType: "application/json; charset=utf-8",
-        cacheControl: "public, max-age=300"
-      },
-      customMetadata: {
-        receipt,
-        site_id: packet.site_id,
-        event_id: packet.event_id,
-        projection_revision: packet.projection_revision ?? "",
-        semantic_revision: packet.semantic_revision ?? ""
-      }
-    });
-
-    return json({
-      ok: true,
-      deduped: false,
-      event_id: packet.event_id,
-      site_id: packet.site_id,
-      key
-    });
   }
 };
