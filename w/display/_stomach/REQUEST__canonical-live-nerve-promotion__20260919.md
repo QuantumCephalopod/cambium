@@ -60,3 +60,33 @@ A canonical promotion act may close only when:
 Return the canonical deployment witness or the smallest blocker to `display.papers/_stomach`.
 
 This request is production pressure, not automatic merge authority derived from filesystem ancestry.
+
+
+## promotion attempt — 2026-09-19 · provider membrane blocked
+
+### earned preflight
+- A surgical promotion branch was created in the writable fork directly from canonical parent `5c6978a19ded9b406e27e34f9d81fc0bb5224b3b`.
+- The promotion commit `48cc52b7bbbf52b6afa6a09d39dbf5fd74eeedee` changes exactly the four admitted live-nerve carriers and no other file:
+  - `w/display/x/live/src/index.js`
+  - `w/display/x/live/test.mjs`
+  - `w/display/x/live/README.md`
+  - `.github/workflows/cloudflare-live.yml`
+- GitHub Actions run `35471086651` executed that exact commit on branch `mnemos/canonical-live-nerve-promotion-20260919`.
+- Test job: SUCCESS.
+- Deploy job: SKIPPED, as required outside canonical `self-similar-systems/cambium:main`.
+
+### exact blocker
+The connected GitHub integration can read `self-similar-systems/cambium` but cannot mutate it:
+- creating an upstream branch returned HTTP 403 `Resource not accessible by integration`;
+- creating an upstream pull request from the prepared fork branch returned the same HTTP 403.
+
+No canonical ref, pull request, commit or deployment was changed by this attempt.
+
+### resumption witness
+The prepared surgical source remains available in the writable fork:
+- branch: `mnemos/canonical-live-nerve-promotion-20260919`
+- commit: `48cc52b7bbbf52b6afa6a09d39dbf5fd74eeedee`
+- exact canonical parent: `5c6978a19ded9b406e27e34f9d81fc0bb5224b3b`
+- provider preflight: `display live nerve` run `35471086651` SUCCESS.
+
+This request remains OPEN. The smallest unresolved dependency is canonical repository write/PR authority. Once that membrane is writable, re-check canonical `main` before promotion; do not assume the parent remained current.
