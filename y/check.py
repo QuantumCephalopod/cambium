@@ -247,6 +247,10 @@ def main():
     papers_sierpinski=(DISPLAY/'y'/'yy'/'papers'/'sierpinski.js').read_text(encoding='utf-8')
     check('S_QUANTUM_SCALE' in papers_sierpinski and 'bodyScaleFor' in papers_sierpinski and 'Math.pow(2,rankNumber' in papers_sierpinski,'Papers visual scale is not anchored to S quantum')
     check('drawLights' in papers_sierpinski and 'metabolight' in papers_sierpinski and 'quantumEmberCount' in papers_sierpinski,'Papers metabolight/quantum-emission witness missing')
+    check("PRETEXT_VERSION='0.0.9'" in papers_sierpinski and 'prepareWithSegments' in papers_sierpinski and 'layoutNextLineRange' in papers_sierpinski and 'materializeLineRange' in papers_sierpinski,'Papers active wisdom is not bound through pinned Pretext layout')
+    check('papers-wisdom-stage' in papers_sierpinski and 'wisdomState' in papers_sierpinski,'Papers metabolight text ink plane missing')
+    pretext_root=artifact/'papers-pretext-0.0.9'
+    check((pretext_root/'layout.js').is_file() and (pretext_root/'LICENSE').is_file() and (pretext_root/'VERSION.json').is_file(),'Papers pinned Pretext public carrier missing')
     check("getElementById('commit')" not in runtime and 'pending=' not in runtime,'obsolete inspect→commit staging remains in Display runtime')
     check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
