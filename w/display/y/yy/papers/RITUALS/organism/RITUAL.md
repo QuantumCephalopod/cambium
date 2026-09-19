@@ -46,6 +46,25 @@ not:
 
 Transport evolution must preserve the same Papers-local rendering/interaction contract. Do not expose private Drive identifiers merely to make live coupling easier.
 
+### Acknowledged-base live circulation
+
+Normal live HOME circulation is a **bounded transition between Worker-acknowledged public states**, not a retransmission of the complete Papers shadow.
+
+The source owns the public-unit grammar and the deterministic unit revisions. The transport/destination treats those unit keys and values as opaque public-safe material and preserves only state-transition law:
+
+- normal rich delivery is computed from the last **Worker-ACKNOWLEDGED** public revision, never from the last attempted parcel;
+- a packet carries a bounded `base_public_revision → target_public_revision` transition plus only changed keyed `upserts` and lawful `deletes`;
+- if destination current revision already equals target, return `DEDUPED` without rewriting content;
+- otherwise destination current revision must equal base before mutation; any other current revision returns `REBASE_REQUIRED` with the actual revision and must not be blindly overwritten;
+- after applying the opaque keyed delta, recompute/verify the deterministic target revision before atomically replacing the materialized current object and acknowledging that target;
+- failed delivery does not advance the source acknowledged base; a newer HOME while delivery is pending recomputes one cumulative latest-state delta from the same acknowledged base rather than queueing stale sequential patches;
+- a complete public-safe snapshot is bootstrap, explicit rebase/reconciliation, or integrity-repair physiology only; ordinary circulation resumes as delta immediately afterward;
+- activity-only or otherwise unchanged HOME delivery may carry bounded metadata but **must not rewrite or strip an already-rich public current object**;
+- absent or lagging Inquiry tissue is a source-owned `PARTIAL / PENDING` projection state, never an implicit deletion and never permission to invent wisdom;
+- visitor reads remain static/cacheable and never actuate either delta or recovery writes.
+
+The exact serialization and source-side unit values remain implementation-local. This receptor owns the invariant boundary: **acknowledged-base delta for ordinary circulation, full snapshot only for recovery-class transitions, and no metadata-only destruction of rich state.**
+
 ## Recursive tetrahedral body
 
 Papers itself is the view. The primary research population is not a list over a decorative tetrahedron and it is not a cloud of abstract points.
