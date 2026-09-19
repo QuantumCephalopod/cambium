@@ -7,6 +7,11 @@ const N = require('./navigation-physiology.js');
 const atom = noun => ({noun,children:{}});
 const root = {noun:'root',children:{w:atom('Form'),x:atom('Continuity'),z:atom('Care'),y:atom('Inquiry')}};
 let s = N.collectStructure(root);
+for(const path of ['w','x','z','y']){
+  const record=N.addressRecord(s,path),derived=N.cellForPath(path);
+  assert.ok(record,'rank-1 address must be realized');
+  assert.deepStrictEqual(derived.center,record.center,'derived cell center must equal realized structure center');
+}
 assert.deepEqual(s.leaves.map(x=>x.path).sort(), ['w','x','y','z']);
 assert.ok(s.leaves.every(x => x.center.length === 3 && x.center.every(Number.isFinite)));
 for (const a of s.addresses) {

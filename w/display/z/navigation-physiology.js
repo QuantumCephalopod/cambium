@@ -54,6 +54,13 @@
     return structure.addresses.find(a => a.path === path) || null;
   }
 
+  function cellForPath(path) {
+    A.validate(path);
+    let tet=V0.map(v=>[...v]);
+    for(const g of path) tet=splitTet(tet)[GENES.indexOf(g)];
+    return {path,tet,center:centroid(tet),point:semanticPoint(path),locus:path?A.key(path):'overview'};
+  }
+
   /* The address/locus remains a vertex. The camera instead frames the recursive
    * tetrahedral cell rooted at that address. That keeps the selected continuation
    * and its three peer directions perceptually co-equal rather than throwing the
@@ -101,5 +108,5 @@
     });
   }
 
-  return Object.freeze({GENES,V0,hasFullSplit,splitTet,centroid,semanticPoint,collectStructure,addressRecord,focusTarget,velocity,axisValue,createState});
+  return Object.freeze({GENES,V0,hasFullSplit,splitTet,centroid,semanticPoint,cellForPath,collectStructure,addressRecord,focusTarget,velocity,axisValue,createState});
 });

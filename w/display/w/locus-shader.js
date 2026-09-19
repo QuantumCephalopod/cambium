@@ -149,7 +149,29 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   function target(){const path=W.scopeId===localScope?W.view:'';return N.focusTarget(structure,path)}
   function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2]}}
-  function hit(x,y,rect){let best=null;for(const a of structure.addresses){const p=project(a.point,rect),d=Math.hypot(x-p.x,y-p.y),limit=Math.max(26,34-a.path.length*2);if(d<limit&&(!best||d<best.d))best={a,d}}return best?.a?.path||''}
+  function pointInTriangle(x,y,a,b,c){
+    const area=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
+    const p={x,y},s1=area(a,b,p),s2=area(b,c,p),s3=area(c,a,p);
+    const hasNeg=s1<-.35||s2<-.35||s3<-.35,hasPos=s1>.35||s2>.35||s3>.35;
+    return !(hasNeg&&hasPos);
+  }
+  function hitFace(x,y,rect){
+    let best=null;
+    for(const a of structure.addresses){
+      const pts=a.tet.map(p=>project(p,rect));
+      for(const f of faceIx){
+        const tri=[pts[f[0]],pts[f[1]],pts[f[2]]];
+        if(!pointInTriangle(x,y,...tri))continue;
+        const z=(tri[0].z+tri[1].z+tri[2].z)/3,depth=a.path.length;
+        if(!best||depth>best.depth||(depth===best.depth&&z>best.z))best={a,depth,z};
+      }
+    }
+    return best?.a?.path||'';
+  }
+  function projectAddressCenter(path){
+    const r=canvas.getBoundingClientRect(),cell=N.cellForPath(path||''),p=project(cell.center,r);
+    return {path:path||'',x:p.x,y:p.y,z:p.z,width:r.width,height:r.height};
+  }
   function hitPoint(x,y,rect){
     let best=null;
     for(const rec of pointRecords){
@@ -240,7 +262,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(!down||down.id!==e.pointerId)return;const wasMoved=down.moved;down=null;try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId)}catch(_){}
       if(!wasMoved){
         const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,hp=hasPoints?hitPoint(x,y,r):null;
-        if(hp)selectPoint(hp.rec.spec.id,true);else if(inspectable){const path=hit(x,y,r);if(path)W.inspect(path,'background:'+id)}
+        if(hp)selectPoint(hp.rec.spec.id,true);else if(inspectable){const path=hitFace(x,y,r);if(path)W.inspect(path,'background-face:'+id)}
       }
       canvas.style.cursor=draggable?'grab':'default';e.preventDefault()
     };
@@ -249,7 +271,9 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   requestAnimationFrame(draw);
   api=Object.freeze({
     id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
-    selectPoint,get selectedPointId(){return selectedPointId},
+    selectPoint,projectAddressCenter,
+    hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
+    get selectedPointId(){return selectedPointId},
     get points(){return pointRecords.map(p=>p.spec)},
     pulse(){element.dataset.pulse='true';setTimeout(()=>delete element.dataset.pulse,500)}
   });

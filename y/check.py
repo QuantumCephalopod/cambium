@@ -201,7 +201,7 @@ def main():
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
-    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','commit','site-registry','site-projections','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
+    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
     check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')
     check(not (artifact/'papers/index.html').exists(),'Papers regressed to a separate document/page')
@@ -218,7 +218,7 @@ def main():
     bundle_dir=artifact/'assets'/bundle; check(bundle_dir.is_dir(),'content-addressed membrane bundle missing')
     check({q.name for q in bundle_dir.iterdir() if q.is_file()}==set(assets),'bundle file set diverges from tree-derived asset contract')
 
-    nav=(DISPLAY/'z'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text()
+    nav=(DISPLAY/'z'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text(); philosophy_render=(DISPLAY/'y'/'philosophy'/'render.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not recursive split-tet centroid')
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
@@ -242,6 +242,10 @@ def main():
     check("data-aperture=\"closed\"" in actual and "dataset.aperture='open'" in aperture,'global navigator is not aperture-owned')
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
+    check("getElementById('commit')" not in runtime and 'pending=' not in runtime,'obsolete inspect→commit staging remains in Display runtime')
+    check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
+    check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
+    check('philosophy-global-site' in philosophy_render and 'requestGlobalTarget' in philosophy_render,'Philosophy mounted-address direct encounter missing')
 
     js_sources=['z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','x/display-runtime-v2.js','w/locus-shader.js','z/navigation-aperture.js','z/display-safe-area.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
     for source in js_sources:

@@ -2,6 +2,7 @@
 'use strict';
 const id='organism:philosophy';
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
+const W=globalThis.SSSWorldView||null,Fields=globalThis.SSSInterlocutorFields||null;
 const shader=Object.freeze({
   id:'shader:organism:philosophy',
   clear:[0.006,0.009,0.014,1],
@@ -40,35 +41,53 @@ void main(){
   outColor=vec4(pow(max(ink,0.),vec3(.94)),clamp(alpha,.075,.34));
 }`
 });
+let markerLayer=null,markerHost=null;
 function nodeAt(root,path){let n=root;for(const g of path){n=n?.children?.[g];if(!n)return null}return n}
-function mountedOccupancy(path){
-  const el=document.getElementById('site-registry');
-  if(!el)return [];
-  let registry;
-  try{registry=JSON.parse(el.textContent)}catch(_){return []}
-  const titles=new Map((registry.interlocutors||[]).map(s=>[s.id,s.title||s.id.replace(/^organism:/,'')]));
-  return (registry.mounts||[])
-    .filter(m=>m.scope==='main'&&m.address===path&&m.interlocutor!==id)
-    .map(m=>titles.get(m.interlocutor)||m.interlocutor.replace(/^organism:/,''));
+function titleMap(){
+  const el=document.getElementById('site-registry');if(!el)return new Map();
+  try{const r=JSON.parse(el.textContent);return new Map((r.interlocutors||[]).map(s=>[s.id,s.title||s.id.replace(/^organism:/,'')]))}catch(_){return new Map()}
 }
-function occupancyAt(projection,path){
-  return [...new Set([...(projection.occupancy?.[path]||[]),...mountedOccupancy(path)])];
+function targets(){
+  if(!W)return [];
+  const titles=titleMap();
+  return W.globalTargets.map(t=>({target:t,address:t.path||'ε',label:(t.interlocutorIds||[]).map(x=>titles.get(x)||x.replace(/^organism:/,'')).join(' + ')}));
 }
+function ensureMarkers(host){
+  if(markerLayer&&markerHost===host)return markerLayer;
+  markerLayer?.remove();markerHost=host;markerLayer=document.createElement('div');
+  markerLayer.className='philosophy-global-sites';markerLayer.setAttribute('aria-label','Mounted global site addresses');host.append(markerLayer);return markerLayer;
+}
+function positionMarkers(){
+  if(!markerLayer||!markerHost||markerHost.hidden||!Fields)return;
+  const field=Fields.get(id);if(!field?.projectAddressCenter)return;
+  for(const b of markerLayer.querySelectorAll('.philosophy-global-site')){
+    const p=field.projectAddressCenter(b.dataset.address||'');
+    b.style.left=p.x+'px';b.style.top=p.y+'px';b.style.opacity=String(p.z<-.18?.42:.96);
+    b.dataset.active=String((b.dataset.address||'')===(W?.activeGlobalAddress||''));
+  }
+}
+function renderMarkers(host){
+  const layer=ensureMarkers(host);layer.hidden=false;layer.replaceChildren();
+  for(const row of targets()){
+    const b=document.createElement('button');b.type='button';b.className='philosophy-global-site';b.dataset.address=row.target.path||'';
+    const a=document.createElement('small');a.textContent=row.address;
+    const label=document.createElement('span');label.textContent='['+row.label.toLowerCase()+']';
+    b.append(a,label);
+    b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();W?.requestGlobalTarget(row.target,'philosophy-mounted-site',{x:e.clientX,y:e.clientY})});
+    layer.append(b);
+  }
+  requestAnimationFrame(positionMarkers);
+}
+addEventListener('sss:orientation',positionMarkers);addEventListener('resize',positionMarkers);
 function render({host,content,projection,path='',language='en'}={}){
   if(!host||!content||!projection?.root)return false;
   const node=path?nodeAt(projection.root,path):projection.root;
-  host.hidden=false;
-  content.className='interlocutor-content philosophy-content';
-  content.replaceChildren();
+  host.hidden=false;content.className='interlocutor-content philosophy-content';content.replaceChildren();
   const copy=document.createElement('section');copy.className=path?'':'root';
-  if(path){
-    const occupants=occupancyAt(projection,path);
-    copy.innerHTML=`<div class="kicker">philosophy · inspect ${path}</div><h1>${node?.[language]||node?.noun||path}</h1><p>${node?.one?.[language]||''}${occupants.length?'<br><br>'+occupants.map(x=>'⟦ '+x+' : root ⟧').join('  '):''}</p>`;
-  }else{
-    copy.innerHTML=`<div class="kicker">organism:philosophy · entry interlocutor</div><h1>Form · Continuity · Care · Inquiry</h1><p>${language==='de'?'Dieser Interlocutor bringt seinen eigenen tetrahedralen Hintergrund mit. Hier ist er zusätzlich ein lokales Inspektionsinstrument für den realisierten globalen Adressraum. Die globale Minimap bewegt direkt zwischen tatsächlichen Site-Holons.':'This interlocutor brings its own tetrahedral background. Here it is additionally a local inspection instrument for the realized global address-space. The global minimap moves directly between actual site-holons.'}</p>`;
-  }
-  content.append(copy);return true;
+  if(path)copy.innerHTML=`<div class="kicker">philosophy · inspect ${path}</div><h1>${node?.[language]||node?.noun||path}</h1><p>${node?.one?.[language]||''}</p>`;
+  else copy.innerHTML=`<div class="kicker">organism:philosophy · global address witness</div><h1>Form · Continuity · Care · Inquiry</h1><p>${language==='de'?'Die Flächen fokussieren rekursive Adresszellen. Echte globale Site-Holons erscheinen an ihren tree-derived Adressen; ihre Marker wechseln direkt den Encounter.':'Faces focus recursive address cells. Actual global site-holons appear at their tree-derived addresses; their markers switch encounters directly.'}</p>`;
+  content.append(copy);renderMarkers(host);return true;
 }
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren()}
+function unmount({host,content}={}){if(markerLayer)markerLayer.hidden=true;if(host)host.hidden=true;if(content)content.replaceChildren()}
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection:projection=>projection}));
 })();
