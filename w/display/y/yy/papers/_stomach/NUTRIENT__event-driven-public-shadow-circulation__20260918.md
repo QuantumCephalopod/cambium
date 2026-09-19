@@ -1,6 +1,6 @@
 # NUTRIENT — event-driven Papers public-shadow circulation
 
-status: OPEN / UNRESOLVED
+status: OPEN / PARTIALLY ASSIMILATED
 source: explicit user discussion; current Papers receptor already defines the intended source→shadow membrane
 admitted_at: 2026-09-18
 target: github.cambium...display.papers
@@ -25,3 +25,28 @@ Close and witness the event-driven transport so a relevant Drive `/papers/_feed`
 
 ## exit condition
 A controlled relevant Papers HOME/feed advance causally produces one authenticated Worker/write event, one bounded GitHub/static-shadow refresh and a successfully built public artifact that can be traced to the same source revision; a retry is idempotent, no visitor request is required to trigger the write, and no private source identifiers cross the public membrane.
+
+
+## metabolic pass — 2026-09-19 · bounded inquiry shadow hydration
+
+### earned / witnessed in this pass
+- Drive Papers has now source-owned a bounded `Inquiry` projection through its own `_feed`: 60 Holon identities were present in the admitted surface at the witnessed pass, with 47 COMPLETE relational bodies and 13 explicit PARTIAL projection gaps.
+- `display.papers` transduced that admitted feed surface into one bounded public-safe static shadow at `public/papers-shadow/current.json`; the carrier is 874,890 UTF-8 bytes and remains below the current 1 MiB live-Worker packet bound.
+- The snapshot is rooted to source HOME `papers-feed-inquiry-projection-v1-18GPXeg`; it contains no private Drive IDs/URLs, procurement/acquisition tissue, raw source carriers or credentials.
+- Current `sierpinski.js` now hydrates this same-origin static shadow asynchronously while retaining the embedded projection as a bounded fallback. Visitor hydration is an ordinary static read and never calls the authenticated write Worker.
+- For `2H.AvDK`, the exact staged public artifact now carries COMPLETE inquiry tissue: 6E=6, 4F=4, 1T present, three surviving metabolites, plus a compact metabolight wisdom projection derived only from the admitted source-owned body.
+- Staging commit `15f22f56f6912ec697c85eaa95462186c99f2a13` passed the complete Display membrane workflow: feed-projector compatibility, repository projection, site-public build, tree-addressed organism witness, address algebra, tetrahedral closure and exact membrane-byte verification.
+- The exact uploaded staging artifact was re-read: `papers-shadow/current.json` is present, parseable, 874,890 bytes, and its `2H.AvDK` body is COMPLETE with the expected 6/4/1/3 relational counts. The delivered Papers JavaScript also passes `node --check`.
+
+### implementation distinction that survived challenge
+The living invariant is **source-change-driven authenticated secretion into a static/cacheable public shadow**. GitHub mutation was one earlier contemplated carrier, not the invariant. Current Display transport has already evolved to an R2 current-object nerve that accepts an optional bounded `snapshot`; the staging Git/public file is therefore the lawful static fallback/bootstrap, not a second research database and not a reason to reintroduce a GitHub write bot.
+
+### still OPEN
+- The current bound Papers Apps-Script producer does not yet include the admitted Inquiry snapshot in its live HOME packet. A bounded inter-organ request named `REQUEST — display.papers live inquiry shadow secretion` has been admitted into source `/papers/_stomach`; source Papers decides that mutation under its own law.
+- No successful source-produced Inquiry snapshot → Worker/R2 delivery has yet been witnessed.
+- The R2 public read surface has not been re-witnessed here as the active visitor carrier; browser-visible production must not be claimed from staging mechanics alone.
+- Exact real-browser acceptance of the changed public surface remains outstanding. The present execution environment blocks Chromium navigation by administrator policy, so that witness was deliberately not fabricated.
+- Canonical organization deployment has not been performed by this pass; staging success is not production success.
+
+### sharpened exit condition
+This nutrient closes only after the **current** transport embodiment satisfies the original invariant: a relevant source-owned Papers HOME/feed change emits one authenticated bounded snapshot, the static public shadow reaches the same source event/revision idempotently, and the deployed visitor surface can read that shadow without invoking the write path. A Git commit is not intrinsically required if the already-earned R2 static-current carrier closes those same obligations.
