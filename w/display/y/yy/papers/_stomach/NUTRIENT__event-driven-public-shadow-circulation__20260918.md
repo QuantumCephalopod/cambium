@@ -50,3 +50,24 @@ The living invariant is **source-change-driven authenticated secretion into a st
 
 ### sharpened exit condition
 This nutrient closes only after the **current** transport embodiment satisfies the original invariant: a relevant source-owned Papers HOME/feed change emits one authenticated bounded snapshot, the static public shadow reaches the same source event/revision idempotently, and the deployed visitor surface can read that shadow without invoking the write path. A Git commit is not intrinsically required if the already-earned R2 static-current carrier closes those same obligations.
+
+
+## metabolic pass — 2026-09-19 · source delta contract admitted
+
+### earned
+- Drive `/papers` returned source HOME `papers-live-delta-circulation-contract-20260919T1620Z` and accepted the already-admitted live public relation while sharpening ordinary transport from whole-state retransmission to **changed keyed public units from the last Worker-ACKNOWLEDGED base**.
+- A complete public-safe snapshot remains lawful only for first bootstrap, explicit `REBASE_REQUIRED` reconciliation or integrity repair.
+- Destination state transition is bounded: current==target → dedupe; otherwise current must equal base; apply opaque keyed upserts/deletes; verify the deterministic target revision; atomically replace; acknowledge the target/event.
+- A failed delivery leaves the acknowledged base unchanged. A newer HOME while rich delivery is pending supersedes stale pending rich parcels by recomputing one cumulative delta from the same acknowledged base.
+- Body/FIELD identity and Inquiry freshness remain independently projectable. Missing Inquiry is `PARTIAL / PENDING`, not deletion.
+
+### challenge / current incompatibility
+The currently deployed-source Worker implementation in `w/display/x/live/src/index.js` accepts optional full `snapshot` packets but otherwise replaces `y/papers/current.json` with each new HOME envelope. Therefore a metadata-only HOME can erase an already-rich current shadow, and the Worker currently has no `base_public_revision / target_public_revision` stale-base refusal or keyed-delta materialization semantics. This is a real destination-transport wound, not a Papers semantic-body wound.
+
+### assimilation
+- The acknowledged-base delta invariant is now incorporated into the public Papers local receptor.
+- Papers semantic inquiry geometry, renderer, shader, genealogy, provenance law and public content body are unchanged.
+- No Papers `INDEX.yaml` / `_cambium.yaml` growth is warranted.
+- The foreign response carrier has finished its local semantic duty and may retire after reference closure.
+- The remaining implementation pressure crosses the explicit Papers→Display membrane as a bounded request: evolve the shared live nerve generically so it can realize opaque acknowledged-base state transitions without learning Papers-specific semantics.
+- The original circulation nutrient remains OPEN until the end-to-end exit witness closes: real changed-unit delivery, unchanged-HOME no-rich-write, retry dedupe, stale-base refusal, full-snapshot recovery, and deployed static visitor read without write actuation.
