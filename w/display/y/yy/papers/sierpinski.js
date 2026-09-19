@@ -31,6 +31,7 @@ const OPEN_MS=900;
 const MAX_DEPTH=8;
 const PRETEXT_VERSION='0.0.9';
 const PRETEXT_PATH='papers-pretext-0.0.9/layout.js';
+const SHADOW_PATH='papers-shadow/current.json';
 const WISDOM_MAX_WIDTH=680;
 const FACE=[[0,2,1],[0,1,3],[0,3,2],[1,2,3]];
 const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
@@ -52,8 +53,23 @@ void main(){outColor=vec4(0.0);}`
 let state=null;
 let pretextModule=null;
 let pretextPromise=null;
+let shadowPromise=null;
 
 function pretextURL(){return new URL(PRETEXT_PATH,document.baseURI).href}
+function shadowURL(){return new URL(SHADOW_PATH,document.baseURI).href}
+function ensureShadow(){
+  if(!shadowPromise){
+    shadowPromise=fetch(shadowURL(),{cache:'no-store',credentials:'same-origin'})
+      .then(r=>{if(!r.ok)throw new Error(`Papers shadow HTTP ${r.status}`);return r.json()})
+      .then(packet=>{
+        const snap=packet?.snapshot;
+        if(packet?.site_id!=='organism:papers'||snap?.schema!=='papers-public-shadow.v2'||snap?.source!=='papers/_feed'||!snap?.projection?.groups||!snap?.projection?.phenotype)throw new Error('Papers shadow membrane mismatch');
+        return snap;
+      })
+      .catch(err=>{console.warn('Papers static shadow unavailable; retaining embedded projection',err);return null});
+  }
+  return shadowPromise;
+}
 function ensurePretext(){
   if(pretextModule)return Promise.resolve(pretextModule);
   if(!pretextPromise){
@@ -137,6 +153,36 @@ function buildRecords(projection,fieldRoot){
     const cell=byGene.get(entity.gene);if(cell)records.push({...entity,world:pointInTet(cell.tet,entity)});
   }
   return {records,structure};
+}
+
+function applyProjection(next,shadowHome=''){
+  if(!state||!next?.groups||!next?.phenotype)return false;
+  const fp=fieldProjection(next),built=buildRecords(next,fp.root);
+  state.projection=next;
+  state.identities=identityIndex(next);
+  state.parents=parentIndex(next);
+  state.records=built.records;
+  state.recordById=new Map(built.records.map(x=>[x.id,x]));
+  state.wisdomPrepared=null;
+  if(shadowHome){
+    state.shadowApplied=true;state.shadowHome=shadowHome;
+    state.canvas.dataset.shadowState='ready';state.canvas.dataset.shadowHome=shadowHome;
+    state.textCanvas.dataset.shadowState='ready';state.textCanvas.dataset.shadowHome=shadowHome;
+  }
+  if(state.current&&!state.identities.has(state.current.id)){
+    state.current=null;state.stack=[];state.transition=0;state.closing=false;state.label.classList.remove('show');
+  }else if(state.current)setLabel(state.current.id);
+  return true;
+}
+function hydrateShadow(host){
+  if(!state||state.host!==host)return;
+  state.canvas.dataset.shadowState=state.shadowApplied?'ready':'loading';
+  state.textCanvas.dataset.shadowState=state.shadowApplied?'ready':'loading';
+  ensureShadow().then(snap=>{
+    if(!snap||!state||state.host!==host||!state.mounted)return;
+    const home=snap.inquiry_home_event||snap.projection?.event_id||'';
+    if(!state.shadowApplied||state.shadowHome!==home)applyProjection(snap.projection,home);
+  });
 }
 
 function perspective(fovy,aspect,near,far){const f=1/Math.tan(fovy/2),nf=1/(near-far);return new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)*nf,-1,0,0,2*far*near*nf,0])}
@@ -434,9 +480,9 @@ function attachInput(){
 function initialize(host,projection,backgroundDrag=true){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
-  state={host,projection,canvas:stage.canvas,textCanvas:stage.textCanvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null};
-  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.textCanvas.dataset.pretextStatus=state.pretextStatus;
-  ensurePretext();attachInput();state.raf=requestAnimationFrame(draw);return state;
+  state={host,projection,canvas:stage.canvas,textCanvas:stage.textCanvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null,shadowApplied:false,shadowHome:''};
+  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
+  ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
 
 function render({host,content,projection,backgroundDrag=true}={}){
@@ -444,7 +490,7 @@ function render({host,content,projection,backgroundDrag=true}={}){
   host.hidden=false;content.replaceChildren();content.className='interlocutor-content papers-content';
   const shared=host.querySelector('.interlocutor-background');if(shared){shared.style.opacity='0';shared.style.pointerEvents='none'}
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
-  if(!state||state.host!==host)initialize(host,projection,backgroundDrag);else{state.projection=projection;state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.textCanvas.hidden=false;state.hud.hidden=false;state.label.hidden=false}
+  if(!state||state.host!==host)initialize(host,projection,backgroundDrag);else{if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.textCanvas.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
   return true;
 }
 function unmount({host,content}={}){if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
