@@ -2,7 +2,7 @@ name: display live nerve
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'mnemos/**']
     paths:
       - 'w/display/x/live/**'
       - '.github/workflows/cloudflare-live.yml'
@@ -16,8 +16,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reacquire cambium
+        uses: actions/checkout@v6
+
+      - name: Use Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Witness live nerve
+        run: |
+          node --check w/display/x/live/src/index.js
+          node w/display/x/live/test.mjs
+
   deploy:
-    if: github.repository == 'self-similar-systems/cambium'
+    needs: test
+    if: github.repository == 'self-similar-systems/cambium' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
