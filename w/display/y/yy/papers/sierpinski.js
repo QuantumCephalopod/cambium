@@ -35,6 +35,15 @@ const PRETEXT_VERSION='0.0.9';
 const PRETEXT_PATH='papers-pretext-0.0.9/layout.js';
 const SHADOW_PATH='papers-shadow/current.json';
 const WISDOM_MAX_WIDTH=680;
+const PHYSIOLOGY_PHASE_MS=5200;
+const PHYSIOLOGY_PHASES=Object.freeze([
+  Object.freeze({id:'question',label:'QUESTION',copy:'The living body notices what it cannot yet answer.'}),
+  Object.freeze({id:'prepare',label:'PREPARE',copy:'Arrived matter is checked and folded into a form Papers can digest.'}),
+  Object.freeze({id:'metabolize',label:'METABOLIZE',copy:'One complete outside work closes into one living Source quantum.'}),
+  Object.freeze({id:'grow',label:'GROW',copy:'Four living peers may close into one larger Holon. The parents remain alive.'})
+]);
+const BACKGROUND_FIELD_ALPHA=.16;
+const NESTED_BACKGROUND_ALPHA=.07;
 const FACE=[[0,2,1],[0,1,3],[0,3,2],[1,2,3]];
 const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 
@@ -108,7 +117,12 @@ function rankOf(value){const m=String(value||'').match(/^(\d+)H\./);return m?`${
 function rankNumber(value){const m=String(value||'').match(/^(\d+)H(?:\.|$)/);return m?Number(m[1]):0}
 function bodyScaleFor(entity){return S_QUANTUM_SCALE*Math.pow(2,rankNumber(entity?.rank))}
 function rootFieldScale(width){return width<ROOT_FIELD_BREAKPOINT?ROOT_FIELD_MOBILE:ROOT_FIELD_DESKTOP}
-function overviewCenterFor(entity,width){return mul(entity.world,rootFieldScale(width))}
+function overviewDriftPoint(entity,now=performance.now()){
+  const a=entity.motionA||entity.world,b=entity.motionB||entity.world,phase=random01(entity.id,'flow-phase')*Math.PI*2;
+  const t=.5+.5*Math.sin(now*.00016+phase),wander=mix3(a,b,smooth(t));
+  return mix3(entity.world,wander,.22);
+}
+function overviewCenterFor(entity,width,now=performance.now()){return mul(overviewDriftPoint(entity,now),rootFieldScale(width))}
 function overviewBodyScaleFor(entity,width){return bodyScaleFor(entity)*rootFieldScale(width)}
 function cameraForScale(scale){return Math.max(MIN_MACRO_Z,scale/MACRO_FILL)}
 function fieldProjection(d){
@@ -155,7 +169,10 @@ function buildRecords(projection,fieldRoot){
   }
   const identities=identityIndex(projection),records=[];
   for(const entity of identities.values()){
-    const cell=byGene.get(entity.gene);if(cell)records.push({...entity,world:pointInTet(cell.tet,entity)});
+    const cell=byGene.get(entity.gene);if(cell){
+      const world=pointInTet(cell.tet,entity),motionA=pointInTet(cell.tet,{id:entity.id+'·flow-a'}),motionB=pointInTet(cell.tet,{id:entity.id+'·flow-b'});
+      records.push({...entity,world,motionA,motionB});
+    }
   }
   return {records,structure};
 }
@@ -305,9 +322,15 @@ void main(){
 function makeStage(host){
   const canvas=document.createElement('canvas');canvas.className='papers-sierpinski-stage';canvas.setAttribute('aria-label','Papers recursive tetrahedral inquiry field');host.append(canvas);
   const textCanvas=document.createElement('canvas');textCanvas.className='papers-wisdom-stage';textCanvas.setAttribute('aria-label','Papers active metabolight wisdom');textCanvas.dataset.pretextVersion=PRETEXT_VERSION;host.append(textCanvas);
+  const physiology=document.createElement('section');physiology.className='papers-physiology';physiology.setAttribute('aria-label','How Papers lives');
+  physiology.innerHTML='<small>HOW PAPERS LIVES</small><canvas class="papers-physiology-canvas" aria-hidden="true"></canvas><div class="papers-physiology-phases"></div><div class="papers-physiology-copy"><b></b><span></span></div>';
+  const physiologyPhases=physiology.querySelector('.papers-physiology-phases');
+  for(const phase of PHYSIOLOGY_PHASES){const n=document.createElement('span');n.dataset.phase=phase.id;n.textContent=phase.label;physiologyPhases.append(n)}
+  host.append(physiology);
+  const physiologyCanvas=physiology.querySelector('.papers-physiology-canvas'),physiologyTitle=physiology.querySelector('.papers-physiology-copy b'),physiologyCopy=physiology.querySelector('.papers-physiology-copy span');
   const hud=document.createElement('div');hud.className='papers-sierpinski-hud';host.append(hud);
   const label=document.createElement('div');label.className='papers-sierpinski-label';host.append(label);
-  return {canvas,textCanvas,hud,label};
+  return {canvas,textCanvas,physiology,physiologyCanvas,physiologyPhases:[...physiologyPhases.children],physiologyTitle,physiologyCopy,hud,label};
 }
 function resizeCanvas(canvas){
   const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.6),w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));
@@ -320,6 +343,57 @@ function resizeWisdomCanvas(canvas,rect){
   const ctx=canvas.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,rect.width,rect.height);
   return {ctx,d};
 }
+
+function resizePhysiologyCanvas(canvas){
+  const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.6),w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));
+  if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
+  const ctx=canvas.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,r.width,r.height);
+  return {ctx,r};
+}
+function simplex2D(ctx,x,y,size,rotation=0,alpha=.5,fill=.04){
+  const raw=[[0,-.72],[-.66,.42],[.66,.42],[0,.10]],c=Math.cos(rotation),sn=Math.sin(rotation);
+  const pts=raw.map(([px,py])=>[x+(px*c-py*sn)*size,y+(px*sn+py*c)*size]);
+  ctx.save();ctx.lineWidth=1;ctx.strokeStyle=`rgba(221,246,229,${alpha})`;ctx.fillStyle=`rgba(182,238,205,${fill})`;
+  for(const f of FACE){ctx.beginPath();ctx.moveTo(...pts[f[0]]);ctx.lineTo(...pts[f[1]]);ctx.lineTo(...pts[f[2]]);ctx.closePath();ctx.fill()}
+  for(const e of EDGE){ctx.beginPath();ctx.moveTo(...pts[e[0]]);ctx.lineTo(...pts[e[1]]);ctx.stroke()}
+  ctx.restore();
+}
+function drawOverviewPhysiology(now){
+  const box=state.physiology,canvas=state.physiologyCanvas;if(!box||!canvas)return;
+  const visible=!state.current;box.dataset.visible=visible?'true':'false';box.setAttribute('aria-hidden',visible?'false':'true');
+  if(!visible)return;
+  const cycle=(now/PHYSIOLOGY_PHASE_MS)%PHYSIOLOGY_PHASES.length,index=Math.floor(cycle),phaseT=cycle-index,phase=PHYSIOLOGY_PHASES[index];
+  if(box.dataset.phase!==phase.id){
+    box.dataset.phase=phase.id;state.physiologyTitle.textContent=phase.label;state.physiologyCopy.textContent=phase.copy;
+    state.physiologyPhases.forEach((n,i)=>n.dataset.active=i===index?'true':'false');
+  }
+  const {ctx,r}=resizePhysiologyCanvas(canvas),w=r.width,h=r.height,cx=w*.5,cy=h*.52,s=Math.min(w,h)*.22,t=smooth(phaseT);
+  ctx.lineCap='round';ctx.lineJoin='round';
+  if(phase.id==='question'){
+    simplex2D(ctx,cx-s*.55,cy,s*.55,now*.00012,.32,.025);
+    const travel=.5-.5*Math.cos(t*Math.PI*2),x=cx-s*.10+travel*s*1.22,y=cy-Math.sin(t*Math.PI)*s*.34;
+    simplex2D(ctx,x,y,s*.16,-now*.0005,.72,.08);
+    ctx.strokeStyle='rgba(173,235,205,.18)';ctx.beginPath();ctx.arc(cx-s*.55,cy,s*.80,-.48,.48);ctx.stroke();
+  }else if(phase.id==='prepare'){
+    const anchors=[[-.62,-.22],[.58,-.26],[-.45,.48],[.48,.46]];
+    for(let i=0;i<8;i++){
+      const a=i/8*Math.PI*2+now*.00035*(i%2?1:-1),orbit=s*(.64-.05*(i%3)),target=anchors[i%4];
+      const ox=cx+Math.cos(a)*orbit,oy=cy+Math.sin(a)*orbit*.55,tx=cx+target[0]*s,ty=cy+target[1]*s;
+      simplex2D(ctx,mix(ox,tx,t),mix(oy,ty,t),s*.10,a+t,.34+.42*t,.035+.04*t);
+    }
+  }else if(phase.id==='metabolize'){
+    const anchors=[[0,-.68],[-.62,.42],[.62,.42],[0,.10]];
+    for(let i=0;i<4;i++){const a=anchors[i];simplex2D(ctx,cx+a[0]*s,cy+a[1]*s,s*.12,now*.00025+i,.40,.035)}
+    const edgeAlpha=.12+.55*t;simplex2D(ctx,cx,cy,s*.96,now*.00004,edgeAlpha,.025+.08*t);
+    ctx.fillStyle=`rgba(224,255,211,${.08+.34*t})`;ctx.beginPath();ctx.arc(cx,cy,3+7*t,0,Math.PI*2);ctx.fill();
+  }else{
+    const anchors=[[0,-.58],[-.54,.34],[.54,.34],[0,.08]];
+    for(let i=0;i<4;i++){const a=anchors[i],pulse=.96+.05*Math.sin(now*.0014+i);simplex2D(ctx,cx+a[0]*s,cy+a[1]*s,s*.20*pulse,now*.00010+i*.25,.42,.045)}
+    simplex2D(ctx,cx,cy,s*1.18,now*.000035,.18+.54*t,.02+.055*t);
+    ctx.fillStyle=`rgba(242,255,208,${.12+.55*t})`;ctx.shadowColor='rgba(220,255,185,.55)';ctx.shadowBlur=18;ctx.beginPath();ctx.arc(cx,cy,4+8*t,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+  }
+}
+
 function projectedPixels(scale,cameraZ,height){return (scale/cameraZ)*(height/2)/Math.tan(FOV/2)*2}
 function childBodies(current){
   const ps=state.parents.get(current.id)||[];if(ps.length!==4)return [];
@@ -386,11 +460,11 @@ function outerCells(width){
   const rootScale=rootFieldScale(width);
   return GENES.map((g,i)=>{const p=PALETTE[g];return {center:mul(state.renderer.V0[i],.5*rootScale),scale:.5*rootScale,color:[p[0]*.45,p[1]*.45,p[2]*.45,.045]}});
 }
-function populationBodies(width,height,fade=1){
+function populationBodies(width,height,fade=1,now=performance.now()){
   const leaves=[],lights=[];
   for(const rec of state.records){
     if(rec.id===state.current?.id)continue;
-    collectBody(rec.id,overviewCenterFor(rec,width),overviewBodyScaleFor(rec,width),FAR_Z,height,leaves,lights);
+    collectBody(rec.id,overviewCenterFor(rec,width,now),overviewBodyScaleFor(rec,width),FAR_Z,height,leaves,lights);
   }
   for(const x of leaves)x.color[3]*=fade;
   for(const x of lights)x.color[3]*=fade;
@@ -403,7 +477,7 @@ function openGlobal(id,width,now=performance.now()){
   const overviewWidth=Number(width)||state?.canvas?.getBoundingClientRect().width||innerWidth;
   const scale=overviewBodyScaleFor(rec,overviewWidth);
   state.stack=[];
-  state.current={id,scale,sourceLocal:[...overviewCenterFor(rec,overviewWidth)],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
+  state.current={id,scale,sourceLocal:[...overviewCenterFor(rec,overviewWidth,now)],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
   state.localQ=[...W.orientation];state.transition=0;state.closing=false;state.transitionStart=now;setLabel(id);return true;
 }
 function descend(child,now=performance.now()){
@@ -441,7 +515,7 @@ function draw(now){
    * around the permanent central void. Global navigation keeps rotating it even
    * while inquiry is open. */
   state.renderer.draw(outerCells(rect.width),W.orientation,[0,0,0],proj,view,{faces:true});
-  const fade=!state.current?1:(state.stack.length?0:Math.pow(1-state.transition,2)),population=populationBodies(rect.width,rect.height,fade);
+  const fade=!state.current?1:(state.stack.length?NESTED_BACKGROUND_ALPHA:mix(1,BACKGROUND_FIELD_ALPHA,state.transition)),population=populationBodies(rect.width,rect.height,fade,now);
   state.renderer.draw(population.leaves,W.orientation,[0,0,0],proj,view,{faces:true});
   state.renderer.drawLights(population.lights,W.orientation,[0,0,0],proj,view,now*.001,d);
   let lightCount=0,quantumCount=0,activeLight=null,translate=[0,0,0];
@@ -453,14 +527,14 @@ function draw(now){
     lightCount=lights.filter(x=>x.kind==='metabolight').length;quantumCount=lights.filter(x=>x.kind==='quantum').length;activeLight=lights.find(x=>x.id===state.current.id&&x.kind==='metabolight')||null;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  drawWisdom(rect,cam,translate,activeLight);
-  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
+  drawWisdom(rect,cam,translate,activeLight);drawOverviewPhysiology(now);
+  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;state.hud.innerHTML=`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch an organism</small>`};
   state.raf=requestAnimationFrame(draw);
 }
 
-function hitGlobal(x,y,width,height){let best=null;for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width),W.orientation,FAR_Z,width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),FAR_Z,height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
+function hitGlobal(x,y,width,height,now=performance.now()){let best=null;for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width,now),W.orientation,FAR_Z,width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),FAR_Z,height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
 function hitChild(x,y,width,height){
   if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
   /* projectPoint rotates its input before perspective. Pull the world translation
@@ -482,7 +556,7 @@ function attachInput(){
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
       if(state.current){const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}
-      else{const target=hitGlobal(x,y,r.width,r.height);if(target)openGlobal(target,r.width)}
+      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now);if(target)openGlobal(target,r.width,now)}
     }
     e.preventDefault();
   };
@@ -493,7 +567,7 @@ function attachInput(){
 function initialize(host,projection,backgroundDrag=true){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
-  state={host,projection,canvas:stage.canvas,textCanvas:stage.textCanvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null,shadowApplied:false,shadowHome:''};
+  state={host,projection,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null,shadowApplied:false,shadowHome:''};
   state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
@@ -503,10 +577,10 @@ function render({host,content,projection,backgroundDrag=true}={}){
   host.hidden=false;content.replaceChildren();content.className='interlocutor-content papers-content';
   const shared=host.querySelector('.interlocutor-background');if(shared){shared.style.opacity='0';shared.style.pointerEvents='none'}
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
-  if(!state||state.host!==host)initialize(host,projection,backgroundDrag);else{if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.textCanvas.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
+  if(!state||state.host!==host)initialize(host,projection,backgroundDrag);else{if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.textCanvas.hidden=false;state.physiology.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
   return true;
 }
-function unmount({host,content}={}){if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
+function unmount({host,content}={}){if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
 function activateFieldPoint(){}
 
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
