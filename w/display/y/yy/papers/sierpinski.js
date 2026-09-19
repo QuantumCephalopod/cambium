@@ -20,9 +20,11 @@ const PALETTE={w:[.34,.78,.64],x:[.42,.82,.88],z:[.78,.78,.60],y:[.52,.93,.48]};
  * dollies inward. Recursive detail is revealed only when screen scale earns it.
  */
 
-const NODE_SCALE=.032;
+const NODE_SCALE=.032; // distant encounter proxy only
+const S_QUANTUM_SCALE=.0045; // smallest Papers organism body
+const MACRO_FILL=.285;
+const MIN_MACRO_Z=.014;
 const FAR_Z=3.2;
-const MACRO_Z=.105;
 const FOV=Math.PI/3.3;
 const LOD_PX=7;
 const OPEN_MS=900;
@@ -62,6 +64,9 @@ function rotateQ(q,dx,dy){return qNorm(qMul(qAxis([0,1,0],dx*.006),qMul(qAxis([1
 
 function locusName(projection,gene){return projection?.phenotype?.[gene]||gene}
 function rankOf(value){const m=String(value||'').match(/^(\d+)H\./);return m?`${m[1]}H`:'S'}
+function rankNumber(value){const m=String(value||'').match(/^(\d+)H(?:\.|$)/);return m?Number(m[1]):0}
+function bodyScaleFor(entity){return S_QUANTUM_SCALE*Math.pow(2,rankNumber(entity?.rank))}
+function cameraForScale(scale){return Math.max(MIN_MACRO_Z,scale/MACRO_FILL)}
 function fieldProjection(d){
   const children={};
   for(const g of GENES){
@@ -76,8 +81,11 @@ function fieldProjection(d){
 function identityIndex(projection){
   const out=new Map();
   for(const g of GENES){
-    for(const x of projection?.groups?.[g]||[])out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'source',rank:'S'});
-    for(const x of projection?.holons?.[g]||[])out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'holon',rank:rankOf(x.id)});
+    for(const x of projection?.groups?.[g]||[])out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'source',rank:'S',publicWisdom:false});
+    for(const x of projection?.holons?.[g]||[]){
+      const meta=projection?.holon_meta?.[x.id],wisdom=Array.isArray(meta)&&typeof meta[3]==='string'&&meta[3].trim().length>0;
+      out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'holon',rank:rankOf(x.id),publicWisdom:wisdom});
+    }
   }
   return out;
 }
@@ -141,6 +149,40 @@ precision highp float;
 in vec4 vColor;
 out vec4 outColor;
 void main(){outColor=vColor;}`;
+  const LIGHT_VS=`#version 300 es
+precision highp float;
+in vec3 iCenter;
+in float iSize;
+in vec4 iColor;
+in float iPhase;
+uniform mat4 uProj,uView;
+uniform vec4 uQuat;
+uniform vec3 uTranslate;
+uniform float uTime;
+out vec4 vColor;
+vec3 qrot(vec4 q,vec3 v){return v+2.0*cross(q.yzw,cross(q.yzw,v)+q.x*v);}
+void main(){
+  vec3 world=qrot(uQuat,iCenter)+uTranslate;
+  gl_Position=uProj*uView*vec4(world,1.0);
+  gl_PointSize=max(1.0,iSize*(.94+.06*sin(uTime*1.25+iPhase)));
+  vColor=iColor;
+}`;
+  const LIGHT_FS=`#version 300 es
+precision highp float;
+in vec4 vColor;
+out vec4 outColor;
+void main(){
+  vec2 p=gl_PointCoord*2.0-1.0;
+  float r=length(p);
+  if(r>1.0)discard;
+  float halo=pow(max(0.0,1.0-r),2.15);
+  float core=exp(-12.0*r*r);
+  float body=1.0-smoothstep(.16,1.0,r);
+  vec3 warm=vec3(1.0,.93,.72);
+  vec3 c=mix(vColor.rgb,warm,core*.58);
+  float a=vColor.a*(.18*halo+.78*core+.20*body);
+  outColor=vec4(c,a);
+}`;
   const p=program(gl,VS,FS);
   const loc={
     pos:gl.getAttribLocation(p,'aPos'),center:gl.getAttribLocation(p,'iCenter'),scale:gl.getAttribLocation(p,'iScale'),color:gl.getAttribLocation(p,'iColor'),
@@ -149,6 +191,14 @@ void main(){outColor=vColor;}`;
   const triangles=[];for(const f of FACE)for(const i of f)triangles.push(...V0[i]);
   const lines=[];for(const e of EDGE)lines.push(...V0[e[0]],...V0[e[1]]);
   const instanceBuffer=gl.createBuffer();
+  const lightProgram=program(gl,LIGHT_VS,LIGHT_FS),lightVao=gl.createVertexArray(),lightBuffer=gl.createBuffer();
+  const lightLoc={
+    center:gl.getAttribLocation(lightProgram,'iCenter'),size:gl.getAttribLocation(lightProgram,'iSize'),
+    color:gl.getAttribLocation(lightProgram,'iColor'),phase:gl.getAttribLocation(lightProgram,'iPhase'),
+    proj:gl.getUniformLocation(lightProgram,'uProj'),view:gl.getUniformLocation(lightProgram,'uView'),
+    quat:gl.getUniformLocation(lightProgram,'uQuat'),translate:gl.getUniformLocation(lightProgram,'uTranslate'),
+    time:gl.getUniformLocation(lightProgram,'uTime')
+  };
   function geom(data){const vao=gl.createVertexArray();gl.bindVertexArray(vao);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);gl.enableVertexAttribArray(loc.pos);gl.vertexAttribPointer(loc.pos,3,gl.FLOAT,false,12,0);return {vao,count:data.length/3}}
   const tri=geom(triangles),line=geom(lines);
   function flatten(instances){const out=[];for(const x of instances)out.push(x.center[0],x.center[1],x.center[2],x.scale,x.color[0],x.color[1],x.color[2],x.color[3]);return out}
@@ -166,7 +216,16 @@ void main(){outColor=vColor;}`;
     if(faces){gl.depthMask(false);bindInstances(tri,data);gl.drawArraysInstanced(gl.TRIANGLES,0,tri.count,instances.length)}
     gl.depthMask(false);bindInstances(line,data);gl.drawArraysInstanced(gl.LINES,0,line.count,instances.length);gl.depthMask(true);
   }
-  return {gl,V0,draw};
+  function drawLights(lights,q,translate,proj,view,time,dpr=1){
+    if(!lights.length)return;
+    const data=[];for(const x of lights)data.push(x.center[0],x.center[1],x.center[2],x.size*dpr,x.color[0],x.color[1],x.color[2],x.color[3],x.phase);
+    gl.bindVertexArray(lightVao);gl.bindBuffer(gl.ARRAY_BUFFER,lightBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.DYNAMIC_DRAW);
+    const stride=36;
+    for(const [at,size,off] of [[lightLoc.center,3,0],[lightLoc.size,1,12],[lightLoc.color,4,16],[lightLoc.phase,1,32]]){gl.enableVertexAttribArray(at);gl.vertexAttribPointer(at,size,gl.FLOAT,false,stride,off)}
+    gl.useProgram(lightProgram);gl.uniformMatrix4fv(lightLoc.proj,false,proj);gl.uniformMatrix4fv(lightLoc.view,false,view);gl.uniform4fv(lightLoc.quat,new Float32Array(q));gl.uniform3fv(lightLoc.translate,new Float32Array(translate));gl.uniform1f(lightLoc.time,time);
+    gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.drawArrays(gl.POINTS,0,lights.length);gl.depthMask(true);
+  }
+  return {gl,V0,draw,drawLights};
 }
 
 function makeStage(host){
@@ -185,29 +244,45 @@ function childBodies(current){
   const ps=state.parents.get(current.id)||[];if(ps.length!==4)return [];
   return ps.map((pid,i)=>({id:pid,center:mul(state.renderer.V0[i],current.scale*.5),scale:current.scale*.5}));
 }
-function collectLeaves(id,center,scale,cameraZ,height,out,depth=0){
+function metabolight(id,center,px,entity,selected=false){
+  const rank=rankNumber(entity?.rank),source=entity?.kind==='source',wisdom=Boolean(entity?.publicWisdom),pal=PALETTE[entity?.gene]||PALETTE.x;
+  const target=source?[.80,1.0,.90]:[1.0,.86,.55],blend=source ? .50 : (wisdom ? .60 : .40),c=mix3(pal,target,blend);
+  const size=source?clamp(4+px*.15,4,9):clamp(10+rank*6+Math.sqrt(Math.max(px,0))*1.1+(wisdom ? 4 : 0)+(selected ? 5 : 0),10,62);
+  const alpha=source ? .22 : clamp(.30+rank*.075+(wisdom ? .12 : 0)+(selected ? .12 : 0),.30,.94);
+  return {id,center,size,color:[...c,alpha],phase:random01(id,'metabolight')*Math.PI*2,kind:source?'quantum':'metabolight',rank};
+}
+function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
   const ps=state.parents.get(id)||[],px=projectedPixels(scale,cameraZ,height),entity=state.identities.get(id),gene=entity?.gene||'x',pal=PALETTE[gene]||PALETTE.x;
-  if(ps.length!==4||px<LOD_PX||depth>=MAX_DEPTH){out.push({id,center,scale,color:[pal[0],pal[1],pal[2],.11+Math.min(.30,px/150)]});return}
-  for(let i=0;i<4;i++)collectLeaves(ps[i],add(center,mul(state.renderer.V0[i],scale*.5)),scale*.5,cameraZ,height,out,depth+1);
+  if(entity?.kind==='holon')lights.push(metabolight(id,center,px,entity,depth===0));
+  if(ps.length!==4||px<LOD_PX||depth>=MAX_DEPTH){
+    leaves.push({id,center,scale,color:[pal[0],pal[1],pal[2],.11+Math.min(.30,px/150)]});
+    if(entity?.kind==='source')lights.push(metabolight(id,center,px,entity,depth===0));
+    return;
+  }
+  for(let i=0;i<4;i++)collectBody(ps[i],add(center,mul(state.renderer.V0[i],scale*.5)),scale*.5,cameraZ,height,leaves,lights,depth+1);
 }
 function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+r[0]*f/z,y:height/2-r[1]*f/z,z:r[2]}}
 function outerCells(){return GENES.map((g,i)=>{const p=PALETTE[g];return {center:mul(state.renderer.V0[i],.5),scale:.5,color:[p[0]*.45,p[1]*.45,p[2]*.45,.045]}})}
 function populationInstances(fade=1){
   const out=[];for(const rec of state.records){if(rec.id===state.current?.id)continue;const p=PALETTE[rec.gene]||PALETTE.x;out.push({center:rec.world,scale:NODE_SCALE,color:[p[0],p[1],p[2],(.12+(rec.kind==='holon'?.055:0))*fade]})}return out;
 }
+function populationLights(fade=1){
+  const out=[];for(const rec of state.records){if(rec.id===state.current?.id)continue;const rank=rankNumber(rec.rank),pal=PALETTE[rec.gene]||PALETTE.x,target=rec.kind==='source'?[.80,1,.90]:[1,.86,.55],c=mix3(pal,target,rec.publicWisdom ? .55 : .34);out.push({center:rec.world,size:(rec.kind==='source'?3.2:4.4+rank*.7),color:[...c,(rec.kind==='source' ? .10 : .12+rank*.018+(rec.publicWisdom ? .05 : 0))*fade],phase:random01(rec.id,'fieldlight')*Math.PI*2})}return out;
+}
 
 function setLabel(id){const d=state.identities.get(id);state.label.textContent=`${id} · ${d?.title||id}`;state.label.classList.add('show')}
 function openGlobal(id,now=performance.now()){
   const rec=state.recordById.get(id);if(!rec)return false;
+  const scale=bodyScaleFor(rec);
   state.stack=[];
-  state.current={id,scale:NODE_SCALE,sourceLocal:[...rec.world],entryWorld:null,cameraFrom:FAR_Z,cameraTo:MACRO_Z,globalSource:true};
+  state.current={id,scale,sourceLocal:[...rec.world],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
   state.localQ=[...W.orientation];state.transition=0;state.closing=false;state.transitionStart=now;setLabel(id);return true;
 }
 function descend(child,now=performance.now()){
   if(!state.current)return false;const hit=childBodies(state.current).find(x=>x.id===child);if(!hit)return false;
   state.stack.push({id:state.current.id,scale:state.current.scale,camera:state.current.cameraTo});
   const entryWorld=add(currentTranslation(),qRot(state.localQ,hit.center));
-  state.current={id:child,scale:hit.scale,sourceLocal:null,entryWorld,cameraFrom:cameraZ(),cameraTo:state.stack.at(-1).camera*.5,globalSource:false};
+  state.current={id:child,scale:hit.scale,sourceLocal:null,entryWorld,cameraFrom:cameraZ(),cameraTo:cameraForScale(hit.scale),globalSource:false};
   state.transition=0;state.closing=false;state.transitionStart=now;setLabel(child);return true;
 }
 function ascend(now=performance.now()){
@@ -232,7 +307,7 @@ function currentTranslation(){
 
 function draw(now){
   if(!state||!state.mounted){if(state)state.raf=requestAnimationFrame(draw);return}
-  updateTransition(now);const {gl}=state.renderer,{rect,w,h}=resizeCanvas(state.canvas),cam=cameraZ(),proj=perspective(FOV,w/h,Math.max(.0008,cam*.015),12),view=lookAt([0,0,cam],[0,0,0],[0,1,0]);
+  updateTransition(now);const {gl}=state.renderer,{rect,d,w,h}=resizeCanvas(state.canvas),cam=cameraZ(),proj=perspective(FOV,w/h,Math.max(.00008,cam*.015),12),view=lookAt([0,0,cam],[0,0,0],[0,1,0]);
   gl.viewport(0,0,w,h);gl.clearColor(.003,.006,.006,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   /* The outer body is the rank-1 Sierpiński shell itself: four corner tetrahedra
    * around the permanent central void. Global navigation keeps rotating it even
@@ -240,13 +315,19 @@ function draw(now){
   state.renderer.draw(outerCells(),W.orientation,[0,0,0],proj,view,{faces:true});
   const fade=!state.current?1:(state.stack.length?0:Math.pow(1-state.transition,2));
   state.renderer.draw(populationInstances(fade),W.orientation,[0,0,0],proj,view,{faces:true});
+  state.renderer.drawLights(populationLights(fade),W.orientation,[0,0,0],proj,view,now*.001,d);
+  let lightCount=0,quantumCount=0;
   if(state.current){
-    const tree=[];collectLeaves(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree);for(const x of tree)x.color[3]*=.3+.7*state.transition;
+    const tree=[],lights=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,lights);for(const x of tree)x.color[3]*=.3+.7*state.transition;for(const x of lights)x.color[3]*=.25+.75*state.transition;
     const translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
     state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,.82]}],state.localQ,translate,proj,view,{faces:false});
+    state.renderer.drawLights(lights,state.localQ,translate,proj,view,now*.001,d);
+    lightCount=lights.filter(x=>x.kind==='metabolight').length;quantumCount=lights.filter(x=>x.kind==='quantum').length;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  state.hud.innerHTML=state.current?`<span>INQUIRY</span><b>${state.current.id}</b><small>drag body · touch parent · empty space ascends</small>`:`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch an organism</small>`;
+  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
+  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
+  else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;state.hud.innerHTML=`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch an organism</small>`};
   state.raf=requestAnimationFrame(draw);
 }
 
@@ -284,7 +365,7 @@ function initialize(host,projection,backgroundDrag=true){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
   state={host,projection,canvas:stage.canvas,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false};
-  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';
+  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);
   attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
 

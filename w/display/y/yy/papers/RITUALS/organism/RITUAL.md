@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.2"
+version: "1.3"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -176,6 +176,32 @@ The public Papers projection may expose only tissue intentionally secreted throu
 
 It must not expose private Drive IDs/URLs, acquisition tissue, credentials, private nested-organ interiors, or copyrighted full carriers merely because Papers procured them.
 
+## Luminous recursive scale
+
+Within Papers' local rendering scale, `S.*` is the minimum **Papers organism quantum**. This does not erase a Source organism's internal admitted `4V / 6E / 4F / 1T` inquiry body: those are internal parts/relations of one `S.*`, not smaller Papers organisms.
+
+The visual scale law is deterministic:
+
+- `S` has one fixed linear quantum scale;
+- rank `nH` spans `2^n` linear S-units;
+- rank `nH` therefore contains `4^n` S-organism quanta under complete recursive parent resolution;
+- zoom/framing may change camera distance but must not remint S at a different intrinsic size;
+- perceptual LOD may collapse unresolved depth, but revealed descendants return to this same S-anchored scale law.
+
+### Metabolight
+
+A Holon's permanent recursive center void is the lawful perceptual site for **metabolight**: luminous condensation of the wisdom/metabolic yield carried by that recursive closure.
+
+- every visible Holon rank may carry one central metabolight at its own recursive center;
+- nested lower-rank Holons retain their own smaller metabolights when LOD reveals them;
+- visible `S.*` ground carries only a faint quantum ember, distinguishing minimum Papers-organism presence from Holon condensation;
+- baseline V1 metabolight size/intensity may be rank-driven so scale is perceptible before the public projection exposes complete metabolite tissue;
+- an actually admitted public wisdom/metabolite payload may truthfully boost the light;
+- missing public wisdom tissue means **projection absence only** and must never be rendered/interpreted as proof of zero metabolic yield;
+- selection may strengthen the current body's light without changing its identity, rank, parentage or semantic content.
+
+The light is therefore not decorative bloom and not a second ontology. It is Papers-local phenomenology attached to the same recursive organism body already earned by genealogy.
+
 ## Phenomenology and design freedom
 
 Papers owns its local material language, recursive specimen rendering and interaction policy. Philosophy and other site-holons must not be changed merely to make Papers aesthetically convenient.
@@ -211,3 +237,5 @@ A public Papers mutation closes when:
 ## Compression
 
 **Papers is a tetrahedral public inquiry field. Every living `S.*` and `nH` is the same canonical tetrahedral geometric species; rank changes genealogy, not morphology, and point packing is only encounter/LOD. Selection materializes already-earned source-owned structure in-place: `S.*` opens its internal source-body `4V / 6E / 4F / 1T` and metabolites when admitted, while `nH` opens its four-parent relational body and recursive ancestry. Provenance exits outward from the Source organism without replacing it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis and local phenomenology. Transport may evolve without turning the viewer into the actuator or the projection into authority.**
+
+Version 1.3 luminous recursive-scale correction (2026-09-19): Papers now anchors local visual scale to `S.*` as the minimum Papers-organism quantum. Rank `nH` is rendered at `2^n` linear S-scale so complete ancestry contains `4^n` S quanta without rescaling S itself. Holon center voids carry recursive metabolight; nested Holons retain smaller lights and visible Sources carry faint quantum embers. V1 baseline luminosity is rank-driven, while already-admitted public wisdom may boost it; missing wisdom tissue remains projection absence rather than evidence of no metabolites.

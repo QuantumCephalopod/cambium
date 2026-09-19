@@ -1,0 +1,48 @@
+{
+  "event_id": "crawlerbait-display-safe-area-20260919T014215Z",
+  "home_at_utc": "2026-09-19T01:42:15Z",
+  "organism": "organism:crawlerbait",
+  "entrypoint": "github.cambium...display.crawlerbait",
+  "operation": "consume-display-safe-area",
+  "outcome": "PASS/EARNED · CRAWLERBAIT LOCAL PANEL INHABITS DISPLAY SAFE-AREA",
+  "changed_scope": [
+    "Crawlerbait panel max-height now derives from Display's existing --display-safe-top contract",
+    "desktop and responsive local presentation remain below the current Display top membrane/status region",
+    "Crawlerbait data, shader, bait-space, inspector, background drag and machine-readable reef behavior are unchanged",
+    "central Display runtime/style was not mutated",
+    "no Crawlerbait INDEX/_cambium or RITUAL change"
+  ],
+  "context": {
+    "source_nutrient": "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__display-safe-area__20260919.md",
+    "implementation_commit": "c9ad42fc02970c6bfec65b64cf7444487ee29191",
+    "structural_witness": {
+      "workflow_run": 35413102511,
+      "conclusion": "success",
+      "staging_artifact_id": 10573769409,
+      "staging_artifact_digest": "sha256:4ba5771bfaba969dce0339c1b97f9010be1b11410ab5fffb5af4359e24d8cdf3"
+    },
+    "browser_witness": {
+      "artifact_bytes": "exact staging artifact; local CSS/JS inlined only to bypass sandbox URL restrictions",
+      "desktop": {
+        "viewport": "1508x758",
+        "display_safe_top_px": 86,
+        "panel_top_px": 142.140625,
+        "header_overlap_px2": 0,
+        "status_overlap_px2": 0
+      },
+      "responsive": {
+        "viewport": "600x844",
+        "display_safe_top_px": 74,
+        "panel_top_px": 286.5625,
+        "header_overlap_px2": 0,
+        "status_overlap_px2": 0
+      },
+      "browser_errors": 0,
+      "note": "At <=520px the existing global Display rule hides .interlocutor-content entirely; this act did not widen scope into that separate presentation policy."
+    },
+    "structural_growth": false,
+    "parent_uplink_required": false
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}
