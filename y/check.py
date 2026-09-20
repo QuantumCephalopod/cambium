@@ -247,6 +247,11 @@ def main():
     papers_sierpinski=(DISPLAY/'y'/'yy'/'papers'/'sierpinski.js').read_text(encoding='utf-8')
     check('S_QUANTUM_SCALE' in papers_sierpinski and 'bodyScaleFor' in papers_sierpinski and 'Math.pow(2,rankNumber' in papers_sierpinski,'Papers visual scale is not anchored to S quantum')
     check('ROOT_FIELD_DESKTOP=1.75' in papers_sierpinski and 'ROOT_FIELD_MOBILE=1.42' in papers_sierpinski and 'overviewBodyScaleFor' in papers_sierpinski and 'populationBodies' in papers_sierpinski and 'collectBody(rec.id' in papers_sierpinski and 'NODE_SCALE' not in papers_sierpinski,'Papers overview does not preserve shared encounter scale + S-anchored recursive rank LOD')
+    check('PHYSIOLOGY_PHASES' in papers_sierpinski and all(token in papers_sierpinski for token in ("QUESTION","PREPARE","METABOLIZE","GROW")) and 'papers-physiology' in papers_sierpinski,'Papers overview physiology no longer exposes the four live pump phases')
+    check('motionA=pointInTet(cell.tet' in papers_sierpinski and 'motionB=pointInTet(cell.tet' in papers_sierpinski and 'overviewDriftPoint' in papers_sierpinski,'Papers overview motion escaped current tetrahedral chamber-derived packing')
+    check('BACKGROUND_FIELD_ALPHA' in papers_sierpinski and 'NESTED_BACKGROUND_ALPHA' in papers_sierpinski and 'state.canvas.dataset.backgroundFieldAlpha' in papers_sierpinski,'Papers scale passage no longer preserves previous-scale background matter')
+    check('drawOverviewPhysiology' in papers_sierpinski and 'simplex2D' in papers_sierpinski,'Papers central physiology is not embodied through simplex matter')
+
     check('drawLights' in papers_sierpinski and 'metabolight' in papers_sierpinski and 'quantumEmberCount' in papers_sierpinski,'Papers metabolight/quantum-emission witness missing')
     check("PRETEXT_VERSION='0.0.9'" in papers_sierpinski and 'prepareWithSegments' in papers_sierpinski and 'layoutNextLineRange' in papers_sierpinski and 'materializeLineRange' in papers_sierpinski,'Papers active wisdom is not bound through pinned Pretext layout')
     check('papers-wisdom-stage' in papers_sierpinski and 'wisdomState' in papers_sierpinski,'Papers metabolight text ink plane missing')
