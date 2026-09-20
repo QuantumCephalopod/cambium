@@ -251,6 +251,8 @@ def main():
     check('motionA=pointInTet(cell.tet' in papers_sierpinski and 'motionB=pointInTet(cell.tet' in papers_sierpinski and 'overviewDriftPoint' in papers_sierpinski,'Papers overview motion escaped current tetrahedral chamber-derived packing')
     check('BACKGROUND_FIELD_ALPHA' in papers_sierpinski and 'NESTED_BACKGROUND_ALPHA' in papers_sierpinski and 'state.canvas.dataset.backgroundFieldAlpha' in papers_sierpinski,'Papers scale passage no longer preserves previous-scale background matter')
     check('drawOverviewPhysiology' in papers_sierpinski and 'simplex2D' in papers_sierpinski,'Papers central physiology is not embodied through simplex matter')
+    check('projection?.source_meta?.[x.id]' in papers_sierpinski and 'ORIGINAL WORK' in papers_sierpinski and 'PAPERS METABOLISM' in papers_sierpinski and 'papers-source-inquiry' in papers_sierpinski,'Selected Sources no longer embody public source_meta identity/provenance/metabolism')
+    check('SOURCE INQUIRY · PROJECTION GAP' in papers_sierpinski and 'sourceInquiryReceipt' in papers_sierpinski and 'state.inquiryBodies' in papers_sierpinski,'Selected Source inquiry does not preserve public projection-gap truth/future source-body uptake')
 
     check('drawLights' in papers_sierpinski and 'metabolight' in papers_sierpinski and 'quantumEmberCount' in papers_sierpinski,'Papers metabolight/quantum-emission witness missing')
     check("PRETEXT_VERSION='0.0.9'" in papers_sierpinski and 'prepareWithSegments' in papers_sierpinski and 'layoutNextLineRange' in papers_sierpinski and 'materializeLineRange' in papers_sierpinski,'Papers active wisdom is not bound through pinned Pretext layout')
