@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.4"
+version: "1.5"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -245,6 +245,78 @@ The global-to-macro transition should feel like entering a body rather than open
 Future Papers design work should default to Papers-local tissue. Elevate only a genuinely specimen-agnostic hook that arbitrary site-holons require.
 
 This is the guardrail: **shape is conserved; phenomenology and living use are local.**
+
+## Living overview physiology
+
+The overview is not a scatterplot of research objects. It is the first perceptual encounter with one living recursive Papers body.
+
+### Perceptual north star — organ → tissue → cell
+
+Papers should feel like **living tetrahedral tissue crystallized from research**.
+
+- from far away, perceive one organism-scale body rather than a list of specimens;
+- at intermediate scale, perceive recursive tissue: larger coherent bodies visibly contain/reveal smaller living bodies;
+- at Source ground, perceive the minimum Papers organism quantum;
+- no scale transition changes body-kind. Source, Holon, collapsed particle and recursively resolved body are the same tetrahedral material at different coherence/resolution.
+
+Higher rank therefore means **more recursive matter held together as one**, not merely a larger icon or brighter light.
+
+The permanent cavities and central voids are interior spaces of that recursive tissue, not unused screen real estate. Metabolight is condensed metabolic yield *inside* a body; it must never visually replace the body that earned it.
+
+### Dynamic matter — bounded recursive motion
+
+Papers-local motion may make the body feel alive, but motion must not invent semantic topology.
+
+- every currently realized chamber may host a bounded local flow field without implying a deeper semantic subdivision;
+- specimen motion is perceptual packing/dynamics only and must remain inside the truthful chamber relation;
+- the same motion law must remain valid if Cambium later earns another split: child chambers inherit the law recursively rather than requiring rank- or depth-specific special cases;
+- movement should expose coherence and scale, not resemble unconstrained particle noise;
+- collapsed simplex particles, visible tetrahedra and recursively resolved bodies are one material family.
+
+A future split may change where matter is permitted to move because the living address-space changed; the renderer must derive that permitted region from current anatomy rather than hard-code today's four root loci.
+
+### Scale passage — the previous world remains real
+
+Selection is a **change of scale inside one continuing world**.
+
+The selected organism moves toward the perceptual center and inquiry zooms into its scale, but the previous-scale Papers body should remain perceptibly present as distant/background matter whenever projection permits.
+
+This background may read as an asteroid belt, tissue field, or tilt-shifted distant body, but it remains the same continuing Papers world. It is not a decorative replacement scene and must not fabricate lineage.
+
+The intended feeling is:
+
+`organ → tissue → cell`
+
+not:
+
+`overview page → detail page`.
+
+### Overview physiology — four living phases
+
+When no organism is selected, the central void should explain **what Papers does** through a small living demonstration made from the same tetrahedral/simplex material as the surrounding body.
+
+The explanation is grounded in the four current Papers pumps:
+
+1. **QUESTION** — accumulation: the living body notices what it cannot yet answer and develops one bounded appetite for an external encounter that could change it.
+2. **PREPARE** — chaperone: arrived matter is recognized, checked, bound/folded and routed into a form an existing downstream enzyme can truthfully accept.
+3. **METABOLIZE** — digestion: one complete external work is saturated, tetrahedralized as 4V/6E/4F/1T, collapsed to surviving metabolites and — only after closure — embodied as one minimum `S.*` Source organism.
+4. **GROW** — anabolism: four distinct ACTIVE same-rank organisms may, only through complete relational closure, birth one next-rank Holon while the four parents remain living and reusable.
+
+Procurement is a real intake membrane between QUESTION and PREPARE, but it is not currently a fifth Papers pump. The overview may depict that crossing without promoting it into a fifth phase.
+
+The cycle is recursive and living rather than a one-way production line:
+
+`QUESTION → PREPARE → METABOLIZE → GROW → QUESTION`
+
+Anabolic growth changes the current Papers body; the next QUESTION phase reacquires that changed body and therefore may become curious about something different.
+
+Do **not** map these four temporal phases onto the four spatial root loci merely because both have cardinality four. Genesis / Continuity / Governance / Evolution are semantic anatomy; QUESTION / PREPARE / METABOLIZE / GROW are temporal physiology.
+
+### Explanatory text boundary
+
+Overview explanation is intentionally concise and secondary to the living demonstration. It may use ordinary DOM/canvas text because these four pump labels/copies are stable explanatory tissue, not Holon wisdom.
+
+Pinned Pretext remains the current layout carrier for selected, source-owned metabolight wisdom. Pretext is not the overview motion engine and need not carry the physics of the living demonstration.
 
 ## Closure / acceptance
 
