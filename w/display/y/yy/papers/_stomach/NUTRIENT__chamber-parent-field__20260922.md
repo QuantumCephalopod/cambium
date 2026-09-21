@@ -78,3 +78,91 @@ Browser witness should show:
 - deep background is alive through Philosophy without competing with Papers.
 
 Compression: leave the center empty, make realized chambers enterable and visibly fourfold, and let Papers float inside the live Philosophy parent inquiry field.
+
+
+## ACT / WITNESS — 2026-09-22
+
+### chamber truth
+
+The apparent missing fourth chamber was diagnosed as perceptual, not anatomical.
+
+The current public population is:
+- w · Genesis: 7
+- x · Continuity: 39
+- z · Governance: 95
+- y · Evolution: 13
+
+All four realized root chambers are present.
+
+### ACT — chamber passage
+
+Papers now carries a local chamber scale state independent of organism inquiry.
+
+- chamber targets come from the actual `N.collectStructure(...).addresses` body;
+- `N.focusTarget(state.structure,path)` supplies exact cell centroid + recursive scale;
+- clicking/touching a chamber face enters that realized subtet;
+- organism hit testing remains first priority, so existing Source/Holon selection survives;
+- empty-space click or Escape ascends from chamber scale;
+- the same mechanism can recurse if deeper realized chamber addresses later exist.
+
+The overview body's world transform now applies the chamber focus centroid/scale before projection. Source/Holon intrinsic rank scale and bounded motion law are unchanged.
+
+### ACT — four-chamber structural witness
+
+The four root subtets remain faintly visible as edge-only chamber shells.
+
+This prevents sparse Genesis/Evolution chambers from disappearing merely because Governance currently contains most of the population.
+
+The shell is perceptual structure only; it does not create new semantic address tissue.
+
+### ACT — empty center + coherent peripheral physiology
+
+The central HOW PAPERS LIVES demo is gone.
+
+The entire physiology explanation is now one peripheral unit:
+- HOW PAPERS LIVES
+- animation
+- four phase labels
+- active phase title/copy
+
+Nothing from that explanatory physiology occupies the center.
+
+### ACT — live Philosophy parent inquiry field
+
+Papers now creates one passive deep-off field using:
+- the live `organism:philosophy` shader object from the module registry;
+- the live global Philosophy projection already held by Display WorldView;
+- the existing generic field renderer.
+
+The Philosophy shader fragment is not copied into Papers.
+
+The inherited field is non-inspectable and non-draggable inside Papers. Philosophy remains source owner; Papers merely uses the live parent field as environmental substrate.
+
+### mechanical witness
+
+GitHub Actions:
+- run `35664212386`
+- final head at witness: `91ed7f9a09988c000e64e9c428b58926c4a311f1`
+- build: SUCCESS
+- Display structural/address/tetrahedral/membrane checks: SUCCESS
+- deploy: skipped on writable fork as expected
+
+Permanent checks now reject:
+- loss of exact chamber focusTarget passage;
+- loss of four-chamber shell embodiment;
+- loss of observable chamber path/scale;
+- return of split/central physiology;
+- copied/re-authored parent shader in place of the live Philosophy module relation;
+- interactive Philosophy parent field inside Papers.
+
+### remaining acceptance
+
+Real-browser acceptance remains OPEN:
+- center is actually perceptually empty;
+- all four chambers read as chambers;
+- chamber click/zoom feels smooth and obvious;
+- organism selection still feels natural after chamber zoom;
+- peripheral physiology remains one coherent unit;
+- Philosophy parent field adds depth without competing with Papers foreground.
+
+This nutrient remains OPEN until browser witness.
