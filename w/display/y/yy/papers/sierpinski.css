@@ -1,6 +1,7 @@
 [data-interlocutor="organism:papers"]{pointer-events:none;background:#020605}
 [data-interlocutor="organism:papers"] .interlocutor-background,[data-interlocutor="organism:papers"] .interlocutor-field-labels{opacity:0!important;pointer-events:none!important}
 [data-interlocutor="organism:papers"] .papers-content{position:absolute;inset:0;pointer-events:none}
+.papers-parent-field-stage{position:absolute;inset:0;z-index:1;width:100%;height:100%;display:block;pointer-events:none;opacity:.34;filter:saturate(.72) brightness(.72)}
 .papers-sierpinski-stage{position:absolute;inset:0;z-index:3;width:100%;height:100%;display:block;pointer-events:auto;touch-action:none;cursor:grab}
 .papers-sierpinski-stage:active{cursor:grabbing}
 .papers-wisdom-stage{position:absolute;inset:0;z-index:4;width:100%;height:100%;display:block;pointer-events:none}
@@ -10,15 +11,13 @@
 .papers-sierpinski-hud small{font:7px/1.4 var(--mono);letter-spacing:.055em;color:rgba(236,245,238,.28)}
 .papers-sierpinski-label{position:absolute;left:50%;bottom:34px;z-index:5;max-width:min(620px,72vw);transform:translateX(-50%);pointer-events:none;text-align:center;font:500 13px/1.35 var(--sans);letter-spacing:-.015em;color:rgba(239,248,241,.76);text-shadow:0 2px 28px #000;opacity:0;transition:opacity .22s ease}
 .papers-sierpinski-label.show{opacity:1}
-@media(max-width:700px){.papers-sierpinski-hud{left:16px;top:70px}.papers-sierpinski-label{bottom:20px;max-width:84vw;font-size:11px}.papers-physiology{width:min(360px,68vw);grid-template-rows:auto minmax(72px,13vh);gap:4px}.papers-physiology-witness{left:16px;top:128px;width:min(300px,calc(100vw - 32px))}.papers-physiology-copy span{max-width:280px;font-size:7px}.papers-physiology-phases{gap:3px}.papers-physiology-phases span{font-size:6px;letter-spacing:.05em}.papers-source-inquiry{grid-template-columns:1fr 1fr;gap:18px;padding:88px 16px 72px;align-items:end}.papers-source-original{grid-column:1}.papers-source-metabolism{grid-column:2}.papers-source-inquiry h2{font-size:12px}.papers-source-credit,.papers-source-receipt,.papers-source-inquiry-state{font-size:7px;line-height:1.45}}
+@media(max-width:700px){.papers-sierpinski-hud{left:16px;top:70px}.papers-sierpinski-label{bottom:20px;max-width:84vw;font-size:11px}.papers-physiology{left:16px;top:128px;width:min(300px,calc(100vw - 32px));grid-template-rows:auto 72px auto auto;gap:5px}.papers-physiology-copy span{max-width:280px;font-size:7px}.papers-physiology-phases{gap:3px}.papers-physiology-phases span{font-size:6px;letter-spacing:.05em}.papers-source-inquiry{grid-template-columns:1fr 1fr;gap:18px;padding:88px 16px 72px;align-items:end}.papers-source-original{grid-column:1}.papers-source-metabolism{grid-column:2}.papers-source-inquiry h2{font-size:12px}.papers-source-credit,.papers-source-receipt,.papers-source-inquiry-state{font-size:7px;line-height:1.45}}
 
-.papers-physiology{position:absolute;left:50%;top:50%;z-index:5;width:min(420px,54vw);transform:translate(-50%,-50%);display:grid;grid-template-rows:auto minmax(88px,16vh);gap:4px;pointer-events:none;text-align:center;color:rgba(236,245,238,.68);opacity:.72;transition:opacity .38s ease,transform .38s ease;text-shadow:0 2px 22px rgba(0,0,0,.9)}
-.papers-physiology::before{content:"";position:absolute;inset:-12% -8%;z-index:-1;background:radial-gradient(ellipse at center,rgba(2,6,5,.42) 0%,rgba(2,6,5,.18) 45%,rgba(2,6,5,0) 72%)}
-.papers-physiology[data-visible="false"]{opacity:0;transform:translate(-50%,-47%) scale(.98)}
+.papers-physiology{position:absolute;left:28px;top:148px;z-index:5;width:min(300px,28vw);display:grid;grid-template-rows:auto 82px auto auto;gap:6px;pointer-events:none;text-align:left;color:rgba(236,245,238,.62);opacity:.72;transition:opacity .38s ease,transform .38s ease;text-shadow:0 2px 18px rgba(0,0,0,.88)}
+.papers-physiology::before{content:"";position:absolute;inset:-12px -14px;z-index:-1;background:radial-gradient(ellipse at 24% 45%,rgba(2,6,5,.52) 0%,rgba(2,6,5,.22) 48%,rgba(2,6,5,0) 78%)}
+.papers-physiology[data-visible="false"]{opacity:0;transform:translateY(-4px)}
 .papers-physiology>small{font:7px/1.2 var(--mono);letter-spacing:.16em;color:rgba(162,235,211,.32)}
 .papers-physiology-canvas{width:100%;height:100%;display:block;opacity:.68}
-.papers-physiology-witness{position:absolute;left:28px;top:148px;z-index:5;width:min(300px,28vw);display:grid;gap:8px;pointer-events:none;text-align:left;color:rgba(236,245,238,.62);opacity:.72;transition:opacity .38s ease,transform .38s ease;text-shadow:0 2px 18px rgba(0,0,0,.88)}
-.papers-physiology-witness[data-visible="false"]{opacity:0;transform:translateY(-4px)}
 .papers-physiology-phases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;align-items:center}
 .papers-physiology-phases span{position:relative;padding-top:6px;font:6px/1.25 var(--mono);letter-spacing:.07em;color:rgba(236,245,238,.18);transition:color .45s ease,transform .45s ease}
 .papers-physiology-phases span::before{content:"";position:absolute;left:0;top:0;width:12px;height:1px;background:rgba(197,242,214,.09);transition:width .45s ease,background .45s ease}
