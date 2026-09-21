@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.5"
+version: "1.6"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -291,9 +291,37 @@ not:
 
 `overview page → detail page`.
 
+### Chamber passage — overview → chamber → organism
+
+The realized Papers chambers are navigable spatial bodies, not merely invisible bins used for packing.
+
+Local scale passage may therefore proceed:
+
+`overview → realized chamber / subtet → organism inquiry`
+
+The chamber transition must reuse the same recursive tetrahedral cell geometry already carried by Display navigation:
+- focus the exact realized cell centroid;
+- scale by recursive cell depth;
+- preserve the shared global orientation;
+- do not derive semantic chamber identity from specimen packing, density, glow, or screen position;
+- if finer chamber structure is later actually realized, the same passage law recurs without rank-specific special cases.
+
+Uneven organism counts may make one chamber perceptually sparse, but sparse occupancy does not erase the chamber itself. Faint shell/edge embodiment may therefore witness all realized chambers without turning chamber geometry into a second semantic source.
+
+### Parent inquiry off-field
+
+Papers is globally encountered inside the site's Inquiry direction. Its deep off-field may therefore inherit the live Philosophy field/shader as a **parent inquiry substrate**.
+
+This is a membrane relation, not interior identity:
+- Philosophy remains source owner of its shader physiology and global projection;
+- Papers may reference that live shader/projection downstream instead of copying/re-authoring it;
+- the inherited field remains passive/non-interactive inside Papers;
+- Papers organisms, chamber passage, metabolights and inquiry remain foreground-owned by Papers;
+- the parent field must not overwrite Papers' material language or semantics.
+
 ### Overview physiology — four living phases
 
-When no organism is selected, the central void should explain **what Papers does** through a small living demonstration made from the same tetrahedral/simplex material as the surrounding body.
+When no organism is selected, **the center remains empty field-space**. HOW PAPERS LIVES may appear only as one coherent peripheral unit whose animation, phase labels and active explanation stay visually together.
 
 The explanation is grounded in the four current Papers pumps:
 
@@ -314,7 +342,7 @@ Do **not** map these four temporal phases onto the four spatial root loci merely
 
 ### Explanatory text boundary
 
-Overview explanation is intentionally concise and secondary to the living demonstration. It may use ordinary DOM/canvas text because these four pump labels/copies are stable explanatory tissue, not Holon wisdom.
+Overview explanation is intentionally concise, peripheral and secondary to the living field. Animation + phase labels + active explanation remain one local unit; none of them may occupy the central void. It may use ordinary DOM/canvas text because these four pump labels/copies are stable explanatory tissue, not Holon wisdom.
 
 Pinned Pretext remains the current layout carrier for selected, source-owned metabolight wisdom. Pretext is not the overview motion engine and need not carry the physics of the living demonstration.
 
@@ -338,7 +366,10 @@ A public Papers mutation closes when:
 14. local selection/traversal does not hijack global Display navigation or shared orientation;
 15. shader/render/interaction changes remain Papers-local unless a genuinely generic Display coupling is earned;
 16. visitor inquiry does not actuate the authenticated update Worker;
-17. the exact generated artifact is browser-witnessed for point selection, lineage traversal, relation/metabolite trace focus and external-source handoff when those surfaces change.
+17. realized chamber passage preserves exact recursive cell identity/centroid/scale and does not invent semantic depth from packing;
+18. the overview center remains free of explanatory/demo overlays and HOW PAPERS LIVES remains one peripheral unit when present;
+19. any Philosophy-derived parent field references Philosophy-owned live shader/projection tissue without copying its interior or becoming interactive Papers semantics;
+20. the exact generated artifact is browser-witnessed for chamber passage, point selection, lineage traversal, relation/metabolite trace focus and external-source handoff when those surfaces change.
 
 ## Compression
 
@@ -347,3 +378,6 @@ A public Papers mutation closes when:
 Version 1.3 luminous recursive-scale correction (2026-09-19): Papers now anchors local visual scale to `S.*` as the minimum Papers-organism quantum. Rank `nH` is rendered at `2^n` linear S-scale so complete ancestry contains `4^n` S quanta without rescaling S itself. Holon center voids carry recursive metabolight; nested Holons retain smaller lights and visible Sources carry faint quantum embers. V1 baseline luminosity is rank-driven, while already-admitted public wisdom may boost it; missing wisdom tissue remains projection absence rather than evidence of no metabolites.
 
 Version 1.4 metabolight-text correction (2026-09-19): already-public Holon wisdom may now become readable at the active Holon's own projected metabolight instead of in a detached metadata panel. Selection/scale only reveal admitted text; absent public wisdom renders no invented sentence. Text layout remains Papers-local implementation—currently pinned Pretext 0.0.9 feeding a transparent Canvas2D ink plane—and does not alter genealogy, S scale, Display geometry or semantic authority.
+
+
+Version 1.6 chambered-overview correction (2026-09-22): the overview center is reserved as empty field-space; HOW PAPERS LIVES remains one coherent peripheral animation+explanation unit. Realized tetrahedral chambers become navigable scale passages between overview and organism inquiry using exact recursive cell centroid/scale geometry. Sparse occupancy may no longer make a realized chamber disappear perceptually. Papers may also inherit the live Philosophy shader/projection as a passive deep-off parent inquiry substrate while preserving Philosophy ownership and Papers-local foreground identity.
