@@ -233,3 +233,18 @@ Provider witness:
 A real browser image of the repaired artifact remains necessary to close the perceptual acceptance of this nutrient.
 
 The independent live-shadow freshness wound also remains: the currently committed static shadow is still the older 154-organism body and is not repaired by this scale act.
+
+
+## perceptual quantum recalibration — 2026-09-21
+
+The earlier repair restored the missing overview rank law and shared encounter scale. A later perceptual pass now tightens only the fixed minimum S quantum:
+
+`S_QUANTUM_SCALE: .0045 → .0012`
+
+The recursive law remains unchanged:
+
+`S → 1H → 2H → 3H → 4H → 5H = ×2 linear scale per rank`.
+
+At ordinary overview heights this places Sources near ~1 screen pixel while 4H/5H become the first clearly mass-bearing bodies from distance. No opacity increase compensates for this change.
+
+The current scale-collapse wound therefore remains OPEN only for real-browser perceptual acceptance and the independent static-shadow/live-circulation freshness issue.
