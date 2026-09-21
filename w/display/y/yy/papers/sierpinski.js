@@ -20,7 +20,7 @@ const PALETTE={w:[.34,.78,.64],x:[.42,.82,.88],z:[.78,.78,.60],y:[.52,.93,.48]};
  * dollies inward. Recursive detail is revealed only when screen scale earns it.
  */
 
-const S_QUANTUM_SCALE=.0045; // smallest Papers organism body in canonical root units
+const S_QUANTUM_SCALE=.0012; // smallest Papers organism body in canonical root units; ~1px at ordinary overview height
 const ROOT_FIELD_DESKTOP=1.75;
 const ROOT_FIELD_MOBILE=1.42;
 const ROOT_FIELD_BREAKPOINT=560;
@@ -36,6 +36,8 @@ const PRETEXT_PATH='papers-pretext-0.0.9/layout.js';
 const SHADOW_PATH='papers-shadow/current.json';
 const WISDOM_MAX_WIDTH=680;
 const PHYSIOLOGY_PHASE_MS=5200;
+const OVERVIEW_WANDER=.86;
+const OVERVIEW_FLOW_PERIOD_MS=42000;
 const PHYSIOLOGY_PHASES=Object.freeze([
   Object.freeze({id:'question',label:'QUESTION',copy:'The living body notices what it cannot yet answer.'}),
   Object.freeze({id:'prepare',label:'PREPARE',copy:'Arrived matter is checked and folded into a form Papers can digest.'}),
@@ -118,9 +120,12 @@ function rankNumber(value){const m=String(value||'').match(/^(\d+)H(?:\.|$)/);re
 function bodyScaleFor(entity){return S_QUANTUM_SCALE*Math.pow(2,rankNumber(entity?.rank))}
 function rootFieldScale(width){return width<ROOT_FIELD_BREAKPOINT?ROOT_FIELD_MOBILE:ROOT_FIELD_DESKTOP}
 function overviewDriftPoint(entity,now=performance.now()){
-  const a=entity.motionA||entity.world,b=entity.motionB||entity.world,phase=random01(entity.id,'flow-phase')*Math.PI*2;
-  const t=.5+.5*Math.sin(now*.00016+phase),wander=mix3(a,b,smooth(t));
-  return mix3(entity.world,wander,.22);
+  const points=[entity.motionA,entity.motionB,entity.motionC,entity.motionD].filter(Boolean);
+  if(points.length<2)return entity.world;
+  const phase=random01(entity.id,'flow-phase')*points.length,speed=mix(.72,1.28,random01(entity.id,'flow-speed'));
+  const u=((now/OVERVIEW_FLOW_PERIOD_MS)*speed+phase)%points.length,index=Math.floor(u),t=smooth(u-index);
+  const wander=mix3(points[index],points[(index+1)%points.length],t);
+  return mix3(entity.world,wander,OVERVIEW_WANDER);
 }
 function overviewCenterFor(entity,width,now=performance.now()){return mul(overviewDriftPoint(entity,now),rootFieldScale(width))}
 function overviewBodyScaleFor(entity,width){return bodyScaleFor(entity)*rootFieldScale(width)}
@@ -158,10 +163,10 @@ function parentIndex(projection){
   }
   return out;
 }
-function pointInTet(tet,spec){
+function pointInTet(tet,spec,inset=.28){
   let weights=[0,1,2,3].map(i=>-Math.log(Math.max(1e-7,random01(spec.id,i))));
   const s=weights.reduce((a,b)=>a+b,0);weights=weights.map(v=>v/s);
-  const inset=.28;weights=weights.map(v=>(1-inset)*v+inset*.25);
+  weights=weights.map(v=>(1-inset)*v+inset*.25);
   return [0,1,2].map(k=>weights.reduce((sum,w,i)=>sum+w*tet[i][k],0));
 }
 function buildRecords(projection,fieldRoot){
@@ -173,8 +178,8 @@ function buildRecords(projection,fieldRoot){
   const identities=identityIndex(projection),records=[];
   for(const entity of identities.values()){
     const cell=byGene.get(entity.gene);if(cell){
-      const world=pointInTet(cell.tet,entity),motionA=pointInTet(cell.tet,{id:entity.id+'·flow-a'}),motionB=pointInTet(cell.tet,{id:entity.id+'·flow-b'});
-      records.push({...entity,world,motionA,motionB});
+      const world=pointInTet(cell.tet,entity),motionA=pointInTet(cell.tet,{id:entity.id+'·flow-a'},.20),motionB=pointInTet(cell.tet,{id:entity.id+'·flow-b'},.20),motionC=pointInTet(cell.tet,{id:entity.id+'·flow-c'},.20),motionD=pointInTet(cell.tet,{id:entity.id+'·flow-d'},.20);
+      records.push({...entity,world,motionA,motionB,motionC,motionD});
     }
   }
   return {records,structure};
@@ -563,7 +568,7 @@ function draw(now){
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
   drawWisdom(rect,cam,translate,activeLight);updateSourceInquiry();drawOverviewPhysiology(now);
-  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
+  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;state.hud.innerHTML=`<span>PAPERS</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch an organism</small>`};
   state.raf=requestAnimationFrame(draw);
@@ -603,7 +608,7 @@ function initialize(host,projection,backgroundDrag=true){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
   state={host,projection,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null,inquiryBodies:{},shadowApplied:false,shadowHome:''};
-  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
+  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
 
