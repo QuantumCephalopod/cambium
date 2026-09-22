@@ -259,6 +259,13 @@ def main():
     check('PARENT_FIELD_ID' not in papers_sierpinski and 'createParentInquiryField' not in papers_sierpinski and 'parentInquiryViewTarget' not in papers_sierpinski,'superseded full Philosophy structural parent field remains in Papers')
     check('.papers-inquiry-environment-stage' in papers_sierpinski_css and '.papers-parent-field-stage' not in papers_sierpinski_css,'Papers environment surface did not replace the full parent-field carrier')
     check('PAPERS_OVERVIEW_BASIS_Y=-.275' in papers_sierpinski and 'overviewOrientation' in papers_sierpinski and 'dataset.overviewBasisY' in papers_sierpinski,'Papers fourfold perceptual rest frame missing')
+    check('papers-chamber-labels' in papers_sierpinski and 'updateChamberLabels' in papers_sierpinski and 'chamberLabelNodes' in papers_sierpinski and '.papers-chamber-label' in papers_sierpinski_css,'Papers truthful chamber identity/count witnesses missing')
+    check("GENEALOGY_REPAIR_PATH='papers-shadow/genealogy-gap-repair.json'" in papers_sierpinski and 'mergeGenealogyRepair' in papers_sierpinski and 'genealogyRepairCount' in papers_sierpinski,'Papers bounded genealogy-gap hydration missing')
+    genealogy_repair=DISPLAY/'y'/'yy'/'papers'/'public'/'papers-shadow'/'genealogy-gap-repair.json'
+    check(genealogy_repair.is_file(),'Papers public genealogy repair carrier missing')
+    genealogy_repair_data=json.loads(genealogy_repair.read_text(encoding='utf-8'))
+    check(genealogy_repair_data.get('schema')=='papers-public-genealogy-gap-repair.v1' and genealogy_repair_data.get('site_id')=='organism:papers','Papers genealogy repair membrane mismatch')
+    check(all(isinstance(v,list) and len(v)==4 for v in genealogy_repair_data.get('parents',{}).values()),'Papers genealogy repair contains non-four-parent Holon relation')
     check('CHAMBER_OPEN_MS=760' in papers_sierpinski and 'N.focusTarget(state.structure,path)' in papers_sierpinski and 'hitChamber' in papers_sierpinski and 'setChamber' in papers_sierpinski and 'ascendChamber' in papers_sierpinski,'Papers realized chamber passage regressed')
     check('CHAMBER_SHELL_ALPHA=.085' in papers_sierpinski and 'outerCells' in papers_sierpinski and '{faces:false}' in papers_sierpinski,'Papers four-chamber structural witness regressed')
     check("state.canvas.dataset.chamberPath='overview'" in papers_sierpinski and 'state.canvas.dataset.chamberScale' in papers_sierpinski,'Papers chamber passage is not observable')
