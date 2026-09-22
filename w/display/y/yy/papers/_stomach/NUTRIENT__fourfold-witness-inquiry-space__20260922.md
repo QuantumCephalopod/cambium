@@ -56,3 +56,63 @@ This nutrient closes only when:
 4. global Display navigation/orientation remains unchanged;
 5. structural checks pass;
 6. real-browser witness confirms the intended relation.
+
+
+## ACT / WITNESS — 2026-09-22
+
+### ACT — truthful fourfold rest frame
+
+The fourfold wound was resolved without moving any organism between semantic chambers.
+
+A Papers-local fixed rest yaw is composed beneath the shared Display orientation:
+
+`PAPERS_OVERVIEW_BASIS_Y = -0.275 rad` (~-15.76°)
+
+This is a presentation frame only:
+- Source/Holon IDs and root genes are unchanged;
+- deterministic in-chamber point generation is unchanged;
+- S quantum scale and recursive Holon scale are unchanged;
+- later global Display rotation remains inherited because the local basis is composed with `W.orientation`.
+
+Using the exact current public shadow and witnessed desktop viewport, the resulting root-population projected bounding boxes have zero pairwise overlap. In particular, the former x/y overlap collapses from ~5002.7 px² to 0.
+
+### ACT — Inquiry-only Philosophy environment
+
+The superseded full Philosophy parent-field / parent-frame implementation was removed.
+
+Papers now creates a non-interactive full-screen environment carrier that:
+- reads the live `organism:philosophy` shader fragment from the module registry;
+- reuses generic Display field palette physiology rather than copying the palette transform;
+- fixes `vRegion` / focus to Philosophy `y / Inquiry`;
+- renders no Philosophy tetrahedral geometry;
+- remains under the independent Papers organism body.
+
+Therefore the visible relation is:
+
+`Philosophy Inquiry material-space ⟦ independent Papers organism ⟧`
+
+rather than Philosophy's complete root tetrahedron behind or identified with Papers.
+
+### dependency-cone cleanup
+
+The temporary generic external `viewTarget` hook created for the rejected parent-frame interpretation was removed. The only generic addition retained is reusable `paletteSet` exposure so identity-owned environment carriers can reuse Display's exact neutral palette physiology.
+
+### mechanical witness
+
+GitHub Actions:
+- run: `35729235963`
+- head: `b94521f989f01376e05550d099d542da7dfe736a`
+- conclusion: SUCCESS
+- persistent Display build: SUCCESS
+- tree-addressed Display organism checks: SUCCESS
+- address algebra: SUCCESS
+- tetrahedral closure: SUCCESS
+- membrane byte verification: SUCCESS
+
+### remaining residue
+
+Only real-browser perceptual acceptance remains. It has been distilled into:
+
+`_stomach/NUTRIENT__fourfold-inquiry-browser-acceptance__20260922.md`
+
+This carrier is therefore metabolized and may retire to waste.
