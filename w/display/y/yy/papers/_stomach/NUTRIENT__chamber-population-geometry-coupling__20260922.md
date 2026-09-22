@@ -164,3 +164,51 @@ The user also repeats the unresolved empirical question:
 > stop guessing and find out why there is one container completely empty.
 
 This correction supersedes the prior candidate repair that visually embedded Papers as if its local root occupied/replaced the full global Inquiry cell geometry. That implementation must be re-evaluated before further closure.
+
+
+## EMPIRICAL DIAGNOSIS — apparent empty fourth chamber
+
+Current static public shadow contains 154 unique identities with zero cross-gene duplicate IDs. Effective renderer membership remains:
+- w / Genesis: 7 Sources + 0 Holons = 7
+- x / Continuity: 26 Sources + 13 Holons = 39
+- z / Governance: 56 Sources + 39 Holons = 95
+- y / Evolution: 6 Sources + 7 Holons = 13
+
+No root population is dropped by identityIndex/buildRecords/populationBodies.
+
+Using the actual current packing algorithm, current public IDs, desktop root scale, FAR_Z, current viewport approximately 1039×799, and Display HOME orientation, the projected population witnesses are:
+
+- w centroid ≈ (691.1, 259.6), bbox ≈ [622.9,224.1]→[736.4,310.1]
+- x centroid ≈ (449.5, 537.3), bbox ≈ [343.5,424.8]→[572.4,673.0]
+- z centroid ≈ (370.3, 294.0), bbox ≈ [288.8,220.6]→[463.6,364.2]
+- y centroid ≈ (563.8, 535.7), bbox ≈ [516.0,496.9]→[596.0,585.6]
+
+Pairwise population-footprint overlap is zero for every root pair except x/y.
+
+x/y:
+- centroid separation ≈ 114.3 px;
+- projected bbox overlap area ≈ 5002.7 px²;
+- 8 / 13 y organisms project inside x's population bounding box.
+
+Therefore the missing fourth visible cluster is a projection witness failure: y / Evolution is substantially swallowed by x / Continuity in the HOME view even though both retain correct 3D chamber membership.
+
+Secondary visibility asymmetry:
+- w / Genesis contains no Holons at all;
+- Sources render at fixed S quantum scale and only carry faint source quantum emission;
+- therefore w is also much less perceptually assertive than x/z/y even though its seven Sources are present.
+
+This diagnosis is data/algorithm-derived, not inferred from the screenshot alone.
+
+## PARENT-SPACE CORRECTION
+
+The previous parent-frame repair is rejected by the user correction.
+
+Correct relation:
+- Philosophy owns a global Inquiry subtetrahedral environment.
+- Papers is an independent organism floating *within that Inquiry volume*.
+- Papers does not occupy/replace/tile the complete Inquiry tetrahedron.
+- Papers view must not show Philosophy's full four-root tetrahedral structure behind it.
+- surrounding Papers space should inherit the Philosophy shader/material decision for the Inquiry region only.
+- Papers local root/chambers remain their own geometry inside that environment.
+
+The current runtime implementation that renders the complete Philosophy field behind Papers must therefore be removed/replaced before this nutrient can close.
