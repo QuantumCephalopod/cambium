@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.7"
+version: "1.8"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -76,10 +76,13 @@ The local root body remains the realized four-locus Sierpiński tetrahedral stru
 - `z · Governance`
 - `y · Evolution`
 
+When root chambers are spatially shown, their visible names and current public Source/Holon counts should be derived from this live phenotype + current projected population and anchored to the actual projected chamber geometry. Labels are witnesses, not new semantic tissue.
+
 Every living Papers identity — `S.*` and `nH` — is one canonical tetrahedral organism inside its **true Papers root locus**. The packed point is an encounter/LOD proxy for that organism, never a different body-kind.
 
 - `S.*` already exists only after Drive Papers has tetrahedralized one external source into internal `4V / 6E / 4F / 1T`; its four vertices are metabolized source-body partitions, not four Papers parent organisms.
 - `nH` has the same tetrahedral geometric species while adding recursive Papers ancestry: exactly four same-rank Papers organisms are its direct parent vertices.
+- A public `nH` whose projected direct-parent list is absent or not exactly four remains a Holon with a **genealogy projection gap**. Missing projected ancestry must never be reinterpreted as Source ground or used to justify terminal Source-like morphology; presentation must preserve the gap until source-owned genealogy is available.
 - Distance and density may collapse either kind to a point proxy; selection/scale reveal already-earned structure rather than switching morphology.
 - A specimen's exact position *inside* its locus is deterministic perceptual packing only; it is not an invented recursive semantic address.
 - Do not derive ontology from hashes, screen coordinates, depth, point spacing, rank labels or shader state.
