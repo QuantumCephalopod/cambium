@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.6"
+version: "1.7"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -279,18 +279,20 @@ A future split may change where matter is permitted to move because the living a
 
 Selection is a **change of scale inside one continuing world**.
 
-#### Scoped parent-frame continuity
+#### Inquiry-environment continuity
 
-When Papers is encountered through `site-space:y ⟦ papers:ε ⟧` and the live Philosophy field remains visible as parent environment, that parent field must participate in the same physical scale passage as Papers rather than remain a separately framed backdrop.
+When Papers is encountered through `site-space:y ⟦ papers:ε ⟧`, the surrounding world may inherit Philosophy's **Inquiry** environmental material while Papers remains an independently rooted organism floating inside that volume.
 
-The coupling is geometric, not semantic:
-- the actual global Papers mount cell supplies the parent frame;
-- Papers local root and chamber focus are embedded into that frame by affine composition;
-- parent and local surfaces therefore share movement/focus while retaining independent address spaces;
-- local Papers `w/x/z/y` must never be reinterpreted as concatenated global descendants merely because their visual frames nest;
-- global Display navigation remains global and is not mutated by Papers-local chamber traversal.
+The relation is environmental, not constitutive:
+- Philosophy's global `y / Inquiry` region supplies the surrounding material/shader condition;
+- Papers keeps its own local root, chambers, camera passage, motion and inquiry geometry;
+- do not render Philosophy's complete four-region tetrahedral body as a second structural container inside the Papers encounter;
+- do not scale or tile Papers as though its local root were identical to the Inquiry tetrahedron;
+- local Papers `w/x/z/y` must never be reinterpreted as concatenated Philosophy descendants;
+- global Display navigation/orientation remains global and is not mutated by Papers-local chamber traversal;
+- reuse the Philosophy-owned shader/material decision for Inquiry rather than copying or re-authoring its fragment into Papers.
 
-A parent field that stays still while Papers moves, or a Papers field painted as another full-root coordinate system over the parent, breaks the intended continuous-world relation even if both surfaces independently use correct tetrahedral geometry.
+Compression: **Papers floats inside Inquiry-space; Inquiry colors the surrounding world, it does not become Papers' body.**
 
 The selected organism moves toward the perceptual center and inquiry zooms into its scale, but the previous-scale Papers body should remain perceptibly present as distant/background matter whenever projection permits.
 
