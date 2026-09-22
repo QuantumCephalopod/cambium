@@ -44,6 +44,7 @@ const INQUIRY_LIGHT_GAIN=.72;
 const CHAMBER_OPEN_MS=760;
 const CHAMBER_SHELL_ALPHA=.085;
 const PARENT_FIELD_ID='organism:papers:philosophy-parent';
+const PARENT_MOUNT_PATH='y';
 const PHYSIOLOGY_PHASES=Object.freeze([
   Object.freeze({id:'question',label:'QUESTION',copy:'The living body notices what it cannot yet answer.'}),
   Object.freeze({id:'prepare',label:'PREPARE',copy:'Arrived matter is checked and folded into a form Papers can digest.'}),
@@ -135,6 +136,18 @@ function overviewDriftPoint(entity,now=performance.now()){
   return mix3(entity.world,wander,OVERVIEW_WANDER);
 }
 function chamberFocus(){return state?.chamberFocus||{center:[0,0,0],scale:1}}
+function parentMountFrame(){
+  const cell=N?.cellForPath?.(PARENT_MOUNT_PATH);
+  if(!cell)return {center:[0,0,0],scale:1};
+  return {center:[...cell.center],scale:Math.pow(.5,PARENT_MOUNT_PATH.length)};
+}
+function parentInquiryViewTarget(){
+  const local=chamberFocus(),frame=parentMountFrame();
+  /* Visual frame composition only: site-space:y ⟦ papers:ε ⟧ remains a
+   * semantic scope restart. Local Papers coordinates are embedded into the
+   * actual parent cell without concatenating their addresses. */
+  return {center:add(frame.center,mul(local.center,frame.scale)),scale:local.scale/frame.scale};
+}
 function overviewTransformScale(width){return rootFieldScale(width)*chamberFocus().scale}
 function overviewWorldPoint(point,width){return mul(sub(point,chamberFocus().center),overviewTransformScale(width))}
 function overviewCenterFor(entity,width,now=performance.now()){return overviewWorldPoint(overviewDriftPoint(entity,now),width)}
@@ -349,7 +362,7 @@ function sitePalette(siteId){
 function createParentInquiryField(host,canvas){
   const parent=modules.get('organism:philosophy'),projection=W?.projection;
   if(!Fields||!parent?.shader||!projection?.root)return null;
-  return Fields.create({id:PARENT_FIELD_ID,element:host,canvas,labelHost:null,projection,palette:sitePalette('organism:philosophy'),shader:parent.shader,inspectable:false,draggable:false,localScope:'papers-parent-field'});
+  return Fields.create({id:PARENT_FIELD_ID,element:host,canvas,labelHost:null,projection,palette:sitePalette('organism:philosophy'),shader:parent.shader,inspectable:false,draggable:false,localScope:'papers-parent-field',viewTarget:parentInquiryViewTarget});
 }
 function makeStage(host){
   const parentCanvas=document.createElement('canvas');parentCanvas.className='papers-parent-field-stage';parentCanvas.setAttribute('aria-hidden','true');host.append(parentCanvas);
@@ -631,6 +644,7 @@ function draw(now){
   }
   drawWisdom(rect,cam,translate,activeLight);updateSourceInquiry();drawOverviewPhysiology(now);
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
+  if(state.parentCanvas){const pt=parentInquiryViewTarget();state.parentCanvas.dataset.parentMountPath=PARENT_MOUNT_PATH;state.parentCanvas.dataset.localChamberPath=state.chamberPath||'overview';state.parentCanvas.dataset.parentViewScale=String(pt.scale);}
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';state.hud.innerHTML=`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch organism · touch chamber${state.chamberPath?' · empty space ascends':''}</small>`};
   state.raf=requestAnimationFrame(draw);
