@@ -148,3 +148,19 @@ Real-browser acceptance is still required to establish:
 - Philosophy now visibly travels with Papers chamber passage instead of remaining still;
 - all four Papers chambers remain readable under the corrected parent frame;
 - no new visual competition/occlusion was introduced.
+
+
+## SOURCE CORRECTION — user browser witness / 2026-09-22
+
+The user explicitly corrects the parent-field interpretation:
+
+> Papers is NOT the entirety of Philosophy's Inquiry tetrahedron.
+> Papers is a separate organism floating in the whole of that Inquiry tetrahedron.
+> Entering Papers must not leave the full four Philosophy tetrahedra visible.
+> The surrounding Papers space should instead be unmistakably inside Philosophy's Inquiry subtetrahedron: not black nothingness, but shaded/materialized according to whatever the Philosophy shader decides for that Inquiry cell.
+
+The user also repeats the unresolved empirical question:
+
+> stop guessing and find out why there is one container completely empty.
+
+This correction supersedes the prior candidate repair that visually embedded Papers as if its local root occupied/replaced the full global Inquiry cell geometry. That implementation must be re-evaluated before further closure.
