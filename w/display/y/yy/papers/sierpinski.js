@@ -35,6 +35,7 @@ const MAX_DEPTH=8;
 const PRETEXT_VERSION='0.0.9';
 const PRETEXT_PATH='papers-pretext-0.0.9/layout.js';
 const SHADOW_PATH='papers-shadow/current.json';
+const GENEALOGY_REPAIR_PATH='papers-shadow/genealogy-gap-repair.json';
 const WISDOM_MAX_WIDTH=680;
 const PHYSIOLOGY_PHASE_MS=5200;
 const OVERVIEW_WANDER=.86;
@@ -74,9 +75,38 @@ let state=null;
 let pretextModule=null;
 let pretextPromise=null;
 let shadowPromise=null;
+let genealogyRepairPromise=null;
 
 function pretextURL(){return new URL(PRETEXT_PATH,document.baseURI).href}
 function shadowURL(){return new URL(SHADOW_PATH,document.baseURI).href}
+function genealogyRepairURL(){return new URL(GENEALOGY_REPAIR_PATH,document.baseURI).href}
+function ensureGenealogyRepair(){
+  if(!genealogyRepairPromise){
+    genealogyRepairPromise=fetch(genealogyRepairURL(),{cache:'no-store',credentials:'same-origin'})
+      .then(r=>{if(!r.ok)throw new Error(`Papers genealogy repair HTTP ${r.status}`);return r.json()})
+      .then(x=>x?.schema==='papers-public-genealogy-gap-repair.v1'&&x?.site_id==='organism:papers'&&x?.parents&&typeof x.parents==='object'?x:null)
+      .catch(err=>{console.warn('Papers bounded genealogy repair unavailable',err);return null});
+  }
+  return genealogyRepairPromise;
+}
+function mergeGenealogyRepair(snap,repair){
+  if(!snap?.projection||!repair?.parents)return snap;
+  const p=snap.projection,publicIds=new Set(),holonIds=new Set();
+  for(const gene of GENES){
+    for(const x of p.groups?.[gene]||[])if(x?.id)publicIds.add(x.id);
+    for(const x of p.holons?.[gene]||[]){if(x?.id){publicIds.add(x.id);holonIds.add(x.id)}}
+  }
+  const applied=[];
+  for(const [id,parents] of Object.entries(repair.parents)){
+    if(!holonIds.has(id)||!Array.isArray(parents)||parents.length!==4||!parents.every(x=>publicIds.has(x)))continue;
+    const meta=p.holon_meta?.[id];if(!Array.isArray(meta))continue;
+    const current=Array.isArray(meta[0])?meta[0]:[];
+    if(current.length===4)continue;
+    meta[0]=[...parents];applied.push(id);
+  }
+  snap.genealogy_repair={schema:repair.schema,source:repair.source,source_event:repair.source_event,applied};
+  return snap;
+}
 function ensureShadow(){
   if(!shadowPromise){
     shadowPromise=fetch(shadowURL(),{cache:'no-store',credentials:'same-origin'})
@@ -84,7 +114,7 @@ function ensureShadow(){
       .then(packet=>{
         const snap=packet?.snapshot;
         if(packet?.site_id!=='organism:papers'||snap?.schema!=='papers-public-shadow.v2'||snap?.source!=='papers/_feed'||!snap?.projection?.groups||!snap?.projection?.phenotype)throw new Error('Papers shadow membrane mismatch');
-        return snap;
+        return ensureGenealogyRepair().then(repair=>mergeGenealogyRepair(snap,repair));
       })
       .catch(err=>{console.warn('Papers static shadow unavailable; retaining embedded projection',err);return null});
   }
@@ -225,6 +255,7 @@ function hydrateShadow(host){
     if(!snap||!state||state.host!==host||!state.mounted)return;
     const home=snap.inquiry_home_event||snap.projection?.event_id||'';
     state.inquiryBodies=snap?.inquiry?.bodies&&typeof snap.inquiry.bodies==='object'?snap.inquiry.bodies:{};
+    state.canvas.dataset.genealogyRepairCount=String(snap?.genealogy_repair?.applied?.length||0);
     if(!state.shadowApplied||state.shadowHome!==home)applyProjection(snap.projection,home);
   });
 }
