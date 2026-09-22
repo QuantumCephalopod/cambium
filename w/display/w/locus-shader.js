@@ -289,5 +289,5 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   shaders.set(id,api);return api;
 }
 function get(id){return shaders.get(id)||null}
-globalThis.SSSInterlocutorFields=Object.freeze({create,get});
+globalThis.SSSInterlocutorFields=Object.freeze({create,get,paletteSet});
 })();

@@ -1,3 +1,10 @@
+<!-- RETIRED / METABOLIZED 2026-09-22
+Completed chamber-passage / empty-center / peripheral-physiology work has been assimilated.
+Remaining live perceptual/environment pressure was distilled into:
+_stomach/NUTRIENT__fourfold-witness-inquiry-space__20260922.md
+This carrier is retained only as spent process/evidence history.
+-->
+
 # NUTRIENT — navigable chambers + empty center + Philosophy parent inquiry field
 
 status: OPEN / UNRESOLVED
