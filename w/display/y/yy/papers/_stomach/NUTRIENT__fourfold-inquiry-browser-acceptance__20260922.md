@@ -27,3 +27,25 @@ Confirm in the actual rendered artifact that:
 6. chamber passage, organism selection, empty-space/Escape ascent and shared drag/orientation still feel natural.
 
 If any item fails, admit the browser witness as new pressure rather than rewriting this acceptance record.
+
+
+## browser witness — 2026-09-22 · PARTIAL / FAILED FOURFOLD READABILITY
+
+The user's next browser witness confirms:
+- Inquiry-space environment relation is substantially improved;
+- one root chamber still appears visually unpopulated;
+- chamber identities are not readable, making the apparent missing population ambiguous;
+- selected `5H.8P2A` exposes `4H.YEyI` with terminal Source-like morphology.
+
+The selected-Holon symptom is now diagnosed as stale-shadow genealogy, not Holon ontology. A bounded source-faithful staging repair hydrates six already-public missing parent sets, and CI run `35770839418` passes.
+
+Root chambers now carry non-interactive projected labels derived from the live Papers phenotype plus the actual currently rendered record population. Each label exposes:
+`<gene> · <name> · <source count>S · <holon count>H`.
+
+### next browser acceptance
+
+The next witness must identify the visually empty chamber by its actual label and compare the label's rendered record count to visible occupants.
+
+If a chamber label reports nonzero S/H while its body still appears empty, that is a renderer/perceptual visibility defect rather than data membership loss and should be admitted as fresh pressure with the exact labeled locus.
+
+Also confirm that `4H.YEyI` now reveals its four 3H parents rather than terminating as Source-like ground.
