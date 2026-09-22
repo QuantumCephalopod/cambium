@@ -98,7 +98,7 @@ function fieldPointRecords(structure,projection){
   }
   return out;
 }
-function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope}){
+function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope,viewTarget=null}){
   if(!element||!canvas||!projection?.root)throw new Error('interlocutor field surface incomplete: '+id);
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
@@ -147,7 +147,16 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(next===hoverPointId)return;
     hoverPointId=next;uploadPoints();
   }
-  function target(){const path=W.scopeId===localScope?W.view:'';return N.focusTarget(structure,path)}
+  function target(){
+    if(typeof viewTarget==='function'){
+      const t=viewTarget();
+      if(t&&Array.isArray(t.center)&&t.center.length===3&&Number.isFinite(Number(t.scale))&&Number(t.scale)>0){
+        return {center:t.center.map(Number),scale:Number(t.scale)};
+      }
+    }
+    const path=W.scopeId===localScope?W.view:'';
+    return N.focusTarget(structure,path);
+  }
   function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2]}}
   function pointInTriangle(x,y,a,b,c){
     const area=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
@@ -270,7 +279,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }else canvas.style.pointerEvents='none';
   requestAnimationFrame(draw);
   api=Object.freeze({
-    id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
+    id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,viewTargetExternal:typeof viewTarget==='function',
     selectPoint,projectAddressCenter,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
     get selectedPointId(){return selectedPointId},
