@@ -167,18 +167,6 @@ function overviewDriftPoint(entity,now=performance.now()){
   return mix3(entity.world,wander,OVERVIEW_WANDER);
 }
 function chamberFocus(){return state?.chamberFocus||{center:[0,0,0],scale:1}}
-function parentMountFrame(){
-  const cell=N?.cellForPath?.(PARENT_MOUNT_PATH);
-  if(!cell)return {center:[0,0,0],scale:1};
-  return {center:[...cell.center],scale:Math.pow(.5,PARENT_MOUNT_PATH.length)};
-}
-function parentInquiryViewTarget(){
-  const local=chamberFocus(),frame=parentMountFrame();
-  /* Visual frame composition only: site-space:y ⟦ papers:ε ⟧ remains a
-   * semantic scope restart. Local Papers coordinates are embedded into the
-   * actual parent cell without concatenating their addresses. */
-  return {center:add(frame.center,mul(local.center,frame.scale)),scale:local.scale/frame.scale};
-}
 function overviewTransformScale(width){return rootFieldScale(width)*chamberFocus().scale}
 function overviewWorldPoint(point,width){return mul(sub(point,chamberFocus().center),overviewTransformScale(width))}
 function overviewCenterFor(entity,width,now=performance.now()){return overviewWorldPoint(overviewDriftPoint(entity,now),width)}
