@@ -279,6 +279,19 @@ A future split may change where matter is permitted to move because the living a
 
 Selection is a **change of scale inside one continuing world**.
 
+#### Scoped parent-frame continuity
+
+When Papers is encountered through `site-space:y ⟦ papers:ε ⟧` and the live Philosophy field remains visible as parent environment, that parent field must participate in the same physical scale passage as Papers rather than remain a separately framed backdrop.
+
+The coupling is geometric, not semantic:
+- the actual global Papers mount cell supplies the parent frame;
+- Papers local root and chamber focus are embedded into that frame by affine composition;
+- parent and local surfaces therefore share movement/focus while retaining independent address spaces;
+- local Papers `w/x/z/y` must never be reinterpreted as concatenated global descendants merely because their visual frames nest;
+- global Display navigation remains global and is not mutated by Papers-local chamber traversal.
+
+A parent field that stays still while Papers moves, or a Papers field painted as another full-root coordinate system over the parent, breaks the intended continuous-world relation even if both surfaces independently use correct tetrahedral geometry.
+
 The selected organism moves toward the perceptual center and inquiry zooms into its scale, but the previous-scale Papers body should remain perceptibly present as distant/background matter whenever projection permits.
 
 This background may read as an asteroid belt, tissue field, or tilt-shifted distant body, but it remains the same continuing Papers world. It is not a decorative replacement scene and must not fabricate lineage.
