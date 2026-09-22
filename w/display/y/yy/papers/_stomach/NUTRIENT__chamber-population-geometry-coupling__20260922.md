@@ -64,3 +64,87 @@ Minimum acceptance:
 - chamber zoom reads as one geometrically continuous passage rather than one layer moving independently of another;
 - existing selection, bounded motion, S scale, Holon genealogy, source inquiry and Display-global navigation remain intact;
 - structural checks pass; real-browser perceptual witness remains explicit if it cannot be established from provider/tool evidence alone.
+
+
+## DISTILL / CHALLENGE — 2026-09-22
+
+### population witness
+
+The current branch carries two bounded public projections:
+
+Embedded `projection.json`:
+- w: 7 Sources + 0 Holons
+- x: 26 Sources + 13 Holons
+- z: 56 Sources + 30 Holons
+- y: 6 Sources + 6 Holons
+
+Current static public shadow:
+- w: 7 Sources + 0 Holons = 7
+- x: 26 Sources + 13 Holons = 39
+- z: 56 Sources + 39 Holons = 95
+- y: 6 Sources + 7 Holons = 13
+
+Therefore no root chamber is absent from public membership.
+
+The current renderer also does not discard one root population:
+- `identityIndex()` enumerates all four `groups[g]` and `holons[g]`;
+- `buildRecords()` resolves each gene to its realized root leaf;
+- every record gets `world` plus four motion anchors by `pointInTet(cell.tet,...)`;
+- `overviewDriftPoint()` interpolates only among points inside the same convex tetrahedron;
+- `populationBodies()` iterates every record except the single actively selected organism.
+
+The hypothesis “one full chamber is missing because its data or records are absent” is therefore ruled out for the witnessed branch state.
+
+### spatial split witness
+
+The user-visible large dark tetrahedral field and the Papers population are produced by two different render surfaces.
+
+Papers foreground:
+- local root structure is built from Papers' `fieldProjection()`;
+- chamber shells and Source/Holon population both use Papers' `chamberFocus()`;
+- chamber passage updates only that Papers-local focus.
+
+Philosophy parent field:
+- is separately created through generic `SSSInterlocutorFields.create(...)`;
+- uses the live `organism:philosophy` shader and live global WorldView projection;
+- previously derived its view exclusively from global `W.scopeId / W.view`;
+- Papers passed the artificial local scope `papers-parent-field`, so the parent surface remained at its own overview while Papers chamber focus changed.
+
+Thus the browser symptom is earned: two full-root coordinate systems were visually superposed. They shared global orientation but not mount frame / focus. Apparent “containers” in the Philosophy background could therefore look empty or accidentally occupied relative to the independently positioned Papers population.
+
+## ACT — scoped parent-frame coupling
+
+The repair keeps the membrane explicit:
+
+`site-space:y ⟦ papers:ε ⟧`
+
+It does **not** reinterpret Papers-local chamber addresses as global concatenations.
+
+A neutral generic Display field hook now accepts an optional external `viewTarget` function. When absent, existing field behavior is unchanged.
+
+Papers supplies one view target composed from:
+1. its actual global mount cell `y / Inquiry`;
+2. the current Papers-local `chamberFocus()`.
+
+For a global mount at one recursive child cell:
+- parent frame center = exact global `cellForPath('y').center`;
+- parent frame linear scale = `0.5`;
+- Papers local center is embedded as `parent.center + 0.5 * local.center`;
+- parent view zoom is `local.scale / 0.5`.
+
+This is an affine scoped-frame composition. The transformed global `y` cell therefore coincides exactly with Papers local root geometry at overview, and continues to share the same physical passage as Papers focuses a local chamber.
+
+The relation is visual/camera geometry only; semantic authority and address spaces remain separate.
+
+Changed carriers:
+- `w/display/w/locus-shader.js` — optional bounded external field view target;
+- `w/display/y/yy/papers/sierpinski.js` — global-y mount-frame composition + observable parent/local focus state;
+- `y/check.py` — permanent structural regression witnesses.
+
+## remaining open witness
+
+Real-browser acceptance is still required to establish:
+- the previously misleading “empty container” perception is resolved by the corrected nesting;
+- Philosophy now visibly travels with Papers chamber passage instead of remaining still;
+- all four Papers chambers remain readable under the corrected parent frame;
+- no new visual competition/occlusion was introduced.
