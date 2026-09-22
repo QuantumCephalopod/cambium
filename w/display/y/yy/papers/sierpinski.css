@@ -1,7 +1,7 @@
 [data-interlocutor="organism:papers"]{pointer-events:none;background:#020605}
 [data-interlocutor="organism:papers"] .interlocutor-background,[data-interlocutor="organism:papers"] .interlocutor-field-labels{opacity:0!important;pointer-events:none!important}
 [data-interlocutor="organism:papers"] .papers-content{position:absolute;inset:0;pointer-events:none}
-.papers-parent-field-stage{position:absolute;inset:0;z-index:1;width:100%;height:100%;display:block;pointer-events:none;opacity:.34;filter:saturate(.72) brightness(.72)}
+.papers-inquiry-environment-stage{position:absolute;inset:0;z-index:1;width:100%;height:100%;display:block;pointer-events:none}
 .papers-sierpinski-stage{position:absolute;inset:0;z-index:3;width:100%;height:100%;display:block;pointer-events:auto;touch-action:none;cursor:grab}
 .papers-sierpinski-stage:active{cursor:grabbing}
 .papers-wisdom-stage{position:absolute;inset:0;z-index:4;width:100%;height:100%;display:block;pointer-events:none}
