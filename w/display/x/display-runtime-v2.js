@@ -5,7 +5,16 @@ const Modules=globalThis.SSSInterlocutorModules;
 if(!H||!F||!W||!Fields||!Safe||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
 const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
 const PROJECTIONS=JSON.parse(document.getElementById('site-projections').textContent);
+const DEPENDENCIES=JSON.parse(document.getElementById('display-dependencies').textContent);
 const GLOBAL_SCOPE='main';
+function dependency(identity,member=''){
+  if(typeof identity!=='string'||!identity)throw new TypeError('dependency identity required');
+  const dep=DEPENDENCIES?.[identity];if(!dep)throw new Error('unknown Display dependency identity: '+identity);
+  if(typeof member!=='string')throw new TypeError('dependency member must be a relative path');
+  const path=member.replaceAll('\\','/');
+  if(path.startsWith('/')||path.split('/').some(x=>x==='..'))throw new Error('dependency member escaped its body: '+member);
+  return new URL(dep.base+path,document.baseURI).href;
+}
 const registry=H.createRegistry(),specs=new Map(),surfaces=new Map();
 for(const s of SPEC.interlocutors||[]){
   const site=H.defineInterlocutor({id:s.id,localScope:s.local_scope,shader:s.shader,manifestation:s.manifestation,state:{activity:null}});
@@ -58,7 +67,7 @@ function render(path=W.view){
   for(const id of activeIds){
     const s=surfaces.get(id),spec=specs.get(id);if(!s||!spec)continue;
     const localPath=spec.manifestation?.background_inspect?(path||''):'';
-    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false});
+    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency});
   }
   composition();Safe.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
@@ -99,5 +108,5 @@ addEventListener('sss:activity',e=>{if(e.detail)receiveActivity(e.detail)});
 addEventListener('popstate',e=>{if(!e.state)return;restoring=true;try{activeIds=e.state.activeIds||[...ROOT_IDS];activeAddress=e.state.activeAddress||'';stack=e.state.stack||[];syncGlobalNavigator();if(inspectCapable(activeIds)&&e.state.localView)W.inspect(e.state.localView,'history');else W.clearInspection('history');render(W.view);reconcile()}finally{restoring=false}});
 Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlobalNavigator();history.replaceState(snap(),'','#'+GLOBAL_SCOPE+':overview');render('');
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
-globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),remount,get state(){return snap()},get fields(){return fieldById},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
+globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();
