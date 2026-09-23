@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.3"
+version: "3.4"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -81,6 +81,24 @@ Therefore two site-holons may look and behave radically differently while the sa
 
 Default mutation law: if pressure originates in one site-holon, keep the change inside that body. Lift tissue into Display only when the change is genuinely specimen-agnostic, required by arbitrary future site-holons, and leaves semantic/local behavior in the site body. Central Display must never learn Papers-, Philosophy- or Crawlerbait-specific meaning merely to support their local expression.
 
+### Identity-resolved foreign embodiment
+
+Display may host an intact foreign code body at the **currently truthful semantic locus** without tetrahedralizing that body's interior or inventing a new semantic container merely for custody. A foreign body remains one occupant until real local pressure earns finer Display addressability.
+
+Display realizes the shared Cambium distinction:
+
+`stable identity != current semantic address != physical custody`
+
+- **identity** names which foreign whole/capability is being depended on;
+- **semantic address** says what that whole currently means inside Display;
+- **custody** says where its current carrier lives in the repository.
+
+Consumers bind to stable identity/capability, never to the current semantic address or repository path. `y/build.py` reacquires current Display `INDEX.yaml`, traverses only realized Display loci, inspects direct occupants there, and derives a public dependency projection. Traversal does not recursively crawl arbitrary folders and does not cross site-holon/independent-organism membranes. Runtime hands each site renderer one neutral `dependency(identity, member)` resolver; site-local code never needs to know whether the foreign body currently lives at `w`, a later descendant, or another lawfully regrown Display locus.
+
+Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives directly in unsplit `w · Embodiment`. Its native `VERSION.json` is the current identity witness. This does **not** split Embodiment and does not make Pretext a Display semantic vertex. If Embodiment later differentiates under real pressure, Cambium may move the same foreign identity to whichever earned child then accounts for it; the derived dependency projection changes while consumers remain unchanged.
+
+Do not invent a universal foreign-body manifest merely to generalize this first case. Extend identity witnessing only when another real foreign body proves the present native witness insufficient.
+
 ## Tree-derived public membrane
 
 `y/build.py` discovers Population anatomy and derives the public interlocutor registry, global mounts, page projections and identity-owned render/style assets from that tree.
@@ -148,3 +166,5 @@ CI success alone is not browser closure.
 **Display is a tetrahedrally differentiated oriented membrane. Embodiment gives autonomous interlocutors local worlds, Continuity preserves identity through relocation, Orientation makes the global recursive field navigable, and Population physically plants site-holons into that field. Display preserves one shared tetrahedral body and orientation law while each site-holon owns its projection, shader, rendering, local interaction and any earned static public aperture. The Population tree is mount truth: what is bodily present is globally reachable, while each holon remains locally itself.**
 
 Version 3.3 background-orientation interaction correction (2026-09-18): the already-shared orientation field now owns default background drag across arbitrary site-holons. Local membranes may opt out with explicit false without changing global navigator orientation, site identity, geometry, inspection capability or locally owned interaction.
+
+Version 3.4 identity/address/custody correction (2026-09-23): Display now hosts foreign code bodies at their currently truthful semantic loci while consumers resolve stable identity through current live anatomy. The first realized case moves pinned Pretext intact into unsplit Embodiment and derives its public module location at build time; no Typography container or convenience split is introduced.
