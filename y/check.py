@@ -203,7 +203,7 @@ def main():
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
-    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
+    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
     check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')
     check(not (artifact/'papers/index.html').exists(),'Papers regressed to a separate document/page')
@@ -211,14 +211,16 @@ def main():
 
     bundle=build.asset_bundle_id(); prefix=f'assets/{bundle}/'
     srcs={s.get('src') for s in p.scripts if s.get('src')}; styles={d.get('href') for d in p.links if d.get('rel')=='stylesheet'}; icons={d.get('href') for d in p.links if d.get('rel')=='icon'}
-    expected_scripts={prefix+n for n in assets if n.endswith('.js')}; expected_styles={prefix+n for n in assets if n.endswith('.css')}; expected_icons={prefix+n for n in assets if n.endswith('.svg')}
+    template_assets=build.template_asset_sources()
+    expected_scripts={prefix+n for n in template_assets if n.endswith('.js')}; expected_styles={prefix+n for n in template_assets if n.endswith('.css')}; expected_icons={prefix+n for n in template_assets if n.endswith('.svg')}
     check(srcs==expected_scripts,'unexpected public script surface or mixed generation')
     check(styles==expected_styles,'unexpected public stylesheet surface or mixed generation')
     check(icons==expected_icons,'favicon escaped membrane bundle namespace')
     public_refs=srcs|styles|icons; check(public_refs and all(x.startswith(prefix) for x in public_refs),'public assets do not share one immutable bundle')
     check(f'<!-- membrane bundle {bundle};' in actual,'HTML does not declare membrane bundle generation')
     bundle_dir=artifact/'assets'/bundle; check(bundle_dir.is_dir(),'content-addressed membrane bundle missing')
-    check({q.name for q in bundle_dir.iterdir() if q.is_file()}==set(assets),'bundle file set diverges from tree-derived asset contract')
+    bundle_files={q.relative_to(bundle_dir).as_posix() for q in bundle_dir.rglob('*') if q.is_file()}
+    check(bundle_files==set(assets),'bundle file set diverges from tree-derived asset contract')
 
     nav=(DISPLAY/'z'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text(); philosophy_render=(DISPLAY/'y'/'philosophy'/'render.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
@@ -275,11 +277,15 @@ def main():
     check('SOURCE INQUIRY · PROJECTION GAP' in papers_sierpinski and 'sourceInquiryReceipt' in papers_sierpinski and 'state.inquiryBodies' in papers_sierpinski,'Selected Source inquiry does not preserve public projection-gap truth/future source-body uptake')
 
     check('drawLights' in papers_sierpinski and 'metabolight' in papers_sierpinski and 'quantumEmberCount' in papers_sierpinski,'Papers metabolight/quantum-emission witness missing')
-    check("PRETEXT_VERSION='0.0.9'" in papers_sierpinski and 'prepareWithSegments' in papers_sierpinski and 'layoutNextLineRange' in papers_sierpinski and 'materializeLineRange' in papers_sierpinski,'Papers active wisdom is not bound through pinned Pretext layout')
+    check("PRETEXT_ID='@chenglou/pretext'" in papers_sierpinski and "state.dependency(PRETEXT_ID,'layout.js')" in papers_sierpinski and "PRETEXT_VERSION='0.0.9'" in papers_sierpinski and 'prepareWithSegments' in papers_sierpinski and 'layoutNextLineRange' in papers_sierpinski and 'materializeLineRange' in papers_sierpinski,'Papers active wisdom is not resolving pinned Pretext by stable Display identity')
     check('papers-wisdom-stage' in papers_sierpinski and 'wisdomState' in papers_sierpinski,'Papers metabolight text ink plane missing')
-    pretext_root=artifact/'papers-pretext-0.0.9'
-    check((pretext_root/'layout.js').is_file() and (pretext_root/'LICENSE').is_file() and (pretext_root/'VERSION.json').is_file(),'Papers pinned Pretext public carrier missing')
+    dependencies=build.display_dependencies(); pretext=dependencies.get('@chenglou/pretext')
+    check(pretext is not None and pretext['version']=='0.0.9' and (pretext['body']/'layout.js').is_file() and (pretext['body']/'LICENSE').is_file(),'Display cannot reacquire Pretext by stable package identity')
+    pretext_root=artifact/'assets'/build.asset_bundle_id()/'dependencies'/pretext['slug']
+    check((pretext_root/'layout.js').is_file() and (pretext_root/'LICENSE').is_file() and (pretext_root/'VERSION.json').is_file(),'derived Display dependency bundle omitted pinned Pretext body')
+    check(not (DISPLAY/'y'/'yy'/'papers'/'public'/'papers-pretext-0.0.9').exists(),'Papers still owns the superseded Pretext carrier')
     check("getElementById('commit')" not in runtime and 'pending=' not in runtime,'obsolete inspect→commit staging remains in Display runtime')
+    check("getElementById('display-dependencies')" in runtime and 'function dependency(identity' in runtime and 'dependency});' in runtime,'Display runtime does not expose identity-resolved dependencies to site-holons')
     check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
     check('philosophy-global-site' in philosophy_render and 'requestGlobalTarget' in philosophy_render,'Philosophy mounted-address direct encounter missing')
