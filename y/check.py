@@ -275,11 +275,15 @@ def main():
     check('SOURCE INQUIRY · PROJECTION GAP' in papers_sierpinski and 'sourceInquiryReceipt' in papers_sierpinski and 'state.inquiryBodies' in papers_sierpinski,'Selected Source inquiry does not preserve public projection-gap truth/future source-body uptake')
 
     check('drawLights' in papers_sierpinski and 'metabolight' in papers_sierpinski and 'quantumEmberCount' in papers_sierpinski,'Papers metabolight/quantum-emission witness missing')
-    check("PRETEXT_VERSION='0.0.9'" in papers_sierpinski and 'prepareWithSegments' in papers_sierpinski and 'layoutNextLineRange' in papers_sierpinski and 'materializeLineRange' in papers_sierpinski,'Papers active wisdom is not bound through pinned Pretext layout')
+    check("PRETEXT_ID='@chenglou/pretext'" in papers_sierpinski and "state.dependency(PRETEXT_ID,'layout.js')" in papers_sierpinski and "PRETEXT_VERSION='0.0.9'" in papers_sierpinski and 'prepareWithSegments' in papers_sierpinski and 'layoutNextLineRange' in papers_sierpinski and 'materializeLineRange' in papers_sierpinski,'Papers active wisdom is not resolving pinned Pretext by stable Display identity')
     check('papers-wisdom-stage' in papers_sierpinski and 'wisdomState' in papers_sierpinski,'Papers metabolight text ink plane missing')
-    pretext_root=artifact/'papers-pretext-0.0.9'
-    check((pretext_root/'layout.js').is_file() and (pretext_root/'LICENSE').is_file() and (pretext_root/'VERSION.json').is_file(),'Papers pinned Pretext public carrier missing')
+    dependencies=build.display_dependencies(); pretext=dependencies.get('@chenglou/pretext')
+    check(pretext is not None and pretext['version']=='0.0.9' and (pretext['body']/'layout.js').is_file() and (pretext['body']/'LICENSE').is_file(),'Display cannot reacquire Pretext by stable package identity')
+    pretext_root=artifact/'assets'/build.asset_bundle_id()/'dependencies'/pretext['slug']
+    check((pretext_root/'layout.js').is_file() and (pretext_root/'LICENSE').is_file() and (pretext_root/'VERSION.json').is_file(),'derived Display dependency bundle omitted pinned Pretext body')
+    check(not (DISPLAY/'y'/'yy'/'papers'/'public'/'papers-pretext-0.0.9').exists(),'Papers still owns the superseded Pretext carrier')
     check("getElementById('commit')" not in runtime and 'pending=' not in runtime,'obsolete inspect→commit staging remains in Display runtime')
+    check("getElementById('display-dependencies')" in runtime and 'function dependency(identity' in runtime and 'dependency});' in runtime,'Display runtime does not expose identity-resolved dependencies to site-holons')
     check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
     check('philosophy-global-site' in philosophy_render and 'requestGlobalTarget' in philosophy_render,'Philosophy mounted-address direct encounter missing')
