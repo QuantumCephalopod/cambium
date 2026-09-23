@@ -165,3 +165,47 @@ No canonical ref, PR, commit, Worker deployment or production state changed.
 - The master circulation nutrient remains OPEN.
 - Safe resumption requires re-reading canonical `main` before using the prepared commit; do not assume the checked parent remains current.
 - Once canonical write/PR authority exists, reconcile only the four affected live-nerve carriers, require canonical test + actual deploy success, and only then proceed to bound source-runtime deployment and end-to-end circulation witnesses.
+
+
+## metabolic witness — 2026-09-22 · stale public shadow observed in browser genealogy/population
+
+A fresh display.papers browser witness exposed the exact consequence of the still-open source-runtime deployment boundary.
+
+### source-owned current outward state
+- Drive /papers current Body/FIELD + current evolved `_feed.gs` public-state algorithm expose 116 Source identities and 79 Holon identities.
+- Current public-state locus counts derived by the source producer itself are:
+  - w / Genesis: 7S + 0H = 7
+  - x / Continuity: 27S + 13H = 40
+  - z / Governance: 76S + 57H = 133
+  - y / Evolution: 6S + 9H = 15
+- Current evolved source mirror `holonRegistry_()` parses `parents: {...}` / `exact parents: {...}` and `publicState_()` emits those parent arrays into each `holon:<id>` public unit.
+- The bound Apps-Script runtime remains undeployed; current Drive Pulse still declares `SOURCE_MIRROR_CURRENT · BOUND_RUNTIME_DEPLOYMENT_OPEN`.
+
+### stale destination shadow
+The GitHub static shadow still carries the older `papers-feed-inquiry-projection-v1-18GPXeg` body:
+- w: 7S + 0H = 7
+- x: 26S + 13H = 39
+- z: 56S + 39H = 95
+- y: 6S + 7H = 13
+
+No old identity is extra; the stale shadow is purely missing newer public state. Relative to current source producer truth it lacks:
+- x: 1 Source
+- z: 20 Sources + 18 Holons
+- y: 2 Holons
+
+### genealogy symptom
+Six Holons in the stale shadow carry `parents: []` despite Drive Body/FIELD already exposing exact four-parent sets:
+`1H.sqW4`, `2H.j4Q4`, `2H.sm-I`, `3H.V6VQ`, `4H.YEyI`, `3H.zWu2`.
+
+This made `4H.YEyI` render as terminal Source-like morphology inside `5H.8P2A`, because the renderer correctly refuses recursive descent unless exactly four public parents are projected.
+
+display.papers now carries a bounded staging-only public genealogy-gap repair derived solely from already-secreted Drive Body parent relations; it fills only missing arrays when all four parent identities are already public. This is a compatibility repair, not closure of the circulation wound.
+
+### exact remaining boundary
+The sustainable cure remains unchanged:
+1. canonical destination live nerve deployment,
+2. bound /papers source runtime deployment from the already-evolved `_feed.gs`,
+3. real reconcile/delta ACK,
+4. static visitor witness showing current public population + genealogy.
+
+Do not treat the staging compatibility repair as replacement for this end-to-end circulation closure.
