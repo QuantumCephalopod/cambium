@@ -78,6 +78,57 @@ def validate_index(index):
         walk(index[g], g)
 
 
+def display_loci():
+    """Yield current realized Display semantic loci without crossing organism membranes."""
+    index=load_yaml(DISPLAY/'INDEX.yaml'); validate_index(index)
+    rows=[]
+    def walk(node,address,folder):
+        if not folder.is_dir():
+            raise ValueError(f'Display phenotype locus {address} is missing at {folder.relative_to(ROOT)}')
+        rows.append({'address':address,'folder':folder,'node':node})
+        children=[g for g in GENES if g in node]
+        for gene in children:
+            child_address=address+gene
+            walk(node[gene],child_address,folder/child_address)
+    for gene in GENES:
+        walk(index[gene],gene,DISPLAY/gene)
+    return rows
+
+
+def display_dependencies():
+    """Resolve direct foreign package occupants by stable identity through current Display anatomy."""
+    found={}
+    for locus in display_loci():
+        address,folder,node=locus['address'],locus['folder'],locus['node']
+        semantic_children={address+g for g in GENES if g in node}
+        for child in sorted((p for p in folder.iterdir() if p.is_dir()),key=lambda p:p.name):
+            if child.name in semantic_children or (child/'site.json').is_file():
+                continue
+            witness=child/'VERSION.json'
+            if not witness.is_file():
+                continue
+            try:
+                meta=json.loads(witness.read_text(encoding='utf-8'))
+            except Exception as exc:
+                raise ValueError(f'{witness.relative_to(ROOT)} is not valid JSON') from exc
+            identity=meta.get('package')
+            if not isinstance(identity,str) or not identity.strip():
+                continue
+            if identity in found:
+                raise ValueError(f'duplicate Display dependency identity {identity}')
+            version=meta.get('version')
+            if not isinstance(version,str) or not version.strip():
+                raise ValueError(f'{witness.relative_to(ROOT)} dependency {identity} lacks version')
+            found[identity]={
+                'identity':identity,
+                'version':version,
+                'address':address,
+                'body':child,
+                'slug':re.sub(r'[^A-Za-z0-9_-]+','-',identity).strip('-').lower(),
+            }
+    return found
+
+
 def validate_cambium(c, label='_cambium.yaml'):
     expected = {
         '4V': set(GENES),
@@ -317,8 +368,8 @@ def _slug(site_id):
     return re.sub(r'[^A-Za-z0-9_-]+', '-', site_id).strip('-').lower()
 
 
-def asset_sources():
-    """One immutable membrane-generation asset set, including identity-owned site tissue."""
+def template_asset_sources():
+    """Template-linked Display assets plus identity-owned site tissue."""
     out = {
         'root-view.css': DISPLAY/'w'/'root-view.css',
         'site-runtime.css': DISPLAY/'z'/'site-runtime.css',
@@ -345,6 +396,39 @@ def asset_sources():
         out[f'site-{slug}.css'] = site['style_path']
         out[f'site-{slug}.js'] = site['renderer_path']
     return out
+
+
+def dependency_asset_sources():
+    out={}
+    slugs=set()
+    for identity,dep in sorted(display_dependencies().items()):
+        slug=dep['slug']
+        if not slug or slug in slugs:
+            raise ValueError(f'non-unique Display dependency slug for {identity}')
+        slugs.add(slug)
+        for source in sorted(dep['body'].rglob('*')):
+            if source.is_symlink():
+                raise ValueError(f'Display dependency may not contain symlink: {source.relative_to(ROOT)}')
+            if source.is_file():
+                rel=source.relative_to(dep['body']).as_posix()
+                out[f'dependencies/{slug}/{rel}']=source
+    return out
+
+
+def asset_sources():
+    out=template_asset_sources()
+    for name,source in dependency_asset_sources().items():
+        if name in out:
+            raise ValueError(f'Display dependency asset collides with membrane asset: {name}')
+        out[name]=source
+    return out
+
+
+def dependency_projection(bundle):
+    return {
+        identity:{'version':dep['version'],'base':f'assets/{bundle}/dependencies/{dep["slug"]}/'}
+        for identity,dep in sorted(display_dependencies().items())
+    }
 
 
 def asset_bundle_id():
@@ -387,11 +471,13 @@ def _site_script_tags():
 
 def render():
     text = (DISPLAY/'w'/'template.html').read_text(encoding='utf-8')
+    bundle = asset_bundle_id()
     replacements = {
         '/*__INTERLOCUTOR_SURFACES__*/': _site_surfaces(),
         '/*__SITE_STYLES__*/': _site_style_links(),
         '/*__SITE_REGISTRY__*/': _enc(site_mounts()),
         '/*__SITE_PROJECTIONS__*/': _enc(site_projections()),
+        '/*__DISPLAY_DEPENDENCIES__*/': _enc(dependency_projection(bundle)),
         '/*__SITE_SCRIPTS__*/': _site_script_tags(),
     }
     for marker, value in replacements.items():
@@ -399,8 +485,7 @@ def render():
             raise ValueError(f'display template must contain exactly one {marker} slot')
         text = text.replace(marker, value)
 
-    bundle = asset_bundle_id()
-    for name in asset_sources():
+    for name in template_asset_sources():
         flat = f'assets/{name}'
         # Asset rewriting is an HTML-reference operation, not a free-text
         # substitution. Site projections intentionally contain arbitrary observed

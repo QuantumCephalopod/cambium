@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.8"
+version: "1.9"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -235,7 +235,7 @@ When the public projection actually carries a Holon's crystallized wisdom/metabo
 - inactive/nested metabolights remain light-only unless a later earned inquiry law says otherwise;
 - text should spatially inhabit the light's local field rather than returning to a detached metadata panel;
 - line breaking/measurement and Canvas/WebGL glyph machinery are implementation carriers, not Papers ontology;
-- the current V1 carrier may use pinned Pretext plus a transparent Papers-local Canvas2D ink plane while Display remains entirely unaware of either implementation.
+- the current V1 carrier may use pinned Pretext plus a transparent Papers-local Canvas2D ink plane; Display hosts/resolves Pretext only as a neutral foreign Embodiment dependency and remains unaware of metabolight semantics or Papers' Canvas ink policy.
 
 The native relation is **truth → metabolight anchor → spatial layout → readable ink**. The library carrying layout may later change without changing that relation.
 
@@ -362,7 +362,7 @@ Do **not** map these four temporal phases onto the four spatial root loci merely
 
 Overview explanation is intentionally concise, peripheral and secondary to the living field. Animation + phase labels + active explanation remain one local unit; none of them may occupy the central void. It may use ordinary DOM/canvas text because these four pump labels/copies are stable explanatory tissue, not Holon wisdom.
 
-Pinned Pretext remains the current layout carrier for selected, source-owned metabolight wisdom. Pretext is not the overview motion engine and need not carry the physics of the living demonstration.
+Pinned Pretext remains the current layout carrier for selected, source-owned metabolight wisdom. Papers resolves it by stable identity `@chenglou/pretext` through the Display dependency membrane rather than owning or hard-coding its carrier path. Pretext is not the overview motion engine and need not carry the physics of the living demonstration.
 
 ## Closure / acceptance
 
@@ -399,3 +399,5 @@ Version 1.4 metabolight-text correction (2026-09-19): already-public Holon wisdo
 
 
 Version 1.6 chambered-overview correction (2026-09-22): the overview center is reserved as empty field-space; HOW PAPERS LIVES remains one coherent peripheral animation+explanation unit. Realized tetrahedral chambers become navigable scale passages between overview and organism inquiry using exact recursive cell centroid/scale geometry. Sparse occupancy may no longer make a realized chamber disappear perceptually. Papers may also inherit the live Philosophy shader/projection as a passive deep-off parent inquiry substrate while preserving Philosophy ownership and Papers-local foreground identity.
+
+Version 1.9 dependency-custody correction (2026-09-23): Papers no longer owns the pinned Pretext bytes or their repository address. Its metabolight-text physiology requests `@chenglou/pretext` by stable identity from Display; Display derives current custody from live anatomy while Papers retains sole ownership of what text means, where metabolight text belongs, and how Canvas ink embodies it.
