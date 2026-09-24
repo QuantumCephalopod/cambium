@@ -27,7 +27,7 @@ Visitors do **not** call the Worker. There is no browser polling loop, public st
 
 ## R2 shadow-address law
 
-R2 is a co-addressed public/heavy-data shadow of site-space, not a second taxonomy. A public object belonging to a locus keeps the same relative address as that locus.
+R2 is a co-addressed private intermediate shadow of site-space, not a second taxonomy and not a visitor origin. A public object belonging to a locus keeps the same relative address as that locus.
 
 Examples:
 
@@ -138,15 +138,15 @@ Failed live delivery is kept in a bounded ScriptProperties outbox and creates on
 
 A visitor opening or refreshing the website never participates in this chain.
 
-## R2 public-read safety
+## Private R2 boundary
 
-The bucket is private by default. Public object delivery, when enabled, uses the custom domain:
+The bucket is private by default. The bucket remains private. Direct object delivery is not part of the Papers visitor contract. The previously reserved custom domain remains disabled:
 
 ```text
 assets.sss.saarland
 ```
 
-The `r2.dev` public development URL remains disabled. Before the custom domain is enabled for production reads, install the intended cache/WAF/rate-limit shell. Public reads then go directly through the R2 custom domain and Cloudflare cache; they do not traverse `sss-live`.
+The `r2.dev` public development URL remains disabled. Before the custom domain is enabled for production reads, install the intended cache/WAF/rate-limit shell. Visitors read the already-public same-origin `/papers-shadow/current.json` static surface instead; they do not traverse `sss-live` or R2.
 
 Emergency CUT:
 
