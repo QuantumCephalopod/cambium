@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.4"
+version: "3.5"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -97,6 +97,29 @@ Consumers bind to stable identity/capability, never to the current semantic addr
 
 Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives directly in unsplit `w · Embodiment`. Its native `VERSION.json` is the current identity witness. This does **not** split Embodiment and does not make Pretext a Display semantic vertex. If Embodiment later differentiates under real pressure, Cambium may move the same foreign identity to whichever earned child then accounts for it; the derived dependency projection changes while consumers remain unchanged.
 
+### Acknowledged live circulation — delta recurs before snapshot
+
+Display Continuity may carry a site-holon's admitted public state through an opaque keyed-unit transport, but transport growth must not require repeatedly resending the whole organism projection.
+
+The rank-invariant circulation law is:
+
+`source-owned unit map → actual Worker revision ledger → changed units only → acknowledged delta → next base`
+
+Rules:
+- the Worker may expose, only through the authenticated source membrane, the current `public_revision` and opaque `unit_key → unit_revision` hashes; it does not return semantic values through this handshake and does not become source authority;
+- a producer whose local ACK ledger is absent/corrupt reacquires that remote ledger rather than inventing a historical baseline or forcing a complete snapshot;
+- ordinary circulation compares the acknowledged ledger with current source-owned unit revisions and sends only changed opaque units and lawful deletes;
+- if one delta exceeds the bounded request size, the **same delta law recurs at smaller transport scale**: choose a deterministic subset of changed units that fits, compute the intermediate target revision, send/ACK it, then use that ACK as the next base;
+- every chunk is an ordinary delta. Chunking is not a second protocol, semantic subdivision, or organism anatomy;
+- a single opaque unit that exceeds the transport bound is explicit unit-granularity pressure and must not be silently split by Display;
+- the deterministic empty unit ledger is a lawful first base, so first publication may also grow through bounded deltas;
+- full-state reconciliation remains bounded legacy/integrity repair only. It is not the normal growth path for a state whose size may increase without bound;
+- asynchronous intermediate projections are truthful transport lag. Display must not claim final convergence until the source reaches the current source-owned public revision.
+
+Compression:
+
+> **Remember hashes, move differences, recurse the same delta when the difference is too large.**
+
 Do not invent a universal foreign-body manifest merely to generalize this first case. Extend identity witnessing only when another real foreign body proves the present native witness insufficient.
 
 ## Tree-derived public membrane
@@ -168,3 +191,6 @@ CI success alone is not browser closure.
 Version 3.3 background-orientation interaction correction (2026-09-18): the already-shared orientation field now owns default background drag across arbitrary site-holons. Local membranes may opt out with explicit false without changing global navigator orientation, site identity, geometry, inspection capability or locally owned interaction.
 
 Version 3.4 identity/address/custody correction (2026-09-23): Display now hosts foreign code bodies at their currently truthful semantic loci while consumers resolve stable identity through current live anatomy. The first realized case moves pinned Pretext intact into unsplit Embodiment and derives its public module location at build time; no Typography container or convenience split is introduced.
+
+
+Version 3.5 acknowledged-live-circulation correction (2026-09-24): Continuity now treats complete snapshots as bounded recovery only. Producers reacquire the authenticated Worker unit-revision ledger, derive only source-owned differences, and recursively subdivide an oversized difference into sequential ordinary acknowledged-base deltas. Empty state has a deterministic revision base; one oversized opaque unit remains an explicit granularity wound rather than being silently split.
