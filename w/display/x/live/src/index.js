@@ -561,12 +561,17 @@ export default {
       if (packet.reconcile) return await applyReconcile(env, key, packet, current);
       if (packet.delta) return await applyDelta(env, key, packet, current);
 
+      const publicRevision = current.state?.public_revision ?? (current.legacy ? null : EMPTY_PUBLIC_REVISION);
+      const materializationQueued = current.state
+        ? await queueMaterialization(env, packet, current.state.public_revision)
+        : false;
       return json(responseContext(packet, key, {
         ok: true,
         activity_only: true,
         rich_write: false,
-        public_revision: current.state?.public_revision ?? (current.legacy ? null : EMPTY_PUBLIC_REVISION),
-        legacy_current: current.legacy
+        public_revision: publicRevision,
+        legacy_current: current.legacy,
+        materialization_queued: materializationQueued
       }));
     } catch (error) {
       return json(responseContext(packet, key, {
