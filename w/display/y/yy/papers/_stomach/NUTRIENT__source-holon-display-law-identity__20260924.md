@@ -108,7 +108,7 @@ Production browser witness after the first metabolites-as-content pass exposed a
 - that point was called a metabolight even though Sources/Holons may have several surviving metabolites;
 - all metabolite text was concatenated into one screen-oriented canvas overlay near the organism center rather than embodied as separate metabolite-local bodies;
 - the persistent right-side “PAPERS ORGANISM / 4V / 6E / 4F / 1T / metabolite count” surface repeated generic simplex anatomy rather than visitor-relevant content;
-- a zero-metabolite/projection-gap visitor fallback was being treated as an ordinary presentation state even though the intended living Papers organism contract assumes metabolized organisms carry surviving metabolite content.
+- zero/missing metabolite state was being given a fallback presentation even though Display has no authority to substitute other content for whatever metabolite cardinality source Papers actually projects.
 
 Assimilated correction:
 - distinguish non-semantic **organism embers** from semantic **metabolights**;
@@ -118,6 +118,6 @@ Assimilated correction:
 - text anchor is recomputed every frame from the metabolight's rotated/transformed 3D world position, so body rotation/motion carries the wisdom instead of leaving a screen overlay behind;
 - remove the redundant tetrahedral-count sidebar and generic “PAPERS ORGANISM” chrome;
 - keep 4V/6E/4F/1T as discoverable earning structure, not default reading content;
-- absent projected metabolites are internal projection-contract debt, not a normal alternative visitor-content mode.
+- source-owned zero surviving metabolites remain zero; metabolites known to exist but absent from the public projection are projection-contract debt. Neither case may be filled with 1T or generic anatomy prose.
 
 Browser acceptance still OPEN until the canonical site is merged and visually inspected.
