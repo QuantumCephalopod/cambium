@@ -112,3 +112,17 @@ Normalize the expected ledger to the JSON-shaped plain-object boundary before co
 - current live-nerve test passes on a branch rooted at the current canonical HEAD;
 - resulting upstream PR changes only the test witness plus this open-request evidence unless another independently witnessed dependency is required;
 - canonical production deployment remains OPEN until the repaired canonical workflow actually succeeds.
+
+
+## bounded repair witness — 2026-09-24
+
+Fork branch `mnemos/live-ledger-prototype-witness-20260924` was rooted directly at current canonical HEAD `9887db14930496df08960341ecffe3507b405434`.
+
+Differential provider witness:
+- unmodified current canonical base on the fork branch → `display live nerve` run `36053840908` **FAILURE** on the same prototype-sensitive ledger assertion;
+- repaired branch head `f657d7fcb24be7f659eef1c3a2634fce4c977ff8` → `display live nerve` run `36053899399` **SUCCESS**;
+- executable change: one assertion only, normalizing the null-prototype expected ledger to an ordinary JSON-shaped object before equality comparison.
+
+The repair therefore closes the staging/fork regression witness without changing transport semantics.
+
+Canonical promotion remains OPEN: creating the upstream pull request from the prepared fork branch again returned HTTP 403 `Resource not accessible by integration`. No canonical ref or production Worker changed in this act.
