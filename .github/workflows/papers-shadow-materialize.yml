@@ -1,0 +1,33 @@
+name: papers static shadow materialization
+
+on:
+  workflow_dispatch:
+    inputs:
+      site_id:
+        required: true
+        type: string
+      public_revision:
+        required: true
+        type: string
+      event_id:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: papers-static-shadow-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    if: github.repository == 'self-similar-systems/cambium' && inputs.site_id == 'organism:papers'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reacquire cambium
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Coalesce acknowledged delta chunks
+        run: sleep 12
