@@ -230,3 +230,14 @@ Remaining membrane blocker:
 - Drive Pulse still reports `BOUND_RUNTIME_DEPLOYMENT_OPEN`, so current Inquiry freshness must not be mistaken for a witnessed bound-runtime secretion.
 
 No Display renderer workaround is warranted. Resume in order: canonical live-nerve repair promotion/deploy → bound source-runtime activation → acknowledged source→Worker/R2 delivery → static visitor read + Source metabolight browser witness.
+
+
+## correction — 2026-09-24 · same-origin publication boundary
+
+The accepted relation is:
+
+`Drive Papers → live transport → intermediate R2 state → same-origin static materialization → visitor read`
+
+R2 remains transport/staging memory. The visitor-facing carrier is `/papers-shadow/current.json`; browser reads remain same-origin and static.
+
+The current missing edge is intermediate current state → same-origin static materialization. Transport should carry opaque accepted public state; Papers interprets its own public unit grammar at the renderer boundary.
