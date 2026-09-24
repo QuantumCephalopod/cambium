@@ -1,0 +1,40 @@
+{
+  "event_id": "display-papers-same-origin-materializer-staged-20260924T230100Z",
+  "parent_event_id": "display-papers-delta-circulation-assimilation-20260919T203300Z",
+  "home_at_utc": "2026-09-24T23:01:00Z",
+  "organism": "organism:papers",
+  "entrypoint": "github.cambium...display.papers",
+  "outcome": "PARTIAL/EARNED · PRIVATE-R2 → SAME-ORIGIN MATERIALIZER STAGED + WITNESSED · CANONICAL PROMOTION OPEN",
+  "changed_scope": [
+    "R2 reasserted as private acknowledged intermediate state rather than visitor origin",
+    "Papers-local public-unit → papers-public-shadow.v2 materializer added without changing browser read contract",
+    "sss-live now admits a separate server-only materialized-state read on the existing /__live/home route",
+    "accepted rich R2 state can wake one bounded GitHub materialization workflow; R2 ACK remains independent from downstream static publication",
+    "later activity-only HOME can re-wake current materialization without polling",
+    "workflow concurrency cancels superseded chunk wakes and materializes only the then-current accepted state after a bounded stabilization window",
+    "ordinary visitor path remains same-origin /papers-shadow/current.json; no public R2 route was added",
+    "malformed Display live-ledger HOME context carrier repaired",
+    "master public-shadow circulation nutrient remains OPEN pending canonical promotion and production witness"
+  ],
+  "context": {
+    "canonical_base": "6535e91e1b8cf73ebe4800e51ce33e72baea8d75",
+    "staging_branch": "mnemos/papers-circulation-20260924",
+    "staged_head_before_home": "273911bcffed57620b642ff0a702b137a5689e65",
+    "live_nerve_run": "36070266686 SUCCESS",
+    "materializer_run": "36070300397 SUCCESS",
+    "display_membrane_run": "36070471828 SUCCESS",
+    "private_state_carrier": "sss-shadow / y/papers/current.json",
+    "visitor_carrier": "/papers-shadow/current.json",
+    "upstream_pr_attempt": "BLOCKED · HTTP 403 Resource not accessible by integration",
+    "remaining_exit_witness": [
+      "canonical promotion of staged dependency cone",
+      "canonical sss-live deployment with materialization wake",
+      "runtime server-to-server materialization credentials provisioned",
+      "one production accepted R2 revision materialized into canonical static shadow",
+      "normal Pages deployment",
+      "browser Source metabolight witness from same-origin static shadow"
+    ]
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}
