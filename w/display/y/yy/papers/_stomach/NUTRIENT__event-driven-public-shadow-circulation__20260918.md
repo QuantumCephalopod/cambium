@@ -209,3 +209,24 @@ The sustainable cure remains unchanged:
 4. static visitor witness showing current public population + genealogy.
 
 Do not treat the staging compatibility repair as replacement for this end-to-end circulation closure.
+
+
+## return from Display dependency — 2026-09-24 · latest canonical live-nerve test blocker repaired on fork
+
+Current re-entry supersedes two older assumptions:
+- canonical `self-similar-systems/cambium` now contains the acknowledged-base live nerve and later delta-chunking evolution;
+- Drive `/papers/_feed → Inquiry` now contains Source rows under the common organism grammar, including full 4V/6E/4F/1T + surviving metabolites for witnessed Sources such as `S.YFs0`.
+
+The latest canonical delta-chunking deployment attempt itself did **not** deploy: `display live nerve` run `36024444316` failed in its test job and skipped deployment. The failure was test-only: a JSON plain-object `unit_revisions` map was compared with a value-identical null-prototype helper map.
+
+Display repaired only that witness on fork branch `mnemos/live-ledger-prototype-witness-20260924` rooted at current canonical HEAD `9887db14930496df08960341ecffe3507b405434`.
+- unmodified base witness: run `36053840908` FAILURE;
+- repaired branch head `f657d7fcb24be7f659eef1c3a2634fce4c977ff8`: run `36053899399` SUCCESS;
+- no Worker transport semantics changed.
+
+Remaining membrane blocker:
+- upstream PR creation from the prepared fork branch returned HTTP 403 `Resource not accessible by integration`;
+- therefore latest canonical Worker deployment remains OPEN;
+- Drive Pulse still reports `BOUND_RUNTIME_DEPLOYMENT_OPEN`, so current Inquiry freshness must not be mistaken for a witnessed bound-runtime secretion.
+
+No Display renderer workaround is warranted. Resume in order: canonical live-nerve repair promotion/deploy → bound source-runtime activation → acknowledged source→Worker/R2 delivery → static visitor read + Source metabolight browser witness.
