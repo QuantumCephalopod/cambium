@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.0"
+version: "2.1"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -109,14 +109,24 @@ The public inquiry hierarchy is not rank-order prose.
 
 **Surviving metabolites are the default visible content of a selected Papers organism.** They are the collapsed distinctions the organism has to say after `4V / 6E / 4F / 1T` has done its work.
 
+The embodiment is recursively self-similar:
+- Papers organisms float inside their truthful chamber/container under one deterministic bounded flow law;
+- metabolites float inside the selected organism's central interior under that **same packing/flow law at the next scale**;
+- every surviving metabolite owns exactly one **metabolight**;
+- the metabolight and its Pretext-laid-out **title + compression** share one moving organism-local anchor, so rotating/moving the body carries the wisdom with it;
+- a one-per-organism visibility glow may remain as a faint **organism ember** for distant/LOD perception, especially for tiny Sources, but an ember is never a metabolight and carries no metabolite semantics.
+
 Therefore:
-- selected-organism spatial wisdom should foreground admitted metabolite **title + compression**;
+- `N` surviving metabolites → exactly `N` metabolights in the selected organism;
 - the complete `1T` volume, `6E`, `4F`, `4V`, removal witnesses and genealogy remain discoverable earning structure behind that wisdom;
 - do not render the whole `1T` derivation as the always-on reading layer merely because it is available;
-- do not substitute `1T` or other derivation prose when metabolites are absent; preserve the projection gap;
-- this law is origin/rank invariant: any `S.*` or `nH` with admitted metabolites uses the same visible-wisdom physiology.
+- generic simplex facts/counts such as “4 vertices / 6 edges / 4 faces / 1 volume” are not visitor content and must not occupy a permanent inquiry sidebar;
+- a living metabolized Papers organism is not presented as a legitimate zero-metabolite content state. If the public membrane fails to carry its metabolite body, record that internally as projection-contract debt; do not invent a fallback visitor presentation and do not substitute derivation prose;
+- this law is origin/rank invariant: `S.*` and `nH` use the same metabolite-light/text physiology whenever their source-owned metabolite projection is present.
 
 Compression:
+
+> **Organisms float in chambers; metabolites float in organisms; metabolights carry what survived.**
 
 > **The tetrahedral body explains why the organism exists; metabolites are what it has to say.**
 
@@ -421,3 +431,6 @@ Version 1.9 dependency-custody correction (2026-09-23): Papers no longer owns th
 
 
 Version 2.0 content-priority correction (2026-09-24): surviving metabolites are now the canonical foreground reading layer for a selected Papers organism. Pretext embodies metabolite title + compression at the active organism; 4V/6E/4F/1T remain discoverable earning structure and may not replace missing metabolites merely to fill the view.
+
+
+Version 2.1 self-similar metabolite embodiment correction (2026-09-24): the former one-light-per-organism “metabolight” is reclassified as a non-semantic organism ember used only for distant/LOD visibility. Actual metabolights are now one-to-one with surviving metabolites, packed and moved inside the selected organism by the same deterministic bounded flow logic used for organisms inside chambers. Each metabolight carries its own Pretext title+compression anchor. Generic tetrahedral counts are removed from permanent visitor-facing inquiry chrome; missing metabolite projection is a contract wound, not an alternate content mode.
