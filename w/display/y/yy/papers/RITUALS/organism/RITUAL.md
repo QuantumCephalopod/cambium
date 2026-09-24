@@ -121,7 +121,7 @@ Therefore:
 - the complete `1T` volume, `6E`, `4F`, `4V`, removal witnesses and genealogy remain discoverable earning structure behind that wisdom;
 - do not render the whole `1T` derivation as the always-on reading layer merely because it is available;
 - generic simplex facts/counts such as “4 vertices / 6 edges / 4 faces / 1 volume” are not visitor content and must not occupy a permanent inquiry sidebar;
-- a living metabolized Papers organism is not presented as a legitimate zero-metabolite content state. If the public membrane fails to carry its metabolite body, record that internally as projection-contract debt; do not invent a fallback visitor presentation and do not substitute derivation prose;
+- metabolite cardinality remains source-owned. If source law truthfully yields zero surviving metabolites, Display renders zero metabolights and invents no replacement content. If metabolites are known to exist but fail to cross the public membrane, that is projection-contract debt;
 - this law is origin/rank invariant: `S.*` and `nH` use the same metabolite-light/text physiology whenever their source-owned metabolite projection is present.
 
 Compression:
@@ -433,4 +433,4 @@ Version 1.9 dependency-custody correction (2026-09-23): Papers no longer owns th
 Version 2.0 content-priority correction (2026-09-24): surviving metabolites are now the canonical foreground reading layer for a selected Papers organism. Pretext embodies metabolite title + compression at the active organism; 4V/6E/4F/1T remain discoverable earning structure and may not replace missing metabolites merely to fill the view.
 
 
-Version 2.1 self-similar metabolite embodiment correction (2026-09-24): the former one-light-per-organism “metabolight” is reclassified as a non-semantic organism ember used only for distant/LOD visibility. Actual metabolights are now one-to-one with surviving metabolites, packed and moved inside the selected organism by the same deterministic bounded flow logic used for organisms inside chambers. Each metabolight carries its own Pretext title+compression anchor. Generic tetrahedral counts are removed from permanent visitor-facing inquiry chrome; missing metabolite projection is a contract wound, not an alternate content mode.
+Version 2.1 self-similar metabolite embodiment correction (2026-09-24): the former one-light-per-organism “metabolight” is reclassified as a non-semantic organism ember used only for distant/LOD visibility. Actual metabolights are now one-to-one with surviving metabolites, packed and moved inside the selected organism by the same deterministic bounded flow logic used for organisms inside chambers. Each metabolight carries its own Pretext title+compression anchor. Generic tetrahedral counts are removed from permanent visitor-facing inquiry chrome; missing metabolite projection is a contract wound, while a truthful source-owned zero-metabolite result remains zero rather than being filled with derivation prose.
