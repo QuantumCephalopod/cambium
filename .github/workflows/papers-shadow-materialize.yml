@@ -51,3 +51,10 @@ jobs:
           assert isinstance(state.get('units'),dict)
           print('accepted current revision',state['public_revision'])
           PY
+
+      - name: Build same-origin Papers shadow
+        run: |
+          python3 w/display/y/yy/papers/materialize-shadow.py \
+            --input _papers-live-state.json \
+            --output w/display/y/yy/papers/public/papers-shadow/current.json \
+            --previous w/display/y/yy/papers/public/papers-shadow/current.json
