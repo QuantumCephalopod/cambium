@@ -31,3 +31,23 @@ jobs:
           fetch-depth: 0
       - name: Coalesce acknowledged delta chunks
         run: sleep 12
+
+      - name: Fetch current accepted Papers state
+        env:
+          MATERIALIZE_SECRET: ${{ secrets.PAPERS_MATERIALIZE_SECRET }}
+        run: |
+          set -euo pipefail
+          test -n "${MATERIALIZE_SECRET}"
+          curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer ${MATERIALIZE_SECRET}" \
+            "https://sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized" \
+            --output _papers-live-state.json
+          python3 - <<'PY'
+          import json
+          state=json.load(open('_papers-live-state.json',encoding='utf-8'))
+          assert state.get('version')==2
+          assert state.get('site_id')=='organism:papers'
+          assert isinstance(state.get('public_revision'),str) and state['public_revision'].startswith('sha256:')
+          assert isinstance(state.get('units'),dict)
+          print('accepted current revision',state['public_revision'])
+          PY
