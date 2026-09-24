@@ -121,3 +121,25 @@ Assimilated correction:
 - source-owned zero surviving metabolites remain zero; metabolites known to exist but absent from the public projection are projection-contract debt. Neither case may be filled with 1T or generic anatomy prose.
 
 Browser acceptance still OPEN until the canonical site is merged and visually inspected.
+
+
+## browser witness — Source metabolights still absent because source projection runtime is stale — 2026-09-24
+
+Browser witness after self-similar metabolite embodiment:
+- Holons correctly receive one moving metabolight per projected surviving metabolite.
+- Sources still receive no metabolights.
+
+Live source-side diagnosis:
+- current Drive `/papers/_feed → Inquiry` contract row still says only `nH` relational bodies are exposed and `S.*` inquiry remains source-local;
+- scanning `Inquiry!B1:B1820` yields zero `S.*` organism IDs;
+- therefore Display has no Source metabolite sections to embody. This is not a renderer kind-switch.
+
+The maintained Drive `/papers/_feed.gs` source is already corrected:
+- `organismCandidates_()` admits both `S.*` and `nH.*`;
+- `projectOrganismInquiry_()` projects 4V / 6E / 4F / 1T / metabolites through one organism grammar;
+- `publicState_()` consumes Inquiry groups for both source and holon units.
+
+Remaining wound:
+> the Apps Script project bound/deployed behind `/papers/_feed` is still running the older source. Connector access can mutate the maintained raw source and Sheets/Docs, but does not expose Apps Script project-source/deployment mutation.
+
+No Display workaround is admitted. The next lawful move is carrier activation of the already-earned source-owned projector, then browser witness that Source metabolights appear under the exact same renderer law.
