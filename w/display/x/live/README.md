@@ -51,15 +51,16 @@ Any unregistered `site_id` is rejected rather than allowed to invent an R2 path.
 
 ## Public surface
 
-Production Worker exposure is exactly:
+Production Worker exposure is exactly one authenticated route:
 
 ```text
 POST https://sss.saarland/__live/home
+GET  https://sss.saarland/__live/home?site_id=<admitted-site-id>
 ```
 
 `wrangler.jsonc` disables the `workers.dev` entrance and mounts only that exact custom-domain route. Other `__live` paths are not part of the production contract.
 
-`POST /__live/home` requires:
+Both methods require:
 
 ```text
 Authorization: Bearer <HOME_SECRET>
@@ -67,7 +68,9 @@ Authorization: Bearer <HOME_SECRET>
 
 `HOME_SECRET` exists only in the Cloudflare Worker secret store and the authorized Drive/Apps-Script producer. It must never appear in Git, R2, public JavaScript or receipts.
 
-The request body is bounded to 1 MiB, admits only a fixed field set, currently admits only `organism:papers`, and admits only `kind = HOME`.
+POST request bodies are bounded to 1 MiB, admit only a fixed field set, currently admit only `organism:papers`, and admit only `kind = HOME`.
+
+Authenticated GET is transport introspection only: it returns the current deterministic `public_revision` plus the opaque `unit_key → unit_revision` ledger. It never returns unit values and is not a browser/public state API. Producers use it to reacquire the actual acknowledged baseline after local ScriptProperties loss, deployment migration, or stale-base recovery.
 
 ## R2 write semantics
 
@@ -100,7 +103,17 @@ The Worker closes a delta only when:
 
 If current state is neither base nor target, the Worker returns `REBASE_REQUIRED` with the actual current revision and does not overwrite. If an ETag race is lost after the read, the Worker re-reads current state: an already-reached target dedupes; any other result becomes `REBASE_REQUIRED`.
 
-A complete `reconcile` unit set is recovery physiology only: first bootstrap, explicit stale-base reconciliation or integrity repair. After reconciliation, ordinary circulation resumes as delta.
+Ordinary growth never requires a complete snapshot. If one source-derived delta would exceed the 1 MiB POST bound, the producer deterministically partitions the changed opaque units into a sequence of smaller **ordinary deltas**. Each chunk:
+- starts from the immediately previous Worker-ACKed revision;
+- carries only a subset of the still-different units;
+- computes one deterministic intermediate public revision from that updated revision ledger;
+- is conditionally written and ACKed before the next chunk is derived.
+
+Chunking therefore introduces no second transport ontology: **a chunk is the same acknowledged-base delta law recursively applied at smaller transport scale**. A single opaque unit that cannot fit by itself is an explicit unit-granularity wound and is never silently split by Display.
+
+The deterministic empty-map revision is a lawful first base. An empty R2 locus may therefore grow by bounded deltas without requiring one oversized first snapshot.
+
+A complete `reconcile` unit set remains bounded integrity/legacy recovery physiology only. It is not the normal bootstrap or growth path for a state whose size can increase without bound.
 
 Activity-only HOME packets never replace or strip the rich current object. A legacy v1 shadow is likewise preserved by activity-only traffic and requires explicit reconciliation before a rich delta can apply.
 
@@ -121,7 +134,7 @@ Papers changes
 -> R2 current object replacement if needed
 ```
 
-Failed live delivery is kept in a bounded ScriptProperties outbox and creates only a temporary wound-only retry trigger. The source acknowledged-base ledger advances only after the Worker returns the accepted target public revision. A newer HOME while a rich parcel remains pending recomputes one cumulative latest-state delta from that same acknowledged base rather than requiring stale sequential patches. Successful delivery removes the parcel. An idle organism has no polling schedule.
+Failed live delivery is kept in a bounded ScriptProperties outbox and creates only a temporary wound-only retry trigger. The producer reacquires the Worker revision ledger when its local ACK ledger is absent/corrupt, computes only the remaining difference to current source truth, and advances its local acknowledged ledger only after each accepted Worker target revision. A newer HOME while circulation is pending recomputes against the latest ACKed/remote ledger rather than replaying stale parcels. If the remaining difference is large, deterministic bounded delta chunks advance that same ledger one ACK at a time. Successful convergence removes the parcel. An idle organism has no polling schedule.
 
 A visitor opening or refreshing the website never participates in this chain.
 
