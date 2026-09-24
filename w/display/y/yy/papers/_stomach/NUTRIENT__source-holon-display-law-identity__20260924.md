@@ -79,3 +79,22 @@ Correction pressure:
 - normalize every Papers runtime identity to one complete object schema;
 - origin-specific fields may be empty, but must not be structurally absent;
 - a common organism renderer must not require defensive kind checks merely to avoid missing-property crashes.
+
+
+## browser/content correction — metabolites are the primary public content — 2026-09-24
+
+Production browser witness after Source/Holon display-law unification shows the ontology is now structurally coherent but the information hierarchy is inverted:
+
+- Sources read well because their provenance surface is concise.
+- Holons still render the entire 1T volume text as the dominant spatial Pretext overlay.
+- The actually visitor-relevant surviving metabolites remain hidden even though they are the collapsed wisdom product of Papers metabolism.
+
+Correction:
+- **surviving metabolites are the default visible content of a selected Papers organism**;
+- the spatial Pretext wisdom plane must render metabolite title + compression (bounded public wisdom), not the entire 1T derivation;
+- 4V / 6E / 4F / 1T remain truthful discoverable structure and earning evidence, but are secondary inspection surfaces rather than the always-on reading layer;
+- no fallback from missing metabolites to 1T is allowed merely to fill the screen;
+- Source and Holon retain one display law: when metabolites are publicly projected they are foreground content regardless of origin/rank; when they are absent, preserve the projection gap rather than substitute derivation prose.
+
+Compression:
+> **The tetrahedral body explains why the organism exists; metabolites are what it has to say.**
