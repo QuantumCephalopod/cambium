@@ -83,8 +83,15 @@ async function ledger(env, siteId = "organism:papers", secret = "secret") {
   }), env);
 }
 
+async function materialized(env, secret = "materialize") {
+  return worker.fetch(new Request(
+    "https://sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized",
+    { method: "GET", headers: { Authorization: "Bearer " + secret } }
+  ), env);
+}
+
 const bucket = new MockR2();
-const env = { HOME_SECRET: "secret", SHADOW: bucket };
+const env = { HOME_SECRET: "secret", MATERIALIZE_SECRET: "materialize", SHADOW: bucket };
 const units1 = { root: await unit({ count: 1 }), "holon:a": await unit({ title: "A" }) };
 const revision1 = await stateRevision(units1);
 
@@ -96,6 +103,15 @@ assert.equal(response.status, 200);
 assert.equal(result.mode, "reconcile");
 assert.equal(result.public_revision, revision1);
 assert.equal(bucket.putCount, 1);
+
+response = await materialized(env);
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.public_revision, revision1);
+assert.deepEqual(Object.keys(result.units).sort(), Object.keys(units1).sort());
+
+response = await materialized(env, "wrong");
+assert.equal(response.status, 401);
 
 response = await ledger(env);
 result = await response.json();
