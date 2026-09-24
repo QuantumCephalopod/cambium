@@ -32,5 +32,16 @@
   "structural_growth": false,
   "parent_uplink_required": false,
   "kind": "HOME",
-  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "repair_kind": "provider-test witness repair",
+    "canonical_failed_run": 36024444316,
+    "canonical_failed_commit": "c5cf5b415aafbe0c783e29dbd1209d7fa684093d",
+    "repair_base": "9887db14930496df08960341ecffe3507b405434",
+    "repair_branch": "mnemos/live-ledger-prototype-witness-20260924",
+    "repair_code_commit": "f657d7fcb24be7f659eef1c3a2634fce4c977ff8",
+    "baseline_branch_run": 36053840908,
+    "repair_branch_run": 36053899399,
+    "remaining_boundary": "canonical promotion/deployment was still open at this HOME"
+  }
 }
