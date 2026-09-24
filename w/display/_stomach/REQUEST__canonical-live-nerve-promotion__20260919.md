@@ -90,3 +90,25 @@ The prepared surgical source remains available in the writable fork:
 - provider preflight: `display live nerve` run `35471086651` SUCCESS.
 
 This request remains OPEN. The smallest unresolved dependency is canonical repository write/PR authority. Once that membrane is writable, re-check canonical `main` before promotion; do not assume the parent remained current.
+
+
+## production re-entry — 2026-09-24 · delta-chunking deploy blocked by test-shape mismatch
+
+### provider witness
+Canonical `self-similar-systems/cambium:main` advanced beyond the 2026-09-19 authority blocker and now contains the acknowledged-base live nerve plus the later delta-chunking evolution.
+
+Canonical commit `c5cf5b415aafbe0c783e29dbd1209d7fa684093d` triggered `display live nerve` run `36024444316`.
+- test job: **FAILURE**
+- deploy job: **SKIPPED**
+- failing step: `Witness live nerve`
+- exact failure: Node strict deep equality compared an ordinary JSON object returned as `unit_revisions` with an otherwise value-identical null-prototype object produced by the test helper `revisionLedger()`.
+
+The failure does **not** witness a transport-law mismatch. The reported maps contained the same keys and SHA-256 revisions; only their JavaScript prototypes differed.
+
+### bounded repair
+Normalize the expected ledger to the JSON-shaped plain-object boundary before comparison. Do not change Worker packet grammar, revision derivation, R2 mutation semantics, source Papers physiology, or the acknowledged-base contract.
+
+### acceptance
+- current live-nerve test passes on a branch rooted at the current canonical HEAD;
+- resulting upstream PR changes only the test witness plus this open-request evidence unless another independently witnessed dependency is required;
+- canonical production deployment remains OPEN until the repaired canonical workflow actually succeeds.
