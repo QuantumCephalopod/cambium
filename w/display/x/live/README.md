@@ -140,25 +140,26 @@ A visitor opening or refreshing the website never participates in this chain.
 
 ## Private R2 boundary
 
-The bucket is private by default. The bucket remains private. Direct object delivery is not part of the Papers visitor contract. The previously reserved custom domain remains disabled:
+The bucket remains private intermediate transport memory. Neither the `r2.dev` development URL nor an R2 custom domain is part of the Papers visitor contract.
+
+The previously reserved `assets.sss.saarland` attachment remains disabled and is not a future publication step. Visitors read only the already-public same-origin static carrier:
 
 ```text
-assets.sss.saarland
+https://sss.saarland/papers-shadow/current.json
 ```
 
-The `r2.dev` public development URL remains disabled. Before the custom domain is enabled for production reads, install the intended cache/WAF/rate-limit shell. Visitors read the already-public same-origin `/papers-shadow/current.json` static surface instead; they do not traverse `sss-live` or R2.
-
-Emergency CUT:
+The current relation is:
 
 ```text
-Cloudflare R2
--> sss-shadow
--> Custom Domains
--> assets.sss.saarland
--> Disable domain
+authenticated Papers HOME
+-> sss-live
+-> private sss-shadow current state
+-> server-side same-origin materialization
+-> ordinary GitHub Pages deployment
+-> visitor static read
 ```
 
-This removes public read access while preserving the bucket and objects. Billing alerts are secondary witnesses, not a hard shutoff.
+A browser request never reads R2, never receives an R2 credential, never calls `sss-live`, and never actuates materialization.
 
 ## Production deployment
 
