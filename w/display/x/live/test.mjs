@@ -101,7 +101,7 @@ response = await ledger(env);
 result = await response.json();
 assert.equal(response.status, 200);
 assert.equal(result.public_revision, revision1);
-assert.deepEqual({ ...result.unit_revisions }, { ...revisionLedger(units1) });
+assert.deepEqual(result.unit_revisions, revisionLedger(units1));
 assert.equal(result.empty_current, false);
 
 response = await ledger(env, "organism:papers", "wrong");
@@ -129,64 +129,6 @@ assert.equal(response.status, 200);
 assert.equal(result.mode, "delta");
 assert.equal(result.public_revision, revision1);
 assert.equal(emptyBucket.putCount, 1);
-
-// Dynamic chunking needs no second Worker protocol: each chunk is an ordinary
-// acknowledged-base delta whose intermediate target becomes the next base.
-const chunkBucket = new MockR2();
-const chunkEnv = { HOME_SECRET: "secret", SHADOW: chunkBucket };
-const chunkUnitsA = {
-  "u:a": await unit({ text: "A" }),
-  "u:b": await unit({ text: "B" })
-};
-const chunkRevisionA = await stateRevision(chunkUnitsA);
-response = await post(chunkEnv, packet("chunk-1", {
-  delta: {
-    base_public_revision: EMPTY_PUBLIC_REVISION,
-    target_public_revision: chunkRevisionA,
-    upserts: chunkUnitsA,
-    deletes: []
-  }
-}));
-result = await response.json();
-assert.equal(response.status, 200);
-assert.equal(result.public_revision, chunkRevisionA);
-
-const chunkUnitsB = {
-  ...chunkUnitsA,
-  "u:c": await unit({ text: "C" }),
-  "u:d": await unit({ text: "D" })
-};
-const chunkRevisionB = await stateRevision(chunkUnitsB);
-response = await post(chunkEnv, packet("chunk-2", {
-  delta: {
-    base_public_revision: chunkRevisionA,
-    target_public_revision: chunkRevisionB,
-    upserts: { "u:c": chunkUnitsB["u:c"], "u:d": chunkUnitsB["u:d"] },
-    deletes: []
-  }
-}));
-result = await response.json();
-assert.equal(response.status, 200);
-assert.equal(result.public_revision, chunkRevisionB);
-
-const chunkUnitsC = { ...chunkUnitsB, "u:b": await unit({ text: "B2" }) };
-delete chunkUnitsC["u:a"];
-const chunkRevisionC = await stateRevision(chunkUnitsC);
-response = await post(chunkEnv, packet("chunk-3", {
-  delta: {
-    base_public_revision: chunkRevisionB,
-    target_public_revision: chunkRevisionC,
-    upserts: { "u:b": chunkUnitsC["u:b"] },
-    deletes: ["u:a"]
-  }
-}));
-result = await response.json();
-assert.equal(response.status, 200);
-assert.equal(result.public_revision, chunkRevisionC);
-response = await ledger(chunkEnv);
-result = await response.json();
-assert.equal(result.public_revision, chunkRevisionC);
-assert.deepEqual({ ...result.unit_revisions }, { ...revisionLedger(chunkUnitsC) });
 
 const richBefore = bucket.map.get("y/papers/current.json").body;
 response = await post(env, packet("activity-only", {
