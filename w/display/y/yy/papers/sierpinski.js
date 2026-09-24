@@ -439,8 +439,8 @@ function makeStage(host){
   for(const phase of PHYSIOLOGY_PHASES){const n=document.createElement('span');n.dataset.phase=phase.id;n.textContent=phase.label;physiologyPhases.append(n)}
   host.append(physiology);
   const physiologyCanvas=physiology.querySelector('.papers-physiology-canvas'),physiologyTitle=physiology.querySelector('.papers-physiology-copy b'),physiologyCopy=physiology.querySelector('.papers-physiology-copy span');
-  const sourceInfo=document.createElement('section');sourceInfo.className='papers-source-inquiry';sourceInfo.setAttribute('aria-label','Selected Source inquiry');
-  sourceInfo.innerHTML='<div class="papers-source-original"><small>ORIGINAL WORK</small><span class="papers-source-code"></span><h2></h2><p class="papers-source-credit"></p><div class="papers-source-links"></div></div><div class="papers-source-metabolism"><small>PAPERS METABOLISM</small><p class="papers-source-receipt"></p><small class="papers-source-inquiry-label">SOURCE INQUIRY</small><p class="papers-source-inquiry-state"></p></div>';
+  const sourceInfo=document.createElement('section');sourceInfo.className='papers-source-inquiry';sourceInfo.setAttribute('aria-label','Selected Papers organism inquiry');
+  sourceInfo.innerHTML='<div class="papers-source-original"><small class="papers-origin-label">ORIGIN</small><span class="papers-source-code"></span><h2></h2><p class="papers-source-credit"></p><div class="papers-source-links"></div></div><div class="papers-source-metabolism"><small>PAPERS ORGANISM</small><p class="papers-source-receipt"></p><small class="papers-source-inquiry-label">TETRAHEDRAL BODY</small><p class="papers-source-inquiry-state"></p></div>';
   host.append(sourceInfo);
   const chamberLabels=document.createElement('div');chamberLabels.className='papers-chamber-labels';chamberLabels.setAttribute('aria-hidden','true');host.append(chamberLabels);
   const chamberLabelNodes=new Map();
@@ -516,19 +516,24 @@ function childBodies(current){
   const ps=state.parents.get(current.id)||[];if(ps.length!==4)return [];
   return ps.map((pid,i)=>({id:pid,center:mul(state.renderer.V0[i],current.scale*.5),scale:current.scale*.5}));
 }
+function inquiryBody(id){return state?.inquiryBodies?.[id]||null}
+function inquiryVolumeText(entity){
+  if(!entity)return '';
+  const body=inquiryBody(entity.id),volume=body?.volume;
+  return (volume&&typeof volume.text==='string'&&volume.text.trim())?volume.text.trim():(typeof entity.wisdom==='string'?entity.wisdom.trim():'');
+}
 function metabolight(id,center,px,entity,selected=false){
-  const rank=rankNumber(entity?.rank),source=entity?.kind==='source',wisdom=Boolean(entity?.publicWisdom),pal=PALETTE[entity?.gene]||PALETTE.x;
-  const target=source?[.80,1.0,.90]:[1.0,.86,.55],blend=source ? .50 : (wisdom ? .60 : .40),c=mix3(pal,target,blend);
-  const size=source?clamp(4+px*.15,4,9):clamp(10+rank*6+Math.sqrt(Math.max(px,0))*1.1+(wisdom ? 4 : 0)+(selected ? 5 : 0),10,62);
-  const alpha=source ? .22 : clamp(.30+rank*.075+(wisdom ? .12 : 0)+(selected ? .12 : 0),.30,.94);
-  return {id,center,size,color:[...c,alpha],phase:random01(id,'metabolight')*Math.PI*2,kind:source?'quantum':'metabolight',rank};
+  const rank=rankNumber(entity?.rank),wisdom=Boolean(inquiryVolumeText(entity)),pal=PALETTE[entity?.gene]||PALETTE.x;
+  const target=[1.0,.90,.64],blend=clamp(.40+rank*.035+(wisdom?.12:0),.40,.68),c=mix3(pal,target,blend);
+  const size=clamp(7+rank*6+Math.sqrt(Math.max(px,0))*1.1+(wisdom?4:0)+(selected?5:0),7,62);
+  const alpha=clamp(.24+rank*.075+(wisdom?.12:0)+(selected?.12:0),.24,.94);
+  return {id,center,size,color:[...c,alpha],phase:random01(id,'metabolight')*Math.PI*2,kind:rank===0?'quantum':'metabolight',rank};
 }
 function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
   const ps=state.parents.get(id)||[],px=projectedPixels(scale,cameraZ,height),entity=state.identities.get(id),gene=entity?.gene||'x',pal=PALETTE[gene]||PALETTE.x;
-  if(entity?.kind==='holon')lights.push(metabolight(id,center,px,entity,depth===0));
+  if(entity)lights.push(metabolight(id,center,px,entity,depth===0));
   if(ps.length!==4||px<LOD_PX||depth>=MAX_DEPTH){
     leaves.push({id,center,scale,color:[pal[0],pal[1],pal[2],.11+Math.min(.30,px/150)]});
-    if(entity?.kind==='source')lights.push(metabolight(id,center,px,entity,depth===0));
     return;
   }
   for(let i=0;i<4;i++)collectBody(ps[i],add(center,mul(state.renderer.V0[i],scale*.5)),scale*.5,cameraZ,height,leaves,lights,depth+1);
@@ -537,47 +542,57 @@ function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2]
 function projectWorldPoint(p,cameraZ,width,height){const z=cameraZ-p[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+p[0]*f/z,y:height/2-p[1]*f/z,z:p[2]}}
 function wisdomFont(width){return width<700?'500 11px system-ui, -apple-system, "Segoe UI", sans-serif':'500 13px system-ui, -apple-system, "Segoe UI", sans-serif'}
 function wisdomLineHeight(width){return width<700?17:20}
-function preparedWisdom(entity,font){
-  if(!pretextModule||!entity?.wisdom)return null;
-  const key=`${entity.id}\u0000${font}\u0000${entity.wisdom}`;
-  if(state.wisdomPrepared?.key!==key)state.wisdomPrepared={key,prepared:pretextModule.prepareWithSegments(entity.wisdom,font)};
+function preparedWisdom(entity,text,font){
+  if(!pretextModule||!entity||!text)return null;
+  const key=`${entity.id}\u0000${font}\u0000${text}`;
+  if(state.wisdomPrepared?.key!==key)state.wisdomPrepared={key,prepared:pretextModule.prepareWithSegments(text,font)};
   return state.wisdomPrepared.prepared;
 }
 function externalLabel(url,index){
   try{const u=new URL(url),host=u.hostname.replace(/^www\./,'');if(host==='doi.org')return 'DOI · ORIGINAL WORK';if(host==='arxiv.org')return 'ARXIV · ORIGINAL WORK';if(host==='github.com')return 'GITHUB · UPSTREAM';if(host.includes('pmlr.press'))return 'PMLR · ORIGINAL WORK';if(host.includes('w3.org'))return 'W3C · CANONICAL SOURCE';return host.toUpperCase()+' · ORIGINAL SOURCE'}catch(_){return 'ORIGINAL SOURCE '+(index+1)}
 }
-function sourceInquiryReceipt(id){
-  const body=state.inquiryBodies?.[id];
-  if(!body)return {projected:false,text:'Detailed internal 4V / 6E / 4F / 1T tissue is not yet projected through the public membrane.'};
+function organismInquiryReceipt(id){
+  const body=inquiryBody(id);
+  if(!body)return {projected:false,text:'Canonical tetrahedral body is not yet projected through the public membrane.'};
+  const vertices=Array.isArray(body.vertices)?body.vertices.length:(body.vertices&&typeof body.vertices==='object'?Object.keys(body.vertices).length:0);
   const edges=Array.isArray(body.edges)?body.edges.length:0,faces=Array.isArray(body.faces)?body.faces.length:0,metabolites=Array.isArray(body.metabolites)?body.metabolites.length:0,volume=body.volume?1:0;
-  return {projected:true,text:`${edges}/6 edges · ${faces}/4 faces · ${volume}/1 volume · ${metabolites} metabolites`};
+  return {projected:true,text:`${vertices}/4 vertices · ${edges}/6 edges · ${faces}/4 faces · ${volume}/1 volume · ${metabolites} metabolites`};
 }
-function updateSourceInquiry(){
-  const box=state.sourceInfo,entity=state.current?state.identities.get(state.current.id):null,visible=entity?.kind==='source',alpha=visible?smooth(clamp((state.transition-.38)/.38)):0;
+function updateOrganismInquiry(){
+  const box=state.sourceInfo,entity=state.current?state.identities.get(state.current.id):null,visible=Boolean(entity),alpha=visible?smooth(clamp((state.transition-.38)/.38)):0;
   if(!box)return;
   box.dataset.visible=visible?'true':'false';box.style.setProperty('--source-open',alpha.toFixed(3));box.setAttribute('aria-hidden',visible?'false':'true');
   if(!visible)return;
-  const inquiry=sourceInquiryReceipt(entity.id),key=[entity.id,entity.title,entity.credit,entity.metabolism,entity.externals.join('|'),inquiry.projected,inquiry.text].join('\u0000');
+  const source=entity.kind==='source',parents=state.parents.get(entity.id)||[],inquiry=organismInquiryReceipt(entity.id);
+  const origin=source?'EXTERNAL ORIGIN':'COMPOSITION',originText=source?(entity.credit||'External provenance unresolved in the current public projection.'):`${entity.rank} · ${parents.length}/4 canonical parents${parents.length?': '+parents.join(' · '):''}`;
+  const receipt=source?(entity.metabolism||'Canonical Papers metabolism receipt is not projected.'):`recursive tetrahedral composition · ${entity.rank} · ${parents.length}/4 parents`;
+  const key=[entity.id,entity.title,origin,originText,receipt,entity.externals.join('|'),parents.join('|'),inquiry.projected,inquiry.text].join('\u0000');
   if(box.dataset.sourceKey===key)return;
-  box.dataset.sourceKey=key;box.dataset.sourceId=entity.id;box.dataset.sourceInquiry=inquiry.projected?'projected':'gap';
-  box.querySelector('.papers-source-code').textContent=`${entity.id} · ${entity.gene} · ${locusName(state.projection,entity.gene)}`;
+  box.dataset.sourceKey=key;box.dataset.sourceId=entity.id;box.dataset.sourceInquiry=inquiry.projected?'projected':'gap';box.dataset.origin=source?'external':'composed';
+  box.querySelector('.papers-origin-label').textContent=origin;
+  box.querySelector('.papers-source-code').textContent=`${entity.id} · ${entity.rank} · ${entity.gene} · ${locusName(state.projection,entity.gene)}`;
   box.querySelector('h2').textContent=entity.title||entity.id;
-  box.querySelector('.papers-source-credit').textContent=entity.credit||'Source credit unresolved in the current public projection.';
-  box.querySelector('.papers-source-receipt').textContent=entity.metabolism||'Tetrahedralization receipt is not projected for this Source.';
+  box.querySelector('.papers-source-credit').textContent=originText;
+  box.querySelector('.papers-source-receipt').textContent=receipt;
   const links=box.querySelector('.papers-source-links');links.replaceChildren();
-  entity.externals.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=externalLabel(url,i);links.append(a)});
-  if(!entity.externals.length){const span=document.createElement('span');span.textContent='Canonical external origin not projected.';links.append(span)}
-  box.querySelector('.papers-source-inquiry-label').textContent=inquiry.projected?'SOURCE INQUIRY · PROJECTED':'SOURCE INQUIRY · PROJECTION GAP';
+  if(source){
+    entity.externals.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=externalLabel(url,i);links.append(a)});
+    if(!entity.externals.length){const span=document.createElement('span');span.textContent='Canonical external origin not projected.';links.append(span)}
+  }else{
+    parents.forEach(id=>{const span=document.createElement('span');span.textContent=id;links.append(span)});
+  }
+  box.querySelector('.papers-source-inquiry-label').textContent=inquiry.projected?'TETRAHEDRAL BODY · PROJECTED':'TETRAHEDRAL BODY · PROJECTION GAP';
   box.querySelector('.papers-source-inquiry-state').textContent=inquiry.text;
 }
 
 function drawWisdom(rect,cam,translate,activeLight){
   const {ctx}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null;
   canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;delete canvas.dataset.wisdomAnchorX;delete canvas.dataset.wisdomAnchorY;delete canvas.dataset.wisdomRadius;
-  if(!state.current||!entity?.wisdom){canvas.dataset.wisdomState=state.current?'missing':'inactive';return}
+  const volumeText=inquiryVolumeText(entity);
+  if(!state.current||!volumeText){canvas.dataset.wisdomState=state.current?'projection-gap':'inactive';return}
   if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
   const alpha=smooth(clamp((state.transition-.56)/.34));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';return}
-  const anchor=projectWorldPoint(translate,cam,rect.width,rect.height),font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),prepared=preparedWisdom(entity,font);if(!prepared)return;
+  const anchor=projectWorldPoint(translate,cam,rect.width,rect.height),font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),prepared=preparedWisdom(entity,volumeText,font);if(!prepared)return;
   const width=Math.min(WISDOM_MAX_WIDTH,Math.max(250,rect.width*(rect.width<700 ? .88 : .66))),half=width/2;
   const centerX=clamp(anchor.x,half+16,rect.width-half-16),x0=centerX-half,x1=centerX+half,radius=clamp((activeLight?.size||32)*.78+24,44,86),gap=14;
   const rows=rect.width<700?12:14,top=clamp(anchor.y-(rows*.5)*lineHeight,58,Math.max(58,rect.height-rows*lineHeight-28));
@@ -725,10 +740,10 @@ function draw(now){
     translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
     state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,.82]}],state.localQ,translate,proj,view,{faces:false});
     state.renderer.drawLights(lights,state.localQ,translate,proj,view,now*.001,d,INQUIRY_LIGHT_GAIN);
-    lightCount=lights.filter(x=>x.kind==='metabolight').length;quantumCount=lights.filter(x=>x.kind==='quantum').length;activeLight=lights.find(x=>x.id===state.current.id&&x.kind==='metabolight')||null;
+    lightCount=lights.filter(x=>x.kind==='metabolight').length;quantumCount=lights.filter(x=>x.kind==='quantum').length;activeLight=lights.find(x=>x.id===state.current.id)||null;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  drawWisdom(rect,cam,translate,activeLight);updateSourceInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
+  drawWisdom(rect,cam,translate,activeLight);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
