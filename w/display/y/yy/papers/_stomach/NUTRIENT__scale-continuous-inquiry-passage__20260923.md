@@ -52,3 +52,25 @@ The intended scale law is **centripetal**:
 - larger Holons stop the camera farther out than tiny Sources under the existing S-anchored scale law, making the enclosing Papers structure perceptibly nearer and immediately exposing relative scale.
 
 Revised acceptance: **camera motion creates depth; background-world translation must remain zero.**
+
+
+## browser correction — invariant Papers-root centroid — 2026-09-24
+
+Browser witness of the centripetal repair exposed one remaining frame leak: selecting an organism after pre-focusing a realized chamber (for example Genesis) converges to that chamber's transformed centroid and inherits the chamber zoom scale, while selection from Overview converges to the intended complete Papers-root centroid.
+
+The earned invariant is stronger:
+
+- realized chamber focus is **entry/view context**, not inquiry-center identity;
+- every selected Source/Holon, from any realized chamber and at any future recursive chamber depth, converges to the one centroid of the complete Papers r1 tetrahedron;
+- the current chamber focus must relax continuously toward the root frame during the same selection passage rather than snapping to Overview first;
+- closing the inquiry reverses that passage so the prior chamber focus can return without losing navigation context;
+- selected organism intrinsic scale/camera target is computed from the S-anchored rank law in the root frame, never multiplied by the currently focused chamber scale;
+- rank changes organism size and therefore camera distance, but never changes the invariant target centroid;
+- this remains valid if Papers later differentiates root chambers recursively: local chamber depth changes entry context only, while the permanent r1 center remains the inquiry attractor.
+
+Acceptance:
+1. selecting the same organism from Overview or any pre-focused chamber yields the same final center and intrinsic body scale;
+2. chamber → organism motion begins from the actually visible chamber state with no discontinuous snap;
+3. during inquiry the enclosing Papers frame smoothly relaxes from chamber focus to complete root focus;
+4. returning from inquiry restores the preselection chamber frame;
+5. the selected body's final centroid is root [0,0,0] regardless of chamber path/rank.
