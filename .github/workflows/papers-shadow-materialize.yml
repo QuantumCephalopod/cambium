@@ -71,3 +71,18 @@ jobs:
           assert public.get('snapshot',{}).get('public_revision')==source.get('public_revision')
           print(public['public_revision'])
           PY
+
+      - name: Persist current public shadow
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- w/display/y/yy/papers/public/papers-shadow/current.json; then
+            echo "same-origin Papers shadow already current"
+            exit 0
+          fi
+          git config user.name "papers shadow materializer"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          REV="$(python3 -c "import json; print(json.load(open('_papers-live-state.json'))['public_revision'])")"
+          git add -- w/display/y/yy/papers/public/papers-shadow/current.json
+          git commit -m "papers shadow: materialize ${REV}"
+          git pull --rebase origin main
+          git push origin HEAD:main
