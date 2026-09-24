@@ -517,13 +517,19 @@ function childBodies(current){
   return ps.map((pid,i)=>({id:pid,center:mul(state.renderer.V0[i],current.scale*.5),scale:current.scale*.5}));
 }
 function inquiryBody(id){return state?.inquiryBodies?.[id]||null}
-function inquiryVolumeText(entity){
-  if(!entity)return '';
-  const body=inquiryBody(entity.id),volume=body?.volume;
-  return (volume&&typeof volume.text==='string'&&volume.text.trim())?volume.text.trim():(typeof entity.wisdom==='string'?entity.wisdom.trim():'');
+function inquiryMetabolites(entity){
+  if(!entity)return [];
+  const body=inquiryBody(entity.id),items=Array.isArray(body?.metabolites)?body.metabolites:[];
+  return items.filter(m=>m&&typeof m==='object'&&(typeof m.title==='string'||typeof m.compression==='string'||typeof m.text==='string'));
+}
+function inquiryWisdomText(entity){
+  return inquiryMetabolites(entity).map(m=>{
+    const title=typeof m.title==='string'?m.title.trim():'',compression=typeof m.compression==='string'?m.compression.trim():'';
+    return title&&compression?`${title} — ${compression}`:(compression||title);
+  }).filter(Boolean).join('   ◆   ');
 }
 function metabolight(id,center,px,entity,selected=false){
-  const rank=rankNumber(entity?.rank),wisdom=Boolean(inquiryVolumeText(entity)),pal=PALETTE[entity?.gene]||PALETTE.x;
+  const rank=rankNumber(entity?.rank),wisdom=inquiryMetabolites(entity).length>0,pal=PALETTE[entity?.gene]||PALETTE.x;
   const target=[1.0,.90,.64],blend=clamp(.40+rank*.035+(wisdom?.12:0),.40,.68),c=mix3(pal,target,blend);
   const size=clamp(7+rank*6+Math.sqrt(Math.max(px,0))*1.1+(wisdom?4:0)+(selected?5:0),7,62);
   const alpha=clamp(.24+rank*.075+(wisdom?.12:0)+(selected?.12:0),.24,.94);
@@ -588,11 +594,12 @@ function updateOrganismInquiry(){
 function drawWisdom(rect,cam,translate,activeLight){
   const {ctx}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null;
   canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;delete canvas.dataset.wisdomAnchorX;delete canvas.dataset.wisdomAnchorY;delete canvas.dataset.wisdomRadius;
-  const volumeText=inquiryVolumeText(entity);
-  if(!state.current||!volumeText){canvas.dataset.wisdomState=state.current?'projection-gap':'inactive';return}
+  const metabolites=inquiryMetabolites(entity),wisdomText=inquiryWisdomText(entity);
+  canvas.dataset.wisdomMetabolites=String(metabolites.length);canvas.dataset.wisdomSource='metabolites';
+  if(!state.current||!wisdomText){canvas.dataset.wisdomState=state.current?'projection-gap':'inactive';return}
   if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
   const alpha=smooth(clamp((state.transition-.56)/.34));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';return}
-  const anchor=projectWorldPoint(translate,cam,rect.width,rect.height),font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),prepared=preparedWisdom(entity,volumeText,font);if(!prepared)return;
+  const anchor=projectWorldPoint(translate,cam,rect.width,rect.height),font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),prepared=preparedWisdom(entity,wisdomText,font);if(!prepared)return;
   const width=Math.min(WISDOM_MAX_WIDTH,Math.max(250,rect.width*(rect.width<700 ? .88 : .66))),half=width/2;
   const centerX=clamp(anchor.x,half+16,rect.width-half-16),x0=centerX-half,x1=centerX+half,radius=clamp((activeLight?.size||32)*.78+24,44,86),gap=14;
   const rows=rect.width<700?12:14,top=clamp(anchor.y-(rows*.5)*lineHeight,58,Math.max(58,rect.height-rows*lineHeight-28));
