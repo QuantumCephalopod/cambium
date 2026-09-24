@@ -3,6 +3,7 @@ const JSON_HEADERS = Object.freeze({
   "cache-control": "no-store"
 });
 const MAX_BODY_BYTES = 1024 * 1024;
+const EMPTY_PUBLIC_REVISION = "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945";
 const EVENT_ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$/;
 const UNIT_KEY = /^[A-Za-z0-9][A-Za-z0-9:._/-]{0,240}$/;
 const REVISION = /^sha256:[a-f0-9]{64}$/;
@@ -194,8 +195,14 @@ async function valueRevision(value) {
   return sha256Revision(canonicalJson(value));
 }
 
+function revisionLedger(units) {
+  const ledger = Object.create(null);
+  for (const key of Object.keys(units).sort()) ledger[key] = units[key].revision;
+  return ledger;
+}
+
 async function stateRevision(units) {
-  const ledger = Object.keys(units).sort().map((key) => [key, units[key].revision]);
+  const ledger = Object.entries(revisionLedger(units));
   return sha256Revision(canonicalJson(ledger));
 }
 
@@ -304,15 +311,21 @@ async function concurrentResult(env, key, packet, targetRevision) {
 
 async function applyDelta(env, key, packet, current) {
   const delta = packet.delta;
+  let baseUnits;
   if (!current.state) {
-    return json(responseContext(packet, key, {
-      ok: false,
-      error: "REBASE_REQUIRED",
-      actual_public_revision: null,
-      legacy_current: current.legacy
-    }), 409);
+    if (current.legacy || delta.base_public_revision !== EMPTY_PUBLIC_REVISION) {
+      return json(responseContext(packet, key, {
+        ok: false,
+        error: "REBASE_REQUIRED",
+        actual_public_revision: current.legacy ? null : EMPTY_PUBLIC_REVISION,
+        legacy_current: current.legacy
+      }), 409);
+    }
+    baseUnits = Object.create(null);
+  } else {
+    baseUnits = current.state.units;
   }
-  if (current.state.public_revision === delta.target_public_revision) {
+  if (current.state?.public_revision === delta.target_public_revision) {
     return json(responseContext(packet, key, {
       ok: true,
       deduped: true,
@@ -320,16 +333,17 @@ async function applyDelta(env, key, packet, current) {
       rich_write: false
     }));
   }
-  if (current.state.public_revision !== delta.base_public_revision) {
+  const actualBase = current.state?.public_revision ?? EMPTY_PUBLIC_REVISION;
+  if (actualBase !== delta.base_public_revision) {
     return json(responseContext(packet, key, {
       ok: false,
       error: "REBASE_REQUIRED",
-      actual_public_revision: current.state.public_revision
+      actual_public_revision: actualBase
     }), 409);
   }
 
   await verifyUnits(delta.upserts, "delta.upserts");
-  const units = cloneUnits(current.state.units);
+  const units = cloneUnits(baseUnits);
   for (const keyToDelete of delta.deletes) delete units[keyToDelete];
   for (const [unitKey, unit] of Object.entries(delta.upserts)) units[unitKey] = unit;
   const computed = await stateRevision(units);
@@ -401,9 +415,11 @@ async function readPacket(request) {
 }
 
 export {
+  EMPTY_PUBLIC_REVISION,
   canonicalJson,
   publicPacket,
   readCurrent,
+  revisionLedger,
   stateRevision,
   valueRevision
 };
@@ -412,13 +428,51 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname !== "/__live/home") return new Response("not found", { status: 404 });
-    if (request.method !== "POST") return new Response("method not allowed", { status: 405 });
 
     const expected = env.HOME_SECRET;
     const supplied = request.headers.get("Authorization");
     if (!expected || supplied !== `Bearer ${expected}`) {
       return new Response("unauthorized", { status: 401 });
     }
+
+    if (request.method === "GET") {
+      const siteId = url.searchParams.get("site_id") || "";
+      if (!(siteId in SHADOW_KEYS) || [...url.searchParams.keys()].some((key) => key !== "site_id")) {
+        return json({ ok: false, error: "site_id is not admitted to the public shadow" }, 400);
+      }
+      const key = SHADOW_KEYS[siteId];
+      try {
+        const current = await readCurrent(env.SHADOW, key, siteId);
+        if (current.legacy) {
+          return json({
+            ok: false,
+            site_id: siteId,
+            key,
+            error: "LEGACY_CURRENT_REQUIRES_RECONCILE",
+            legacy_current: true,
+            public_revision: null,
+            unit_revisions: null
+          }, 409);
+        }
+        return json({
+          ok: true,
+          site_id: siteId,
+          key,
+          public_revision: current.state?.public_revision ?? EMPTY_PUBLIC_REVISION,
+          unit_revisions: current.state ? revisionLedger(current.state.units) : {},
+          empty_current: !current.state
+        });
+      } catch (error) {
+        return json({
+          ok: false,
+          site_id: siteId,
+          key,
+          error: error?.message || "live ledger read failed"
+        }, error instanceof TypeError ? 400 : (error?.status || 500));
+      }
+    }
+
+    if (request.method !== "POST") return new Response("method not allowed", { status: 405 });
 
     let packet;
     try { packet = await readPacket(request); }
@@ -435,7 +489,7 @@ export default {
         ok: true,
         activity_only: true,
         rich_write: false,
-        public_revision: current.state?.public_revision ?? null,
+        public_revision: current.state?.public_revision ?? (current.legacy ? null : EMPTY_PUBLIC_REVISION),
         legacy_current: current.legacy
       }));
     } catch (error) {
