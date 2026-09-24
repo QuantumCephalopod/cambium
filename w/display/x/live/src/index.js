@@ -316,7 +316,7 @@ async function writeState(env, key, packet, units, publicRevision, currentObject
     onlyIf: writeCondition(currentObject),
     httpMetadata: {
       contentType: "application/json; charset=utf-8",
-      cacheControl: "public, max-age=300"
+      cacheControl: "private, no-store"
     },
     customMetadata: {
       site_id: packet.site_id,
@@ -478,9 +478,37 @@ export default {
     const url = new URL(request.url);
     if (url.pathname !== "/__live/home") return new Response("not found", { status: 404 });
 
-    const expected = env.HOME_SECRET;
     const supplied = request.headers.get("Authorization");
-    if (!expected || supplied !== `Bearer ${expected}`) {
+
+    if (request.method === "GET" && url.searchParams.get("view") === "materialized") {
+      if (!env.MATERIALIZE_SECRET || supplied !== `Bearer ${env.MATERIALIZE_SECRET}`) {
+        return new Response("unauthorized", { status: 401 });
+      }
+      const siteId = url.searchParams.get("site_id") || "";
+      const keys = [...url.searchParams.keys()];
+      if (!(siteId in SHADOW_KEYS) || keys.some((key) => key !== "site_id" && key !== "view")) {
+        return json({ ok: false, error: "materialized state request is not admitted" }, 400);
+      }
+      try {
+        const current = await readCurrent(env.SHADOW, SHADOW_KEYS[siteId], siteId);
+        if (current.legacy || !current.state) {
+          return json({
+            ok: false,
+            site_id: siteId,
+            error: current.legacy ? "LEGACY_CURRENT_REQUIRES_RECONCILE" : "MATERIALIZED_STATE_UNAVAILABLE"
+          }, 409);
+        }
+        return json(current.state);
+      } catch (error) {
+        return json({
+          ok: false,
+          site_id: siteId,
+          error: error?.message || "materialized state read failed"
+        }, error instanceof TypeError ? 400 : (error?.status || 500));
+      }
+    }
+
+    if (!env.HOME_SECRET || supplied !== `Bearer ${env.HOME_SECRET}`) {
       return new Response("unauthorized", { status: 401 });
     }
 
