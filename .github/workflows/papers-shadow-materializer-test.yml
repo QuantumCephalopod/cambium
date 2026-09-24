@@ -1,0 +1,22 @@
+name: papers shadow materializer test
+
+on:
+  push:
+    branches: ['mnemos/**', 'staging/**', 'hotfix/**', main]
+    paths:
+      - 'w/display/y/yy/papers/materialize-shadow.py'
+      - 'w/display/y/yy/papers/materialize-shadow.test.py'
+      - '.github/workflows/papers-shadow-materializer-test.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Witness Papers shadow materializer
+        run: |
+          python3 -m py_compile w/display/y/yy/papers/materialize-shadow.py
+          python3 w/display/y/yy/papers/materialize-shadow.test.py
