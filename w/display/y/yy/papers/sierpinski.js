@@ -36,7 +36,11 @@ const PRETEXT_ID='@chenglou/pretext';
 const PRETEXT_VERSION='0.0.9';
 const SHADOW_PATH='papers-shadow/current.json';
 const GENEALOGY_REPAIR_PATH='papers-shadow/genealogy-gap-repair.json';
-const WISDOM_MAX_WIDTH=680;
+const METABOLITE_FIELD_SCALE=.32;
+const METABOLITE_LABEL_MAX_WIDTH=320;
+const METABOLITE_LABEL_ROWS=4;
+const METABOLITE_LIGHT_GAIN=1.0;
+const INQUIRY_EMBER_GAIN=.28;
 const PHYSIOLOGY_PHASE_MS=5200;
 const OVERVIEW_WANDER=.86;
 const OVERVIEW_FLOW_PERIOD_MS=42000;
@@ -159,7 +163,7 @@ function rankOf(value){const m=String(value||'').match(/^(\d+)H\./);return m?`${
 function rankNumber(value){const m=String(value||'').match(/^(\d+)H(?:\.|$)/);return m?Number(m[1]):0}
 function bodyScaleFor(entity){return S_QUANTUM_SCALE*Math.pow(2,rankNumber(entity?.rank))}
 function rootFieldScale(width){return width<ROOT_FIELD_BREAKPOINT?ROOT_FIELD_MOBILE:ROOT_FIELD_DESKTOP}
-function overviewDriftPoint(entity,now=performance.now()){
+function flowPoint(entity,now=performance.now()){
   const points=[entity.motionA,entity.motionB,entity.motionC,entity.motionD].filter(Boolean);
   if(points.length<2)return entity.world;
   const phase=random01(entity.id,'flow-phase')*points.length,speed=mix(.72,1.28,random01(entity.id,'flow-speed'));
@@ -167,6 +171,7 @@ function overviewDriftPoint(entity,now=performance.now()){
   const wander=mix3(points[index],points[(index+1)%points.length],t);
   return mix3(entity.world,wander,OVERVIEW_WANDER);
 }
+function overviewDriftPoint(entity,now=performance.now()){return flowPoint(entity,now)}
 function chamberFocus(){return state?.chamberFocus||{center:[0,0,0],scale:1}}
 function backgroundPassage(){return state?.backgroundPassage||0}
 function inquiryFrameFocus(){
@@ -254,7 +259,7 @@ function applyProjection(next,shadowHome=''){
   state.structure=built.structure;
   state.records=built.records;
   state.recordById=new Map(built.records.map(x=>[x.id,x]));
-  state.wisdomPrepared=null;
+  state.wisdomPrepared=new Map();
   if(shadowHome){
     state.shadowApplied=true;state.shadowHome=shadowHome;
     state.canvas.dataset.shadowState='ready';state.canvas.dataset.shadowHome=shadowHome;
@@ -439,8 +444,8 @@ function makeStage(host){
   for(const phase of PHYSIOLOGY_PHASES){const n=document.createElement('span');n.dataset.phase=phase.id;n.textContent=phase.label;physiologyPhases.append(n)}
   host.append(physiology);
   const physiologyCanvas=physiology.querySelector('.papers-physiology-canvas'),physiologyTitle=physiology.querySelector('.papers-physiology-copy b'),physiologyCopy=physiology.querySelector('.papers-physiology-copy span');
-  const sourceInfo=document.createElement('section');sourceInfo.className='papers-source-inquiry';sourceInfo.setAttribute('aria-label','Selected Papers organism inquiry');
-  sourceInfo.innerHTML='<div class="papers-source-original"><small class="papers-origin-label">ORIGIN</small><span class="papers-source-code"></span><h2></h2><p class="papers-source-credit"></p><div class="papers-source-links"></div></div><div class="papers-source-metabolism"><small>PAPERS ORGANISM</small><p class="papers-source-receipt"></p><small class="papers-source-inquiry-label">TETRAHEDRAL BODY</small><p class="papers-source-inquiry-state"></p></div>';
+  const sourceInfo=document.createElement('section');sourceInfo.className='papers-source-inquiry';sourceInfo.setAttribute('aria-label','Selected Papers organism origin');
+  sourceInfo.innerHTML='<div class="papers-source-original"><small class="papers-origin-label">ORIGIN</small><span class="papers-source-code"></span><h2></h2><p class="papers-source-credit"></p><div class="papers-source-links"></div></div>';
   host.append(sourceInfo);
   const chamberLabels=document.createElement('div');chamberLabels.className='papers-chamber-labels';chamberLabels.setAttribute('aria-hidden','true');host.append(chamberLabels);
   const chamberLabelNodes=new Map();
@@ -522,22 +527,38 @@ function inquiryMetabolites(entity){
   const body=inquiryBody(entity.id),items=Array.isArray(body?.metabolites)?body.metabolites:[];
   return items.filter(m=>m&&typeof m==='object'&&(typeof m.title==='string'||typeof m.compression==='string'||typeof m.text==='string'));
 }
-function inquiryWisdomText(entity){
-  return inquiryMetabolites(entity).map(m=>{
-    const title=typeof m.title==='string'?m.title.trim():'',compression=typeof m.compression==='string'?m.compression.trim():'';
-    return title&&compression?`${title} — ${compression}`:(compression||title);
-  }).filter(Boolean).join('   ◆   ');
+function metaboliteWisdomText(metabolite){
+  if(!metabolite||typeof metabolite!=='object')return '';
+  const title=typeof metabolite.title==='string'?metabolite.title.trim():'',compression=typeof metabolite.compression==='string'?metabolite.compression.trim():'';
+  return title&&compression?title+' — '+compression:(compression||title);
 }
-function metabolight(id,center,px,entity,selected=false){
-  const rank=rankNumber(entity?.rank),wisdom=inquiryMetabolites(entity).length>0,pal=PALETTE[entity?.gene]||PALETTE.x;
-  const target=[1.0,.90,.64],blend=clamp(.40+rank*.035+(wisdom?.12:0),.40,.68),c=mix3(pal,target,blend);
-  const size=clamp(7+rank*6+Math.sqrt(Math.max(px,0))*1.1+(wisdom?4:0)+(selected?5:0),7,62);
-  const alpha=clamp(.24+rank*.075+(wisdom?.12:0)+(selected?.12:0),.24,.94);
-  return {id,center,size,color:[...c,alpha],phase:random01(id,'metabolight')*Math.PI*2,kind:rank===0?'quantum':'metabolight',rank};
+function metaboliteField(entity,current,cam,height,now=performance.now()){
+  const metabolites=inquiryMetabolites(entity);if(!current||!metabolites.length)return [];
+  const fieldScale=current.scale*METABOLITE_FIELD_SCALE,tet=state.renderer.V0.map(v=>mul(v,fieldScale)),pal=PALETTE[entity?.gene]||PALETTE.x,px=projectedPixels(fieldScale,cam,height);
+  return metabolites.map((metabolite,index)=>{
+    const metaboliteId=(typeof metabolite.id==='string'&&metabolite.id.trim())?metabolite.id.trim():'M'+(index+1),id=entity.id+'·'+metaboliteId;
+    const record={
+      id,
+      world:pointInTet(tet,{id},.16),
+      motionA:pointInTet(tet,{id:id+'·flow-a'},.12),
+      motionB:pointInTet(tet,{id:id+'·flow-b'},.12),
+      motionC:pointInTet(tet,{id:id+'·flow-c'},.12),
+      motionD:pointInTet(tet,{id:id+'·flow-d'},.12)
+    };
+    const center=flowPoint(record,now),warm=[1.0,.93,.72],blend=mix(.58,.76,random01(id,'metabolite-warm')),color=mix3(pal,warm,blend);
+    return {id,metaboliteId,metabolite,center,size:clamp(10+Math.sqrt(Math.max(px,0))*.28+random01(id,'metabolite-size')*3,10,24),color:[...color,.90],phase:random01(id,'metabolite-phase')*Math.PI*2,kind:'metabolite'};
+  });
+}
+function organismEmber(id,center,px,entity,selected=false){
+  const rank=rankNumber(entity?.rank),hasMetabolites=inquiryMetabolites(entity).length>0,pal=PALETTE[entity?.gene]||PALETTE.x;
+  const target=[1.0,.90,.64],blend=clamp(.40+rank*.035+(hasMetabolites?.08:0),.40,.64),c=mix3(pal,target,blend);
+  const size=clamp(6+rank*4+Math.sqrt(Math.max(px,0))*.72+(selected?2:0),6,42);
+  const alpha=clamp(.18+rank*.055+(hasMetabolites?.06:0),.18,.68);
+  return {id,center,size,color:[...c,alpha],phase:random01(id,'organism-ember')*Math.PI*2,kind:rank===0?'source-ember':'organism-ember',rank};
 }
 function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
   const ps=state.parents.get(id)||[],px=projectedPixels(scale,cameraZ,height),entity=state.identities.get(id),gene=entity?.gene||'x',pal=PALETTE[gene]||PALETTE.x;
-  if(entity)lights.push(metabolight(id,center,px,entity,depth===0));
+  if(entity)lights.push(organismEmber(id,center,px,entity,depth===0));
   if(ps.length!==4||px<LOD_PX||depth>=MAX_DEPTH){
     leaves.push({id,center,scale,color:[pal[0],pal[1],pal[2],.11+Math.min(.30,px/150)]});
     return;
@@ -548,38 +569,31 @@ function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2]
 function projectWorldPoint(p,cameraZ,width,height){const z=cameraZ-p[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+p[0]*f/z,y:height/2-p[1]*f/z,z:p[2]}}
 function wisdomFont(width){return width<700?'500 11px system-ui, -apple-system, "Segoe UI", sans-serif':'500 13px system-ui, -apple-system, "Segoe UI", sans-serif'}
 function wisdomLineHeight(width){return width<700?17:20}
-function preparedWisdom(entity,text,font){
-  if(!pretextModule||!entity||!text)return null;
-  const key=`${entity.id}\u0000${font}\u0000${text}`;
-  if(state.wisdomPrepared?.key!==key)state.wisdomPrepared={key,prepared:pretextModule.prepareWithSegments(text,font)};
-  return state.wisdomPrepared.prepared;
+function preparedWisdom(key,text,font){
+  if(!pretextModule||!key||!text)return null;
+  if(!(state.wisdomPrepared instanceof Map))state.wisdomPrepared=new Map();
+  const cacheKey=`${key}\u0000${font}\u0000${text}`;
+  if(!state.wisdomPrepared.has(cacheKey))state.wisdomPrepared.set(cacheKey,pretextModule.prepareWithSegments(text,font));
+  return state.wisdomPrepared.get(cacheKey);
 }
 function externalLabel(url,index){
   try{const u=new URL(url),host=u.hostname.replace(/^www\./,'');if(host==='doi.org')return 'DOI · ORIGINAL WORK';if(host==='arxiv.org')return 'ARXIV · ORIGINAL WORK';if(host==='github.com')return 'GITHUB · UPSTREAM';if(host.includes('pmlr.press'))return 'PMLR · ORIGINAL WORK';if(host.includes('w3.org'))return 'W3C · CANONICAL SOURCE';return host.toUpperCase()+' · ORIGINAL SOURCE'}catch(_){return 'ORIGINAL SOURCE '+(index+1)}
 }
-function organismInquiryReceipt(id){
-  const body=inquiryBody(id);
-  if(!body)return {projected:false,text:'Canonical tetrahedral body is not yet projected through the public membrane.'};
-  const vertices=Array.isArray(body.vertices)?body.vertices.length:(body.vertices&&typeof body.vertices==='object'?Object.keys(body.vertices).length:0);
-  const edges=Array.isArray(body.edges)?body.edges.length:0,faces=Array.isArray(body.faces)?body.faces.length:0,metabolites=Array.isArray(body.metabolites)?body.metabolites.length:0,volume=body.volume?1:0;
-  return {projected:true,text:`${vertices}/4 vertices · ${edges}/6 edges · ${faces}/4 faces · ${volume}/1 volume · ${metabolites} metabolites`};
-}
+
 function updateOrganismInquiry(){
   const box=state.sourceInfo,entity=state.current?state.identities.get(state.current.id):null,visible=Boolean(entity),alpha=visible?smooth(clamp((state.transition-.38)/.38)):0;
   if(!box)return;
   box.dataset.visible=visible?'true':'false';box.style.setProperty('--source-open',alpha.toFixed(3));box.setAttribute('aria-hidden',visible?'false':'true');
   if(!visible)return;
-  const source=entity.kind==='source',parents=state.parents.get(entity.id)||[],inquiry=organismInquiryReceipt(entity.id);
-  const origin=source?'EXTERNAL ORIGIN':'COMPOSITION',originText=source?(entity.credit||'External provenance unresolved in the current public projection.'):`${entity.rank} · ${parents.length}/4 canonical parents${parents.length?': '+parents.join(' · '):''}`;
-  const receipt=source?(entity.metabolism||'Canonical Papers metabolism receipt is not projected.'):`recursive tetrahedral composition · ${entity.rank} · ${parents.length}/4 parents`;
-  const externals=Array.isArray(entity.externals)?entity.externals:[],key=[entity.id,entity.title,origin,originText,receipt,externals.join('|'),parents.join('|'),inquiry.projected,inquiry.text].join('\u0000');
+  const source=entity.kind==='source',parents=state.parents.get(entity.id)||[],origin=source?'EXTERNAL ORIGIN':'COMPOSITION';
+  const originText=source?(entity.credit||'External provenance unresolved in the current public projection.'):entity.rank+' · recursive composition';
+  const externals=Array.isArray(entity.externals)?entity.externals:[],key=[entity.id,entity.title,origin,originText,externals.join('|'),parents.join('|')].join('\u0000');
   if(box.dataset.sourceKey===key)return;
-  box.dataset.sourceKey=key;box.dataset.sourceId=entity.id;box.dataset.sourceInquiry=inquiry.projected?'projected':'gap';box.dataset.origin=source?'external':'composed';
+  box.dataset.sourceKey=key;box.dataset.sourceId=entity.id;box.dataset.origin=source?'external':'composed';
   box.querySelector('.papers-origin-label').textContent=origin;
-  box.querySelector('.papers-source-code').textContent=`${entity.id} · ${entity.rank} · ${entity.gene} · ${locusName(state.projection,entity.gene)}`;
+  box.querySelector('.papers-source-code').textContent=entity.id+' · '+entity.rank+' · '+entity.gene+' · '+locusName(state.projection,entity.gene);
   box.querySelector('h2').textContent=entity.title||entity.id;
   box.querySelector('.papers-source-credit').textContent=originText;
-  box.querySelector('.papers-source-receipt').textContent=receipt;
   const links=box.querySelector('.papers-source-links');links.replaceChildren();
   if(source){
     externals.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=externalLabel(url,i);links.append(a)});
@@ -587,41 +601,38 @@ function updateOrganismInquiry(){
   }else{
     parents.forEach(id=>{const span=document.createElement('span');span.textContent=id;links.append(span)});
   }
-  box.querySelector('.papers-source-inquiry-label').textContent=inquiry.projected?'TETRAHEDRAL BODY · PROJECTED':'TETRAHEDRAL BODY · PROJECTION GAP';
-  box.querySelector('.papers-source-inquiry-state').textContent=inquiry.text;
 }
-
-function drawWisdom(rect,cam,translate,activeLight){
-  const {ctx}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null;
-  canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;delete canvas.dataset.wisdomAnchorX;delete canvas.dataset.wisdomAnchorY;delete canvas.dataset.wisdomRadius;
-  const metabolites=inquiryMetabolites(entity),wisdomText=inquiryWisdomText(entity);
-  canvas.dataset.wisdomMetabolites=String(metabolites.length);canvas.dataset.wisdomSource='metabolites';
-  if(!state.current||!wisdomText){canvas.dataset.wisdomState=state.current?'projection-gap':'inactive';return}
+function drawWisdom(rect,cam,translate,metabolights,now){
+  const {ctx}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
+  canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
+  if(!state.current){canvas.dataset.wisdomState='inactive';return}
+  if(!lights.length){canvas.dataset.wisdomState='contract-gap';return}
   if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
-  const alpha=smooth(clamp((state.transition-.56)/.34));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';return}
-  const anchor=projectWorldPoint(translate,cam,rect.width,rect.height),font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),prepared=preparedWisdom(entity,wisdomText,font);if(!prepared)return;
-  const width=Math.min(WISDOM_MAX_WIDTH,Math.max(250,rect.width*(rect.width<700 ? .88 : .66))),half=width/2;
-  const centerX=clamp(anchor.x,half+16,rect.width-half-16),x0=centerX-half,x1=centerX+half,radius=clamp((activeLight?.size||32)*.78+24,44,86),gap=14;
-  const rows=rect.width<700?12:14,top=clamp(anchor.y-(rows*.5)*lineHeight,58,Math.max(58,rect.height-rows*lineHeight-28));
-  let cursor={segmentIndex:0,graphemeIndex:0},lineCount=0,finished=false;
-  ctx.font=font;ctx.textBaseline='middle';ctx.fillStyle=`rgba(239,246,235,${(.80*alpha).toFixed(3)})`;ctx.shadowColor=`rgba(223,255,208,${(.20*alpha).toFixed(3)})`;ctx.shadowBlur=10;
-  outer: for(let row=0;row<rows;row++){
-    const y=top+(row+.5)*lineHeight,dy=y-anchor.y,slots=[];
-    if(Math.abs(dy)<radius){
-      const dx=Math.sqrt(Math.max(0,radius*radius-dy*dy)),leftEnd=anchor.x-dx-gap,rightStart=anchor.x+dx+gap;
-      if(leftEnd-x0>72)slots.push({x:x0,width:leftEnd-x0,align:'right'});
-      if(x1-rightStart>72)slots.push({x:rightStart,width:x1-rightStart,align:'left'});
-      if(!slots.length)continue;
-    }else slots.push({x:x0,width:x1-x0,align:'center'});
-    for(const slot of slots){
-      const range=pretextModule.layoutNextLineRange(prepared,cursor,slot.width);if(range===null){finished=true;break outer}
-      const line=pretextModule.materializeLineRange(prepared,range);let x=slot.x;if(slot.align==='right')x=slot.x+slot.width-line.width;else if(slot.align==='center')x=slot.x+(slot.width-line.width)/2;
+  const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';return}
+  const font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),rows=rect.width<700?3:METABOLITE_LABEL_ROWS;
+  let lineCount=0,labelCount=0,completeCount=0;
+  ctx.font=font;ctx.textBaseline='middle';ctx.shadowColor='rgba(223,255,208,'+(.16*alpha).toFixed(3)+')';ctx.shadowBlur=8;
+  for(const light of lights){
+    const text=metaboliteWisdomText(light.metabolite);if(!text)continue;
+    const world=add(qRot(state.localQ,light.center),translate),anchor=projectWorldPoint(world,cam,rect.width,rect.height);
+    if(anchor.x<-80||anchor.x>rect.width+80||anchor.y<-80||anchor.y>rect.height+80)continue;
+    let dx=anchor.x-rect.width*.5,dy=anchor.y-rect.height*.5,norm=Math.hypot(dx,dy);
+    if(norm<18){const angle=random01(light.id,'label-angle')*Math.PI*2;dx=Math.cos(angle);dy=Math.sin(angle);norm=1}
+    const ux=dx/norm,uy=dy/norm,side=ux>=0?1:-1,floatY=Math.sin(now*.00055+light.phase)*4,gap=light.size*.72+12;
+    const originX=anchor.x+ux*gap,originY=anchor.y+uy*gap+floatY,available=side>0?rect.width-originX-18:originX-18;
+    const width=Math.min(METABOLITE_LABEL_MAX_WIDTH,Math.max(120,available)),x0=clamp(side>0?originX:originX-width,14,Math.max(14,rect.width-width-14));
+    const top=clamp(originY-lineHeight*1.25,34,Math.max(34,rect.height-rows*lineHeight-22)),prepared=preparedWisdom(light.id,text,font);if(!prepared)continue;
+    const pulse=.88+.08*Math.sin(now*.001+light.phase);ctx.fillStyle='rgba(239,246,235,'+(.82*alpha*pulse).toFixed(3)+')';
+    let cursor={segmentIndex:0,graphemeIndex:0},finished=false;
+    for(let row=0;row<rows;row++){
+      const range=pretextModule.layoutNextLineRange(prepared,cursor,width);if(range===null){finished=true;break}
+      const line=pretextModule.materializeLineRange(prepared,range),x=side>0?x0:x0+width-line.width,y=top+(row+.5)*lineHeight;
       ctx.fillText(line.text,x,y);cursor=range.end;lineCount++;
     }
+    if(!finished&&pretextModule.layoutNextLineRange(prepared,cursor,width)===null)finished=true;
+    if(finished)completeCount++;labelCount++;
   }
-  if(!finished&&pretextModule.layoutNextLineRange(prepared,cursor,width)===null)finished=true;
-  canvas.dataset.wisdomState='visible';canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.wisdomComplete=finished?'true':'false';
-  canvas.dataset.wisdomAnchorX=anchor.x.toFixed(2);canvas.dataset.wisdomAnchorY=anchor.y.toFixed(2);canvas.dataset.wisdomRadius=radius.toFixed(2);
+  canvas.dataset.wisdomState=labelCount?'visible':'contract-gap';canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.wisdomComplete=labelCount&&completeCount===labelCount?'true':'false';
 }
 function outerCells(width){
   const focus=inquiryFrameFocus(),scale=rootFieldScale(width)*focus.scale,active=state?.chamberPath||'';
@@ -741,19 +752,22 @@ function draw(now){
   const fade=!state.current?1:(state.stack.length?NESTED_BACKGROUND_ALPHA:mix(1,BACKGROUND_FIELD_ALPHA,passage)),starFade=!state.current?1:mix(1,BACKGROUND_STAR_ALPHA,passage),population=populationBodies(rect.width,rect.height,fade,starFade,now);
   state.renderer.draw(population.leaves,overviewQ,[0,0,0],proj,view,{faces:true});
   state.renderer.drawLights(population.lights,overviewQ,[0,0,0],proj,view,now*.001,d,OVERVIEW_LIGHT_GAIN);
-  let lightCount=0,quantumCount=0,activeLight=null,translate=[0,0,0];
+  let metaboliteCount=0,organismEmberCount=0,metabolights=[],translate=[0,0,0];
   if(state.current){
-    const tree=[],lights=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,lights);for(const x of tree)x.color[3]*=.3+.7*state.transition;for(const x of lights)x.color[3]*=.25+.75*state.transition;
+    const tree=[],embers=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,embers);for(const x of tree)x.color[3]*=.3+.7*state.transition;
+    const structuralEmbers=embers.filter(x=>x.id!==state.current.id);for(const x of structuralEmbers)x.color[3]*=.18+.42*state.transition;
     translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
     state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,.82]}],state.localQ,translate,proj,view,{faces:false});
-    state.renderer.drawLights(lights,state.localQ,translate,proj,view,now*.001,d,INQUIRY_LIGHT_GAIN);
-    lightCount=lights.filter(x=>x.kind==='metabolight').length;quantumCount=lights.filter(x=>x.kind==='quantum').length;activeLight=lights.find(x=>x.id===state.current.id)||null;
+    state.renderer.drawLights(structuralEmbers,state.localQ,translate,proj,view,now*.001,d,INQUIRY_EMBER_GAIN);
+    const entity=state.identities.get(state.current.id);metabolights=metaboliteField(entity,state.current,cam,rect.height,now);for(const x of metabolights)x.color[3]*=state.transition;
+    state.renderer.drawLights(metabolights,state.localQ,translate,proj,view,now*.001,d,METABOLITE_LIGHT_GAIN);
+    metaboliteCount=metabolights.length;organismEmberCount=structuralEmbers.length;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  drawWisdom(rect,cam,translate,activeLight);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
+  drawWisdom(rect,cam,translate,metabolights,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
-  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(lightCount);state.canvas.dataset.quantumEmberCount=String(quantumCount);
-  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank),quanta=Math.pow(4,rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>${quanta} S quantum${quanta===1?'':'a'} · metabolight · drag body · touch parent · empty space ascends</small>`}
+  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);
+  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>drag body · touch parent · empty space ascends</small>`}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';state.hud.innerHTML=`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch organism · touch chamber${state.chamberPath?' · empty space ascends':''}</small>`};
   state.raf=requestAnimationFrame(draw);
 }
@@ -791,7 +805,7 @@ function attachInput(){
 function initialize(host,projection,backgroundDrag=true,dependency=null){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x])),environment=createInquiryEnvironment(stage.environmentCanvas);
-  state={host,projection,dependency,structure:built.structure,environmentCanvas:stage.environmentCanvas,environment,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},chamberFrom:null,chamberTo:null,chamberTransitionStart:0,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null,inquiryBodies:{},shadowApplied:false,shadowHome:''};
+  state={host,projection,dependency,structure:built.structure,environmentCanvas:stage.environmentCanvas,environment,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},chamberFrom:null,chamberTo:null,chamberTransitionStart:0,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
   state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.chamberPath='overview';state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextIdentity=PRETEXT_ID;state.textCanvas.dataset.pretextVersion=PRETEXT_VERSION;state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
