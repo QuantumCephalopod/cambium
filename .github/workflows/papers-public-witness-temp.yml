@@ -8,18 +8,25 @@ jobs:
   witness:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Witness repaired HOME through feed projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 y/feed.py --before 9887db14930496df08960341ecffe3507b405434 --after HEAD
+          python3 y/readme.py
       - name: Witness public Papers carriers
         shell: bash
         run: |
           python3 - <<'PY'
           import json, urllib.request, urllib.error, hashlib
-
           targets = [
               ("r2", "https://assets.sss.saarland/y/papers/current.json"),
               ("same_origin_shadow", "https://sss.saarland/papers-shadow/current.json"),
               ("site", "https://sss.saarland/"),
           ]
-
           for label, url in targets:
               print(f"=== {label} {url} ===")
               try:
@@ -31,11 +38,9 @@ jobs:
                       print("bytes", len(body))
                       print("sha256", hashlib.sha256(body).hexdigest())
                       if label != "site":
-                          try:
-                              obj = json.loads(body)
+                          try: obj = json.loads(body)
                           except Exception as e:
-                              print("json_error", repr(e))
-                              continue
+                              print("json_error", repr(e)); continue
                           print("top_keys", sorted(obj.keys()))
                           if obj.get("version") == 2 and isinstance(obj.get("units"), dict):
                               units = obj["units"]
@@ -45,25 +50,20 @@ jobs:
                               for key in ["source:S.YFs0","inquiry:S.YFs0"]:
                                   u = units.get(key)
                                   print(key, "present", bool(u))
-                                  if u:
-                                      v = u.get("value")
-                                      print(key, "revision", u.get("revision"))
-                                      if key.startswith("inquiry:") and isinstance(v, dict):
-                                          sections = v.get("sections") or []
-                                          kinds = [s[0] for s in sections if isinstance(s,list) and s]
-                                          metabolites = [s for s in sections if isinstance(s,list) and s and s[0]=="metabolite"]
-                                          print("inquiry_state", v.get("state"))
-                                          print("section_count", len(sections))
-                                          print("section_kinds", json.dumps(kinds))
-                                          print("metabolite_count", len(metabolites))
-                                          print("metabolite_ids", json.dumps([m[1] for m in metabolites]))
+                                  if u and key.startswith("inquiry:"):
+                                      v=u.get("value") or {}; sections=v.get("sections") or []
+                                      metabolites=[s for s in sections if isinstance(s,list) and s and s[0]=="metabolite"]
+                                      print("inquiry_state",v.get("state"))
+                                      print("section_count",len(sections))
+                                      print("metabolite_count",len(metabolites))
+                                      print("metabolite_ids",json.dumps([m[1] for m in metabolites]))
                           else:
-                              snap = obj.get("snapshot") if isinstance(obj,dict) else None
-                              print("legacy_event", obj.get("event_id") if isinstance(obj,dict) else None)
-                              print("snapshot_schema", snap.get("schema") if isinstance(snap,dict) else None)
-                              text = body.decode("utf-8","replace")
-                              print("has_INV_S_YFs0", "INV-S.YFs0-01" in text)
-                              print("S_YFs0_occurrences", text.count("S.YFs0"))
+                              snap=obj.get("snapshot") if isinstance(obj,dict) else None
+                              text=body.decode("utf-8","replace")
+                              print("legacy_event",obj.get("event_id") if isinstance(obj,dict) else None)
+                              print("snapshot_schema",snap.get("schema") if isinstance(snap,dict) else None)
+                              print("has_INV_S_YFs0","INV-S.YFs0-01" in text)
+                              print("S_YFs0_occurrences",text.count("S.YFs0"))
               except urllib.error.HTTPError as e:
                   print("http_error", e.code)
                   print("body", e.read(500).decode("utf-8","replace"))
