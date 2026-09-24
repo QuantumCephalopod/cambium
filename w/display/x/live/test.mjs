@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import worker, { stateRevision, valueRevision } from "./src/index.js";
+import worker, { EMPTY_PUBLIC_REVISION, revisionLedger, stateRevision, valueRevision } from "./src/index.js";
 
 class R2Body {
   constructor(record) {
@@ -76,6 +76,13 @@ async function post(env, body) {
   }), env);
 }
 
+async function ledger(env, siteId = "organism:papers", secret = "secret") {
+  return worker.fetch(new Request("https://sss.saarland/__live/home?site_id=" + encodeURIComponent(siteId), {
+    method: "GET",
+    headers: { Authorization: "Bearer " + secret }
+  }), env);
+}
+
 const bucket = new MockR2();
 const env = { HOME_SECRET: "secret", SHADOW: bucket };
 const units1 = { root: await unit({ count: 1 }), "holon:a": await unit({ title: "A" }) };
@@ -89,6 +96,39 @@ assert.equal(response.status, 200);
 assert.equal(result.mode, "reconcile");
 assert.equal(result.public_revision, revision1);
 assert.equal(bucket.putCount, 1);
+
+response = await ledger(env);
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.public_revision, revision1);
+assert.deepEqual(result.unit_revisions, revisionLedger(units1));
+assert.equal(result.empty_current, false);
+
+response = await ledger(env, "organism:papers", "wrong");
+assert.equal(response.status, 401);
+
+const emptyBucket = new MockR2();
+const emptyEnv = { HOME_SECRET: "secret", SHADOW: emptyBucket };
+response = await ledger(emptyEnv);
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.public_revision, EMPTY_PUBLIC_REVISION);
+assert.deepEqual(result.unit_revisions, {});
+assert.equal(result.empty_current, true);
+
+response = await post(emptyEnv, packet("empty-base-delta", {
+  delta: {
+    base_public_revision: EMPTY_PUBLIC_REVISION,
+    target_public_revision: revision1,
+    upserts: units1,
+    deletes: []
+  }
+}));
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.mode, "delta");
+assert.equal(result.public_revision, revision1);
+assert.equal(emptyBucket.putCount, 1);
 
 const richBefore = bucket.map.get("y/papers/current.json").body;
 response = await post(env, packet("activity-only", {
@@ -167,6 +207,11 @@ legacyBucket.map.set("y/papers/current.json", {
 });
 const legacyEnv = { HOME_SECRET: "secret", SHADOW: legacyBucket };
 const legacyBody = legacyBucket.map.get("y/papers/current.json").body;
+response = await ledger(legacyEnv);
+result = await response.json();
+assert.equal(response.status, 409);
+assert.equal(result.error, "LEGACY_CURRENT_REQUIRES_RECONCILE");
+
 response = await post(legacyEnv, packet("legacy-activity"));
 result = await response.json();
 assert.equal(result.activity_only, true);
