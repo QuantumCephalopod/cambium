@@ -98,3 +98,26 @@ Correction:
 
 Compression:
 > **The tetrahedral body explains why the organism exists; metabolites are what it has to say.**
+
+
+## browser witness — metabolight semantics were still fake — 2026-09-24
+
+Production browser witness after the first metabolites-as-content pass exposed a deeper implementation error:
+
+- the large 1T wall was replaced with metabolite text, but the renderer still had exactly one luminous point per organism;
+- that point was called a metabolight even though Sources/Holons may have several surviving metabolites;
+- all metabolite text was concatenated into one screen-oriented canvas overlay near the organism center rather than embodied as separate metabolite-local bodies;
+- the persistent right-side “PAPERS ORGANISM / 4V / 6E / 4F / 1T / metabolite count” surface repeated generic simplex anatomy rather than visitor-relevant content;
+- a zero-metabolite/projection-gap visitor fallback was being treated as an ordinary presentation state even though the intended living Papers organism contract assumes metabolized organisms carry surviving metabolite content.
+
+Assimilated correction:
+- distinguish non-semantic **organism embers** from semantic **metabolights**;
+- one surviving metabolite maps to one metabolight;
+- metabolights are deterministically packed and animated inside the selected organism's central interior using the same point-in-tetrahedron + bounded flow primitive already used for organisms inside chambers;
+- each metabolight carries only its own metabolite title+compression through Pretext;
+- text anchor is recomputed every frame from the metabolight's rotated/transformed 3D world position, so body rotation/motion carries the wisdom instead of leaving a screen overlay behind;
+- remove the redundant tetrahedral-count sidebar and generic “PAPERS ORGANISM” chrome;
+- keep 4V/6E/4F/1T as discoverable earning structure, not default reading content;
+- absent projected metabolites are internal projection-contract debt, not a normal alternative visitor-content mode.
+
+Browser acceptance still OPEN until the canonical site is merged and visually inspected.
