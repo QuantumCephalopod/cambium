@@ -241,3 +241,35 @@ The accepted relation is:
 R2 remains transport/staging memory. The visitor-facing carrier is `/papers-shadow/current.json`; browser reads remain same-origin and static.
 
 The current missing edge is intermediate current state → same-origin static materialization. Transport should carry opaque accepted public state; Papers interprets its own public unit grammar at the renderer boundary.
+
+
+## metabolic pass — 2026-09-24 · private-R2 → same-origin materializer staged
+
+### correction assimilated
+The visitor boundary is now explicit again:
+- R2 is private acknowledged intermediate state only;
+- `/papers-shadow/current.json` remains the only Papers visitor data carrier;
+- no R2 custom domain, `r2.dev`, browser Worker read, or visitor-triggered synchronization is part of the accepted physiology.
+
+### staged implementation
+Branch `mnemos/papers-circulation-20260924` now carries:
+- a Papers-local `materialize-shadow.py` transform from verified v2 public units to the existing `papers-public-shadow.v2` schema;
+- a server-only materialized-state read on the existing authenticated `/__live/home` Worker route;
+- a Worker wake that requests canonical GitHub materialization after accepted rich R2 state, while keeping R2 ACK independent from downstream publication;
+- activity-only HOME as a lawful later opportunity to heal a missed materialization wake;
+- a canonical workflow whose one concurrency group cancels superseded chunk wakes, waits through the bounded chunk burst, reads the then-current private state, materializes it, and commits only `public/papers-shadow/current.json`;
+- the earlier malformed Display HOME carrier repaired with its required `context`.
+
+### witnesses
+- live-nerve regression: GitHub Actions `36070266686` SUCCESS;
+- Papers materializer regression: `36070300397` SUCCESS;
+- full Display membrane on exact final staging head `273911bcffed57620b642ff0a702b137a5689e65`: `36070471828` SUCCESS.
+
+### still OPEN
+- canonical PR creation remains provider-blocked through the connected integration (HTTP 403);
+- canonical Worker deployment of this materialization wake has therefore not occurred;
+- the minimal runtime trigger credential and paired server-to-server materialization secret are not yet witnessed as provisioned;
+- no production private-R2 → canonical static-shadow commit has yet occurred;
+- no production browser witness has yet observed the Source metabolite body from the newly materialized same-origin shadow.
+
+The master circulation nutrient remains OPEN until the same accepted public revision is witnessed in private R2, canonical static `papers-shadow/current.json`, and the deployed visitor surface.
