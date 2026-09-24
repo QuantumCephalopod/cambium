@@ -101,7 +101,7 @@ response = await ledger(env);
 result = await response.json();
 assert.equal(response.status, 200);
 assert.equal(result.public_revision, revision1);
-assert.deepEqual(result.unit_revisions, revisionLedger(units1));
+assert.deepEqual(result.unit_revisions, { ...revisionLedger(units1) });
 assert.equal(result.empty_current, false);
 
 response = await ledger(env, "organism:papers", "wrong");
