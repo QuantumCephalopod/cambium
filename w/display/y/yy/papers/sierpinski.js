@@ -206,11 +206,11 @@ function identityIndex(projection){
   for(const g of GENES){
     for(const x of projection?.groups?.[g]||[]){
       const meta=projection?.source_meta?.[x.id],credit=Array.isArray(meta)&&typeof meta[0]==='string'?meta[0].trim():'',metabolism=Array.isArray(meta)&&typeof meta[1]==='string'?meta[1].trim():'',externals=Array.isArray(meta)&&Array.isArray(meta[2])?meta[2].filter(u=>typeof u==='string'&&/^https?:\/\//.test(u)):[];
-      out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'source',rank:'S',publicWisdom:false,wisdom:'',credit,metabolism,externals});
+      out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'source',rank:'S',publicWisdom:false,wisdom:'',credit,metabolism,externals,parents:[]});
     }
     for(const x of projection?.holons?.[g]||[]){
-      const meta=projection?.holon_meta?.[x.id],wisdom=Array.isArray(meta)&&typeof meta[3]==='string'?meta[3].trim():'';
-      out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'holon',rank:rankOf(x.id),publicWisdom:Boolean(wisdom),wisdom});
+      const meta=projection?.holon_meta?.[x.id],wisdom=Array.isArray(meta)&&typeof meta[3]==='string'?meta[3].trim():'',parents=Array.isArray(meta)&&Array.isArray(meta[0])?[...meta[0]]:[];
+      out.set(x.id,{id:x.id,title:x.title,gene:g,kind:'holon',rank:rankOf(x.id),publicWisdom:Boolean(wisdom),wisdom,credit:'',metabolism:'',externals:[],parents});
     }
   }
   return out;
@@ -566,7 +566,7 @@ function updateOrganismInquiry(){
   const source=entity.kind==='source',parents=state.parents.get(entity.id)||[],inquiry=organismInquiryReceipt(entity.id);
   const origin=source?'EXTERNAL ORIGIN':'COMPOSITION',originText=source?(entity.credit||'External provenance unresolved in the current public projection.'):`${entity.rank} · ${parents.length}/4 canonical parents${parents.length?': '+parents.join(' · '):''}`;
   const receipt=source?(entity.metabolism||'Canonical Papers metabolism receipt is not projected.'):`recursive tetrahedral composition · ${entity.rank} · ${parents.length}/4 parents`;
-  const key=[entity.id,entity.title,origin,originText,receipt,entity.externals.join('|'),parents.join('|'),inquiry.projected,inquiry.text].join('\u0000');
+  const externals=Array.isArray(entity.externals)?entity.externals:[],key=[entity.id,entity.title,origin,originText,receipt,externals.join('|'),parents.join('|'),inquiry.projected,inquiry.text].join('\u0000');
   if(box.dataset.sourceKey===key)return;
   box.dataset.sourceKey=key;box.dataset.sourceId=entity.id;box.dataset.sourceInquiry=inquiry.projected?'projected':'gap';box.dataset.origin=source?'external':'composed';
   box.querySelector('.papers-origin-label').textContent=origin;
@@ -576,8 +576,8 @@ function updateOrganismInquiry(){
   box.querySelector('.papers-source-receipt').textContent=receipt;
   const links=box.querySelector('.papers-source-links');links.replaceChildren();
   if(source){
-    entity.externals.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=externalLabel(url,i);links.append(a)});
-    if(!entity.externals.length){const span=document.createElement('span');span.textContent='Canonical external origin not projected.';links.append(span)}
+    externals.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=externalLabel(url,i);links.append(a)});
+    if(!externals.length){const span=document.createElement('span');span.textContent='Canonical external origin not projected.';links.append(span)}
   }else{
     parents.forEach(id=>{const span=document.createElement('span');span.textContent=id;links.append(span)});
   }
