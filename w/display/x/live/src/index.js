@@ -260,40 +260,39 @@ function responseContext(packet, key, extra = {}) {
 }
 
 async function queueMaterialization(env, packet, publicRevision) {
-  if (!env.GITHUB_ACTIONS_TOKEN) {
-    throw Object.assign(new Error("same-origin materialization trigger is not configured"), { status: 503 });
-  }
-  const response = await fetch(
-    "https://api.github.com/repos/" + MATERIALIZE_REPO +
-    "/actions/workflows/" + MATERIALIZE_WORKFLOW + "/dispatches",
-    {
-      method: "POST",
-      headers: {
-        "accept": "application/vnd.github+json",
-        "authorization": "Bearer " + env.GITHUB_ACTIONS_TOKEN,
-        "content-type": "application/json",
-        "user-agent": "sss-live-materializer/1",
-        "x-github-api-version": "2022-11-28"
-      },
-      body: JSON.stringify({
-        ref: "main",
-        inputs: {
-          site_id: packet.site_id,
-          public_revision: publicRevision,
-          event_id: packet.event_id
-        }
-      })
-    }
-  );
-  if (response.status !== 204) {
-    let detail = "";
-    try { detail = (await response.text()).slice(0, 300); } catch (_) {}
-    throw Object.assign(
-      new Error("same-origin materialization dispatch failed: HTTP " + response.status + (detail ? " · " + detail : "")),
-      { status: 503 }
+  if (!env.GITHUB_ACTIONS_TOKEN) return false;
+  try {
+    const response = await fetch(
+      "https://api.github.com/repos/" + MATERIALIZE_REPO +
+      "/actions/workflows/" + MATERIALIZE_WORKFLOW + "/dispatches",
+      {
+        method: "POST",
+        headers: {
+          "accept": "application/vnd.github+json",
+          "authorization": "Bearer " + env.GITHUB_ACTIONS_TOKEN,
+          "content-type": "application/json",
+          "user-agent": "sss-live-materializer/1",
+          "x-github-api-version": "2022-11-28"
+        },
+        body: JSON.stringify({
+          ref: "main",
+          inputs: {
+            site_id: packet.site_id,
+            public_revision: publicRevision,
+            event_id: packet.event_id
+          }
+        })
+      }
     );
+    if (response.status !== 204) {
+      console.error("same-origin materialization dispatch HTTP " + response.status);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("same-origin materialization dispatch failed", error);
+    return false;
   }
-  return true;
 }
 
 async function writeState(env, key, packet, units, publicRevision, currentObject, mode) {
