@@ -58,3 +58,16 @@ jobs:
             --input _papers-live-state.json \
             --output w/display/y/yy/papers/public/papers-shadow/current.json \
             --previous w/display/y/yy/papers/public/papers-shadow/current.json
+
+      - name: Witness materialized revision identity
+        run: |
+          python3 - <<'PY'
+          import json
+          source=json.load(open('_papers-live-state.json',encoding='utf-8'))
+          public=json.load(open('w/display/y/yy/papers/public/papers-shadow/current.json',encoding='utf-8'))
+          assert public.get('site_id')=='organism:papers'
+          assert public.get('snapshot',{}).get('schema')=='papers-public-shadow.v2'
+          assert public.get('public_revision')==source.get('public_revision')
+          assert public.get('snapshot',{}).get('public_revision')==source.get('public_revision')
+          print(public['public_revision'])
+          PY
