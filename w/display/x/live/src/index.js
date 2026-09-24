@@ -10,6 +10,8 @@ const REVISION = /^sha256:[a-f0-9]{64}$/;
 const SHADOW_KEYS = Object.freeze({
   "organism:papers": "y/papers/current.json"
 });
+const MATERIALIZE_REPO = "self-similar-systems/cambium";
+const MATERIALIZE_WORKFLOW = "papers-shadow-materialize.yml";
 const ALLOWED_FIELDS = new Set([
   "event_id",
   "site_id",
