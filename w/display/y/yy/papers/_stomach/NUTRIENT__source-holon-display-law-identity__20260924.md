@@ -59,3 +59,23 @@ OPEN:
 
 candidate closure:
 > Source and Holon are one canonical Papers organism species. Rank and origin change scale, genealogy and provenance; they do not change the tetrahedral information-display law.
+
+
+## browser witness — normalized runtime identity gap — 2026-09-24
+
+Production browser click on a selected Source/Holon froze rendering with:
+
+`TypeError: can't access property "join", entity.externals is undefined`
+
+at `updateOrganismInquiry()`.
+
+Cause:
+- the inquiry renderer was unified before the runtime identity record shape was;
+- Source identity records carried `credit/metabolism/externals`;
+- Holon identity records omitted those keys entirely;
+- the common renderer therefore still encountered kind-shaped JavaScript data even though the display law had become organism-shaped.
+
+Correction pressure:
+- normalize every Papers runtime identity to one complete object schema;
+- origin-specific fields may be empty, but must not be structurally absent;
+- a common organism renderer must not require defensive kind checks merely to avoid missing-property crashes.
