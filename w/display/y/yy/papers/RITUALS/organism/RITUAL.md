@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "1.9"
+version: "2.0"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -102,6 +102,23 @@ For a selected Papers organism, the public body should keep the same tetrahedral
 4. **METABOLITES** — what distinctions survived collapse as reusable wisdom, and what minimal vertex/edge/face/volume body earned each survivor?
 
 For `S.*`, local `w/x/z/y` vertices, edges, faces and volume are the organism's own tetrahedralized source body. They must never be rewritten as four Papers parent organisms. Original authorship, DOI/publisher/repository identity and canonical public origin are outward provenance relations from that tetrahedral body, not a morphology switch.
+
+### Content priority — metabolites are foreground wisdom
+
+The public inquiry hierarchy is not rank-order prose.
+
+**Surviving metabolites are the default visible content of a selected Papers organism.** They are the collapsed distinctions the organism has to say after `4V / 6E / 4F / 1T` has done its work.
+
+Therefore:
+- selected-organism spatial wisdom should foreground admitted metabolite **title + compression**;
+- the complete `1T` volume, `6E`, `4F`, `4V`, removal witnesses and genealogy remain discoverable earning structure behind that wisdom;
+- do not render the whole `1T` derivation as the always-on reading layer merely because it is available;
+- do not substitute `1T` or other derivation prose when metabolites are absent; preserve the projection gap;
+- this law is origin/rank invariant: any `S.*` or `nH` with admitted metabolites uses the same visible-wisdom physiology.
+
+Compression:
+
+> **The tetrahedral body explains why the organism exists; metabolites are what it has to say.**
 
 The hand therefore learns one grammar: **drag the body whose scale you currently inhabit**.
 
@@ -401,3 +418,6 @@ Version 1.4 metabolight-text correction (2026-09-19): already-public Holon wisdo
 Version 1.6 chambered-overview correction (2026-09-22): the overview center is reserved as empty field-space; HOW PAPERS LIVES remains one coherent peripheral animation+explanation unit. Realized tetrahedral chambers become navigable scale passages between overview and organism inquiry using exact recursive cell centroid/scale geometry. Sparse occupancy may no longer make a realized chamber disappear perceptually. Papers may also inherit the live Philosophy shader/projection as a passive deep-off parent inquiry substrate while preserving Philosophy ownership and Papers-local foreground identity.
 
 Version 1.9 dependency-custody correction (2026-09-23): Papers no longer owns the pinned Pretext bytes or their repository address. Its metabolight-text physiology requests `@chenglou/pretext` by stable identity from Display; Display derives current custody from live anatomy while Papers retains sole ownership of what text means, where metabolight text belongs, and how Canvas ink embodies it.
+
+
+Version 2.0 content-priority correction (2026-09-24): surviving metabolites are now the canonical foreground reading layer for a selected Papers organism. Pretext embodies metabolite title + compression at the active organism; 4V/6E/4F/1T remain discoverable earning structure and may not replace missing metabolites merely to fill the view.
