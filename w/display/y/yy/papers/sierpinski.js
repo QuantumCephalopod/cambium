@@ -36,7 +36,11 @@ const PRETEXT_ID='@chenglou/pretext';
 const PRETEXT_VERSION='0.0.9';
 const SHADOW_PATH='papers-shadow/current.json';
 const GENEALOGY_REPAIR_PATH='papers-shadow/genealogy-gap-repair.json';
-const WISDOM_MAX_WIDTH=680;
+const METABOLITE_FIELD_SCALE=.32;
+const METABOLITE_LABEL_MAX_WIDTH=320;
+const METABOLITE_LABEL_ROWS=4;
+const METABOLITE_LIGHT_GAIN=1.0;
+const INQUIRY_EMBER_GAIN=.28;
 const PHYSIOLOGY_PHASE_MS=5200;
 const OVERVIEW_WANDER=.86;
 const OVERVIEW_FLOW_PERIOD_MS=42000;
@@ -159,7 +163,7 @@ function rankOf(value){const m=String(value||'').match(/^(\d+)H\./);return m?`${
 function rankNumber(value){const m=String(value||'').match(/^(\d+)H(?:\.|$)/);return m?Number(m[1]):0}
 function bodyScaleFor(entity){return S_QUANTUM_SCALE*Math.pow(2,rankNumber(entity?.rank))}
 function rootFieldScale(width){return width<ROOT_FIELD_BREAKPOINT?ROOT_FIELD_MOBILE:ROOT_FIELD_DESKTOP}
-function overviewDriftPoint(entity,now=performance.now()){
+function flowPoint(entity,now=performance.now()){
   const points=[entity.motionA,entity.motionB,entity.motionC,entity.motionD].filter(Boolean);
   if(points.length<2)return entity.world;
   const phase=random01(entity.id,'flow-phase')*points.length,speed=mix(.72,1.28,random01(entity.id,'flow-speed'));
@@ -167,6 +171,7 @@ function overviewDriftPoint(entity,now=performance.now()){
   const wander=mix3(points[index],points[(index+1)%points.length],t);
   return mix3(entity.world,wander,OVERVIEW_WANDER);
 }
+function overviewDriftPoint(entity,now=performance.now()){return flowPoint(entity,now)}
 function chamberFocus(){return state?.chamberFocus||{center:[0,0,0],scale:1}}
 function backgroundPassage(){return state?.backgroundPassage||0}
 function inquiryFrameFocus(){
@@ -254,7 +259,7 @@ function applyProjection(next,shadowHome=''){
   state.structure=built.structure;
   state.records=built.records;
   state.recordById=new Map(built.records.map(x=>[x.id,x]));
-  state.wisdomPrepared=null;
+  state.wisdomPrepared=new Map();
   if(shadowHome){
     state.shadowApplied=true;state.shadowHome=shadowHome;
     state.canvas.dataset.shadowState='ready';state.canvas.dataset.shadowHome=shadowHome;
@@ -439,8 +444,8 @@ function makeStage(host){
   for(const phase of PHYSIOLOGY_PHASES){const n=document.createElement('span');n.dataset.phase=phase.id;n.textContent=phase.label;physiologyPhases.append(n)}
   host.append(physiology);
   const physiologyCanvas=physiology.querySelector('.papers-physiology-canvas'),physiologyTitle=physiology.querySelector('.papers-physiology-copy b'),physiologyCopy=physiology.querySelector('.papers-physiology-copy span');
-  const sourceInfo=document.createElement('section');sourceInfo.className='papers-source-inquiry';sourceInfo.setAttribute('aria-label','Selected Papers organism inquiry');
-  sourceInfo.innerHTML='<div class="papers-source-original"><small class="papers-origin-label">ORIGIN</small><span class="papers-source-code"></span><h2></h2><p class="papers-source-credit"></p><div class="papers-source-links"></div></div><div class="papers-source-metabolism"><small>PAPERS ORGANISM</small><p class="papers-source-receipt"></p><small class="papers-source-inquiry-label">TETRAHEDRAL BODY</small><p class="papers-source-inquiry-state"></p></div>';
+  const sourceInfo=document.createElement('section');sourceInfo.className='papers-source-inquiry';sourceInfo.setAttribute('aria-label','Selected Papers organism origin');
+  sourceInfo.innerHTML='<div class="papers-source-original"><small class="papers-origin-label">ORIGIN</small><span class="papers-source-code"></span><h2></h2><p class="papers-source-credit"></p><div class="papers-source-links"></div></div>';
   host.append(sourceInfo);
   const chamberLabels=document.createElement('div');chamberLabels.className='papers-chamber-labels';chamberLabels.setAttribute('aria-hidden','true');host.append(chamberLabels);
   const chamberLabelNodes=new Map();
@@ -528,16 +533,16 @@ function inquiryWisdomText(entity){
     return title&&compression?`${title} — ${compression}`:(compression||title);
   }).filter(Boolean).join('   ◆   ');
 }
-function metabolight(id,center,px,entity,selected=false){
-  const rank=rankNumber(entity?.rank),wisdom=inquiryMetabolites(entity).length>0,pal=PALETTE[entity?.gene]||PALETTE.x;
-  const target=[1.0,.90,.64],blend=clamp(.40+rank*.035+(wisdom?.12:0),.40,.68),c=mix3(pal,target,blend);
-  const size=clamp(7+rank*6+Math.sqrt(Math.max(px,0))*1.1+(wisdom?4:0)+(selected?5:0),7,62);
-  const alpha=clamp(.24+rank*.075+(wisdom?.12:0)+(selected?.12:0),.24,.94);
-  return {id,center,size,color:[...c,alpha],phase:random01(id,'metabolight')*Math.PI*2,kind:rank===0?'quantum':'metabolight',rank};
+function organismEmber(id,center,px,entity,selected=false){
+  const rank=rankNumber(entity?.rank),hasMetabolites=inquiryMetabolites(entity).length>0,pal=PALETTE[entity?.gene]||PALETTE.x;
+  const target=[1.0,.90,.64],blend=clamp(.40+rank*.035+(hasMetabolites?.08:0),.40,.64),c=mix3(pal,target,blend);
+  const size=clamp(6+rank*4+Math.sqrt(Math.max(px,0))*.72+(selected?2:0),6,42);
+  const alpha=clamp(.18+rank*.055+(hasMetabolites?.06:0),.18,.68);
+  return {id,center,size,color:[...c,alpha],phase:random01(id,'organism-ember')*Math.PI*2,kind:rank===0?'source-ember':'organism-ember',rank};
 }
 function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
   const ps=state.parents.get(id)||[],px=projectedPixels(scale,cameraZ,height),entity=state.identities.get(id),gene=entity?.gene||'x',pal=PALETTE[gene]||PALETTE.x;
-  if(entity)lights.push(metabolight(id,center,px,entity,depth===0));
+  if(entity)lights.push(organismEmber(id,center,px,entity,depth===0));
   if(ps.length!==4||px<LOD_PX||depth>=MAX_DEPTH){
     leaves.push({id,center,scale,color:[pal[0],pal[1],pal[2],.11+Math.min(.30,px/150)]});
     return;
@@ -548,11 +553,12 @@ function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2]
 function projectWorldPoint(p,cameraZ,width,height){const z=cameraZ-p[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+p[0]*f/z,y:height/2-p[1]*f/z,z:p[2]}}
 function wisdomFont(width){return width<700?'500 11px system-ui, -apple-system, "Segoe UI", sans-serif':'500 13px system-ui, -apple-system, "Segoe UI", sans-serif'}
 function wisdomLineHeight(width){return width<700?17:20}
-function preparedWisdom(entity,text,font){
-  if(!pretextModule||!entity||!text)return null;
-  const key=`${entity.id}\u0000${font}\u0000${text}`;
-  if(state.wisdomPrepared?.key!==key)state.wisdomPrepared={key,prepared:pretextModule.prepareWithSegments(text,font)};
-  return state.wisdomPrepared.prepared;
+function preparedWisdom(key,text,font){
+  if(!pretextModule||!key||!text)return null;
+  if(!(state.wisdomPrepared instanceof Map))state.wisdomPrepared=new Map();
+  const cacheKey=`${key}\u0000${font}\u0000${text}`;
+  if(!state.wisdomPrepared.has(cacheKey))state.wisdomPrepared.set(cacheKey,pretextModule.prepareWithSegments(text,font));
+  return state.wisdomPrepared.get(cacheKey);
 }
 function externalLabel(url,index){
   try{const u=new URL(url),host=u.hostname.replace(/^www\./,'');if(host==='doi.org')return 'DOI · ORIGINAL WORK';if(host==='arxiv.org')return 'ARXIV · ORIGINAL WORK';if(host==='github.com')return 'GITHUB · UPSTREAM';if(host.includes('pmlr.press'))return 'PMLR · ORIGINAL WORK';if(host.includes('w3.org'))return 'W3C · CANONICAL SOURCE';return host.toUpperCase()+' · ORIGINAL SOURCE'}catch(_){return 'ORIGINAL SOURCE '+(index+1)}
@@ -791,7 +797,7 @@ function attachInput(){
 function initialize(host,projection,backgroundDrag=true,dependency=null){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x])),environment=createInquiryEnvironment(stage.environmentCanvas);
-  state={host,projection,dependency,structure:built.structure,environmentCanvas:stage.environmentCanvas,environment,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},chamberFrom:null,chamberTo:null,chamberTransitionStart:0,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:null,inquiryBodies:{},shadowApplied:false,shadowHome:''};
+  state={host,projection,dependency,structure:built.structure,environmentCanvas:stage.environmentCanvas,environment,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},chamberFrom:null,chamberTo:null,chamberTransitionStart:0,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
   state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.chamberPath='overview';state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextIdentity=PRETEXT_ID;state.textCanvas.dataset.pretextVersion=PRETEXT_VERSION;state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
