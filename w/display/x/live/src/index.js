@@ -331,14 +331,14 @@ async function concurrentResult(env, key, packet, targetRevision) {
   const latest = await readCurrent(env.SHADOW, key, packet.site_id);
   const actual = latest.state?.public_revision ?? null;
   if (actual && actual === targetRevision) {
-    await queueMaterialization(env, packet, actual);
+    const materializationQueued = await queueMaterialization(env, packet, actual);
     return json(responseContext(packet, key, {
       ok: true,
       deduped: true,
       public_revision: actual,
       rich_write: false,
       concurrent: true,
-      materialization_queued: true
+      materialization_queued: materializationQueued
     }));
   }
   return json(responseContext(packet, key, {
@@ -366,13 +366,13 @@ async function applyDelta(env, key, packet, current) {
     baseUnits = current.state.units;
   }
   if (current.state?.public_revision === delta.target_public_revision) {
-    await queueMaterialization(env, packet, delta.target_public_revision);
+    const materializationQueued = await queueMaterialization(env, packet, delta.target_public_revision);
     return json(responseContext(packet, key, {
       ok: true,
       deduped: true,
       public_revision: delta.target_public_revision,
       rich_write: false,
-      materialization_queued: true
+      materialization_queued: materializationQueued
     }));
   }
   const actualBase = current.state?.public_revision ?? EMPTY_PUBLIC_REVISION;
@@ -400,27 +400,27 @@ async function applyDelta(env, key, packet, current) {
 
   const written = await writeState(env, key, packet, units, computed, current.object, "delta");
   if (!written.stored) return concurrentResult(env, key, packet, delta.target_public_revision);
-  await queueMaterialization(env, packet, computed);
+  const materializationQueued = await queueMaterialization(env, packet, computed);
   return json(responseContext(packet, key, {
     ok: true,
     deduped: false,
     public_revision: computed,
     rich_write: true,
     mode: "delta",
-    materialization_queued: true
+    materialization_queued: materializationQueued
   }));
 }
 
 async function applyReconcile(env, key, packet, current) {
   const reconcile = packet.reconcile;
   if (current.state?.public_revision === reconcile.target_public_revision) {
-    await queueMaterialization(env, packet, reconcile.target_public_revision);
+    const materializationQueued = await queueMaterialization(env, packet, reconcile.target_public_revision);
     return json(responseContext(packet, key, {
       ok: true,
       deduped: true,
       public_revision: reconcile.target_public_revision,
       rich_write: false,
-      materialization_queued: true
+      materialization_queued: materializationQueued
     }));
   }
   await verifyUnits(reconcile.units, "reconcile.units");
@@ -435,14 +435,14 @@ async function applyReconcile(env, key, packet, current) {
   }
   const written = await writeState(env, key, packet, reconcile.units, computed, current.object, "reconcile");
   if (!written.stored) return concurrentResult(env, key, packet, reconcile.target_public_revision);
-  await queueMaterialization(env, packet, computed);
+  const materializationQueued = await queueMaterialization(env, packet, computed);
   return json(responseContext(packet, key, {
     ok: true,
     deduped: false,
     public_revision: computed,
     rich_write: true,
     mode: "reconcile",
-    materialization_queued: true
+    materialization_queued: materializationQueued
   }));
 }
 
