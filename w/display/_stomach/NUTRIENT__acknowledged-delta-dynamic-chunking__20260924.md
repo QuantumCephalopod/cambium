@@ -1,6 +1,6 @@
 # NUTRIENT — acknowledged delta with dynamic recursive chunking — 2026-09-24
 
-status: OPEN / GENERIC DISPLAY CONTINUITY PRESSURE
+status: ASSIMILATED / CANONICAL PROMOTION + PROVIDER ACTIVATION OPEN
 kind: display-live transport encounter
 target: github.cambium → display.x/live
 source: Philipp, 2026-09-24
@@ -45,3 +45,28 @@ Observed failure:
 - R2 ETag race remains non-last-write-wins;
 - no browser polling or public read endpoint is introduced;
 - source semantics remain opaque to Display transport.
+
+
+## assimilation witness — 2026-09-24
+
+Display live nerve implementation:
+- authenticated `GET /__live/home?site_id=...` returns only current `public_revision` + opaque unit revision ledger;
+- empty R2 state has deterministic empty-ledger revision and accepts first ordinary delta from that base;
+- existing POST delta/reconcile semantics remain opaque and unchanged for semantic values;
+- chained ordinary delta progression is regression-witnessed;
+- fork workflow run `36020182099` passed the live-nerve test suite; deploy correctly remained skipped outside canonical organization main.
+
+Drive producer implementation:
+- canonical `/papers/_feed.gs` was mutated in place on stable Drive ID `1rKA3vxriCOYSWWu4-ubVTcYZqZyxIqWr`;
+- local ACK loss now reacquires the Worker revision ledger instead of synthesizing a historical baseline;
+- current source state is compared only against ACKed/remote unit hashes;
+- oversized cumulative differences are greedily/deterministically partitioned into ordinary bounded deltas;
+- every chunk computes an intermediate public revision, waits for Worker ACK, persists that ACK ledger, and only then derives the next chunk;
+- retry/rebase reacquires the remote ledger and resumes from the actual current Worker base;
+- local pure-function witness forced an 80-unit ~1.7 MiB difference into 2 packets, largest 1,040,089 bytes (< 1,048,576), and converged to the exact final revision;
+- one opaque unit larger than the packet bound raises `LIVE_UNIT_TOO_LARGE` rather than being semantically fragmented.
+
+Remaining:
+- deliberate canonical merge/deploy of the generic Worker;
+- paste/deploy the already-canonical Drive `_feed.gs` into the bound Apps Script project after the Worker route supports the ledger GET;
+- run real `inspectLiveProjection → syncLiveNerve → backfillInquiryProjection` and witness Source Inquiry convergence/public visibility.
