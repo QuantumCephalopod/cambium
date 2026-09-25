@@ -1,0 +1,88 @@
+name: papers static shadow materialization
+
+on:
+  workflow_dispatch:
+    inputs:
+      site_id:
+        required: true
+        type: string
+      public_revision:
+        required: true
+        type: string
+      event_id:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: papers-static-shadow-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    if: github.repository == 'self-similar-systems/cambium' && inputs.site_id == 'organism:papers'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reacquire cambium
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Coalesce acknowledged delta chunks
+        run: sleep 12
+
+      - name: Fetch current accepted Papers state
+        env:
+          MATERIALIZE_SECRET: ${{ secrets.PAPERS_MATERIALIZE_SECRET }}
+        run: |
+          set -euo pipefail
+          test -n "${MATERIALIZE_SECRET}"
+          curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer ${MATERIALIZE_SECRET}" \
+            "https://sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized" \
+            --output _papers-live-state.json
+          python3 - <<'PY'
+          import json
+          state=json.load(open('_papers-live-state.json',encoding='utf-8'))
+          assert state.get('version')==2
+          assert state.get('site_id')=='organism:papers'
+          assert isinstance(state.get('public_revision'),str) and state['public_revision'].startswith('sha256:')
+          assert isinstance(state.get('units'),dict)
+          print('accepted current revision',state['public_revision'])
+          PY
+
+      - name: Build same-origin Papers shadow
+        run: |
+          python3 w/display/y/yy/papers/materialize-shadow.py \
+            --input _papers-live-state.json \
+            --output w/display/y/yy/papers/public/papers-shadow/current.json \
+            --previous w/display/y/yy/papers/public/papers-shadow/current.json
+
+      - name: Witness materialized revision identity
+        run: |
+          python3 - <<'PY'
+          import json
+          source=json.load(open('_papers-live-state.json',encoding='utf-8'))
+          public=json.load(open('w/display/y/yy/papers/public/papers-shadow/current.json',encoding='utf-8'))
+          assert public.get('site_id')=='organism:papers'
+          assert public.get('snapshot',{}).get('schema')=='papers-public-shadow.v2'
+          assert public.get('public_revision')==source.get('public_revision')
+          assert public.get('snapshot',{}).get('public_revision')==source.get('public_revision')
+          print(public['public_revision'])
+          PY
+
+      - name: Persist current public shadow
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- w/display/y/yy/papers/public/papers-shadow/current.json; then
+            echo "same-origin Papers shadow already current"
+            exit 0
+          fi
+          git config user.name "papers shadow materializer"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          REV="$(python3 -c "import json; print(json.load(open('_papers-live-state.json'))['public_revision'])")"
+          git add -- w/display/y/yy/papers/public/papers-shadow/current.json
+          git commit -m "papers shadow: materialize ${REV}"
+          git pull --rebase origin main
+          git push origin HEAD:main
