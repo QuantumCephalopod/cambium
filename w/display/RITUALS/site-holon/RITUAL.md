@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.5"
+version: "2.6"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -144,7 +144,9 @@ Local descent inside a site-holon does not mutate its global mount. Ascent past 
 
 Shader/background/manifestation belong to stable interlocutor identity, not global address. All visible local fields inherit shared Display orientation, while page-specific navigation/interaction remains owned by the page-organism.
 
-A site-holon floats as content inside its host's cell. Its field therefore shows the host seen from inside the locus: the host's realized geometry with the host's own shader, framed at the site's geometric path plus its local walked path, beneath the site's own body. Host = the container the witness came through, else the overview interlocutor. A site whose own renderer already embodies its host may refuse with shader `environment: false`.
+A site-holon floats as content inside its host's cell. Its field therefore stands in the host's environment at the locus: the host's geometry is not seen; the host's own shader, evaluated at the container the site occupies (region, place and span in host space, shared orientation), fills the entire space in which the site is witnessed, beneath the site's own body. Host = the container the witness came through, else the overview interlocutor. A site whose own renderer already embodies its host may refuse with shader `environment: false`.
+
+Seen from its host, a site-holon is a floating body: its own realized geometry at full resolution, drawn with its own identity shader, at one organism size inside its mount cell, whatever its internal depth. Entering the body is Descent across the membrane; inside, the host is present only as that environment. A site whose generic identity shader draws nothing (its body lives in a custom renderer) is not yet visible as a floating body.
 
 A site-local shader may change color, transparency, grain, blur, density or other material qualities without changing the shared tetrahedral topology. Local interaction may manipulate or populate that same body without replacing global orientation or global site navigation.
 
@@ -175,6 +177,8 @@ A site-holon change is accepted when:
 ## Living provenance
 
 Version 2.3 global occupied-region correction (2026-09-18): a cooked cross-site collision pressure earned one specimen-agnostic Display safe-area contract. Global membrane surfaces expose their actual occupied rectangles plus derived conservative insets to every site render and as CSS variables; site-local presentation remains identity-owned, central Display does not branch on specimen identity, and concrete pixels remain implementation rather than ontology.
+
+Version 2.6 floating-bodies correction (2026-09-26): site-holons are seen from their host as floating full-resolution bodies of one organism size and are entered by selection.
 
 Version 2.5 descent correction (2026-09-26): site-holons now share Display Descent, ascent crosses the site membrane back through the walked path, and a site's field shows its host seen from inside its locus with a local `environment: false` refusal.
 

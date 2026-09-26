@@ -51,9 +51,22 @@ function hostEnvironment(id){
   if(!shader?.fragment||!root)return null;
   return Object.freeze({hostId,shader,root,palette:specs.get(hostId)?.shader?.palette,path:m.rawAddress.slice(hm.rawAddress.length)});
 }
+/* Organisms float as bodies inside the overview interlocutor that contains all of
+ * site-space, each at its mount cell. Nested hosting beyond one membrane is not yet
+ * realized. */
+function floatingBodies(id){
+  if(!ROOT_IDS.includes(id))return [];
+  const out=[];
+  for(const other of specs.keys()){
+    if(ROOT_IDS.includes(other))continue;const m=registry.getMount(other);if(!m||m.scope!==GLOBAL_SCOPE||!m.rawAddress)continue;
+    const s2=surfaces.get(other),shader=s2?.module?.shader,root=(s2?.module?.fieldProjection?s2.module.fieldProjection(s2.projection):s2?.projection)?.root;
+    if(shader?.fragment&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette});
+  }
+  return out;
+}
 for(const [id,surface] of surfaces){
   const spec=specs.get(id),fieldProjection=surface.module.fieldProjection?surface.module.fieldProjection(surface.projection):surface.projection;
-  fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id)}));
+  fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id)}));
 }
 let activeIds=[...ROOT_IDS],activeAddress='',stack=[],restoring=false;
 function sameIds(a,b){return a.length===b.length&&a.every((x,i)=>x===b[i])}
@@ -113,6 +126,7 @@ addEventListener('sss:view',e=>{if(e.detail.scopeId!==GLOBAL_SCOPE)return;render
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
 /* Ascent past a site's own root continues through the membrane: the same
  * gesture returns to the container the witness came through. */
+addEventListener('sss:enter-body',e=>{const d=e.detail||{};if(!d.id||!activeIds.includes(d.from))return;const m=registry.getMount(d.id);if(m&&m.scope===GLOBAL_SCOPE)navigateGlobal(m.rawAddress,true,d.origin||null)});
 addEventListener('sss:membrane-ascend',e=>{const id=e.detail?.id;if(!id||!activeIds.includes(id))return;if(stack.length)leave();else if(activeAddress)navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2})});
 addEventListener('sss:language',()=>{render(W.view)});addEventListener('resize',()=>{Safe.refresh();composition()});
 home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else setLocalView('','home')});
