@@ -3,23 +3,20 @@
   "constitution": null,
   "home": {
     "changed_scope": [
-      "R2 reasserted as private acknowledged intermediate state rather than visitor origin",
-      "Papers-local public-unit → papers-public-shadow.v2 materializer added without changing browser read contract",
-      "sss-live now admits a separate server-only materialized-state read on the existing /__live/home route",
-      "accepted rich R2 state can wake one bounded GitHub materialization workflow; R2 ACK remains independent from downstream static publication",
-      "later activity-only HOME can re-wake current materialization without polling",
-      "workflow concurrency cancels superseded chunk wakes and materializes only the then-current accepted state after a bounded stabilization window",
-      "ordinary visitor path remains same-origin /papers-shadow/current.json; no public R2 route was added",
-      "malformed Display live-ledger HOME context carrier repaired",
-      "master public-shadow circulation nutrient remains OPEN pending canonical promotion and production witness"
+      "manual canonical materializer probe reached GitHub Actions but failed fetching current state with HTTP 404",
+      "404 distinguished routing failure from secret failure because admitted Worker path returns 401 when reached without valid authorization",
+      "dedicated Worker Custom Domain live.sss.saarland staged",
+      "GitHub materializer staged to read private state from live.sss.saarland",
+      "visitor-facing sss.saarland remains GitHub Pages and no public R2 route is introduced",
+      "Drive maintained source _feed.gs still requires the same hostname update because connector byte replacement was blocked"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PARTIAL/EARNED · PRIVATE-R2 → SAME-ORIGIN MATERIALIZER STAGED + WITNESSED · CANONICAL PROMOTION OPEN"
+    "outcome": "PARTIAL/EARNED · MATERIALIZER 404 LOCALIZED TO WORKER ROUTING · DEDICATED LIVE DOMAIN REPAIR STAGED"
   },
-  "observed_at_utc": "2026-09-25T16:56:33.449601Z",
+  "observed_at_utc": "2026-09-26T09:41:45.480451Z",
   "owner": "organism:papers",
   "phenotype": null,
-  "reflected_home_event": "display-papers-same-origin-materializer-staged-20260924T230100Z",
+  "reflected_home_event": "display-papers-live-route-404-diagnosis-20260926T092000Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
@@ -30,6 +27,7 @@
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
+      "ENCOUNTER__materializer-404__20260926.md",
       "NUTRIENT__dimensional-metabolite-text__20260920.md",
       "NUTRIENT__event-driven-public-shadow-circulation__20260918.md",
       "NUTRIENT__fourfold-inquiry-browser-acceptance__20260922.md",
@@ -46,6 +44,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "ede8d2f3745ef55f1ace3f167874c631703cd98a"
+    "source_revision": "025f72e792b8e86c3433c87c3da73091676903c8"
   }
 }
