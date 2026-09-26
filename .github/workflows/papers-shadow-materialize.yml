@@ -40,7 +40,7 @@ jobs:
           test -n "${MATERIALIZE_SECRET}"
           curl --fail-with-body --silent --show-error \
             --header "Authorization: Bearer ${MATERIALIZE_SECRET}" \
-            "https://sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized" \
+            "https://live.sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized" \
             --output _papers-live-state.json
           python3 - <<'PY'
           import json
