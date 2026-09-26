@@ -800,21 +800,21 @@
     },
     "01be2f08378d7bd1a1af68a3": {
       "asns": {
-        "45102": 11
+        "45102": 13
       },
       "baits": {
-        "/": 11
+        "/": 13
       },
       "countries": {
-        "US": 11
+        "US": 13
       },
       "devices": {
-        "mobile": 11
+        "mobile": 13
       },
-      "events": 11,
+      "events": 13,
       "first_seen": "2026-09-20T06:16:05Z",
       "id": "01be2f08378d7bd1a1af68a3",
-      "last_seen": "2026-09-25T01:22:53Z",
+      "last_seen": "2026-09-26T01:30:26Z",
       "network_identity": "ip:v1:8af770583cae92208eae43a5875591b41641d3f27b942148127f6a44377c9df6",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -1947,26 +1947,27 @@
     },
     "08a9c2a95b1cd04e9f9b6829": {
       "asns": {
-        "51167": 6
+        "51167": 7
       },
       "baits": {
         "/.git/config": 1,
         "/AGENT.md": 1,
         "/AGENTS.md": 1,
         "/GEMINI.md": 1,
+        "/api/.env": 1,
         "/backend/.env": 1,
         "/config.json": 1
       },
       "countries": {
-        "FR": 6
+        "FR": 7
       },
       "devices": {
-        "desktop": 6
+        "desktop": 7
       },
-      "events": 6,
+      "events": 7,
       "first_seen": "2026-09-17T01:10:31Z",
       "id": "08a9c2a95b1cd04e9f9b6829",
-      "last_seen": "2026-09-25T01:44:16Z",
+      "last_seen": "2026-09-26T01:27:26Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -3183,21 +3184,21 @@
     },
     "10d9a36f41b6417d8a0079d1": {
       "asns": {
-        "132203": 2
+        "132203": 4
       },
       "baits": {
-        "/": 2
+        "/": 4
       },
       "countries": {
-        "DE": 2
+        "DE": 4
       },
       "devices": {
-        "mobile": 2
+        "mobile": 4
       },
-      "events": 2,
+      "events": 4,
       "first_seen": "2026-09-19T06:47:51Z",
       "id": "10d9a36f41b6417d8a0079d1",
-      "last_seen": "2026-09-19T06:47:51Z",
+      "last_seen": "2026-09-26T03:09:23Z",
       "network_identity": "ip:v1:bb233fee2df9847ab1c91ae768b8a6b96fb8edd68dd4700b706eefaf792cf14c",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -5239,23 +5240,60 @@
     },
     "1d0203ac1f918ff60bbe4506": {
       "asns": {
-        "8075": 2
+        "8075": 3
       },
       "baits": {
-        "/": 2
+        "/": 3
       },
       "countries": {
-        "NL": 2
+        "NL": 3
       },
       "devices": {
-        "desktop": 2
+        "desktop": 3
       },
-      "events": 2,
+      "events": 3,
       "first_seen": "2026-09-19T02:21:53Z",
       "id": "1d0203ac1f918ff60bbe4506",
-      "last_seen": "2026-09-25T00:20:53Z",
+      "last_seen": "2026-09-26T02:35:59Z",
       "network_identity": "ip:v1:2aa2943d0dde84b50a41e67b6f4854e14c4a2b6e81e7e26af130a42d6b4eb307",
       "user_agent": "curl/8.6.0",
+      "verified_bot_categories": {}
+    },
+    "1d12fdf96f8cba2a18c720df": {
+      "asns": {
+        "197170": 17
+      },
+      "baits": {
+        "/.aws/credentials": 1,
+        "/.env.bak": 1,
+        "/.env.dist": 1,
+        "/.env.local": 1,
+        "/_profiler/phpinfo": 1,
+        "/api/.env": 1,
+        "/app/etc/env.php": 1,
+        "/config/app.php": 1,
+        "/config/mailgun.php": 1,
+        "/config/packages/swiftmailer.yaml": 1,
+        "/configuration.php": 1,
+        "/database.yml": 1,
+        "/env-config.js": 1,
+        "/laravel/.env": 1,
+        "/local_settings.py": 1,
+        "/web.config": 1,
+        "/wp-config.php": 1
+      },
+      "countries": {
+        "DE": 17
+      },
+      "devices": {
+        "desktop": 17
+      },
+      "events": 17,
+      "first_seen": "2026-09-25T22:37:50Z",
+      "id": "1d12fdf96f8cba2a18c720df",
+      "last_seen": "2026-09-25T22:37:51Z",
+      "network_identity": "ip:v1:607ba63f4338529104d0d932e34e07a7fc557a10443e84999bb314cf073dfb6c",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
     },
     "1d3fae5ef7d144fc46c5a84c": {
@@ -8845,22 +8883,23 @@
     },
     "33902824f0b721a7dfb49902": {
       "asns": {
-        "51167": 2
+        "51167": 3
       },
       "baits": {
+        "/.env": 1,
         "/AGENT.md": 1,
         "/GEMINI.md": 1
       },
       "countries": {
-        "FR": 2
+        "FR": 3
       },
       "devices": {
-        "desktop": 2
+        "desktop": 3
       },
-      "events": 2,
+      "events": 3,
       "first_seen": "2026-09-21T03:58:56Z",
       "id": "33902824f0b721a7dfb49902",
-      "last_seen": "2026-09-21T03:58:57Z",
+      "last_seen": "2026-09-26T01:27:25Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0",
       "verified_bot_categories": {}
@@ -9559,23 +9598,23 @@
     },
     "3759506870c0a8a8144bdfb0": {
       "asns": {
-        "211590": 11
+        "211590": 14
       },
       "baits": {
-        "/": 7,
-        "/feed/": 1,
-        "/wp-json/batch/v1": 3
+        "/": 8,
+        "/feed/": 2,
+        "/wp-json/batch/v1": 4
       },
       "countries": {
-        "FR": 11
+        "FR": 14
       },
       "devices": {
-        "desktop": 11
+        "desktop": 14
       },
-      "events": 11,
+      "events": 14,
       "first_seen": "2026-09-19T01:02:43Z",
       "id": "3759506870c0a8a8144bdfb0",
-      "last_seen": "2026-09-20T04:37:25Z",
+      "last_seen": "2026-09-26T02:18:07Z",
       "network_identity": "ip:v1:d40815b8c2f9b2b190dfd6b9015264379c424cf76c6f6170f8c153a12a7fa824",
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -11097,6 +11136,38 @@
       "last_seen": "2026-09-18T01:47:48Z",
       "network_identity": "ip:v1:3251b75efaf69eb865f459fea8a8a9dfad6e127976f65e7ee400439fdaaa8379",
       "user_agent": "Mozilla/5.0",
+      "verified_bot_categories": {}
+    },
+    "42430e82f65969851f4f0068": {
+      "asns": {
+        "197170": 12
+      },
+      "baits": {
+        "/.env.backup": 1,
+        "/.env.dev": 1,
+        "/.env.example": 1,
+        "/.env.production": 1,
+        "/.git/packed-refs": 1,
+        "/app/.env": 1,
+        "/app/config/parameters.yml": 1,
+        "/config.inc.php": 1,
+        "/config/aws/credentials": 1,
+        "/firebase-config.js": 1,
+        "/mail.php": 1,
+        "/schema.prisma": 1
+      },
+      "countries": {
+        "DE": 12
+      },
+      "devices": {
+        "desktop": 12
+      },
+      "events": 12,
+      "first_seen": "2026-09-25T22:37:50Z",
+      "id": "42430e82f65969851f4f0068",
+      "last_seen": "2026-09-25T22:37:52Z",
+      "network_identity": "ip:v1:607ba63f4338529104d0d932e34e07a7fc557a10443e84999bb314cf073dfb6c",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
     },
     "42e824d6a8534c68b18bf8b1": {
@@ -12957,21 +13028,21 @@
     },
     "502f738cb30918c013c4cf3f": {
       "asns": {
-        "132203": 5
+        "132203": 6
       },
       "baits": {
-        "/": 5
+        "/": 6
       },
       "countries": {
-        "HK": 5
+        "HK": 6
       },
       "devices": {
-        "mobile": 5
+        "mobile": 6
       },
-      "events": 5,
+      "events": 6,
       "first_seen": "2026-09-15T01:12:39Z",
       "id": "502f738cb30918c013c4cf3f",
-      "last_seen": "2026-09-23T01:08:06Z",
+      "last_seen": "2026-09-26T03:04:21Z",
       "network_identity": "ip:v1:8197db333724cc4e8e7706ff5426f12457a86dceb20a7480f70a7e14838c1aca",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -13984,6 +14055,30 @@
         "Search Engine Optimization": 1
       }
     },
+    "58102c20d1b54307d7c4488e": {
+      "asns": {
+        "23033": 2
+      },
+      "baits": {
+        "/": 1,
+        "/robots.txt": 1
+      },
+      "countries": {
+        "US": 2
+      },
+      "devices": {
+        "desktop": 2
+      },
+      "events": 2,
+      "first_seen": "2026-09-26T02:23:40Z",
+      "id": "58102c20d1b54307d7c4488e",
+      "last_seen": "2026-09-26T02:24:28Z",
+      "network_identity": "ip:v1:ce796f3d058401de60a1a515c484000e99a598d9e62a8e93ef54020e2e3c731b",
+      "user_agent": "Mozilla/5.0 (compatible; DotBot/1.2; +https://opensiteexplorer.org/dotbot; help@moz.com)",
+      "verified_bot_categories": {
+        "Search Engine Optimization": 2
+      }
+    },
     "5894065aa08ff855f37f5fe8": {
       "asns": {
         "18779": 1
@@ -14028,23 +14123,23 @@
     },
     "5947373753e9ed5a69dbb190": {
       "asns": {
-        "211590": 5
+        "211590": 7
       },
       "baits": {
-        "/": 3,
+        "/": 5,
         "/feed/": 1,
         "/wp-json/batch/v1": 1
       },
       "countries": {
-        "FR": 5
+        "FR": 7
       },
       "devices": {
-        "desktop": 5
+        "desktop": 7
       },
-      "events": 5,
+      "events": 7,
       "first_seen": "2026-09-19T01:02:43Z",
       "id": "5947373753e9ed5a69dbb190",
-      "last_seen": "2026-09-20T04:37:25Z",
+      "last_seen": "2026-09-26T02:18:07Z",
       "network_identity": "ip:v1:d40815b8c2f9b2b190dfd6b9015264379c424cf76c6f6170f8c153a12a7fa824",
       "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -14323,24 +14418,24 @@
     },
     "5c3d62783b53c82e358ee3b6": {
       "asns": {
-        "51167": 4
+        "51167": 5
       },
       "baits": {
-        "/": 1,
+        "/": 2,
         "/.env": 1,
         "/.env.production": 1,
         "/.mcp.json": 1
       },
       "countries": {
-        "FR": 4
+        "FR": 5
       },
       "devices": {
-        "desktop": 4
+        "desktop": 5
       },
-      "events": 4,
+      "events": 5,
       "first_seen": "2026-09-14T21:26:36Z",
       "id": "5c3d62783b53c82e358ee3b6",
-      "last_seen": "2026-09-22T02:27:36Z",
+      "last_seen": "2026-09-26T01:27:24Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15",
       "verified_bot_categories": {}
@@ -14783,21 +14878,21 @@
     },
     "5e799495316e57f07453e0e6": {
       "asns": {
-        "13335": 866
+        "13335": 870
       },
       "baits": {
-        "/wp-admin/install.php": 866
+        "/wp-admin/install.php": 870
       },
       "countries": {
-        "RU": 866
+        "RU": 870
       },
       "devices": {
-        "desktop": 866
+        "desktop": 870
       },
-      "events": 866,
+      "events": 870,
       "first_seen": "2026-09-13T20:18:42Z",
       "id": "5e799495316e57f07453e0e6",
-      "last_seen": "2026-09-25T21:02:10Z",
+      "last_seen": "2026-09-26T04:51:03Z",
       "network_identity": "ip:v1:16bb63ce617207dd7f2930ffa030c3f1b7fc017ee1084314b5ce9b5b8af927b8",
       "user_agent": "http://sss.saarland/wp-admin/install.php?step=1",
       "verified_bot_categories": {}
@@ -16103,6 +16198,27 @@
       "last_seen": "2026-09-16T08:51:31Z",
       "network_identity": "ip:v1:4cab820212a7214997b473a1f3a3a853580ae6c02a871b25dc2985d669c69c60",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 8_2) AppleWebKit/550.48 (KHTML, like Gecko) Chrome/93.0.2183 Safari/537.36",
+      "verified_bot_categories": {}
+    },
+    "65e1402bdf08a502bd228fad": {
+      "asns": {
+        "14618": 1
+      },
+      "baits": {
+        "/robots.txt": 1
+      },
+      "countries": {
+        "US": 1
+      },
+      "devices": {
+        "desktop": 1
+      },
+      "events": 1,
+      "first_seen": "2026-09-26T04:52:39Z",
+      "id": "65e1402bdf08a502bd228fad",
+      "last_seen": "2026-09-26T04:52:39Z",
+      "network_identity": "ip:v1:a1090980a9e54bf3d794475d7d44bd5dc87edd2caa3ecab5571702c322cae887",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/600.2.5 (KHTML, like Gecko) Version/8.0.2 Safari/600.2.5 (Gort)",
       "verified_bot_categories": {}
     },
     "65e4308a1308cc02b7fa8632": {
@@ -17753,6 +17869,49 @@
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
     },
+    "6fcca6e0aaa49331f3436a3f": {
+      "asns": {
+        "197170": 23
+      },
+      "baits": {
+        "/.env.old": 1,
+        "/.env.prod": 1,
+        "/.env.sample": 1,
+        "/.env.save": 1,
+        "/.env~": 1,
+        "/.git/ORIG_HEAD": 1,
+        "/.git/logs/HEAD": 1,
+        "/@fs/config/mail.php": 1,
+        "/application/config/email.php": 1,
+        "/aws.yml": 1,
+        "/backend/.env": 1,
+        "/compose.yml": 1,
+        "/config/database.js": 1,
+        "/config/packages/mailer.yaml": 1,
+        "/config/packages/mailer.yml": 1,
+        "/docker-compose.yml": 1,
+        "/env.js": 1,
+        "/info.php": 1,
+        "/phpinfo.php": 1,
+        "/public/.env": 1,
+        "/settings.js": 1,
+        "/smtp.php": 1,
+        "/wp-config.php.bak": 1
+      },
+      "countries": {
+        "DE": 23
+      },
+      "devices": {
+        "desktop": 23
+      },
+      "events": 23,
+      "first_seen": "2026-09-25T22:37:50Z",
+      "id": "6fcca6e0aaa49331f3436a3f",
+      "last_seen": "2026-09-25T22:37:51Z",
+      "network_identity": "ip:v1:607ba63f4338529104d0d932e34e07a7fc557a10443e84999bb314cf073dfb6c",
+      "user_agent": "Go-http-client/1.1",
+      "verified_bot_categories": {}
+    },
     "7010fb94ff5fdb47b0265cdd": {
       "asns": {
         "45090": 3
@@ -17797,21 +17956,22 @@
     },
     "7026ae3a86b206aa74e31154": {
       "asns": {
-        "51167": 1
+        "51167": 2
       },
       "baits": {
-        "/": 1
+        "/": 1,
+        "/.git/config": 1
       },
       "countries": {
-        "FR": 1
+        "FR": 2
       },
       "devices": {
-        "desktop": 1
+        "desktop": 2
       },
-      "events": 1,
+      "events": 2,
       "first_seen": "2026-09-17T01:10:30Z",
       "id": "7026ae3a86b206aa74e31154",
-      "last_seen": "2026-09-17T01:10:30Z",
+      "last_seen": "2026-09-26T01:27:28Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0",
       "verified_bot_categories": {}
@@ -18619,6 +18779,38 @@
       "network_identity": "ip:v1:b2533f0fbb741ab48155df9ea87b721fb0c19d2e1a40c45b9f27a4953549aaad",
       "user_agent": "Mozilla/5.0 (l9scan/2.0.33e27393e2431313e2838313; +https://leakix.net)",
       "verified_bot_categories": {}
+    },
+    "75d84dee7b7f223ad2e87680": {
+      "asns": {
+        "8075": 12
+      },
+      "baits": {
+        "/": 1,
+        "/assets/718fcd7f35875537/favicon.svg": 1,
+        "/assets/718fcd7f35875537/interlocutors.css": 1,
+        "/assets/718fcd7f35875537/navigation-aperture.js": 1,
+        "/assets/718fcd7f35875537/site-fold.js": 1,
+        "/assets/718fcd7f35875537/site-holon.js": 2,
+        "/assets/718fcd7f35875537/site-organism-crawlerbait.js": 2,
+        "/assets/718fcd7f35875537/site-organism-papers.js": 1,
+        "/assets/718fcd7f35875537/site-organism-philosophy.css": 1,
+        "/assets/718fcd7f35875537/site-runtime.css": 1
+      },
+      "countries": {
+        "US": 12
+      },
+      "devices": {
+        "desktop": 12
+      },
+      "events": 12,
+      "first_seen": "2026-09-25T22:25:08Z",
+      "id": "75d84dee7b7f223ad2e87680",
+      "last_seen": "2026-09-25T22:25:34Z",
+      "network_identity": "ip:v1:50494e09721970a33cc75ee7736639f98563bd30cc40b9ad87fd7a921d2430ef",
+      "user_agent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.4; +https://openai.com/gptbot)",
+      "verified_bot_categories": {
+        "AI Crawler": 12
+      }
     },
     "760951332d1a9bc024571c29": {
       "asns": {
@@ -19720,6 +19912,27 @@
         "Search Engine Crawler": 1
       }
     },
+    "7e2de4f6032afaca6417c499": {
+      "asns": {
+        "132203": 2
+      },
+      "baits": {
+        "/": 2
+      },
+      "countries": {
+        "US": 2
+      },
+      "devices": {
+        "mobile": 2
+      },
+      "events": 2,
+      "first_seen": "2026-09-26T01:13:29Z",
+      "id": "7e2de4f6032afaca6417c499",
+      "last_seen": "2026-09-26T01:13:31Z",
+      "network_identity": "ip:v1:7eedf623cbd80928884d81d4ac8ab0fbd72c2fa6d5bb95cdc85c455e67957786",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+      "verified_bot_categories": {}
+    },
     "7e3bce029d81f1ef3d8e2a88": {
       "asns": {
         "263740": 1
@@ -20403,23 +20616,24 @@
     },
     "8281a7189f196227691dec57": {
       "asns": {
-        "51167": 3
+        "51167": 4
       },
       "baits": {
         "/.git/config": 1,
         "/api/.env": 1,
+        "/app/.env": 1,
         "/backend/.env": 1
       },
       "countries": {
-        "FR": 3
+        "FR": 4
       },
       "devices": {
-        "desktop": 3
+        "desktop": 4
       },
-      "events": 3,
+      "events": 4,
       "first_seen": "2026-09-15T22:50:30Z",
       "id": "8281a7189f196227691dec57",
-      "last_seen": "2026-09-22T02:27:37Z",
+      "last_seen": "2026-09-26T01:27:27Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15",
       "verified_bot_categories": {}
@@ -25115,6 +25329,29 @@
       "user_agent": "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)",
       "verified_bot_categories": {}
     },
+    "9e7d36a5b820d865f7686465": {
+      "asns": {
+        "140577": 1
+      },
+      "baits": {
+        "/robots.txt": 1
+      },
+      "countries": {
+        "US": 1
+      },
+      "devices": {
+        "desktop": 1
+      },
+      "events": 1,
+      "first_seen": "2026-09-25T21:35:17Z",
+      "id": "9e7d36a5b820d865f7686465",
+      "last_seen": "2026-09-25T21:35:17Z",
+      "network_identity": "ip:v1:58cb9bb22013306c26b14c2331ea2ca4c262d72e6ba71d9e858357e975116413",
+      "user_agent": "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)",
+      "verified_bot_categories": {
+        "Search Engine Optimization": 1
+      }
+    },
     "9ed93167242672927ba614c1": {
       "asns": {
         "396982": 5
@@ -26109,6 +26346,27 @@
       "user_agent": "Mozilla/5.0 (compatible; InternetMeasurement/1.0; +https://internet-measurement.com/)",
       "verified_bot_categories": {}
     },
+    "a4bc5ae44a63560c0efdd2e0": {
+      "asns": {
+        "62874": 1
+      },
+      "baits": {
+        "/": 1
+      },
+      "countries": {
+        "US": 1
+      },
+      "devices": {
+        "desktop": 1
+      },
+      "events": 1,
+      "first_seen": "2026-09-25T22:12:52Z",
+      "id": "a4bc5ae44a63560c0efdd2e0",
+      "last_seen": "2026-09-25T22:12:52Z",
+      "network_identity": "ip:v1:aa024873f3742bde98a6eafe6d072bc437aeffc0b4c82f750f49d4fd5cc556d2",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+      "verified_bot_categories": {}
+    },
     "a4d2ea5c31cf2ac06b721c01": {
       "asns": {
         "14061": 2
@@ -27012,23 +27270,24 @@
     },
     "aa2cd8d69b4a6e3440368b72": {
       "asns": {
-        "51167": 3
+        "51167": 4
       },
       "baits": {
         "/": 1,
         "/.zshrc": 1,
-        "/api/.env": 1
+        "/api/.env": 1,
+        "/backend/.env": 1
       },
       "countries": {
-        "FR": 3
+        "FR": 4
       },
       "devices": {
-        "desktop": 3
+        "desktop": 4
       },
-      "events": 3,
+      "events": 4,
       "first_seen": "2026-09-15T22:50:29Z",
       "id": "aa2cd8d69b4a6e3440368b72",
-      "last_seen": "2026-09-24T01:32:11Z",
+      "last_seen": "2026-09-26T01:27:27Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -28149,21 +28408,21 @@
     },
     "b1fa51cf1831b6776dac605f": {
       "asns": {
-        "37963": 2
+        "37963": 3
       },
       "baits": {
-        "/": 2
+        "/": 3
       },
       "countries": {
-        "CN": 2
+        "CN": 3
       },
       "devices": {
-        "mobile": 2
+        "mobile": 3
       },
-      "events": 2,
+      "events": 3,
       "first_seen": "2026-09-21T17:18:50Z",
       "id": "b1fa51cf1831b6776dac605f",
-      "last_seen": "2026-09-21T17:18:51Z",
+      "last_seen": "2026-09-26T01:46:51Z",
       "network_identity": "ip:v1:6d80a79a0e8ad91f71dcf3b01c064d1b0eac69786f00df4a8ea18145e7408a5e",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -29328,6 +29587,29 @@
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
     },
+    "b89ee8c3d08aa31a82d805f2": {
+      "asns": {
+        "140577": 1
+      },
+      "baits": {
+        "/": 1
+      },
+      "countries": {
+        "US": 1
+      },
+      "devices": {
+        "desktop": 1
+      },
+      "events": 1,
+      "first_seen": "2026-09-25T21:35:18Z",
+      "id": "b89ee8c3d08aa31a82d805f2",
+      "last_seen": "2026-09-25T21:35:18Z",
+      "network_identity": "ip:v1:e8f067c18d345c8cf9f0eba69a86fac7505ed69fe931cdbbcea42aae3c95ac8b",
+      "user_agent": "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)",
+      "verified_bot_categories": {
+        "Search Engine Optimization": 1
+      }
+    },
     "b8b49fcb3b80ad6d899f58e6": {
       "asns": {
         "13335": 1
@@ -29348,6 +29630,29 @@
       "network_identity": "ip:v1:78beb095ddbbc0ca65f1a7b37e8fd80de4835cc7ce11ca0a08d252dd32d19c0f",
       "user_agent": "Mozilla/5.0",
       "verified_bot_categories": {}
+    },
+    "b8dfb56e4a83389bf8f2aa2f": {
+      "asns": {
+        "8075": 1
+      },
+      "baits": {
+        "/robots.txt": 1
+      },
+      "countries": {
+        "US": 1
+      },
+      "devices": {
+        "desktop": 1
+      },
+      "events": 1,
+      "first_seen": "2026-09-25T22:25:08Z",
+      "id": "b8dfb56e4a83389bf8f2aa2f",
+      "last_seen": "2026-09-25T22:25:08Z",
+      "network_identity": "ip:v1:aa1c961af9b0d754c485375caf0e8d1c7089c76da03eb2d024d1fa39c7e2c25a",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36; compatible; OAI-SearchBot/1.4; robots.txt; +https://openai.com/searchbot",
+      "verified_bot_categories": {
+        "Search Engine Crawler": 1
+      }
     },
     "b8e439212481e60ca54aa155": {
       "asns": {
@@ -31287,25 +31592,26 @@
     },
     "c2692de6938b0985e4ab69a7": {
       "asns": {
-        "51167": 6
+        "51167": 7
       },
       "baits": {
         "/": 1,
         "/.env": 2,
+        "/.env.bak": 1,
         "/.env.production": 1,
         "/backend/.env": 1,
         "/config.json": 1
       },
       "countries": {
-        "FR": 6
+        "FR": 7
       },
       "devices": {
-        "mobile": 6
+        "mobile": 7
       },
-      "events": 6,
+      "events": 7,
       "first_seen": "2026-09-13T21:40:05Z",
       "id": "c2692de6938b0985e4ab69a7",
-      "last_seen": "2026-09-25T01:44:17Z",
+      "last_seen": "2026-09-26T01:27:28Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -31886,6 +32192,27 @@
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
     },
+    "c4cb881d07415703fc388f73": {
+      "asns": {
+        "28573": 1
+      },
+      "baits": {
+        "/xmlrpc.php": 1
+      },
+      "countries": {
+        "BR": 1
+      },
+      "devices": {
+        "desktop": 1
+      },
+      "events": 1,
+      "first_seen": "2026-09-26T01:22:42Z",
+      "id": "c4cb881d07415703fc388f73",
+      "last_seen": "2026-09-26T01:22:42Z",
+      "network_identity": "ip:v1:d16873652360bb43dd364ffa4d007adcd820177029b12d519fa8c0b11a86a40e",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; arm64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/71.0.0.0 Safari/537.36",
+      "verified_bot_categories": {}
+    },
     "c506cd91601f24336f6d717a": {
       "asns": {
         "211298": 1
@@ -31988,21 +32315,21 @@
     },
     "c58df51d07ae136efb188b10": {
       "asns": {
-        "219502": 1
+        "219502": 2
       },
       "baits": {
-        "/.env": 1
+        "/.env": 2
       },
       "countries": {
-        "NL": 1
+        "NL": 2
       },
       "devices": {
-        "desktop": 1
+        "desktop": 2
       },
-      "events": 1,
+      "events": 2,
       "first_seen": "2026-09-22T17:01:59Z",
       "id": "c58df51d07ae136efb188b10",
-      "last_seen": "2026-09-22T17:01:59Z",
+      "last_seen": "2026-09-26T01:45:54Z",
       "network_identity": "ip:v1:ca37391a60b94e850462ce9e1716a21b1d1f2d3d0510951632af9d27180c9383",
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -32312,24 +32639,25 @@
     },
     "c7a38eda5c0f077faeb92d1f": {
       "asns": {
-        "51167": 4
+        "51167": 5
       },
       "baits": {
         "/.env.bak": 1,
+        "/.zshrc": 1,
         "/QWEN.md": 1,
         "/app/.env": 1,
         "/config.json": 1
       },
       "countries": {
-        "FR": 4
+        "FR": 5
       },
       "devices": {
-        "desktop": 4
+        "desktop": 5
       },
-      "events": 4,
+      "events": 5,
       "first_seen": "2026-09-13T21:40:05Z",
       "id": "c7a38eda5c0f077faeb92d1f",
-      "last_seen": "2026-09-23T02:37:11Z",
+      "last_seen": "2026-09-26T01:27:27Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -33904,21 +34232,21 @@
     },
     "d4ab976a3b60c93f7e27d0a7": {
       "asns": {
-        "132203": 2
+        "132203": 3
       },
       "baits": {
-        "/": 2
+        "/": 3
       },
       "countries": {
-        "US": 2
+        "US": 3
       },
       "devices": {
-        "mobile": 2
+        "mobile": 3
       },
-      "events": 2,
+      "events": 3,
       "first_seen": "2026-09-16T13:07:16Z",
       "id": "d4ab976a3b60c93f7e27d0a7",
-      "last_seen": "2026-09-16T13:07:17Z",
+      "last_seen": "2026-09-26T01:11:10Z",
       "network_identity": "ip:v1:0c678f9e9d68ccbe5ae68f6ea8a6b75fb8f89a61dedb9521545dd955213d2974",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -34656,23 +34984,23 @@
     },
     "d96a58d488671dc67c2cd13f": {
       "asns": {
-        "211590": 8
+        "211590": 14
       },
       "baits": {
-        "/": 3,
+        "/": 6,
         "/wp-json/": 1,
-        "/wp-json/batch/v1": 4
+        "/wp-json/batch/v1": 7
       },
       "countries": {
-        "FR": 8
+        "FR": 14
       },
       "devices": {
-        "desktop": 8
+        "desktop": 14
       },
-      "events": 8,
+      "events": 14,
       "first_seen": "2026-09-19T01:02:44Z",
       "id": "d96a58d488671dc67c2cd13f",
-      "last_seen": "2026-09-20T04:37:25Z",
+      "last_seen": "2026-09-26T02:18:07Z",
       "network_identity": "ip:v1:d40815b8c2f9b2b190dfd6b9015264379c424cf76c6f6170f8c153a12a7fa824",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -34703,7 +35031,7 @@
     },
     "d9c878167742fb987f838676": {
       "asns": {
-        "51167": 6
+        "51167": 8
       },
       "baits": {
         "/": 1,
@@ -34711,18 +35039,20 @@
         "/.env.bak": 1,
         "/.git/config": 1,
         "/.mcp.json": 1,
-        "/.zshrc": 1
+        "/.zshrc": 1,
+        "/CLAUDE.md": 1,
+        "/GEMINI.md": 1
       },
       "countries": {
-        "FR": 6
+        "FR": 8
       },
       "devices": {
-        "desktop": 6
+        "desktop": 8
       },
-      "events": 6,
+      "events": 8,
       "first_seen": "2026-09-13T21:40:05Z",
       "id": "d9c878167742fb987f838676",
-      "last_seen": "2026-09-24T01:32:09Z",
+      "last_seen": "2026-09-26T01:27:26Z",
       "network_identity": "ip:v1:f599637fb699f41f2a3b9ad5c2f431af334a675eb645067facfd4acf4314e0f6",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -35153,21 +35483,21 @@
     },
     "dd37aefa19bc79aebe8c51a9": {
       "asns": {
-        "211590": 3
+        "211590": 4
       },
       "baits": {
-        "/": 3
+        "/": 4
       },
       "countries": {
-        "FR": 3
+        "FR": 4
       },
       "devices": {
-        "desktop": 3
+        "desktop": 4
       },
-      "events": 3,
+      "events": 4,
       "first_seen": "2026-09-14T17:12:22Z",
       "id": "dd37aefa19bc79aebe8c51a9",
-      "last_seen": "2026-09-20T04:37:24Z",
+      "last_seen": "2026-09-26T02:18:06Z",
       "network_identity": "ip:v1:b669aeb8936f591136a7f7a16ccce52d09c9485d2fbdf0a722b113478a3a8a87",
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -35300,6 +35630,27 @@
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Version/17.0 Safari/605.1.15",
       "verified_bot_categories": {}
     },
+    "de76c4b91629118c4dcfeb2d": {
+      "asns": {
+        "132203": 2
+      },
+      "baits": {
+        "/": 2
+      },
+      "countries": {
+        "US": 2
+      },
+      "devices": {
+        "mobile": 2
+      },
+      "events": 2,
+      "first_seen": "2026-09-26T04:05:33Z",
+      "id": "de76c4b91629118c4dcfeb2d",
+      "last_seen": "2026-09-26T04:05:33Z",
+      "network_identity": "ip:v1:05bfb2042295a77747d4b27c5bb97cac1bb3b5b0275fb7a099c448e98f4c4b63",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+      "verified_bot_categories": {}
+    },
     "de7c803411c8673e34b31136": {
       "asns": {
         "396982": 14
@@ -35425,6 +35776,53 @@
       "last_seen": "2026-09-14T04:42:00Z",
       "network_identity": "ip:v1:b3a35463148a5cde8cb2a24254d3363b330f41401d7cda5e26cab836391069fc",
       "user_agent": "Go-http-client/1.1",
+      "verified_bot_categories": {}
+    },
+    "def4106d758c5337a1f6c3e6": {
+      "asns": {
+        "197170": 27
+      },
+      "baits": {
+        "/.env": 1,
+        "/.env.development": 1,
+        "/.env.production.local": 1,
+        "/.env.staging": 1,
+        "/.env.swp": 1,
+        "/.env.testing": 1,
+        "/.env.txt": 1,
+        "/@fs/.env.development": 1,
+        "/@fs/.env.local": 1,
+        "/@fs/.env.staging": 1,
+        "/@fs/config/services.php": 1,
+        "/@fs/wp-config.php": 1,
+        "/appsettings.Production.json": 1,
+        "/appsettings.json": 1,
+        "/config/db.ts": 1,
+        "/config/mail.php": 1,
+        "/config/secrets.yml": 1,
+        "/config/services.php": 1,
+        "/docker-compose.yaml": 1,
+        "/docker/.env": 1,
+        "/js/env.js": 1,
+        "/phpinfo": 1,
+        "/pi.php": 1,
+        "/prisma/schema.prisma": 1,
+        "/runtime-env.js": 1,
+        "/sites/default/settings.php": 1,
+        "/wp-config.old.php": 1
+      },
+      "countries": {
+        "DE": 27
+      },
+      "devices": {
+        "desktop": 27
+      },
+      "events": 27,
+      "first_seen": "2026-09-25T22:37:50Z",
+      "id": "def4106d758c5337a1f6c3e6",
+      "last_seen": "2026-09-25T22:37:51Z",
+      "network_identity": "ip:v1:607ba63f4338529104d0d932e34e07a7fc557a10443e84999bb314cf073dfb6c",
+      "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
     },
     "def9618cb0fcee0852b20ca7": {
@@ -36662,6 +37060,40 @@
       "last_seen": "2026-09-24T21:43:06Z",
       "network_identity": "ip:v1:5b832910b30b071f4fce348e4e211b2eaf5c06fffeb44bbed0f99413d54d3161",
       "user_agent": "papers-public-witness/1",
+      "verified_bot_categories": {}
+    },
+    "e58b3301ec352903f3a1cc25": {
+      "asns": {
+        "197170": 14
+      },
+      "baits": {
+        "/": 1,
+        "/.env.docker": 1,
+        "/@fs/.env.production": 1,
+        "/LocalSettings.php": 1,
+        "/admin/phpinfo.php": 1,
+        "/bootstrap/cache/config.php": 1,
+        "/config.js": 1,
+        "/config/database.php": 1,
+        "/config/database.yml": 1,
+        "/core/.env": 1,
+        "/settings.py": 1,
+        "/static/js/config.js": 1,
+        "/storage/.env": 1,
+        "/www/.env": 1
+      },
+      "countries": {
+        "DE": 14
+      },
+      "devices": {
+        "desktop": 14
+      },
+      "events": 14,
+      "first_seen": "2026-09-25T22:37:50Z",
+      "id": "e58b3301ec352903f3a1cc25",
+      "last_seen": "2026-09-25T22:37:52Z",
+      "network_identity": "ip:v1:607ba63f4338529104d0d932e34e07a7fc557a10443e84999bb314cf073dfb6c",
+      "user_agent": "curl/8.5.0",
       "verified_bot_categories": {}
     },
     "e59ef39ba32312639809adba": {
@@ -40155,25 +40587,25 @@
     },
     "f95e8215f20937c3948c3eb4": {
       "asns": {
-        "8075": 1
+        "8075": 2
       },
       "baits": {
-        "/robots.txt": 1
+        "/robots.txt": 2
       },
       "countries": {
-        "US": 1
+        "US": 2
       },
       "devices": {
-        "desktop": 1
+        "desktop": 2
       },
-      "events": 1,
+      "events": 2,
       "first_seen": "2026-09-20T15:19:25Z",
       "id": "f95e8215f20937c3948c3eb4",
-      "last_seen": "2026-09-20T15:19:25Z",
+      "last_seen": "2026-09-25T23:27:37Z",
       "network_identity": "ip:v1:d64ad8731086c7487392751520818f093c43a99deead2eb45142a8d412ad8a35",
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36; compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot",
       "verified_bot_categories": {
-        "Search Engine Crawler": 1
+        "Search Engine Crawler": 2
       }
     },
     "f974aa012467271bdc3f7b22": {
@@ -40551,21 +40983,21 @@
     },
     "fc3fd75f9abfa9d612b20c70": {
       "asns": {
-        "45102": 17
+        "45102": 18
       },
       "baits": {
-        "/": 17
+        "/": 18
       },
       "countries": {
-        "US": 17
+        "US": 18
       },
       "devices": {
-        "mobile": 17
+        "mobile": 18
       },
-      "events": 17,
+      "events": 18,
       "first_seen": "2026-09-20T17:14:22Z",
       "id": "fc3fd75f9abfa9d612b20c70",
-      "last_seen": "2026-09-25T19:34:37Z",
+      "last_seen": "2026-09-26T04:27:45Z",
       "network_identity": "ip:v1:600767355f7c942ba2fe4b63b98165127440cd2282ca60a0b439daa1a6b9f79b",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -40679,21 +41111,21 @@
     },
     "fd79dbbf66c7cc062ae08560": {
       "asns": {
-        "132203": 1
+        "132203": 2
       },
       "baits": {
-        "/": 1
+        "/": 2
       },
       "countries": {
-        "DE": 1
+        "DE": 2
       },
       "devices": {
-        "mobile": 1
+        "mobile": 2
       },
-      "events": 1,
+      "events": 2,
       "first_seen": "2026-09-22T13:02:52Z",
       "id": "fd79dbbf66c7cc062ae08560",
-      "last_seen": "2026-09-22T13:02:52Z",
+      "last_seen": "2026-09-26T02:50:19Z",
       "network_identity": "ip:v1:29d622418ddc29d02c552406ea51526a21d3e54a9ab0bfdadcdf7fc0e7186391",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -41000,21 +41432,22 @@
     },
     "ff74c9cd4ca09397e86a6e54": {
       "asns": {
-        "219502": 1
+        "219502": 2
       },
       "baits": {
-        "/.env": 1
+        "/.env": 2
       },
       "countries": {
+        "NL": 1,
         "TR": 1
       },
       "devices": {
-        "desktop": 1
+        "desktop": 2
       },
-      "events": 1,
+      "events": 2,
       "first_seen": "2026-09-22T16:14:14Z",
       "id": "ff74c9cd4ca09397e86a6e54",
-      "last_seen": "2026-09-22T16:14:14Z",
+      "last_seen": "2026-09-26T02:09:06Z",
       "network_identity": "ip:v1:1e8ce7a528daac96ef40323c7df1fec188fe8a03f398977b9afbca18441f3657",
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
       "verified_bot_categories": {}
@@ -147304,12 +147737,1572 @@
       "source_index": 4,
       "status": 200,
       "t": "2026-09-25T21:15:17Z"
+    },
+    {
+      "crawler": "9e7d36a5b820d865f7686465",
+      "method": "GET",
+      "path": "/robots.txt",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 96,
+      "status": 200,
+      "t": "2026-09-25T21:35:17Z"
+    },
+    {
+      "crawler": "b89ee8c3d08aa31a82d805f2",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 56,
+      "status": 200,
+      "t": "2026-09-25T21:35:18Z"
+    },
+    {
+      "crawler": "a4bc5ae44a63560c0efdd2e0",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 87,
+      "status": 200,
+      "t": "2026-09-25T22:12:52Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 9,
+      "status": 200,
+      "t": "2026-09-25T22:25:08Z"
+    },
+    {
+      "crawler": "b8dfb56e4a83389bf8f2aa2f",
+      "method": "GET",
+      "path": "/robots.txt",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 69,
+      "status": 200,
+      "t": "2026-09-25T22:25:08Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/interlocutors.css",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 84,
+      "status": 200,
+      "t": "2026-09-25T22:25:11Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-fold.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 2,
+      "status": 200,
+      "t": "2026-09-25T22:25:15Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-organism-papers.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 10,
+      "status": 200,
+      "t": "2026-09-25T22:25:17Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-runtime.css",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 11,
+      "status": 200,
+      "t": "2026-09-25T22:25:18Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/navigation-aperture.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 3,
+      "status": 200,
+      "t": "2026-09-25T22:25:19Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-holon.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 85,
+      "status": 200,
+      "t": "2026-09-25T22:25:22Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/favicon.svg",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 33,
+      "status": 200,
+      "t": "2026-09-25T22:25:23Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-organism-philosophy.css",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 34,
+      "status": 200,
+      "t": "2026-09-25T22:25:27Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-organism-crawlerbait.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 4,
+      "status": 200,
+      "t": "2026-09-25T22:25:28Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-organism-crawlerbait.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 35,
+      "status": 200,
+      "t": "2026-09-25T22:25:28Z"
+    },
+    {
+      "crawler": "75d84dee7b7f223ad2e87680",
+      "method": "GET",
+      "path": "/assets/718fcd7f35875537/site-holon.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 36,
+      "status": 200,
+      "t": "2026-09-25T22:25:34Z"
+    },
+    {
+      "crawler": "01be2f08378d7bd1a1af68a3",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 62,
+      "status": 200,
+      "t": "2026-09-25T22:31:46Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/.env.production",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 5,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/application/config/email.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 6,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/www/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 7,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/.env.save",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 13,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/storage/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 14,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/info.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 16,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/admin/phpinfo.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 17,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/wp-config.old.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 19,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/config/packages/mailer.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 25,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/api/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 26,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/.env.staging",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 29,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/.env.docker",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 31,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/wp-config.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 41,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/static/js/config.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 42,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/runtime-env.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 43,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/.env.testing",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 46,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/backend/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 47,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/smtp.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 48,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/config.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 49,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/.env.development",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 50,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/config/packages/swiftmailer.yaml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 51,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/config/services.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 53,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/pi.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 57,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/.env.swp",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 58,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/aws.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 61,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/config/mail.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 63,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/.aws/credentials",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 67,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/.env.local",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 70,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/public/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 71,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/config/packages/mailer.yaml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 72,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/.env.old",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 74,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/firebase-config.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 75,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 81,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/laravel/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 83,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/.env.backup",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 88,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/.env.dev",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 97,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/bootstrap/cache/config.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 98,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/.env.production.local",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 99,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/config/secrets.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 105,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/wp-config.php.bak",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 106,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/.env.bak",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 107,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/local_settings.py",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 108,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/app/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 109,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/mail.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 110,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/env-config.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 115,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/settings.py",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 118,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/_profiler/phpinfo",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 120,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/.env.prod",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 121,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/.env.txt",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 122,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/js/env.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 123,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/docker/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 136,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/env.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 137,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/phpinfo.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 141,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/.env~",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 142,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/settings.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 147,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/phpinfo",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 148,
+      "status": 403,
+      "t": "2026-09-25T22:37:50Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/web.config",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 18,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/core/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 20,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/prisma/schema.prisma",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 27,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/@fs/wp-config.php",
+      "query": "?import",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 28,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/.git/packed-refs",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 30,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/.git/logs/HEAD",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 37,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/app/config/parameters.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 38,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/config/db.ts",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 39,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/schema.prisma",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 40,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/@fs/.env.production",
+      "query": "?import",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 44,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/config/mailgun.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 45,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/config.inc.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 52,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/@fs/config/services.php",
+      "query": "?import",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 54,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/config/database.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 55,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/@fs/.env.local",
+      "query": "?import",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 59,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/@fs/.env.staging",
+      "query": "?import",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 64,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/config/aws/credentials",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 65,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/.env.dist",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 68,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/docker-compose.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 73,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/app/etc/env.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 76,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/configuration.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 77,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/@fs/config/mail.php",
+      "query": "?import",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 82,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/LocalSettings.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 86,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/config/database.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 100,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/appsettings.json",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 101,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/appsettings.Production.json",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 111,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/compose.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 112,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/sites/default/settings.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 113,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/.git/ORIG_HEAD",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 114,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/config/app.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 116,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/.env.sample",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 117,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/@fs/.env.development",
+      "query": "?import",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 138,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "6fcca6e0aaa49331f3436a3f",
+      "method": "GET",
+      "path": "/config/database.js",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 143,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "def4106d758c5337a1f6c3e6",
+      "method": "GET",
+      "path": "/docker-compose.yaml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 144,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "1d12fdf96f8cba2a18c720df",
+      "method": "GET",
+      "path": "/database.yml",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 145,
+      "status": 403,
+      "t": "2026-09-25T22:37:51Z"
+    },
+    {
+      "crawler": "e58b3301ec352903f3a1cc25",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 124,
+      "status": 403,
+      "t": "2026-09-25T22:37:52Z"
+    },
+    {
+      "crawler": "42430e82f65969851f4f0068",
+      "method": "GET",
+      "path": "/.env.example",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 146,
+      "status": 403,
+      "t": "2026-09-25T22:37:52Z"
+    },
+    {
+      "crawler": "5e799495316e57f07453e0e6",
+      "method": "GET",
+      "path": "/wp-admin/install.php",
+      "query": "?step=1",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 89,
+      "status": 404,
+      "t": "2026-09-25T22:55:15Z"
+    },
+    {
+      "crawler": "f95e8215f20937c3948c3eb4",
+      "method": "GET",
+      "path": "/robots.txt",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 128,
+      "status": 200,
+      "t": "2026-09-25T23:27:37Z"
+    },
+    {
+      "crawler": "5e799495316e57f07453e0e6",
+      "method": "GET",
+      "path": "/wp-admin/install.php",
+      "query": "?step=1",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 139,
+      "status": 404,
+      "t": "2026-09-26T00:52:17Z"
+    },
+    {
+      "crawler": "d4ab976a3b60c93f7e27d0a7",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 21,
+      "status": 200,
+      "t": "2026-09-26T01:11:10Z"
+    },
+    {
+      "crawler": "7e2de4f6032afaca6417c499",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 135,
+      "status": 301,
+      "t": "2026-09-26T01:13:29Z"
+    },
+    {
+      "crawler": "7e2de4f6032afaca6417c499",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 66,
+      "status": 200,
+      "t": "2026-09-26T01:13:31Z"
+    },
+    {
+      "crawler": "c4cb881d07415703fc388f73",
+      "method": "POST",
+      "path": "/xmlrpc.php",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 140,
+      "status": 405,
+      "t": "2026-09-26T01:22:42Z"
+    },
+    {
+      "crawler": "5c3d62783b53c82e358ee3b6",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 119,
+      "status": 200,
+      "t": "2026-09-26T01:27:24Z"
+    },
+    {
+      "crawler": "33902824f0b721a7dfb49902",
+      "method": "GET",
+      "path": "/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 152,
+      "status": 404,
+      "t": "2026-09-26T01:27:25Z"
+    },
+    {
+      "crawler": "08a9c2a95b1cd04e9f9b6829",
+      "method": "GET",
+      "path": "/api/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 94,
+      "status": 404,
+      "t": "2026-09-26T01:27:26Z"
+    },
+    {
+      "crawler": "d9c878167742fb987f838676",
+      "method": "GET",
+      "path": "/CLAUDE.md",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 95,
+      "status": 404,
+      "t": "2026-09-26T01:27:26Z"
+    },
+    {
+      "crawler": "d9c878167742fb987f838676",
+      "method": "GET",
+      "path": "/GEMINI.md",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 153,
+      "status": 404,
+      "t": "2026-09-26T01:27:26Z"
+    },
+    {
+      "crawler": "c7a38eda5c0f077faeb92d1f",
+      "method": "GET",
+      "path": "/.zshrc",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 129,
+      "status": 404,
+      "t": "2026-09-26T01:27:27Z"
+    },
+    {
+      "crawler": "8281a7189f196227691dec57",
+      "method": "GET",
+      "path": "/app/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 130,
+      "status": 404,
+      "t": "2026-09-26T01:27:27Z"
+    },
+    {
+      "crawler": "aa2cd8d69b4a6e3440368b72",
+      "method": "GET",
+      "path": "/backend/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 154,
+      "status": 404,
+      "t": "2026-09-26T01:27:27Z"
+    },
+    {
+      "crawler": "7026ae3a86b206aa74e31154",
+      "method": "GET",
+      "path": "/.git/config",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 79,
+      "status": 404,
+      "t": "2026-09-26T01:27:28Z"
+    },
+    {
+      "crawler": "c2692de6938b0985e4ab69a7",
+      "method": "GET",
+      "path": "/.env.bak",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 80,
+      "status": 404,
+      "t": "2026-09-26T01:27:28Z"
+    },
+    {
+      "crawler": "01be2f08378d7bd1a1af68a3",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 131,
+      "status": 200,
+      "t": "2026-09-26T01:30:26Z"
+    },
+    {
+      "crawler": "c58df51d07ae136efb188b10",
+      "method": "GET",
+      "path": "/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 127,
+      "status": 404,
+      "t": "2026-09-26T01:45:54Z"
+    },
+    {
+      "crawler": "b1fa51cf1831b6776dac605f",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 133,
+      "status": 301,
+      "t": "2026-09-26T01:46:51Z"
+    },
+    {
+      "crawler": "ff74c9cd4ca09397e86a6e54",
+      "method": "GET",
+      "path": "/.env",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 78,
+      "status": 401,
+      "t": "2026-09-26T02:09:06Z"
+    },
+    {
+      "crawler": "d96a58d488671dc67c2cd13f",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 90,
+      "status": 200,
+      "t": "2026-09-26T02:18:06Z"
+    },
+    {
+      "crawler": "dd37aefa19bc79aebe8c51a9",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 102,
+      "status": 200,
+      "t": "2026-09-26T02:18:06Z"
+    },
+    {
+      "crawler": "3759506870c0a8a8144bdfb0",
+      "method": "GET",
+      "path": "/feed/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 104,
+      "status": 404,
+      "t": "2026-09-26T02:18:06Z"
+    },
+    {
+      "crawler": "d96a58d488671dc67c2cd13f",
+      "method": "POST",
+      "path": "/wp-json/batch/v1",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 22,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "d96a58d488671dc67c2cd13f",
+      "method": "POST",
+      "path": "/wp-json/batch/v1",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 23,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "5947373753e9ed5a69dbb190",
+      "method": "POST",
+      "path": "/",
+      "query": "?rest_route=/batch/v1",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 24,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "3759506870c0a8a8144bdfb0",
+      "method": "POST",
+      "path": "/",
+      "query": "?rest_route=/batch/v1",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 91,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "5947373753e9ed5a69dbb190",
+      "method": "POST",
+      "path": "/",
+      "query": "?rest_route=/batch/v1",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 92,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "d96a58d488671dc67c2cd13f",
+      "method": "POST",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 93,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "d96a58d488671dc67c2cd13f",
+      "method": "POST",
+      "path": "/wp-json/batch/v1",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 103,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "d96a58d488671dc67c2cd13f",
+      "method": "POST",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 150,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "3759506870c0a8a8144bdfb0",
+      "method": "POST",
+      "path": "/wp-json/batch/v1",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 151,
+      "status": 403,
+      "t": "2026-09-26T02:18:07Z"
+    },
+    {
+      "crawler": "58102c20d1b54307d7c4488e",
+      "method": "GET",
+      "path": "/robots.txt",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 149,
+      "status": 200,
+      "t": "2026-09-26T02:23:40Z"
+    },
+    {
+      "crawler": "58102c20d1b54307d7c4488e",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 132,
+      "status": 200,
+      "t": "2026-09-26T02:24:28Z"
+    },
+    {
+      "crawler": "1d0203ac1f918ff60bbe4506",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 32,
+      "status": 200,
+      "t": "2026-09-26T02:35:59Z"
+    },
+    {
+      "crawler": "5e799495316e57f07453e0e6",
+      "method": "GET",
+      "path": "/wp-admin/install.php",
+      "query": "?step=1",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 126,
+      "status": 404,
+      "t": "2026-09-26T02:43:45Z"
+    },
+    {
+      "crawler": "fd79dbbf66c7cc062ae08560",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 125,
+      "status": 200,
+      "t": "2026-09-26T02:50:19Z"
+    },
+    {
+      "crawler": "502f738cb30918c013c4cf3f",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 155,
+      "status": 200,
+      "t": "2026-09-26T03:04:21Z"
+    },
+    {
+      "crawler": "10d9a36f41b6417d8a0079d1",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 15,
+      "status": 301,
+      "t": "2026-09-26T03:09:22Z"
+    },
+    {
+      "crawler": "10d9a36f41b6417d8a0079d1",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 134,
+      "status": 200,
+      "t": "2026-09-26T03:09:23Z"
+    },
+    {
+      "crawler": "de76c4b91629118c4dcfeb2d",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 12,
+      "status": 301,
+      "t": "2026-09-26T04:05:33Z"
+    },
+    {
+      "crawler": "de76c4b91629118c4dcfeb2d",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 60,
+      "status": 200,
+      "t": "2026-09-26T04:05:33Z"
+    },
+    {
+      "crawler": "fc3fd75f9abfa9d612b20c70",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 8,
+      "status": 200,
+      "t": "2026-09-26T04:27:45Z"
+    },
+    {
+      "crawler": "5e799495316e57f07453e0e6",
+      "method": "GET",
+      "path": "/wp-admin/install.php",
+      "query": "?step=1",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 0,
+      "status": 404,
+      "t": "2026-09-26T04:51:03Z"
+    },
+    {
+      "crawler": "65e1402bdf08a502bd228fad",
+      "method": "GET",
+      "path": "/robots.txt",
+      "query": "",
+      "source_file": "20260925T212916Z--20260926T045640Z.traffic.json",
+      "source_index": 1,
+      "status": 200,
+      "t": "2026-09-26T04:52:39Z"
     }
   ],
   "legacy_404_through": "2026-09-18T11:13:56Z",
-  "raw_capture_end": "2026-09-25T21:29:16Z",
+  "raw_capture_end": "2026-09-26T04:56:40Z",
   "raw_capture_start": "2026-08-18T15:42:27Z",
-  "raw_requests": 10624,
+  "raw_requests": 10780,
   "routes": {
     "/": {
       "crawlers": {
@@ -147325,7 +149318,7 @@
         "016e4095920ebbee635e796e": 1,
         "019c550dca018f5274dab8ba": 1,
         "01b51f423e6c7dab77ea402b": 2,
-        "01be2f08378d7bd1a1af68a3": 11,
+        "01be2f08378d7bd1a1af68a3": 13,
         "01d13967e3169d5fab6dc1a5": 1,
         "022b0e049ecaa3c8bccfffd9": 1,
         "026cdfcf7d5ebbc55a22a91b": 2,
@@ -147393,7 +149386,7 @@
         "0fef2c9d53b49d1c60353f81": 1,
         "107071cedcf293dd6d00379d": 1,
         "109983c8ea955c823d63fd0e": 4,
-        "10d9a36f41b6417d8a0079d1": 2,
+        "10d9a36f41b6417d8a0079d1": 4,
         "110a7eafcf8205d12139272a": 1,
         "121c0f4c05a32dd0d1c15826": 2,
         "1227c57dfcdd95005f1f154a": 3,
@@ -147444,7 +149437,7 @@
         "1c2e6a26d89b03c4656ea204": 1,
         "1cb4437f879d518257425c9f": 2,
         "1ccae712a75a84ba746d5954": 1,
-        "1d0203ac1f918ff60bbe4506": 2,
+        "1d0203ac1f918ff60bbe4506": 3,
         "1d7243af95eef8a5455c53f7": 1,
         "1d77939d4ea58856fb5ec9b4": 7,
         "1e078994f1966958a0d9d0db": 3,
@@ -147560,7 +149553,7 @@
         "36fd8a32fdc9c57868031f76": 3,
         "370ea8fbca196f193c2841f8": 1,
         "371a650fef41260a5e301404": 2,
-        "3759506870c0a8a8144bdfb0": 7,
+        "3759506870c0a8a8144bdfb0": 8,
         "37626bb98d7fb2262a444876": 5,
         "37695ca4e18cf0000dce06e0": 1,
         "3779ca1109793f7497983217": 2,
@@ -147657,7 +149650,7 @@
         "4fbf01511bbd890b11e62709": 4,
         "4fdd2dab4b89ac19dbb1c9d5": 2,
         "5024c4b4ee68f50375486ac7": 2,
-        "502f738cb30918c013c4cf3f": 5,
+        "502f738cb30918c013c4cf3f": 6,
         "507158faaea74e4ccd4bccec": 1,
         "5079d3905d626d496d49453a": 1,
         "50cba061aa82c3f27870dd13": 1,
@@ -147687,9 +149680,10 @@
         "5757635cf1907c6d2b65d937": 1,
         "57927abf9d81c45ee4a9b54b": 1,
         "57b5ade2324b606a759c4a9c": 1,
+        "58102c20d1b54307d7c4488e": 1,
         "5894065aa08ff855f37f5fe8": 1,
         "59111d330a7a842e8bd708cd": 3,
-        "5947373753e9ed5a69dbb190": 3,
+        "5947373753e9ed5a69dbb190": 5,
         "5963e8a964858292b4049c9c": 1,
         "5a77c7e7c3e05e37c378f6e2": 2,
         "5a7e83b7bc6e43b9e3948723": 1,
@@ -147698,7 +149692,7 @@
         "5bbf458024808b148f55563a": 1,
         "5beb69afc5761e53fc5dc4f0": 4,
         "5c16e615f6f6cc9dd13529a9": 3,
-        "5c3d62783b53c82e358ee3b6": 1,
+        "5c3d62783b53c82e358ee3b6": 2,
         "5c69c78e2fc5bf8bbf249368": 1,
         "5c842e0cb813315e2a8fef93": 1,
         "5cabb60db6de603826a207ff": 1,
@@ -147822,6 +149816,7 @@
         "75918e0a3a961989c2f11162": 1,
         "7596f49c0b18f827e5a6d8ae": 1,
         "75d11e08e062a0761eca20dd": 4,
+        "75d84dee7b7f223ad2e87680": 1,
         "760951332d1a9bc024571c29": 10,
         "76156c69b2c28407af754ef7": 1,
         "7623136e030621ac70f0e798": 1,
@@ -147857,6 +149852,7 @@
         "7d9f81a7db2e5ed2f96984d8": 1,
         "7e2012b4ca267d9e35d9095e": 3,
         "7e270aa3ad817a017258f3df": 1,
+        "7e2de4f6032afaca6417c499": 2,
         "7e62c71390ab404b796b725a": 1,
         "7e74b8dd2940524483f6470d": 4,
         "7e96cf6467b6a42cef6f8267": 1,
@@ -148030,6 +150026,7 @@
         "a41a2f8e5822ec99b9bf58db": 2,
         "a467acb25f7c03b43100d00b": 4,
         "a49b990934b2d853c9c34eba": 1,
+        "a4bc5ae44a63560c0efdd2e0": 1,
         "a4d2ea5c31cf2ac06b721c01": 2,
         "a4dcb649c16c21e8173d933a": 1,
         "a5108b0982711b5fca46a03b": 1,
@@ -148089,7 +150086,7 @@
         "b0d842fbba2c559e061a04e3": 1,
         "b1929e04383eed4722ffdbef": 1,
         "b1c6706b0f23ce2b0c8818f6": 2,
-        "b1fa51cf1831b6776dac605f": 2,
+        "b1fa51cf1831b6776dac605f": 3,
         "b1fe292b229f7e2f6313b5f5": 1,
         "b218e43996b5b902f6425f3d": 1,
         "b2684ea2bc39f5c69f7a2e91": 2,
@@ -148120,6 +150117,7 @@
         "b82cfec1d9458869a2e2c70c": 2,
         "b86e16f1eb67275cbd3c6686": 8,
         "b89090e53011b5d622cb8c7c": 2,
+        "b89ee8c3d08aa31a82d805f2": 1,
         "b8e439212481e60ca54aa155": 1,
         "b8e94502f406c555b279bbcc": 3,
         "b933f9e1b14732372aea07c6": 1,
@@ -148262,7 +150260,7 @@
         "d4684255a482dfdc8d2f50bc": 1,
         "d48034d2eef936687d4df7d5": 3,
         "d498e128e05d1f3b378da70b": 1,
-        "d4ab976a3b60c93f7e27d0a7": 2,
+        "d4ab976a3b60c93f7e27d0a7": 3,
         "d4d7b07d34ed71dffabcbc22": 1,
         "d4f0442cc0844a3208157dda": 1,
         "d4f3f5abd2a19966c7350958": 1,
@@ -148284,7 +150282,7 @@
         "d94bdb4a8eefec313ade7665": 1,
         "d9544c17391605ce6f5738e9": 1,
         "d9568f82d55a35d303a091d4": 1,
-        "d96a58d488671dc67c2cd13f": 3,
+        "d96a58d488671dc67c2cd13f": 6,
         "d9747732259ae4bdc83aaaf2": 3,
         "d9c878167742fb987f838676": 1,
         "d9f2d685569ba8681dd02f63": 2,
@@ -148299,11 +150297,12 @@
         "dc5b3cb04b0223e536d2b1e6": 2,
         "dc74b0976cdc81f4a6780430": 1,
         "dd01e83b1cd5f7ece7bec48a": 2,
-        "dd37aefa19bc79aebe8c51a9": 3,
+        "dd37aefa19bc79aebe8c51a9": 4,
         "dd6efcaecafd6c70ef0858c3": 2,
         "ddb122a2700c0be153e3765e": 1,
         "dde77629a8cc8b0622b9e7a2": 3,
         "de010f8d10b095d262acf236": 1,
+        "de76c4b91629118c4dcfeb2d": 2,
         "de80b70742c7d91ec6c48af3": 1,
         "de8c9662b237b8d3c640f461": 1,
         "dea0b821f265063b1f6c3e04": 1,
@@ -148342,6 +150341,7 @@
         "e5201032260c806ed21ebb35": 1,
         "e52e744cbf2961570c1d4e58": 1,
         "e5405bf0de0bd24ae24c20ae": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "e607b5d0bea06d557dc48dd3": 1,
         "e61ea105c9b47d6cb710e02e": 3,
         "e623fe966c9517b1958738a9": 1,
@@ -148447,11 +150447,11 @@
         "fb2e1a3e1a432a27a620024f": 1,
         "fb90a5ad0432ef5debba909d": 2,
         "fb9b762437bcc0b26a2df9d7": 1,
-        "fc3fd75f9abfa9d612b20c70": 17,
+        "fc3fd75f9abfa9d612b20c70": 18,
         "fca3edbc6cef27ce12ce3a1a": 1,
         "fd01af961c41938896943d1f": 1,
         "fd6971ad2e6a495c3b6da11a": 1,
-        "fd79dbbf66c7cc062ae08560": 1,
+        "fd79dbbf66c7cc062ae08560": 2,
         "fdc5bdff3df65495234f7500": 8,
         "fe0cec3b2d493833548fe677": 1,
         "fec9f7f5bc531825e5d6da93": 1,
@@ -148463,16 +150463,16 @@
         "ffe688a941e6119d64d0fb23": 1
       },
       "first_seen": "2026-09-13T20:02:54Z",
-      "last_seen": "2026-09-25T21:15:16Z",
+      "last_seen": "2026-09-26T04:27:45Z",
       "legacy_404_observations": 0,
       "path": "/",
-      "raw_requests": 1979,
+      "raw_requests": 2006,
       "statuses": {
-        "200": 1339,
-        "301": 266,
+        "200": 1356,
+        "301": 270,
         "304": 8,
         "401": 150,
-        "403": 86,
+        "403": 92,
         "405": 32,
         "499": 79,
         "522": 19
@@ -148614,6 +150614,7 @@
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
         "1a3e38f4a76b50490c8ff869": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "1df5dc38d7dd22e1ef1fad5c": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "a675dd17b3589093c4032da9": 1,
@@ -148623,12 +150624,12 @@
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 4,
       "path": "/.aws/credentials",
-      "raw_requests": 10,
+      "raw_requests": 11,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 8
       }
     },
@@ -148979,6 +150980,7 @@
         "291a1dd414f7b546a99e4cdc": 1,
         "2ba10259206cfa8421357e62": 1,
         "30642e69bad6977a947c9f49": 1,
+        "33902824f0b721a7dfb49902": 1,
         "36fd8a32fdc9c57868031f76": 1,
         "467a9b5115c683d7d60e9605": 1,
         "46e84d6b28d8c14456d776bf": 1,
@@ -149006,12 +151008,13 @@
         "bc9c1143e799adfc4a6a9b7b": 1,
         "c2692de6938b0985e4ab69a7": 2,
         "c56ebfdbbfa4b4b0556c02e3": 1,
-        "c58df51d07ae136efb188b10": 1,
+        "c58df51d07ae136efb188b10": 2,
         "c61cf69f3128983c69158160": 1,
         "c64d8808da7a3a90132f0c79": 1,
         "ca32be2388484ef923baa885": 1,
         "cc852432cc6ef0c2a20b002e": 2,
         "d9c878167742fb987f838676": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "e019286b412c9a77014debaf": 1,
         "e0f4395d9bb624b484ae3b10": 1,
         "e107705bae483d85924a4b93": 1,
@@ -149020,18 +151023,18 @@
         "ebff9e95a7335bd442f71e1e": 2,
         "f4e19f99714bc3f6185650e9": 1,
         "ff1e2786850c452cdc7e2384": 1,
-        "ff74c9cd4ca09397e86a6e54": 1
+        "ff74c9cd4ca09397e86a6e54": 2
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-25T19:28:07Z",
+      "last_seen": "2026-09-26T02:09:06Z",
       "legacy_404_observations": 32,
       "path": "/.env",
-      "raw_requests": 86,
+      "raw_requests": 90,
       "statuses": {
         "301": 6,
-        "401": 8,
-        "403": 2,
-        "404": 65,
+        "401": 9,
+        "403": 3,
+        "404": 67,
         "499": 5
       }
     },
@@ -149072,6 +151075,7 @@
         "286270ec09895b1d29f191c9": 3,
         "2ba10259206cfa8421357e62": 1,
         "2cdd4e4904b032537212a13b": 1,
+        "42430e82f65969851f4f0068": 1,
         "4334098c576d39dad9f41ca1": 1,
         "56a0b2585a235f5f3718785c": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
@@ -149082,13 +151086,13 @@
         "ebff9e95a7335bd442f71e1e": 2
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 22,
       "path": "/.env.backup",
-      "raw_requests": 20,
+      "raw_requests": 21,
       "statuses": {
         "301": 4,
-        "403": 2,
+        "403": 3,
         "404": 14
       }
     },
@@ -149125,6 +151129,7 @@
     "/.env.bak": {
       "crawlers": {
         "00a497d923e2e771c7b2dd33": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "208effc822c04b02a18ed8bc": 1,
         "286270ec09895b1d29f191c9": 3,
         "854319a811e948eb6526304a": 1,
@@ -149132,6 +151137,7 @@
         "a14f7281214bdaebe5d73d9c": 1,
         "b8e94502f406c555b279bbcc": 1,
         "bef0337da948924da2beb7c0": 1,
+        "c2692de6938b0985e4ab69a7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "c7a38eda5c0f077faeb92d1f": 1,
         "d939dc96e10f6ffc6579df31": 1,
@@ -149143,15 +151149,15 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-24T01:32:11Z",
+      "last_seen": "2026-09-26T01:27:28Z",
       "legacy_404_observations": 15,
       "path": "/.env.bak",
-      "raw_requests": 20,
+      "raw_requests": 22,
       "statuses": {
         "301": 2,
         "401": 1,
-        "403": 2,
-        "404": 15
+        "403": 3,
+        "404": 16
       }
     },
     "/.env.ci": {
@@ -149176,6 +151182,7 @@
         "2078d4a3496e6eb5c2f21fc7": 1,
         "208effc822c04b02a18ed8bc": 2,
         "286270ec09895b1d29f191c9": 2,
+        "42430e82f65969851f4f0068": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "854319a811e948eb6526304a": 1,
         "86aff9f491f46896f57e08b1": 2,
@@ -149184,13 +151191,13 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 7,
       "path": "/.env.dev",
-      "raw_requests": 14,
+      "raw_requests": 15,
       "statuses": {
         "301": 3,
-        "403": 2,
+        "403": 3,
         "404": 9
       }
     },
@@ -149210,6 +151217,7 @@
         "bc9c1143e799adfc4a6a9b7b": 1,
         "bef0337da948924da2beb7c0": 1,
         "d2b051bac5a3d6c2c7c3b8d0": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "e019286b412c9a77014debaf": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "ee4ef907877be5b8b8d75e04": 1,
@@ -149217,20 +151225,21 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-14T21:15:41Z",
-      "last_seen": "2026-09-24T10:33:40Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 4,
       "path": "/.env.development",
-      "raw_requests": 20,
+      "raw_requests": 21,
       "statuses": {
         "301": 3,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 14
       }
     },
     "/.env.dist": {
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "208effc822c04b02a18ed8bc": 2,
         "4334098c576d39dad9f41ca1": 1,
         "86aff9f491f46896f57e08b1": 1,
@@ -149240,13 +151249,13 @@
         "f4e6f9376e16550bf32aaa47": 2
       },
       "first_seen": "2026-09-15T13:38:20Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 8,
       "path": "/.env.dist",
-      "raw_requests": 10,
+      "raw_requests": 11,
       "statuses": {
         "301": 2,
-        "403": 2,
+        "403": 3,
         "404": 6
       }
     },
@@ -149258,17 +151267,18 @@
         "86aff9f491f46896f57e08b1": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "b0897692abfd81944dfc2ab7": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "ee4ef907877be5b8b8d75e04": 1
       },
       "first_seen": "2026-09-14T21:15:44Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 4,
       "path": "/.env.docker",
-      "raw_requests": 8,
+      "raw_requests": 9,
       "statuses": {
         "301": 1,
-        "403": 2,
+        "403": 3,
         "404": 5
       }
     },
@@ -149279,6 +151289,7 @@
         "2078d4a3496e6eb5c2f21fc7": 2,
         "208effc822c04b02a18ed8bc": 2,
         "2ba10259206cfa8421357e62": 1,
+        "42430e82f65969851f4f0068": 1,
         "86aff9f491f46896f57e08b1": 2,
         "bef0337da948924da2beb7c0": 1,
         "ebff9e95a7335bd442f71e1e": 1,
@@ -149287,13 +151298,13 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-14T21:15:42Z",
-      "last_seen": "2026-09-23T17:07:21Z",
+      "last_seen": "2026-09-25T22:37:52Z",
       "legacy_404_observations": 11,
       "path": "/.env.example",
-      "raw_requests": 15,
+      "raw_requests": 16,
       "statuses": {
         "301": 4,
-        "403": 2,
+        "403": 3,
         "404": 9
       }
     },
@@ -149343,6 +151354,7 @@
         "00396a1556fe95973ebd9a67": 1,
         "00a497d923e2e771c7b2dd33": 1,
         "1a3e38f4a76b50490c8ff869": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "208effc822c04b02a18ed8bc": 1,
         "286270ec09895b1d29f191c9": 2,
@@ -149360,14 +151372,14 @@
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-24T10:33:39Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 8,
       "path": "/.env.local",
-      "raw_requests": 21,
+      "raw_requests": 22,
       "statuses": {
         "301": 1,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 17
       }
     },
@@ -149394,6 +151406,7 @@
         "286270ec09895b1d29f191c9": 2,
         "2ba10259206cfa8421357e62": 1,
         "4334098c576d39dad9f41ca1": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "86aff9f491f46896f57e08b1": 2,
         "a14f7281214bdaebe5d73d9c": 1,
         "b6b546a35b3a8503937b7446": 1,
@@ -149404,13 +151417,13 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-14T22:09:07Z",
-      "last_seen": "2026-09-25T03:50:31Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 13,
       "path": "/.env.old",
-      "raw_requests": 21,
+      "raw_requests": 22,
       "statuses": {
         "301": 3,
-        "403": 2,
+        "403": 3,
         "404": 16
       }
     },
@@ -149468,6 +151481,7 @@
         "2078d4a3496e6eb5c2f21fc7": 1,
         "208effc822c04b02a18ed8bc": 1,
         "286270ec09895b1d29f191c9": 3,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "854319a811e948eb6526304a": 1,
         "86aff9f491f46896f57e08b1": 2,
@@ -149476,13 +151490,13 @@
         "ee4ef907877be5b8b8d75e04": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 8,
       "path": "/.env.prod",
-      "raw_requests": 14,
+      "raw_requests": 15,
       "statuses": {
         "301": 3,
-        "403": 2,
+        "403": 3,
         "404": 9
       }
     },
@@ -149498,6 +151512,7 @@
         "3506537e8659aea5c01114b5": 1,
         "36fd8a32fdc9c57868031f76": 1,
         "3a21700accb87d06fc2ead1e": 1,
+        "42430e82f65969851f4f0068": 1,
         "4d88f626bf238bd9d8028449": 1,
         "5c3d62783b53c82e358ee3b6": 1,
         "61eeb93e79122892e8a98c6e": 1,
@@ -149519,28 +151534,29 @@
         "ff73e9d9462d1630ff2b0afe": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-24T10:33:40Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 15,
       "path": "/.env.production",
-      "raw_requests": 32,
+      "raw_requests": 33,
       "statuses": {
         "301": 3,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 26
       }
     },
     "/.env.production.local": {
       "crawlers": {
-        "2078d4a3496e6eb5c2f21fc7": 2
+        "2078d4a3496e6eb5c2f21fc7": 2,
+        "def4106d758c5337a1f6c3e6": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/.env.production.local",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/.env.remote": {
@@ -149568,19 +151584,20 @@
         "208effc822c04b02a18ed8bc": 1,
         "2ba10259206cfa8421357e62": 1,
         "56a0b2585a235f5f3718785c": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "87e0603f8b2207a96e5c9b90": 1,
         "b8e94502f406c555b279bbcc": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-14T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 5,
       "path": "/.env.sample",
-      "raw_requests": 8,
+      "raw_requests": 9,
       "statuses": {
         "301": 1,
-        "403": 2,
+        "403": 3,
         "404": 5
       }
     },
@@ -149594,6 +151611,7 @@
         "2ba10259206cfa8421357e62": 1,
         "4334098c576d39dad9f41ca1": 1,
         "56a0b2585a235f5f3718785c": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "87e0603f8b2207a96e5c9b90": 1,
         "921416476a5b6f6206dae56d": 1,
         "a14f7281214bdaebe5d73d9c": 1,
@@ -149604,14 +151622,14 @@
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-14T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 16,
       "path": "/.env.save",
-      "raw_requests": 19,
+      "raw_requests": 20,
       "statuses": {
         "301": 2,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 14
       }
     },
@@ -149651,6 +151669,7 @@
         "b0897692abfd81944dfc2ab7": 1,
         "b8e94502f406c555b279bbcc": 1,
         "bef0337da948924da2beb7c0": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "e019286b412c9a77014debaf": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "ee4ef907877be5b8b8d75e04": 1,
@@ -149658,14 +151677,14 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 10,
       "path": "/.env.staging",
-      "raw_requests": 21,
+      "raw_requests": 22,
       "statuses": {
         "301": 3,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 15
       }
     },
@@ -149694,17 +151713,18 @@
         "bef0337da948924da2beb7c0": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "d2b051bac5a3d6c2c7c3b8d0": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "f4e19f99714bc3f6185650e9": 1
       },
       "first_seen": "2026-09-15T13:38:21Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 5,
       "path": "/.env.swp",
-      "raw_requests": 13,
+      "raw_requests": 14,
       "statuses": {
         "301": 3,
-        "403": 2,
+        "403": 3,
         "404": 8
       }
     },
@@ -149750,15 +151770,16 @@
         "002b9d7f56ed121491fdb5d0": 2,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "b0897692abfd81944dfc2ab7": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/.env.testing",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -149771,16 +151792,17 @@
         "8afba1a0eaccfed8fe8945f9": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "a8064c803911e6d7671a8113": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-14T22:09:07Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 1,
       "path": "/.env.txt",
-      "raw_requests": 9,
+      "raw_requests": 10,
       "statuses": {
         "301": 2,
-        "403": 2,
+        "403": 3,
         "404": 5
       }
     },
@@ -149927,6 +151949,7 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "00a497d923e2e771c7b2dd33": 1,
         "208effc822c04b02a18ed8bc": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "854319a811e948eb6526304a": 1,
         "86aff9f491f46896f57e08b1": 1,
         "b0897692abfd81944dfc2ab7": 2,
@@ -149935,13 +151958,13 @@
         "f6a95dbc1fefb82a3c45152b": 1
       },
       "first_seen": "2026-09-15T13:38:21Z",
-      "last_seen": "2026-09-25T03:50:31Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 1,
       "path": "/.env~",
-      "raw_requests": 10,
+      "raw_requests": 11,
       "statuses": {
         "301": 2,
-        "403": 2,
+        "403": 3,
         "404": 6
       }
     },
@@ -150074,17 +152097,18 @@
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
         "00396a1556fe95973ebd9a67": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-18T16:54:04Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/.git/ORIG_HEAD",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -150119,6 +152143,7 @@
         "69ce643c1c2fdebc7a49bb63": 1,
         "6d945ae1f2be2a07b279d7dd": 1,
         "6e4c54c68622dfec183390c0": 1,
+        "7026ae3a86b206aa74e31154": 1,
         "704634172c322945922c562f": 1,
         "71c92465173fc6ab7d4a4048": 1,
         "71dd4ed19c466632bfcffa18": 1,
@@ -150172,15 +152197,15 @@
         "ff73e9d9462d1630ff2b0afe": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-25T16:00:18Z",
+      "last_seen": "2026-09-26T01:27:28Z",
       "legacy_404_observations": 15,
       "path": "/.git/config",
-      "raw_requests": 96,
+      "raw_requests": 97,
       "statuses": {
         "301": 11,
         "401": 10,
         "403": 2,
-        "404": 73
+        "404": 74
       }
     },
     "/.git/index": {
@@ -150216,31 +152241,33 @@
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
         "00396a1556fe95973ebd9a67": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "b0897692abfd81944dfc2ab7": 1
       },
       "first_seen": "2026-09-18T16:54:04Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/.git/logs/HEAD",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
     "/.git/packed-refs": {
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
+        "42430e82f65969851f4f0068": 1,
         "b0897692abfd81944dfc2ab7": 2
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/.git/packed-refs",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -151259,15 +153286,16 @@
         "15ddad19352cd3d483b9edbf": 1,
         "762e6fb39a0f6b3e59c634ed": 1,
         "aa2cd8d69b4a6e3440368b72": 1,
+        "c7a38eda5c0f077faeb92d1f": 1,
         "d9c878167742fb987f838676": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-22T02:27:37Z",
+      "last_seen": "2026-09-26T01:27:27Z",
       "legacy_404_observations": 1,
       "path": "/.zshrc",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "404": 4
+        "404": 5
       }
     },
     "//assets/272370e974faf3b1/favicon.svg": {
@@ -151745,15 +153773,16 @@
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
         "b0897692abfd81944dfc2ab7": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/@fs/.env.development",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -151761,15 +153790,16 @@
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
         "82e8d0c90bdc5c73db7e0f1a": 2,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 2
       },
       "first_seen": "2026-09-21T13:47:03Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/@fs/.env.local",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -151778,15 +153808,16 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "b0897692abfd81944dfc2ab7": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/@fs/.env.production",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -151795,15 +153826,16 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/@fs/.env.staging",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -151823,16 +153855,17 @@
     },
     "/@fs/config/mail.php": {
       "crawlers": {
+        "6fcca6e0aaa49331f3436a3f": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "b0897692abfd81944dfc2ab7": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/@fs/config/mail.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/@fs/config/services.php": {
@@ -151840,15 +153873,16 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/@fs/config/services.php",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -151894,15 +153928,16 @@
     "/@fs/wp-config.php": {
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
-        "c56ebfdbbfa4b4b0556c02e3": 1
+        "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/@fs/wp-config.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/@vite/client": {
@@ -151971,15 +154006,16 @@
     "/CLAUDE.md": {
       "crawlers": {
         "15ddad19352cd3d483b9edbf": 1,
+        "d9c878167742fb987f838676": 1,
         "ff73e9d9462d1630ff2b0afe": 1
       },
       "first_seen": "2026-09-20T04:24:00Z",
-      "last_seen": "2026-09-25T01:44:17Z",
+      "last_seen": "2026-09-26T01:27:26Z",
       "legacy_404_observations": 0,
       "path": "/CLAUDE.md",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "404": 2
+        "404": 3
       }
     },
     "/CVS/Root": {
@@ -152002,15 +154038,16 @@
         "33902824f0b721a7dfb49902": 1,
         "3a21700accb87d06fc2ead1e": 1,
         "d939dc96e10f6ffc6579df31": 1,
+        "d9c878167742fb987f838676": 1,
         "ff73e9d9462d1630ff2b0afe": 1
       },
       "first_seen": "2026-09-16T22:09:07Z",
-      "last_seen": "2026-09-23T02:37:11Z",
+      "last_seen": "2026-09-26T01:27:26Z",
       "legacy_404_observations": 3,
       "path": "/GEMINI.md",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "404": 5
+        "404": 6
       }
     },
     "/Gemfile": {
@@ -152043,15 +154080,16 @@
     "/LocalSettings.php": {
       "crawlers": {
         "a14f7281214bdaebe5d73d9c": 1,
-        "c56ebfdbbfa4b4b0556c02e3": 1
+        "c56ebfdbbfa4b4b0556c02e3": 1,
+        "e58b3301ec352903f3a1cc25": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/LocalSettings.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/NuGet.Config": {
@@ -152406,6 +154444,7 @@
     },
     "/_profiler/phpinfo": {
       "crawlers": {
+        "1d12fdf96f8cba2a18c720df": 1,
         "208effc822c04b02a18ed8bc": 1,
         "86aff9f491f46896f57e08b1": 2,
         "87e0603f8b2207a96e5c9b90": 1,
@@ -152414,14 +154453,14 @@
         "f6a95dbc1fefb82a3c45152b": 1
       },
       "first_seen": "2026-09-14T22:09:07Z",
-      "last_seen": "2026-09-25T03:50:31Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 2,
       "path": "/_profiler/phpinfo",
-      "raw_requests": 8,
+      "raw_requests": 9,
       "statuses": {
         "301": 3,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -152830,17 +154869,18 @@
         "a14f7281214bdaebe5d73d9c": 1,
         "a391e21bb84344fccd0df0d5": 1,
         "bef0337da948924da2beb7c0": 1,
-        "c56ebfdbbfa4b4b0556c02e3": 1
+        "c56ebfdbbfa4b4b0556c02e3": 1,
+        "e58b3301ec352903f3a1cc25": 1
       },
       "first_seen": "2026-09-15T13:38:51Z",
-      "last_seen": "2026-09-23T16:51:57Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/admin/phpinfo.php",
-      "raw_requests": 7,
+      "raw_requests": 8,
       "statuses": {
         "301": 2,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -153107,6 +155147,8 @@
       "crawlers": {
         "00a497d923e2e771c7b2dd33": 1,
         "0104e73d30bc89711a380790": 2,
+        "08a9c2a95b1cd04e9f9b6829": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "208effc822c04b02a18ed8bc": 2,
         "286270ec09895b1d29f191c9": 2,
@@ -153126,15 +155168,15 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-26T01:27:26Z",
       "legacy_404_observations": 13,
       "path": "/api/.env",
-      "raw_requests": 23,
+      "raw_requests": 25,
       "statuses": {
         "301": 3,
         "401": 1,
-        "403": 2,
-        "404": 17
+        "403": 3,
+        "404": 18
       }
     },
     "/api/admin": {
@@ -153657,6 +155699,8 @@
         "286270ec09895b1d29f191c9": 3,
         "2ba10259206cfa8421357e62": 1,
         "3506537e8659aea5c01114b5": 1,
+        "42430e82f65969851f4f0068": 1,
+        "8281a7189f196227691dec57": 1,
         "86aff9f491f46896f57e08b1": 1,
         "a4077b42babd89750f70d996": 1,
         "b0897692abfd81944dfc2ab7": 1,
@@ -153667,14 +155711,14 @@
         "ff73e9d9462d1630ff2b0afe": 2
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-25T01:44:16Z",
+      "last_seen": "2026-09-26T01:27:27Z",
       "legacy_404_observations": 7,
       "path": "/app/.env",
-      "raw_requests": 19,
+      "raw_requests": 21,
       "statuses": {
         "301": 1,
-        "403": 2,
-        "404": 16
+        "403": 3,
+        "404": 17
       }
     },
     "/app/auth.json": {
@@ -153695,17 +155739,18 @@
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
+        "42430e82f65969851f4f0068": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "e019286b412c9a77014debaf": 3,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-18T04:40:48Z",
-      "last_seen": "2026-09-23T17:07:21Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 1,
       "path": "/app/config/parameters.yml",
-      "raw_requests": 7,
+      "raw_requests": 8,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 5
       }
     },
@@ -153739,15 +155784,16 @@
     },
     "/app/etc/env.php": {
       "crawlers": {
+        "1d12fdf96f8cba2a18c720df": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1
       },
       "first_seen": "2026-09-22T23:18:56Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/app/etc/env.php",
-      "raw_requests": 1,
+      "raw_requests": 2,
       "statuses": {
-        "403": 1
+        "403": 2
       }
     },
     "/app/etc/local.xml": {
@@ -153868,16 +155914,17 @@
     },
     "/application/config/email.php": {
       "crawlers": {
+        "6fcca6e0aaa49331f3436a3f": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "b0897692abfd81944dfc2ab7": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/application/config/email.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/application_default_credentials.json": {
@@ -153944,15 +155991,16 @@
       "crawlers": {
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "e019286b412c9a77014debaf": 2
       },
       "first_seen": "2026-09-18T14:34:40Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/appsettings.Production.json",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -153987,15 +156035,16 @@
         "1a3e38f4a76b50490c8ff869": 2,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "f14e75e42309aafb16152c79": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 8,
       "path": "/appsettings.json",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -158814,6 +160863,7 @@
         "31acdb6537964d7fee5c037a": 1,
         "4699c8acaf21c202d9c84a85": 1,
         "6cd3da6e4b4d8986529cd5ca": 1,
+        "75d84dee7b7f223ad2e87680": 1,
         "7735ff5b134706ebf2eab802": 1,
         "77d82ebcde0dd40f22896313": 1,
         "966671ad35a5c26b1ee4026c": 1,
@@ -158823,27 +160873,28 @@
         "ffe688a941e6119d64d0fb23": 1
       },
       "first_seen": "2026-09-24T12:43:46Z",
-      "last_seen": "2026-09-25T21:15:17Z",
+      "last_seen": "2026-09-25T22:25:23Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/favicon.svg",
-      "raw_requests": 12,
+      "raw_requests": 13,
       "statuses": {
-        "200": 12
+        "200": 13
       }
     },
     "/assets/718fcd7f35875537/interlocutors.css": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 1,
         "a8064c803911e6d7671a8113": 1,
         "bfe444f0d5891630599f7b03": 1,
         "cfb10738cbefec74bdd19334": 1
       },
       "first_seen": "2026-09-24T12:28:14Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:11Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/interlocutors.css",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "200": 3
+        "200": 4
       }
     },
     "/assets/718fcd7f35875537/locus-shader.js": {
@@ -158880,15 +160931,16 @@
     },
     "/assets/718fcd7f35875537/navigation-aperture.js": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 1,
         "a8064c803911e6d7671a8113": 1
       },
       "first_seen": "2026-09-25T14:37:19Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:19Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/navigation-aperture.js",
-      "raw_requests": 1,
+      "raw_requests": 2,
       "statuses": {
-        "200": 1
+        "200": 2
       }
     },
     "/assets/718fcd7f35875537/navigation-physiology.js": {
@@ -158924,31 +160976,33 @@
     },
     "/assets/718fcd7f35875537/site-fold.js": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 1,
         "966671ad35a5c26b1ee4026c": 1,
         "a8064c803911e6d7671a8113": 1,
         "cfb10738cbefec74bdd19334": 1
       },
       "first_seen": "2026-09-24T14:58:37Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:15Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/site-fold.js",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "200": 3
+        "200": 4
       }
     },
     "/assets/718fcd7f35875537/site-holon.js": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 2,
         "a8064c803911e6d7671a8113": 1,
         "bfe444f0d5891630599f7b03": 1
       },
       "first_seen": "2026-09-24T12:28:14Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:34Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/site-holon.js",
-      "raw_requests": 2,
+      "raw_requests": 4,
       "statuses": {
-        "200": 2
+        "200": 4
       }
     },
     "/assets/718fcd7f35875537/site-organism-crawlerbait.css": {
@@ -158968,15 +161022,16 @@
     },
     "/assets/718fcd7f35875537/site-organism-crawlerbait.js": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 2,
         "a8064c803911e6d7671a8113": 1
       },
       "first_seen": "2026-09-25T14:37:19Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:28Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/site-organism-crawlerbait.js",
-      "raw_requests": 1,
+      "raw_requests": 3,
       "statuses": {
-        "200": 1
+        "200": 3
       }
     },
     "/assets/718fcd7f35875537/site-organism-papers.css": {
@@ -158997,29 +161052,31 @@
     },
     "/assets/718fcd7f35875537/site-organism-papers.js": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 1,
         "a8064c803911e6d7671a8113": 1
       },
       "first_seen": "2026-09-25T14:37:19Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:17Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/site-organism-papers.js",
-      "raw_requests": 1,
+      "raw_requests": 2,
       "statuses": {
-        "200": 1
+        "200": 2
       }
     },
     "/assets/718fcd7f35875537/site-organism-philosophy.css": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 1,
         "a8064c803911e6d7671a8113": 1,
         "cfb10738cbefec74bdd19334": 1
       },
       "first_seen": "2026-09-24T14:58:37Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:27Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/site-organism-philosophy.css",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "200": 2
+        "200": 3
       }
     },
     "/assets/718fcd7f35875537/site-organism-philosophy.js": {
@@ -159040,16 +161097,17 @@
     },
     "/assets/718fcd7f35875537/site-runtime.css": {
       "crawlers": {
+        "75d84dee7b7f223ad2e87680": 1,
         "a8064c803911e6d7671a8113": 1,
         "cfb10738cbefec74bdd19334": 1
       },
       "first_seen": "2026-09-24T14:58:37Z",
-      "last_seen": "2026-09-25T14:37:19Z",
+      "last_seen": "2026-09-25T22:25:18Z",
       "legacy_404_observations": 0,
       "path": "/assets/718fcd7f35875537/site-runtime.css",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "200": 2
+        "200": 3
       }
     },
     "/assets/718fcd7f35875537/world-view.js": {
@@ -163241,16 +165299,17 @@
     "/aws.yml": {
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:39Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/aws.yml",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -163378,22 +165437,24 @@
         "286270ec09895b1d29f191c9": 2,
         "2ba10259206cfa8421357e62": 1,
         "3506537e8659aea5c01114b5": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "8281a7189f196227691dec57": 1,
         "921416476a5b6f6206dae56d": 1,
         "a14f7281214bdaebe5d73d9c": 1,
+        "aa2cd8d69b4a6e3440368b72": 1,
         "c2692de6938b0985e4ab69a7": 1,
         "d939dc96e10f6ffc6579df31": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-25T01:44:16Z",
+      "last_seen": "2026-09-26T01:27:27Z",
       "legacy_404_observations": 7,
       "path": "/backend/.env",
-      "raw_requests": 16,
+      "raw_requests": 18,
       "statuses": {
         "401": 1,
-        "403": 2,
-        "404": 13
+        "403": 3,
+        "404": 14
       }
     },
     "/backup.sql": {
@@ -163815,15 +165876,16 @@
     "/bootstrap/cache/config.php": {
       "crawlers": {
         "82e8d0c90bdc5c73db7e0f1a": 2,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 2
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/bootstrap/cache/config.php",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -164326,15 +166388,16 @@
     "/compose.yml": {
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "a14f7281214bdaebe5d73d9c": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/compose.yml",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/composer.json": {
@@ -164395,16 +166458,17 @@
     },
     "/config.inc.php": {
       "crawlers": {
+        "42430e82f65969851f4f0068": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/config.inc.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/config.js": {
@@ -164416,16 +166480,17 @@
         "99d294c85a4ae63e4304c41b": 3,
         "b0897692abfd81944dfc2ab7": 1,
         "e019286b412c9a77014debaf": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 2,
       "path": "/config.js",
-      "raw_requests": 11,
+      "raw_requests": 12,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 9
       }
     },
@@ -164673,17 +166738,18 @@
     },
     "/config/app.php": {
       "crawlers": {
+        "1d12fdf96f8cba2a18c720df": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "ebff9e95a7335bd442f71e1e": 2
       },
       "first_seen": "2026-09-21T13:47:03Z",
-      "last_seen": "2026-09-23T17:07:21Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/config/app.php",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -164762,16 +166828,17 @@
     },
     "/config/aws/credentials": {
       "crawlers": {
+        "42430e82f65969851f4f0068": 1,
         "82e8d0c90bdc5c73db7e0f1a": 2,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/config/aws/credentials",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -164819,31 +166886,33 @@
     },
     "/config/database.js": {
       "crawlers": {
+        "6fcca6e0aaa49331f3436a3f": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/config/database.js",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/config/database.php": {
       "crawlers": {
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T13:47:03Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/config/database.php",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -164852,15 +166921,16 @@
         "1a3e38f4a76b50490c8ff869": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "f4e6f9376e16550bf32aaa47": 2
       },
       "first_seen": "2026-09-18T04:40:48Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 1,
       "path": "/config/database.yml",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -164869,15 +166939,16 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-23T17:07:21Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/config/db.ts",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -164942,30 +167013,32 @@
         "00396a1556fe95973ebd9a67": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-18T16:54:09Z",
-      "last_seen": "2026-09-23T17:07:21Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/config/mail.php",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
         "301": 1,
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
     "/config/mailgun.php": {
       "crawlers": {
+        "1d12fdf96f8cba2a18c720df": 1,
         "82e8d0c90bdc5c73db7e0f1a": 2
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/config/mailgun.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/config/ovh-backups.json": {
@@ -164985,45 +167058,48 @@
     "/config/packages/mailer.yaml": {
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/config/packages/mailer.yaml",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/config/packages/mailer.yml": {
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/config/packages/mailer.yml",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
     "/config/packages/swiftmailer.yaml": {
       "crawlers": {
+        "1d12fdf96f8cba2a18c720df": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "a14f7281214bdaebe5d73d9c": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/config/packages/swiftmailer.yaml",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/config/parameters.yml": {
@@ -165072,15 +167148,16 @@
         "1a3e38f4a76b50490c8ff869": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "f4e6f9376e16550bf32aaa47": 2
       },
       "first_seen": "2026-09-18T04:40:48Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 1,
       "path": "/config/secrets.yml",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -165102,15 +167179,16 @@
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
         "b0897692abfd81944dfc2ab7": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T13:47:03Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/config/services.php",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -165196,16 +167274,17 @@
     },
     "/configuration.php": {
       "crawlers": {
+        "1d12fdf96f8cba2a18c720df": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "b0897692abfd81944dfc2ab7": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/configuration.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/configuration/auth.json": {
@@ -165309,18 +167388,19 @@
         "921416476a5b6f6206dae56d": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "b6b546a35b3a8503937b7446": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-14T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:20Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 3,
       "path": "/core/.env",
-      "raw_requests": 10,
+      "raw_requests": 11,
       "statuses": {
         "301": 1,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 6
       }
     },
@@ -165733,16 +167813,17 @@
     },
     "/database.yml": {
       "crawlers": {
+        "1d12fdf96f8cba2a18c720df": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "b0897692abfd81944dfc2ab7": 1
       },
       "first_seen": "2026-09-21T23:42:43Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/database.yml",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/database/.env": {
@@ -166136,15 +168217,16 @@
         "1a3e38f4a76b50490c8ff869": 2,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "e019286b412c9a77014debaf": 1
       },
       "first_seen": "2026-09-18T04:40:48Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 1,
       "path": "/docker-compose.yaml",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -166154,19 +168236,20 @@
         "1a3e38f4a76b50490c8ff869": 1,
         "36fd8a32fdc9c57868031f76": 1,
         "4d88f626bf238bd9d8028449": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "c64d8808da7a3a90132f0c79": 1,
         "e019286b412c9a77014debaf": 1,
         "ebff9e95a7335bd442f71e1e": 2
       },
       "first_seen": "2026-09-13T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 3,
       "path": "/docker-compose.yml",
-      "raw_requests": 10,
+      "raw_requests": 11,
       "statuses": {
         "401": 1,
-        "403": 1,
+        "403": 2,
         "404": 8
       }
     },
@@ -166178,18 +168261,19 @@
         "b0897692abfd81944dfc2ab7": 1,
         "bef0337da948924da2beb7c0": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "ee4ef907877be5b8b8d75e04": 1,
         "f4e19f99714bc3f6185650e9": 1
       },
       "first_seen": "2026-09-14T21:16:19Z",
-      "last_seen": "2026-09-23T17:07:20Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 8,
       "path": "/docker/.env",
-      "raw_requests": 10,
+      "raw_requests": 11,
       "statuses": {
         "301": 2,
-        "403": 2,
+        "403": 3,
         "404": 6
       }
     },
@@ -166415,6 +168499,7 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "00a497d923e2e771c7b2dd33": 1,
         "1a3e38f4a76b50490c8ff869": 2,
+        "1d12fdf96f8cba2a18c720df": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "5722106dac03deca2bbfca4e": 1,
         "b0897692abfd81944dfc2ab7": 1,
@@ -166422,12 +168507,12 @@
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-18T04:40:48Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 1,
       "path": "/env-config.js",
-      "raw_requests": 9,
+      "raw_requests": 10,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 7
       }
     },
@@ -166469,18 +168554,19 @@
         "1a3e38f4a76b50490c8ff869": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "5722106dac03deca2bbfca4e": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "e019286b412c9a77014debaf": 1,
         "ed67b4e52ea0a45bb9223d4e": 1,
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 9,
       "path": "/env.js",
-      "raw_requests": 9,
+      "raw_requests": 10,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 7
       }
     },
@@ -166774,7 +168860,7 @@
       "crawlers": {
         "002518398c9edbe4d15313ec": 2,
         "022b0e049ecaa3c8bccfffd9": 1,
-        "3759506870c0a8a8144bdfb0": 1,
+        "3759506870c0a8a8144bdfb0": 2,
         "3baceb926df394a538e0d525": 1,
         "3c6672f2baae7ea27bbd1c8d": 1,
         "5947373753e9ed5a69dbb190": 1,
@@ -166785,13 +168871,13 @@
         "e4f882c95d5cc8029458e5c0": 1
       },
       "first_seen": "2026-09-13T22:09:07Z",
-      "last_seen": "2026-09-23T12:26:05Z",
+      "last_seen": "2026-09-26T02:18:06Z",
       "legacy_404_observations": 6,
       "path": "/feed/",
-      "raw_requests": 14,
+      "raw_requests": 15,
       "statuses": {
         "401": 1,
-        "404": 13
+        "404": 14
       }
     },
     "/feed/atom/": {
@@ -166839,16 +168925,17 @@
     },
     "/firebase-config.js": {
       "crawlers": {
+        "42430e82f65969851f4f0068": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "b0897692abfd81944dfc2ab7": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/firebase-config.js",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/firebase-key.json": {
@@ -167453,6 +169540,7 @@
         "132f0b9b4317376b09a43a2d": 1,
         "208effc822c04b02a18ed8bc": 1,
         "6d945ae1f2be2a07b279d7dd": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "75d11e08e062a0761eca20dd": 1,
         "8da1b7571f38a87ca057b0b7": 1,
         "a14f7281214bdaebe5d73d9c": 1,
@@ -167461,14 +169549,14 @@
         "bef0337da948924da2beb7c0": 1
       },
       "first_seen": "2026-09-12T22:09:07Z",
-      "last_seen": "2026-09-23T16:51:52Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 38,
       "path": "/info.php",
-      "raw_requests": 14,
+      "raw_requests": 15,
       "statuses": {
         "301": 1,
         "401": 3,
-        "403": 2,
+        "403": 3,
         "404": 8
       }
     },
@@ -167691,15 +169779,16 @@
         "00a497d923e2e771c7b2dd33": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "99d294c85a4ae63e4304c41b": 4,
-        "c56ebfdbbfa4b4b0556c02e3": 1
+        "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 2,
       "path": "/js/env.js",
-      "raw_requests": 8,
+      "raw_requests": 9,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 6
       }
     },
@@ -167944,6 +170033,7 @@
     "/laravel/.env": {
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "2ba10259206cfa8421357e62": 1,
         "3506537e8659aea5c01114b5": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
@@ -167955,13 +170045,13 @@
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-14T21:15:55Z",
-      "last_seen": "2026-09-23T17:07:20Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 1,
       "path": "/laravel/.env",
-      "raw_requests": 10,
+      "raw_requests": 11,
       "statuses": {
         "301": 5,
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -168142,17 +170232,18 @@
     "/local_settings.py": {
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/local_settings.py",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -168238,16 +170329,17 @@
     },
     "/mail.php": {
       "crawlers": {
+        "42430e82f65969851f4f0068": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "b0897692abfd81944dfc2ab7": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/mail.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/mail/.env": {
@@ -169449,17 +171541,18 @@
         "86aff9f491f46896f57e08b1": 1,
         "a14f7281214bdaebe5d73d9c": 2,
         "b8e94502f406c555b279bbcc": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ee4ef907877be5b8b8d75e04": 1,
         "f6a95dbc1fefb82a3c45152b": 1
       },
       "first_seen": "2026-09-14T21:16:29Z",
-      "last_seen": "2026-09-25T03:50:33Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 16,
       "path": "/phpinfo",
-      "raw_requests": 8,
+      "raw_requests": 9,
       "statuses": {
         "301": 2,
-        "403": 2,
+        "403": 3,
         "404": 4
       }
     },
@@ -169471,6 +171564,7 @@
         "208effc822c04b02a18ed8bc": 2,
         "36fd8a32fdc9c57868031f76": 1,
         "4d88f626bf238bd9d8028449": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "86aff9f491f46896f57e08b1": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "bef0337da948924da2beb7c0": 1,
@@ -169478,14 +171572,14 @@
         "c64d8808da7a3a90132f0c79": 1
       },
       "first_seen": "2026-09-13T22:09:07Z",
-      "last_seen": "2026-09-23T16:51:51Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 5,
       "path": "/phpinfo.php",
-      "raw_requests": 12,
+      "raw_requests": 13,
       "statuses": {
         "301": 2,
         "401": 1,
-        "403": 2,
+        "403": 3,
         "404": 7
       }
     },
@@ -169572,16 +171666,17 @@
         "86aff9f491f46896f57e08b1": 1,
         "b8e94502f406c555b279bbcc": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ff1e2786850c452cdc7e2384": 1
       },
       "first_seen": "2026-09-14T22:09:07Z",
-      "last_seen": "2026-09-23T16:51:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 6,
       "path": "/pi.php",
-      "raw_requests": 6,
+      "raw_requests": 7,
       "statuses": {
         "301": 1,
-        "403": 1,
+        "403": 2,
         "404": 4
       }
     },
@@ -169815,16 +171910,17 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "1a3e38f4a76b50490c8ff869": 1,
         "a14f7281214bdaebe5d73d9c": 2,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-18T14:35:13Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/prisma/schema.prisma",
-      "raw_requests": 6,
+      "raw_requests": 7,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 4
       }
     },
@@ -169973,6 +172069,7 @@
         "208effc822c04b02a18ed8bc": 1,
         "2ba10259206cfa8421357e62": 1,
         "4334098c576d39dad9f41ca1": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "86aff9f491f46896f57e08b1": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
@@ -169980,13 +172077,13 @@
         "ee4ef907877be5b8b8d75e04": 1
       },
       "first_seen": "2026-09-14T21:15:48Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 4,
       "path": "/public/.env",
-      "raw_requests": 8,
+      "raw_requests": 9,
       "statuses": {
         "301": 2,
-        "403": 2,
+        "403": 3,
         "404": 4
       }
     },
@@ -170379,12 +172476,14 @@
         "54429ce7ea8f5a01a3e2d062": 1,
         "55bcb1d678430c2d19b59539": 1,
         "56c3de68df3aef28c4b5e5d5": 4,
+        "58102c20d1b54307d7c4488e": 1,
         "5c98b2bb49a483fb7a078938": 1,
         "60d398137e24c60969ba4456": 2,
         "614c8cba39c155b1667fdf91": 1,
         "63cf92a598d08c1722589594": 1,
         "63f058d2e26f260b5c2adcc3": 1,
         "656be15b3092a874b40baf2e": 4,
+        "65e1402bdf08a502bd228fad": 1,
         "7158df27cbe8ce9f88dd5a7b": 1,
         "7160b9cb613dd3f276e65376": 1,
         "77abc6dc349ad0a0ded46aa2": 1,
@@ -170402,6 +172501,7 @@
         "9889e4b615964ea1aebc919c": 1,
         "9c5c29fffe86b1a445a61924": 1,
         "9d324ee8dc52299635fba81d": 1,
+        "9e7d36a5b820d865f7686465": 1,
         "a210911865d6467d065f525f": 1,
         "aa3a70dcb73488cff372b19f": 1,
         "aa4b7046670dccf6f953040d": 1,
@@ -170410,6 +172510,7 @@
         "b3a5e6fda8ee1059844ce364": 1,
         "b43f6ea323678bc90eae299c": 1,
         "b65c85c263e09c7d2ea1003e": 1,
+        "b8dfb56e4a83389bf8f2aa2f": 1,
         "bb6a011932dbdc39874a103e": 1,
         "bd01d96a3cb93602bf41ac40": 2,
         "bdcecf15fdcf921df776d56d": 1,
@@ -170437,16 +172538,16 @@
         "f12d3813b046368a10e51463": 1,
         "f33b7d78e8c776abaed86138": 1,
         "f5253a6458a80240554f655a": 6,
-        "f95e8215f20937c3948c3eb4": 1,
+        "f95e8215f20937c3948c3eb4": 2,
         "f9d70b38584e399a7f3338ea": 1
       },
       "first_seen": "2026-09-13T20:38:21Z",
-      "last_seen": "2026-09-25T13:02:06Z",
+      "last_seen": "2026-09-26T04:52:39Z",
       "legacy_404_observations": 0,
       "path": "/robots.txt",
-      "raw_requests": 163,
+      "raw_requests": 168,
       "statuses": {
-        "200": 134,
+        "200": 139,
         "301": 12,
         "401": 17
       }
@@ -170468,15 +172569,16 @@
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/runtime-env.js",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -170588,6 +172690,7 @@
     "/schema.prisma": {
       "crawlers": {
         "002b9d7f56ed121491fdb5d0": 1,
+        "42430e82f65969851f4f0068": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "c56ebfdbbfa4b4b0556c02e3": 1,
         "e019286b412c9a77014debaf": 2,
@@ -170595,12 +172698,12 @@
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-18T04:40:48Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 1,
       "path": "/schema.prisma",
-      "raw_requests": 7,
+      "raw_requests": 8,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 5
       }
     },
@@ -171128,16 +173231,17 @@
     },
     "/settings.js": {
       "crawlers": {
+        "6fcca6e0aaa49331f3436a3f": 1,
         "a14f7281214bdaebe5d73d9c": 2,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/settings.js",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -171236,17 +173340,18 @@
         "a14f7281214bdaebe5d73d9c": 1,
         "b0897692abfd81944dfc2ab7": 1,
         "e019286b412c9a77014debaf": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-18T14:35:16Z",
-      "last_seen": "2026-09-23T17:07:23Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/settings.py",
-      "raw_requests": 6,
+      "raw_requests": 7,
       "statuses": {
         "301": 1,
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -171605,16 +173710,17 @@
       "crawlers": {
         "2078d4a3496e6eb5c2f21fc7": 1,
         "a14f7281214bdaebe5d73d9c": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "e019286b412c9a77014debaf": 2,
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-18T04:40:48Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 1,
       "path": "/sites/default/settings.php",
-      "raw_requests": 5,
+      "raw_requests": 6,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 3
       }
     },
@@ -171698,16 +173804,17 @@
     },
     "/smtp.php": {
       "crawlers": {
+        "6fcca6e0aaa49331f3436a3f": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "a14f7281214bdaebe5d73d9c": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-22T23:18:54Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/smtp.php",
-      "raw_requests": 2,
+      "raw_requests": 3,
       "statuses": {
-        "403": 2
+        "403": 3
       }
     },
     "/smtp/.env": {
@@ -171953,15 +174060,16 @@
     "/static/js/config.js": {
       "crawlers": {
         "a14f7281214bdaebe5d73d9c": 2,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/static/js/config.js",
-      "raw_requests": 3,
+      "raw_requests": 4,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 1
       }
     },
@@ -172016,16 +174124,17 @@
         "2ba10259206cfa8421357e62": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "bef0337da948924da2beb7c0": 1,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-15T22:09:07Z",
-      "last_seen": "2026-09-23T17:07:19Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 1,
       "path": "/storage/.env",
-      "raw_requests": 7,
+      "raw_requests": 8,
       "statuses": {
         "301": 1,
-        "403": 2,
+        "403": 3,
         "404": 4
       }
     },
@@ -173169,17 +175278,18 @@
     "/web.config": {
       "crawlers": {
         "1a3e38f4a76b50490c8ff869": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "a14f7281214bdaebe5d73d9c": 1,
         "e019286b412c9a77014debaf": 1
       },
       "first_seen": "2026-09-18T14:35:36Z",
-      "last_seen": "2026-09-22T23:18:56Z",
+      "last_seen": "2026-09-25T22:37:51Z",
       "legacy_404_observations": 0,
       "path": "/web.config",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -173522,7 +175632,7 @@
     },
     "/wp-admin/install.php": {
       "crawlers": {
-        "5e799495316e57f07453e0e6": 866,
+        "5e799495316e57f07453e0e6": 870,
         "7cf8582736ea13d43069f941": 1,
         "97536cf3ef827db7d725989a": 1,
         "a1874b40bebb3f8d27c4e353": 1,
@@ -173531,12 +175641,12 @@
         "c8f7755191baf96db8ed861c": 1
       },
       "first_seen": "2026-09-13T20:18:42Z",
-      "last_seen": "2026-09-25T21:02:10Z",
+      "last_seen": "2026-09-26T04:51:03Z",
       "legacy_404_observations": 1,
       "path": "/wp-admin/install.php",
-      "raw_requests": 873,
+      "raw_requests": 877,
       "statuses": {
-        "404": 871,
+        "404": 875,
         "499": 2
       }
     },
@@ -173581,15 +175691,16 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
         "b0897692abfd81944dfc2ab7": 1,
+        "def4106d758c5337a1f6c3e6": 1,
         "ebff9e95a7335bd442f71e1e": 1
       },
       "first_seen": "2026-09-21T23:42:40Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/wp-config.old.php",
-      "raw_requests": 4,
+      "raw_requests": 5,
       "statuses": {
-        "403": 2,
+        "403": 3,
         "404": 2
       }
     },
@@ -173598,18 +175709,19 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "0104e73d30bc89711a380790": 1,
         "1a3e38f4a76b50490c8ff869": 1,
+        "1d12fdf96f8cba2a18c720df": 1,
         "36fd8a32fdc9c57868031f76": 1,
         "b0897692abfd81944dfc2ab7": 2,
         "c64d8808da7a3a90132f0c79": 1,
         "ebff9e95a7335bd442f71e1e": 2
       },
       "first_seen": "2026-09-16T09:26:07Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/wp-config.php",
-      "raw_requests": 9,
+      "raw_requests": 10,
       "statuses": {
-        "403": 9
+        "403": 10
       }
     },
     "/wp-config.php-backup": {
@@ -173631,18 +175743,19 @@
         "002b9d7f56ed121491fdb5d0": 1,
         "1a3e38f4a76b50490c8ff869": 1,
         "2078d4a3496e6eb5c2f21fc7": 1,
+        "6fcca6e0aaa49331f3436a3f": 1,
         "82e8d0c90bdc5c73db7e0f1a": 1,
         "e019286b412c9a77014debaf": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "f4e6f9376e16550bf32aaa47": 1
       },
       "first_seen": "2026-09-18T05:56:37Z",
-      "last_seen": "2026-09-23T17:07:22Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 0,
       "path": "/wp-config.php.bak",
-      "raw_requests": 7,
+      "raw_requests": 8,
       "statuses": {
-        "403": 7
+        "403": 8
       }
     },
     "/wp-config.php.old": {
@@ -173837,7 +175950,7 @@
       "crawlers": {
         "135732cc30d9098d8130022b": 1,
         "1d77939d4ea58856fb5ec9b4": 7,
-        "3759506870c0a8a8144bdfb0": 3,
+        "3759506870c0a8a8144bdfb0": 4,
         "4803c30f80d889ffc3cf33d8": 1,
         "5947373753e9ed5a69dbb190": 1,
         "5ec5db74c3f299b190e2b3d3": 2,
@@ -173848,16 +175961,16 @@
         "8e08cec9ddf8ccfd2c03ea97": 1,
         "a50dc43098aa03fefb4bab13": 1,
         "b927095e2a9dfea6436d41b7": 1,
-        "d96a58d488671dc67c2cd13f": 4
+        "d96a58d488671dc67c2cd13f": 7
       },
       "first_seen": "2026-09-14T15:29:28Z",
-      "last_seen": "2026-09-25T13:44:27Z",
+      "last_seen": "2026-09-26T02:18:07Z",
       "legacy_404_observations": 0,
       "path": "/wp-json/batch/v1",
-      "raw_requests": 28,
+      "raw_requests": 32,
       "statuses": {
         "401": 2,
-        "403": 13,
+        "403": 17,
         "405": 13
       }
     },
@@ -174337,17 +176450,18 @@
         "56a0b2585a235f5f3718785c": 1,
         "a4077b42babd89750f70d996": 1,
         "b0897692abfd81944dfc2ab7": 2,
+        "e58b3301ec352903f3a1cc25": 1,
         "ebff9e95a7335bd442f71e1e": 1,
         "ee4ef907877be5b8b8d75e04": 1
       },
       "first_seen": "2026-09-14T21:15:54Z",
-      "last_seen": "2026-09-23T17:07:20Z",
+      "last_seen": "2026-09-25T22:37:50Z",
       "legacy_404_observations": 5,
       "path": "/www/.env",
-      "raw_requests": 8,
+      "raw_requests": 9,
       "statuses": {
         "301": 2,
-        "403": 2,
+        "403": 3,
         "404": 4
       }
     },
@@ -174406,6 +176520,7 @@
         "c1e229fb584a1c0928e2471d": 1,
         "c1eca374f09e6cf3e76b1780": 1,
         "c4277439c6b0ad5ebd7157b2": 1,
+        "c4cb881d07415703fc388f73": 1,
         "c65dfe20424e3e41f06e7089": 1,
         "c8e422747d3962db2d822e25": 1,
         "c9e2c463deab079492838534": 1,
@@ -174419,14 +176534,14 @@
         "ebadf3330356a33aa46499d2": 6
       },
       "first_seen": "2026-09-13T22:09:07Z",
-      "last_seen": "2026-09-25T20:11:08Z",
+      "last_seen": "2026-09-26T01:22:42Z",
       "legacy_404_observations": 19,
       "path": "/xmlrpc.php",
-      "raw_requests": 46,
+      "raw_requests": 47,
       "statuses": {
         "401": 1,
         "404": 29,
-        "405": 16
+        "405": 17
       }
     },
     "/y/papers/current.json": {
