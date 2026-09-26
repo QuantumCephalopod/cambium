@@ -290,4 +290,25 @@ result = await response.json();
 assert.equal(response.status, 400);
 assert.match(result.error, /revision does not match/);
 
+// A GitHub materialization dispatch failure must remain unresolved/retryable.
+// Production has a token; simulate GitHub rejecting the workflow dispatch.
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => new Response("denied", { status: 403 });
+try {
+  const dispatchBucket = new MockR2();
+  const dispatchEnv = {
+    HOME_SECRET: "secret",
+    GITHUB_ACTIONS_TOKEN: "present",
+    SHADOW: dispatchBucket
+  };
+  response = await post(dispatchEnv, packet("dispatch-failure", {
+    reconcile: { target_public_revision: revision1, units: units1 }
+  }));
+  result = await response.json();
+  assert.equal(response.status, 500);
+  assert.match(result.error, /materialization dispatch/);
+} finally {
+  globalThis.fetch = originalFetch;
+}
+
 console.log("display live nerve regression witness: PASS");
