@@ -55,7 +55,14 @@ void main(){
   if(vHot>.5)c=mix(c,vec3(1.),.32);
   outColor=vec4(c,alpha);
 }`;
-function program(gl,fragment){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,VERTEX));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fragment));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
+/* Full-screen host environment: the host's own fragment is evaluated behind a
+ * child site, oriented by the shared Display quaternion, focused on the region
+ * the child occupies inside the host. */
+const ENV_VERTEX=`#version 300 es
+precision highp float;uniform vec4 uQuat;uniform float uEnvRegion;out vec3 vN;out vec3 vW;out float vRegion;
+vec3 qrot(vec4 q,vec3 v){return v+2.0*cross(q.yzw,cross(q.yzw,v)+q.x*v);}
+void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);vW=qrot(uQuat,vec3(p*.72,-.35));vN=qrot(uQuat,normalize(vec3(-p.x*.18,-p.y*.18,1.)));vRegion=uEnvRegion;}`;
+function program(gl,fragment,vertex=VERTEX){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vertex));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fragment));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
 function pointProgram(gl){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,POINT_VERTEX));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,POINT_FRAGMENT));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
 function geometry(structure){const data=[];function tri(a,b,c,region){const no=nrm(cross(sub(b,a),sub(c,a)));for(const v of [a,b,c])data.push(...v,...no,region)}for(const cell of structure.leaves){const r=geneIndex[cell.path[0]]??0;for(const f of faceIx)tri(cell.tet[f[0]],cell.tet[f[1]],cell.tet[f[2]],r)}return new Float32Array(data)}
 function nodeAt(root,path){let n=root;for(const g of path){n=n?.children?.[g];if(!n)return null}return n}
@@ -98,7 +105,7 @@ function fieldPointRecords(structure,projection){
   }
   return out;
 }
-function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope}){
+function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope,environment=null}){
   if(!element||!canvas||!projection?.root)throw new Error('interlocutor field surface incomplete: '+id);
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
@@ -122,6 +129,20 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }
   }
   const ctx=!gl?canvas.getContext('2d'):null;
+  /* Opt-in per identity-owned shader: `environment:'host'` inherits the host field. */
+  const inheritsHost=shader.environment==='host'&&typeof environment==='function';
+  let ENV=null;
+  function hostEnvironment(){
+    if(!gl||!inheritsHost)return null;
+    const e=environment();if(!e?.shader?.fragment){ENV=null;return null}
+    if(!ENV||ENV.shaderId!==e.shader.id){
+      try{
+        const p=program(gl,e.shader.fragment,ENV_VERTEX);
+        ENV={shaderId:e.shader.id,p,vao:gl.createVertexArray(),U:{quat:gl.getUniformLocation(p,'uQuat'),region:gl.getUniformLocation(p,'uEnvRegion'),time:gl.getUniformLocation(p,'uTime'),focus:gl.getUniformLocation(p,'uFocus'),resolution:gl.getUniformLocation(p,'uResolution'),pal:gl.getUniformLocation(p,'uPalette[0]')}};
+      }catch(err){console.warn('host environment unavailable for '+id,err);ENV={shaderId:e.shader.id,p:null};}
+    }
+    return ENV.p?{env:e,GLE:ENV,colors:paletteSet(e.palette)}:null;
+  }
   if(labelHost){labelHost.replaceChildren();for(const g of N.GENES){const n=document.createElement('div');n.className='field-label';n.dataset.gene=g;const node=nodeAt(projection.root,g);n.innerHTML=`<span>${g}</span><b>${node?.en||node?.noun||g}</b>`;labelHost.append(n)}}
   let selectedPointId='',hoverPointId='',down=null,api=null;
   let tooltip=null;
@@ -225,8 +246,18 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     const {r,d,w,h}=resize(),t=target(),focus=W.scopeId===localScope&&W.view?(geneIndex[W.view[0]]??-1):-1;
     const proj=perspective(Math.PI/3.3,w/h,.1,20),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,(r.width<560?1.42:1.75)*t.scale,t.center);
     if(gl&&GL){
-      const clear=Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1];
-      gl.viewport(0,0,w,h);gl.clearColor(...clear);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);applyState();gl.useProgram(GL.p);
+      const host=hostEnvironment(),hostClear=host?.env.shader.clear;
+      const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);
+      gl.viewport(0,0,w,h);gl.clearColor(...clear);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+      if(host){
+        const {env,GLE}=host;
+        gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.disable(gl.BLEND);gl.useProgram(GLE.p);gl.bindVertexArray(GLE.vao);
+        gl.uniform4fv(GLE.U.quat,new Float32Array(W.orientation));gl.uniform1f(GLE.U.region,env.region);
+        if(GLE.U.time)gl.uniform1f(GLE.U.time,ms*.001);if(GLE.U.focus)gl.uniform1f(GLE.U.focus,env.region);if(GLE.U.resolution)gl.uniform2f(GLE.U.resolution,w,h);if(GLE.U.pal)gl.uniform3fv(GLE.U.pal,new Float32Array(host.colors.flat()));
+        gl.drawArrays(gl.TRIANGLES,0,3);gl.clear(gl.DEPTH_BUFFER_BIT);
+        canvas.dataset.hostEnvironment=env.hostId;canvas.dataset.hostRegion=String(env.region);
+      }else{delete canvas.dataset.hostEnvironment;delete canvas.dataset.hostRegion}
+      applyState();gl.useProgram(GL.p);
       gl.uniformMatrix4fv(GL.U.proj,false,proj);gl.uniformMatrix4fv(GL.U.view,false,view);gl.uniformMatrix4fv(GL.U.model,false,mdl);
       gl.uniform1f(GL.U.time,ms*.001);gl.uniform1f(GL.U.focus,focus);if(GL.U.resolution)gl.uniform2f(GL.U.resolution,w,h);gl.uniform3fv(GL.pal,new Float32Array(colors.flat()));
       if(typeof shader.beforeDraw==='function')shader.beforeDraw({gl,program:GL.p,ms,focus,width:w,height:h,orientation:W.orientation});
