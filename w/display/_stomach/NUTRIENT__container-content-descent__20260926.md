@@ -57,3 +57,62 @@ Keep as visual witness until the lawful realization replaces it; then retire.
    Current lean: Display.
 3. How does Philosophy's existing background inspection fold into descent rather than
    remaining a Philosophy specialty?
+
+## distillation — 2026-09-26 (recurrence evidence)
+
+Descent grew independently three times:
+- Philosophy/Display nav: `W.inspect(path)` + `N.focusTarget` (centroid, scale `1.02·2^len`); no click-ascent; no LOD;
+- Papers chambers: `hitChamber` tests only children of the current chamber; miss → `ascendChamber` (drop one gene);
+- Papers organisms: `hitChild` tests only the 4 children; miss → `ascend` (pop walked stack); LOD by `projectedPixels < LOD_PX`.
+
+Invariant: container = one cell; content = its four `splitTet` children; framing = child centroid at ×2;
+selection local to the current container; a miss ascends exactly one rank; LOD by projected size.
+Costume: easing/timing constants, Esc key, stack-vs-path representation, `MAX_DEPTH`.
+
+Challenge to current body: `focusTarget` caps scale at `Math.min(9, …)` (navigation-physiology.js),
+an effective depth ceiling (~rank 3) inside a law that must be unbounded.
+
+Ascent (Philipp, confirmed): back through the container you came through — the walked path.
+It equals prefix truncation in a tree and stays truthful in a web (holon lineage, quotient chambers).
+
+## candidate law — DESCENT (open)
+
+1. The witness is inside exactly one current container.
+2. Content = the container's four children, whatever they carry (cells, whole site-holons, holons, baits).
+3. Selection hit-tests only the current container's children.
+4. Descent pushes the container onto the walked path and frames the child relatively (no absolute zoom cap).
+5. Render the children, plus their children only if realized, as a non-selectable hint.
+6. A miss pops the walked path.
+7. Membrane crossings use the same gesture; loading may add a transition, never a different gesture.
+
+## challenge ring
+
+- relocation `y → x`: PASS (placement from registry mount locus, not body bytes);
+- quotient `xz ~ zx`: PASS (walked path remembers the entering chamber);
+- web holon with two containers: PASS (stack);
+- constant per-frame cost: PASS (≤ 4 children + ≤ 16 hints, relative framing);
+- nested site at `ww`: was UNDERDETERMINED; resolved below.
+
+## resolution — occupied cells (Philipp)
+
+Cambium wood law: when a cell splits, all of its content propagates to the children, and
+`ua^m ~ ua` (`xx` is the same point as `x`). A cell is therefore always container; organisms are
+always content, placed at their deepest realized address and shown at the resolution of the
+current view. At `w` all organisms under `w` float in `w` (split visible as hint); descending into
+`w` sorts them into `ww/wx/wz/wy`. There is no separate global space beneath an organism.
+
+Consequence for Crawlerbait: its bait tree treats split prefixes as routers and keeps tissue only
+at leaves; content does not propagate on split. Crawlerbait-local regrowth pressure.
+(Program organs keep their adjusted split law: the parent becomes a clean router for historic
+incoming dependencies.)
+
+## new pressure — pooling / visual coalescence (Philipp, open)
+
+Content deeper than the rendered hint level coalesces into one pool at the hint cell, carrying
+its constituents; pools are directly navigable. Candidate shape:
+- pool(cell) = all content whose address continues below that cell; deterministic by prefix;
+- a pool opens into its four sub-pools plus content sitting exactly at that point (pools of pools —
+  never a flat list, so cost stays local);
+- jumping to a constituent fills the walked path through every intermediate container, so ascent
+  still returns house by house.
+Open: pool presentation (count as size/brightness?) is identity-owned or Display-invariant.
