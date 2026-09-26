@@ -39,9 +39,27 @@ if(!GLOBAL_PROJECTION?.root) throw new Error('overview interlocutor must expose 
 const activity=H.createActivityBus(registry),fold=F.createFold(document.getElementById('tetra-fold'));
 const home=document.getElementById('root-home'),stateEl=document.getElementById('site-state'),stage=document.getElementById('interlocutor-stage');
 const fieldById=new Map();
+/* Host environment is derived from mount truth only: the host of a site is the
+ * mounted site whose raw address is the longest proper prefix of its own, and the
+ * site occupies the host region named by the next gene. Re-derived on demand so
+ * relocation changes environment without touching any site body. */
+const GENE_REGION=Object.freeze({w:0,x:1,z:2,y:3});
+function hostEnvironment(id){
+  const m=registry.getMount(id);if(!m||m.scope!==GLOBAL_SCOPE||!m.rawAddress)return null;
+  let best=null;
+  for(const other of specs.keys()){
+    if(other===id)continue;const o=registry.getMount(other);
+    if(!o||o.scope!==GLOBAL_SCOPE||o.rawAddress.length>=m.rawAddress.length||!m.rawAddress.startsWith(o.rawAddress))continue;
+    if(!best||o.rawAddress.length>best.mount.rawAddress.length)best={id:other,mount:o};
+  }
+  if(!best)return null;
+  const shader=surfaces.get(best.id)?.module?.shader,region=GENE_REGION[m.rawAddress[best.mount.rawAddress.length]];
+  if(!shader?.fragment||region===undefined)return null;
+  return Object.freeze({hostId:best.id,shader,palette:specs.get(best.id)?.shader?.palette,region});
+}
 for(const [id,surface] of surfaces){
   const spec=specs.get(id),fieldProjection=surface.module.fieldProjection?surface.module.fieldProjection(surface.projection):surface.projection;
-  fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope}));
+  fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id)}));
 }
 let activeIds=[...ROOT_IDS],activeAddress='',stack=[],restoring=false;
 function sameIds(a,b){return a.length===b.length&&a.every((x,i)=>x===b[i])}
