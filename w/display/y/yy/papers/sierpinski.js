@@ -67,6 +67,7 @@ const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
  * carries no point population. */
 const shader=Object.freeze({
   id:'shader:organism:papers',
+  environment:false, /* Papers' own inquiry environment already embodies its host */
   clear:[0,0,0,0],
   fallbackAlpha:0,
   state:Object.freeze({blend:true,depthTest:false,depthWrite:false}),

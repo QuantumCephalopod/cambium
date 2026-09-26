@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.5"
+version: "3.6"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -142,10 +142,11 @@ Display keeps alive across every encounter:
 - default-true site-holon background drag with an identity-local explicit-false opt-out;
 - exact address/quotient geometry;
 - recursive split-cell centroid camera framing;
+- Descent: one container→content gesture at every rank and across membranes (navigation `Descent`);
 - target-origin tetrahedral closure transition;
 - activity receptor and browser encounter/history body.
 
-Entering an interlocutor never hands the global navigator to its local recursive space.
+Entering an interlocutor never hands the global minimap to its local recursive space; descent and ascent are one gesture on both sides of the membrane.
 
 ## Navigation and local inspection
 
@@ -192,5 +193,7 @@ Version 3.3 background-orientation interaction correction (2026-09-18): the alre
 
 Version 3.4 identity/address/custody correction (2026-09-23): Display now hosts foreign code bodies at their currently truthful semantic loci while consumers resolve stable identity through current live anatomy. The first realized case moves pinned Pretext intact into unsplit Embodiment and derives its public module location at build time; no Typography container or convenience split is introduced.
 
+
+Version 3.6 descent correction (2026-09-26): Descent entered persistent global physiology as the shared container→content gesture; the global minimap remains global.
 
 Version 3.5 acknowledged-live-circulation correction (2026-09-24): Continuity now treats complete snapshots as bounded recovery only. Producers reacquire the authenticated Worker unit-revision ledger, derive only source-owned differences, and recursively subdivide an oversized difference into sequential ordinary acknowledged-base deltas. Empty state has a deterministic revision base; one oversized opaque unit remains an explicit granularity wound rather than being silently split.

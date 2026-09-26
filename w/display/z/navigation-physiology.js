@@ -70,7 +70,7 @@
   function focusTarget(structure, path) {
     const record = addressRecord(structure, path);
     if (!record) return {center:[0,0,0], scale:1};
-    return {center:[...record.center], scale:Math.min(9, 1.02 * Math.pow(2, path.length))};
+    return {center:[...record.center], scale:1.02 * Math.pow(2, path.length)};
   }
 
   function velocity(value, max=.86, dead=.035) {

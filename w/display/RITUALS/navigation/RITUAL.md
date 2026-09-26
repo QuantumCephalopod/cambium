@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.2"
+version: "2.3"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -50,7 +50,7 @@ There is no global inspect-then-commit step.
 
 ## Philosophy background inspection
 
-Philosophy separately embodies the realized global address-space and may inspect any realized address locally without moving the active global encounter.
+Philosophy's background inspection is Descent inside Philosophy's own container: selecting a child cell descends into it without moving the active global encounter.
 
 Therefore:
 
@@ -71,7 +71,20 @@ Examples:
 
 `site-space:w ⟦ crawlerbait:ε ⟧`
 
-The global minimap stays global while any site-holon is active. Papers-local recursion and Crawlerbait-local machine-facing routes never seize or extend the global site navigator. The universal coupling between global navigation and visible local fields is shared orientation only.
+Address spaces stay distinct across the membrane; the gesture does not. Crawlerbait-local machine-facing routes never become global navigation addresses.
+
+## Descent — one gesture at every rank
+
+The witness is always inside exactly one current container: a realized cell of the global field or an organism body floating in one. A container's content is its four children. Content propagates on every split (Cambium wood law, `ua^m ~ ua`), so every organism floats in every cell above its deepest realized address; the view's resolution only decides how finely it is sorted.
+
+- select: only the current container's children can be entered;
+- descend: the container is pushed onto the walked path and the child is framed at its centroid, relatively, with no absolute zoom ceiling;
+- render: the container's children, plus their realized children as a non-selectable hint; content below the hint level coalesces into pools (Display invariant); a pool opens into its four sub-pools, never a flat list, and entering it fills the walked path through every intermediate container;
+- ascend: a gesture that enters no child pops the walked path — back through the container the witness came through;
+- membranes: entering or leaving a site-holon is the same gesture. The active interlocutor is the organism whose container is innermost on the walked path; Continuity reads it rather than switching separately. The target-origin fold remains a loading cover at membrane crossings.
+
+The global minimap and x/y rails remain shared orientation controls, unchanged.
+
 
 ## Raw address and quotient navigation
 
@@ -109,5 +122,7 @@ Pointer navigation supplies the actual minimap target as membrane origin. Four f
 ## Compression
 
 **The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target. Site-local routes remain local and never silently become global navigation addresses.**
+
+Version 2.3 descent correction (2026-09-26): container→content descent became one Display invariant at every rank and across site-holon membranes — local child selection, relative centroid framing without zoom ceiling, two-level LOD with pooled deeper content, ascent back through the walked path, and the active interlocutor read from the innermost container. Supersedes the separation of local traversal from global navigation.
 
 Version 2.2 default background-drag correction (2026-09-18): shared background drag/orientation is now a Display-global site-holon default rather than a Philosophy/Papers special case. The site membrane may explicitly disable only its own background drag with `background_drag: false`; Philosophy-style inspection and global navigator controls remain separate capabilities.

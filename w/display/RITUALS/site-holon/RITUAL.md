@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.4"
+version: "2.5"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -138,11 +138,13 @@ For Crawlerbait:
 
 Relocation changes the outer environment only. It may never rewrite a site's local genealogy into fake concatenations such as `main:yy`.
 
-Local selection or traversal inside a site-holon likewise does not mutate its global mount or transfer the global navigator into local scope.
+Local descent inside a site-holon does not mutate its global mount. Ascent past the site's own root continues through the membrane into the container the witness came through (navigation `Descent`).
 
 ## Identity-owned embodiment
 
 Shader/background/manifestation belong to stable interlocutor identity, not global address. All visible local fields inherit shared Display orientation, while page-specific navigation/interaction remains owned by the page-organism.
+
+A site-holon floats as content inside its host's cell. Its field therefore shows the host seen from inside the locus: the host's realized geometry with the host's own shader, framed at the site's geometric path plus its local walked path, beneath the site's own body. Host = the container the witness came through, else the overview interlocutor. A site whose own renderer already embodies its host may refuse with shader `environment: false`.
 
 A site-local shader may change color, transparency, grain, blur, density or other material qualities without changing the shared tetrahedral topology. Local interaction may manipulate or populate that same body without replacing global orientation or global site navigation.
 
@@ -152,7 +154,7 @@ Activity targets stable interlocutor identity, never global placement. Remountin
 
 ## Global navigation
 
-Only physically discovered site-holons become global minimap targets. Clicking one performs direct target-origin encounter movement. Philosophy's broad background inspection is a Philosophy-local specialty, not the site-holon primitive.
+Only physically discovered site-holons become global minimap targets. Clicking one performs direct target-origin encounter movement. Descent is the shared primitive; Philosophy's background inspection is Descent inside Philosophy.
 
 ## Closure
 
@@ -173,5 +175,7 @@ A site-holon change is accepted when:
 ## Living provenance
 
 Version 2.3 global occupied-region correction (2026-09-18): a cooked cross-site collision pressure earned one specimen-agnostic Display safe-area contract. Global membrane surfaces expose their actual occupied rectangles plus derived conservative insets to every site render and as CSS variables; site-local presentation remains identity-owned, central Display does not branch on specimen identity, and concrete pixels remain implementation rather than ontology.
+
+Version 2.5 descent correction (2026-09-26): site-holons now share Display Descent, ascent crosses the site membrane back through the walked path, and a site's field shows its host seen from inside its locus with a local `environment: false` refusal.
 
 Version 2.4 global background-drag correction (2026-09-18): background tetrahedral drag became a default-true Display/site-holon invariant independent of background inspection. New site-holons inherit shared drag/orientation without local enabling code; an explicit local `background_drag: false` opts out only that site while global navigator orientation and local semantic interaction remain intact. Custom renderers receive the same effective toggle through the generic render contract.

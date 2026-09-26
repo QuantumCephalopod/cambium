@@ -7,7 +7,6 @@ let inspectorHost=null,selectedAddress='',crawlerById=new Map();
 
 const shader=Object.freeze({
   id:'shader:organism:crawlerbait',
-  environment:'host',
   clear:[0.004,0.012,0.018,1],
   fallbackAlpha:.2,
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
