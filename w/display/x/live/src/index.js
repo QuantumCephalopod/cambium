@@ -286,12 +286,12 @@ async function queueMaterialization(env, packet, publicRevision) {
     );
     if (response.status !== 204) {
       console.error("same-origin materialization dispatch HTTP " + response.status);
-      return false;
+      throw new Error("same-origin materialization dispatch HTTP " + response.status);
     }
     return true;
   } catch (error) {
     console.error("same-origin materialization dispatch failed", error);
-    return false;
+    throw error;
   }
 }
 
