@@ -68,12 +68,21 @@ const CAMERA_MS=330;
 const smooth01=t=>t<=0?0:t>=1?1:t*t*(3-2*t);
 /* A body floats inside its host cell at one organism size, whatever its own depth:
  * organisms refine inward, only composed holons grow outward. */
-const BODY_FRACTION=.5;
-function bodyGeometry(structure,path){
-  const cell=N.cellForPath(path),k=Math.pow(2,-path.length)*BODY_FRACTION;
-  const raw=geometry(structure.leaves);
-  for(let i=0;i<raw.length;i+=7){for(let j=0;j<3;j++)raw[i+j]=cell.center[j]+raw[i+j]*k}
-  return {data:raw,tet:N.V0.map(v=>v.map((x,j)=>cell.center[j]+x*k))};
+/* Content is two ranks smaller than the realized container carrying it. When the
+ * container splits, content propagates into the child (self-child for content at the
+ * split point, `ua^m ~ ua`) and shrinks with it; its own subdivision is unchanged. */
+const CONTENT_RANKS=2;
+function placement(hostStructure,raw){
+  const realized=new Set(hostStructure.addresses.map(a=>a.path));
+  let p='';for(let i=1;i<=raw.length;i++)if(realized.has(raw.slice(0,i)))p=raw.slice(0,i);
+  if(p===raw&&p)while(realized.has(p+p.at(-1)))p+=p.at(-1);
+  const center=raw.length>p.length?N.cellForPath(raw).center:N.cellForPath(p).center;
+  return Object.freeze({cell:p,center:[...center],k:Math.pow(2,-(p.length+CONTENT_RANKS))});
+}
+function bodyGeometry(structure,place){
+  const raw=geometry(structure.leaves),k=place.k,c=place.center;
+  for(let i=0;i<raw.length;i+=7){for(let j=0;j<3;j++)raw[i+j]=c[j]+raw[i+j]*k}
+  return {data:raw,tet:N.V0.map(v=>v.map((x,j)=>c[j]+x*k))};
 }
 function nodeAt(root,path){let n=root;for(const g of path){n=n?.children?.[g];if(!n)return null}return n}
 function shaderContract(shader){
@@ -167,8 +176,8 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       }catch(err){console.warn('host environment unavailable for '+id,err);HOST={key:e.hostId+'|'+e.shader.id,p:null}}
     }
     if(!HOST.p)return null;
-    const k=Math.pow(2,-e.path.length)*BODY_FRACTION,mount=N.cellForPath(e.path),f=currentFrame();
-    return {e,H:HOST,center:mount.center.map((v,i)=>v+f.center[i]*k),span:k/f.scale,region:geneIndex[e.path[0]]??0};
+    const k=e.place.k,f=currentFrame();
+    return {e,H:HOST,center:e.place.center.map((v,i)=>v+f.center[i]*k),span:k/f.scale,region:geneIndex[e.path[0]]??0};
   }
   /* FLOATING BODIES — organisms whose host is this field float in their mount cell,
    * drawn with their own identity shader at full geometry, entered by selection. */
@@ -181,10 +190,10 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       let B=BODIES.get(b.id);
       if(!B||B.key!==b.shader.id+'|'+b.path){
         try{
-          const bp=program(gl,b.shader.fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer(),g=bodyGeometry(N.collectStructure(b.root),b.path);
+          const place=placement(structure,b.path),bp=program(gl,b.shader.fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer(),g=bodyGeometry(N.collectStructure(b.root),place);
           gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g.data,gl.STATIC_DRAW);
           for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(bp,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
-          B={key:b.shader.id+'|'+b.path,id:b.id,p:bp,vao:bvao,count:g.data.length/7,tet:g.tet,state:b.shader.state||{},colors:paletteSet(b.palette),U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}};
+          B={key:b.shader.id+'|'+b.path,id:b.id,place,p:bp,vao:bvao,count:g.data.length/7,tet:g.tet,state:b.shader.state||{},colors:paletteSet(b.palette),U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}};
         }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
         BODIES.set(b.id,B);
       }
@@ -405,7 +414,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(!down||down.id!==e.pointerId)return;const wasMoved=down.moved;down=null;try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId)}catch(_){}
       if(!wasMoved){
         const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,hp=hasPoints?hitPoint(x,y,r):null;
-        const body=hp?'':hitBody(x,y,r);if(body)dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:body,origin:{x:e.clientX,y:e.clientY}}}));else if(hp?.rec.pool)descendTo(hp.rec.path,'pool:'+id);else if(hp)selectPoint(hp.rec.spec.id,true);else{const path=hitChild(x,y,r);if(path)descendTo(path,'descent:'+id);else ascend('ascent:'+id)}
+        const body=hp?'':hitBody(x,y,r);if(body){const B=BODIES.get(body);cam={from:currentFrame(),to:{center:[...B.place.center],scale:1/B.place.k},start:performance.now()};const origin={x:e.clientX,y:e.clientY};setTimeout(()=>dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:body,origin}})),CAMERA_MS)}else if(hp?.rec.pool)descendTo(hp.rec.path,'pool:'+id);else if(hp)selectPoint(hp.rec.spec.id,true);else{const path=hitChild(x,y,r);if(path)descendTo(path,'descent:'+id);else ascend('ascent:'+id)}
       }
       canvas.style.cursor=draggable?'grab':'default';e.preventDefault()
     };
@@ -414,7 +423,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   requestAnimationFrame(draw);
   api=Object.freeze({
     id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
-    selectPoint,projectAddressCenter,get container(){return container()},get walk(){return [...walk]},descendTo,ascend,
+    selectPoint,projectAddressCenter,get container(){return container()},arriveFrom(place){if(place)cam={from:{center:[...place.center],scale:1/place.k},to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
     get selectedPointId(){return selectedPointId},
     get points(){return pointRecords.map(p=>p.spec)},
@@ -423,5 +432,5 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   shaders.set(id,api);return api;
 }
 function get(id){return shaders.get(id)||null}
-globalThis.SSSInterlocutorFields=Object.freeze({create,get,paletteSet});
+globalThis.SSSInterlocutorFields=Object.freeze({create,get,paletteSet,placement});
 })();

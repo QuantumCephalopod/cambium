@@ -50,7 +50,7 @@ function titleMap(){
 function targets(){
   if(!W)return [];
   const titles=titleMap();
-  return W.globalTargets.map(t=>({target:t,address:t.path||'ε',label:(t.interlocutorIds||[]).map(x=>titles.get(x)||x.replace(/^organism:/,'')).join(' + ')}));
+  return W.globalTargets.filter(t=>t.path).map(t=>({target:t,address:t.path||'ε',label:(t.interlocutorIds||[]).map(x=>titles.get(x)||x.replace(/^organism:/,'')).join(' + ')}));
 }
 function ensureMarkers(host){
   if(markerLayer&&markerHost===host)return markerLayer;

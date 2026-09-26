@@ -1,6 +1,6 @@
 (() => {
 'use strict';
-const H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea;
+const Nav=globalThis.SSSDisplayNavigation,H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea;
 const Modules=globalThis.SSSInterlocutorModules;
 if(!H||!F||!W||!Fields||!Safe||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
 const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
@@ -43,13 +43,16 @@ const fieldById=new Map();
  * was entered from on the walked stack, else the overview interlocutor that
  * contains all of site-space. Its geometric path inside that host is its mount
  * address relative to the host's own. Central Display names no specimen. */
+const hostStructures=new Map();
+function placeIn(hostId,root,path){let st=hostStructures.get(hostId);if(!st){st=Nav.collectStructure(root);hostStructures.set(hostId,st)}return Fields.placement(st,path)}
 function hostEnvironment(id){
   const m=registry.getMount(id);if(!m||m.scope!==GLOBAL_SCOPE||!activeIds.includes(id))return null;
   const from=stack.length?stack.at(-1).activeIds.find(x=>x!==id):null,hostId=from||ROOT_IDS.find(x=>x!==id);
   if(!hostId)return null;const hm=registry.getMount(hostId);if(!hm||!m.rawAddress.startsWith(hm.rawAddress)||m.rawAddress===hm.rawAddress)return null;
   const hs=surfaces.get(hostId),shader=hs?.module?.shader,root=(hs?.module?.fieldProjection?hs.module.fieldProjection(hs.projection):hs?.projection)?.root;
   if(!shader?.fragment||!root)return null;
-  return Object.freeze({hostId,shader,root,palette:specs.get(hostId)?.shader?.palette,path:m.rawAddress.slice(hm.rawAddress.length)});
+  const path=m.rawAddress.slice(hm.rawAddress.length);
+  return Object.freeze({hostId,shader,palette:specs.get(hostId)?.shader?.palette,path,place:placeIn(hostId,root,path)});
 }
 /* Organisms float as bodies inside the overview interlocutor that contains all of
  * site-space, each at its mount cell. Nested hosting beyond one membrane is not yet
@@ -127,7 +130,14 @@ addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)r
 /* Ascent past a site's own root continues through the membrane: the same
  * gesture returns to the container the witness came through. */
 addEventListener('sss:enter-body',e=>{const d=e.detail||{};if(!d.id||!activeIds.includes(d.from))return;const m=registry.getMount(d.id);if(m&&m.scope===GLOBAL_SCOPE)navigateGlobal(m.rawAddress,true,d.origin||null)});
-addEventListener('sss:membrane-ascend',e=>{const id=e.detail?.id;if(!id||!activeIds.includes(id))return;if(stack.length)leave();else if(activeAddress)navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2})});
+/* Leaving an organism is the same transition as arriving: the membrane closes,
+ * the host returns, and the host camera zooms out from the body it left. */
+addEventListener('sss:membrane-ascend',e=>{
+  const id=e.detail?.id;if(!id||!activeIds.includes(id)||fold.busy)return;
+  const env=hostEnvironment(id);
+  const back=()=>{if(stack.length)leave();else{const r=resolveGlobal('');if(r.interlocutors.length)enter(r,'',true)}if(env)fieldById.get(env.hostId)?.arriveFrom(env.place)};
+  fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});
+});
 addEventListener('sss:language',()=>{render(W.view)});addEventListener('resize',()=>{Safe.refresh();composition()});
 home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else setLocalView('','home')});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(stack.length)leave();else home.click()}});
