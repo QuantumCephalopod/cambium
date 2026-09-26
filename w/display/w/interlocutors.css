@@ -21,3 +21,5 @@ html[data-composition="split"] header{z-index:32}
 @media(max-width:900px){.interlocutor-content{width:calc(100% - 270px)}}
 @media(max-width:760px){.interlocutor-content{left:18px;bottom:20px;width:calc(100% - 238px)}html[data-composition="split"] .interlocutor-content{left:14px;bottom:16px;width:calc(100% - 28px)}html[data-composition="split"] #mini{opacity:.96}}
 @media(max-width:520px){.interlocutor-content{display:none}.field-label b{font-size:10px}html[data-composition="split"] #mini{transform:translateX(-50%) scale(.86);transform-origin:50% 100%}}
+.field-body-label{pointer-events:auto;cursor:pointer;background:none;border:0;padding:4px 6px;font:inherit;color:rgba(241,239,233,.9)}
+.field-body-label:hover b,.field-body-label:focus-visible b{color:#fff;text-decoration:underline;text-underline-offset:3px}
