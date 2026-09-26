@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.5"
+version: "2.6"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -80,7 +80,7 @@ The witness is always inside exactly one current container: a realized cell of t
 - select: only the current container's children can be entered;
 - descend: the container is pushed onto the walked path and the child is framed at its centroid, relatively, with no absolute zoom ceiling; the camera moves there smoothly (~0.33 s), never teleports, and ascent moves back the same way;
 - render: geometry is drawn at full realized resolution — a Sierpinski body is cheap and each rank quadruples capacity, so depth settles. LOD governs content only: content below the container's children and their realized children coalesces into pools (Display invariant); a pool opens into its four sub-pools, never a flat list, and entering it fills the walked path through every intermediate container;
-- bodies: organisms float as bodies in their host, drawn with their own identity shader at full geometry and entered by selection. Content is two ranks smaller than the realized container carrying it; when that container splits, the content propagates into the finer child (self-child for content at the split point) and shrinks with it, keeping its own subdivision. Organisms refine inward; composed holons grow with rank (composition grows outward);
+- bodies: organisms float as bodies in their host, drawn with their own identity shader at full geometry and entered by selection. Content is two ranks smaller than the realized container carrying it; when that container splits, the content propagates into the finer child (self-child for content at the split point) and shrinks with it, keeping its own subdivision. A body drifts inside the space its container bounds and never crosses it. Every body carries a label attached to it; the label is selectable exactly like the body's face. Organisms refine inward; composed holons grow with rank (composition grows outward);
 - ascend: a gesture that enters no child pops the walked path — back through the container the witness came through;
 - membranes: entering or leaving a site-holon is the same gesture. Entering zooms into the body, then crosses under the target-origin fold; leaving crosses under the same fold and the host zooms out from the body it left. The active interlocutor is the organism whose container is innermost on the walked path; Continuity reads it rather than switching separately. The target-origin fold remains a loading cover at membrane crossings.
 
@@ -123,6 +123,8 @@ Pointer navigation supplies the actual minimap target as membrane origin. Four f
 ## Compression
 
 **The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target. Site-local routes remain local and never silently become global navigation addresses.**
+
+Version 2.6 body-label correction (2026-09-26): bodies drift within their container's bounds and carry an attached label selectable like their face; Philosophy's separate site markers are retired.
 
 Version 2.5 content-rank correction (2026-09-26): content sits two ranks below its realized container and shrinks into finer children on split; leaving an organism uses the membrane fold and zooms out from the body; the navigator opens pinned by default.
 

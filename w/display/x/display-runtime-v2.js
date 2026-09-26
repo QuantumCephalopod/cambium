@@ -63,7 +63,7 @@ function floatingBodies(id){
   for(const other of specs.keys()){
     if(ROOT_IDS.includes(other))continue;const m=registry.getMount(other);if(!m||m.scope!==GLOBAL_SCOPE||!m.rawAddress)continue;
     const s2=surfaces.get(other),shader=s2?.module?.shader,root=(s2?.module?.fieldProjection?s2.module.fieldProjection(s2.projection):s2?.projection)?.root;
-    if(shader?.fragment&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette});
+    if(shader?.fragment&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette,title:specs.get(other)?.title||other});
   }
   return out;
 }
@@ -135,7 +135,7 @@ addEventListener('sss:enter-body',e=>{const d=e.detail||{};if(!d.id||!activeIds.
 addEventListener('sss:membrane-ascend',e=>{
   const id=e.detail?.id;if(!id||!activeIds.includes(id)||fold.busy)return;
   const env=hostEnvironment(id);
-  const back=()=>{if(stack.length)leave();else{const r=resolveGlobal('');if(r.interlocutors.length)enter(r,'',true)}if(env)fieldById.get(env.hostId)?.arriveFrom(env.place)};
+  const back=()=>{if(stack.length)leave();else{const r=resolveGlobal('');if(r.interlocutors.length)enter(r,'',true)}if(env)fieldById.get(env.hostId)?.arriveFrom(env.place,id)};
   fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});
 });
 addEventListener('sss:language',()=>{render(W.view)});addEventListener('resize',()=>{Safe.refresh();composition()});

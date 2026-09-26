@@ -80,9 +80,22 @@ function placement(hostStructure,raw){
   return Object.freeze({cell:p,center:[...center],k:Math.pow(2,-(p.length+CONTENT_RANKS))});
 }
 function bodyGeometry(structure,place){
-  const raw=geometry(structure.leaves),k=place.k,c=place.center;
-  for(let i=0;i<raw.length;i+=7){for(let j=0;j<3;j++)raw[i+j]=c[j]+raw[i+j]*k}
-  return {data:raw,tet:N.V0.map(v=>v.map((x,j)=>c[j]+x*k))};
+  const raw=geometry(structure.leaves),k=place.k;
+  for(let i=0;i<raw.length;i+=7){for(let j=0;j<3;j++)raw[i+j]*=k}
+  return raw;
+}
+/* A body is not pinned to its container's centroid: it drifts inside the space the
+ * container bounds, never crossing it (the drift tet is the container shrunk by the
+ * body's own extent). */
+const DRIFT_PERIOD_MS=42000;
+function driftPath(place,id){
+  const cell=N.cellForPath(place.cell),c=cell.center,room=Math.max(0,1-place.k/Math.pow(2,-place.cell.length));
+  const tet=cell.tet.map(v=>v.map((x,j)=>c[j]+(x-c[j])*room));
+  return {base:place.center,points:[0,1,2,3].map(i=>pointInTet(tet,{id:id+'·drift-'+i,kind:'source'})),phase:random01(id,'drift-phase')*4,speed:.72+.56*random01(id,'drift-speed')};
+}
+function driftAt(d,now){
+  const u=((now/DRIFT_PERIOD_MS)*d.speed+d.phase)%4,i=Math.floor(u),t=smooth01(u-i),a=d.points[i],b=d.points[(i+1)%4];
+  return a.map((v,j)=>v+(b[j]-v)*t);
 }
 function nodeAt(root,path){let n=root;for(const g of path){n=n?.children?.[g];if(!n)return null}return n}
 function shaderContract(shader){
@@ -191,9 +204,9 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(!B||B.key!==b.shader.id+'|'+b.path){
         try{
           const place=placement(structure,b.path),bp=program(gl,b.shader.fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer(),g=bodyGeometry(N.collectStructure(b.root),place);
-          gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g.data,gl.STATIC_DRAW);
+          gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g,gl.STATIC_DRAW);
           for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(bp,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
-          B={key:b.shader.id+'|'+b.path,id:b.id,place,p:bp,vao:bvao,count:g.data.length/7,tet:g.tet,state:b.shader.state||{},colors:paletteSet(b.palette),U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}};
+          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],p:bp,vao:bvao,count:g.length/7,state:b.shader.state||{},colors:paletteSet(b.palette),U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}};
         }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
         BODIES.set(b.id,B);
       }
@@ -201,10 +214,23 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }
     return out;
   }
+  const bodyLabels=new Map();
+  function bodyLabel(B){
+    let n=bodyLabels.get(B.id);
+    if(!n){n=document.createElement('button');n.type='button';n.className='field-label field-body-label';n.innerHTML='<b></b>';n.querySelector('b').textContent=B.title;
+      n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();enterBody(B.id,{x:e.clientX,y:e.clientY})});
+      (labelHost||element).append(n);bodyLabels.set(B.id,n)}
+    return n;
+  }
+  function enterBody(bodyId,origin){
+    const B=BODIES.get(bodyId);if(!B?.p)return;
+    cam={from:currentFrame(),to:{center:[...B.pos],scale:1/B.place.k},start:performance.now()};
+    setTimeout(()=>dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:bodyId,origin}})),CAMERA_MS);
+  }
   function hitBody(x,y,rect){
     let best=null;
     for(const B of BODIES.values()){
-      if(!B.p)continue;const pts=B.tet.map(p=>project(p,rect));
+      if(!B.p)continue;const pts=N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),rect));
       for(const f of faceIx){const tri=[pts[f[0]],pts[f[1]],pts[f[2]]];if(!pointInTriangle(x,y,...tri))continue;const z=(tri[0].z+tri[1].z+tri[2].z)/3;if(!best||z>best.z)best={id:B.id,z}}
     }
     return best?.id||'';
@@ -378,11 +404,13 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       for(const B of fb){
         const bs=B.state;if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
         if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
-        gl.useProgram(B.p);gl.uniformMatrix4fv(B.U.proj,false,proj);gl.uniformMatrix4fv(B.U.view,false,view);gl.uniformMatrix4fv(B.U.model,false,mdl);
+        B.pos=driftAt(B.drift,ms);const bm=model(W.orientation,base*t.scale,t.center.map((v,j)=>v-B.pos[j]));
+        gl.useProgram(B.p);gl.uniformMatrix4fv(B.U.proj,false,proj);gl.uniformMatrix4fv(B.U.view,false,view);gl.uniformMatrix4fv(B.U.model,false,bm);
         if(B.U.time)gl.uniform1f(B.U.time,ms*.001);if(B.U.focus)gl.uniform1f(B.U.focus,-1);if(B.U.resolution)gl.uniform2f(B.U.resolution,w,h);if(B.U.pal)gl.uniform3fv(B.U.pal,new Float32Array(B.colors.flat()));
         gl.bindVertexArray(B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
       }
       canvas.dataset.floatingBodies=fb.map(B=>B.id).join(' ');
+      for(const B of fb){const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r);n.hidden=element.hidden;n.style.left=lp.x+'px';n.style.top=lp.y+'px'}
       drawPointsGL(proj,view,mdl,d);
     }else if(ctx){
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);
@@ -414,7 +442,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(!down||down.id!==e.pointerId)return;const wasMoved=down.moved;down=null;try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId)}catch(_){}
       if(!wasMoved){
         const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,hp=hasPoints?hitPoint(x,y,r):null;
-        const body=hp?'':hitBody(x,y,r);if(body){const B=BODIES.get(body);cam={from:currentFrame(),to:{center:[...B.place.center],scale:1/B.place.k},start:performance.now()};const origin={x:e.clientX,y:e.clientY};setTimeout(()=>dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:body,origin}})),CAMERA_MS)}else if(hp?.rec.pool)descendTo(hp.rec.path,'pool:'+id);else if(hp)selectPoint(hp.rec.spec.id,true);else{const path=hitChild(x,y,r);if(path)descendTo(path,'descent:'+id);else ascend('ascent:'+id)}
+        const body=hp?'':hitBody(x,y,r);if(body)enterBody(body,{x:e.clientX,y:e.clientY});else if(hp?.rec.pool)descendTo(hp.rec.path,'pool:'+id);else if(hp)selectPoint(hp.rec.spec.id,true);else{const path=hitChild(x,y,r);if(path)descendTo(path,'descent:'+id);else ascend('ascent:'+id)}
       }
       canvas.style.cursor=draggable?'grab':'default';e.preventDefault()
     };
@@ -423,7 +451,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   requestAnimationFrame(draw);
   api=Object.freeze({
     id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
-    selectPoint,projectAddressCenter,get container(){return container()},arriveFrom(place){if(place)cam={from:{center:[...place.center],scale:1/place.k},to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
+    selectPoint,projectAddressCenter,get container(){return container()},arriveFrom(place,bodyId){if(place){const B=bodyId&&BODIES.get(bodyId),c=B?.pos||place.center;cam={from:{center:[...c],scale:1/place.k},to:frameFor(container()),start:performance.now()}}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
     get selectedPointId(){return selectedPointId},
     get points(){return pointRecords.map(p=>p.spec)},
