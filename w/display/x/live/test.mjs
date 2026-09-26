@@ -69,7 +69,7 @@ const packet = (event_id, extra = {}) => ({
 const unit = async (value) => ({ revision: await valueRevision(value), value });
 
 async function post(env, body) {
-  return worker.fetch(new Request("https://sss.saarland/__live/home", {
+  return worker.fetch(new Request("https://live.sss.saarland/__live/home", {
     method: "POST",
     headers: { Authorization: "Bearer secret", "content-type": "application/json" },
     body: JSON.stringify(body)
@@ -77,7 +77,7 @@ async function post(env, body) {
 }
 
 async function ledger(env, siteId = "organism:papers", secret = "secret") {
-  return worker.fetch(new Request("https://sss.saarland/__live/home?site_id=" + encodeURIComponent(siteId), {
+  return worker.fetch(new Request("https://live.sss.saarland/__live/home?site_id=" + encodeURIComponent(siteId), {
     method: "GET",
     headers: { Authorization: "Bearer " + secret }
   }), env);
@@ -85,7 +85,7 @@ async function ledger(env, siteId = "organism:papers", secret = "secret") {
 
 async function materialized(env, secret = "materialize") {
   return worker.fetch(new Request(
-    "https://sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized",
+    "https://live.sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized",
     { method: "GET", headers: { Authorization: "Bearer " + secret } }
   ), env);
 }

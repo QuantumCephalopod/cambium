@@ -54,11 +54,11 @@ Any unregistered `site_id` is rejected rather than allowed to invent an R2 path.
 Production Worker exposure is exactly one authenticated route:
 
 ```text
-POST https://sss.saarland/__live/home
-GET  https://sss.saarland/__live/home?site_id=<admitted-site-id>
+POST https://live.sss.saarland/__live/home
+GET  https://live.sss.saarland/__live/home?site_id=<admitted-site-id>
 ```
 
-`wrangler.jsonc` disables the `workers.dev` entrance and mounts only that exact custom-domain route. Other `__live` paths are not part of the production contract.
+`wrangler.jsonc` disables the `workers.dev` entrance and mounts `live.sss.saarland` as the Worker Custom Domain. The Worker itself admits only `/__live/home`; all other paths return 404. The public `sss.saarland` hostname remains the GitHub Pages visitor surface and is not proxied merely to reach the Worker.
 
 Both methods require:
 

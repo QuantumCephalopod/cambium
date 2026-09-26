@@ -273,3 +273,55 @@ Branch `mnemos/papers-circulation-20260924` now carries:
 - no production browser witness has yet observed the Source metabolite body from the newly materialized same-origin shadow.
 
 The master circulation nutrient remains OPEN until the same accepted public revision is witnessed in private R2, canonical static `papers-shadow/current.json`, and the deployed visitor surface.
+
+
+## encounter — 2026-09-26 · user reports runtime secret setup complete
+
+Source-faithful user report:
+> "aaaallrighty >_< ich denk cih habs :D alle secretse gesetzt!"
+
+Current verification boundary:
+- user report admitted as completion claim, not yet treated as provider witness;
+- latest Papers pulse observed at `papers-chaperone-20260926T065804Z-authorship-cugW`, which predates the user's present secret-setup report;
+- no `papers static shadow materialization` workflow run has occurred yet after the new secret provisioning;
+- canonical static `papers-shadow/current.json` remains on historical event `papers-feed-inquiry-projection-v1-18GPXeg` and still lacks the Source body `S.YFs0`.
+
+Next bounded witness:
+- run the existing owner-side `syncLiveNerve()` once after secret provisioning;
+- success requires the Worker to dispatch the canonical materializer, GitHub Actions to authenticate back to the Worker's server-only current-state read, and the resulting same-origin static shadow to advance to the same accepted public revision.
+
+
+## encounter — 2026-09-26 · owner reports syncLiveNerve completed after secret setup
+
+Source-faithful user report:
+> "done!! <33"
+
+Provider witness after the owner-run:
+- canonical GitHub has no `papers static shadow materialization` workflow run at all;
+- no `papers shadow: materialize ...` commit exists after the owner-run;
+- therefore the GitHub materializer was not dispatched;
+- the failure boundary is before GitHub Actions, inside or immediately at the Worker → GitHub workflow-dispatch edge;
+- the GitHub Action → Worker private-read secret pair has not yet been exercised by this run and must not be blamed from absence of a dispatch.
+
+Current most likely operational check:
+- confirm the newly added Cloudflare Worker secrets are included in the deployed `sss-live` version; dashboard secret edits require Deploy before the Worker sees them;
+- then run `syncLiveNerve()` once more and re-witness whether a materializer workflow appears.
+
+
+## encounter — 2026-09-26 · second owner sync after GitHub-side secret was actually submitted
+
+Source-faithful user report:
+> "done 2 : D<333"
+
+Provider witness:
+- after the second owner-run `syncLiveNerve()`, canonical GitHub still reports zero runs of `papers static shadow materialization`;
+- no materializer commit appeared on canonical `main`;
+- therefore the Worker → GitHub `workflow_dispatch` edge still did not complete;
+- the downstream GitHub Action → Worker private-read edge remains unexercised by an actual materializer run;
+- current source code would normally wake materialization after accepted/deduped rich state and also on activity-only HOME when a current v2 R2 state exists;
+- absence of a dispatch is therefore compatible with either a pre-dispatch live wound (for example legacy/non-v2 current state or auth/rebase failure) or GitHub rejecting the dispatch token.
+
+Next discriminator:
+- manually dispatch the existing canonical `papers static shadow materialization` workflow once.
+- If it reaches the private Worker state, the downstream secret pair and current R2 state are good, leaving only Worker → GitHub dispatch auth.
+- If it fails before materialization, its GitHub Action log gives the exact server-side read error without exposing secrets.
