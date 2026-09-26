@@ -289,3 +289,20 @@ Current verification boundary:
 Next bounded witness:
 - run the existing owner-side `syncLiveNerve()` once after secret provisioning;
 - success requires the Worker to dispatch the canonical materializer, GitHub Actions to authenticate back to the Worker's server-only current-state read, and the resulting same-origin static shadow to advance to the same accepted public revision.
+
+
+## encounter — 2026-09-26 · owner reports syncLiveNerve completed after secret setup
+
+Source-faithful user report:
+> "done!! <33"
+
+Provider witness after the owner-run:
+- canonical GitHub has no `papers static shadow materialization` workflow run at all;
+- no `papers shadow: materialize ...` commit exists after the owner-run;
+- therefore the GitHub materializer was not dispatched;
+- the failure boundary is before GitHub Actions, inside or immediately at the Worker → GitHub workflow-dispatch edge;
+- the GitHub Action → Worker private-read secret pair has not yet been exercised by this run and must not be blamed from absence of a dispatch.
+
+Current most likely operational check:
+- confirm the newly added Cloudflare Worker secrets are included in the deployed `sss-live` version; dashboard secret edits require Deploy before the Worker sees them;
+- then run `syncLiveNerve()` once more and re-witness whether a materializer workflow appears.
