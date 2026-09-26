@@ -25,21 +25,17 @@
   },
   "home": {
     "changed_scope": [
-      "Display live transport now treats keyed-unit delta from an acknowledged revision ledger as the only ordinary growth path; complete snapshots remain bounded recovery only",
-      "authenticated GET on the existing /__live/home route exposes only current public_revision plus opaque unit_key→unit_revision hashes so a producer can reacquire the actual Worker baseline without transferring semantic values",
-      "an empty R2 locus has a deterministic empty-ledger revision and may accept its first ordinary delta from that base",
-      "oversized cumulative differences require no second chunk protocol: the producer recursively subdivides the same ordinary delta into deterministic <=1 MiB chunks, ACKing each intermediate target revision before deriving the next",
-      "a single opaque unit larger than the request bound remains explicit unit-granularity pressure and is not silently split by Display",
-      "Worker regression run 36020182099 succeeded and witnesses authenticated revision-ledger read, empty-base delta, sequential chained deltas, stale-base refusal, dedupe, reconciliation, legacy protection, ETag race protection and bad-unit rejection",
-      "canonical Drive /papers/_feed.gs was mutated in place on stable Drive ID 1rKA3vxriCOYSWWu4-ubVTcYZqZyxIqWr to reacquire remote revision ledgers, compute changed units only, dynamically plan/send bounded ordinary deltas, persist ACK after every chunk and resume from remote state after rebase",
-      "local chunk-planner witness forced an 80-unit ~1.7 MiB difference into two bounded ordinary deltas; largest packet was 1,040,089 bytes under the 1,048,576-byte contract and final revision matched exactly",
-      "Display phenotype remains Embodiment / Continuity / Orientation / Population; no INDEX or _cambium structural change was earned"
+      "regression witness established that a rejected GitHub workflow dispatch was previously swallowed as materialization_queued:false under HTTP 200",
+      "queueMaterialization now rethrows rejected/request-failed dispatches instead of returning false",
+      "the existing Worker request handler therefore returns a server failure for an unresolved downstream publication edge",
+      "Papers Apps Script already classifies 5xx live delivery as retryable and preserves the live outbox for later wound retry",
+      "R2 accepted/current state remains durable; the retry concerns only the unclosed materialization edge"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "BLOCKED/EARNED · ACKNOWLEDGED DELTA RECURSION IMPLEMENTED + WITNESSED · CANONICAL PROMOTION / PROVIDER ACTIVATION OPEN"
+    "outcome": "PASS/EARNED · FAILED MATERIALIZER DISPATCH REMAINS UNRESOLVED/RETRYABLE"
   },
-  "observed_at_utc": "2026-09-24T15:34:58.250318Z",
-  "owner": "display",
+  "observed_at_utc": "2026-09-26T10:54:39.054311Z",
+  "owner": "organism:display",
   "phenotype": {
     "w": {
       "noun": "Embodiment"
@@ -54,7 +50,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-live-ack-delta-chunking-20260924T151600Z",
+  "reflected_home_event": "display-live-materializer-dispatch-retry-20260926T105000Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -89,6 +85,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "d45cb4c2e35483f21d943a109b7a28428291159a"
+    "source_revision": "9ec4558d7d0302ddb1a43bfc0bb7375ef587ed96"
   }
 }
