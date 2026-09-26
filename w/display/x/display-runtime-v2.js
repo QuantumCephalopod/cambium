@@ -134,6 +134,7 @@ addEventListener('sss:enter-body',e=>{const d=e.detail||{};if(!d.id||!activeIds.
  * the host returns, and the host camera zooms out from the body it left. */
 addEventListener('sss:membrane-ascend',e=>{
   const id=e.detail?.id;if(!id||!activeIds.includes(id)||fold.busy)return;
+  if(!stack.length&&!activeAddress)return; /* already the outermost container: nothing to ascend into */
   const env=hostEnvironment(id);
   const back=()=>{if(stack.length)leave();else{const r=resolveGlobal('');if(r.interlocutors.length)enter(r,'',true)}if(env)fieldById.get(env.hostId)?.arriveFrom(env.place,id)};
   fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});
