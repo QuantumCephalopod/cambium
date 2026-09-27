@@ -1,6 +1,6 @@
 # NUTRIENT — Text is being: metabolites, organisms and their geometry bloom as text — 2026-09-27
 
-status: OPEN / PHENOMENOLOGY + SELECTION PRESSURE
+status: EMBODIED (#120, HOME display-papers-text-being-embodied-20260927T142303Z) / RESIDUE OPEN
 kind: papers encounter
 source: Philipp, walking the live Papers body after the shared-descent nutrient
 target: github.cambium → display → papers
@@ -80,3 +80,19 @@ A standalone Canvas2D + pinned Pretext body of S.-PYM earned these, all as one g
 
 Open from the witness: kerning (glyph advances measured per character); where the 1T volume lives
 now that the center belongs to the metabolites; several open sentences never overlapping.
+
+## embodied (2026-09-27, #120, live on sss.saarland)
+
+The prototype grammar now lives in the Papers body itself and is browser-witnessed on the
+deployed site: 5H.Dw6a's metabolite light unfolds into its sentence on hover; edge wz frays under
+the pointer and a click turns the body so the edge lies level and re-weaves into its sentence.
+Glyph advances come from measured prefixes (kerning closed). Organisms without projected tissue
+(e.g. S.Hark) rest as bare lines and letters — projection absence, not a renderer wound.
+
+## residue — the exit condition of this nutrient
+
+1. **No collisions.** A blooming metabolite sentence still overlaps its neighbours and runs into the
+   left detail panel (seen on 5H.Dw6a). Open sentences must never overlap each other or chrome.
+2. **Readability under rotation** — facing / size threshold below which a face stays dust, not ink.
+3. **Where 1T lives** now that the center belongs to the metabolites.
+4. **Source-ground sidecar** — reconcile with "not a list over the tetrahedron" before building.
