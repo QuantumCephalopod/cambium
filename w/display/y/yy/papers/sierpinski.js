@@ -41,7 +41,7 @@ const METABOLITE_LABEL_MAX_WIDTH=320;
 const METABOLITE_LABEL_ROWS=4;
 const METABOLITE_LIGHT_GAIN=1.0;
 const INQUIRY_EMBER_GAIN=.28;
-const PHYSIOLOGY_PHASE_MS=5200;
+const PHYSIOLOGY_PHASE_MS=6400;
 const OVERVIEW_WANDER=.86;
 const OVERVIEW_FLOW_PERIOD_MS=42000;
 const OVERVIEW_LIGHT_GAIN=.46;
@@ -51,10 +51,10 @@ const CHAMBER_SHELL_ALPHA=.55,CHAMBER_FACE_ALPHA=.05;
 const PAPERS_OVERVIEW_BASIS_Y=-.275;
 const PHILOSOPHY_INQUIRY_REGION=3;
 const PHYSIOLOGY_PHASES=Object.freeze([
-  Object.freeze({id:'question',label:'QUESTION',copy:'The living body notices what it cannot yet answer.'}),
-  Object.freeze({id:'prepare',label:'PREPARE',copy:'Arrived matter is checked and folded into a form Papers can digest.'}),
-  Object.freeze({id:'metabolize',label:'METABOLIZE',copy:'One complete outside work closes into one living Source quantum.'}),
-  Object.freeze({id:'grow',label:'GROW',copy:'Four living peers may close into one larger Holon. The parents remain alive.'})
+  Object.freeze({id:'question',label:'QUESTION',copy:'Papers is a living body grown from research. It notices what it cannot yet answer, and reaches out.'}),
+  Object.freeze({id:'prepare',label:'PREPARE',copy:'A real outside work arrives. Its authors keep it; Papers only folds its words into a form it can digest.'}),
+  Object.freeze({id:'metabolize',label:'METABOLIZE',copy:'The words become a tetrahedral body: 4 vertices, 6 relations, 4 faces, 1 whole. What survives is its wisdom.'}),
+  Object.freeze({id:'grow',label:'GROW',copy:'Four living organisms close into one larger one. The parents stay alive, and the grown body asks anew.'})
 ]);
 const BACKGROUND_FIELD_ALPHA=.16;
 const BACKGROUND_STAR_ALPHA=.72;
@@ -443,7 +443,7 @@ function makeStage(host){
   const canvas=document.createElement('canvas');canvas.className='papers-sierpinski-stage';canvas.setAttribute('aria-label','Papers recursive tetrahedral inquiry field');host.append(canvas);
   const textCanvas=document.createElement('canvas');textCanvas.className='papers-wisdom-stage';textCanvas.setAttribute('aria-label','Papers active metabolight wisdom');textCanvas.dataset.pretextVersion=PRETEXT_VERSION;host.append(textCanvas);
   const physiology=document.createElement('section');physiology.className='papers-physiology';physiology.setAttribute('aria-label','How Papers lives');
-  physiology.innerHTML='<small>HOW PAPERS LIVES</small><canvas class="papers-physiology-canvas" aria-hidden="true"></canvas><div class="papers-physiology-phases"></div><div class="papers-physiology-copy"><b></b><span></span></div>';
+  physiology.innerHTML='<small>HOW PAPERS LIVES</small><i class="papers-physiology-thesis">not a library: research metabolized into one living body</i><canvas class="papers-physiology-canvas" aria-hidden="true"></canvas><div class="papers-physiology-phases"></div><div class="papers-physiology-copy"><b></b><span></span></div>';
   const physiologyPhases=physiology.querySelector('.papers-physiology-phases');
   for(const phase of PHYSIOLOGY_PHASES){const n=document.createElement('span');n.dataset.phase=phase.id;n.textContent=phase.label;physiologyPhases.append(n)}
   host.append(physiology);
@@ -503,30 +503,84 @@ function drawOverviewPhysiology(now){
     box.dataset.phase=phase.id;state.physiologyTitle.textContent=phase.label;state.physiologyCopy.textContent=phase.copy;
     state.physiologyPhases.forEach((n,i)=>n.dataset.active=i===index?'true':'false');
   }
-  const {ctx,r}=resizePhysiologyCanvas(canvas),w=r.width,h=r.height,cx=w*.5,cy=h*.52,s=Math.min(w,h)*.22,t=smooth(phaseT);
+  const {ctx,r}=resizePhysiologyCanvas(canvas),w=r.width,h=r.height;
+  physiologyStory(ctx,w,h,index,phaseT,now);
+}
+/* HOW PAPERS LIVES — one continuous story, not four vignettes. The same objects persist across the
+ * four pumps: a living r1 body with one empty cell reaches through its membrane; a real outside work
+ * arrives while its authors stay outside, tied to it by a provenance thread; its lines fold into four
+ * bundles that become a tetrahedral body (letters running its six edges, dust filling its faces);
+ * the body collapses to its surviving lights and settles into the empty cell as one Source; four
+ * living cells then close into one larger Holon while every parent stays lit, and the grown body
+ * asks anew. Canvas2D only; everything is derived from time, nothing is stored between frames. */
+const PHYS_RAW=[[0,-.72],[-.66,.42],[.66,.42],[0,.10]],PHYS_GAP=2;
+function physTet(c,size,rot=0){const cs=Math.cos(rot),sn=Math.sin(rot);return PHYS_RAW.map(([x,y])=>[c[0]+(x*cs-y*sn)*size,c[1]+(x*sn+y*cs)*size])}
+function physLerp(a,b,t){return [mix(a[0],b[0],t),mix(a[1],b[1],t)]}
+function physDot(ctx,p,r,a,rgb='232,252,238'){if(a<=.004)return;ctx.fillStyle=`rgba(${rgb},${a.toFixed(3)})`;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill()}
+function physGlow(ctx,p,r,a){if(a<=.004)return;const g=ctx.createRadialGradient(p[0],p[1],0,p[0],p[1],r);g.addColorStop(0,`rgba(250,255,222,${a.toFixed(3)})`);g.addColorStop(.35,`rgba(226,255,196,${(a*.45).toFixed(3)})`);g.addColorStop(1,'rgba(200,255,190,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill()}
+function physStroke(ctx,pts,a,dash=null){if(a<=.004)return;ctx.save();ctx.strokeStyle=`rgba(221,246,229,${a.toFixed(3)})`;ctx.lineWidth=1;if(dash)ctx.setLineDash(dash);for(const [i,j] of EDGE){ctx.beginPath();ctx.moveTo(...pts[i]);ctx.lineTo(...pts[j]);ctx.stroke()}ctx.restore()}
+function physLabel(ctx,text,x,y,a,font='5.5px ui-monospace, monospace'){if(a<=.004)return;ctx.font=font;ctx.fillStyle=`rgba(236,250,240,${a.toFixed(3)})`;ctx.fillText(text,x,y)}
+function physiologyStory(ctx,w,h,phase,u,now){
+  const t=smooth(u),B=[w*.22,h*.56],sb=h*.34,M=[w*.50,h*.50],sm=h*.30,memX=w*.66,P0=[w*.85,h*.44],tag=[memX+w*.04,h*.92];
+  const cells=PHYS_RAW.map(([x,y])=>[B[0]+x*sb*.5,B[1]+y*sb*.5]),cellSize=sb*.5,rot=Math.sin(now*.00021)*.08,gapC=cells[PHYS_GAP];
   ctx.lineCap='round';ctx.lineJoin='round';
-  if(phase.id==='question'){
-    simplex2D(ctx,cx-s*.55,cy,s*.55,now*.00012,.32,.025);
-    const travel=.5-.5*Math.cos(t*Math.PI*2),x=cx-s*.10+travel*s*1.22,y=cy-Math.sin(t*Math.PI)*s*.34;
-    simplex2D(ctx,x,y,s*.16,-now*.0005,.72,.08);
-    ctx.strokeStyle='rgba(173,235,205,.18)';ctx.beginPath();ctx.arc(cx-s*.55,cy,s*.80,-.48,.48);ctx.stroke();
-  }else if(phase.id==='prepare'){
-    const anchors=[[-.62,-.22],[.58,-.26],[-.45,.48],[.48,.46]];
-    for(let i=0;i<8;i++){
-      const a=i/8*Math.PI*2+now*.00035*(i%2?1:-1),orbit=s*(.64-.05*(i%3)),target=anchors[i%4];
-      const ox=cx+Math.cos(a)*orbit,oy=cy+Math.sin(a)*orbit*.55,tx=cx+target[0]*s,ty=cy+target[1]*s;
-      simplex2D(ctx,mix(ox,tx,t),mix(oy,ty,t),s*.10,a+t,.34+.42*t,.035+.04*t);
-    }
-  }else if(phase.id==='metabolize'){
-    const anchors=[[0,-.68],[-.62,.42],[.62,.42],[0,.10]];
-    for(let i=0;i<4;i++){const a=anchors[i];simplex2D(ctx,cx+a[0]*s,cy+a[1]*s,s*.12,now*.00025+i,.40,.035)}
-    const edgeAlpha=.12+.55*t;simplex2D(ctx,cx,cy,s*.96,now*.00004,edgeAlpha,.025+.08*t);
-    ctx.fillStyle=`rgba(224,255,211,${.08+.34*t})`;ctx.beginPath();ctx.arc(cx,cy,3+7*t,0,Math.PI*2);ctx.fill();
-  }else{
-    const anchors=[[0,-.58],[-.54,.34],[.54,.34],[0,.08]];
-    for(let i=0;i<4;i++){const a=anchors[i],pulse=.96+.05*Math.sin(now*.0014+i);simplex2D(ctx,cx+a[0]*s,cy+a[1]*s,s*.20*pulse,now*.00010+i*.25,.42,.045)}
-    simplex2D(ctx,cx,cy,s*1.18,now*.000035,.18+.54*t,.02+.055*t);
-    ctx.fillStyle=`rgba(242,255,208,${.12+.55*t})`;ctx.shadowColor='rgba(220,255,185,.55)';ctx.shadowBlur=18;ctx.beginPath();ctx.arc(cx,cy,4+8*t,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+  /* membrane between the living body and the outside world */
+  ctx.save();ctx.setLineDash([2,4]);ctx.strokeStyle='rgba(173,235,205,.18)';ctx.beginPath();ctx.moveTo(memX,h*.06);ctx.quadraticCurveTo(memX-w*.03,h*.5,memX,h*.96);ctx.stroke();ctx.restore();
+  physLabel(ctx,'PAPERS',w*.03,h*.1,.26);physLabel(ctx,'OUTSIDE',memX+w*.04,h*.1,.26);
+  /* the living body: r1 = four cells; the gap cell stays empty until METABOLIZE lands a Source in it */
+  const filled=phase===3||(phase===2&&u>.86),holon=phase===3?t:0;
+  cells.forEach((c,i)=>{
+    const gap=i===PHYS_GAP&&!filled,pulse=.5+.5*Math.sin(now*.0026+i*1.7);
+    if(gap){physStroke(ctx,physTet(c,cellSize*.92,rot),.16+.22*pulse,[1.5,3]);if(phase===0)physLabel(ctx,'?',c[0]-2.5,c[1]+3,.25+.45*pulse,'600 9px system-ui, sans-serif')}
+    else{simplex2D(ctx,c[0],c[1],cellSize*.92,rot,.38+.18*holon,.03+.03*holon);physGlow(ctx,c,4+2*pulse,.35+.25*pulse)}
+  });
+  /* GROW: the four living cells close into one larger holon; its centre void lights up */
+  if(phase===3){
+    physStroke(ctx,physTet(B,sb*1.04,rot),.12+.6*t);physGlow(ctx,B,6+16*t,.18+.62*t);
+    physLabel(ctx,'nH · four parents, all alive',B[0]-sb*.9,B[1]+sb*.95,.6*t);
+    if(u>.78){const q=smooth((u-.78)/.22),g=[B[0]+sb*1.25,B[1]+sb*.2];physStroke(ctx,physTet(g,sb*.5,rot),.3*q,[1.5,3]);physLabel(ctx,'?',g[0]-2.5,g[1]+3,.6*q,'600 9px system-ui, sans-serif')}
+  }
+  /* QUESTION: appetite reaches from the empty cell through the membrane */
+  if(phase===0){
+    const reach=smooth(u/.7),tip=physLerp(gapC,[memX,gapC[1]-h*.12],reach);
+    ctx.strokeStyle=`rgba(221,246,229,${(.45*reach).toFixed(3)})`;ctx.beginPath();ctx.moveTo(...gapC);ctx.quadraticCurveTo((gapC[0]+tip[0])/2,gapC[1]-h*.3,tip[0],tip[1]);ctx.stroke();physDot(ctx,tip,1.6,.8*reach);
+  }
+  /* the outside work: a page of lines, its authors staying outside on the provenance thread */
+  const lineCount=5,page=[30,38];
+  let pagePos=P0,pageA=0,peel=0;
+  if(phase===0)pageA=smooth((u-.4)/.4);
+  else if(phase===1){pageA=1;pagePos=physLerp(P0,M,smooth(u/.5));peel=smooth((u-.5)/.45)}
+  const authorsA=phase===0?pageA:(phase===3?1-t:1);
+  physLabel(ctx,'AUTHORS',tag[0],tag[1]-7,.55*authorsA);physLabel(ctx,'ORIGINAL WORK',tag[0],tag[1],.42*authorsA);
+  if(pageA>.01&&peel<1){
+    const a=pageA*(1-peel),x=pagePos[0]-page[0]/2,y=pagePos[1]-page[1]/2;
+    ctx.strokeStyle=`rgba(221,246,229,${(.55*a).toFixed(3)})`;ctx.lineWidth=1;ctx.strokeRect(x,y,page[0],page[1]);
+    ctx.fillStyle=`rgba(221,246,229,${(.42*a).toFixed(3)})`;for(let l=0;l<lineCount;l++)ctx.fillRect(x+4,y+6+l*6.5,page[0]-8-(l%2)*7,1.4);
+  }
+  /* provenance thread: from the authors to wherever their work's body is now */
+  const V=physTet(M,sm,rot);
+  let bodyAt=null;
+  if(phase===1)bodyAt=pagePos;else if(phase===2)bodyAt=u<.62?M:physLerp(M,gapC,smooth((u-.62)/.24));
+  if(bodyAt&&authorsA>.01){ctx.save();ctx.setLineDash([1,3]);ctx.strokeStyle=`rgba(236,250,240,${(.28*authorsA).toFixed(3)})`;ctx.beginPath();ctx.moveTo(tag[0]+2,tag[1]-13);ctx.lineTo(bodyAt[0],bodyAt[1]);ctx.stroke();ctx.restore()}
+  /* PREPARE: the page's lines peel into four bundles that become the four vertices */
+  if(phase===1&&peel>0){
+    const top=[pagePos[0]-page[0]/2,pagePos[1]-page[1]/2];
+    for(let k=0;k<40;k++){const l=k%lineCount,from=[top[0]+4+(k*2.9)%(page[0]-8),top[1]+6+l*6.5],p=physLerp(from,V[k%4],smooth(clamp(peel*1.25-(k/40)*.25)));physDot(ctx,p,.8,.75)}
+    V.forEach(v=>physDot(ctx,v,1.2+1.4*peel,.5*peel));
+  }
+  /* METABOLIZE: letters run the six edges, dust fills the four faces, then everything collapses to what survives */
+  if(phase===2){
+    const grow=smooth(u/.34),collapse=smooth((u-.62)/.24),size=mix(sm,cellSize*.92,collapse),c=bodyAt,pts=physTet(c,size,rot);
+    physStroke(ctx,pts,(.2+.5*grow)*(1-.4*collapse));
+    EDGE.forEach(([i,j],e)=>{for(let k=0;k<7;k++){const f=((k/7)+now*.00022*(1+e*.13))%1;if(f>grow)continue;physDot(ctx,physLerp(pts[i],pts[j],f),.7,.7*(1-collapse))}});
+    FACE.forEach((f,fi)=>{for(let k=0;k<14;k++){let a=random01('phys-face-'+fi,k),b=random01('phys-face-'+fi,'b'+k);if(a+b>1){a=1-a;b=1-b}
+      const x=pts[f[0]][0]+a*(pts[f[1]][0]-pts[f[0]][0])+b*(pts[f[2]][0]-pts[f[0]][0]),y=pts[f[0]][1]+a*(pts[f[1]][1]-pts[f[0]][1])+b*(pts[f[2]][1]-pts[f[0]][1]);
+      physDot(ctx,[x,y+collapse*6*random01('phys-fall-'+fi,k)],.6,.4*grow*(1-collapse))}});
+    const lights=u<.62?smooth((u-.34)/.2):1;
+    [[-.18,.05],[.16,.12]].forEach(([dx,dy])=>physGlow(ctx,[c[0]+dx*size,c[1]+dy*size],3+3*lights,.7*lights));
+    physLabel(ctx,'4V · 6E · 4F · 1T',c[0]-20,c[1]+sm*.8,.5*smooth((u-.34)/.2)*(1-collapse));
+    physLabel(ctx,'what survives: metabolites',c[0]-30,c[1]-sm*.85,.5*smooth((u-.45)/.15)*(1-collapse));
+    if(u>.8)physLabel(ctx,'S · one Source',gapC[0]+cellSize*.55,gapC[1]-cellSize*.35,.7*smooth((u-.8)/.2),'600 6.5px ui-monospace, monospace');
   }
 }
 
@@ -795,15 +849,28 @@ function inkDust(ctx,glyphs,pick,size,color,alpha,ox=0,oy=0){
   for(const g of glyphs)if(pick(g)){const r=typeof size==='function'?size(g):size;ctx.rect(ox+g.x-r,oy+g.y-r,2*r,2*r);any=true}
   if(!any)return;ctx.globalAlpha=Math.min(1,alpha);ctx.fillStyle=color;ctx.fill();ctx.globalAlpha=1;
 }
+/* Glyph atlas: each (font, colour, baseline, character) is rasterized once into a tiny bitmap and then
+ * blitted with drawImage. Opening an edge or face weaves hundreds of letters at once; per-glyph fillText
+ * was the measured cost on CPU-only machines, a blit is not. Positions and metrics are unchanged. */
+const glyphAtlas=new Map();let glyphMeasure=null;
+function glyphSprite(font,color,baseline,ch,scale){
+  const key=font+'|'+color+'|'+baseline+'|'+scale+'|'+ch;let g=glyphAtlas.get(key);if(g)return g;
+  if(!glyphMeasure)glyphMeasure=document.createElement('canvas').getContext('2d');glyphMeasure.font=font;
+  const size=Number((font.match(/([\d.]+)px/)||[0,12])[1]),w=Math.ceil(glyphMeasure.measureText(ch).width)+4,h=Math.ceil(size*1.7)+4,oy=baseline==='top'?2:Math.ceil(size*1.25)+2;
+  const c=document.createElement('canvas');c.width=Math.max(1,Math.ceil(w*scale));c.height=Math.max(1,Math.ceil(h*scale));
+  const x=c.getContext('2d');x.scale(scale,scale);x.font=font;x.fillStyle=color;x.textBaseline=baseline;x.fillText(ch,2,oy);
+  g={c,w,h,ox:2,oy};if(glyphAtlas.size>4000)glyphAtlas.clear();glyphAtlas.set(key,g);return g;
+}
 function inkText(ctx,glyphs,pick,color,alphaOf,fontOf,ox=0,oy=0){
-  ctx.fillStyle=color;let f='';
+  const baseline=ctx.textBaseline==='top'?'top':'alphabetic',scale=state?.inkScale||1;let f=fontOf?'':ctx.font;
   for(let j=0;j<glyphs.length;j++){const g=glyphs[j];if(!pick(g,j))continue;const a=alphaOf(g,j);if(a<=.004)continue;
-    if(fontOf){const nf=fontOf(g,j);if(nf!==f){f=nf;ctx.font=nf}}ctx.globalAlpha=Math.min(1,a);ctx.fillText(g.ch,ox+g.x,oy+g.y)}
+    if(fontOf)f=fontOf(g,j);if(g.ch===' ')continue;const sp=glyphSprite(f,color,baseline,g.ch,scale);
+    ctx.globalAlpha=Math.min(1,a);ctx.drawImage(sp.c,ox+g.x-sp.ox,oy+g.y-sp.oy,sp.w,sp.h)}
   ctx.globalAlpha=1;
 }
 function inkAabb(corners){const xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys);return {x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y}}
 function drawWisdom(rect,cam,translate,metabolights,now){
-  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
+  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect);state.inkScale=Math.max(1,Math.round(d*2)/2);const canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
   canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
   const dt=Math.min(.05,Math.max(0,(now-(state.beingLast||now))/1000));state.beingLast=now;
   if(!state.current||!entity){canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}

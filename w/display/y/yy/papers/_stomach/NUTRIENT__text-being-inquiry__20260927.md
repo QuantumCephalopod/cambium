@@ -103,5 +103,6 @@ Glyph advances come from measured prefixes (kerning closed). Organisms without p
 at all 😃 its mainly tied to the popup of lots of text eg edges and faces are throttling fps when
 opening them =)"
 
-→ residue 4. **Opening is cheap.** An edge or face opening must not drop frames: the burst of glyphs
-  (springs, dust, ink) on open is the measured bottleneck, not canvas resolution.
+→ residue 4 answered in place (HOME display-papers-containers-story-20260927T180350Z): woven letters are
+  blitted from a cached glyph atlas instead of per-glyph fillText. Still owed: a frame-time witness on
+  Philipp's own CPU-only laptop.

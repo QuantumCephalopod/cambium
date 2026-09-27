@@ -44,3 +44,9 @@ source-faithful:
 bears on: open item 2 above (which Papers tissue survives migration) — the chambers must stop being
 invisible packing bins with floating labels and become the visible rank-1 Sierpiński body every other
 site shows, entered by the shared Descent grammar; crawlerbait is the witness to inherit, not re-grow.
+
+## answered in part (2026-09-27, HOME display-papers-containers-story-20260927T180350Z)
+
+The chambers are now the visible rank-1 body and content is entered container-first (RITUAL 2.4).
+Still open: Papers' renderer itself joining Display's shared Descent field (walked path, pools,
+host environment instead of Papers' own inquiry-environment shader).

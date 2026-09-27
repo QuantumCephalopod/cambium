@@ -1,6 +1,6 @@
 # NUTRIENT — HOW PAPERS LIVES must show what Papers is — 2026-09-27
 
-status: OPEN / PHENOMENOLOGY
+status: SPENT — metabolized into RITUAL 2.4 (Overview physiology) and the HOW PAPERS LIVES story; HOME display-papers-containers-story-20260927T180350Z
 kind: papers encounter
 source: Philipp, chat 2026-09-27 (after #123 went live)
 target: github.cambium → display → papers (overview physiology unit, RITUAL "Overview physiology — four living phases")
