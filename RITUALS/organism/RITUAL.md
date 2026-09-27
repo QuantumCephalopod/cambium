@@ -93,7 +93,7 @@ python3 y/site-public.py --artifact _site --check
 
 ## current living pressure
 
-- Root `_stomach/launch.md` remains unresolved launch pressure.
+- First public launch is closed; its spent intake record lives in `_waste/metabolized-first-public-launch-20260927.md`.
 - Display-local nutrients remain owned by `w/display/_stomach/` until metabolized.
 - Crawlerbait's Cloudflare tide remains Crawlerbait-local physiology; provider credentials remain outside repository/public bytes.
 - Completed child pressure may be retired only after witnessed anatomy, durable child HOME and feed return close its local cycle.

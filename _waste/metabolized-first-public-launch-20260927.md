@@ -1,3 +1,5 @@
+<!-- retired 2026-09-27: spent. Witnessed closed: Pages pump deploys; sss.saarland serves over HTTPS; the served membrane carries no noindex; an Impressum surface is reachable. Not witnessed here: a deliberate site-wide licence choice — if still wanted, it re-enters as its own nutrient. -->
+
 # unresolved nutrient — first public launch
 
 state: open. scope: website only.
