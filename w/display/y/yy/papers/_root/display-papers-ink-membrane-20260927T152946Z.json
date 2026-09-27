@@ -1,0 +1,40 @@
+{
+  "event_id": "display-papers-ink-membrane-20260927T152946Z",
+  "home_at_utc": "2026-09-27T15:29:46Z",
+  "organism": "organism:papers",
+  "entrypoint": "github.cambium...display.papers",
+  "outcome": "PASS/EARNED · OPEN TEXT NEVER COLLIDES · METABOLITES REPEL · SMOOTHNESS BASELINE CPU-ONLY · RITUAL 2.3",
+  "changed_scope": [
+    "sierpinski.js: open or folding sentences take free space around their own anchor (ring placement for metabolites and vertices, smallest nudge for woven edges and faces); obstacles are visible Papers chrome, Display's minimap aside and every other open sentence; receded chrome (opacity < .3) yields; the origin panel fades fully when open text lies over it",
+    "sierpinski.js: glyph advances measured in the weight and size each glyph is drawn in (metabolite text had been measured 13px/500 and drawn 12px/400-600, opening gaps inside words)",
+    "sierpinski.js: metabolite lights are repelling bodies drawn to their own flow points (radius half the organism); metaboliteField still yields exactly one light per metabolite",
+    "sierpinski.js: adaptive resolution governor for the GL canvases (data-render-scale, .45–1); HUD, chamber labels, inquiry and physiology panels write the DOM only on change; glyph dust drawn as one path per piece, ink with one colour per piece",
+    "RITUAL 2.3: 'open text never collides', 'metabolites are bodies, not pins', and 'smoothness is phenomenology, baseline a laptop without a GPU' assimilated as law",
+    "NUTRIENT__text-being-inquiry__20260927 narrowed in place: no-collision residue closed",
+    "ENCOUNTER__small-screen-repel-smooth__20260927 (Philipp's ~850px / no-GPU walk) admitted, metabolized and retired to _waste; it was admitted after the renderer work on it began, and says so"
+  ],
+  "remaining_stomach": [
+    "NUTRIENT__shared-descent-invariant__20260926.md — migrate the renderer onto shared Descent; retiring Papers' own inquiry-environment shader in favour of Display's host environment is also the largest remaining full-screen shader cost",
+    "NUTRIENT__text-being-inquiry__20260927.md — residue: face readability threshold under rotation, where 1T lives, source-ground sidecar",
+    "NUTRIENT__source-inquiry-metabolite-projection__20260926.md — backfill completion + Source metabolight browser witness"
+  ],
+  "witness": {
+    "browser": "Mnemos on a local y/site-public.py build: 5H.Dw6a and 5H.aNlh metabolite sentences open in free space clear of the origin panel with even spacing (data-ink-collisions=0); 6H.dNMx face wxz woven readable at 800px, clear of the minimap; 2H._phq's three metabolites separate by repulsion; data-render-scale adapted .45–.71 in a throttled pane",
+    "checks": "y/check.py passes on the local artifact after 16301d2 restored the literal witness surfaces",
+    "not_witnessed": "frame timing on Philipp's CPU-only laptop itself"
+  },
+  "structural_growth": false,
+  "parent_uplink_required": false,
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "act": "ink membrane, repelling metabolites and CPU-only smoothness for the Papers text-being body",
+    "trigger": "Philipp, chat 2026-09-27: collisions seen live, then the ~850px / no-GPU walk of #122",
+    "renderer_changed": true,
+    "open_nutrients": [
+      "NUTRIENT__shared-descent-invariant__20260926.md",
+      "NUTRIENT__text-being-inquiry__20260927.md",
+      "NUTRIENT__source-inquiry-metabolite-projection__20260926.md"
+    ]
+  }
+}

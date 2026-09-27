@@ -1,6 +1,6 @@
 # ENCOUNTER — small screens, repelling metabolites, smoothness — 2026-09-27
 
-status: OPEN (admitted after the renderer work began; see provenance)
+status: SPENT — metabolized into RITUAL 2.3 and sierpinski.js (#122); HOME display-papers-ink-membrane-20260927T152946Z
 kind: papers encounter
 source: Philipp, walking the #122 ink-membrane build on his own laptop (~850px wide, no GPU), 2026-09-27
 target: github.cambium → display → papers
