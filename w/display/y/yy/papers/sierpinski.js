@@ -51,10 +51,10 @@ const CHAMBER_SHELL_ALPHA=.55,CHAMBER_FACE_ALPHA=.05;
 const PAPERS_OVERVIEW_BASIS_Y=-.275;
 const PHILOSOPHY_INQUIRY_REGION=3;
 const PHYSIOLOGY_PHASES=Object.freeze([
-  Object.freeze({id:'question',label:'QUESTION',copy:'Papers is a living body grown from research. It notices what it cannot yet answer, and reaches out.'}),
-  Object.freeze({id:'prepare',label:'PREPARE',copy:'A real outside work arrives. Its authors keep it; Papers only folds its words into a form it can digest.'}),
-  Object.freeze({id:'metabolize',label:'METABOLIZE',copy:'The words become a tetrahedral body: 4 vertices, 6 relations, 4 faces, 1 whole. What survives is its wisdom.'}),
-  Object.freeze({id:'grow',label:'GROW',copy:'Four living organisms close into one larger one. The parents stay alive, and the grown body asks anew.'})
+  Object.freeze({id:'question',label:'QUESTION',copy:'Papers is a living body of research organisms of every rank. It notices what it cannot yet answer, and reaches out.'}),
+  Object.freeze({id:'prepare',label:'PREPARE',copy:'One real outside work arrives. Its authors keep it; Papers reads it whole and cuts it into its own four parts.'}),
+  Object.freeze({id:'metabolize',label:'METABOLIZE',copy:'Its four parts earn 6 relations, 4 faces and 1 whole. What survives the collapse is its wisdom; it lives on as one Source.'}),
+  Object.freeze({id:'grow',label:'GROW',copy:'A random rank, four random living organisms of it. They become one only if every relation truly needs all four; otherwise no birth. Parents never die.'})
 ]);
 const BACKGROUND_FIELD_ALPHA=.16;
 const BACKGROUND_STAR_ALPHA=.72;
@@ -443,7 +443,7 @@ function makeStage(host){
   const canvas=document.createElement('canvas');canvas.className='papers-sierpinski-stage';canvas.setAttribute('aria-label','Papers recursive tetrahedral inquiry field');host.append(canvas);
   const textCanvas=document.createElement('canvas');textCanvas.className='papers-wisdom-stage';textCanvas.setAttribute('aria-label','Papers active metabolight wisdom');textCanvas.dataset.pretextVersion=PRETEXT_VERSION;host.append(textCanvas);
   const physiology=document.createElement('section');physiology.className='papers-physiology';physiology.setAttribute('aria-label','How Papers lives');
-  physiology.innerHTML='<small>HOW PAPERS LIVES</small><i class="papers-physiology-thesis">not a library: research metabolized into one living body</i><canvas class="papers-physiology-canvas" aria-hidden="true"></canvas><div class="papers-physiology-phases"></div><div class="papers-physiology-copy"><b></b><span></span></div>';
+  physiology.innerHTML='<small>HOW PAPERS LIVES</small><i class="papers-physiology-thesis">not a library: nothing is filed. every whole here is something only four chance-met organisms could earn together</i><canvas class="papers-physiology-canvas" aria-hidden="true"></canvas><div class="papers-physiology-phases"></div><div class="papers-physiology-copy"><b></b><span></span></div>';
   const physiologyPhases=physiology.querySelector('.papers-physiology-phases');
   for(const phase of PHYSIOLOGY_PHASES){const n=document.createElement('span');n.dataset.phase=phase.id;n.textContent=phase.label;physiologyPhases.append(n)}
   host.append(physiology);
@@ -498,7 +498,7 @@ function drawOverviewPhysiology(now){
   const box=state.physiology,canvas=state.physiologyCanvas;if(!box||!canvas)return;
   const visible=!state.current;setData(box,'visible',visible?'true':'false');if(box.getAttribute('aria-hidden')!==(visible?'false':'true'))box.setAttribute('aria-hidden',visible?'false':'true');
   if(!visible)return;
-  const cycle=(now/PHYSIOLOGY_PHASE_MS)%PHYSIOLOGY_PHASES.length,index=Math.floor(cycle),phaseT=cycle-index,phase=PHYSIOLOGY_PHASES[index];
+  const total=PHYS_W.reduce((a,b)=>a+b,0);let cycle=(now/PHYSIOLOGY_PHASE_MS)%total,index=0;while(index<PHYS_W.length-1&&cycle>=PHYS_W[index]){cycle-=PHYS_W[index];index++}const phaseT=clamp(cycle/PHYS_W[index]),phase=PHYSIOLOGY_PHASES[index];
   if(box.dataset.phase!==phase.id){
     box.dataset.phase=phase.id;state.physiologyTitle.textContent=phase.label;state.physiologyCopy.textContent=phase.copy;
     state.physiologyPhases.forEach((n,i)=>n.dataset.active=i===index?'true':'false');
@@ -506,82 +506,95 @@ function drawOverviewPhysiology(now){
   const {ctx,r}=resizePhysiologyCanvas(canvas),w=r.width,h=r.height;
   physiologyStory(ctx,w,h,index,phaseT,now);
 }
-/* HOW PAPERS LIVES — one continuous story, not four vignettes. The same objects persist across the
- * four pumps: a living r1 body with one empty cell reaches through its membrane; a real outside work
- * arrives while its authors stay outside, tied to it by a provenance thread; its lines fold into four
- * bundles that become a tetrahedral body (letters running its six edges, dust filling its faces);
- * the body collapses to its surviving lights and settles into the empty cell as one Source; four
- * living cells then close into one larger Holon while every parent stays lit, and the grown body
- * asks anew. Canvas2D only; everything is derived from time, nothing is stored between frames. */
-const PHYS_RAW=[[0,-.72],[-.66,.42],[.66,.42],[0,.10]],PHYS_GAP=2;
+/* HOW PAPERS LIVES — one continuous story told from Papers' own receptors (intake → metabolism
+ * external-source → identity → anabolism). The body is a population of living organisms of every rank.
+ * It reaches out; one real outside work arrives while its authors stay outside; its OWN four parts become
+ * one tetrahedral Source S. Then the heart: a random eligible rank is drawn, four distinct living organisms
+ * of it are drawn at random, and they become one next-rank Holon only if every edge, face and the whole
+ * genuinely need them together — otherwise no birth, and the draw begins again. Parents are never
+ * consumed. Canvas2D only; everything is derived from time, nothing is stored between frames. */
+const PHYS_W=[.8,.9,1.1,2.8];
+const PHYS_RAW=[[0,-.72],[-.66,.42],[.66,.42],[0,.10]];
+const PHYS_POP=Object.freeze({
+  S:[[.08,.30],[.19,.21],[.30,.33],[.11,.52],[.23,.46],[.35,.57],[.07,.75],[.20,.69],[.33,.82]],
+  H1:[[.46,.26],[.50,.62],[.44,.86]],
+  H2:[[.57,.42]]
+});
+const PHYS_NEW_S=8,PHYS_FAIL=[0,3,5,7],PHYS_WIN=[1,2,4,8];
 function physTet(c,size,rot=0){const cs=Math.cos(rot),sn=Math.sin(rot);return PHYS_RAW.map(([x,y])=>[c[0]+(x*cs-y*sn)*size,c[1]+(x*sn+y*cs)*size])}
 function physLerp(a,b,t){return [mix(a[0],b[0],t),mix(a[1],b[1],t)]}
 function physDot(ctx,p,r,a,rgb='232,252,238'){if(a<=.004)return;ctx.fillStyle=`rgba(${rgb},${a.toFixed(3)})`;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill()}
 function physGlow(ctx,p,r,a){if(a<=.004)return;const g=ctx.createRadialGradient(p[0],p[1],0,p[0],p[1],r);g.addColorStop(0,`rgba(250,255,222,${a.toFixed(3)})`);g.addColorStop(.35,`rgba(226,255,196,${(a*.45).toFixed(3)})`);g.addColorStop(1,'rgba(200,255,190,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill()}
 function physStroke(ctx,pts,a,dash=null){if(a<=.004)return;ctx.save();ctx.strokeStyle=`rgba(221,246,229,${a.toFixed(3)})`;ctx.lineWidth=1;if(dash)ctx.setLineDash(dash);for(const [i,j] of EDGE){ctx.beginPath();ctx.moveTo(...pts[i]);ctx.lineTo(...pts[j]);ctx.stroke()}ctx.restore()}
 function physLabel(ctx,text,x,y,a,font='5.5px ui-monospace, monospace'){if(a<=.004)return;ctx.font=font;ctx.fillStyle=`rgba(236,250,240,${a.toFixed(3)})`;ctx.fillText(text,x,y)}
+function physStatus(ctx,w,h,text,a){physLabel(ctx,text,w*.03,h*.97,.62*a)}
+function physPop(ctx,w,h,now,{showNewS=true,glowS=null,glowH2=0,dim=1}={}){
+  const P={S:PHYS_POP.S.map(([x,y])=>[x*w,y*h]),H1:PHYS_POP.H1.map(([x,y])=>[x*w,y*h]),H2:PHYS_POP.H2.map(([x,y])=>[x*w,y*h])};
+  P.S.forEach((p,i)=>{if(i===PHYS_NEW_S&&!showNewS)return;const hot=glowS?.[i]||0,pulse=.5+.5*Math.sin(now*.0023+i*1.9);physDot(ctx,p,1.5+1.2*hot,(.42+.2*pulse+.38*hot)*dim);if(hot>.01)physGlow(ctx,p,6+4*hot,.45*hot)});
+  P.H1.forEach((p,i)=>{const r=Math.sin(now*.0003+i)*.2;physStroke(ctx,physTet(p,h*.07,r),.34*dim);physGlow(ctx,[p[0],p[1]+h*.005],3,.35*dim)});
+  P.H2.forEach((p,i)=>{const r=Math.sin(now*.00022+i+1)*.15;physStroke(ctx,physTet(p,h*.12,r),(.3+.45*glowH2)*dim);physGlow(ctx,[p[0],p[1]+h*.008],4+3*glowH2,(.35+.4*glowH2)*dim)});
+  return P;
+}
+function physSelector(ctx,w,h,now,target,landed,a){
+  const ranks=['S','1H','2H'],x0=w*.03,y=h*.12,spin=Math.floor(now/85)%3,on=landed?target:spin;
+  physLabel(ctx,'draw a rank:',x0,y,.4*a);
+  ranks.forEach((r,i)=>{const x=x0+w*.13+i*w*.07,hot=i===on;if(hot){ctx.strokeStyle=`rgba(236,250,240,${(.7*a).toFixed(3)})`;ctx.strokeRect(x-2,y-6.5,r.length*4.2+4,9)}physLabel(ctx,r,x,y,(hot?.9:.3)*a,'600 5.5px ui-monospace, monospace')});
+}
+function physMeet(ctx,pts,edgeT,faceT,badFace,badT,a){
+  EDGE.forEach(([i,j],k)=>{const e=clamp(edgeT*6-k);if(e<=0)return;const end=physLerp(pts[i],pts[j],e);ctx.strokeStyle=`rgba(221,246,229,${(.6*a).toFixed(3)})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(...pts[i]);ctx.lineTo(...end);ctx.stroke()});
+  FACE.forEach((f,k)=>{const q=clamp(faceT*4-k);if(q<=0)return;const bad=k===badFace&&badT>0;ctx.save();ctx.beginPath();ctx.moveTo(...pts[f[0]]);ctx.lineTo(...pts[f[1]]);ctx.lineTo(...pts[f[2]]);ctx.closePath();
+    if(bad){ctx.setLineDash([2,2]);ctx.strokeStyle=`rgba(255,196,170,${(.7*badT*a).toFixed(3)})`;ctx.stroke()}else{ctx.fillStyle=`rgba(190,242,210,${(.07*q*a).toFixed(3)})`;ctx.fill()}ctx.restore()});
+}
 function physiologyStory(ctx,w,h,phase,u,now){
-  const t=smooth(u),B=[w*.22,h*.56],sb=h*.34,M=[w*.50,h*.50],sm=h*.30,memX=w*.66,P0=[w*.85,h*.44],tag=[memX+w*.04,h*.92];
-  const cells=PHYS_RAW.map(([x,y])=>[B[0]+x*sb*.5,B[1]+y*sb*.5]),cellSize=sb*.5,rot=Math.sin(now*.00021)*.08,gapC=cells[PHYS_GAP];
+  const memX=w*.68,P0=[w*.86,h*.44],tag=[memX+w*.04,h*.9],M=[w*.52,h*.5],sm=h*.28;
   ctx.lineCap='round';ctx.lineJoin='round';
-  /* membrane between the living body and the outside world */
-  ctx.save();ctx.setLineDash([2,4]);ctx.strokeStyle='rgba(173,235,205,.18)';ctx.beginPath();ctx.moveTo(memX,h*.06);ctx.quadraticCurveTo(memX-w*.03,h*.5,memX,h*.96);ctx.stroke();ctx.restore();
-  physLabel(ctx,'PAPERS',w*.03,h*.1,.26);physLabel(ctx,'OUTSIDE',memX+w*.04,h*.1,.26);
-  /* the living body: r1 = four cells; the gap cell stays empty until METABOLIZE lands a Source in it */
-  const filled=phase===3||(phase===2&&u>.86),holon=phase===3?t:0;
-  cells.forEach((c,i)=>{
-    const gap=i===PHYS_GAP&&!filled,pulse=.5+.5*Math.sin(now*.0026+i*1.7);
-    if(gap){physStroke(ctx,physTet(c,cellSize*.92,rot),.16+.22*pulse,[1.5,3]);if(phase===0)physLabel(ctx,'?',c[0]-2.5,c[1]+3,.25+.45*pulse,'600 9px system-ui, sans-serif')}
-    else{simplex2D(ctx,c[0],c[1],cellSize*.92,rot,.38+.18*holon,.03+.03*holon);physGlow(ctx,c,4+2*pulse,.35+.25*pulse)}
-  });
-  /* GROW: the four living cells close into one larger holon; its centre void lights up */
-  if(phase===3){
-    physStroke(ctx,physTet(B,sb*1.04,rot),.12+.6*t);physGlow(ctx,B,6+16*t,.18+.62*t);
-    physLabel(ctx,'nH · four parents, all alive',B[0]-sb*.9,B[1]+sb*.95,.6*t);
-    if(u>.78){const q=smooth((u-.78)/.22),g=[B[0]+sb*1.25,B[1]+sb*.2];physStroke(ctx,physTet(g,sb*.5,rot),.3*q,[1.5,3]);physLabel(ctx,'?',g[0]-2.5,g[1]+3,.6*q,'600 9px system-ui, sans-serif')}
+  ctx.save();ctx.setLineDash([2,4]);ctx.strokeStyle='rgba(173,235,205,.18)';ctx.beginPath();ctx.moveTo(memX,h*.04);ctx.quadraticCurveTo(memX-w*.03,h*.5,memX,h*.96);ctx.stroke();ctx.restore();
+  physLabel(ctx,'OUTSIDE',memX+w*.04,h*.12,.26);
+  if(phase<3){
+    const P=physPop(ctx,w,h,now,{showNewS:phase===2&&u>.9,dim:phase===2?.55:1});
+    if(phase<2)physLabel(ctx,'PAPERS · every organism alive, every rank',w*.03,h*.12,.26);
+    if(phase===0){
+      const reach=smooth(u/.7),from=P.H2[0],tip=physLerp(from,[memX,h*.3],reach);
+      ctx.strokeStyle=`rgba(221,246,229,${(.45*reach).toFixed(3)})`;ctx.beginPath();ctx.moveTo(...from);ctx.quadraticCurveTo((from[0]+tip[0])/2,h*.08,tip[0],tip[1]);ctx.stroke();physDot(ctx,tip,1.6,.8*reach);
+      physStatus(ctx,w,h,'it notices what it cannot yet answer, and reaches out',smooth(u/.3));
+    }
+    /* the outside work, its authors staying outside on the provenance thread */
+    let pagePos=P0,pageA=phase===0?smooth((u-.45)/.35):1,peel=0;
+    if(phase===1){pagePos=physLerp(P0,M,smooth(u/.5));peel=smooth((u-.52)/.43)}
+    physLabel(ctx,'AUTHORS',tag[0],tag[1]-7,.55*pageA);physLabel(ctx,'ORIGINAL WORK',tag[0],tag[1],.42*pageA);
+    const page=[28,36];
+    if(phase<2&&pageA>.01&&peel<1){const a=pageA*(1-peel),x=pagePos[0]-page[0]/2,y=pagePos[1]-page[1]/2;ctx.strokeStyle=`rgba(221,246,229,${(.55*a).toFixed(3)})`;ctx.lineWidth=1;ctx.strokeRect(x,y,page[0],page[1]);ctx.fillStyle=`rgba(221,246,229,${(.42*a).toFixed(3)})`;for(let l=0;l<5;l++)ctx.fillRect(x+4,y+6+l*6,page[0]-8-(l%2)*7,1.4)}
+    const V=physTet(M,sm);
+    const bodyAt=phase===1?pagePos:(phase===2?(u<.66?M:physLerp(M,P.S[PHYS_NEW_S],smooth((u-.66)/.24))):null);
+    if(bodyAt&&pageA>.01){ctx.save();ctx.setLineDash([1,3]);ctx.strokeStyle=`rgba(236,250,240,${(.28*pageA).toFixed(3)})`;ctx.beginPath();ctx.moveTo(tag[0]+2,tag[1]-13);ctx.lineTo(...bodyAt);ctx.stroke();ctx.restore()}
+    if(phase===1){
+      if(peel>0){const top=[pagePos[0]-page[0]/2,pagePos[1]-page[1]/2];for(let k=0;k<40;k++){const from=[top[0]+4+(k*2.9)%(page[0]-8),top[1]+6+(k%5)*6],p=physLerp(from,V[Math.floor(k/10)],smooth(clamp(peel*1.25-(k/40)*.25)));physDot(ctx,p,.8,.75)}V.forEach(v=>physDot(ctx,v,1.2+1.4*peel,.5*peel))}
+      physStatus(ctx,w,h,'a real work arrives; its authors keep it; it is read whole, then cut into its own four parts',smooth(u/.3));
+    }
+    if(phase===2){
+      const grow=smooth(u/.32),collapse=smooth((u-.66)/.24),size=mix(sm,1.5,collapse),pts=physTet(bodyAt,size);
+      physStroke(ctx,pts,(.2+.5*grow)*(1-collapse));
+      EDGE.forEach(([i,j],e)=>{for(let k=0;k<7;k++){const f=((k/7)+now*.00022*(1+e*.13))%1;if(f>grow)continue;physDot(ctx,physLerp(pts[i],pts[j],f),.7,.7*(1-collapse))}});
+      FACE.forEach((f,fi)=>{for(let k=0;k<12;k++){let a=random01('phys-face-'+fi,k),b=random01('phys-face-'+fi,'b'+k);if(a+b>1){a=1-a;b=1-b}
+        physDot(ctx,[pts[f[0]][0]+a*(pts[f[1]][0]-pts[f[0]][0])+b*(pts[f[2]][0]-pts[f[0]][0]),pts[f[0]][1]+a*(pts[f[1]][1]-pts[f[0]][1])+b*(pts[f[2]][1]-pts[f[0]][1])],.6,.4*grow*(1-collapse))}});
+      const lights=smooth((u-.36)/.2)*(1-collapse);[[-.18,.05],[.16,.12]].forEach(([dx,dy])=>physGlow(ctx,[bodyAt[0]+dx*size,bodyAt[1]+dy*size],3+3*lights,.7*lights));
+      physLabel(ctx,'4 parts · 6 relations · 4 faces · 1 whole',bodyAt[0]-44,bodyAt[1]+sm*.85,.5*grow*(1-collapse));
+      physStatus(ctx,w,h,u<.66?'what survives the collapse are its metabolites: its wisdom':'it lives on as one Source, S — alive, never filed',smooth(u/.3));
+    }
+    return;
   }
-  /* QUESTION: appetite reaches from the empty cell through the membrane */
-  if(phase===0){
-    const reach=smooth(u/.7),tip=physLerp(gapC,[memX,gapC[1]-h*.12],reach);
-    ctx.strokeStyle=`rgba(221,246,229,${(.45*reach).toFixed(3)})`;ctx.beginPath();ctx.moveTo(...gapC);ctx.quadraticCurveTo((gapC[0]+tip[0])/2,gapC[1]-h*.3,tip[0],tip[1]);ctx.stroke();physDot(ctx,tip,1.6,.8*reach);
-  }
-  /* the outside work: a page of lines, its authors staying outside on the provenance thread */
-  const lineCount=5,page=[30,38];
-  let pagePos=P0,pageA=0,peel=0;
-  if(phase===0)pageA=smooth((u-.4)/.4);
-  else if(phase===1){pageA=1;pagePos=physLerp(P0,M,smooth(u/.5));peel=smooth((u-.5)/.45)}
-  const authorsA=phase===0?pageA:(phase===3?1-t:1);
-  physLabel(ctx,'AUTHORS',tag[0],tag[1]-7,.55*authorsA);physLabel(ctx,'ORIGINAL WORK',tag[0],tag[1],.42*authorsA);
-  if(pageA>.01&&peel<1){
-    const a=pageA*(1-peel),x=pagePos[0]-page[0]/2,y=pagePos[1]-page[1]/2;
-    ctx.strokeStyle=`rgba(221,246,229,${(.55*a).toFixed(3)})`;ctx.lineWidth=1;ctx.strokeRect(x,y,page[0],page[1]);
-    ctx.fillStyle=`rgba(221,246,229,${(.42*a).toFixed(3)})`;for(let l=0;l<lineCount;l++)ctx.fillRect(x+4,y+6+l*6.5,page[0]-8-(l%2)*7,1.4);
-  }
-  /* provenance thread: from the authors to wherever their work's body is now */
-  const V=physTet(M,sm,rot);
-  let bodyAt=null;
-  if(phase===1)bodyAt=pagePos;else if(phase===2)bodyAt=u<.62?M:physLerp(M,gapC,smooth((u-.62)/.24));
-  if(bodyAt&&authorsA>.01){ctx.save();ctx.setLineDash([1,3]);ctx.strokeStyle=`rgba(236,250,240,${(.28*authorsA).toFixed(3)})`;ctx.beginPath();ctx.moveTo(tag[0]+2,tag[1]-13);ctx.lineTo(bodyAt[0],bodyAt[1]);ctx.stroke();ctx.restore()}
-  /* PREPARE: the page's lines peel into four bundles that become the four vertices */
-  if(phase===1&&peel>0){
-    const top=[pagePos[0]-page[0]/2,pagePos[1]-page[1]/2];
-    for(let k=0;k<40;k++){const l=k%lineCount,from=[top[0]+4+(k*2.9)%(page[0]-8),top[1]+6+l*6.5],p=physLerp(from,V[k%4],smooth(clamp(peel*1.25-(k/40)*.25)));physDot(ctx,p,.8,.75)}
-    V.forEach(v=>physDot(ctx,v,1.2+1.4*peel,.5*peel));
-  }
-  /* METABOLIZE: letters run the six edges, dust fills the four faces, then everything collapses to what survives */
-  if(phase===2){
-    const grow=smooth(u/.34),collapse=smooth((u-.62)/.24),size=mix(sm,cellSize*.92,collapse),c=bodyAt,pts=physTet(c,size,rot);
-    physStroke(ctx,pts,(.2+.5*grow)*(1-.4*collapse));
-    EDGE.forEach(([i,j],e)=>{for(let k=0;k<7;k++){const f=((k/7)+now*.00022*(1+e*.13))%1;if(f>grow)continue;physDot(ctx,physLerp(pts[i],pts[j],f),.7,.7*(1-collapse))}});
-    FACE.forEach((f,fi)=>{for(let k=0;k<14;k++){let a=random01('phys-face-'+fi,k),b=random01('phys-face-'+fi,'b'+k);if(a+b>1){a=1-a;b=1-b}
-      const x=pts[f[0]][0]+a*(pts[f[1]][0]-pts[f[0]][0])+b*(pts[f[2]][0]-pts[f[0]][0]),y=pts[f[0]][1]+a*(pts[f[1]][1]-pts[f[0]][1])+b*(pts[f[2]][1]-pts[f[0]][1]);
-      physDot(ctx,[x,y+collapse*6*random01('phys-fall-'+fi,k)],.6,.4*grow*(1-collapse))}});
-    const lights=u<.62?smooth((u-.34)/.2):1;
-    [[-.18,.05],[.16,.12]].forEach(([dx,dy])=>physGlow(ctx,[c[0]+dx*size,c[1]+dy*size],3+3*lights,.7*lights));
-    physLabel(ctx,'4V · 6E · 4F · 1T',c[0]-20,c[1]+sm*.8,.5*smooth((u-.34)/.2)*(1-collapse));
-    physLabel(ctx,'what survives: metabolites',c[0]-30,c[1]-sm*.85,.5*smooth((u-.45)/.15)*(1-collapse));
-    if(u>.8)physLabel(ctx,'S · one Source',gapC[0]+cellSize*.55,gapC[1]-cellSize*.35,.7*smooth((u-.8)/.2),'600 6.5px ui-monospace, monospace');
-  }
+  /* GROW — the heart. Draw a rank; if fewer than four live there, draw again. Draw four of it at random.
+   * They become one only if every relation needs them together; otherwise no birth. Parents stay. */
+  const seg=(a,b)=>clamp((u-a)/(b-a));
+  const failPick=seg(.26,.32),failMeet=seg(.32,.46),failGone=seg(.46,.52),winPick=seg(.58,.64),winMeet=seg(.64,.76),born=smooth(seg(.76,.86));
+  const glowS=PHYS_POP.S.map((_,i)=>{let g=0;const fk=PHYS_FAIL.indexOf(i),wk=PHYS_WIN.indexOf(i);if(fk>=0)g=Math.max(g,clamp(failPick*4-fk)*(1-failGone));if(wk>=0)g=Math.max(g,clamp(winPick*4-wk)*(u<.76?1:.6));return g});
+  const P=physPop(ctx,w,h,now,{glowS,glowH2:u>.1&&u<.18?1:0});
+  if(u<.18)physSelector(ctx,w,h,now,2,u>.1,1);else if(u<.52)physSelector(ctx,w,h,now,0,u>.26,1);else physSelector(ctx,w,h,now,0,u>.58,1);
+  if(u>.26&&u<.52){const pts=PHYS_FAIL.map(i=>P.S[i]);physMeet(ctx,pts,failMeet*1.3,clamp(failMeet*1.6-.5),2,seg(.4,.46),1-failGone)}
+  if(u>.58){const pts=PHYS_WIN.map(i=>P.S[i]),a=1-.55*born;physMeet(ctx,pts,winMeet*1.3,clamp(winMeet*1.6-.5),-1,0,a);
+    if(born>0){const c=[pts.reduce((s,p)=>s+p[0],0)/4,pts.reduce((s,p)=>s+p[1],0)/4];physGlow(ctx,c,4+10*born,.7*born);physStroke(ctx,physTet(c,h*.08*born,Math.sin(now*.0004)*.15),.8*born);physLabel(ctx,'1H',c[0]+h*.09,c[1]-h*.06,.8*born,'600 6.5px ui-monospace, monospace')}}
+  const status=u<.1?'draw a rank at random…':u<.18?'2H: fewer than four alive → no meeting, draw again':u<.26?'draw again…':u<.32?'S: four distinct living organisms, drawn at random':u<.46?'every edge, face and the whole must need all four…':u<.52?'one face would need filler → UNDERDETERMINED · no birth':u<.58?'nothing is forced. draw again…':u<.64?'four more, at random':u<.76?'6 relations, 4 faces, 1 whole: each earned only together':u<.86?'closure → one 1H is born; the four parents stay alive':'chance meetings, earned wholes: rank n holds 4ⁿ sources';
+  physStatus(ctx,w,h,status,1);
 }
 
 function projectedPixels(scale,cameraZ,height){return (scale/cameraZ)*(height/2)/Math.tan(FOV/2)*2}
@@ -886,13 +899,14 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   const open=state.inner||peek,m=hov?[hov.x,hov.y]:[-1e4,-1e4];
   state.canvas.style.cursor=peek?'pointer':'';
   state.beingRecede=mix(state.beingRecede||0,open?1:0,Math.min(1,dt*5));
+  const tq=state.beingTargetQ,settle=tq?clamp((Math.abs(tq[0]*state.localQ[0]+tq[1]*state.localQ[1]+tq[2]*state.localQ[2]+tq[3]*state.localQ[3])-.985)/.014):1;
   ctx.textBaseline='top';ctx.shadowBlur=0;
   const taken=[];
   // faces: back to front, dust → woven disk
   const faces=[...B.faces].sort((a,b)=>a.idx.reduce((s,i)=>s+P[i].vz,0)-b.idx.reduce((s,i)=>s+P[i].vz,0));
   for(const F of faces){
     const isOpen=beingSame(open,{kind:'face',key:F.key}),isLock=beingSame(state.inner,{kind:'face',key:F.key});
-    F.stir=mix(F.stir,isOpen?1:0,Math.min(1,dt*5));F.weave=mix(F.weave,isLock?1:0,Math.min(1,dt*(isLock?3:5)));
+    F.stir=mix(F.stir,isOpen?1:0,Math.min(1,dt*5));F.weave=mix(F.weave,isLock?settle:0,Math.min(1,dt*(isLock?3:5)));
     if(!front[F.key])continue;
     const [A,Bp,C]=F.idx.map(i=>P[i]),[c0,c1,c2]=BEING_CAN,ux=c1[0]-c0[0],uy=c1[1]-c0[1],vx=c2[0]-c0[0],vy=c2[1]-c0[1],det=ux*vy-vx*uy;
     const Px=Bp.x-A.x,Py=Bp.y-A.y,Qx=C.x-A.x,Qy=C.y-A.y;
@@ -922,7 +936,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   // edges: tapered thread of letters; the pointer bursts the fibres; lock weaves the sentence
   for(const E of B.edges){
     const a=P[E.a],b=P[E.b],isOpen=beingSame(open,{kind:'edge',key:E.key}),isLock=beingSame(state.inner,{kind:'edge',key:E.key});
-    E.unravel=mix(E.unravel,isOpen?1:0,Math.min(1,dt*5));E.weave=mix(E.weave,isLock?1:0,Math.min(1,dt*(isLock?3:5)));
+    E.unravel=mix(E.unravel,isOpen?1:0,Math.min(1,dt*5));E.weave=mix(E.weave,isLock?settle:0,Math.min(1,dt*(isLock?3:5)));
     const dim=1-.7*state.beingRecede*(isOpen?0:1);
     if(E.unravel<.02){ctx.strokeStyle='rgba(191,245,220,'+(.42*alpha*dim).toFixed(3)+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();continue}
     const [p,q]=a.x<=b.x?[a,b]:[b,a],len=Math.hypot(q.x-p.x,q.y-p.y)||1,ax=[(q.x-p.x)/len,(q.y-p.y)/len],pe=[-ax[1],ax[0]],c=[(p.x+q.x)/2,(p.y+q.y)/2],n=E.glyphs.length;
@@ -1145,7 +1159,7 @@ function attachInput(){
          * lives deeper descends into the next container on its way first. */
         if(rec&&rec.locus===here)openGlobal(target,r.width,now);
         else if(rec&&rec.locus.startsWith(here))setChamber(rec.locus.slice(0,here.length+1),now);
-        else{const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now)}}
+        else{const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now);else dispatchEvent(new CustomEvent('sss:membrane-ascend',{detail:{id,source:'ascent:papers'}}))}}
     }
     e.preventDefault();
   };

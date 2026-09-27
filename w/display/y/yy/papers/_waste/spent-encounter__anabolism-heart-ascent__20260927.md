@@ -1,6 +1,6 @@
 # ENCOUNTER — the heart is anabolism; ascent is stuck; edge weave wobbles — 2026-09-27
 
-status: OPEN
+status: SPENT — metabolized into RITUAL 2.5 and sierpinski.js; HOME display-papers-anabolism-heart-20260927T182954Z
 kind: papers encounter
 source: Philipp, after #124 went live
 target: github.cambium → display → papers
