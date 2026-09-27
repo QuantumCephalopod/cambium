@@ -4,7 +4,7 @@ status: OPEN / PHENOMENOLOGY + SELECTION PRESSURE
 kind: papers encounter
 source: Philipp, walking the live Papers body after the shared-descent nutrient
 target: github.cambium → display → papers
-related: NUTRIENT__shared-descent-invariant__20260926.md; NUTRIENT__global-tetrahedral-text-physiology__20260923.md (Pretext);
+related: NUTRIENT__shared-descent-invariant__20260926.md;
 display `_stomach/NUTRIENT__text-is-body__20260927.md` (watched Display-level candidate)
 
 ## source-faithful pressure
@@ -52,3 +52,31 @@ Budget: descent LOD keeps only the current rank's organism(s) open — a handful
 
 One standalone organism prototype (S.-PYM Embedology: 4V/6E/4F/1T + 4 surviving invariants)
 before touching the Papers renderer: rotate, bloom, read.
+
+## prototype witness (2026-09-27, Philipp felt it: "the blueprint for how we handle information from now on")
+
+A standalone Canvas2D + pinned Pretext body of S.-PYM earned these, all as one grammar:
+
+- **Information hides in lower resolution — present, not absent.** At rest nothing is written out:
+  lines, faint dust, four sleeping lights, four letters. Everything is *there*, folded, ready to be
+  observed. This is Display's content-LOD law applied to meaning.
+- **One open piece at a time.** hover = peek, click = descend & lock, click outside = ascend;
+  the open piece is the locked one, else the peeked one; everything else steps back.
+- **Descent continues into the organism's own simplices.** The walked path does not stop at the body:
+  `… › S.-PYM › edge wz` / `face wyz` / `vertex w` / `metabolite 2`; ascent pops one step.
+- **Every simplex is made of its letters (text = thing):**
+  - metabolite — the light is the sentence asleep; hover unfolds its letters into the sentence;
+  - edge — the line is a thread of its sentence's letters, tapered toward the vertices; hover lets the
+    pointer itself burst the fibres open where it touches; click turns the body so the edge lies level
+    in front and the fibres re-weave into the sentence (string → particles → text-string);
+  - face — the surface is dust of its own letters; hover stirs it around the pointer; click turns the
+    face frontal and the dust weaves into a disk of text at the incenter, levelled on screen;
+  - vertex — drawn as the letter it is (w x z y); its sentence unfolds out of that letter, centered
+    beneath it (a side chosen per frame made the bloom jitter while the body turns).
+- **Vertices are doors.** For `S.*` a vertex carries its source-body span + invariant (outward:
+  a page span of the original work — the provenance handoff). For `nH` the four vertices *are* the
+  four parent organisms, so opening a vertex is walking into the ancestor, recursively to Source ground.
+  The source-ground sidecar is the same lineage flattened and deduplicated beside it.
+
+Open from the witness: kerning (glyph advances measured per character); where the 1T volume lives
+now that the center belongs to the metabolites; several open sentences never overlapping.

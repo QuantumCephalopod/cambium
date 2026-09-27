@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.1"
+version: "2.2"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -131,6 +131,37 @@ Compression:
 > **The tetrahedral body explains why the organism exists; metabolites are what it has to say.**
 
 The hand therefore learns one grammar: **drag the body whose scale you currently inhabit**.
+
+### Text is being — information folded into lower resolution
+
+Every simplex of a Papers organism is made of its own source-owned words. Text is not a label placed on a body; the words are the body at a finer resolution.
+
+- **metabolite** — the metabolight is the metabolite's sentence asleep: its letters cluster into the light; opening unfolds them into title + compression; closing folds them back into light;
+- **edge (6E)** — the edge is a thread of its relation's letters, tapered toward the vertices; peeking loosens the fibres where the pointer touches; opening turns the body so the edge lies level in front and the fibres re-weave into the sentence;
+- **face (4F)** — the face is a surface of its relation's letters; peeking stirs them around the pointer; opening turns the face frontal and the letters weave into one disk of text at its incenter, levelled on screen;
+- **vertex (4V)** — the vertex is drawn as the letter it is (`w x z y`); its sentence unfolds out of that letter, centered beneath it;
+- **volume (1T)** — remains discoverable earning structure; its place in this grammar is still open.
+
+At rest nothing is written out: lines, faint dust, sleeping lights, four letters. Everything is present, folded, ready to be observed. **One piece is open at a time:** the locked piece, else the peeked one; everything else steps back.
+
+Vertices are doors. For `S.*` a vertex carries its source-body span and invariant — outward, toward the original work (the provenance handoff). For `nH` the four vertices *are* the four parent organisms — opening a vertex walks into the ancestor, recursively to Source ground.
+
+Word order and wording stay exact; motion settles before reading; missing words remain projection absence, never replacement text. Letters-as-particles and Pretext are the current carriers, not ontology.
+
+Compression:
+
+> **The words are the body at a finer resolution. Nothing is hidden; it is folded.**
+
+### Selection is Descent
+
+Papers inhabits Display's shared Descent (navigation `Descent`) at every rank, including inside one organism:
+
+`papers → chamber / subtet → organism → vertex | edge | face | metabolite`
+
+- nothing is selectable from the Papers overview; the witness first descends into a realized chamber and selects among the organisms it contains;
+- inside a selected organism, its own simplices and metabolites are the next children;
+- hover peeks, click descends and locks, a gesture that enters no child ascends back through the container the witness came through — across the Papers membrane into its host the same way;
+- organisms refine inward; composed Holons grow with rank (composition outward) — the S-anchored `2^n` scale law is that distinction for Papers.
 
 ## Perceptual LOD is genealogical resolution
 
@@ -324,6 +355,8 @@ The relation is environmental, not constitutive:
 
 Compression: **Papers floats inside Inquiry-space; Inquiry colors the surrounding world, it does not become Papers' body.**
 
+Display now carries this relation generically (site-holon: the host's shader evaluated at the container the site occupies). On migration onto shared Descent, Papers' own inquiry-environment carrier retires in favour of that host environment; the relation above is unchanged.
+
 The selected organism moves toward the perceptual center and inquiry zooms into its scale, but the previous-scale Papers body should remain perceptibly present as distant/background matter whenever projection permits.
 
 This background may read as an asteroid belt, tissue field, or tilt-shifted distant body, but it remains the same continuing Papers world. It is not a decorative replacement scene and must not fabricate lineage.
@@ -434,3 +467,5 @@ Version 2.0 content-priority correction (2026-09-24): surviving metabolites are 
 
 
 Version 2.1 self-similar metabolite embodiment correction (2026-09-24): the former one-light-per-organism “metabolight” is reclassified as a non-semantic organism ember used only for distant/LOD visibility. Actual metabolights are now one-to-one with surviving metabolites, packed and moved inside the selected organism by the same deterministic bounded flow logic used for organisms inside chambers. Each metabolight carries its own Pretext title+compression anchor. Generic tetrahedral counts are removed from permanent visitor-facing inquiry chrome; missing metabolite projection is a contract wound, while a truthful source-owned zero-metabolite result remains zero rather than being filled with derivation prose.
+
+Version 2.2 text-being + Descent digest (2026-09-27): every simplex of a Papers organism is made of its own words — metabolite lights are sleeping sentences, edges are threads of letters, faces are surfaces of letters, vertices are the letters they are; information rests folded in lower resolution and one piece is open at a time; selection is Display Descent continuing into the organism's own simplices; vertices are doors (provenance outward for `S.*`, ancestry downward for `nH`). Witnessed in a standalone S.-PYM prototype; realization in this body and migration onto shared Descent remain OPEN (`_stomach`). Papers' inquiry-environment carrier is marked to retire in favour of Display's host environment at the locus.
