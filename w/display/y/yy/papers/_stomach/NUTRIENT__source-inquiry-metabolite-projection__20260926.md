@@ -153,3 +153,12 @@ Witness artifact: canonical `S.-PYM — Embedology` (complete 4V/6E/4F/1T + 4 su
   BODY) — truthful, not fabricated;
 - other unwitnessed dialects (e.g. Holons still at `edges=0/6` with volume found) remain explicit gaps;
 - browser witness of Source metabolites as metabolights.
+
+### follow-up — two more dialects (2026-09-27, same day)
+Re-read bodies still blank after the first repair exposed two further writing dialects, now read by
+additional fallbacks (earlier dialects unchanged; witnessed locally against Embedology, `S.F6mG`, `1H.hs7W`):
+- numbered Sources: `VERTICES` / `V1 — …`, `E12 — …`, `F134 — …`, `TETRA VOLUME`, `BOUNDS / REFUSALS`, and
+  untitled numbered surviving invariants (V1..V4 read in gene order w,x,z,y — an ordering assumption);
+- parent-named Holons: edges `S.a ↔ S.b — …`, faces `S.a · S.b · S.c — …` (parents read in `Parent set` order),
+  metabolites as ALL-CAPS titles under `DERIVED CROSS-SOURCE INVARIANTS` with their own CREATE/COPY/CONTROL/
+  CULTIVATE + Compression. `1H.hs7W` now projects COMPLETE with four full metabolites.
