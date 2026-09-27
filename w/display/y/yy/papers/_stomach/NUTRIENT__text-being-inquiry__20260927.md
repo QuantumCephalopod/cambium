@@ -96,3 +96,13 @@ Glyph advances come from measured prefixes (kerning closed). Organisms without p
 3. **Source-ground sidecar** — reconcile with "not a list over the tetrahedron" before building.
 
 (No-collision closed into RITUAL 2.3 — HOME display-papers-ink-membrane-20260927T152946Z.)
+
+## encounter (2026-09-27, Philipp, after #123 went live)
+
+"i love that dynamic resolution change *alot* ... although the performance wasnt bottlenecked by that
+at all 😃 its mainly tied to the popup of lots of text eg edges and faces are throttling fps when
+opening them =)"
+
+→ residue 4 answered in place (HOME display-papers-containers-story-20260927T180350Z): woven letters are
+  blitted from a cached glyph atlas instead of per-glyph fillText. Still owed: a frame-time witness on
+  Philipp's own CPU-only laptop.
