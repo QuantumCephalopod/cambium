@@ -584,7 +584,7 @@ function externalLabel(url,index){
 function updateOrganismInquiry(){
   const box=state.sourceInfo,entity=state.current?state.identities.get(state.current.id):null,visible=Boolean(entity),alpha=visible?smooth(clamp((state.transition-.38)/.38)):0;
   if(!box)return;
-  box.dataset.visible=visible?'true':'false';box.style.setProperty('--source-open',alpha.toFixed(3));box.setAttribute('aria-hidden',visible?'false':'true');
+  box.dataset.visible=visible?'true':'false';box.style.setProperty('--source-open',alpha.toFixed(3));box.style.opacity=visible&&state.inner?'.12':'';box.setAttribute('aria-hidden',visible?'false':'true');
   if(!visible)return;
   const source=entity.kind==='source',parents=state.parents.get(entity.id)||[],origin=source?'EXTERNAL ORIGIN':'COMPOSITION';
   const originText=source?(entity.credit||'External provenance unresolved in the current public projection.'):entity.rank+' · recursive composition';
@@ -603,37 +603,208 @@ function updateOrganismInquiry(){
     parents.forEach(id=>{const span=document.createElement('span');span.textContent=id;links.append(span)});
   }
 }
-function drawWisdom(rect,cam,translate,metabolights,now){
-  const {ctx}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
-  canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
-  if(!state.current){canvas.dataset.wisdomState='inactive';return}
-  if(!lights.length){canvas.dataset.wisdomState='contract-gap';return}
-  if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
-  const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';return}
-  const font=wisdomFont(rect.width),lineHeight=wisdomLineHeight(rect.width),rows=rect.width<700?3:METABOLITE_LABEL_ROWS;
-  let lineCount=0,labelCount=0,completeCount=0;
-  ctx.font=font;ctx.textBaseline='middle';ctx.shadowColor='rgba(223,255,208,'+(.16*alpha).toFixed(3)+')';ctx.shadowBlur=8;
-  for(const light of lights){
-    const text=metaboliteWisdomText(light.metabolite);if(!text)continue;
-    const world=add(qRot(state.localQ,light.center),translate),anchor=projectWorldPoint(world,cam,rect.width,rect.height);
-    if(anchor.x<-80||anchor.x>rect.width+80||anchor.y<-80||anchor.y>rect.height+80)continue;
-    let dx=anchor.x-rect.width*.5,dy=anchor.y-rect.height*.5,norm=Math.hypot(dx,dy);
-    if(norm<18){const angle=random01(light.id,'label-angle')*Math.PI*2;dx=Math.cos(angle);dy=Math.sin(angle);norm=1}
-    const ux=dx/norm,uy=dy/norm,side=ux>=0?1:-1,floatY=Math.sin(now*.00055+light.phase)*4,gap=light.size*.72+12;
-    const originX=anchor.x+ux*gap,originY=anchor.y+uy*gap+floatY,available=side>0?rect.width-originX-18:originX-18;
-    const width=Math.min(METABOLITE_LABEL_MAX_WIDTH,Math.max(120,available)),x0=clamp(side>0?originX:originX-width,14,Math.max(14,rect.width-width-14));
-    const top=clamp(originY-lineHeight*1.25,34,Math.max(34,rect.height-rows*lineHeight-22)),prepared=preparedWisdom(light.id,text,font);if(!prepared)continue;
-    const pulse=.88+.08*Math.sin(now*.001+light.phase);ctx.fillStyle='rgba(239,246,235,'+(.82*alpha*pulse).toFixed(3)+')';
-    let cursor={segmentIndex:0,graphemeIndex:0},finished=false;
-    for(let row=0;row<rows;row++){
-      const range=pretextModule.layoutNextLineRange(prepared,cursor,width);if(range===null){finished=true;break}
-      const line=pretextModule.materializeLineRange(prepared,range),x=side>0?x0:x0+width-line.width,y=top+(row+.5)*lineHeight;
-      ctx.fillText(line.text,x,y);cursor=range.end;lineCount++;
-    }
-    if(!finished&&pretextModule.layoutNextLineRange(prepared,cursor,width)===null)finished=true;
-    if(finished)completeCount++;labelCount++;
+/* ---------- text-being: every simplex of the selected organism is made of its own words ----------
+ * At rest nothing is written out: faint lines, face dust, four vertex letters, sleeping metabolite lights.
+ * hover peeks · click descends and locks · a click that enters no piece ascends one step.
+ * Edges: thread of letters (tapered) → fibres (the pointer bursts them) → woven sentence, edge turned level in front.
+ * Faces: dust of their letters → woven disk, face turned frontal. Vertices: the letter they are; for a Holon the
+ * vertex is its parent organism (a door). Metabolites: the light is the sentence asleep. */
+const BEING_FONT='500 12px system-ui, -apple-system, "Segoe UI", sans-serif',BEING_LH=15;
+const FACE_FONT='500 11px system-ui, -apple-system, "Segoe UI", sans-serif',FACE_LH=13.5;
+const BEING_TW=300,BEING_TR=BEING_TW*Math.sqrt(3)/6,BEING_CAN=[[0,0],[BEING_TW,0],[BEING_TW/2,BEING_TW*Math.sqrt(3)/2]],BEING_CEN=[BEING_TW/2,BEING_TR];
+const beingSegmenter=typeof Intl!=='undefined'&&Intl.Segmenter?new Intl.Segmenter():null;
+function graphemes(text){return beingSegmenter?[...beingSegmenter.segment(text)].map(x=>x.segment):Array.from(text)}
+function beingLines(key,text,font,rows){
+  const prepared=preparedWisdom(key,text,font);if(!prepared)return [];
+  let cursor={segmentIndex:0,graphemeIndex:0};const out=[];
+  for(const r of rows){if(r.w<20)continue;const range=pretextModule.layoutNextLineRange(prepared,cursor,r.w);if(range===null){out.done=true;break}
+    const line=pretextModule.materializeLineRange(prepared,range);out.push({text:line.text.trimEnd(),x:r.x+(r.w-line.width)/2,y:r.y});cursor=range.end}
+  if(!out.done&&pretextModule.layoutNextLineRange(prepared,cursor,1e6)===null)out.done=true;
+  return out;
+}
+function beingGlyphs(ctx,lines,font,boldUpTo=0){
+  ctx.font=font;const out=[];
+  for(const L of lines){const gs=graphemes(L.text);let prefix='';
+    for(const ch of gs){out.push({ch,tx:L.x+ctx.measureText(prefix).width,ty:L.y,bold:out.length<boldUpTo,x:0,y:0,vx:0,vy:0});prefix+=ch}}
+  return out;
+}
+function beingSpring(g,tx,ty,k=.18,damp=.7){g.vx=(g.vx+(tx-g.x)*k)*damp;g.vy=(g.vy+(ty-g.y)*k)*damp;g.x+=g.vx;g.y+=g.vy}
+function beingSame(a,b){return Boolean(a&&b&&a.kind===b.kind&&a.key===b.key)}
+function beingCross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
+function beingNorm(v){const l=Math.hypot(...v)||1;return v.map(x=>x/l)}
+function beingSlerp(a,b,t){let d=a[0]*b[0]+a[1]*b[1]+a[2]*b[2]+a[3]*b[3];if(d<0){b=b.map(x=>-x);d=-d}
+  if(d>.9995)return qNorm(a.map((x,i)=>x+(b[i]-x)*t));const th=Math.acos(d),sn=Math.sin(th);return a.map((x,i)=>(x*Math.sin((1-t)*th)+b[i]*Math.sin(t*th))/sn)}
+function beingQFromRows(m){const[a,b,c,d,e,f,g,h,i]=m,tr=a+e+i;let q;
+  if(tr>0){const k=Math.sqrt(tr+1)*2;q=[k/4,(h-f)/k,(c-g)/k,(d-b)/k]}
+  else if(a>e&&a>i){const k=Math.sqrt(1+a-e-i)*2;q=[(h-f)/k,k/4,(b+d)/k,(c+g)/k]}
+  else if(e>i){const k=Math.sqrt(1+e-a-i)*2;q=[(c-g)/k,(b+d)/k,k/4,(f+h)/k]}
+  else{const k=Math.sqrt(1+i-a-e)*2;q=[(d-b)/k,(c+g)/k,(f+h)/k,k/4]}return qNorm(q)}
+function beingKeyIdx(key){return String(key||'').split('').map(ch=>GENES.indexOf(ch))}
+function ensureBeing(entity,width){
+  const body=inquiryBody(entity.id);
+  if(state.being&&state.being.id===entity.id&&state.being.body===body)return state.being;
+  const ctx=state.textCanvas.getContext('2d'),B={id:entity.id,body,verts:[],edges:[],faces:[],mets:new Map()};
+  state.inner=null;state.beingTargetQ=null;
+  const holon=entity.kind!=='source',parents=state.parents.get(entity.id)||[];
+  GENES.forEach((g,i)=>{
+    let text='',door='';
+    if(holon&&parents.length===4){door=parents[i];const d=state.identities.get(door);text=g+' · '+door+' · '+(d?.title||door)}
+    else{const v=(Array.isArray(body?.vertices)?body.vertices:[]).find(x=>x&&x.id===g);if(v)text=g+' · '+String(v.title||'').trim()+(v.text?' — '+String(v.text).trim():'')}
+    if(!text)text=g;
+    const lines=beingLines(entity.id+'·v·'+g,text,BEING_FONT,Array.from({length:12},(_,j)=>({x:0,y:j*BEING_LH,w:240})));
+    const bold=text.indexOf(' — ');
+    B.verts.push({i,gene:g,door,glyphs:beingGlyphs(ctx,lines,BEING_FONT,bold>0?bold:text.length),h:lines.length*BEING_LH,open:0});
+  });
+  for(const e of (Array.isArray(body?.edges)?body.edges:[])){
+    const idx=beingKeyIdx(e?.id);if(idx.length!==2||idx.some(x=>x<0))continue;
+    const text=String(e.text||e.title||'').trim();if(!text)continue;
+    const w=Math.min(520,width*.72),lines=beingLines(entity.id+'·e·'+e.id,text,BEING_FONT,Array.from({length:16},(_,j)=>({x:-w/2,y:j*BEING_LH,w})));
+    const g=beingGlyphs(ctx,lines,BEING_FONT),n=g.length,h=lines.length*BEING_LH;
+    g.forEach((q,j)=>{q.u0=n>1?j/(n-1)-.5:0;q.ty-=h/2;q.seed=random01(entity.id+e.id,j)*6.283;q.amp=.4+random01(entity.id+e.id,'a'+j)});
+    B.edges.push({key:e.id,a:idx[0],b:idx[1],glyphs:g,unravel:0,weave:0});
   }
-  canvas.dataset.wisdomState=labelCount?'visible':'contract-gap';canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.wisdomComplete=labelCount&&completeCount===labelCount?'true':'false';
+  for(const f of (Array.isArray(body?.faces)?body.faces:[])){
+    const idx=beingKeyIdx(f?.id);if(idx.length!==3||idx.some(x=>x<0))continue;
+    const text=String(f.text||f.title||'').trim();if(!text)continue;
+    let lines=[];
+    for(let r=BEING_TR*.92;r<BEING_TR*3;r+=4){const rows=[];for(let y=-r+FACE_LH*.6;y<r-FACE_LH*.4;y+=FACE_LH){const w=2*Math.sqrt(Math.max(0,r*r-(y+FACE_LH/2)**2))*.92;rows.push({x:-w/2,y,w})}
+      lines=beingLines(entity.id+'·f·'+f.id+'·'+Math.round(r),text,FACE_FONT,rows);if(lines.done)break}
+    const g=beingGlyphs(ctx,lines,FACE_FONT);
+    g.forEach((q,j)=>{let a=random01(entity.id+f.id,'a'+j),b=random01(entity.id+f.id,'b'+j);if(a+b>1){a=1-a;b=1-b}
+      const [c0,c1,c2]=BEING_CAN;q.rc=[c0[0]+a*(c1[0]-c0[0])+b*(c2[0]-c0[0]),c0[1]+a*(c1[1]-c0[1])+b*(c2[1]-c0[1])];q.x=q.rc[0]-BEING_CEN[0];q.y=q.rc[1]-BEING_CEN[1];q.seed=random01(entity.id+f.id,'s'+j)*6.283});
+    B.faces.push({key:f.id,idx,miss:[0,1,2,3].find(i=>!idx.includes(i)),glyphs:g,stir:0,weave:0});
+  }
+  state.being=B;return B;
+}
+function metaboliteGlyphs(B,light,font){
+  if(B.mets.has(light.id))return B.mets.get(light.id);
+  const text=metaboliteWisdomText(light.metabolite);if(!text)return null;
+  const prepared=preparedWisdom(light.id,text,font);if(!prepared)return null;
+  const title=typeof light.metabolite?.title==='string'?light.metabolite.title.trim():'';
+  const lines=beingLines(light.id,text,font,Array.from({length:10},(_,j)=>({x:0,y:j*BEING_LH,w:METABOLITE_LABEL_MAX_WIDTH*.8})));
+  const g=beingGlyphs(state.textCanvas.getContext('2d'),lines,font,title.length),n=g.length,ga=Math.PI*(3-Math.sqrt(5));
+  g.forEach((q,j)=>{const r=Math.sqrt(j/Math.max(1,n))*9;q.ix=Math.cos(j*ga)*r;q.iy=Math.sin(j*ga)*r;q.x=q.ix;q.y=q.iy});
+  const M={id:light.id,glyphs:g,h:lines.length*BEING_LH,open:0};B.mets.set(light.id,M);return M;
+}
+function lockInner(piece){
+  state.inner=piece;state.beingTargetQ=null;if(!piece||!state.current)return;
+  const V=state.renderer.V0,q=state.localQ;
+  if(piece.kind==='edge'){const e=state.being?.edges.find(x=>x.key===piece.key);if(!e)return;
+    let d=beingNorm(sub(V[e.b],V[e.a]));const m=beingNorm(mul(add(V[e.a],V[e.b]),.5));
+    if(qRot(q,d)[0]<0)d=mul(d,-1);const bb=beingCross(m,d);
+    state.beingTargetQ=beingQFromRows([d[0],d[1],d[2],bb[0],bb[1],bb[2],m[0],m[1],m[2]])}
+  if(piece.kind==='face'){const f=state.being?.faces.find(x=>x.key===piece.key);if(!f)return;
+    const vn=qRot(q,beingNorm(mul(V[f.miss],-1))),ax=beingCross(vn,[0,0,1]),sa=Math.hypot(...ax);
+    if(sa>1e-6)state.beingTargetQ=qNorm(qMul(qAxis(ax.map(x=>x/sa),Math.atan2(sa,vn[2])),q))}
+  if(piece.kind==='vert'){const vn=qRot(q,beingNorm(V[piece.key])),t=beingNorm([-.3,.15,1]),ax=beingCross(vn,t),sa=Math.hypot(...ax);
+    if(sa>1e-6)state.beingTargetQ=qNorm(qMul(qAxis(ax.map(x=>x/sa),Math.atan2(sa,vn[0]*t[0]+vn[1]*t[1]+vn[2]*t[2])),q))}
+}
+function beingDescribe(p){
+  if(!p)return '';
+  if(p.kind==='edge')return 'edge '+p.key;if(p.kind==='face')return 'face '+p.key;if(p.kind==='vert')return 'vertex '+GENES[p.key];
+  if(p.kind==='met')return 'metabolite '+(state.being?[...state.being.mets.keys()].indexOf(p.key)+1:1);return '';
+}
+function beingSegDist(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,t=clamp(((p[0]-a.x)*dx+(p[1]-a.y)*dy)/(dx*dx+dy*dy||1));return Math.hypot(p[0]-a.x-t*dx,p[1]-a.y-t*dy)}
+function beingHit(x,y){
+  const G=state.beingGeo;if(!G||!state.current||state.transition<.82)return null;const m=[x,y];
+  for(const L of G.mets)if(Math.hypot(x-L.x,y-L.y)<18)return {kind:'met',key:L.id};
+  for(let i=0;i<4;i++)if(Math.hypot(x-G.P[i].x,y-G.P[i].y)<14)return {kind:'vert',key:i,door:G.doors[i]||''};
+  let best=9,hit=null;for(const e of state.being?.edges||[]){const d=beingSegDist(m,G.P[e.a],G.P[e.b]);if(d<best){best=d;hit={kind:'edge',key:e.key}}}if(hit)return hit;
+  let hz=-1e9;for(const f of state.being?.faces||[]){if(!G.front[f.key])continue;const [a,b,c]=f.idx.map(i=>G.P[i]);const z=a.vz+b.vz+c.vz;if(pointInTriangle(x,y,a,b,c)&&z>hz){hz=z;hit={kind:'face',key:f.key}}}
+  return hit;
+}
+function drawWisdom(rect,cam,translate,metabolights,now){
+  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
+  canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
+  const dt=Math.min(.05,Math.max(0,(now-(state.beingLast||now))/1000));state.beingLast=now;
+  if(!state.current||!entity){canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
+  if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
+  const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';state.beingGeo=null;return}
+  const B=ensureBeing(entity,rect.width),V=state.renderer.V0,sc=state.current.scale;
+  const proj=local=>{const r=qRot(state.localQ,local),p=projectWorldPoint(add(r,translate),cam,rect.width,rect.height);p.vz=r[2];return p};
+  const P=V.map(v=>proj(mul(v,sc))),front={};for(const f of B.faces)front[f.key]=qRot(state.localQ,V[f.miss])[2]<0;
+  const font=wisdomFont(rect.width),metGeo=[];
+  for(const light of lights){const p=proj(light.center);metGeo.push({id:light.id,x:p.x,y:p.y,light})}
+  state.beingGeo={P,front,mets:metGeo,doors:B.verts.map(v=>v.door)};
+  const hov=state.hover,peek=state.pointer?.moved?null:(hov?beingHit(hov.x,hov.y):null);state.beingPeek=peek;
+  const open=state.inner||peek,m=hov?[hov.x,hov.y]:[-1e4,-1e4];
+  state.canvas.style.cursor=peek?'pointer':'';
+  state.beingRecede=mix(state.beingRecede||0,open?1:0,Math.min(1,dt*5));
+  ctx.textBaseline='top';ctx.shadowBlur=0;
+  // faces: back to front, dust → woven disk
+  const faces=[...B.faces].sort((a,b)=>a.idx.reduce((s,i)=>s+P[i].vz,0)-b.idx.reduce((s,i)=>s+P[i].vz,0));
+  for(const F of faces){
+    const isOpen=beingSame(open,{kind:'face',key:F.key}),isLock=beingSame(state.inner,{kind:'face',key:F.key});
+    F.stir=mix(F.stir,isOpen?1:0,Math.min(1,dt*5));F.weave=mix(F.weave,isLock?1:0,Math.min(1,dt*(isLock?3:5)));
+    if(!front[F.key])continue;
+    const [A,Bp,C]=F.idx.map(i=>P[i]),[c0,c1,c2]=BEING_CAN,ux=c1[0]-c0[0],uy=c1[1]-c0[1],vx=c2[0]-c0[0],vy=c2[1]-c0[1],det=ux*vy-vx*uy;
+    const Px=Bp.x-A.x,Py=Bp.y-A.y,Qx=C.x-A.x,Qy=C.y-A.y;
+    const la=(Px*vy-Qx*uy)/det,lc=(-Px*vx+Qx*ux)/det,lb=(Py*vy-Qy*uy)/det,ld=(-Py*vx+Qy*ux)/det,ldet=la*ld-lc*lb;if(Math.abs(ldet)<1e-6)continue;
+    let u=[ld/ldet,-lb/ldet];const ul=Math.hypot(...u)||1;u=[u[0]/ul,u[1]/ul];let v=[-u[1],u[0]];if(lb*v[0]+ld*v[1]<0)v=[-v[0],-v[1]];
+    const ox=A.x+la*BEING_CEN[0]+lc*BEING_CEN[1],oy=A.y+lb*BEING_CEN[0]+ld*BEING_CEN[1];
+    const mcx=(ld*(m[0]-A.x)-lc*(m[1]-A.y))/ldet-BEING_CEN[0],mcy=(-lb*(m[0]-A.x)+la*(m[1]-A.y))/ldet-BEING_CEN[1];
+    const mlx=mcx*u[0]+mcy*u[1],mly=mcx*v[0]+mcy*v[1],near=beingSame(peek,{kind:'face',key:F.key})&&!isLock,n=F.glyphs.length,active=F.stir>.01||F.weave>.01;
+    const dim=1-.6*state.beingRecede*(isOpen?0:1);
+    ctx.save();ctx.setTransform(d*(la*u[0]+lc*u[1]),d*(lb*u[0]+ld*u[1]),d*(la*v[0]+lc*v[1]),d*(lb*v[0]+ld*v[1]),d*ox,d*oy);ctx.font=FACE_FONT;
+    F.glyphs.forEach((g,j)=>{
+      const rx=g.rc[0]-BEING_CEN[0],ry=g.rc[1]-BEING_CEN[1];let lx=rx*u[0]+ry*u[1],ly=rx*v[0]+ry*v[1];
+      if(!active){g.x=lx;g.y=ly;g.vx=0;g.vy=0;g.s=0}else{
+        lx+=Math.sin(now/700+g.seed)*1.5*F.stir;ly+=Math.cos(now/800+g.seed)*1.5*F.stir;
+        if(near){const dx=lx-mlx,dy=ly-mly,dd=Math.hypot(dx,dy)||1,push=26*Math.exp(-((dd/38)**2));lx+=dx/dd*push;ly+=dy/dd*push}
+        const sw=clamp(F.weave*1.5-(j/n)*.5);beingSpring(g,lx*(1-sw)+g.tx*sw,ly*(1-sw)+g.ty*sw);g.s=sw}
+      if(g.s<.4){ctx.fillStyle='rgba(191,245,220,'+((.08+.32*F.stir)*alpha*dim).toFixed(3)+')';ctx.fillRect(g.x-.6,g.y-.6,1.2,1.2)}
+      else{ctx.fillStyle='rgba(223,243,234,'+(clamp((g.s-.4)*2)*alpha).toFixed(3)+')';ctx.fillText(g.ch,g.x,g.y)}
+    });
+    ctx.restore();
+  }
+  ctx.textBaseline='alphabetic';
+  // edges: tapered thread of letters; the pointer bursts the fibres; lock weaves the sentence
+  for(const E of B.edges){
+    const a=P[E.a],b=P[E.b],isOpen=beingSame(open,{kind:'edge',key:E.key}),isLock=beingSame(state.inner,{kind:'edge',key:E.key});
+    E.unravel=mix(E.unravel,isOpen?1:0,Math.min(1,dt*5));E.weave=mix(E.weave,isLock?1:0,Math.min(1,dt*(isLock?3:5)));
+    const dim=1-.7*state.beingRecede*(isOpen?0:1);
+    if(E.unravel<.02){ctx.strokeStyle='rgba(191,245,220,'+(.42*alpha*dim).toFixed(3)+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();continue}
+    const [p,q]=a.x<=b.x?[a,b]:[b,a],len=Math.hypot(q.x-p.x,q.y-p.y)||1,ax=[(q.x-p.x)/len,(q.y-p.y)/len],pe=[-ax[1],ax[0]],c=[(p.x+q.x)/2,(p.y+q.y)/2],n=E.glyphs.length;
+    const um=(m[0]-c[0])*ax[0]+(m[1]-c[1])*ax[1],near=beingSame(peek,{kind:'edge',key:E.key})&&!isLock;
+    E.glyphs.forEach((g,j)=>{
+      const fu=g.u0*len,taper=Math.sin(Math.PI*(g.u0+.5)),wob=Math.sin(now/500+g.seed)*g.amp,burst=near?.18+1.4*Math.exp(-(((fu-um)/55)**2)):1,loose=E.unravel*burst*taper;g.t=taper;
+      const lu=fu+wob*4*loose,lv=Math.sin(g.seed*3+now/800)*14*g.amp*loose,sw=clamp(E.weave*1.5-(j/n)*.5);
+      beingSpring(g,lu*(1-sw)+g.tx*sw,lv*(1-sw)+g.ty*sw,.2,.68);g.s=sw});
+    ctx.save();ctx.translate(c[0],c[1]);ctx.transform(ax[0],ax[1],pe[0],pe[1],0,0);ctx.font=BEING_FONT;
+    for(const g of E.glyphs){
+      if(g.s<.4){const r=.35+.75*g.t;ctx.fillStyle='rgba(191,245,220,'+((.25+.6*E.unravel)*(.4+.6*g.t)*alpha).toFixed(3)+')';ctx.fillRect(g.x-r,g.y-r,2*r,2*r)}
+      else{ctx.fillStyle='rgba(223,243,234,'+(clamp((g.s-.4)*2)*alpha).toFixed(3)+')';ctx.fillText(g.ch,g.x,g.y)}}
+    ctx.restore();
+  }
+  // vertices: the letter they are; the sentence unfolds out of it, centered beneath
+  ctx.textBaseline='top';
+  for(const Vt of B.verts){
+    const p=P[Vt.i],isOpen=beingSame(open,{kind:'vert',key:Vt.i});Vt.open=mix(Vt.open,isOpen?1:0,Math.min(1,dt*5));
+    const ox=Math.max(16-p.x,Math.min(rect.width-256-p.x,-120)),oy=Math.max(80-p.y,Math.min(rect.height-24-Vt.h-p.y,18)),n=Vt.glyphs.length,g0=Vt.glyphs[0];if(!g0)continue;
+    Vt.glyphs.forEach((g,j)=>{const sw=j===0?1:clamp(Vt.open*1.6-(j/Math.max(1,n))*.6);
+      if(j===0)beingSpring(g,(g0.tx+ox)*Vt.open-4*(1-Vt.open),(g0.ty+oy)*Vt.open-8*(1-Vt.open),.2,.68);else beingSpring(g,sw*(ox+g.tx),sw*(oy+g.ty),.2,.68);g.s=sw});
+    const dim=open&&!isOpen?.45:1;
+    for(let j=0;j<n;j++){const g=Vt.glyphs[j];if(j>0&&g.s<.35)continue;
+      ctx.font=(g.bold?'600 ':'400 ')+(j===0?'13px ':'12px ')+'system-ui, -apple-system, "Segoe UI", sans-serif';
+      ctx.fillStyle=j===0?'rgba(191,245,220,'+(.95*alpha*dim).toFixed(3)+')':'rgba(223,243,234,'+(clamp((g.s-.35)*2)*alpha).toFixed(3)+')';ctx.fillText(g.ch,p.x+g.x,p.y+g.y)}
+  }
+  // metabolites: the light is the sentence asleep
+  const cx=rect.width*.5,cy=rect.height*.5;let labelCount=0,lineCount=0;
+  for(const L of metGeo){
+    const M=metaboliteGlyphs(B,L.light,font);if(!M)continue;labelCount++;lineCount+=Math.round(M.h/BEING_LH);
+    const isOpen=beingSame(open,{kind:'met',key:L.id});M.open=mix(M.open,isOpen?1:0,Math.min(1,dt*6));
+    let ux=L.x-cx,uy=L.y-cy;const ul=Math.hypot(ux,uy)||1;ux/=ul;uy/=ul;
+    const w=METABOLITE_LABEL_MAX_WIDTH*.8,oxr=ux*60+(ux>=0?0:-w),oyr=uy*50-M.h/2;
+    const ox=Math.max(14-L.x,Math.min(rect.width-w-14-L.x,oxr)),oy=Math.max(80-L.y,Math.min(rect.height-M.h-24-L.y,oyr)),n=M.glyphs.length;
+    M.glyphs.forEach((g,j)=>{const sw=clamp(M.open*1.6-(j/Math.max(1,n))*.6);
+      beingSpring(g,(1-sw)*(g.ix+Math.sin(now/600+j)*1.2)+sw*(ox+g.tx),(1-sw)*(g.iy+Math.cos(now/700+j)*1.2)+sw*(oy+g.ty));g.s=sw});
+    const dim=open&&!isOpen?.25:1;
+    for(const g of M.glyphs){
+      if(g.s<.35){ctx.fillStyle='rgba(255,244,214,'+(.85*alpha*dim).toFixed(3)+')';ctx.fillRect(L.x+g.x-.8,L.y+g.y-.8,1.6,1.6)}
+      else{ctx.font=(g.bold?'600 ':'400 ')+'12px system-ui, -apple-system, "Segoe UI", sans-serif';ctx.fillStyle='rgba(255,244,214,'+(clamp((g.s-.35)*2)*alpha).toFixed(3)+')';ctx.fillText(g.ch,L.x+g.x,L.y+g.y)}}
+  }
+  canvas.dataset.wisdomState=labelCount?'visible':(lights.length?'contract-gap':'being');canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.textBeing='true';canvas.dataset.innerPath=beingDescribe(state.inner);
+  canvas.dataset.beingEdges=String(B.edges.length);canvas.dataset.beingFaces=String(B.faces.length);
 }
 function outerCells(width){
   const focus=inquiryFrameFocus(),scale=rootFieldScale(width)*focus.scale,active=state?.chamberPath||'';
@@ -740,7 +911,7 @@ function currentTranslation(){
 
 function draw(now){
   if(!state||!state.mounted){if(state)state.raf=requestAnimationFrame(draw);return}
-  updateChamberTransition(now);updateTransition(now);updateBackgroundPassage(now);state.environment?.draw(now);
+  updateChamberTransition(now);updateTransition(now);updateBackgroundPassage(now);if(state.current&&state.beingTargetQ&&!state.pointer?.moved)state.localQ=beingSlerp(state.localQ,state.beingTargetQ,.075);state.environment?.draw(now);
   const {gl}=state.renderer,{rect,d,w,h}=resizeCanvas(state.canvas),cam=cameraZ(),overviewQ=overviewOrientation(),passage=backgroundPassage();
   const far=Math.max(12,cam+overviewTransformScale(rect.width)*2+2),proj=perspective(FOV,w/h,Math.max(.00008,cam*.015),far),view=lookAt([0,0,cam],[0,0,0],[0,1,0]);
   gl.viewport(0,0,w,h);gl.clearColor(.003,.006,.006,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
@@ -758,9 +929,9 @@ function draw(now){
     const tree=[],embers=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,embers);for(const x of tree)x.color[3]*=.3+.7*state.transition;
     const structuralEmbers=embers.filter(x=>x.id!==state.current.id);for(const x of structuralEmbers)x.color[3]*=.18+.42*state.transition;
     translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
-    state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,.82]}],state.localQ,translate,proj,view,{faces:false});
+    state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,state.being?.14:.82]}],state.localQ,translate,proj,view,{faces:false});
     state.renderer.drawLights(structuralEmbers,state.localQ,translate,proj,view,now*.001,d,INQUIRY_EMBER_GAIN);
-    const entity=state.identities.get(state.current.id);metabolights=metaboliteField(entity,state.current,cam,rect.height,now);for(const x of metabolights)x.color[3]*=state.transition;
+    const entity=state.identities.get(state.current.id);metabolights=metaboliteField(entity,state.current,cam,rect.height,now);const recede=state.beingRecede||0,metOpen=state.inner?.kind==='met'||state.beingPeek?.kind==='met';for(const x of metabolights)x.color[3]*=state.transition*(metOpen?1:1-.85*recede);
     state.renderer.drawLights(metabolights,state.localQ,translate,proj,view,now*.001,d,METABOLITE_LIGHT_GAIN);
     metaboliteCount=metabolights.length;organismEmberCount=structuralEmbers.length;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
@@ -768,7 +939,7 @@ function draw(now){
   drawWisdom(rect,cam,translate,metabolights,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);
-  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY</span><b>${state.current.id}</b><small>drag body · touch parent · empty space ascends</small>`}
+  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);state.hud.innerHTML=`<span>INQUIRY${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';state.hud.innerHTML=`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch organism · touch chamber${state.chamberPath?' · empty space ascends':''}</small>`};
   state.raf=requestAnimationFrame(draw);
 }
@@ -789,18 +960,18 @@ function hitChild(x,y,width,height){
 function attachInput(){
   const canvas=state.canvas;
   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;state.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
-  canvas.addEventListener('pointermove',e=>{const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){if(state.current)state.localQ=rotateQ(state.localQ,dx,dy);else if(state.backgroundDrag)W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
+  canvas.addEventListener('pointermove',e=>{{const r=canvas.getBoundingClientRect();state.hover={x:e.clientX-r.left,y:e.clientY-r.top}}const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){if(state.current){state.beingTargetQ=null;state.localQ=rotateQ(state.localQ,dx,dy)}else if(state.backgroundDrag)W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
   const end=e=>{
     const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-      if(state.current){const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}
+      if(state.current){const piece=beingHit(x,y);if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
       else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now);if(target)openGlobal(target,r.width,now);else{const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(state.chamberPath)ascendChamber(now)}}
     }
     e.preventDefault();
   };
-  canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
-  addEventListener('keydown',e=>{if(e.key!=='Escape'||!state)return;if(state.current){e.preventDefault();closeOrAscend()}else if(state.chamberPath){e.preventDefault();ascendChamber()}});
+  canvas.addEventListener('pointerup',end);canvas.addEventListener('pointerleave',()=>{state.hover=null});canvas.addEventListener('pointercancel',end);
+  addEventListener('keydown',e=>{if(e.key!=='Escape'||!state)return;if(state.current){e.preventDefault();if(state.inner)lockInner(null);else closeOrAscend()}else if(state.chamberPath){e.preventDefault();ascendChamber()}});
 }
 
 function initialize(host,projection,backgroundDrag=true,dependency=null){
