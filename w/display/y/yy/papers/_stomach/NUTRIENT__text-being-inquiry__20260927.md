@@ -96,3 +96,12 @@ Glyph advances come from measured prefixes (kerning closed). Organisms without p
 3. **Source-ground sidecar** — reconcile with "not a list over the tetrahedron" before building.
 
 (No-collision closed into RITUAL 2.3 — HOME display-papers-ink-membrane-20260927T152946Z.)
+
+## encounter (2026-09-27, Philipp, after #123 went live)
+
+"i love that dynamic resolution change *alot* ... although the performance wasnt bottlenecked by that
+at all 😃 its mainly tied to the popup of lots of text eg edges and faces are throttling fps when
+opening them =)"
+
+→ residue 4. **Opening is cheap.** An edge or face opening must not drop frames: the burst of glyphs
+  (springs, dust, ink) on open is the measured bottleneck, not canvas resolution.
