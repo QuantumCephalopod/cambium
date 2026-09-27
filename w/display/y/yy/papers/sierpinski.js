@@ -266,7 +266,7 @@ function applyProjection(next,shadowHome=''){
   state.wisdomPrepared=new Map();
   if(shadowHome){
     state.shadowApplied=true;state.shadowHome=shadowHome;
-    setData(state.canvas,'shadowState','ready');setData(state.canvas,'shadowHome',shadowHome);
+    state.canvas.dataset.shadowState='ready';state.canvas.dataset.shadowHome=shadowHome;
     state.textCanvas.dataset.shadowState='ready';state.textCanvas.dataset.shadowHome=shadowHome;
   }
   if(state.current&&!state.identities.has(state.current.id)){
@@ -276,13 +276,13 @@ function applyProjection(next,shadowHome=''){
 }
 function hydrateShadow(host){
   if(!state||state.host!==host)return;
-  setData(state.canvas,'shadowState',state.shadowApplied?'ready':'loading');
+  state.canvas.dataset.shadowState=state.shadowApplied?'ready':'loading';
   state.textCanvas.dataset.shadowState=state.shadowApplied?'ready':'loading';
   ensureShadow().then(snap=>{
     if(!snap||!state||state.host!==host||!state.mounted)return;
     const home=snap.inquiry_home_event||snap.projection?.event_id||'';
     state.inquiryBodies=snap?.inquiry?.bodies&&typeof snap.inquiry.bodies==='object'?snap.inquiry.bodies:{};
-    setData(state.canvas,'genealogyRepairCount',String(snap?.genealogy_repair?.applied?.length||0));
+    state.canvas.dataset.genealogyRepairCount=String(snap?.genealogy_repair?.applied?.length||0);
     if(!state.shadowApplied||state.shadowHome!==home)applyProjection(snap.projection,home);
   });
 }
@@ -434,7 +434,7 @@ void main(){
     gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.useProgram(p);gl.bindVertexArray(vao);
     gl.uniform4fv(U.quat,new Float32Array(W.orientation));if(U.time)gl.uniform1f(U.time,ms*.001);if(U.focus)gl.uniform1f(U.focus,PHILOSOPHY_INQUIRY_REGION);if(U.resolution)gl.uniform2f(U.resolution,w,h);if(U.palette)gl.uniform3fv(U.palette,new Float32Array(palette.flat()));
     gl.drawArrays(gl.TRIANGLES,0,3);
-    setData(canvas,'shaderId',shader.id);setData(canvas,'region','y');setData(canvas,'mode','inquiry-environment');
+    canvas.dataset.shaderId=shader.id;canvas.dataset.region='y';canvas.dataset.mode='inquiry-environment';
   }
   return Object.freeze({draw,shaderId:shader.id,region:'y'});
 }
@@ -466,7 +466,7 @@ function governFrame(now){
   if(now<(state.renderScaleAt||0))return;
   if(state.frameEma>24&&s>.45){state.renderBad=s;state.renderScale=Math.max(.45,s*.85);state.renderScaleAt=now+900}
   else if(state.frameEma<18&&s<1){if(state.renderBad)state.renderBad=Math.min(1.2,state.renderBad*1.02);const ceil=state.renderBad?state.renderBad*.97:1;if(s*1.08<=ceil){state.renderScale=Math.min(1,s*1.08);state.renderScaleAt=now+2500}}
-  setData(state.canvas,'renderScale',(state.renderScale||1).toFixed(2));
+  state.canvas.dataset.renderScale=(state.renderScale||1).toFixed(2);
 }
 function resizeCanvas(canvas){
   const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.6)*(state?.renderScale||1),w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));
@@ -549,7 +549,7 @@ function metaboliteWisdomText(metabolite){
 function metaboliteField(entity,current,cam,height,now=performance.now()){
   const metabolites=inquiryMetabolites(entity);if(!current||!metabolites.length)return [];
   const fieldScale=current.scale*METABOLITE_FIELD_SCALE,tet=state.renderer.V0.map(v=>mul(v,fieldScale)),pal=PALETTE[entity?.gene]||PALETTE.x,px=projectedPixels(fieldScale,cam,height);
-  const lights=metabolites.map((metabolite,index)=>{
+  return metabolites.map((metabolite,index)=>{
     const metaboliteId=(typeof metabolite.id==='string'&&metabolite.id.trim())?metabolite.id.trim():'M'+(index+1),id=entity.id+'·'+metaboliteId;
     const record={
       id,
@@ -562,7 +562,6 @@ function metaboliteField(entity,current,cam,height,now=performance.now()){
     const center=flowPoint(record,now),warm=[1.0,.93,.72],blend=mix(.58,.76,random01(id,'metabolite-warm')),color=mix3(pal,warm,blend);
     return {id,metaboliteId,metabolite,center,size:clamp(10+Math.sqrt(Math.max(px,0))*.28+random01(id,'metabolite-size')*3,10,24),color:[...color,.90],phase:random01(id,'metabolite-phase')*Math.PI*2,kind:'metabolite'};
   });
-  return metaboliteRepel(entity.id,lights,fieldScale,now);
 }
 /* Metabolites are bodies, not pins: each light is a small mass drawn toward its own bounded flow point and
  * pushed away by every neighbour closer than METABOLITE_REPEL·(organism scale), so they spread apart by themselves
@@ -805,11 +804,11 @@ function inkText(ctx,glyphs,pick,color,alphaOf,fontOf,ox=0,oy=0){
 function inkAabb(corners){const xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys);return {x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y}}
 function drawWisdom(rect,cam,translate,metabolights,now){
   const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect),canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
-  setData(canvas,'pretextStatus',state.pretextStatus);setData(canvas,'wisdomLines','0');setData(canvas,'wisdomId',entity?.id||'');setData(canvas,'wisdomMetabolites',String(lights.length));setData(canvas,'wisdomSource','metabolites');setData(canvas,'wisdomState','hidden');delete canvas.dataset.wisdomComplete;
+  canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
   const dt=Math.min(.05,Math.max(0,(now-(state.beingLast||now))/1000));state.beingLast=now;
-  if(!state.current||!entity){setData(canvas,'wisdomState','inactive');state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
-  if(state.pretextStatus!=='ready'||!pretextModule){setData(canvas,'wisdomState',state.pretextStatus);return}
-  const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){setData(canvas,'wisdomState','lod-hidden');state.beingGeo=null;return}
+  if(!state.current||!entity){canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
+  if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
+  const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';state.beingGeo=null;return}
   const B=ensureBeing(entity,rect.width),V=state.renderer.V0,sc=state.current.scale;
   const proj=local=>{const r=qRot(state.localQ,local),p=projectWorldPoint(add(r,translate),cam,rect.width,rect.height);p.vz=r[2];return p};
   const P=V.map(v=>proj(mul(v,sc))),front={};for(const f of B.faces)front[f.key]=qRot(state.localQ,V[f.miss])[2]<0;
@@ -905,10 +904,10 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     inkDust(ctx,M.glyphs,g=>g.s<.35,.8,'rgb(255,244,214)',.85*alpha*dim,L.x,L.y);
     if(M.open>.01)inkText(ctx,M.glyphs,g=>g.s>=.35,'rgb(255,244,214)',g=>clamp((g.s-.35)*2)*alpha,g=>(g.bold?'600 ':'400 ')+metPx+' system-ui, -apple-system, "Segoe UI", sans-serif',L.x,L.y);
   }
-  setData(canvas,'wisdomState',labelCount?'visible':(lights.length?'contract-gap':'being'));setData(canvas,'wisdomLines',String(lineCount));setData(canvas,'textBeing','true');setData(canvas,'innerPath',beingDescribe(state.inner));
-  setData(canvas,'beingEdges',String(B.edges.length));setData(canvas,'beingFaces',String(B.faces.length));
+  canvas.dataset.wisdomState=labelCount?'visible':(lights.length?'contract-gap':'being');canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.textBeing='true';canvas.dataset.innerPath=beingDescribe(state.inner);
+  canvas.dataset.beingEdges=String(B.edges.length);canvas.dataset.beingFaces=String(B.faces.length);
   state.inkOverPanel=Boolean(state.inkPanel&&taken.some(b=>inkOverlap(b,[state.inkPanel])>1));
-  setData(canvas,'inkOpen',String(taken.length));setData(canvas,'inkCollisions',String(taken.filter((b,i)=>inkOverlap(b,inkChrome(rect))>1||inkOverlap(b,taken.slice(i+1))>1).length));
+  canvas.dataset.inkOpen=String(taken.length);canvas.dataset.inkCollisions=String(taken.filter((b,i)=>inkOverlap(b,inkChrome(rect))>1||inkOverlap(b,taken.slice(i+1))>1).length);
 }
 function outerCells(width){
   const focus=inquiryFrameFocus(),scale=rootFieldScale(width)*focus.scale,active=state?.chamberPath||'';
@@ -969,7 +968,7 @@ function setChamber(path='',now=performance.now()){
   const target=path?N.focusTarget(state.structure,path):{center:[0,0,0],scale:1};
   state.chamberFrom={center:[...state.chamberFocus.center],scale:state.chamberFocus.scale};
   state.chamberTo={center:[...target.center],scale:target.scale};
-  state.chamberPath=path;state.chamberTransitionStart=now;setData(state.canvas,'chamberPath',path||'overview');return true;
+  state.chamberPath=path;state.chamberTransitionStart=now;state.canvas.dataset.chamberPath=path||'overview';return true;
 }
 function updateChamberTransition(now){
   if(!state?.chamberTo)return;
@@ -1036,15 +1035,15 @@ function draw(now){
     translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
     state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,state.being?.14:.82]}],state.localQ,translate,proj,view,{faces:false});
     state.renderer.drawLights(structuralEmbers,state.localQ,translate,proj,view,now*.001,d,INQUIRY_EMBER_GAIN);
-    const entity=state.identities.get(state.current.id);metabolights=metaboliteField(entity,state.current,cam,rect.height,now);const recede=state.beingRecede||0,metOpen=state.inner?.kind==='met'||state.beingPeek?.kind==='met';for(const x of metabolights)x.color[3]*=state.transition*(metOpen?1:1-.85*recede);
+    const entity=state.identities.get(state.current.id);metabolights=metaboliteRepel(entity.id,metaboliteField(entity,state.current,cam,rect.height,now),state.current.scale*METABOLITE_FIELD_SCALE,now);const recede=state.beingRecede||0,metOpen=state.inner?.kind==='met'||state.beingPeek?.kind==='met';for(const x of metabolights)x.color[3]*=state.transition*(metOpen?1:1-.85*recede);
     state.renderer.drawLights(metabolights,state.localQ,translate,proj,view,now*.001,d,METABOLITE_LIGHT_GAIN);
     metaboliteCount=metabolights.length;organismEmberCount=structuralEmbers.length;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
   drawWisdom(rect,cam,translate,metabolights,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
-  setData(state.canvas,'sQuantumScale',String(S_QUANTUM_SCALE));setData(state.canvas,'backgroundFieldAlpha',String(fade));setData(state.canvas,'backgroundStarAlpha',String(starFade));setData(state.canvas,'backgroundPassage',String(passage));setData(state.canvas,'inquiryCameraZ',String(cam));setData(state.canvas,'rootFieldScale',String(rootFieldScale(rect.width)));setData(state.canvas,'overviewSScale',String(overviewBodyScaleFor({rank:'S'},rect.width)));setData(state.canvas,'rootSScale',String(rootBodyScaleFor({rank:'S'},rect.width)));setData(state.canvas,'overviewWander',String(OVERVIEW_WANDER));setData(state.canvas,'overviewFlowPeriod',String(OVERVIEW_FLOW_PERIOD_MS));setData(state.canvas,'overviewBasisY',String(PAPERS_OVERVIEW_BASIS_Y));setData(state.canvas,'chamberPath',state.chamberPath||'overview');setData(state.canvas,'chamberScale',String(chamberFocus().scale));setData(state.canvas,'inquiryFrameScale',String(inquiryFocus.scale));setData(state.canvas,'inquiryFrameCenter',inquiryFocus.center.map(v=>v.toFixed(6)).join(','));setData(state.canvas,'metabolightCount',String(metaboliteCount));setData(state.canvas,'organismEmberCount',String(organismEmberCount));
-  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);setData(state.canvas,'currentRank',String(rank));setData(state.canvas,'currentBodyScale',String(state.current.scale));setHud(`<span>INQUIRY${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`)}
+  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);
+  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`)}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';setHud(`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch organism · touch chamber${state.chamberPath?' · empty space ascends':''}</small>`)};
   state.raf=requestAnimationFrame(draw);
 }
@@ -1083,7 +1082,7 @@ function initialize(host,projection,backgroundDrag=true,dependency=null){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x])),environment=createInquiryEnvironment(stage.environmentCanvas);
   state={host,projection,dependency,structure:built.structure,environmentCanvas:stage.environmentCanvas,environment,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},chamberFrom:null,chamberTo:null,chamberTransitionStart:0,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
-  setData(state.canvas,'backgroundDrag',state.backgroundDrag?'true':'false');setData(state.canvas,'sQuantumScale',String(S_QUANTUM_SCALE));setData(state.canvas,'overviewWander',String(OVERVIEW_WANDER));setData(state.canvas,'overviewFlowPeriod',String(OVERVIEW_FLOW_PERIOD_MS));setData(state.canvas,'chamberPath','overview');setData(state.canvas,'shadowState','loading');state.textCanvas.dataset.pretextIdentity=PRETEXT_ID;state.textCanvas.dataset.pretextVersion=PRETEXT_VERSION;state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
+  state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.chamberPath='overview';state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextIdentity=PRETEXT_ID;state.textCanvas.dataset.pretextVersion=PRETEXT_VERSION;state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
 
@@ -1092,7 +1091,7 @@ function render({host,content,projection,backgroundDrag=true,dependency=null}={}
   host.hidden=false;content.replaceChildren();content.className='interlocutor-content papers-content';
   const shared=host.querySelector('.interlocutor-background');if(shared){shared.style.opacity='0';shared.style.pointerEvents='none'}
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
-  if(!state||state.host!==host)initialize(host,projection,backgroundDrag,dependency);else{state.dependency=dependency;if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;setData(state.canvas,'backgroundDrag',state.backgroundDrag?'true':'false');state.mounted=true;state.environmentCanvas.hidden=false;state.canvas.hidden=false;state.textCanvas.hidden=false;state.physiology.hidden=false;state.sourceInfo.hidden=false;state.chamberLabels.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
+  if(!state||state.host!==host)initialize(host,projection,backgroundDrag,dependency);else{state.dependency=dependency;if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.environmentCanvas.hidden=false;state.canvas.hidden=false;state.textCanvas.hidden=false;state.physiology.hidden=false;state.sourceInfo.hidden=false;state.chamberLabels.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
   return true;
 }
 function unmount({host,content}={}){if(state){state.mounted=false;state.environmentCanvas.hidden=true;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}

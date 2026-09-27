@@ -91,8 +91,8 @@ Glyph advances come from measured prefixes (kerning closed). Organisms without p
 
 ## residue — the exit condition of this nutrient
 
-1. **No collisions.** A blooming metabolite sentence still overlaps its neighbours and runs into the
-   left detail panel (seen on 5H.Dw6a). Open sentences must never overlap each other or chrome.
-2. **Readability under rotation** — facing / size threshold below which a face stays dust, not ink.
-3. **Where 1T lives** now that the center belongs to the metabolites.
-4. **Source-ground sidecar** — reconcile with "not a list over the tetrahedron" before building.
+1. **Readability under rotation** — facing / size threshold below which a face stays dust, not ink.
+2. **Where 1T lives** now that the center belongs to the metabolites.
+3. **Source-ground sidecar** — reconcile with "not a list over the tetrahedron" before building.
+
+(No-collision closed into RITUAL 2.3 — HOME display-papers-ink-membrane-20260927T152946Z.)
