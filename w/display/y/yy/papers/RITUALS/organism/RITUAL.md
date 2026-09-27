@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.4"
+version: "2.5"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -149,7 +149,7 @@ At rest nothing is written out: lines, faint dust, sleeping lights, four letters
 
 Vertices are doors. For `S.*` a vertex carries its source-body span and invariant — outward, toward the original work (the provenance handoff). For `nH` the four vertices *are* the four parent organisms — opening a vertex walks into the ancestor, recursively to Source ground.
 
-Word order and wording stay exact; motion settles before reading; missing words remain projection absence, never replacement text. Letters-as-particles and Pretext are the current carriers, not ontology.
+Word order and wording stay exact; motion settles before reading — a locked edge or face weaves only once the body has finished turning it level; missing words remain projection absence, never replacement text. Letters-as-particles and Pretext are the current carriers, not ontology.
 
 Compression:
 
@@ -393,7 +393,7 @@ Uneven organism counts may make one chamber perceptually sparse, but sparse occu
 
 **The chambers are Papers' visible rank-1 Sierpiński body** — the same container grammar every Display site shows, never invisible packing bins with floating labels: faint faces and clear edges, the current container brighter and the others receding, all of it stepping back while an organism is open. Chamber labels hang from their chamber's body and are selectable like its face. Geometry is always drawn at full realized resolution; when Papers earns a deeper split, the same body simply shows more cells.
 
-**Container first.** Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
+**Container first, and out through the membrane.** A gesture that enters nothing at Papers' own root ascends across the membrane into the container the witness came through, exactly as everywhere else. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
 
 ### Parent inquiry off-field
 
@@ -410,7 +410,7 @@ This is a membrane relation, not interior identity:
 
 When no organism is selected, **the center remains empty field-space**. HOW PAPERS LIVES may appear only as one coherent peripheral unit whose animation, phase labels and active explanation stay visually together.
 
-**It explains what Papers is, not only what it does:** not a library but research metabolized into one living body. The four phases are one continuous story with persistent actors — a living r1 body with an empty cell reaches through its membrane; a real outside work arrives while its authors stay outside on a provenance thread; its words fold into a tetrahedral body (letters on the six edges, dust on the four faces) that collapses to its surviving lights and settles as one Source; four living cells close into one larger Holon while every parent stays lit, and the grown body asks anew.
+**It explains what Papers is, told from Papers' own receptors, and its heart is anabolism.** The body is a population of living organisms of every rank; it reaches out; one real outside work arrives while its authors stay outside on a provenance thread; the work's *own* four parts earn 6 relations, 4 faces and 1 whole, collapse to what survives, and live on as one Source. Then the why: a random eligible rank is drawn — too few alive there, draw again; four distinct living organisms of it are drawn at random; they become one next-rank Holon only if every relation genuinely needs all four, otherwise no birth and the draw begins again. Parents are never consumed; repeat meetings stay allowed. Nothing is filed: every whole is something only four chance-met organisms could earn together. The story must never suggest a structure waiting for a missing piece — no such waiting exists.
 
 The explanation is grounded in the four current Papers pumps:
 
@@ -484,3 +484,5 @@ Version 2.2 text-being + Descent digest (2026-09-27): every simplex of a Papers 
 Version 2.3 ink-membrane + living-metabolite correction (2026-09-27): open text never collides with chrome or with other open text, receded chrome yields, and woven text stays on its body; metabolites repel one another as moving bodies; smoothness on a CPU-only laptop is the baseline, held by adaptive rendering resolution rather than by stutter.
 
 Version 2.4 visible-container + what-Papers-is correction (2026-09-27): the four chambers are drawn as Papers' visible rank-1 body and content is entered container-first; HOW PAPERS LIVES tells one continuous story of what Papers is; woven text is drawn from a cached glyph atlas so opening an edge or face stays cheap on CPU-only machines.
+
+Version 2.5 anabolism-heart correction (2026-09-27): HOW PAPERS LIVES is retold from Papers' own anabolism/metabolism receptors (random rank, random quartet, closure or no birth, parents never consumed); ascent at Papers' root crosses the membrane; woven text waits for the body to finish turning.
