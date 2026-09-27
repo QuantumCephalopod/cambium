@@ -114,11 +114,42 @@ A future act should close only when:
 ## relation to older open nutrients
 
 This pressure continues and sharpens:
-- `NUTRIENT__source-inquiry-empty__20260920.md` — original Source-inquiry projection-gap witness;
-- `NUTRIENT__source-holon-display-law-identity__20260924.md` — Source/Holon one-species display law and metabolites-as-content correction.
+- `../_waste/superseded-source-inquiry-empty__20260920.md` — original Source-inquiry projection-gap witness;
+- `../_waste/metabolized-source-holon-display-law-identity__20260924.md` (law now in RITUAL 2.0/2.1) — Source/Holon one-species display law and metabolites-as-content correction.
 
 Those historical nutrients should not be independently re-solved from stale assumptions. This nutrient carries the current live-state discriminator: the transport is now proven; the remaining primary wound is **source-owned Inquiry/metabolite projection completeness**.
 
 ## compression
 
 > **The Sources already live. The public pipe already lives. What is missing is faithful secretion of the Sources' already-earned internal Papers metabolism. Project it; do not invent it.**
+
+
+## metabolic pass — 2026-09-27 · source-side reader dialect repaired; backfill running
+
+### diagnosis (PASS / EARNED)
+The materializer passes source sections through faithfully; the blindness sat in the source-owned
+`/papers/_feed` Inquiry reader (`projectOrganismInquiry_` and its helpers). Canonical artifacts are
+fully digested on Drive but written in a headed dialect the reader did not recognise
+(`VERTEX w — …`, `EDGE wx`, `FACE wxz`, `VOLUME wxyz`, `SURVIVING INVARIANTS` + numbered items,
+bare `BOUNDARY`), and relation keys written in gene order (`zy`, `wzy`, `xzy`) were rejected by an
+alphabetical key set — visible in the shadow as the recurring signature `edges=5/6 faces=2/4`.
+Live shadow at diagnosis: 23 Sources projected with 0/4 · 0/6 · 0/4 · 0/1 · 0 metabolites.
+Witness artifact: canonical `S.-PYM — Embedology` (complete 4V/6E/4F/1T + 4 surviving invariants).
+
+### act (source-owned, owner-deployed)
+- reader extended with fallbacks for the headed dialect; relation keys normalised as sets; the
+  previously working dialect is read exactly as before;
+- completeness corrected: a Holon's 4V are its four parents (was: vertex lines required, which
+  dropped COMPLETE Holons to PARTIAL once re-read);
+- `reprojectInquiry()` marks every projected organism stale (clears only `artifact_modified_utc`) so
+  `backfillInquiryProjection()` re-reads every canonical artifact; published rows stay until replaced;
+- tested locally against Embedology (4/6/4/1 + 4) and a synthetic Holon (COMPLETE); Philipp pasted
+  it into the bound project and ran it; the live chain (LIVE_READY → materializer dispatch → canonical
+  shadow commit → Pages) carried the first passes; re-read Holons recovered COMPLETE.
+
+### still OPEN
+- backfill completion (`INQUIRY_READY`) and a count of remaining parse gaps after it;
+- short-form metabolites (`title — compression` only) stay PARTIAL by existing law (COMPACT METABOLITE
+  BODY) — truthful, not fabricated;
+- other unwitnessed dialects (e.g. Holons still at `edges=0/6` with volume found) remain explicit gaps;
+- browser witness of Source metabolites as metabolights.

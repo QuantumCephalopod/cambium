@@ -4,7 +4,7 @@ status: OPEN / ARCHITECTURE PRESSURE
 kind: papers structural encounter
 source: Philipp, after living with Display Descent (#111–#114)
 target: github.cambium → display → papers
-related: NUTRIENT__global-tetrahedral-text-physiology__20260923.md (Pretext)
+related: display `_stomach/NUTRIENT__text-is-body__20260927.md` (text physiology, Pretext)
 
 ## source-faithful pressure
 
