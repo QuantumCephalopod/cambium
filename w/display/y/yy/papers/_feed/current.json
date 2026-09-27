@@ -3,25 +3,25 @@
   "constitution": null,
   "home": {
     "changed_scope": [
-      "sierpinski.js: open or folding sentences take free space around their own anchor (ring placement for metabolites and vertices, smallest nudge for woven edges and faces); obstacles are visible Papers chrome, Display's minimap aside and every other open sentence; receded chrome (opacity < .3) yields; the origin panel fades fully when open text lies over it",
-      "sierpinski.js: glyph advances measured in the weight and size each glyph is drawn in (metabolite text had been measured 13px/500 and drawn 12px/400-600, opening gaps inside words)",
-      "sierpinski.js: metabolite lights are repelling bodies drawn to their own flow points (radius half the organism); metaboliteField still yields exactly one light per metabolite",
-      "sierpinski.js: adaptive resolution governor for the GL canvases (data-render-scale, .45–1); HUD, chamber labels, inquiry and physiology panels write the DOM only on change; glyph dust drawn as one path per piece, ink with one colour per piece",
-      "RITUAL 2.3: 'open text never collides', 'metabolites are bodies, not pins', and 'smoothness is phenomenology, baseline a laptop without a GPU' assimilated as law",
-      "NUTRIENT__text-being-inquiry__20260927 narrowed in place: no-collision residue closed",
-      "ENCOUNTER__small-screen-repel-smooth__20260927 (Philipp's ~850px / no-GPU walk) admitted, metabolized and retired to _waste; it was admitted after the renderer work on it began, and says so"
+      "sierpinski.js: the four realized chambers draw as Papers' visible rank-1 Sierpiński body (faint faces, pale edges; current container brighter, others receding, all stepping back while an organism is open); the shells had always been drawn, at .085 alpha in the field's own green, i.e. invisible",
+      "sierpinski.js: container-first Descent: touching an organism from the overview enters its chamber; it opens only from inside the chamber that holds it; chamber labels hang from the chamber body and are selectable",
+      "sierpinski.js: HOW PAPERS LIVES rewritten as one continuous story with persistent actors (r1 body with an empty cell, membrane, outside work with its authors on a provenance thread, tetrahedral metabolism collapsing to surviving lights, a Source landing in the empty cell, four cells closing into a Holon with all parents alive, a new question); copy and thesis line explain what Papers is",
+      "sierpinski.js: woven text blitted from a cached glyph atlas instead of per-glyph fillText, answering Philipp's measurement that opening edges/faces, not resolution, throttled frames",
+      "y/check.py: the four-chamber witness pinned the superseded invisible shell (.085); it now witnesses the visible body and container-first Descent",
+      "RITUAL 2.4 assimilates visible containers, container-first entry and what-Papers-is as law",
+      "NUTRIENT__what-papers-is__20260927 metabolized and retired to _waste; text-being and shared-descent nutrients narrowed in place"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · OPEN TEXT NEVER COLLIDES · METABOLITES REPEL · SMOOTHNESS BASELINE CPU-ONLY · RITUAL 2.3"
+    "outcome": "PASS/EARNED · VISIBLE RANK-1 BODY · CONTAINER-FIRST DESCENT · HOW PAPERS LIVES TELLS WHAT PAPERS IS · GLYPH ATLAS · RITUAL 2.4"
   },
-  "observed_at_utc": "2026-09-27T15:54:42.175035Z",
+  "observed_at_utc": "2026-09-27T18:08:30.911412Z",
   "owner": "organism:papers",
   "phenotype": null,
-  "reflected_home_event": "display-papers-ink-membrane-20260927T152946Z",
+  "reflected_home_event": "display-papers-containers-story-20260927T180350Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "9ce95d71c66b3c0da3ebf1ca079c9c828faf9ebf5b7894dd8ab1d16510d55fe4"
+      "sha256": "dc7a722e78c3563ba13fac5d2ea078560e3c5d5016950f28c8608d776aceabf8"
     }
   ],
   "shell": {
@@ -32,10 +32,10 @@
       "NUTRIENT__source-inquiry-metabolite-projection__20260926.md",
       "NUTRIENT__text-being-inquiry__20260927.md"
     ],
-    "waste_direct_count": 35
+    "waste_direct_count": 36
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "687eafca236eb6e840c7a16329ef603ba82ae7bd"
+    "source_revision": "4101b47048662a07ea75c9cc5d6b47767fa60dc2"
   }
 }
