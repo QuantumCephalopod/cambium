@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.3"
+version: "2.4"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -389,7 +389,11 @@ The chamber transition must reuse the same recursive tetrahedral cell geometry a
 - do not derive semantic chamber identity from specimen packing, density, glow, or screen position;
 - if finer chamber structure is later actually realized, the same passage law recurs without rank-specific special cases.
 
-Uneven organism counts may make one chamber perceptually sparse, but sparse occupancy does not erase the chamber itself. Faint shell/edge embodiment may therefore witness all realized chambers without turning chamber geometry into a second semantic source.
+Uneven organism counts may make one chamber perceptually sparse, but sparse occupancy does not erase the chamber itself.
+
+**The chambers are Papers' visible rank-1 Sierpiński body** — the same container grammar every Display site shows, never invisible packing bins with floating labels: faint faces and clear edges, the current container brighter and the others receding, all of it stepping back while an organism is open. Chamber labels hang from their chamber's body and are selectable like its face. Geometry is always drawn at full realized resolution; when Papers earns a deeper split, the same body simply shows more cells.
+
+**Container first.** Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
 
 ### Parent inquiry off-field
 
@@ -405,6 +409,8 @@ This is a membrane relation, not interior identity:
 ### Overview physiology — four living phases
 
 When no organism is selected, **the center remains empty field-space**. HOW PAPERS LIVES may appear only as one coherent peripheral unit whose animation, phase labels and active explanation stay visually together.
+
+**It explains what Papers is, not only what it does:** not a library but research metabolized into one living body. The four phases are one continuous story with persistent actors — a living r1 body with an empty cell reaches through its membrane; a real outside work arrives while its authors stay outside on a provenance thread; its words fold into a tetrahedral body (letters on the six edges, dust on the four faces) that collapses to its surviving lights and settles as one Source; four living cells close into one larger Holon while every parent stays lit, and the grown body asks anew.
 
 The explanation is grounded in the four current Papers pumps:
 
@@ -476,3 +482,5 @@ Version 2.1 self-similar metabolite embodiment correction (2026-09-24): the form
 Version 2.2 text-being + Descent digest (2026-09-27): every simplex of a Papers organism is made of its own words — metabolite lights are sleeping sentences, edges are threads of letters, faces are surfaces of letters, vertices are the letters they are; information rests folded in lower resolution and one piece is open at a time; selection is Display Descent continuing into the organism's own simplices; vertices are doors (provenance outward for `S.*`, ancestry downward for `nH`). Witnessed in a standalone S.-PYM prototype and realized in this body (#120, browser-witnessed live 2026-09-27); migration onto shared Descent remains OPEN (`_stomach`). Papers' inquiry-environment carrier is marked to retire in favour of Display's host environment at the locus.
 
 Version 2.3 ink-membrane + living-metabolite correction (2026-09-27): open text never collides with chrome or with other open text, receded chrome yields, and woven text stays on its body; metabolites repel one another as moving bodies; smoothness on a CPU-only laptop is the baseline, held by adaptive rendering resolution rather than by stutter.
+
+Version 2.4 visible-container + what-Papers-is correction (2026-09-27): the four chambers are drawn as Papers' visible rank-1 body and content is entered container-first; HOW PAPERS LIVES tells one continuous story of what Papers is; woven text is drawn from a cached glyph atlas so opening an edge or face stays cheap on CPU-only machines.
