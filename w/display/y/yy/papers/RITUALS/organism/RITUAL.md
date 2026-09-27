@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.2"
+version: "2.3"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -112,6 +112,7 @@ The public inquiry hierarchy is not rank-order prose.
 The embodiment is recursively self-similar:
 - Papers organisms float inside their truthful chamber/container under one deterministic bounded flow law;
 - metabolites float inside the selected organism's central interior under that **same packing/flow law at the next scale**;
+- metabolites are bodies, not pins: each is drawn toward its own flow point and repels every neighbour, so they separate by themselves and keep moving; where a metabolite drifts carries no meaning;
 - every surviving metabolite owns exactly one **metabolight**;
 - the metabolight and its Pretext-laid-out **title + compression** share one moving organism-local anchor, so rotating/moving the body carries the wisdom with it;
 - a one-per-organism visibility glow may remain as a faint **organism ember** for distant/LOD perception, especially for tiny Sources, but an ember is never a metabolight and carries no metabolite semantics.
@@ -143,6 +144,8 @@ Every simplex of a Papers organism is made of its own source-owned words. Text i
 - **volume (1T)** — remains discoverable earning structure; its place in this grammar is still open.
 
 At rest nothing is written out: lines, faint dust, sleeping lights, four letters. Everything is present, folded, ready to be observed. **One piece is open at a time:** the locked piece, else the peeked one; everything else steps back.
+
+**Open text never collides.** An open or still-folding sentence takes free space around its own anchor — never over visible chrome, never over another open sentence. Receded chrome yields rather than repels, woven edges and faces stay on their own body wherever the screen allows, and chrome that open text must cover fades out rather than showing through. Placement is perception only; it never reorders or rewords the text.
 
 Vertices are doors. For `S.*` a vertex carries its source-body span and invariant — outward, toward the original work (the provenance handoff). For `nH` the four vertices *are* the four parent organisms — opening a vertex walks into the ancestor, recursively to Source ground.
 
@@ -307,6 +310,8 @@ Future Papers design work should default to Papers-local tissue. Elevate only a 
 
 This is the guardrail: **shape is conserved; phenomenology and living use are local.**
 
+Smoothness is part of the phenomenology. The baseline is a laptop without a GPU: rendering resolution may adapt to hold the frame rate, but motion must not stutter, and an idle frame writes nothing to the page it does not have to.
+
 ## Living overview physiology
 
 The overview is not a scatterplot of research objects. It is the first perceptual encounter with one living recursive Papers body.
@@ -469,3 +474,5 @@ Version 2.0 content-priority correction (2026-09-24): surviving metabolites are 
 Version 2.1 self-similar metabolite embodiment correction (2026-09-24): the former one-light-per-organism “metabolight” is reclassified as a non-semantic organism ember used only for distant/LOD visibility. Actual metabolights are now one-to-one with surviving metabolites, packed and moved inside the selected organism by the same deterministic bounded flow logic used for organisms inside chambers. Each metabolight carries its own Pretext title+compression anchor. Generic tetrahedral counts are removed from permanent visitor-facing inquiry chrome; missing metabolite projection is a contract wound, while a truthful source-owned zero-metabolite result remains zero rather than being filled with derivation prose.
 
 Version 2.2 text-being + Descent digest (2026-09-27): every simplex of a Papers organism is made of its own words — metabolite lights are sleeping sentences, edges are threads of letters, faces are surfaces of letters, vertices are the letters they are; information rests folded in lower resolution and one piece is open at a time; selection is Display Descent continuing into the organism's own simplices; vertices are doors (provenance outward for `S.*`, ancestry downward for `nH`). Witnessed in a standalone S.-PYM prototype and realized in this body (#120, browser-witnessed live 2026-09-27); migration onto shared Descent remains OPEN (`_stomach`). Papers' inquiry-environment carrier is marked to retire in favour of Display's host environment at the locus.
+
+Version 2.3 ink-membrane + living-metabolite correction (2026-09-27): open text never collides with chrome or with other open text, receded chrome yields, and woven text stays on its body; metabolites repel one another as moving bodies; smoothness on a CPU-only laptop is the baseline, held by adaptive rendering resolution rather than by stutter.
