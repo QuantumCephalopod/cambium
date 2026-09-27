@@ -47,7 +47,7 @@ const OVERVIEW_FLOW_PERIOD_MS=42000;
 const OVERVIEW_LIGHT_GAIN=.46;
 const INQUIRY_LIGHT_GAIN=.72;
 const CHAMBER_OPEN_MS=760;
-const CHAMBER_SHELL_ALPHA=.085;
+const CHAMBER_SHELL_ALPHA=.55,CHAMBER_FACE_ALPHA=.05;
 const PAPERS_OVERVIEW_BASIS_Y=-.275;
 const PHILOSOPHY_INQUIRY_REGION=3;
 const PHYSIOLOGY_PHASES=Object.freeze([
@@ -248,7 +248,7 @@ function buildRecords(projection,fieldRoot){
   for(const entity of identities.values()){
     const cell=byGene.get(entity.gene);if(cell){
       const world=pointInTet(cell.tet,entity),motionA=pointInTet(cell.tet,{id:entity.id+'·flow-a'},.20),motionB=pointInTet(cell.tet,{id:entity.id+'·flow-b'},.20),motionC=pointInTet(cell.tet,{id:entity.id+'·flow-c'},.20),motionD=pointInTet(cell.tet,{id:entity.id+'·flow-d'},.20);
-      records.push({...entity,world,motionA,motionB,motionC,motionD});
+      records.push({...entity,locus:cell.path,world,motionA,motionB,motionC,motionD});
     }
   }
   return {records,structure};
@@ -453,7 +453,7 @@ function makeStage(host){
   host.append(sourceInfo);
   const chamberLabels=document.createElement('div');chamberLabels.className='papers-chamber-labels';chamberLabels.setAttribute('aria-hidden','true');host.append(chamberLabels);
   const chamberLabelNodes=new Map();
-  for(const gene of GENES){const n=document.createElement('div');n.className='papers-chamber-label';n.dataset.gene=gene;chamberLabels.append(n);chamberLabelNodes.set(gene,n)}
+  for(const gene of GENES){const n=document.createElement('button');n.type='button';n.className='papers-chamber-label';n.dataset.gene=gene;n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(state&&!state.current)setChamber(gene)});chamberLabels.append(n);chamberLabelNodes.set(gene,n)}
   const hud=document.createElement('div');hud.className='papers-sierpinski-hud';host.append(hud);
   const label=document.createElement('div');label.className='papers-sierpinski-label';host.append(label);
   return {environmentCanvas,canvas,textCanvas,physiology,physiologyCanvas,physiologyPhases:[...physiologyPhases.children],physiologyTitle,physiologyCopy,sourceInfo,chamberLabels,chamberLabelNodes,hud,label};
@@ -909,9 +909,12 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   state.inkOverPanel=Boolean(state.inkPanel&&taken.some(b=>inkOverlap(b,[state.inkPanel])>1));
   canvas.dataset.inkOpen=String(taken.length);canvas.dataset.inkCollisions=String(taken.filter((b,i)=>inkOverlap(b,inkChrome(rect))>1||inkOverlap(b,taken.slice(i+1))>1).length);
 }
-function outerCells(width){
-  const focus=inquiryFrameFocus(),scale=rootFieldScale(width)*focus.scale,active=state?.chamberPath||'';
-  return GENES.map((g,i)=>{const p=PALETTE[g],alpha=active&&active.startsWith(g)?CHAMBER_SHELL_ALPHA*1.8:CHAMBER_SHELL_ALPHA;return {center:mul(sub(mul(state.renderer.V0[i],.5),focus.center),scale),scale:.5*scale,color:[p[0]*.50,p[1]*.50,p[2]*.50,alpha]}});
+/* The realized chambers are the visible rank-1 Sierpiński body of Papers — the same container
+ * grammar every Display site shows — not invisible packing bins: faint faces, clear edges, the
+ * current container brighter, the rest receding; all of it steps back while an organism is open. */
+function outerCells(width,alphaBase=CHAMBER_SHELL_ALPHA){
+  const focus=inquiryFrameFocus(),scale=rootFieldScale(width)*focus.scale,active=state?.chamberPath||'',recede=1-.75*backgroundPassage();
+  return GENES.map((g,i)=>{const p=PALETTE[g],k=active?(active.startsWith(g)?1.6:.45):1,alpha=alphaBase*k*recede;return {center:mul(sub(mul(state.renderer.V0[i],.5),focus.center),scale),scale:.5*scale,color:[...mix3(p,[.86,1,.93],.62),alpha]}});
 }
 function populationBodies(width,height,bodyFade=1,lightFade=bodyFade,now=performance.now()){
   const leaves=[],lights=[];
@@ -955,7 +958,7 @@ function updateChamberLabels(width,height){
   const active=state.chamberPath||'';
   for(const gene of GENES){
     const node=state.chamberLabelNodes.get(gene),cell=N.addressRecord(state.structure,gene);if(!node||!cell)continue;
-    const p=projectOverviewPoint(cell.center,width,height);
+    const p=projectOverviewPoint(cell.tet[0].map((v,j)=>cell.center[j]+(v-cell.center[j])*.92),width,height);
     if(node.inkRecords!==state.records){const members=state.records.filter(r=>r.gene===gene),sources=members.filter(r=>r.kind==='source').length;node.inkRecords=state.records;node.innerHTML=`<b>${gene} · ${locusName(state.projection,gene)}</b><small>${sources}S · ${members.length-sources}H</small>`}
     const visible=p.x>-80&&p.x<width+80&&p.y>-50&&p.y<height+50;
     const baseOpacity=active?(active.startsWith(gene)?.92:.22):(p.z<-.15?.50:.78),passageOpacity=mix(1,.18,backgroundPassage());
@@ -1024,7 +1027,7 @@ function draw(now){
    * every later Display orientation change remains inherited as a shared rotation.
    * Inquiry passage is centripetal: the root/chamber world remains in its own frame
    * while the selected organism moves to center and the camera dives into its scale. */
-  state.renderer.draw(outerCells(rect.width),overviewQ,[0,0,0],proj,view,{faces:false});
+  state.renderer.draw(outerCells(rect.width,CHAMBER_FACE_ALPHA),overviewQ,[0,0,0],proj,view,{faces:true});state.renderer.draw(outerCells(rect.width),overviewQ,[0,0,0],proj,view,{faces:false});
   const fade=!state.current?1:(state.stack.length?NESTED_BACKGROUND_ALPHA:mix(1,BACKGROUND_FIELD_ALPHA,passage)),starFade=!state.current?1:mix(1,BACKGROUND_STAR_ALPHA,passage),population=populationBodies(rect.width,rect.height,fade,starFade,now);
   state.renderer.draw(population.leaves,overviewQ,[0,0,0],proj,view,{faces:true});
   state.renderer.drawLights(population.lights,overviewQ,[0,0,0],proj,view,now*.001,d,OVERVIEW_LIGHT_GAIN);
@@ -1044,7 +1047,7 @@ function draw(now){
   const inquiryFocus=inquiryFrameFocus();
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`)}
-  else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';setHud(`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}touch organism · touch chamber${state.chamberPath?' · empty space ascends':''}</small>`)};
+  else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';setHud(`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}${state.chamberPath?'touch organism · empty space ascends':'touch a chamber to enter it'}</small>`)};
   state.raf=requestAnimationFrame(draw);
 }
 
@@ -1070,7 +1073,12 @@ function attachInput(){
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
       if(state.current){const piece=beingHit(x,y);if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
-      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now);if(target)openGlobal(target,r.width,now);else{const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(state.chamberPath)ascendChamber(now)}}
+      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now),rec=target?state.recordById.get(target):null,here=state.chamberPath||'';
+        /* Descent: only the current container's content can be entered; touching content that
+         * lives deeper descends into the next container on its way first. */
+        if(rec&&rec.locus===here)openGlobal(target,r.width,now);
+        else if(rec&&rec.locus.startsWith(here))setChamber(rec.locus.slice(0,here.length+1),now);
+        else{const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now)}}
     }
     e.preventDefault();
   };
