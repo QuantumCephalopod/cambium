@@ -1039,7 +1039,8 @@ function updateChamberLabels(width,height){
   const active=state.chamberPath||'';
   for(const gene of GENES){
     const node=state.chamberLabelNodes.get(gene),cell=N.addressRecord(state.structure,gene);if(!node||!cell)continue;
-    const p=projectOverviewPoint(cell.tet[0].map((v,j)=>cell.center[j]+(v-cell.center[j])*.92),width,height);
+    // A chamber label hangs from the one vertex only that chamber owns: its own outer corner (tet[i] of split child i).
+    const own=cell.tet[GENES.indexOf(gene)],p=projectOverviewPoint(own.map((v,j)=>cell.center[j]+(v-cell.center[j])*.92),width,height);
     if(node.inkRecords!==state.records){const members=state.records.filter(r=>r.gene===gene),sources=members.filter(r=>r.kind==='source').length;node.inkRecords=state.records;node.innerHTML=`<b>${gene} · ${locusName(state.projection,gene)}</b><small>${sources}S · ${members.length-sources}H</small>`}
     const visible=p.x>-80&&p.x<width+80&&p.y>-50&&p.y<height+50;
     const baseOpacity=active?(active.startsWith(gene)?.92:.22):(p.z<-.15?.50:.78),passageOpacity=mix(1,.18,backgroundPassage());
