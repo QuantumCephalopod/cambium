@@ -910,14 +910,17 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     if(!front[F.key])continue;
     const [A,Bp,C]=F.idx.map(i=>P[i]),[c0,c1,c2]=BEING_CAN,ux=c1[0]-c0[0],uy=c1[1]-c0[1],vx=c2[0]-c0[0],vy=c2[1]-c0[1],det=ux*vy-vx*uy;
     const Px=Bp.x-A.x,Py=Bp.y-A.y,Qx=C.x-A.x,Qy=C.y-A.y;
-    const la=(Px*vy-Qx*uy)/det,lc=(-Px*vx+Qx*ux)/det,lb=(Py*vy-Qy*uy)/det,ld=(-Py*vx+Qy*ux)/det,ldet=la*ld-lc*lb;if(Math.abs(ldet)<1e-6)continue;
+    let la=(Px*vy-Qx*uy)/det,lc=(-Px*vx+Qx*ux)/det,lb=(Py*vy-Qy*uy)/det,ld=(-Py*vx+Qy*ux)/det;const ldet=la*ld-lc*lb;if(Math.abs(ldet)<1e-6)continue;
     let u=[ld/ldet,-lb/ldet];const ul=Math.hypot(...u)||1;u=[u[0]/ul,u[1]/ul];let v=[-u[1],u[0]];if(lb*v[0]+ld*v[1]<0)v=[-v[0],-v[1]];
     let ox=A.x+la*BEING_CEN[0]+lc*BEING_CEN[1],oy=A.y+lb*BEING_CEN[0]+ld*BEING_CEN[1];
+    /* A woven face opens at one readable size at every rank: where the camera clamp frames a small body
+     * below MACRO_FILL (S ground), the weave grows the text plane back to the size a fully framed body gives. */
+    const kw=mix(1,Math.max(1,MACRO_FILL*cam/sc),clamp(F.weave*1.5)),L0=[la,lb,lc,ld];la*=kw;lb*=kw;lc*=kw;ld*=kw;
     {const ma=la*u[0]+lc*u[1],mb=lb*u[0]+ld*u[1],mc=la*v[0]+lc*v[1],md=lb*v[0]+ld*v[1],fb=F.bounds||(F.bounds=inkBounds(F.glyphs,FACE_LH));
       let want=[0,0];
       if(F.weave>.05){const box=inkAabb([[fb.x0,fb.y0],[fb.x1,fb.y0],[fb.x0,fb.y1],[fb.x1,fb.y1]].map(([x,y])=>[ma*x+mc*y+ox,mb*x+md*y+oy])),b=inkNudge(F,box,rect,taken);want=[b.sx,b.sy];if(F.weave>.2)taken.push(b)}else F.inkShift=null;
       F.sh=F.sh||[0,0];F.sh=F.sh.map((s,i)=>mix(s,want[i],Math.min(1,dt*6)));const k=clamp(F.weave*1.5);ox+=F.sh[0]*k;oy+=F.sh[1]*k}
-    const mcx=(ld*(m[0]-A.x)-lc*(m[1]-A.y))/ldet-BEING_CEN[0],mcy=(-lb*(m[0]-A.x)+la*(m[1]-A.y))/ldet-BEING_CEN[1];
+    const mcx=((L0[3]*(m[0]-A.x)-L0[2]*(m[1]-A.y))/ldet-BEING_CEN[0])/kw,mcy=((-L0[1]*(m[0]-A.x)+L0[0]*(m[1]-A.y))/ldet-BEING_CEN[1])/kw;
     const mlx=mcx*u[0]+mcy*u[1],mly=mcx*v[0]+mcy*v[1],near=beingSame(peek,{kind:'face',key:F.key})&&!isLock,n=F.glyphs.length,active=F.stir>.01||F.weave>.01;
     const dim=1-.6*state.beingRecede*(isOpen?0:1);
     ctx.save();ctx.setTransform(d*(la*u[0]+lc*u[1]),d*(lb*u[0]+ld*u[1]),d*(la*v[0]+lc*v[1]),d*(lb*v[0]+ld*v[1]),d*ox,d*oy);ctx.font=FACE_FONT;
@@ -989,6 +992,48 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   canvas.dataset.beingEdges=String(B.edges.length);canvas.dataset.beingFaces=String(B.faces.length);
   state.inkOverPanel=Boolean(state.inkPanel&&taken.some(b=>inkOverlap(b,[state.inkPanel])>1));
   canvas.dataset.inkOpen=String(taken.length);canvas.dataset.inkCollisions=String(taken.filter((b,i)=>inkOverlap(b,inkChrome(rect))>1||inkOverlap(b,taken.slice(i+1))>1).length);
+}
+/* Organism names: the metabolite physiology one rank up. Before any selection every organism's own
+ * identity (`id · title`) rests as a cluster of its letters on its body, so an organism too small to
+ * see is still perceptible as its sleeping name; a peek unfolds the letters into the readable name and
+ * leaving folds them back. The cluster is presence, not selection: entering still follows Descent. */
+const NAME_FONT='500 11px system-ui, -apple-system, "Segoe UI", sans-serif',NAME_LH=14,NAME_W=220;
+function nameGlyphs(rec){
+  if(state.namesFor!==state.records){state.names=new Map();state.namesFor=state.records}
+  const N0=state.names;let G=N0.get(rec.id);if(G)return G;
+  const d=state.identities.get(rec.id),text=rec.id+' · '+String(d?.title||rec.title||'').trim();
+  const lines=beingLines('name·'+rec.id,text,NAME_FONT,Array.from({length:4},(_,j)=>({x:0,y:j*NAME_LH,w:NAME_W})));if(!lines.length)return null;
+  const g=beingGlyphs(state.textCanvas.getContext('2d'),lines,NAME_FONT,rec.id.length),n=g.length,ga=Math.PI*(3-Math.sqrt(5)),R=4+Math.sqrt(n)*.55;
+  g.forEach((q,j)=>{const r=Math.sqrt(j/Math.max(1,n))*R;q.ix=Math.cos(j*ga)*r;q.iy=Math.sin(j*ga)*r;q.x=q.ix;q.y=q.iy});
+  G={id:rec.id,glyphs:g,open:0};N0.set(rec.id,G);return G;
+}
+function drawNames(rect,now){
+  const canvas=state.textCanvas,presence=1-backgroundPassage();
+  if(presence<=.01||state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.nameClusters='0';canvas.dataset.nameOpen='';return}
+  const ctx=canvas.getContext('2d'),q=overviewOrientation(),here=state.chamberPath||'',dt=Math.min(.05,Math.max(0,(now-(state.nameLast||now))/1000));state.nameLast=now;
+  const hov=state.hover&&!state.current&&!state.pointer?.moved?hitGlobal(state.hover.x,state.hover.y,rect.width,rect.height,now):'';
+  if(!state.current)state.canvas.style.cursor=hov?'pointer':'';
+  const sleep=[[],[]],taken=[];let count=0;
+  ctx.textBaseline='top';
+  for(const rec of state.records){
+    const G=nameGlyphs(rec);if(!G)continue;count++;
+    const p=projectPoint(overviewCenterFor(rec,rect.width,now),q,FAR_Z,rect.width,rect.height);
+    if(p.x<-40||p.x>rect.width+40||p.y<-40||p.y>rect.height+40)continue;
+    const isOpen=rec.id===hov;G.open=mix(G.open,isOpen?1:0,Math.min(1,dt*6));
+    let ox=0,oy=0;const n=G.glyphs.length;
+    if(G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,NAME_LH)),r=inkRing(G,p.x,p.y,[0,1],12,b,rect,taken);
+      ox=Math.max(14-p.x-b.x0,Math.min(rect.width-14-p.x-b.x1,r.ox));oy=Math.max(80-p.y-b.y0,Math.min(rect.height-24-p.y-b.y1,r.oy));
+      if(G.open>.15)taken.push({x:p.x+ox+b.x0,y:p.y+oy+b.y0,w:b.x1-b.x0,h:b.y1-b.y0})}else G.inkAt=null;
+    G.glyphs.forEach((g,j)=>{const sw=clamp(G.open*1.6-(j/Math.max(1,n))*.6);
+      beingSpring(g,(1-sw)*(g.ix+Math.sin(now/900+j)*.8)+sw*(ox+g.tx),(1-sw)*(g.iy+Math.cos(now/1000+j)*.8)+sw*(oy+g.ty));g.s=sw});
+    sleep[rec.locus.startsWith(here)?0:1].push([G,p]);
+    if(G.open>.01)inkText(ctx,G.glyphs,g=>g.s>=.35,'rgb(226,244,235)',g=>clamp((g.s-.35)*2)*presence,g=>(g.bold?'600 ':'400 ')+'11px system-ui, -apple-system, "Segoe UI", sans-serif',p.x,p.y);
+  }
+  /* sleeping names are batched: one path per presence class, not one fill per organism */
+  [[sleep[0],.42],[sleep[1],here?.12:.42]].forEach(([list,a])=>{if(!list.length||a*presence<=.004)return;ctx.beginPath();
+    for(const [G,p] of list)for(const g of G.glyphs)if(g.s<.35)ctx.rect(p.x+g.x-.55,p.y+g.y-.55,1.1,1.1);
+    ctx.globalAlpha=a*presence;ctx.fillStyle='rgb(206,240,224)';ctx.fill();ctx.globalAlpha=1});
+  canvas.dataset.nameClusters=String(count);canvas.dataset.nameOpen=hov||'';
 }
 /* The realized chambers are the visible rank-1 Sierpiński body of Papers — the same container
  * grammar every Display site shows — not invisible packing bins: faint faces, clear edges, the
@@ -1125,7 +1170,7 @@ function draw(now){
     metaboliteCount=metabolights.length;organismEmberCount=structuralEmbers.length;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  drawWisdom(rect,cam,translate,metabolights,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
+  drawWisdom(rect,cam,translate,metabolights,now);drawNames(rect,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`)}

@@ -1,6 +1,6 @@
 # NUTRIENT — Organism names sleep as letter-clusters before selection — 2026-09-28
 
-status: OPEN / PHENOMENOLOGY
+status: SPENT — metabolized into RITUAL 2.6 (organism names sleep as letter-clusters; open items 1–4 answered in the embodiment, see HOME); HOME display-papers-own-vertex-name-bloom-20260928T0900Z
 kind: papers encounter
 source: Philipp, walking the live Papers overview after #125
 target: github.cambium → display → papers

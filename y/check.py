@@ -266,6 +266,8 @@ def main():
     check('PAPERS_OVERVIEW_BASIS_Y=-.275' in papers_sierpinski and 'overviewOrientation' in papers_sierpinski and 'dataset.overviewBasisY' in papers_sierpinski,'Papers fourfold perceptual rest frame missing')
     check('papers-chamber-labels' in papers_sierpinski and 'updateChamberLabels' in papers_sierpinski and 'chamberLabelNodes' in papers_sierpinski and 'projectPoint(overviewWorldPoint(point,width),overviewOrientation(),cameraZ(),width,height)' in papers_sierpinski and '.papers-chamber-label' in papers_sierpinski_css,'Papers chamber identity/count witnesses are detached from the live inward inquiry camera')
     check('own=cell.tet[GENES.indexOf(gene)]' in papers_sierpinski and 'cell.tet[0].map(' not in papers_sierpinski,'Papers chamber label hangs from a vertex its chamber shares with another chamber instead of its own outer corner')
+    check('function drawNames(' in papers_sierpinski and 'drawNames(rect,now)' in papers_sierpinski and 'dataset.nameClusters' in papers_sierpinski,'Papers organism names do not sleep as letter-clusters before selection')
+    check('MACRO_FILL*cam/sc' in papers_sierpinski,'Papers woven face text is scale-bound by a small (S) body instead of one readable size at every rank')
     check("GENEALOGY_REPAIR_PATH='papers-shadow/genealogy-gap-repair.json'" in papers_sierpinski and 'mergeGenealogyRepair' in papers_sierpinski and 'genealogyRepairCount' in papers_sierpinski,'Papers bounded genealogy-gap hydration missing')
     genealogy_repair=DISPLAY/'y'/'yy'/'papers'/'public'/'papers-shadow'/'genealogy-gap-repair.json'
     check(genealogy_repair.is_file(),'Papers public genealogy repair carrier missing')

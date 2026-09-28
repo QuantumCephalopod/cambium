@@ -106,3 +106,12 @@ opening them =)"
 → residue 4 answered in place (HOME display-papers-containers-story-20260927T180350Z): woven letters are
   blitted from a cached glyph atlas instead of per-glyph fillText. Still owed: a frame-time witness on
   Philipp's own CPU-only laptop.
+
+## narrowed (2026-09-28, HOME display-papers-own-vertex-name-bloom-20260928T0900Z)
+
+Item 2 of the source-faithful pressure ("same bloom at every rank") is now embodied one rank up:
+every organism's identity (`id · title`) sleeps as a cluster of its own letters on its body before
+selection and unfolds on peek (RITUAL 2.6). Residue 1 is narrowed on one axis: a woven face now opens
+at the same readable size at S ground as at every Holon rank. Still owed: the facing/size threshold
+below which a turned face stays dust, where 1T lives, the source-ground sidecar, and the CPU-only
+frame-time witness — now including the ~200 sleeping name-clusters (one batched path per frame).

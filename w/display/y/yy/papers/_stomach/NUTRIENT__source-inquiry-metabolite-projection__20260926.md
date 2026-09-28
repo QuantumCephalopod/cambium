@@ -162,3 +162,23 @@ additional fallbacks (earlier dialects unchanged; witnessed locally against Embe
 - parent-named Holons: edges `S.a ↔ S.b — …`, faces `S.a · S.b · S.c — …` (parents read in `Parent set` order),
   metabolites as ALL-CAPS titles under `DERIVED CROSS-SOURCE INVARIANTS` with their own CREATE/COPY/CONTROL/
   CULTIVATE + Compression. `1H.hs7W` now projects COMPLETE with four full metabolites.
+
+## witness (2026-09-28, Mnemos reading the live visitor shadow)
+
+Live shadow `papers-shadow/current.json`, public revision `sha256:d0c02282…` (source HOME papers-chaperone-20260926T100059Z-authorship-dY9d):
+- Sources: 119 · Inquiry 119/119 · COMPLETE 58 · with metabolites 82 · without 37;
+- Holons: 88 · Inquiry 88/88 · COMPLETE 73 · with metabolites 67.
+The 37 Sources without metabolites are all PARTIAL with explicit gaps — none is a silent zero:
+21 `INCOMPLETE MECHANICAL PROJECTION` + `BOUNDARY UNEXPOSED` (e.g. S.-s4Q) · 5 `INCOMPLETE` only (S.8kFt) ·
+6 `COMPACT METABOLITE BODY` + `INCOMPLETE` + `BOUNDARY UNEXPOSED` (S.F6mG) · 5 `COMPACT` + `INCOMPLETE` (S.8xgV).
+
+Sharpest wound now: **11 Sources carry the `COMPACT METABOLITE BODY` gap yet project zero metabolites.**
+That gap is only emitted when the source reader found a compact metabolite block, so those items are
+being recognized and then lost — either the compact items never parse (the numbered line shape differs)
+or they are dropped before the public unit. S.F6mG was witnessed projecting locally on 2026-09-27; this
+shadow may predate that pass. Next bounded move: read one of these canonical artifacts (S.F6mG, S.8xgV)
+against the current `/papers/_feed.gs` reader, source-side.
+
+Related source-side act on the same reader (Drive `/papers/_stomach`, 2026-09-27): `organismMetabolites_`
+no longer admits parent-cited `INV-` keys as an organism's own (4H.YEyI rendered 15 lights for 3 metabolites);
+bound-project deployment + YEyI re-projection still owner-side.

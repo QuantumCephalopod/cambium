@@ -1,6 +1,6 @@
 # NUTRIENT — Chamber labels hang from a shared vertex — 2026-09-28
 
-status: OPEN / RENDERER
+status: SPENT — metabolized into RITUAL 2.6 (chamber labels hang from their own outer vertex); HOME display-papers-own-vertex-name-bloom-20260928T0900Z
 kind: papers encounter
 source: Philipp, walking the live Papers overview after #125 (screenshot)
 target: github.cambium → display → papers
