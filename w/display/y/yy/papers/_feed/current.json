@@ -3,24 +3,24 @@
   "constitution": null,
   "home": {
     "changed_scope": [
-      "sierpinski.js: updateChamberLabels anchors each chamber label at tet[GENES.indexOf(gene)], its own outer corner; since #124 every label used tet[0], which for x/z/y is the midpoint shared with Genesis",
-      "sierpinski.js: drawNames — every organism's identity (id · title) rests as a sunflower cluster of its own glyphs at its body center (same physiology as metabolights), batched into one path per presence class; a peek (hitGlobal under the pointer) unfolds it through the ink membrane; clusters fade with background passage when an organism opens",
-      "sierpinski.js: woven faces scale their text plane by MACRO_FILL*cam/scale while weaving, so the MIN_MACRO_Z camera clamp no longer halves face text at S ground (S ×1.90, 1H+ ×1.00); pointer mapping into the face plane accounts for the same factor",
-      "y/check.py: witnesses own-vertex label anchoring, sleeping name-clusters and rank-invariant face size",
-      "RITUAL 2.6 assimilates organism name-sleep, own-vertex chamber labels and one readable face size",
-      "NUTRIENT__chamber-label-own-vertex__20260928, NUTRIENT__organism-name-bloom__20260928 and NUTRIENT__source-face-scale__20260927 metabolized and retired to _waste; text-being, shared-descent and source-inquiry nutrients narrowed in place"
+      "sierpinski.js: driftBodies — the metabolite spring+repulsion step extracted as one bounded flow law (spring toward own flow point, push from every neighbour inside a shared reach, drag); metaboliteRepel now calls it with unchanged constants (trajectory deviation 2e-17 against the previous code)",
+      "sierpinski.js: driftOrganisms — stepped once per frame in draw(); each organism drifts toward its own chamber flowPoint and repels only organisms in the same chamber, reach .08 + both bodies' 2^n scales, softer spring 3; holdInTet keeps every body inside its chamber tetrahedron; overviewDriftPoint reads the drifted body, so drawing, sleeping names, bodies and hit-testing see one position",
+      "sierpinski.js: buildRecords carries each record's chamber tet",
+      "y/check.py: witnesses the shared flow law, the per-frame organism step and chamber holding",
+      "RITUAL 2.7 assimilates organisms-as-bodies under the flow law 2.1 already stated",
+      "NUTRIENT__organisms-repel-as-bodies__20260928 admitted and metabolized in the same act, retired to _waste"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · CHAMBER LABELS ON OWN VERTEX · ORGANISM NAMES SLEEP AS LETTERS · ONE FACE SIZE AT EVERY RANK · RITUAL 2.6"
+    "outcome": "PASS/EARNED · ORGANISMS REPEL AS BODIES INSIDE THEIR CHAMBER · ONE FLOW LAW AT BOTH SCALES · RITUAL 2.7"
   },
-  "observed_at_utc": "2026-09-28T11:14:43.081489Z",
+  "observed_at_utc": "2026-09-28T20:47:02.147145Z",
   "owner": "organism:papers",
   "phenotype": null,
-  "reflected_home_event": "display-papers-own-vertex-name-bloom-20260928T0900Z",
+  "reflected_home_event": "display-papers-organisms-repel-as-bodies-20260928T2031Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "7f65e214a2ae7a673d32ed37e1b6cd9955fc3370e7bbf92fac66ebaae1a6186e"
+      "sha256": "da4a11dd3bb21876cafc9722695a6b2f08ed26fee26b82df6c543f793d196631"
     }
   ],
   "shell": {
@@ -31,10 +31,10 @@
       "NUTRIENT__source-inquiry-metabolite-projection__20260926.md",
       "NUTRIENT__text-being-inquiry__20260927.md"
     ],
-    "waste_direct_count": 40
+    "waste_direct_count": 41
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "f692f698646ea8b8f58c12f7f83ef982baa64205"
+    "source_revision": "b09fd5e80ee53d556d4d116c8bbf382444e7d040"
   }
 }
