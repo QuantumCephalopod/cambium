@@ -200,6 +200,60 @@ def assimilate_raw(state: dict, record: dict, source_file: str, source_index: in
     })
 
 
+# --- being kinds: one exhaustive CCCC split of what a traffic being did with the open surface --------------------
+# first match wins, so every being has exactly one kind; the only external fact used is our own offered membrane.
+OFFERED_EXACT = {"/", "/index.html", "/.nojekyll", "/favicon.ico", "/robots.txt", "/sitemap.xml"}
+OFFERED_PREFIXES = ("/assets/", "/papers-shadow/", "/crawlerbait/")
+OWN_APERTURES = ("/__live/", "/repos/self-similar-systems/")
+FOREIGN_PORES = ("/cdn-cgi/",)
+READ_METHODS = {"GET", "HEAD", "OPTIONS"}
+BEING_KINDS = {"w": "Feeder", "x": "Harvester", "z": "Prober", "y": "Dweller"}
+
+
+def offered(path: str) -> bool:
+    return (
+        path in OFFERED_EXACT
+        or path.startswith(OFFERED_PREFIXES)
+        or (path.startswith("/apple-touch-icon") and "/" not in path[1:])
+    )
+
+
+def status_code(value) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def being_kind(encounters) -> str:
+    """w Feeder: an accepted write into our own apertures · z Prober: asked for what we never offer (incl. an unaccepted write) ·
+    y Dweller: returned on two or more days · x Harvester: took only what exists, within one day."""
+    if any(
+        e["path"].startswith(OWN_APERTURES)
+        and str(e.get("method") or "").upper() not in READ_METHODS
+        and 0 < status_code(e.get("status")) < 300
+        for e in encounters
+    ):
+        return "w"
+    if any(
+        (not offered(e["path"]) and not e["path"].startswith(OWN_APERTURES) and not e["path"].startswith(FOREIGN_PORES))
+        or (e["path"].startswith(OWN_APERTURES) and str(e.get("method") or "").upper() not in READ_METHODS)
+        for e in encounters
+    ):
+        return "z"  # includes an unaccepted write into our apertures: writing is not offered to strangers
+    if len({str(e.get("t") or "")[:10] for e in encounters}) >= 2:
+        return "y"
+    return "x"
+
+
+def classify_beings(state: dict) -> None:
+    by_crawler = {}
+    for event in state["encounters"]:
+        by_crawler.setdefault(event["crawler"], []).append(event)
+    for cid, crawler in state["crawlers"].items():
+        crawler["kind"] = being_kind(by_crawler.get(cid, []))
+
+
 def rebuild_state():
     legacy = replay_legacy()
     state = {
@@ -240,6 +294,7 @@ def rebuild_state():
             assimilate_raw(state, record, path.name, index)
 
     state["encounters"].sort(key=lambda e: (e.get("t") or "", e["source_file"], e["source_index"]))
+    classify_beings(state)
     return state
 
 
@@ -376,6 +431,7 @@ def projection_from(state: dict):
             "growth_gate": "none",
             "public_namespace": "/crawlerbait/",
             "bait_addressing": "shortest unique prefix of an unbounded stable path-identity stream in tetrahedral bait-space",
+            "being_kinds": "first match wins: w Feeder (accepted write into our own apertures) · z Prober (asked for what we never offer) · y Dweller (returned on 2+ days) · x Harvester (took only what exists within one day)",
         },
         "raw_capture_start": state.get("raw_capture_start"),
         "raw_capture_end": state.get("raw_capture_end"),
@@ -531,7 +587,16 @@ def self_test():
     )
     assert identity_prefix("/a", 128) == legacy
     assert len(identity_prefix("/a", 513)) == 513
-    print("PASS · tide makes stable network-identity+UA beings span every bait they touched; no event ordering is invented")
+    enc = lambda path, t="2026-09-18T00:00:00Z", method="GET", status=200: {"path": path, "t": t, "method": method, "status": status}
+    assert being_kind([enc("/__live/home", method="POST", status=200), enc("/.env")]) == "w"
+    assert being_kind([enc("/__live/home", method="POST", status=409)]) == "z"
+    assert being_kind([enc("/"), enc("/.env", status=404)]) == "z"
+    assert being_kind([enc("/"), enc("/cdn-cgi/rum", method="POST", status=204)]) == "x"
+    assert being_kind([enc("/"), enc("/robots.txt", t="2026-09-19T00:00:00Z")]) == "y"
+    assert being_kind([enc("/"), enc("/assets/x/a.js")]) == "x"
+    classify_beings(state)
+    assert crawler["kind"] == "z"
+    print("PASS · tide makes stable network-identity+UA beings span every bait they touched; no event ordering is invented; every being has exactly one kind")
 
 
 def main():

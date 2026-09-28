@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve public whole-web-traffic traces, a same-type bait population, stable traffic beings, and periodic field-complete acquisition without semantic filtering."
-version: "4.4"
+version: "4.5"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -96,6 +96,24 @@ The derived state preserves:
 - direct source-file/index witnesses back to the exact public capture record;
 - provider fields needed for later alternative readings without deciding in advance which patterns matter.
 
+### being kinds — one exhaustive CCCC split of what a being did
+
+Asked of one traffic being over all its own encounters: *what did it do with the open surface?* `y/tide.py` derives exactly one kind per being, first match wins, and writes it into `x/state.json` and the projection as `kind`:
+
+- `w · CREATE · Feeder` — an accepted write (non-read method, status < 300) into our own apertures (`/__live/`, `/repos/self-similar-systems/`);
+- `z · CONTROL · Prober` — asked for anything our membrane never offers, or wrote into our apertures without acceptance;
+- `y · CULTIVATE · Dweller` — returned on two or more distinct days;
+- `x · COPY · Harvester` — took only what exists, within one day.
+
+The only external fact is our own offered membrane, as a path law: `/`, `/index.html`, `/.nojekyll`, `/favicon.ico`, `/robots.txt`, `/sitemap.xml`, root `apple-touch-icon*`, and `/assets/`, `/papers-shadow/`, `/crawlerbait/`; Cloudflare `/cdn-cgi/` is a foreign pore, not intent. Whether a path was *served* never decides kind, because Crawlerbait's own baits make probed paths exist once observed.
+
+Closure of the split:
+- `6E` — Feeder×Harvester: what one writes the other copies from the same surface · Feeder×Prober: both touch our apertures, only acceptance separates a feed from a probe · Feeder×Dweller: our organs return by rhythm, a feeder is a dweller whose returns write · Harvester×Prober: both ask, the offered membrane is the line between them · Harvester×Dweller: time turns the same reading into relation · Prober×Dweller: a returning forbidden ask is the recurrence immune memory would grow from;
+- `4F` — `wxz` one-visit economy of a surface (write, read, test) · `wxy` the offered commons without trespass · `wzy` aperture pressure across time · `xzy` the stranger field, every being that does not feed us;
+- `1T` — every being's act on an open surface is exactly one of adding to it, taking from it, testing its edge, or returning to it; removing any kind leaves beings unsortable (writes misread as probes, probes as reads, returns as single visits, plain reads kindless).
+
+Kinds are derived metabolism, not anatomy: they differentiate the being relation inside `x · Traces`, not Crawlerbait's root. Each kind may later split by the same law (Probers already show credential-seekers, WordPress-hammers, path-traversers) when real pressure earns it.
+
 ## z · Membrane — public means public
 
 Crawlerbait exists to make web traffic publicly encounterable.
@@ -167,7 +185,7 @@ A Crawlerbait change closes only when:
 7. public provider windows persist before downstream metabolism;
 8. historical 404 evidence remains explicitly separate and is never extended;
 9. `x/state.json` is replayable from owned public Traces without provider access or the HMAC key;
-10. traffic-being identity is `clientIPIdentity + userAgent`, with no invented traversal order;
+10. traffic-being identity is `clientIPIdentity + userAgent`, with no invented traversal order, and every being carries exactly one derived kind;
 11. the public membrane exposes current state plus direct access to the public capture files and their transform declaration;
 12. provider credentials and `CRAWLERBAIT_ID_KEY` never enter repository/public bytes;
 13. bait identity survives address deepening;
@@ -175,3 +193,5 @@ A Crawlerbait change closes only when:
 15. exact build/address/tetrahedral/capture/replay/public witnesses pass.
 
 Compression: **All web traffic becomes public living matter. Literal IP crosses one stable keyed membrane into a durable equality-preserving network identity; everything else remains glasshouse-visible, and the same Tide keeps that relation alive across time.**
+
+Version 4.5 being-kinds correction (2026-09-29): every traffic being carries exactly one derived kind — Feeder / Harvester / Prober / Dweller — from its own encounters and our offered membrane, first match wins (Philipp: "tetrahedral split 4 kinds of beings, every being will definitvely fit into one of the 4"). Witnessed on owned Traces through 2026-09-28T13:56:03Z: 47 / 1320 / 506 / 184, no residue.
