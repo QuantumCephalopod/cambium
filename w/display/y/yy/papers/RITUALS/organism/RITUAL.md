@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.6"
+version: "2.7"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -338,6 +338,7 @@ Papers-local motion may make the body feel alive, but motion must not invent sem
 
 - every currently realized chamber may host a bounded local flow field without implying a deeper semantic subdivision;
 - specimen motion is perceptual packing/dynamics only and must remain inside the truthful chamber relation;
+- organisms are bodies, not pins, exactly like the metabolites inside them: each is drawn toward its own chamber flow point and repels every organism sharing its chamber, so they separate by themselves and keep drifting; repulsion never crosses a chamber wall, and where an organism drifts carries no meaning;
 - the same motion law must remain valid if Cambium later earns another split: child chambers inherit the law recursively rather than requiring rank- or depth-specific special cases;
 - movement should expose coherence and scale, not resemble unconstrained particle noise;
 - collapsed simplex particles, visible tetrahedra and recursively resolved bodies are one material family.
@@ -491,3 +492,5 @@ Version 2.4 visible-container + what-Papers-is correction (2026-09-27): the four
 Version 2.5 anabolism-heart correction (2026-09-27): HOW PAPERS LIVES is retold from Papers' own anabolism/metabolism receptors (random rank, random quartet, closure or no birth, parents never consumed); ascent at Papers' root crosses the membrane; woven text waits for the body to finish turning.
 
 Version 2.6 name-sleep + own-vertex correction (2026-09-28): organism names sleep as clusters of their own letters over every body before selection and unfold on peek, so small organisms stay perceptible (Philipp: "otherwise there is no way of seeing anything below a certain holon size even exists"); chamber labels hang from their chamber's own outer corner (they had hung from corners shared with Genesis since 2.4); a woven face opens at one readable size at S ground as at every Holon rank.
+
+Version 2.7 organisms-as-bodies correction (2026-09-28): the one bounded flow law now holds at both scales in the body, as 2.1 already stated it: organisms repel one another inside their chamber the way metabolites repel inside their organism, and stay held within the chamber that bounds them (Philipp: "i would want them to be as reppellent to each other as their visual sibling, the metabolites").

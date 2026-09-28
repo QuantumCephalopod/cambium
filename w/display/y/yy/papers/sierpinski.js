@@ -175,7 +175,46 @@ function flowPoint(entity,now=performance.now()){
   const wander=mix3(points[index],points[(index+1)%points.length],t);
   return mix3(entity.world,wander,OVERVIEW_WANDER);
 }
-function overviewDriftPoint(entity,now=performance.now()){return flowPoint(entity,now)}
+/* One bounded flow law at every scale — organisms in their chamber, metabolites in their organism: a body is a
+ * small mass drawn toward its own flow point and pushed away by every neighbour inside their shared reach, so
+ * bodies spread apart by themselves and keep moving. Motion only — nothing gains or loses meaning by where it drifts. */
+const BODY_SPRING=6,BODY_PUSH=12.8,BODY_DRAG=4;
+function driftBodies(sim,items,dt,reach,spring=BODY_SPRING){
+  const bodies=items.map(it=>{let b=sim.bodies.get(it.id);if(!b){b={p:[...it.target],v:[0,0,0]};sim.bodies.set(it.id,b)}return b});
+  const force=bodies.map((b,i)=>sub(items[i].target,b.p).map(x=>x*spring));
+  for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
+    const R=reach(items[i],items[j]);let dv=sub(bodies[i].p,bodies[j].p),dist=Math.hypot(...dv);if(dist>=R)continue;
+    if(dist<1e-9){const a=random01(items[i].id,items[j].id)*Math.PI*2;dv=[Math.cos(a),Math.sin(a),.3];dist=Math.hypot(...dv)}
+    const f=BODY_PUSH*(1-dist/R)*R/dist;
+    for(let k=0;k<3;k++){force[i][k]+=dv[k]*f;force[j][k]-=dv[k]*f}
+  }
+  const drag=Math.exp(-BODY_DRAG*dt);
+  bodies.forEach((b,i)=>{for(let k=0;k<3;k++){b.v[k]=(b.v[k]+force[i][k]*dt)*drag;b.p[k]+=b.v[k]*dt}});
+  return bodies;
+}
+function det3(a,b,c){return a[0]*(b[1]*c[2]-b[2]*c[1])-a[1]*(b[0]*c[2]-b[2]*c[0])+a[2]*(b[0]*c[1]-b[1]*c[0])}
+/* a body drifts inside the container that bounds it and never crosses it: outside → nearest-by-barycentric point on the tet */
+function holdInTet(body,tet){
+  const [a,b,c,d]=tet,e1=sub(a,d),e2=sub(b,d),e3=sub(c,d),r=sub(body.p,d),det=det3(e1,e2,e3);if(Math.abs(det)<1e-12)return false;
+  let l=[det3(r,e2,e3)/det,det3(e1,r,e3)/det,det3(e1,e2,r)/det];l.push(1-l[0]-l[1]-l[2]);
+  if(l.every(x=>x>=0))return false;
+  l=l.map(x=>Math.max(0,x));const s=l.reduce((u,v)=>u+v,0)||1;
+  body.p=[0,1,2].map(k=>(l[0]*a[k]+l[1]*b[k]+l[2]*c[k]+l[3]*d[k])/s);return true;
+}
+/* Organisms obey the same law one scale up: each drifts toward its own chamber flow point and repels the organisms
+ * sharing its chamber — reach grows with both bodies' 2^n size — and repulsion never crosses a chamber wall. A softer
+ * spring than metabolites': chamber flow points crowd toward the centroid (Governance carries most of the population),
+ * so bodies must be free to leave their target to find room. Stepped once per frame; every reader of an organism's
+ * position (draw, names, hit-test) sees the same drifted body. */
+const ORGANISM_REACH=.08,ORGANISM_SPRING=3;
+function driftOrganisms(now){
+  if(!state?.records?.length)return;
+  const sim=state.orgSim||(state.orgSim={bodies:new Map(),t:now}),dt=Math.min(.05,Math.max(0,(now-sim.t)/1000));sim.t=now;
+  const chambers=new Map();
+  for(const rec of state.records){const list=chambers.get(rec.locus)||[];list.push({id:rec.id,target:flowPoint(rec,now),size:bodyScaleFor(rec),tet:rec.tet});chambers.set(rec.locus,list)}
+  for(const items of chambers.values())driftBodies(sim,items,dt,(a,b)=>ORGANISM_REACH+a.size+b.size,ORGANISM_SPRING).forEach((b,i)=>{if(items[i].tet&&holdInTet(b,items[i].tet))b.v=b.v.map(v=>v*.5)});
+}
+function overviewDriftPoint(entity,now=performance.now()){return state?.orgSim?.bodies.get(entity.id)?.p||flowPoint(entity,now)}
 function chamberFocus(){return state?.chamberFocus||{center:[0,0,0],scale:1}}
 function backgroundPassage(){return state?.backgroundPassage||0}
 function inquiryFrameFocus(){
@@ -248,7 +287,7 @@ function buildRecords(projection,fieldRoot){
   for(const entity of identities.values()){
     const cell=byGene.get(entity.gene);if(cell){
       const world=pointInTet(cell.tet,entity),motionA=pointInTet(cell.tet,{id:entity.id+'·flow-a'},.20),motionB=pointInTet(cell.tet,{id:entity.id+'·flow-b'},.20),motionC=pointInTet(cell.tet,{id:entity.id+'·flow-c'},.20),motionD=pointInTet(cell.tet,{id:entity.id+'·flow-d'},.20);
-      records.push({...entity,locus:cell.path,world,motionA,motionB,motionC,motionD});
+      records.push({...entity,locus:cell.path,tet:cell.tet,world,motionA,motionB,motionC,motionD});
     }
   }
   return {records,structure};
@@ -630,24 +669,14 @@ function metaboliteField(entity,current,cam,height,now=performance.now()){
     return {id,metaboliteId,metabolite,center,size:clamp(10+Math.sqrt(Math.max(px,0))*.28+random01(id,'metabolite-size')*3,10,24),color:[...color,.90],phase:random01(id,'metabolite-phase')*Math.PI*2,kind:'metabolite'};
   });
 }
-/* Metabolites are bodies, not pins: each light is a small mass drawn toward its own bounded flow point and
- * pushed away by every neighbour closer than METABOLITE_REPEL·(organism scale), so they spread apart by themselves
- * and keep moving. Motion only — no metabolite gains or loses meaning by where it drifts. */
-const METABOLITE_REPEL=.5,METABOLITE_SPRING=6,METABOLITE_PUSH=20,METABOLITE_DRAG=4;
+/* Metabolites are bodies, not pins: the same bounded flow law as organisms in their chamber (driftBodies), one
+ * scale down — every neighbour closer than METABOLITE_REPEL·(organism scale) pushes a light away. */
+const METABOLITE_REPEL=.5;
 function metaboliteRepel(entityId,lights,fieldScale,now){
   let sim=state.metSim;
   if(!sim||sim.id!==entityId||Math.abs(sim.scale-fieldScale)>fieldScale*.01){sim=state.metSim={id:entityId,scale:fieldScale,bodies:new Map(),t:now}}
   const dt=Math.min(.05,Math.max(0,(now-sim.t)/1000)),R=METABOLITE_REPEL*fieldScale/METABOLITE_FIELD_SCALE;sim.t=now;
-  const bodies=lights.map(L=>{let b=sim.bodies.get(L.id);if(!b){b={p:[...L.center],v:[0,0,0]};sim.bodies.set(L.id,b)}return b});
-  const force=bodies.map((b,i)=>sub(lights[i].center,b.p).map(x=>x*METABOLITE_SPRING));
-  for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
-    let dv=sub(bodies[i].p,bodies[j].p),dist=Math.hypot(...dv);if(dist>=R)continue;
-    if(dist<1e-9){const a=random01(lights[i].id,lights[j].id)*Math.PI*2;dv=[Math.cos(a),Math.sin(a),.3];dist=Math.hypot(...dv)}
-    const f=METABOLITE_PUSH*(1-dist/R)*fieldScale/dist;
-    for(let k=0;k<3;k++){force[i][k]+=dv[k]*f;force[j][k]-=dv[k]*f}
-  }
-  const drag=Math.exp(-METABOLITE_DRAG*dt);
-  bodies.forEach((b,i)=>{for(let k=0;k<3;k++){b.v[k]=(b.v[k]+force[i][k]*dt)*drag;b.p[k]+=b.v[k]*dt}lights[i].center=[...b.p]});
+  driftBodies(sim,lights.map(L=>({id:L.id,target:L.center})),dt,()=>R).forEach((b,i)=>{lights[i].center=[...b.p]});
   return lights;
 }
 function organismEmber(id,center,px,entity,selected=false){
@@ -1145,7 +1174,7 @@ function currentTranslation(){
 
 function draw(now){
   if(!state||!state.mounted){if(state)state.raf=requestAnimationFrame(draw);return}
-  governFrame(now);updateChamberTransition(now);updateTransition(now);updateBackgroundPassage(now);if(state.current&&state.beingTargetQ&&!state.pointer?.moved)state.localQ=beingSlerp(state.localQ,state.beingTargetQ,.075);state.environment?.draw(now);
+  governFrame(now);updateChamberTransition(now);updateTransition(now);updateBackgroundPassage(now);driftOrganisms(now);if(state.current&&state.beingTargetQ&&!state.pointer?.moved)state.localQ=beingSlerp(state.localQ,state.beingTargetQ,.075);state.environment?.draw(now);
   const {gl}=state.renderer,{rect,d,w,h}=resizeCanvas(state.canvas),cam=cameraZ(),overviewQ=overviewOrientation(),passage=backgroundPassage();
   const far=Math.max(12,cam+overviewTransformScale(rect.width)*2+2),proj=perspective(FOV,w/h,Math.max(.00008,cam*.015),far),view=lookAt([0,0,cam],[0,0,0],[0,1,0]);
   gl.viewport(0,0,w,h);gl.clearColor(.003,.006,.006,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
