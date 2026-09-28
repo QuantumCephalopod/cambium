@@ -50,3 +50,10 @@ site shows, entered by the shared Descent grammar; crawlerbait is the witness to
 The chambers are now the visible rank-1 body and content is entered container-first (RITUAL 2.4).
 Still open: Papers' renderer itself joining Display's shared Descent field (walked path, pools,
 host environment instead of Papers' own inquiry-environment shader).
+
+## answered in part (2026-09-28, HOME display-papers-own-vertex-name-bloom-20260928T0900Z)
+
+"every holon and every source carries a label" is now embodied the Papers way: each organism's name
+sleeps as a cluster of its own letters on its body and unfolds on peek (RITUAL 2.6), rather than a DOM
+label. Chamber labels hang from their own chamber vertex. Still open: the renderer joining Display's
+shared Descent field (walked path, pools, host environment).
