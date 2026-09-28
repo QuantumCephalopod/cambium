@@ -18934,22 +18934,22 @@
     },
     "5e799495316e57f07453e0e6": {
       "asns": {
-        "13335": 904
+        "13335": 905
       },
       "baits": {
-        "/wp-admin/install.php": 904
+        "/wp-admin/install.php": 905
       },
       "countries": {
-        "RU": 904
+        "RU": 905
       },
       "devices": {
-        "desktop": 904
+        "desktop": 905
       },
-      "events": 904,
+      "events": 905,
       "first_seen": "2026-09-13T20:18:42Z",
       "id": "5e799495316e57f07453e0e6",
       "kind": "z",
-      "last_seen": "2026-09-28T20:58:04Z",
+      "last_seen": "2026-09-28T22:38:09Z",
       "network_identity": "ip:v1:16bb63ce617207dd7f2930ffa030c3f1b7fc017ee1084314b5ce9b5b8af927b8",
       "user_agent": "http://sss.saarland/wp-admin/install.php?step=1",
       "verified_bot_categories": {}
@@ -27577,22 +27577,22 @@
     },
     "88d68477c757021bb76f990d": {
       "asns": {
-        "132203": 3
+        "132203": 4
       },
       "baits": {
-        "/": 3
+        "/": 4
       },
       "countries": {
-        "DE": 3
+        "DE": 4
       },
       "devices": {
-        "mobile": 3
+        "mobile": 4
       },
-      "events": 3,
+      "events": 4,
       "first_seen": "2026-09-13T22:34:53Z",
       "id": "88d68477c757021bb76f990d",
       "kind": "y",
-      "last_seen": "2026-09-17T22:39:45Z",
+      "last_seen": "2026-09-28T22:26:45Z",
       "network_identity": "ip:v1:36f33fd30590e36cddc646d405793013daa260c121a82355024b4d9060e7c2aa",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -31256,22 +31256,22 @@
     },
     "9b4ed64e010dee1453e126dc": {
       "asns": {
-        "45090": 3
+        "45090": 4
       },
       "baits": {
-        "/": 3
+        "/": 4
       },
       "countries": {
-        "CN": 3
+        "CN": 4
       },
       "devices": {
-        "mobile": 3
+        "mobile": 4
       },
-      "events": 3,
+      "events": 4,
       "first_seen": "2026-09-19T00:52:51Z",
       "id": "9b4ed64e010dee1453e126dc",
-      "kind": "x",
-      "last_seen": "2026-09-19T21:03:07Z",
+      "kind": "y",
+      "last_seen": "2026-09-28T22:44:25Z",
       "network_identity": "ip:v1:84ce6afbbfb462b5ac6d308b23941cbdc2fb6e81240d85ad20eac56f2d3d5186",
       "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
       "verified_bot_categories": {}
@@ -183344,12 +183344,42 @@
       "source_index": 56,
       "status": 404,
       "t": "2026-09-28T20:58:04Z"
+    },
+    {
+      "crawler": "88d68477c757021bb76f990d",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260928T221545Z--20260928T231025Z.traffic.json",
+      "source_index": 2,
+      "status": 200,
+      "t": "2026-09-28T22:26:45Z"
+    },
+    {
+      "crawler": "5e799495316e57f07453e0e6",
+      "method": "GET",
+      "path": "/wp-admin/install.php",
+      "query": "?step=1",
+      "source_file": "20260928T221545Z--20260928T231025Z.traffic.json",
+      "source_index": 0,
+      "status": 404,
+      "t": "2026-09-28T22:38:09Z"
+    },
+    {
+      "crawler": "9b4ed64e010dee1453e126dc",
+      "method": "GET",
+      "path": "/",
+      "query": "",
+      "source_file": "20260928T221545Z--20260928T231025Z.traffic.json",
+      "source_index": 1,
+      "status": 200,
+      "t": "2026-09-28T22:44:25Z"
     }
   ],
   "legacy_404_through": "2026-09-18T11:13:56Z",
-  "raw_capture_end": "2026-09-28T22:15:45Z",
+  "raw_capture_end": "2026-09-28T23:10:25Z",
   "raw_capture_start": "2026-08-18T15:42:27Z",
-  "raw_requests": 13074,
+  "raw_requests": 13077,
   "routes": {
     "/": {
       "crawlers": {
@@ -184062,7 +184092,7 @@
         "8873f12f276f400e69cfd4bb": 5,
         "88aab12727ce87274ec7bfd7": 1,
         "88bb4cdb3d9d99c573f5fc7c": 1,
-        "88d68477c757021bb76f990d": 3,
+        "88d68477c757021bb76f990d": 4,
         "89ae50e56a4345b3f9eed880": 1,
         "89fa5667a41e0f612c082802": 1,
         "8a10bba495d67aec2f53d909": 2,
@@ -184165,7 +184195,7 @@
         "9b2993caa77ea97708f7b122": 2,
         "9b3aff2f4b1b00addc5476c3": 1,
         "9b4dfdb7228dc5c8506acb06": 1,
-        "9b4ed64e010dee1453e126dc": 3,
+        "9b4ed64e010dee1453e126dc": 4,
         "9bdc4299b42c3ce8dbccf17f": 2,
         "9c257cdda078c36db65ff917": 1,
         "9c4f8eeb7c7ec10bb377ea68": 1,
@@ -184737,12 +184767,12 @@
         "ffe688a941e6119d64d0fb23": 1
       },
       "first_seen": "2026-09-13T20:02:54Z",
-      "last_seen": "2026-09-28T20:57:52Z",
+      "last_seen": "2026-09-28T22:44:25Z",
       "legacy_404_observations": 0,
       "path": "/",
-      "raw_requests": 2536,
+      "raw_requests": 2538,
       "statuses": {
-        "200": 1621,
+        "200": 1623,
         "301": 323,
         "304": 10,
         "401": 162,
@@ -213974,7 +214004,7 @@
     },
     "/wp-admin/install.php": {
       "crawlers": {
-        "5e799495316e57f07453e0e6": 904,
+        "5e799495316e57f07453e0e6": 905,
         "7cf8582736ea13d43069f941": 1,
         "97536cf3ef827db7d725989a": 1,
         "a1874b40bebb3f8d27c4e353": 1,
@@ -213983,12 +214013,12 @@
         "c8f7755191baf96db8ed861c": 1
       },
       "first_seen": "2026-09-13T20:18:42Z",
-      "last_seen": "2026-09-28T20:58:04Z",
+      "last_seen": "2026-09-28T22:38:09Z",
       "legacy_404_observations": 1,
       "path": "/wp-admin/install.php",
-      "raw_requests": 911,
+      "raw_requests": 912,
       "statuses": {
-        "404": 909,
+        "404": 910,
         "499": 2
       }
     },
