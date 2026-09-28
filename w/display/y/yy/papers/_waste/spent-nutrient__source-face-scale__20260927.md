@@ -1,6 +1,6 @@
 # NUTRIENT — Source faces are scale-bound by the small Source body — 2026-09-27
 
-status: OPEN / PHENOMENOLOGY
+status: SPENT — metabolized into RITUAL 2.6 (a woven face opens at one readable size at every rank); HOME display-papers-own-vertex-name-bloom-20260928T0900Z
 kind: papers encounter
 source: Philipp, walking the live body after #125
 target: github.cambium → display → papers

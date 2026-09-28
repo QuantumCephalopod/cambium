@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.5"
+version: "2.6"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -137,6 +137,7 @@ The hand therefore learns one grammar: **drag the body whose scale you currently
 
 Every simplex of a Papers organism is made of its own source-owned words. Text is not a label placed on a body; the words are the body at a finer resolution.
 
+- **organism** — before selection an organism's own name (`id · title`) is its identity asleep: its letters cluster on its body at every scale, so an organism too small to see is still perceptible as its sleeping name; a peek unfolds them into the readable name, leaving folds them back. The cluster is presence, not selection — entering still follows Descent;
 - **metabolite** — the metabolight is the metabolite's sentence asleep: its letters cluster into the light; opening unfolds them into title + compression; closing folds them back into light;
 - **edge (6E)** — the edge is a thread of its relation's letters, tapered toward the vertices; peeking loosens the fibres where the pointer touches; opening turns the body so the edge lies level in front and the fibres re-weave into the sentence;
 - **face (4F)** — the face is a surface of its relation's letters; peeking stirs them around the pointer; opening turns the face frontal and the letters weave into one disk of text at its incenter, levelled on screen;
@@ -148,6 +149,8 @@ At rest nothing is written out: lines, faint dust, sleeping lights, four letters
 **Open text never collides.** An open or still-folding sentence takes free space around its own anchor — never over visible chrome, never over another open sentence. Receded chrome yields rather than repels, woven edges and faces stay on their own body wherever the screen allows, and chrome that open text must cover fades out rather than showing through. Placement is perception only; it never reorders or rewords the text.
 
 Vertices are doors. For `S.*` a vertex carries its source-body span and invariant — outward, toward the original work (the provenance handoff). For `nH` the four vertices *are* the four parent organisms — opening a vertex walks into the ancestor, recursively to Source ground.
+
+A woven face opens at one readable size at every rank: where framing leaves a small body (S ground) below full fill, the weave grows its text plane to the size a fully framed body gives.
 
 Word order and wording stay exact; motion settles before reading — a locked edge or face weaves only once the body has finished turning it level; missing words remain projection absence, never replacement text. Letters-as-particles and Pretext are the current carriers, not ontology.
 
@@ -391,7 +394,7 @@ The chamber transition must reuse the same recursive tetrahedral cell geometry a
 
 Uneven organism counts may make one chamber perceptually sparse, but sparse occupancy does not erase the chamber itself.
 
-**The chambers are Papers' visible rank-1 Sierpiński body** — the same container grammar every Display site shows, never invisible packing bins with floating labels: faint faces and clear edges, the current container brighter and the others receding, all of it stepping back while an organism is open. Chamber labels hang from their chamber's body and are selectable like its face. Geometry is always drawn at full realized resolution; when Papers earns a deeper split, the same body simply shows more cells.
+**The chambers are Papers' visible rank-1 Sierpiński body** — the same container grammar every Display site shows, never invisible packing bins with floating labels: faint faces and clear edges, the current container brighter and the others receding, all of it stepping back while an organism is open. Chamber labels hang from their chamber's body — from the one vertex that chamber owns alone, its own outer corner, never a corner it shares with a sibling — and are selectable like its face. Geometry is always drawn at full realized resolution; when Papers earns a deeper split, the same body simply shows more cells.
 
 **Container first, and out through the membrane.** A gesture that enters nothing at Papers' own root ascends across the membrane into the container the witness came through, exactly as everywhere else. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
 
@@ -486,3 +489,5 @@ Version 2.3 ink-membrane + living-metabolite correction (2026-09-27): open text 
 Version 2.4 visible-container + what-Papers-is correction (2026-09-27): the four chambers are drawn as Papers' visible rank-1 body and content is entered container-first; HOW PAPERS LIVES tells one continuous story of what Papers is; woven text is drawn from a cached glyph atlas so opening an edge or face stays cheap on CPU-only machines.
 
 Version 2.5 anabolism-heart correction (2026-09-27): HOW PAPERS LIVES is retold from Papers' own anabolism/metabolism receptors (random rank, random quartet, closure or no birth, parents never consumed); ascent at Papers' root crosses the membrane; woven text waits for the body to finish turning.
+
+Version 2.6 name-sleep + own-vertex correction (2026-09-28): organism names sleep as clusters of their own letters over every body before selection and unfold on peek, so small organisms stay perceptible (Philipp: "otherwise there is no way of seeing anything below a certain holon size even exists"); chamber labels hang from their chamber's own outer corner (they had hung from corners shared with Genesis since 2.4); a woven face opens at one readable size at S ground as at every Holon rank.
