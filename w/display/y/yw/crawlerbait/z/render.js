@@ -370,7 +370,7 @@ function afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container}){
   if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
     const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.cell===''?'body':'colony'} · fade ${CAM.o.fade.toFixed(2)}`}
   else delete gl.canvas.dataset.gooFollow;
-  tickHud();
+  tickHud();if(CAM.on&&performance.now()-(CAM.cardAt||0)>1000){CAM.cardAt=performance.now();camCard()}
 }
 shader.afterDraw=afterDraw;
 shader.focus=camFocus;
@@ -460,15 +460,23 @@ function camFocus(){
   const P=o.cell===''||!o.cp?o.p:o.cp,lead=.004;
   return {center:[P[0]+o.head[0]*lead,P[1]+o.head[1]*lead,P[2]+o.head[2]*lead],scale:FOLLOW_SCALE,stiffness:3.4};
 }
-function camCandidates(){return [...SIM.alive].filter(o=>o.fade>.5&&o.done==null&&o.S.wps.length-o.reached>1).sort((a,b)=>a.S.b.id<b.S.b.id?-1:1)}
-function camPick(dir=1){const l=camCandidates();if(!l.length)return null;const i=CAM.o?l.indexOf(CAM.o):-1;return l[((i<0?(dir>0?-1:0):i)+dir+l.length)%l.length]}
+/* who is worth riding with: beings whose next recorded encounter comes soonest; a being that has nothing left, or
+ * nothing within a dozen real seconds at the current pace, has gone quiet and hands the cam to the next */
+const CAM_QUIET=12;
+function nextIn(o){const w=o.S.wps[o.reached+1];if(!w||o.done!=null)return Infinity;const moving=o.dist<o.S.wd[o.reached+1]-1e-9&&o.S.wd[o.reached+1]<=o.S.wd[allowed(o.S,SIM.simT,o)]+1e-9;return moving?0:Math.max(0,w.t-SIM.simT)/Math.pow(10,SIM.paceCur)}
+function camCandidates(){return [...SIM.alive].filter(o=>o.fade>.3&&nextIn(o)<Infinity).sort((a,b)=>nextIn(a)-nextIn(b)||(a.S.b.id<b.S.b.id?-1:1))}
+function camPick(dir=1){const l=camCandidates();if(!l.length)return CAM.o&&SIM.alive.has(CAM.o)?CAM.o:null;
+  const active=l.filter(o=>nextIn(o)<=CAM_QUIET),pool=active.length>1?active:l;
+  const i=CAM.o?pool.indexOf(CAM.o):-1;return i<0?pool[dir>0?0:pool.length-1]:pool[(i+dir+pool.length)%pool.length]}
 // riding with a being means travelling at its pace: engaging the cam slows time to about ×60 (the slider still rules)
 const CAM_PACE=1.8;
 function camEngage(){if(!CAM.on){CAM.on=true;if(SIM.paceLog>CAM_PACE){SIM.paceLog=CAM_PACE;if(HUD.pace)HUD.pace.value=String(CAM_PACE)}}}
 function camSet(on){if(on)camEngage();else CAM.on=false;CAM.target=null;if(on&&(!CAM.o||!SIM.alive.has(CAM.o)))CAM.o=camPick(1);if(!on)CAM.o=null;camCard()}
 function camFollow(ms){
   if(!CAM.on)return;
-  if(!CAM.o||!SIM.alive.has(CAM.o)||CAM.o.done!=null){CAM.o=camPick(1);CAM.target=null;camCard()}
+  if(!CAM.o||!SIM.alive.has(CAM.o)||CAM.o.done!=null||(nextIn(CAM.o)>CAM_QUIET&&ms-CAM.moved>3000)){
+    const q=camCandidates().find(o=>o!==CAM.o&&nextIn(o)<=CAM_QUIET);
+    if(q||!CAM.o||!SIM.alive.has(CAM.o)){CAM.o=q||camPick(1);CAM.target=null;CAM.moved=ms;camCard()}}
   const o=CAM.o;if(!o)return;
   const a=o.S.wps[Math.min(o.reached+1,o.S.wps.length-1)].a;
   if(a!==CAM.target){CAM.target=a;camCard()}
@@ -480,7 +488,9 @@ function camCard(){
   HUD.cam.hidden=false;const K=KIND[o.S.b.k],c=crawlerById.get(o.S.b.id)||{},w=o.S.wps[Math.min(o.reached+1,o.S.wps.length-1)];
   const bait=(lastProjection?.routes||[]).find(r=>r.address===w.a);
   const h=el('b','crawlerbait-cam-kind',`${K.name} · ${K.gene}`);h.style.setProperty('--kind',K.ink);
+  const nx=nextIn(o);
   HUD.cam.append(h,el('span','crawlerbait-cam-row',`heading for ${bait?.path||w.a}`),
+    el('span','crawlerbait-cam-row crawlerbait-cam-next',nx===0?'walking now':nx===Infinity?'nothing left in its record':`next encounter in ${nx<90?Math.round(nx)+' s':Math.round(nx/60)+' min'} at this pace`),
     el('span','crawlerbait-cam-row',`${o.S.b.events} encounters · ${o.S.b.baits} baits · ${o.S.b.days} day${o.S.b.days>1?'s':''}`),
     el('code','crawlerbait-cam-dna',`dna ${String(c.network_identity||o.S.b.id).replace(/^ip:v1:/,'').slice(0,24)}…`),
     el('code','crawlerbait-cam-dna',`mask ${c.user_agent||'(none)'}`));
@@ -507,8 +517,8 @@ function lifeParts(projection){
   const camBox=el('section','crawlerbait-hud-block');
   const cam=el('div','crawlerbait-cam-bar');
   HUD.camBtn=el('button','crawlerbait-play','crawlercam');HUD.camBtn.type='button';HUD.camBtn.addEventListener('click',()=>camSet(!CAM.on));
-  const prev=el('button','crawlerbait-play','‹');prev.type='button';prev.setAttribute('aria-label','previous being');prev.addEventListener('click',()=>{camEngage();CAM.o=camPick(-1);CAM.target=null;camCard()});
-  const next=el('button','crawlerbait-play','›');next.type='button';next.setAttribute('aria-label','next being');next.addEventListener('click',()=>{camEngage();CAM.o=camPick(1);CAM.target=null;camCard()});
+  const prev=el('button','crawlerbait-play','‹');prev.type='button';prev.setAttribute('aria-label','previous being');prev.addEventListener('click',()=>{camEngage();CAM.o=camPick(-1);CAM.target=null;CAM.moved=performance.now();camCard()});
+  const next=el('button','crawlerbait-play','›');next.type='button';next.setAttribute('aria-label','next being');next.addEventListener('click',()=>{camEngage();CAM.o=camPick(1);CAM.target=null;CAM.moved=performance.now();camCard()});
   cam.append(HUD.camBtn,prev,next);HUD.cam=el('div','crawlerbait-cam');HUD.cam.hidden=true;camBox.append(cam,HUD.cam);
   const bar=el('div','crawlerbait-transport');
   const play=el('button','crawlerbait-play',SIM.playing?'pause':'play');play.type='button';
@@ -606,23 +616,27 @@ function render({host,content,projection}={}){
   const fmt=n=>Number(n||0).toLocaleString('en').replace(/,/g,' ');
 
   // top line: identity and the whole reef in one breath
-  const top=el('header','crawlerbait-hud-top');
+  const top=el('div','crawlerbait-hud-top');
   top.append(el('h1','','Crawlerbait'));
   for(const [v,l] of [[projection.summary.baits ?? routes.length,'baits'],[projection.summary.web_requests ?? 0,'requests'],[projection.summary.crawlers ?? 0,'beings'],[depths.length?Math.max(...depths):0,'deep']]){
     const m=el('span','crawlerbait-hud-stat');m.append(el('b','',fmt(v)),el('small','',l));top.append(m)}
   const through=el('span','crawlerbait-hud-through',projection.updated_at?`through ${prettyTime(projection.updated_at)}`:'waiting for first tide');top.append(through);
   const machine=el('a','crawlerbait-hud-link','reef ↗');machine.href='/crawlerbait/';machine.target='_blank';machine.rel='noopener';top.append(machine);
 
-  // left rail: story, kinds, the followed being, the chosen bait
-  const rail=el('aside','crawlerbait-hud-rail');
+  // the HUD is locked to the screen's borders so the centre stays free:
+  // left — who the reef is and who lives in it; right — the one being you ride with and the bait you chose; bottom-left — time
+  const rail=el('div','crawlerbait-hud-rail');
+  rail.append(top);
   storyLine(rail);
   const life=Array.isArray(projection.encounters)&&projection.encounters.length?lifeParts(projection):null;
-  if(life)rail.append(life.legendBox,life.camBox);
+  if(life)rail.append(life.legendBox);
+  const side=el('div','crawlerbait-hud-side');
+  if(life)side.append(life.camBox);
   inspectorHost=el('section','crawlerbait-inspector');
-  rail.append(inspectorHost);
+  side.append(inspectorHost);
 
-  content.append(top,rail);
-  if(life){const bottom=el('footer','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom)}
+  content.append(rail,side);
+  if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom)}
   const selected=selectedAddress?routes.find(r=>r.address===selectedAddress):null;
   renderInspector(selected||null);
   return true;
