@@ -411,6 +411,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       }
       canvas.dataset.floatingBodies=fb.map(B=>B.id).join(' ');
       for(const B of fb){const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r);n.hidden=element.hidden;n.style.left=lp.x+'px';n.style.top=lp.y+'px'}
+      /* SITE LAYER — an identity-owned shader may draw its own layer inside this
+       * field's Descent frame (same camera, orientation and container), beneath the
+       * point layer. Meaning stays in the site; Display only lends the frame. */
+      if(typeof shader.afterDraw==='function'){
+        try{shader.afterDraw({gl,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},container:cur,orientation:W.orientation})}
+        catch(err){if(!canvas.dataset.layerError)console.warn('site layer failed for '+id,err);canvas.dataset.layerError=String(err?.message||err)}
+        gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
+      }
       drawPointsGL(proj,view,mdl,d);
     }else if(ctx){
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);
