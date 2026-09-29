@@ -25,17 +25,14 @@
   },
   "home": {
     "changed_scope": [
-      "regression witness established that a rejected GitHub workflow dispatch was previously swallowed as materialization_queued:false under HTTP 200",
-      "queueMaterialization now rethrows rejected/request-failed dispatches instead of returning false",
-      "the existing Worker request handler therefore returns a server failure for an unresolved downstream publication edge",
-      "Papers Apps Script already classifies 5xx live delivery as retryable and preserves the live outbox for later wound retry",
-      "R2 accepted/current state remains durable; the retry concerns only the unclosed materialization edge"
+      "w/locus-shader.js: optional shader.afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container,orientation}) once per frame after field geometry and floating bodies, before the point layer; Display restores framebuffer + viewport and contains a failing layer (canvas.dataset.layerError)",
+      "Display organism / site-holon RITUALS advanced to 3.7 / 2.9; no INDEX/_cambium change; central runtime still names no site"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · FAILED MATERIALIZER DISPATCH REMAINS UNRESOLVED/RETRYABLE"
+    "outcome": "PASS/EARNED · A SITE MAY DRAW ITS OWN LAYER IN ITS FIELD'S DESCENT FRAME"
   },
-  "observed_at_utc": "2026-09-26T10:54:39.054311Z",
-  "owner": "organism:display",
+  "observed_at_utc": "2026-09-29T10:42:11.502048Z",
+  "owner": "display",
   "phenotype": {
     "w": {
       "noun": "Embodiment"
@@ -50,19 +47,19 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-live-materializer-dispatch-retry-20260926T105000Z",
+  "reflected_home_event": "display-site-layer-frame-hook-20260929T101545Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "4b60038bf8bc9aa59dc47e648cc92481f6207ae04a45cd7cbf9f8781d68baf02"
+      "sha256": "8b992d901ae7121032f2aaa4836d46ec2a77b8ef72a9b09f0d3168ba74bd349a"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "c4a0755f5fb199bc068b64e0583da6977395e284656be9bc24a46f4c022afd82"
+      "sha256": "a38ff9785267fc34638f4d82b6fd0defb1f5cf60114399f5c26e38129b9f3b89"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "89b0abe28b7f9af6e2d406aca3d9e5d9859316365359137ba3a2bff91aac9372"
+      "sha256": "e8345e6de0a7033add8bf6b470b12e74169b892016bc1410e794a448da32790d"
     }
   ],
   "shell": {
@@ -73,18 +70,21 @@
       "INCOMING — care propagates.md",
       "INCOMING — minimap axis latch.md",
       "NUTRIENT__acknowledged-delta-dynamic-chunking__20260924.md",
+      "NUTRIENT__field-layer-frame-hook__20260929.md",
       "NUTRIENT__foreign-organism-hosting-membrane__20260923.md",
       "NUTRIENT__global-safe-area-contract__20260918.md",
       "NUTRIENT__identity-address-custody__20260923.md",
+      "NUTRIENT__pages-actuation-after-materialize__20260927.md",
+      "NUTRIENT__text-is-body__20260927.md",
       "REQUEST__canonical-live-nerve-promotion__20260919.md",
       "browser-witness-20260914.md",
       "navigation-aperture-browser-witness-20260915.md",
       "observations.md"
     ],
-    "waste_direct_count": 8
+    "waste_direct_count": 12
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "9ec4558d7d0302ddb1a43bfc0bb7375ef587ed96"
+    "source_revision": "c8fac0285524c48696b1e771f92c8a7de7f81d50"
   }
 }
