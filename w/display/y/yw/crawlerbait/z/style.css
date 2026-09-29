@@ -16,34 +16,15 @@
 }
 .crawlerbait-content button,.crawlerbait-content input,.crawlerbait-content a{pointer-events:auto}
 
-/* top line, directly under Display's header */
-.crawlerbait-hud-top{
-  position:absolute;
-  top:calc(var(--display-safe-top) + .2rem);
-  left:var(--edge);
-  right:var(--edge);
-  display:flex;
-  flex-wrap:wrap;
-  align-items:baseline;
-  gap:.35rem 1.3rem;
-  padding-bottom:.45rem;
-  border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent);
-}
-.crawlerbait-hud-top h1{margin:0 .4rem 0 0;font:600 1.05rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase}
-.crawlerbait-hud-stat{display:inline-flex;align-items:baseline;gap:.35rem}
-.crawlerbait-hud-stat b{font-weight:500;font-size:.82rem;font-variant-numeric:tabular-nums}
-.crawlerbait-hud-stat small{color:var(--dim);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase}
-.crawlerbait-hud-through{margin-left:auto;color:var(--dim);font-size:.58rem;letter-spacing:.06em}
-.crawlerbait-hud-link{color:var(--ink);font-size:.58rem;text-decoration:none;border-bottom:1px solid var(--faint)}
-.crawlerbait-hud-link:hover,.crawlerbait-hud-link:focus-visible{border-color:var(--ink);outline:none}
-
-/* left rail: story, kinds, the followed being, the chosen bait */
+/* The HUD is locked to the screen's borders (fixed, viewport-relative) so the centre of the reef stays free.
+   Display's own surfaces are respected through the safe-area contract: var(--display-safe-top) is the header,
+   var(--display-safe-bottom) the minimap's band on the right. */
 .crawlerbait-hud-rail{
-  position:absolute;
-  top:calc(var(--display-safe-top) + 3.2rem);
-  bottom:4.2rem;
+  position:fixed;
+  top:calc(var(--display-safe-top) + .6rem);
   left:var(--edge);
-  width:min(16.5rem,calc(100vw - 2*var(--edge)));
+  bottom:calc(var(--edge) + 2.6rem);
+  width:min(15rem,40vw);
   display:flex;
   flex-direction:column;
   gap:1.1rem;
@@ -51,6 +32,40 @@
   scrollbar-width:none;
 }
 .crawlerbait-hud-rail::-webkit-scrollbar{display:none}
+.crawlerbait-hud-top{display:grid;grid-template-columns:repeat(2,max-content);gap:.25rem 1.1rem;padding-bottom:.55rem;border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
+.crawlerbait-hud-top h1{grid-column:1/-1;margin:0 0 .35rem;font:600 1.05rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase}
+.crawlerbait-hud-through{grid-column:1/-1;color:var(--dim);font-size:.56rem;letter-spacing:.06em;margin-top:.2rem}
+.crawlerbait-hud-link{grid-column:1/-1;justify-self:start;color:var(--ink);font-size:.58rem;text-decoration:none;border-bottom:1px solid var(--faint)}
+.crawlerbait-hud-link:hover,.crawlerbait-hud-link:focus-visible{border-color:var(--ink);outline:none}
+.crawlerbait-hud-side{
+  position:fixed;
+  top:calc(var(--display-safe-top) + .6rem);
+  right:var(--edge);
+  bottom:calc(var(--display-safe-bottom) + .8rem);
+  width:min(17rem,40vw);
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  overflow:hidden auto;
+  scrollbar-width:none;
+  text-align:left;
+}
+.crawlerbait-hud-side::-webkit-scrollbar{display:none}
+.crawlerbait-hud-bottom{
+  position:fixed;
+  left:var(--edge);
+  bottom:var(--edge);
+  width:min(30rem,calc(100vw - 2*var(--edge)));
+  padding-top:.5rem;
+  border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent);
+}
+.crawlerbait-hud-stat{display:inline-flex;align-items:baseline;gap:.35rem}
+.crawlerbait-hud-stat b{font-weight:500;font-size:.82rem;font-variant-numeric:tabular-nums}
+.crawlerbait-hud-stat small{color:var(--dim);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase}
+.crawlerbait-hud-through{margin-left:auto;color:var(--dim);font-size:.58rem;letter-spacing:.06em}
+.crawlerbait-hud-link{color:var(--ink);font-size:.58rem;text-decoration:none;border-bottom:1px solid var(--faint)}
+.crawlerbait-hud-link:hover,.crawlerbait-hud-link:focus-visible{border-color:var(--ink);outline:none}
+
 .crawlerbait-hud-block{display:grid;gap:.4rem;pointer-events:auto}
 .crawlerbait-hud-label{display:flex;justify-content:space-between;gap:.8rem;color:var(--dim);font-size:.54rem;text-transform:uppercase;letter-spacing:.16em;padding-bottom:.25rem;border-bottom:1px solid color-mix(in srgb,var(--ink) 12%,transparent)}
 .crawlerbait-story{margin:0;min-height:4.4em;opacity:0;transition:opacity 1.2s;font:italic 300 .8rem/1.45 Georgia,"Times New Roman",serif;color:var(--ink)}
@@ -90,15 +105,6 @@
 .crawlerbait-kind-tag{color:var(--kind);font-weight:500;font-family:inherit}
 .crawlerbait-none{color:var(--dim);font-size:.58rem}
 
-/* bottom strip: time, from the left edge to the minimap */
-.crawlerbait-hud-bottom{
-  position:absolute;
-  left:var(--edge);
-  right:var(--edge); /* Display's content box already ends before its minimap */
-  bottom:var(--edge);
-  padding-top:.5rem;
-  border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent);
-}
 .crawlerbait-transport{display:flex;align-items:center;gap:.7rem;font-size:.6rem;color:var(--dim)}
 .crawlerbait-dim{text-transform:uppercase;letter-spacing:.16em;font-size:.54rem}
 .crawlerbait-pace,.crawlerbait-scrub{-webkit-appearance:none;appearance:none;background:transparent;height:12px;margin:0;min-width:0;cursor:pointer}
@@ -110,16 +116,13 @@
 .crawlerbait-pace-label{min-width:4.6rem;color:var(--ink);font-variant-numeric:tabular-nums}
 .crawlerbait-clock{min-width:8.6rem;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
 
-/* narrow: the minimap owns the bottom, so time moves up under the top line and the rail follows it */
+/* narrow: one column along the left border; the side panel folds under it */
 @media (max-width:720px){
-  .crawlerbait-content{display:flex;flex-direction:column;gap:.7rem;padding:calc(var(--display-safe-top) + .2rem) var(--edge) .5rem;box-sizing:border-box}
-  .crawlerbait-hud-top,.crawlerbait-hud-bottom,.crawlerbait-hud-rail{position:static;inset:auto;width:auto}
-  .crawlerbait-hud-through,.crawlerbait-hud-link{display:none}
-  .crawlerbait-hud-top{order:1;gap:.25rem .9rem}
-  .crawlerbait-hud-top h1{flex-basis:100%;margin-bottom:.2rem}
-  .crawlerbait-hud-bottom{order:2;padding:0 0 .4rem;border-top:0;border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
-  .crawlerbait-hud-rail{order:3;flex:1 1 auto;min-height:0}
-  .crawlerbait-story{display:none}
+  .crawlerbait-hud-rail{width:auto;right:var(--edge);bottom:auto;max-height:42vh}
+  .crawlerbait-hud-top{grid-template-columns:repeat(4,max-content)}
+  .crawlerbait-hud-through,.crawlerbait-hud-link,.crawlerbait-story{display:none}
+  .crawlerbait-hud-side{top:auto;bottom:calc(var(--edge) + 2.6rem);left:var(--edge);right:auto;width:min(17rem,calc(100vw - 2*var(--edge)));max-height:30vh}
+  .crawlerbait-hud-bottom{width:calc(100vw - 2*var(--edge) - var(--display-safe-right))}
   .crawlerbait-pace,.crawlerbait-pace-label,.crawlerbait-dim{display:none}
   .crawlerbait-clock{min-width:0}
 }
