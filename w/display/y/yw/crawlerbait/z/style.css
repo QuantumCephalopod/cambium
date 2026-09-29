@@ -19,7 +19,7 @@
 /* top line, directly under Display's header */
 .crawlerbait-hud-top{
   position:absolute;
-  top:calc(var(--display-safe-top,0px) + .2rem);
+  top:calc(var(--display-safe-top) + .2rem);
   left:var(--edge);
   right:var(--edge);
   display:flex;
@@ -40,7 +40,7 @@
 /* left rail: story, kinds, the followed being, the chosen bait */
 .crawlerbait-hud-rail{
   position:absolute;
-  top:calc(var(--display-safe-top,0px) + 3.2rem);
+  top:calc(var(--display-safe-top) + 3.2rem);
   bottom:4.2rem;
   left:var(--edge);
   width:min(16.5rem,calc(100vw - 2*var(--edge)));
@@ -112,7 +112,7 @@
 
 /* narrow: the minimap owns the bottom, so time moves up under the top line and the rail follows it */
 @media (max-width:720px){
-  .crawlerbait-content{display:flex;flex-direction:column;gap:.7rem;padding:calc(var(--display-safe-top,0px) + .2rem) var(--edge) .5rem;box-sizing:border-box}
+  .crawlerbait-content{display:flex;flex-direction:column;gap:.7rem;padding:calc(var(--display-safe-top) + .2rem) var(--edge) .5rem;box-sizing:border-box}
   .crawlerbait-hud-top,.crawlerbait-hud-bottom,.crawlerbait-hud-rail{position:static;inset:auto;width:auto}
   .crawlerbait-hud-through,.crawlerbait-hud-link{display:none}
   .crawlerbait-hud-top{order:1;gap:.25rem .9rem}
