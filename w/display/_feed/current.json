@@ -25,13 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "w/locus-shader.js: optional shader.afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container,orientation}) once per frame after field geometry and floating bodies, before the point layer; Display restores framebuffer + viewport and contains a failing layer (canvas.dataset.layerError)",
-      "Display organism / site-holon RITUALS advanced to 3.7 / 2.9; no INDEX/_cambium change; central runtime still names no site"
+      "w/locus-shader.js: optional shader.focus() → {center, scale, stiffness?}; critically damped spring in 1/120 s substeps over real elapsed time; glides back to the walked container on release; frame passes following to afterDraw",
+      "Display organism RITUAL 3.8"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · A SITE MAY DRAW ITS OWN LAYER IN ITS FIELD'S DESCENT FRAME"
+    "outcome": "PASS/EARNED · A SITE MAY OFFER A CONTINUOUS FOCUS; DISPLAY FOLLOWS IT SMOOTHLY"
   },
-  "observed_at_utc": "2026-09-29T10:42:11.502048Z",
+  "observed_at_utc": "2026-09-29T12:02:15.905512Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -47,7 +47,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-site-layer-frame-hook-20260929T101545Z",
+  "reflected_home_event": "display-continuous-focus-20260929T115319Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -55,7 +55,7 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "a38ff9785267fc34638f4d82b6fd0defb1f5cf60114399f5c26e38129b9f3b89"
+      "sha256": "cf531bee8bb9ca59e3ed1dc10f5ffa56de051491443bad713ad58dbbe80a5a58"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
@@ -70,6 +70,7 @@
       "INCOMING — care propagates.md",
       "INCOMING — minimap axis latch.md",
       "NUTRIENT__acknowledged-delta-dynamic-chunking__20260924.md",
+      "NUTRIENT__continuous-focus__20260929.md",
       "NUTRIENT__field-layer-frame-hook__20260929.md",
       "NUTRIENT__foreign-organism-hosting-membrane__20260923.md",
       "NUTRIENT__global-safe-area-contract__20260918.md",
@@ -85,6 +86,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "c8fac0285524c48696b1e771f92c8a7de7f81d50"
+    "source_revision": "be87f88b9a30d24269eb675e2c07f5e5cc3db0f9"
   }
 }
