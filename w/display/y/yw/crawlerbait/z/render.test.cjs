@@ -63,5 +63,12 @@ for(const at of [.3,.85]){
   assert(r.alive>0,`no being alive at ${at} of the record`);
   assert(r.splats>0&&r.splats<=90000,`goo splat budget broken at ${at}: ${r.splats}`);
 }
+// coarse resolution: beings coalesce by the pool law one bait-rank deeper (container + 4); a colony has at least two
+for(const container of ['','z']){
+  const r=law.simulate({projection,at:.3,frames:90,container});
+  const byCell=new Map();for(const c of r.cells)if(c)byCell.set(c,(byCell.get(c)||0)+1);
+  for(const [cell,n] of byCell){assert.strictEqual(cell.length,container.length+4,`colony at wrong rank: ${cell} under ${container||'ε'}`);assert(cell.startsWith(container),'colony outside its container');assert(n>=2,`a colony of one at ${cell}`)}
+  assert(r.splats<4000,`coarse view still pays for every body: ${r.splats} splats`);
+}
 console.log(`PASS · ${life.sessions.length} walks by ${projection.crawlers.length} beings keep their kinds and their recorded order`);
 

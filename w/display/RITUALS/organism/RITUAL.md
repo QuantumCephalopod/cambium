@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.7"
+version: "3.8"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -199,3 +199,5 @@ Version 3.6 descent correction (2026-09-26): Descent entered persistent global p
 Version 3.5 acknowledged-live-circulation correction (2026-09-24): Continuity now treats complete snapshots as bounded recovery only. Producers reacquire the authenticated Worker unit-revision ledger, derive only source-owned differences, and recursively subdivide an oversized difference into sequential ordinary acknowledged-base deltas. Empty state has a deterministic revision base; one oversized opaque unit remains an explicit granularity wound rather than being silently split.
 
 Version 3.7 site-layer correction (2026-09-29): a site shader may draw its own layer inside its field's Descent frame through optional `afterDraw`; Descent, drag, pools, point selection and body entry stay Display's. First realized by Crawlerbait's beings (goo bodies walking bait-space).
+
+Version 3.8 continuous-focus correction (2026-09-29): a site shader may offer `focus()` → `{center, scale}`; Display eases its own camera toward it with a frame-rate-independent critically damped spring and glides back to the walked container when released. Descent steps are for the witness's own gestures, never for following motion (Philipp: chained steps made him nauseous).
