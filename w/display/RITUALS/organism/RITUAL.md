@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.6"
+version: "3.7"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -68,7 +68,7 @@ Display owns:
 - shared tetrahedral body topology and geometric projection;
 - shared orientation coupling and global camera relation;
 - global site-space navigation, target-origin fold and membrane law;
-- neutral generic couplings required for arbitrary site-holons to inhabit that body.
+- neutral generic couplings required for arbitrary site-holons to inhabit that body — including one optional site layer: a site shader may carry `afterDraw`, which Display calls once per frame inside the site's own field, after geometry and floating bodies and before the point layer, lending it the current Descent frame (`proj`, `view`, `model`, `frame`, `container`, orientation, size). Display restores its framebuffer/viewport afterwards and contains a failing layer; what the layer draws means nothing to Display.
 
 The site-holon owns:
 - its public/local projection boundary;
@@ -197,3 +197,5 @@ Version 3.4 identity/address/custody correction (2026-09-23): Display now hosts 
 Version 3.6 descent correction (2026-09-26): Descent entered persistent global physiology as the shared container→content gesture; the global minimap remains global.
 
 Version 3.5 acknowledged-live-circulation correction (2026-09-24): Continuity now treats complete snapshots as bounded recovery only. Producers reacquire the authenticated Worker unit-revision ledger, derive only source-owned differences, and recursively subdivide an oversized difference into sequential ordinary acknowledged-base deltas. Empty state has a deterministic revision base; one oversized opaque unit remains an explicit granularity wound rather than being silently split.
+
+Version 3.7 site-layer correction (2026-09-29): a site shader may draw its own layer inside its field's Descent frame through optional `afterDraw`; Descent, drag, pools, point selection and body entry stay Display's. First realized by Crawlerbait's beings (goo bodies walking bait-space).

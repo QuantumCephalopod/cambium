@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.8"
+version: "2.9"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -187,3 +187,5 @@ Version 2.6 floating-bodies correction (2026-09-26): site-holons are seen from t
 Version 2.5 descent correction (2026-09-26): site-holons now share Display Descent, ascent crosses the site membrane back through the walked path, and a site's field shows its host seen from inside its locus with a local `environment: false` refusal.
 
 Version 2.4 global background-drag correction (2026-09-18): background tetrahedral drag became a default-true Display/site-holon invariant independent of background inspection. New site-holons inherit shared drag/orientation without local enabling code; an explicit local `background_drag: false` opts out only that site while global navigator orientation and local semantic interaction remain intact. Custom renderers receive the same effective toggle through the generic render contract.
+
+Version 2.9 site-layer correction (2026-09-29): a site-holon whose phenomenology needs more than shaded faces may carry `shader.afterDraw` and draw its own layer in its field's Descent frame (same camera, orientation and container) beneath Display's point layer. The layer owns no pointer: Descent, drag, pools and point selection remain the shared field's.
