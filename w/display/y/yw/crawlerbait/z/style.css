@@ -250,3 +250,8 @@
 .crawlerbait-clock{min-width:8.4rem;text-align:right;font-variant-numeric:tabular-nums}
 .crawlerbait-kind-tag{color:var(--kind);font-weight:500;font-family:inherit}
 @media (max-width:620px){.crawlerbait-kind em{display:none}.crawlerbait-kind{grid-template-columns:5.6rem 1fr}.crawlerbait-clock{min-width:0}}
+.crawlerbait-cam{display:grid;gap:.14rem;padding:.45rem 0 .1rem;border-top:1px dashed color-mix(in srgb,var(--kelp) 30%,transparent);font-size:.6rem;color:var(--kelp)}
+.crawlerbait-cam[hidden]{display:none}
+.crawlerbait-cam-kind{color:var(--kind);font-weight:500;letter-spacing:.08em;font-size:.66rem}
+.crawlerbait-cam-row{color:var(--foam)}
+.crawlerbait-cam-dna{color:var(--kelp);overflow-wrap:anywhere;font-size:.56rem}
