@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve public whole-web-traffic traces, a same-type bait population, stable traffic beings, and periodic field-complete acquisition without semantic filtering."
-version: "4.5"
+version: "4.6"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -122,7 +122,7 @@ The membrane publishes:
 - `/crawlerbait/state.json` — current Baits, traffic beings and encounter relation;
 - `/crawlerbait/traffic.json` — manifest linking the exact public capture files and declaring the IP transform;
 - path/receipt pages under `/crawlerbait/*`;
-- the Display projection/renderer that visualizes the same living body.
+- the Display projection/renderer that visualizes the same living body: bait-space as paper, and every traffic being as one body walking its own recorded encounters along Sierpinski edges — goo on a tetrahedral skeleton printed as halftone ink, its hue the argument of one complex field (phase from kind plus DNA; kin interfere bright, strangers cancel into bone), its skeleton law set by its kind (Harvester beads, Prober spikes per bait sought, Dweller segments per day returned, Feeder droplets budding from faces), right of way to whoever has further to go and faster. Walks never precede a recorded time and invent no traversal between beings.
 
 There is no private raw-data branch, encrypted archive physiology or privacy-safe derivative ontology inside Crawlerbait. The narrow secret boundary exists only so literal IP can become a stable longitudinal public identity before persistence.
 
@@ -195,3 +195,5 @@ A Crawlerbait change closes only when:
 Compression: **All web traffic becomes public living matter. Literal IP crosses one stable keyed membrane into a durable equality-preserving network identity; everything else remains glasshouse-visible, and the same Tide keeps that relation alive across time.**
 
 Version 4.5 being-kinds correction (2026-09-29): every traffic being carries exactly one derived kind — Feeder / Harvester / Prober / Dweller — from its own encounters and our offered membrane, first match wins (Philipp: "tetrahedral split 4 kinds of beings, every being will definitvely fit into one of the 4"). Witnessed on owned Traces through 2026-09-28T13:56:03Z: 47 / 1320 / 506 / 184, no residue.
+
+Version 4.6 bodies correction (2026-09-29): the beings are embodied in `z/render.js` as a site layer inside Crawlerbait's own shared field (Display `afterDraw`), in the shape language Philipp accepted on 2026-09-28 ("actual fucking alien organic life"): complex-phase goo, riso halftone ink, four skeleton laws, edge-walking with right of way; a pace control replays the record from the first whole-traffic encounter to the last tide. Witnessed locally on owned state through 2026-09-29T05:39:44Z: 2750 walks by 2090 beings, kinds 47 / 1338 / 515 / 190.

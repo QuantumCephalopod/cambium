@@ -1,6 +1,6 @@
 # NUTRIENT — Four kinds of being, and bodies grown from their DNA — 2026-09-28
 
-status: NARROWED — kind law metabolized into RITUAL 4.5 + y/tide.py (2026-09-29); body/renderer embodiment still OPEN
+status: NARROWED — kind law metabolized (RITUAL 4.5, y/tide.py); bodies embodied in z/render.js (RITUAL 4.6, HOME crawlerbait-goo-bodies-20260929T101545Z); still OPEN: bait-space growth replay, meeting a being by pointer
 kind: crawlerbait encounter
 source: Philipp, chat 2026-09-28 evening
 target: github.cambium → display → crawlerbait
@@ -68,3 +68,12 @@ Answer read from `y/tide.py`: address = shortest unique prefix of the path's sha
 Philipp: "f33l free to actually add this now 😃 eg eat that meal <333". The kind law moved into source truth: `y/tide.py` `being_kind` / `classify_beings`, self-tested for all four kinds, reproducing 47 / 1320 / 506 / 184 from owned Traces; RITUAL 4.5 carries the law and its 6E/4F/1T closure. One refinement while digesting: an unaccepted write into our apertures is a Prober (writing is not offered to strangers); no recorded being changes kind under it.
 
 Still OPEN here: the body — embodying beings in `z/render.js` as goo inside Crawlerbait's own shared field (a specimen-agnostic Display frame hook lets a site draw in its field's Descent space, so Descent/drag/selection stay Display's); growth replay of bait-space; CPU budget (prototype: ~9.6 ms JS/frame at ~200 alive → GPU-instanced skeletons in the site body).
+
+## metabolized in part (2026-09-29, later)
+
+Philipp: "the entire visual langauge we built yesterday FOR the data needs to find its way into the live organism". The bodies now live in `z/render.js` as a layer inside Crawlerbait's own field (Display `afterDraw`, fed to Display's stomach first): complex-phase goo, riso halftone ink, four skeleton laws, edge-walking with right of way, pace/scrub over the whole record. Descent, drag, pools and bait selection stay Display's. Budget measured headless: 1.2–3.9 ms JS/frame at 118–272 alive with every body at full detail.
+
+Still OPEN here, sharpest first:
+1. bait-space growth replay — births/divisions as they happened (fiber `being-kinds-prototype/growth.cjs`); the live layer draws current addresses only;
+2. meeting one being by pointer (its card) — the layer owns no pointer; a neutral hit hook would be Display pressure, earned only by a second real case;
+3. live witness on sss.saarland after merge + deploy.
