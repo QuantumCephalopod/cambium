@@ -296,7 +296,23 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     const t=smooth01((performance.now()-cam.start)/CAMERA_MS),ls=Math.log(cam.from.scale)+(Math.log(cam.to.scale)-Math.log(cam.from.scale))*t;
     return {center:cam.from.center.map((v,i)=>v+(cam.to.center[i]-v)*t),scale:Math.exp(ls)};
   }
-  function target(){return currentFrame()}
+  /* FOCUS — an identity-owned shader may offer a continuous focus {center, scale}; the camera follows it with a
+   * critically damped spring instead of Descent steps, and glides back to the walked container when released.
+   * The walk, pools and selection are untouched; Display never learns what is being followed. */
+  let follow=null;
+  function followStep(ms){
+    const want=typeof shader.focus==='function'?shader.focus():null;
+    if(want&&Array.isArray(want.center)&&want.scale>0){
+      if(!follow){const f=currentFrame();follow={c:[...f.center],v:[0,0,0],l:Math.log(f.scale),vl:0,ms}}
+      // real elapsed time in fixed substeps: the spring feels the same at 12 fps and at 144
+      let rest=Math.min(.5,Math.max(0,(ms-follow.ms)/1000));follow.ms=ms;
+      const w=Number(want.stiffness)>0?Number(want.stiffness):2.4,k=w*w,b=2*w,tl=Math.log(want.scale);
+      while(rest>1e-6){const dt=Math.min(1/120,rest);rest-=dt;
+        for(let i=0;i<3;i++){follow.v[i]+=(k*(want.center[i]-follow.c[i])-b*follow.v[i])*dt;follow.c[i]+=follow.v[i]*dt}
+        follow.vl+=(k*(tl-follow.l)-b*follow.vl)*dt;follow.l+=follow.vl*dt}
+    }else if(follow){cam={from:{center:[...follow.c],scale:Math.exp(follow.l)},to:frameFor(container()),start:performance.now()};follow=null}
+  }
+  function target(){return follow?{center:follow.c,scale:Math.exp(follow.l)}:currentFrame()}
   function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2]}}
   function pointInTriangle(x,y,a,b,c){
     const area=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
@@ -381,7 +397,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   function draw(ms){
     if(element.hidden){requestAnimationFrame(draw);return}
-    refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
+    refreshVisible();followStep(ms);const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
     const proj=perspective(Math.PI/3.3,w/h,.1,20),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
     if(gl&&GL){
       const hv=hostView(),hostClear=hv?.e.shader.clear;
@@ -415,7 +431,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
        * field's Descent frame (same camera, orientation and container), beneath the
        * point layer. Meaning stays in the site; Display only lends the frame. */
       if(typeof shader.afterDraw==='function'){
-        try{shader.afterDraw({gl,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},container:cur,orientation:W.orientation})}
+        try{shader.afterDraw({gl,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation})}
         catch(err){if(!canvas.dataset.layerError)console.warn('site layer failed for '+id,err);canvas.dataset.layerError=String(err?.message||err)}
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
       }
