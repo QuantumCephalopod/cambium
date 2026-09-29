@@ -219,7 +219,7 @@ function step(dt,now,pxOf){
     const a=S.wps[o.reached].a;o.cell=a.startsWith(C)?(a.length<=H?'':a.slice(0,H)):null;
     if(o.cell)crowd.set(o.cell,(crowd.get(o.cell)||0)+1)}
   // coalescence is joining: a being alone in its cell has nothing to join and stays itself
-  for(const o of SIM.alive){if(o.cell&&crowd.get(o.cell)<2)o.cell='';if(o.cell!==''&&o.trail.length){o.trail.length=0;o.off[0]=o.off[1]=o.off[2]=0}}
+  for(const o of SIM.alive){if(o.cell&&(crowd.get(o.cell)<2||o===CAM.o))o.cell='';if(o.cell!==''&&o.trail.length){o.trail.length=0;o.off[0]=o.off[1]=o.off[2]=0}}
   /* COARSE WALK — a coalesced being still walks, at the viewed resolution: every change of its rank-H cell is one
    * coarse step, taken along the Sierpinski edges between the two cells. Six fine steps may become two coarse ones,
    * but they still happen: a droplet pinches off one colony and flows into the next. */
@@ -346,6 +346,7 @@ function afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container}){
   const dt=SIM.lastMs?Math.min(.05,(ms-SIM.lastMs)/1000):0;SIM.lastMs=ms;
   // a body keeps its world size near the whole reef and shrinks gently as Descent zooms, so it never swallows a deep container
   SIM.sizeK=Math.pow(Math.max(1,frame?.scale||1),-.75);SIM.container=typeof container==='string'?container:'';
+  if(CAM.on&&CAM.o&&SIM.alive.has(CAM.o)){const a=CAM.o.S.wps[CAM.o.reached].a;SIM.container=a.slice(0,Math.min(a.length,FOLLOW_RANK-1))}
   const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5],pxBase=ms3*f*height/2;
   const pxOf=(P,r)=>{const z=model[2]*P[0]+model[6]*P[1]+model[10]*P[2]+model[14];return r*pxBase/Math.max(.05,3.2-z)};
   const u0=performance.now();step(dt,ms,pxOf);SIM.perf.upd+=((performance.now()-u0)-SIM.perf.upd)*.05;SIM.perf.splats=SIM.ns;
@@ -366,9 +367,13 @@ function afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container}){
   gl.bindVertexArray(Lr.ivao);gl.drawArrays(gl.TRIANGLES,0,3);
   gl.canvas.dataset.gooLayer=`${SIM.alive.size} alive · ${SIM.resolved} bodies · ${SIM.colonies} colonies · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;
   camFollow(ms);
+  if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
+    const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.cell===''?'body':'colony'} · fade ${CAM.o.fade.toFixed(2)}`}
+  else delete gl.canvas.dataset.gooFollow;
   tickHud();
 }
 shader.afterDraw=afterDraw;
+shader.focus=camFocus;
 Object.freeze(shader);
 
 /* ============ site-owned DOM: panel, legend, pace, clock, story ============ */
@@ -446,23 +451,27 @@ function prettyTime(value){
   return String(value).replace('T',' ').replace('Z',' UTC');
 }
 const HUD={legend:null,clock:null,pace:null,paceLabel:null,alive:null,story:null,storyTimer:0,cam:null,camBtn:null};
-/* CRAWLERCAM — follows one being through Display's own Descent: the witness is carried into the cell just above the
- * bait the being heads for, so the being stays a resolved body while Descent, drag and pools remain Display's. */
+/* CRAWLERCAM — follows one being with Display's continuous focus: the camera eases after the body (a spring, never
+ * Descent steps), a little ahead along its heading; the walk, pools and selection remain Display's. */
 const CAM={on:false,o:null,target:null,moved:0};
+const FOLLOW_RANK=4,FOLLOW_SCALE=1.02*Math.pow(2,FOLLOW_RANK);
+function camFocus(){
+  const o=CAM.on?CAM.o:null;if(!o||!SIM.alive.has(o))return null;
+  const P=o.cell===''||!o.cp?o.p:o.cp,lead=.004;
+  return {center:[P[0]+o.head[0]*lead,P[1]+o.head[1]*lead,P[2]+o.head[2]*lead],scale:FOLLOW_SCALE,stiffness:3.4};
+}
 function camCandidates(){return [...SIM.alive].filter(o=>o.fade>.5&&o.done==null&&o.S.wps.length-o.reached>1).sort((a,b)=>a.S.b.id<b.S.b.id?-1:1)}
 function camPick(dir=1){const l=camCandidates();if(!l.length)return null;const i=CAM.o?l.indexOf(CAM.o):-1;return l[((i<0?(dir>0?-1:0):i)+dir+l.length)%l.length]}
-function camSet(on){CAM.on=on;CAM.target=null;if(on&&(!CAM.o||!SIM.alive.has(CAM.o)))CAM.o=camPick(1);if(!on)CAM.o=null;camCard()}
+// riding with a being means travelling at its pace: engaging the cam slows time to about ×60 (the slider still rules)
+const CAM_PACE=1.8;
+function camEngage(){if(!CAM.on){CAM.on=true;if(SIM.paceLog>CAM_PACE){SIM.paceLog=CAM_PACE;if(HUD.pace)HUD.pace.value=String(CAM_PACE)}}}
+function camSet(on){if(on)camEngage();else CAM.on=false;CAM.target=null;if(on&&(!CAM.o||!SIM.alive.has(CAM.o)))CAM.o=camPick(1);if(!on)CAM.o=null;camCard()}
 function camFollow(ms){
   if(!CAM.on)return;
   if(!CAM.o||!SIM.alive.has(CAM.o)||CAM.o.done!=null){CAM.o=camPick(1);CAM.target=null;camCard()}
-  const o=CAM.o,F=globalThis.SSSInterlocutorFields?.get?.(id);if(!o||!F)return;
-  const a=o.S.wps[Math.min(o.reached+1,o.S.wps.length-1)].a,T=a.slice(0,Math.max(0,a.length-3));
-  if(T===CAM.target||ms-CAM.moved<900)return;
-  CAM.target=T;CAM.moved=ms;
-  const X=F.container;let p=0;while(p<X.length&&p<T.length&&X[p]===T[p])p++;
-  for(let guard=24;F.container.length>p&&F.walk.length&&guard>0;guard--)F.ascend('crawlercam');
-  if(T.length>F.container.length&&T.startsWith(F.container))F.descendTo(T,'crawlercam');
-  camCard();
+  const o=CAM.o;if(!o)return;
+  const a=o.S.wps[Math.min(o.reached+1,o.S.wps.length-1)].a;
+  if(a!==CAM.target){CAM.target=a;camCard()}
 }
 function camCard(){
   if(!HUD.cam)return;HUD.cam.replaceChildren();
@@ -487,36 +496,32 @@ function tickHud(){
   if(HUD.alive)HUD.alive.textContent=`${SIM.alive.size} alive`;
   if(HUD.scrub&&document.activeElement!==HUD.scrub)HUD.scrub.value=String(Math.round(SIM.simT/L.seconds*1000));
 }
-function lifePanel(projection){
-  const box=el('section','crawlerbait-life');
-  const head=el('div','crawlerbait-life-head');
-  head.append(el('span','crawlerbait-life-title','beings, walking their record'));
-  HUD.alive=el('span','crawlerbait-life-alive','');head.append(HUD.alive);
-  box.append(head);
+/* the HUD gives each kind of information its own fixed place at the edges of the reef — no floating boxes */
+function lifeParts(projection){
   HUD.legend=el('div','crawlerbait-legend');
   for(const k of ['w','x','z','y']){const row=el('div','crawlerbait-kind');row.dataset.kind=k;row.style.setProperty('--kind',KIND[k].ink);
     row.title=`${KIND[k].gene} · ${KIND[k].does}`;row.append(el('b','',KIND[k].name),el('span','',''),el('em','',KIND[k].does));HUD.legend.append(row)}
-  box.append(HUD.legend);
-  const bar=el('div','crawlerbait-bar');
+  const legendBox=el('section','crawlerbait-hud-block');
+  const head=el('div','crawlerbait-hud-label');head.append(el('span','','beings, walking their record'));HUD.alive=el('span','','');head.append(HUD.alive);
+  legendBox.append(head,HUD.legend);
+  const camBox=el('section','crawlerbait-hud-block');
+  const cam=el('div','crawlerbait-cam-bar');
+  HUD.camBtn=el('button','crawlerbait-play','crawlercam');HUD.camBtn.type='button';HUD.camBtn.addEventListener('click',()=>camSet(!CAM.on));
+  const prev=el('button','crawlerbait-play','‹');prev.type='button';prev.setAttribute('aria-label','previous being');prev.addEventListener('click',()=>{camEngage();CAM.o=camPick(-1);CAM.target=null;camCard()});
+  const next=el('button','crawlerbait-play','›');next.type='button';next.setAttribute('aria-label','next being');next.addEventListener('click',()=>{camEngage();CAM.o=camPick(1);CAM.target=null;camCard()});
+  cam.append(HUD.camBtn,prev,next);HUD.cam=el('div','crawlerbait-cam');HUD.cam.hidden=true;camBox.append(cam,HUD.cam);
+  const bar=el('div','crawlerbait-transport');
   const play=el('button','crawlerbait-play',SIM.playing?'pause':'play');play.type='button';
   play.addEventListener('click',()=>{SIM.playing=!SIM.playing;play.textContent=SIM.playing?'pause':'play'});
   HUD.pace=el('input','crawlerbait-pace');Object.assign(HUD.pace,{type:'range',min:'0',max:'5.54',step:'0.005',value:String(SIM.paceLog)});HUD.pace.setAttribute('aria-label','pace');
   HUD.pace.addEventListener('input',()=>{SIM.paceLog=+HUD.pace.value});
   HUD.paceLabel=el('span','crawlerbait-pace-label','');
-  bar.append(play,el('span','crawlerbait-dim','pace'),HUD.pace,HUD.paceLabel);
-  box.append(bar);
-  const time=el('div','crawlerbait-bar');
   HUD.scrub=el('input','crawlerbait-scrub');Object.assign(HUD.scrub,{type:'range',min:'0',max:'1000',value:'0'});HUD.scrub.setAttribute('aria-label','time');
   HUD.scrub.addEventListener('input',()=>{if(SIM.life)resetTo(+HUD.scrub.value/1000*SIM.life.seconds)});
   HUD.clock=el('span','crawlerbait-clock','');
-  time.append(HUD.scrub,HUD.clock);box.append(time);
-  const cam=el('div','crawlerbait-bar');
-  HUD.camBtn=el('button','crawlerbait-play','crawlercam');HUD.camBtn.type='button';HUD.camBtn.addEventListener('click',()=>camSet(!CAM.on));
-  const prev=el('button','crawlerbait-play','‹');prev.type='button';prev.setAttribute('aria-label','previous being');prev.addEventListener('click',()=>{if(!CAM.on)CAM.on=true;CAM.o=camPick(-1);CAM.target=null;camCard()});
-  const next=el('button','crawlerbait-play','›');next.type='button';next.setAttribute('aria-label','next being');next.addEventListener('click',()=>{if(!CAM.on)CAM.on=true;CAM.o=camPick(1);CAM.target=null;camCard()});
-  cam.append(HUD.camBtn,prev,next);box.append(cam);
-  HUD.cam=el('div','crawlerbait-cam');HUD.cam.hidden=true;box.append(HUD.cam);camCard();
-  return box;
+  bar.append(play,el('span','crawlerbait-dim','pace'),HUD.pace,HUD.paceLabel,HUD.scrub,HUD.clock);
+  camCard();
+  return {legendBox,camBox,bar};
 }
 function storyLine(host){
   clearTimeout(HUD.storyTimer);
@@ -529,8 +534,7 @@ function renderInspector(route){
   inspectorHost.replaceChildren();
   if(!route){
     const empty=el('div','crawlerbait-inspector-empty');
-    empty.append(el('strong','', 'the bait-space is the map'));
-    empty.append(el('span','', 'hover for a trace · click a luminous bait to inspect it'));
+    empty.append(el('span','', 'the bait-space is the map · click a luminous bait'));
     inspectorHost.append(empty);
     return;
   }
@@ -596,36 +600,29 @@ function render({host,content,projection}={}){
   content.className='interlocutor-content crawlerbait-content';
   content.replaceChildren();
 
-  const panel=el('section','crawlerbait-panel');
-  const title=el('div','crawlerbait-title');
-  title.append(el('h1','', 'Crawlerbait'),el('span','', 'live address anatomy'));
-  panel.append(title);
-
   const routes=projection.routes||[];
   crawlerById=new Map((projection.crawlers||[]).map(c=>[c.id,c]));
   const depths=routes.map(r=>String(r.address||'').length).filter(Boolean);
-  const stats=el('div','crawlerbait-stats');
-  stats.append(
-    metric('baits',projection.summary.baits ?? routes.length),
-    metric('web requests',projection.summary.web_requests ?? projection.summary.observed_404 ?? 0),
-    metric('beings',projection.summary.crawlers ?? projection.summary.observed_signatures ?? 0),
-    metric('max depth',depths.length?Math.max(...depths):0)
-  );
-  panel.append(stats);
+  const fmt=n=>Number(n||0).toLocaleString('en').replace(/,/g,' ');
 
-  storyLine(panel);
-  if(Array.isArray(projection.encounters)&&projection.encounters.length)panel.append(lifePanel(projection));
+  // top line: identity and the whole reef in one breath
+  const top=el('header','crawlerbait-hud-top');
+  top.append(el('h1','','Crawlerbait'));
+  for(const [v,l] of [[projection.summary.baits ?? routes.length,'baits'],[projection.summary.web_requests ?? 0,'requests'],[projection.summary.crawlers ?? 0,'beings'],[depths.length?Math.max(...depths):0,'deep']]){
+    const m=el('span','crawlerbait-hud-stat');m.append(el('b','',fmt(v)),el('small','',l));top.append(m)}
+  const through=el('span','crawlerbait-hud-through',projection.updated_at?`through ${prettyTime(projection.updated_at)}`:'waiting for first tide');top.append(through);
+  const machine=el('a','crawlerbait-hud-link','reef ↗');machine.href='/crawlerbait/';machine.target='_blank';machine.rel='noopener';top.append(machine);
 
+  // left rail: story, kinds, the followed being, the chosen bait
+  const rail=el('aside','crawlerbait-hud-rail');
+  storyLine(rail);
+  const life=Array.isArray(projection.encounters)&&projection.encounters.length?lifeParts(projection):null;
+  if(life)rail.append(life.legendBox,life.camBox);
   inspectorHost=el('section','crawlerbait-inspector');
-  panel.append(inspectorHost);
+  rail.append(inspectorHost);
 
-  const foot=el('div','crawlerbait-foot');
-  foot.append(el('span','',projection.updated_at?`through ${prettyTime(projection.updated_at)}`:'waiting for first tide'));
-  const machine=el('a','','machine-readable reef ↗');machine.href='/crawlerbait/';machine.target='_blank';machine.rel='noopener';
-  foot.append(machine);
-  panel.append(foot);
-
-  content.append(panel);
+  content.append(top,rail);
+  if(life){const bottom=el('footer','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom)}
   const selected=selectedAddress?routes.find(r=>r.address===selectedAddress):null;
   renderInspector(selected||null);
   return true;
