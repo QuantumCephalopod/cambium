@@ -114,9 +114,9 @@ Moving the entire body between lawful Population address folders must preserve e
 
 Killer witness:
 
-`display/y/yy/papers/ -> display/y/yx/papers/`
+`display/y/yy/papers/ -> display/y/yz/papers/`
 
-must change Papers global site address `y -> x` on rebuild with zero Papers-internal edits.
+must change Papers global site address `y -> z` on rebuild with zero Papers-internal edits.
 
 ## Exact raw occupancy versus quotient coalescence
 
