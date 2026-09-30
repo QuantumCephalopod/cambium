@@ -25,18 +25,17 @@
   },
   "home": {
     "changed_scope": [
-      "z/navigation-aperture.css: one HUD block scoped to html:not([data-composition=\"split\"]):not([data-composition=\"grid\"]); no fill, no clip-path plate, no drop-shadow on the pocket; text halo and a soft radial halo of the page's own dark; cluster flush to the corner on the edge margin clamp(.9rem,2.2vw,1.6rem); one size knob --hud-t (160 / 138 at ≤760px / 118 at ≤520px / 104 and no captions at ≤380px height); the pocket no longer captures the pointer, only the map, the rails and the trigger do; the trigger is a 40px corner mark",
-      "split and grid encounters keep the seam aperture unchanged: every base rule, including @keyframes aperture-shell-resolve, is untouched",
-      "z/navigation-aperture.js, z/world-view.js, w/template.html and every element id are unchanged",
-      "y/check.py: one witness that the single-encounter navigator is a HUD",
-      "RITUALS/navigation/RITUAL.md 2.7 → 2.8: Global navigator as HUD",
-      "_stomach/NUTRIENT__global-nav-hud-and-glass__20260930.md admitted with Philipp's words verbatim; the HUD half narrowed in the same act, the glass half recorded as open ground",
-      "no INDEX, _cambium, renderer, field or site-holon tissue touched"
+      "z/display-glass.js (new): which surfaces are glass and their rectangles in the field's drawing buffer; parameters",
+      "z/display-lens.js (new): goo lens physics (pure) and its pointer surface",
+      "w/locus-shader.js: one post pass: multisampled scene target, resolve, one full-screen displacement pass with goo union, dispersion, magnification, halftone shadow and rim",
+      "w/template.html, y/build.py, y/check.py (+ two node tests), RITUALS/navigation 2.8 → 2.9",
+      "_stomach/NUTRIENT__glass-and-goo-lens__20260930.md admitted verbatim and narrowed; NUTRIENT__global-nav-hud-and-glass__20260930.md glass half pointed here",
+      "no INDEX, _cambium, site-holon or stills tissue touched"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · THE GLOBAL NAVIGATOR IS A HUD IN SINGLE ENCOUNTERS: INK ON THE FIELD, LOCKED TO THE SCREEN CORNER, NO PLATE, A SMALLER RESERVATION; THE GLASS HALF OF THE REQUEST IS ADMITTED AND LEFT OPEN"
+    "outcome": "PASS/EARNED · OCCUPIED HUD SURFACES ARE GLASS (PURE DISPLACEMENT, HALFTONE SHADOW AND RIM); A GOO LENS HANGS ON THE GLOBAL COMPASS"
   },
-  "observed_at_utc": "2026-09-30T20:52:08.187484Z",
+  "observed_at_utc": "2026-09-30T21:55:02.909274Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -52,11 +51,11 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-global-nav-hud-20260930T204252Z",
+  "reflected_home_event": "display-glass-goo-lens-20260930T215021Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "31ae2cefccaa61ae44e3fa6cc83ba58b17b0ce22092c8b73d4e2ba56cc280925"
+      "sha256": "b54c29b9d6261b125e8f06ebdfb9ac941110b1657218d77c6ea1810e5473afa0"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
@@ -78,6 +77,7 @@
       "NUTRIENT__axis-knob-settle-visual__20260930.md",
       "NUTRIENT__continuous-focus__20260929.md",
       "NUTRIENT__field-layer-frame-hook__20260929.md",
+      "NUTRIENT__glass-and-goo-lens__20260930.md",
       "NUTRIENT__global-nav-hud-and-glass__20260930.md",
       "NUTRIENT__pages-actuation-after-materialize__20260927.md",
       "NUTRIENT__philosophy-papers-bodies__20260930.md",
@@ -90,6 +90,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "3923403ed76ff663e8e735786f2a098397cc44e6"
+    "source_revision": "2a58c532c01c0ff0059764ccee1cb79e96ab646b"
   }
 }
