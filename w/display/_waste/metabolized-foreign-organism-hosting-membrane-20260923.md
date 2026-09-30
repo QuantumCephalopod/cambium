@@ -1,3 +1,5 @@
+<!-- retired 2026-09-30: spent. Its open implementation question (resolve a stable foreign identity through current Display anatomy, stopping at membranes) is answered by the same realization as identity-address-custody. Its open distinction (provider aperture, structural organ, or full independently rooted shell) is carried by shared Cambium zz · Membrane and zy · Organogenesis. The correction it recorded, no new Typography container and no foreign-body manifest until a second real case proves the native identity witness insufficient, stands as the operating decision. Not witnessed here: a second foreign organism; that re-enters as its own nutrient. -->
+
 # NUTRIENT — foreign organism hosting membrane — 2026-09-23
 
 status: OPEN / ARCHITECTURE PRESSURE

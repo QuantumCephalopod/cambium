@@ -1,3 +1,5 @@
+<!-- retired 2026-09-30: spent. Witnessed closed on self-similar-systems/cambium main: @chenglou/pretext lives intact under w/display/w/pretext; y/build.py derives dependency custody by stable identity through current Display anatomy; x/display-runtime-v2.js hands each site a dependency(identity, member) resolver; w/display/RITUALS/organism carries identity != address != custody; the shared Drive Cambium ritual v3.3 carries it at zx · Address; display membrane runs on main passed. Not witnessed here: a byte-diff of the staging delta against main. The promotion this file waited on is the merged state itself. -->
+
 # NUTRIENT — identity/address/custody invariance — 2026-09-23
 
 status: ASSIMILATED / CANONICAL PROMOTION OPEN

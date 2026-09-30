@@ -1,3 +1,5 @@
+<!-- retired 2026-09-30: spent. Witnessed: the acknowledged-base live nerve and its delta-chunking evolution are on canonical main (#99, #100, #101); display live nerve on main passed test and deploy (run 36055518680, 2026-09-24; run 36237195493, 2026-09-26); the regression witness passes locally on current main; the Papers digest of 2026-09-27 records the live chain running end to end. The blocked-promotion response already sits in papers/_waste. Not witnessed here: the provider (Cloudflare) post-state naming the deployed revision, and whether the Apps Script producer performs the >1 MiB chunking. -->
+
 # REQUEST — canonical Display live-nerve promotion order
 
 status: OPEN / FOREIGN CHILD REQUEST
