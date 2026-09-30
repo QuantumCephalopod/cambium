@@ -1,3 +1,5 @@
+<!-- retired 2026-09-30: spent. Its function was to wait for user acceptance on the live site. Philipp gave it in chat on 2026-09-30: "the hold to lock works". The gesture is live in z/world-view.js (AXIS_SETTLE_MS, dataset.latched), asserted by y/check.py, and the live page advertises it as 'pull anywhere · hold still → lock exact velocity'. This was staging evidence only; the user/production receipt it lacked is the acceptance above. -->
+
 # Browser witness — 2026-09-14
 
 state: staging/browser witnessed; production/user witness still pending

@@ -58,15 +58,29 @@ twin.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;const p=twi
 
 const axes={x:document.getElementById('axis-x'),y:document.getElementById('axis-y')};
 const AXIS_SETTLE_MS=520,AXIS_SETTLE_EPS=.018;
+// The knob wears the settle: swell and morph circle -> triangle while held still; the triangle arrives exactly at the lock.
+const KNOB_SWELL=1.45,KNOB_FALL=4,KNOB_N=36,KNOB_R_CIRCLE=8.5,KNOB_R_TRIANGLE=11;
+const KNOB_REDUCED=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const KNOB_CIRCLE=[],KNOB_TRIANGLE=[];
+for(let i=0;i<KNOB_N;i++){const th=(-90+i*360/KNOB_N)*Math.PI/180,c=Math.cos(th),s=Math.sin(th),d=Math.min(...[-30,90,210].map(a=>Math.abs(Math.atan2(Math.sin(th-a*Math.PI/180),Math.cos(th-a*Math.PI/180))))),r=KNOB_R_TRIANGLE/2/Math.cos(d);KNOB_CIRCLE.push([KNOB_R_CIRCLE*c,KNOB_R_CIRCLE*s]);KNOB_TRIANGLE.push([r*c,r*s])}
+function knobShape(knob){
+  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),poly=document.createElementNS(ns,'polygon');
+  svg.setAttribute('class','knob-shape');svg.setAttribute('viewBox','-16 -16 32 32');svg.setAttribute('aria-hidden','true');svg.appendChild(poly);knob.appendChild(svg);
+  return p=>{const u=p*p*(3-2*p);poly.setAttribute('points',KNOB_CIRCLE.map((c,i)=>(c[0]+(KNOB_TRIANGLE[i][0]-c[0])*u).toFixed(2)+','+(c[1]+(KNOB_TRIANGLE[i][1]-c[1])*u).toFixed(2)).join(' '));knob.style.setProperty('--knob-scale',(1+(KNOB_SWELL-1)*p).toFixed(3));knob.style.setProperty('--knob-lock',p.toFixed(3));knob.dataset.morph=p>0?'on':'off'}
+}
 function paintAxis(axis){if(!nav)return;const el=axes[axis],v=nav.axes[axis],k=el.querySelector('.knob');el.setAttribute('aria-valuenow',String(Math.round(v*100)));if(axis==='x')k.style.left=(50+v*43)+'%';else k.style.top=(50-v*43)+'%'}
 function bindAxis(axis){
   const el=axes[axis];let active=null,timer=null,latched=false,lastValue=0;
   const clearTimer=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
+  const shape=knobShape(el.querySelector('.knob'));let shown=0,since=0,prev=0,raf=0;
+  const showKnob=p=>{shown=Math.max(0,Math.min(1,p));shape(shown)};
+  const stopKnob=()=>{if(raf){cancelAnimationFrame(raf);raf=0}};
+  const tick=now=>{raf=0;if(active===null)return;const dt=Math.max(0,now-prev),target=Math.min(1,(now-since)/AXIS_SETTLE_MS);prev=now;showKnob(target>=shown?target:shown-dt*KNOB_FALL/AXIS_SETTLE_MS);raf=requestAnimationFrame(tick)};
   const sample=e=>{const v=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY),changed=Math.abs(v-lastValue)>AXIS_SETTLE_EPS;lastValue=v;nav.setAxis(axis,v);paintAxis(axis);return changed};
-  const arm=()=>{clearTimer();if(active===null)return;timer=setTimeout(()=>{timer=null;if(active===null)return;const pid=active;active=null;latched=true;el.dataset.latched='true';try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}},AXIS_SETTLE_MS)};
-  el.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;clearTimer();if(latched){latched=false;el.dataset.latched='false'}active=e.pointerId;try{el.setPointerCapture(active)}catch(_){}lastValue=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY);nav.setAxis(axis,lastValue);paintAxis(axis);arm();e.preventDefault()});
+  const arm=()=>{clearTimer();if(active===null)return;since=prev=performance.now();if(!KNOB_REDUCED&&!raf)raf=requestAnimationFrame(tick);timer=setTimeout(()=>{timer=null;if(active===null)return;const pid=active;active=null;latched=true;el.dataset.latched='true';stopKnob();showKnob(1);try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}},AXIS_SETTLE_MS)};
+  el.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;clearTimer();if(latched){latched=false;el.dataset.latched='false';showKnob(0)}active=e.pointerId;try{el.setPointerCapture(active)}catch(_){}lastValue=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY);nav.setAxis(axis,lastValue);paintAxis(axis);arm();e.preventDefault()});
   el.addEventListener('pointermove',e=>{if(active!==e.pointerId)return;if(sample(e))arm();e.preventDefault()});
-  const release=e=>{if(active!==e.pointerId)return;clearTimer();const pid=active;active=null;nav.releaseAxis(axis);paintAxis(axis);try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}e.preventDefault()};
+  const release=e=>{if(active!==e.pointerId)return;clearTimer();const pid=active;active=null;stopKnob();showKnob(0);nav.releaseAxis(axis);paintAxis(axis);try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}e.preventDefault()};
   el.addEventListener('pointerup',release);el.addEventListener('pointercancel',release);
   el.addEventListener('keydown',e=>{if(!nav)return;const valid=axis==='x'?['ArrowLeft','ArrowRight']:['ArrowUp','ArrowDown'];if(!valid.includes(e.key))return;e.preventDefault();const sign=(e.key==='ArrowRight'||e.key==='ArrowUp')?1:-1;nav.setAxis(axis,sign*(e.shiftKey?1:.52));paintAxis(axis)});
   el.addEventListener('keyup',()=>{if(!nav)return;nav.releaseAxis(axis);paintAxis(axis)});
