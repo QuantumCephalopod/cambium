@@ -63,7 +63,7 @@ function floatingBodies(id){
   for(const other of specs.keys()){
     if(ROOT_IDS.includes(other))continue;const m=registry.getMount(other);if(!m||m.scope!==GLOBAL_SCOPE||!m.rawAddress)continue;
     const s2=surfaces.get(other),shader=s2?.module?.shader,root=(s2?.module?.fieldProjection?s2.module.fieldProjection(s2.projection):s2?.projection)?.root;
-    if(shader?.fragment&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette,title:specs.get(other)?.title||other});
+    if((shader?.body?.fragment||shader?.fragment)&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette,title:specs.get(other)?.title||other});
   }
   return out;
 }

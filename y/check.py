@@ -42,7 +42,7 @@ def main():
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
-    expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait'}
+    expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten'}
     check(set(by_id)==expected_sites,'unexpected Population site set')
     check(by_id['organism:philosophy']['address']=='','Philosophy must occupy site-space overview')
     check(by_id['organism:crawlerbait']['address']=='w','Crawlerbait must occupy site-space w / Form')
@@ -182,7 +182,7 @@ def main():
     registry=build.site_mounts()
     check(registry['version']==3 and registry['source']=='w/display/y tree','mount registry is not tree-derived')
     rel={(m['interlocutor'],m['scope'],m['address']) for m in registry['mounts']}
-    check(rel=={('organism:philosophy','main',''),('organism:crawlerbait','main','w'),('organism:papers','main','y')},'tree-derived mount relation changed')
+    check(rel=={('organism:philosophy','main',''),('organism:crawlerbait','main','w'),('organism:papers','main','y'),('organism:schattenseiten','main','x')},'tree-derived mount relation changed')
     check(build.root_projection()['source']['organism']=='main-root','Philosophy projection identity changed')
     check(build.papers_projection()['source']=='papers/_feed','Papers projection boundary changed')
 

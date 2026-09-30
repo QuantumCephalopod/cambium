@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.8"
+version: "3.10"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -201,3 +201,7 @@ Version 3.5 acknowledged-live-circulation correction (2026-09-24): Continuity no
 Version 3.7 site-layer correction (2026-09-29): a site shader may draw its own layer inside its field's Descent frame through optional `afterDraw`; Descent, drag, pools, point selection and body entry stay Display's. First realized by Crawlerbait's beings (goo bodies walking bait-space).
 
 Version 3.8 continuous-focus correction (2026-09-29): a site shader may offer `focus()` → `{center, scale}`; Display eases its own camera toward it with a frame-rate-independent critically damped spring and glides back to the walked container when released. Descent steps are for the witness's own gestures, never for following motion (Philipp: chained steps made him nauseous).
+
+Version 3.9 rest-view correction (2026-09-30): a site shader may declare `view: {rest, projection}`. `rest` is a quaternion the shared orientation eases to when the site is shown (and back to Display's home when another site is shown, unless the witness has turned it since); `projection: 'orthographic'` makes the field and its hit-testing use a parallel projection matched to the perspective at the centre plane. Absent it nothing changes; Display names no site. First realized by Schattenseiten, whose works rest in the leaves of a depth-three body so that, along the shadow axis, the 8×8 sheet is one flat picture.
+
+Version 3.10 body-material correction (2026-09-30): a site shader may offer `body: {fragment, state}`, the material of its floating body in the overview, used in place of its field fragment/state. Absent, nothing changes; Display prescribes no look. First realized by Schattenseiten and Papers, whose field shaders draw (almost) nothing and so were labels only.

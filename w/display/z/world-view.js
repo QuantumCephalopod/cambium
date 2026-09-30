@@ -9,6 +9,11 @@ const qAxis=(a,t)=>{const m=Math.hypot(...a)||1,s=Math.sin(t/2)/m;return [Math.c
 const qRot=(q,p)=>{const r=qMul(qMul(q,[0,...p]),[q[0],-q[1],-q[2],-q[3]]);return r.slice(1)};
 const HOME_ORIENT=qNorm(qMul(qAxis([1,0,0],-.12),qAxis([0,1,0],.47)));
 let orient=[...HOME_ORIENT];
+/* a site's rest view: the shared orientation eases to it; a witness's own turning cancels the ease and the claim */
+let ease=null,restActive=false;
+const qDot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2]+a[3]*b[3];
+function easeTo(q,ms=900,source='site-rest'){const to=qNorm(q);ease={from:[...orient],to:qDot(orient,to)<0?to.map(v=>-v):to,t0:performance.now(),ms:Math.max(1,ms),source};if(source==='site-rest')restActive=true}
+function restoreHome(){if(!restActive)return;restActive=false;easeTo(HOME_ORIENT,700,'site-rest-restore')}
 let projection=null,scopeId='main',nav=null,STRUCT={leaves:[],addresses:[]},lang='en',last=performance.now();
 let GLOBAL_TARGETS=[],activeGlobalAddress='',activeGlobalLocus='overview';
 const twin=document.getElementById('navTwin'),tc=twin.getContext('2d');
@@ -47,7 +52,7 @@ function setScope({id,projection:p}={}){if(!p?.root)throw new Error('scope proje
 function setGlobalTargets(targets=[]){GLOBAL_TARGETS=(Array.isArray(targets)?targets:[]).map(t=>Object.freeze({path:String(t.path??''),locus:String(t.locus||''),interlocutorIds:Object.freeze([...(t.interlocutorIds||[])])}));drawTwin();emitView('global-targets');return GLOBAL_TARGETS}
 function setActiveGlobalAddress(path='',locus='overview'){activeGlobalAddress=String(path??'');activeGlobalLocus=String(locus||'overview');emitView('global-encounter');drawTwin()}
 function requestGlobalTarget(target,source='global-minimap',origin=null){if(!target)return false;dispatchEvent(new CustomEvent('sss:global-navigate',{detail:{scopeId,path:target.path,locus:target.locus,interlocutorIds:[...target.interlocutorIds],source,origin}}));return true}
-function rotateBy(dx,dy,source='background'){orient=qNorm(qMul(qAxis([1,0,0],dy*.00325),qMul(qAxis([0,1,0],dx*.00325),orient)));drawTwin();emitOrientation(source)}
+function rotateBy(dx,dy,source='background'){ease=null;restActive=false;orient=qNorm(qMul(qAxis([1,0,0],dy*.00325),qMul(qAxis([0,1,0],dx*.00325),orient)));drawTwin();emitOrientation(source)}
 
 twin.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;const p=twinPoint(e),target=hitTarget(p.x,p.y);if(target){requestGlobalTarget(target,'global-minimap',{x:e.clientX,y:e.clientY});e.preventDefault()}});
 
@@ -71,7 +76,8 @@ bindAxis('x');bindAxis('y');
 
 function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
-  if(nav){const av=nav.angularVelocity();if(av.yaw||av.pitch){if(av.yaw)orient=qNorm(qMul(qAxis([0,1,0],av.yaw*dt),orient));if(av.pitch)orient=qNorm(qMul(qAxis([1,0,0],av.pitch*dt),orient));drawTwin();emitOrientation('global-axis')}}
+  if(ease){const u=Math.min(1,(now-ease.t0)/ease.ms),s=u*u*(3-2*u);orient=qNorm(ease.from.map((v,i)=>v+(ease.to[i]-v)*s));const src=ease.source;if(u>=1)ease=null;drawTwin();emitOrientation(src)}
+  if(nav){const av=nav.angularVelocity();if(av.yaw||av.pitch){ease=null;restActive=false;if(av.yaw)orient=qNorm(qMul(qAxis([0,1,0],av.yaw*dt),orient));if(av.pitch)orient=qNorm(qMul(qAxis([1,0,0],av.pitch*dt),orient));drawTwin();emitOrientation('global-axis')}}
   requestAnimationFrame(frame)
 }
 requestAnimationFrame(frame);
@@ -79,5 +85,5 @@ requestAnimationFrame(frame);
 document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{lang=b.dataset.lang;document.documentElement.lang=lang;document.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.lang===lang)));dispatchEvent(new CustomEvent('sss:language',{detail:{language:lang}}))}));
 document.querySelectorAll('[data-a11y-focus]').forEach(b=>b.addEventListener('click',()=>{const path=b.dataset.a11yFocus||'',target=GLOBAL_TARGETS.find(t=>t.path===path);if(target)requestGlobalTarget(target,'accessible-global-nav',{x:innerWidth/2,y:innerHeight/2})}));
 
-globalThis.SSSWorldView=Object.freeze({setScope,setGlobalTargets,setActiveGlobalAddress,requestGlobalTarget,inspect,clearInspection,rotateBy,drawTwin,get scopeId(){return scopeId},get projection(){return projection},get view(){return nav?.view||''},get language(){return lang},get orientation(){return [...orient]},get structure(){return STRUCT},get globalTargets(){return GLOBAL_TARGETS.slice()},get activeGlobalAddress(){return activeGlobalAddress},projectPoint(p,rect,scale=1.72){const q=qRot(orient,p),f=(Math.min(rect.width,rect.height)/2)/Math.tan(Math.PI/6.6),z=3.0-q[2]*scale;return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2]}}});
+globalThis.SSSWorldView=Object.freeze({setScope,setGlobalTargets,setActiveGlobalAddress,requestGlobalTarget,inspect,clearInspection,rotateBy,easeTo,restoreHome,drawTwin,get scopeId(){return scopeId},get projection(){return projection},get view(){return nav?.view||''},get language(){return lang},get orientation(){return [...orient]},get structure(){return STRUCT},get globalTargets(){return GLOBAL_TARGETS.slice()},get activeGlobalAddress(){return activeGlobalAddress},projectPoint(p,rect,scale=1.72){const q=qRot(orient,p),f=(Math.min(rect.width,rect.height)/2)/Math.tan(Math.PI/6.6),z=3.0-q[2]*scale;return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2]}}});
 })();
