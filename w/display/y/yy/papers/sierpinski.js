@@ -71,6 +71,20 @@ const shader=Object.freeze({
   clear:[0,0,0,0],
   fallbackAlpha:0,
   state:Object.freeze({blend:true,depthTest:false,depthWrite:false}),
+  /* the body seen from a host: ruled paper in Papers' green — its field draws nothing because its own environment does the work */
+  body:Object.freeze({
+    state:Object.freeze({blend:true,depthTest:true,depthWrite:true}),
+    fragment:`#version 300 es
+precision highp float;
+in vec3 vN;in vec3 vW;in float vRegion;uniform float uFocus;uniform vec3 uPalette[4];
+out vec4 outColor;
+void main(){vec3 n=normalize(vN);float facing=.5+.5*dot(n,normalize(vec3(-.35,.6,.72)));
+  int ri=int(clamp(floor(vRegion+.5),0.,3.));vec3 g=uPalette[ri];
+  float rule=step(.86,fract(gl_FragCoord.y/5.));
+  vec3 c=mix(vec3(.03,.045,.025),g,.2+.62*facing);c=mix(c,c*1.45+.05,rule*.55);
+  float sel=(uFocus<-.5||abs(vRegion-uFocus)<.2)?1.:.55;
+  outColor=vec4(c,.94*sel);}`
+  }),
   fragment:`#version 300 es
 precision highp float;
 out vec4 outColor;
