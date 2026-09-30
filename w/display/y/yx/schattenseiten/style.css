@@ -1,0 +1,19 @@
+/* Schattenseiten: pale ink over the host's dark field; text keeps to the borders so the field stays free. */
+.schattenseiten-content{
+  --ink:#ecebe6;--dim:#9a9a94;--paper:#0b1412;--edge:clamp(.9rem,2.2vw,1.6rem);
+  position:absolute;inset:0;pointer-events:none;color:var(--ink);
+  font-family:ui-serif,Georgia,serif;text-shadow:0 0 8px var(--paper),0 0 16px var(--paper);
+}
+.ss-rail{position:fixed;top:calc(var(--display-safe-top,0px) + .6rem);left:var(--edge);width:min(17rem,42vw);display:flex;flex-direction:column;gap:.55rem}
+.ss-rail h1{font-size:1.35rem;font-weight:400;margin:0 0 .3rem;letter-spacing:.02em}
+.ss-word{margin:0;font-size:1.05rem}
+.ss-mirror{margin-top:.4rem}
+.ss-op,.ss-rank{margin:0;font:.72rem/1.45 ui-monospace,Consolas,monospace;color:var(--dim)}
+.ss-panel{position:fixed;top:calc(var(--display-safe-top,0px) + .6rem);right:var(--edge);width:min(16rem,40vw);display:flex;flex-direction:column;gap:.5rem}
+.ss-panel h2{margin:0;font:600 1.1rem ui-monospace,Consolas,monospace}
+.ss-meta{margin:0;font:.72rem ui-monospace,Consolas,monospace;color:var(--dim)}
+.ss-cluster{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
+.ss-cluster img{width:100%;display:block}
+.ss-cluster figcaption{grid-column:1/-1;font:.68rem ui-monospace,Consolas,monospace;color:var(--dim)}
+.ss-anim{width:100%;display:block}
+@media (max-width:560px){.ss-rail{width:calc(100vw - 2*var(--edge))}.ss-panel{top:auto;bottom:calc(var(--edge) + 3rem);width:calc(100vw - 2*var(--edge))}.ss-op,.ss-rank{display:none}}
