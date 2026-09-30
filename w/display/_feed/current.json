@@ -25,18 +25,18 @@
   },
   "home": {
     "changed_scope": [
-      "z/world-view.js: knobShape and KNOB_SWELL / KNOB_FALL / KNOB_N / KNOB_R_CIRCLE / KNOB_R_TRIANGLE / KNOB_REDUCED; bindAxis drives one picture from the same still-time as the lock (arm, lock timeout, pointer-down on a locked knob, release); AXIS_SETTLE_MS, AXIS_SETTLE_EPS and dataset.latched are unchanged",
-      "w/root-view.css: .axis .knob carries transform scale(var(--knob-scale,1)); .knob-shape polygon; .knob[data-morph=\"on\"] hands the outline to the shape; at rest nothing changes",
-      "y/check.py: one witness that the knob shows the settle",
-      "RITUALS/navigation/RITUAL.md 2.6 → 2.7: the knob shows the settle; pick-up; same still-time, never a separate timer; reduced motion",
-      "_stomach/NUTRIENT__axis-knob-settle-visual__20260930.md admitted with Philipp's words verbatim and narrowed in the same act",
-      "_stomach/INCOMING — minimap axis latch.md, browser-witness-20260914.md, navigation-aperture-browser-witness-20260915.md → _waste/metabolized-*.md, retired on Philipp's acceptance that the hold to lock works on the live site",
-      "no INDEX, _cambium, navigation geometry, latch timing or aperture mutation; no site-holon tissue touched"
+      "z/navigation-aperture.css: one HUD block scoped to html:not([data-composition=\"split\"]):not([data-composition=\"grid\"]); no fill, no clip-path plate, no drop-shadow on the pocket; text halo and a soft radial halo of the page's own dark; cluster flush to the corner on the edge margin clamp(.9rem,2.2vw,1.6rem); one size knob --hud-t (160 / 138 at ≤760px / 118 at ≤520px / 104 and no captions at ≤380px height); the pocket no longer captures the pointer, only the map, the rails and the trigger do; the trigger is a 40px corner mark",
+      "split and grid encounters keep the seam aperture unchanged: every base rule, including @keyframes aperture-shell-resolve, is untouched",
+      "z/navigation-aperture.js, z/world-view.js, w/template.html and every element id are unchanged",
+      "y/check.py: one witness that the single-encounter navigator is a HUD",
+      "RITUALS/navigation/RITUAL.md 2.7 → 2.8: Global navigator as HUD",
+      "_stomach/NUTRIENT__global-nav-hud-and-glass__20260930.md admitted with Philipp's words verbatim; the HUD half narrowed in the same act, the glass half recorded as open ground",
+      "no INDEX, _cambium, renderer, field or site-holon tissue touched"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · THE AXIS KNOB WEARS ITS SETTLE: IT SWELLS AND MORPHS FROM CIRCLE TOWARD TRIANGLE WHILE HELD STILL AND IS A TRIANGLE AT THE LOCK; THE HOLD-TO-LOCK LATCH IS ACCEPTED BY PHILIPP AND ITS THREE WAITING FILES ARE RETIRED"
+    "outcome": "PASS/EARNED · THE GLOBAL NAVIGATOR IS A HUD IN SINGLE ENCOUNTERS: INK ON THE FIELD, LOCKED TO THE SCREEN CORNER, NO PLATE, A SMALLER RESERVATION; THE GLASS HALF OF THE REQUEST IS ADMITTED AND LEFT OPEN"
   },
-  "observed_at_utc": "2026-09-30T20:19:29.778624Z",
+  "observed_at_utc": "2026-09-30T20:52:08.187484Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -52,11 +52,11 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-axis-knob-settle-visual-20260930T201201Z",
+  "reflected_home_event": "display-global-nav-hud-20260930T204252Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "5489ccf5506e55f99c669a0e82121082a4d82955aef9dad3e72eaf29fc8e1bc5"
+      "sha256": "31ae2cefccaa61ae44e3fa6cc83ba58b17b0ce22092c8b73d4e2ba56cc280925"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
@@ -78,6 +78,7 @@
       "NUTRIENT__axis-knob-settle-visual__20260930.md",
       "NUTRIENT__continuous-focus__20260929.md",
       "NUTRIENT__field-layer-frame-hook__20260929.md",
+      "NUTRIENT__global-nav-hud-and-glass__20260930.md",
       "NUTRIENT__pages-actuation-after-materialize__20260927.md",
       "NUTRIENT__philosophy-papers-bodies__20260930.md",
       "NUTRIENT__site-body-material__20260930.md",
@@ -89,6 +90,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "99059314314defcfe3b0bf077f6bbaafacf42078"
+    "source_revision": "3923403ed76ff663e8e735786f2a098397cc44e6"
   }
 }
