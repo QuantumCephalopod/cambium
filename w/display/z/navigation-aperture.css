@@ -196,6 +196,55 @@
   color:rgba(241,239,233,.28);
   pointer-events:none;
 }
+/* ---- Global navigator as HUD (single encounter) ---------------------------------
+ * Philipp 2026-09-30: the navigator is an overlay; he wants a HUD like Crawlerbait's: ink on the
+ * field, locked to the screen borders, no plate, the centre free. The octagonal plate, its
+ * near-opaque fill and its drop-shadow belong to the seam aperture of split/grid encounters below.
+ * Size is one knob: --hud-t, the side of the map. Everything else is derived from it. */
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini{
+  --hud-edge:clamp(.9rem,2.2vw,1.6rem);
+  --hud-t:160px;
+  width:calc(var(--hud-t) + 62px);
+  height:calc(var(--hud-t) + 80px);
+  right:var(--hud-edge);
+  bottom:var(--hud-edge);
+}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-trigger{width:40px;height:40px;right:0;bottom:0;top:auto;transform:none}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-trigger::before{inset:5px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket{
+  inset:0;
+  background:none;
+  clip-path:none;
+  filter:none;
+  transform:translate(10px,10px);
+  transform-origin:100% 100%;
+  text-shadow:0 0 6px rgba(5,7,10,.92),0 0 14px rgba(5,7,10,.92);
+  transition:transform .28s cubic-bezier(.2,.78,.18,1),opacity .2s ease;
+}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket::after{display:none}
+/* not a box: a soft halo of the page's own dark behind the instruments, fading to nothing (inverse mode inverts it with everything else) */
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket::before{display:block;content:"";position:absolute;inset:-22px;z-index:-1;clip-path:none;border:0;pointer-events:none;background:radial-gradient(closest-side,rgba(5,7,10,.6),rgba(5,7,10,.34) 58%,rgba(5,7,10,0))}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini[data-aperture="open"] #mini-pocket{transform:none;clip-path:none;pointer-events:none}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-core{left:0;top:0;width:100%;height:100%;transform:none}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-title{left:calc(30px + var(--hud-t) / 2);top:0;max-width:calc(var(--hud-t) + 16px);font-size:7px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-state{left:calc(30px + var(--hud-t) / 2);top:12px;width:calc(var(--hud-t) + 16px);font-size:7px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #navTwin{left:30px;top:26px;width:var(--hud-t);height:var(--hud-t);filter:drop-shadow(0 0 5px rgba(5,7,10,.85))}
+html:not([data-composition="split"]):not([data-composition="grid"]) #navTwin:focus-visible{filter:drop-shadow(0 0 5px rgba(5,7,10,.85)) drop-shadow(0 0 10px rgba(255,255,255,.22))}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini .axis::before{background:rgba(241,239,233,.3)}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y{left:0;top:26px;width:28px;height:var(--hud-t)}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y::before{top:8px;bottom:8px;left:14px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y .knob{left:14px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y .axis-letter{left:10px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x{left:30px;top:calc(var(--hud-t) + 30px);bottom:auto;width:calc(var(--hud-t) - 12px);height:28px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x::before{left:8px;right:8px;top:14px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x .knob{top:14px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x .axis-letter{top:10px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-help{left:30px;bottom:auto;top:calc(var(--hud-t) + 62px);transform:none;width:calc(var(--hud-t) - 12px);font-size:7px;text-align:left}
+@media(max-width:760px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:138px}}
+@media(max-width:520px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:118px}}
+/* a short viewport has no room under the header for the captions: keep the instruments, drop the words */
+@media(max-height:380px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:104px}html:not([data-composition="split"]):not([data-composition="grid"]) #mini-title,html:not([data-composition="split"]):not([data-composition="grid"]) #mini-state{display:none}}
+
 html[data-composition="split"] #mini,
 html[data-composition="grid"] #mini{
   --trigger-shape-radius:0;
