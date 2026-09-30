@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.7"
+version: "2.8"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -118,6 +118,19 @@ The x/y rails are angular-velocity controls:
 - the picture is driven by the same still-time as the lock, never by a separate timer, so it cannot disagree with the lock; under reduced motion it jumps to the triangle at the lock.
 
 Every visible interlocutor-local field reads the same global orientation.
+
+## Global navigator as HUD
+
+In a single encounter the global navigator is a HUD, not a plate:
+
+- ink on the field: no fill, no clip-path plate, no drop-shadow; a soft halo of the page's own dark sits behind the instruments and fades to nothing;
+- locked to the screen's borders on the same edge margin as site HUDs, so the centre stays free;
+- the side of the map (`--hud-t`) is the one size knob; every other measure derives from it;
+- the transparent area never captures the pointer; only the instruments do;
+- a closed navigator reserves only its corner mark through the safe-area contract, an open one only its own cluster;
+- split and grid encounters keep the seam aperture (plate, clip, bloom), because there the navigator lives on the shared seam between two fields.
+
+Refracting the field behind the HUD (glass) is earned separately and is not yet law.
 
 ## Target-origin closure
 

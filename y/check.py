@@ -247,6 +247,8 @@ def main():
     check('clip-path:polygon(0 0,100% 0,var(--fold-x) var(--fold-y))' in site_css,'target-origin tetrahedral iris missing')
     check("data-aperture=\"closed\"" in actual and "dataset.aperture='open'" in aperture,'global navigator is not aperture-owned')
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
+    hud=aperture_css.split('Global navigator as HUD',1)[1].split('html[data-composition="split"] #mini,',1)[0] if 'Global navigator as HUD' in aperture_css else ''
+    check('--hud-t' in hud and 'background:none' in hud and 'clip-path:none' in hud and 'pointer-events:none' in hud,'single-encounter navigator is not a HUD')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
     papers_sierpinski=(DISPLAY/'y'/'yy'/'papers'/'sierpinski.js').read_text(encoding='utf-8')
     papers_sierpinski_css=(DISPLAY/'y'/'yy'/'papers'/'sierpinski.css').read_text(encoding='utf-8')
