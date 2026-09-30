@@ -25,13 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "w/locus-shader.js: optional shader.focus() → {center, scale, stiffness?}; critically damped spring in 1/120 s substeps over real elapsed time; glides back to the walked container on release; frame passes following to afterDraw",
-      "Display organism RITUAL 3.8"
+      "w/locus-shader.js + x/display-runtime-v2.js: optional shader.body {fragment, state} used for floating bodies in place of the field shader",
+      "Display organism / site-holon RITUALS advanced to 3.10 / 3.1; no INDEX/_cambium change; central runtime still names no site"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · A SITE MAY OFFER A CONTINUOUS FOCUS; DISPLAY FOLLOWS IT SMOOTHLY"
+    "outcome": "PASS/EARNED · A SITE MAY GIVE ITS FLOATING BODY A MATERIAL OF ITS OWN"
   },
-  "observed_at_utc": "2026-09-29T12:02:15.905512Z",
+  "observed_at_utc": "2026-09-30T16:34:46.434553Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -47,7 +47,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-continuous-focus-20260929T115319Z",
+  "reflected_home_event": "display-site-body-material-20260930T184500Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -55,11 +55,11 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "cf531bee8bb9ca59e3ed1dc10f5ffa56de051491443bad713ad58dbbe80a5a58"
+      "sha256": "9b1c0fe99704acd64d418e8fa92481118e0e0fa3dc339a2bc5ac6353e7b15748"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "e8345e6de0a7033add8bf6b470b12e74169b892016bc1410e794a448da32790d"
+      "sha256": "459bd159b8a486e8975cbf21063d715b58689159c6b4365a295470aa134cbac7"
     }
   ],
   "shell": {
@@ -70,12 +70,16 @@
       "INCOMING — care propagates.md",
       "INCOMING — minimap axis latch.md",
       "NUTRIENT__acknowledged-delta-dynamic-chunking__20260924.md",
+      "NUTRIENT__art-origin-fails-closed__20260929.md",
       "NUTRIENT__continuous-focus__20260929.md",
       "NUTRIENT__field-layer-frame-hook__20260929.md",
       "NUTRIENT__foreign-organism-hosting-membrane__20260923.md",
       "NUTRIENT__global-safe-area-contract__20260918.md",
       "NUTRIENT__identity-address-custody__20260923.md",
       "NUTRIENT__pages-actuation-after-materialize__20260927.md",
+      "NUTRIENT__philosophy-papers-bodies__20260930.md",
+      "NUTRIENT__site-body-material__20260930.md",
+      "NUTRIENT__site-rest-view__20260930.md",
       "NUTRIENT__text-is-body__20260927.md",
       "REQUEST__canonical-live-nerve-promotion__20260919.md",
       "browser-witness-20260914.md",
@@ -86,6 +90,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "be87f88b9a30d24269eb675e2c07f5e5cc3db0f9"
+    "source_revision": "9741b51a4485f02361214c1d82367e02ede2ebd9"
   }
 }
