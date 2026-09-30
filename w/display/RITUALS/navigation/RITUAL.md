@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.8"
+version: "2.9"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -130,7 +130,12 @@ In a single encounter the global navigator is a HUD, not a plate:
 - a closed navigator reserves only its corner mark through the safe-area contract, an open one only its own cluster;
 - split and grid encounters keep the seam aperture (plate, clip, bloom), because there the navigator lives on the shared seam between two fields.
 
-Refracting the field behind the HUD (glass) is earned separately and is not yet law.
+## Glass and the goo lens
+
+- every occupied HUD surface (`data-display-occupancy`) is glass: the field behind it is refracted inside its rounded rectangle by one post pass in the field renderer; `data-display-glass="off"` opts a surface out, `"on"` opts one in; under `prefers-reduced-transparency` there is no glass;
+- the bend is pure displacement (no light point by default): a complex turn off the rim normal, dispersion that grows with the bend, and a magnified interior; the soft shadow and the rim are printed as a 45 degree halftone, never as a gradient, so dots carry what hard edges would pixelate;
+- a goo lens hangs on the global compass: half its width, all its height, joined to it by a neck that thins with distance and tears at `breakAt`; held it turns round, moving it stretches along its motion and shivers when it stops; released beyond the magnet's reach it stays where it was put, inside it it is pulled home and docks; it never leaves the screen;
+- the lens is a pure-physics module (`z/display-lens.js`) plus one pointer surface; it is shown in single encounters with the compass open or while away from it; it draws glass only, it does not yet show any organism.
 
 ## Target-origin closure
 

@@ -1,6 +1,6 @@
 # NUTRIENT — the global navigator as HUD, and as glass — 2026-09-30
 
-status: NARROWED — the HUD half is metabolized into z/navigation-aperture.css + navigation RITUAL 2.8 (HOME display-global-nav-hud-20260930T204252Z); the glass half is OPEN and not started
+status: NARROWED — the HUD half is metabolized into z/navigation-aperture.css + navigation RITUAL 2.8 (HOME display-global-nav-hud-20260930T204252Z); the glass half is narrowed in HOME display-glass-goo-lens-20260930T215021Z
 kind: display encounter (from Philipp, after using the site a lot)
 source: Philipp 2026-09-30 (English, verbatim): "ok another big pet-peeve (aftter utilising the site alot :D) is the "overlay" nature of the global nav =) i would rather have it be a HUD style (like crawlerbaits for example) whats reaaally nice is if we could do some displacement magic... which means having the "glass" effect with rather simple (computationally) imaginary number shader? :D"
 target: github.cambium → display (z/navigation-aperture.css; later w/locus-shader.js)

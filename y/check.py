@@ -243,6 +243,11 @@ def main():
     check("N.addressRecord(structure,raw.path)" in fields,'field points cannot inhabit exact recursive address cells')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'exact settle-to-lock behavior missing')
     check('knobShape' in world and "dataset.morph" in world and 'KNOB_SWELL' in world,'axis knob does not show the settle')
+    glass=(DISPLAY/'z'/'display-glass.js').read_text(); template=(DISPLAY/'w'/'template.html').read_text()
+    check('data-display-occupancy' in glass and 'data-display-glass' in glass and 'assets/display-glass.js' in template,'occupied HUD surfaces are not declared glass')
+    lens=(DISPLAY/'z'/'display-lens.js').read_text()
+    check('breakAt' in lens and 'assets/display-lens.js' in template and 'uHome' in fields and 'dots(' in fields,'goo lens or halftone missing')
+    check('glassBegin' in fields and 'glassEnd' in fields and 'renderbufferStorageMultisample' in fields and 'cmul' in fields,'field does not refract occupied surfaces')
     check('context.origin' in fold and '--fold-x' in fold and '--fold-y' in fold,'transition is not anchored to chosen target')
     check('clip-path:polygon(0 0,100% 0,var(--fold-x) var(--fold-y))' in site_css,'target-origin tetrahedral iris missing')
     check("data-aperture=\"closed\"" in actual and "dataset.aperture='open'" in aperture,'global navigator is not aperture-owned')
@@ -304,10 +309,10 @@ def main():
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
     check('philosophy-global-site' in philosophy_render and 'requestGlobalTarget' in philosophy_render,'Philosophy mounted-address direct encounter missing')
 
-    js_sources=['z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','x/display-runtime-v2.js','w/locus-shader.js','z/navigation-aperture.js','z/display-safe-area.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
+    js_sources=['z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','x/display-runtime-v2.js','w/locus-shader.js','z/navigation-aperture.js','z/display-safe-area.js','z/display-glass.js','z/display-lens.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
     for source in js_sources:
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'JS syntax failure {source}')
-    for test in ('z/navigation-physiology.test.cjs','x/site-holon.test.cjs','z/site-fold.test.cjs','z/display-safe-area.test.cjs'):
+    for test in ('z/navigation-physiology.test.cjs','x/site-holon.test.cjs','z/site-fold.test.cjs','z/display-safe-area.test.cjs','z/display-glass.test.cjs','z/display-lens.test.cjs'):
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')

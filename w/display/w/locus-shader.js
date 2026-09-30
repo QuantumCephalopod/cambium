@@ -375,6 +375,147 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   function updateLabels(){if(!labelHost||element.hidden)return;const r=canvas.getBoundingClientRect();for(const n of labelHost.querySelectorAll('.field-label')){const a=N.addressRecord(structure,n.dataset.gene);if(!a){n.hidden=true;continue}const p=project(a.point,r);n.hidden=false;n.style.left=p.x+'px';n.style.top=p.y+'px';n.style.opacity=p.z<-.12?'.32':'.82'}}
   function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.5),w=Math.max(1,Math.floor(r.width*d)),h=Math.max(1,Math.floor(r.height*d));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}return {r,d,w,h}}
+  /* GLASS — every occupied HUD surface (see z/display-glass.js) refracts this field.
+   * While at least one surface touches this canvas the field is drawn into a multisampled
+   * target (the screen's own antialiasing is kept), resolved to a texture, and one more pass
+   * draws that texture to the screen, displacing the lookup inside each surface's rounded
+   * rectangle. With no surface nothing changes and nothing is paid. For the duration of the
+   * draw "the default framebuffer" means the scene target, so site code that restores the
+   * screen (afterDraw hooks, a site's own composite) lands in the scene without knowing it.
+   * The bend is complex arithmetic: the rim's outward normal is one complex number, turned off
+   * the normal by multiplying with e^{i·theta}; the lens is a complex scaling about the centre. */
+  const GLASS_VERTEX=`#version 300 es
+void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);}`;
+  const GLASS_FRAGMENT=`#version 300 es
+precision highp float;
+uniform sampler2D uScene;uniform vec2 uRes;uniform vec4 uRect[8];uniform int uCount;
+uniform vec4 uA;uniform vec4 uB;uniform vec4 uC;uniform vec4 uT;uniform vec4 uH;
+uniform vec4 uHome;uniform vec4 uL0;uniform vec4 uL1;uniform vec4 uL2;uniform vec4 uN;
+out vec4 outColor;
+vec2 gShift=vec2(0.);float gInside=0.,gLit=0.,gShade=0.,gRim=0.;
+vec2 cmul(vec2 a,vec2 b){return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x);}
+float sdBox(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+min(max(q.x,q.y),0.)-r;}
+float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);return min(a,b)-h*h*k*.25;}
+float sdSeg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/max(dot(ba,ba),1e-4),0.,1.);return length(pa-ba*h);}
+mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
+/* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 angle/round/wobble/phase, uL2.x stretch */
+float sdLens(vec2 p){
+  vec2 q=p-uL0.xy,raw=q;
+  q=rot(uL1.x)*q;q*=vec2(1./(1.+uL2.x),1.+uL2.x);q=rot(-uL1.x)*q;
+  float r=mix(uA.x,min(uL0.z,uL0.w),uL1.y);
+  float d=sdBox(q,uL0.zw,r);
+  float th=atan(raw.y,raw.x);
+  return d+uL1.z*(sin(3.*th+uL1.w)+.5*sin(5.*th-1.3*uL1.w));
+}
+float gooD(vec2 p){
+  float d=sdLens(p);
+  if(uN.x>.5){
+    float dA=sdBox(p-uHome.xy,uHome.zw,min(uA.x,min(uHome.z,uHome.w)));
+    d=smin(dA,d,uN.w);
+    if(uN.z>.5)d=smin(d,sdSeg(p,uHome.xy,uL0.xy)-uN.z,uN.w);
+  }
+  return d;
+}
+/* halftone: a 45 degree dot screen; the dot grows with the ink it has to print, and is antialiased by its own derivative */
+float dots(vec2 fc,float ink){
+  vec2 f=fract(rot(.7854)*fc/uH.x)-.5;float r=sqrt(clamp(ink,0.,1.))*.74,aa=fwidth(length(f))+1e-3;
+  return 1.-smoothstep(r-aa,r+aa,length(f));
+}
+void surface(float d,vec2 n,float bevW,vec2 pc,vec2 p){
+  if(d>=0.){gShade=max(gShade,smoothstep(uC.x,0.,d)*uC.y);return;}
+  float bev=clamp(uA.y*2.*bevW,2.,uA.z),t=clamp(-d/bev,0.,1.),edge=1.-t,slope=edge*edge;
+  gShift+=cmul(n,vec2(cos(uC.z),sin(uC.z)))*min(uA.w,.9*bev)*slope;
+  gShift-=(p-pc)*uB.y;
+  vec3 N=normalize(vec3(n*edge*1.4,1.));
+  vec3 L1=normalize(vec3(-.45,.6,.66)),L2=normalize(vec3(.5,-.55,.65));
+  gLit+=uB.z*(pow(max(dot(N,L1),0.),26.)+.45*pow(max(dot(N,L2),0.),26.))+uB.w*pow(1.-N.z,2.);
+  gRim=max(gRim,slope*edge);
+  gInside=1.;
+}
+void main(){
+  vec2 frag=gl_FragCoord.xy,h=vec2(.75,0.);
+  for(int i=0;i<8;i++){
+    if(i>=uCount)break;
+    vec4 R=uRect[i];vec2 p=frag-R.xy;float r=min(uA.x,min(R.z,R.w)),d=sdBox(p,R.zw,r);
+    vec2 n=vec2(sdBox(p+h.xy,R.zw,r)-sdBox(p-h.xy,R.zw,r),sdBox(p+h.yx,R.zw,r)-sdBox(p-h.yx,R.zw,r));n/=max(length(n),1e-4);
+    surface(d,n,min(R.z,R.w),R.xy,frag);
+  }
+  if(uN.x>-.5){
+    float d=gooD(frag);
+    vec2 n=vec2(gooD(frag+h.xy)-gooD(frag-h.xy),gooD(frag+h.yx)-gooD(frag-h.yx));n/=max(length(n),1e-4);
+    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag);
+  }
+  vec3 c;
+  c.r=texture(uScene,(frag+gShift*(1.-uB.x))/uRes).r;
+  c.g=texture(uScene,(frag+gShift)/uRes).g;
+  c.b=texture(uScene,(frag+gShift*(1.+uB.x))/uRes).b;
+  c=mix(c,uT.rgb,uT.a*gInside);
+  /* the soft shadow and the rim are printed as ink, not blended: dots forgive pixels, and cost less than a gradient */
+  vec3 ink=vec3(.014,.019,.027);
+  float shadowInk=gShade*(1.-gInside),rimInk=gRim*.9;
+  float k=uH.y;
+  c=mix(c*(1.-shadowInk*(1.-k)),ink,dots(frag,shadowInk)*k*.78);
+  vec3 paper=vec3(.93,.91,.85);
+  c=mix(c,paper,dots(frag+vec2(1.7,.9),rimInk)*k*.5);
+  outColor=vec4(c+gLit,1.);
+}`;
+  let SCENE=null,GLASS_PG=null,GLASS_OFF=false;
+  function disposeScene(){if(!SCENE)return;gl.deleteFramebuffer(SCENE.ms);gl.deleteFramebuffer(SCENE.res);gl.deleteRenderbuffer(SCENE.rc);gl.deleteRenderbuffer(SCENE.rd);gl.deleteTexture(SCENE.tex);SCENE=null}
+  function buildScene(w,h){
+    disposeScene();
+    const tex0=gl.getParameter(gl.TEXTURE_BINDING_2D),samples=Math.max(0,Math.min(4,gl.getParameter(gl.MAX_SAMPLES)||0));
+    const S={w,h,ms:gl.createFramebuffer(),res:gl.createFramebuffer(),rc:gl.createRenderbuffer(),rd:gl.createRenderbuffer(),tex:gl.createTexture()};
+    SCENE=S;
+    gl.bindRenderbuffer(gl.RENDERBUFFER,S.rc);gl.renderbufferStorageMultisample(gl.RENDERBUFFER,samples,gl.RGBA8,w,h);
+    gl.bindRenderbuffer(gl.RENDERBUFFER,S.rd);gl.renderbufferStorageMultisample(gl.RENDERBUFFER,samples,gl.DEPTH_COMPONENT24,w,h);
+    gl.bindFramebuffer(gl.FRAMEBUFFER,S.ms);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.RENDERBUFFER,S.rc);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,S.rd);
+    const a=gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    gl.bindTexture(gl.TEXTURE_2D,S.tex);gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA8,w,h);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.bindFramebuffer(gl.FRAMEBUFFER,S.res);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,S.tex,0);
+    const b=gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.bindRenderbuffer(gl.RENDERBUFFER,null);gl.bindTexture(gl.TEXTURE_2D,tex0);
+    if(a!==gl.FRAMEBUFFER_COMPLETE||b!==gl.FRAMEBUFFER_COMPLETE)throw new Error('glass scene target incomplete');
+    if(!GLASS_PG){
+      const p=program(gl,GLASS_FRAGMENT,GLASS_VERTEX);
+      GLASS_PG={p,vao:gl.createVertexArray(),U:{scene:gl.getUniformLocation(p,'uScene'),res:gl.getUniformLocation(p,'uRes'),rect:gl.getUniformLocation(p,'uRect[0]'),count:gl.getUniformLocation(p,'uCount'),a:gl.getUniformLocation(p,'uA'),b:gl.getUniformLocation(p,'uB'),c:gl.getUniformLocation(p,'uC'),t:gl.getUniformLocation(p,'uT'),h:gl.getUniformLocation(p,'uH'),home:gl.getUniformLocation(p,'uHome'),l0:gl.getUniformLocation(p,'uL0'),l1:gl.getUniformLocation(p,'uL1'),l2:gl.getUniformLocation(p,'uL2'),n:gl.getUniformLocation(p,'uN')}};
+    }
+    return S;
+  }
+  function glassBegin(r,w,h){
+    canvas.dataset.glass='0';
+    const Gm=globalThis.SSSDisplayGlass;
+    if(GLASS_OFF||!Gm||!Gm.enabled())return null;
+    const Ln=globalThis.SSSDisplayLens,snap=Ln?Ln.snapshot():null;
+    const pack=Gm.rects(r,{width:w,height:h},undefined,snap?['mini-pocket','mini-trigger']:null);
+    if(!pack.count&&!snap)return null;
+    try{if(!SCENE||SCENE.w!==w||SCENE.h!==h)buildScene(w,h)}
+    catch(err){console.warn('display glass unavailable for '+id,err);GLASS_OFF=true;disposeScene();gl.bindFramebuffer(gl.FRAMEBUFFER,null);return null}
+    const native=gl.bindFramebuffer;
+    gl.bindFramebuffer=function(target,fb){return native.call(gl,target,fb===null?SCENE.ms:fb)};
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+    canvas.dataset.glass=String(pack.count+(snap?1:0));
+    return {pack,Gm,snap,r};
+  }
+  function glassEnd(g,w,h){
+    delete gl.bindFramebuffer;
+    const S=SCENE,P=GLASS_PG,q=g.Gm.PARAMS,k=g.pack.scale,tex0=gl.getParameter(gl.TEXTURE_BINDING_2D),unit0=gl.getParameter(gl.ACTIVE_TEXTURE);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER,S.ms);gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER,S.res);
+    gl.blitFramebuffer(0,0,w,h,0,0,w,h,gl.COLOR_BUFFER_BIT,gl.NEAREST);
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
+    gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);
+    gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,S.tex);
+    gl.useProgram(P.p);gl.uniform1i(P.U.scene,0);gl.uniform2f(P.U.res,w,h);gl.uniform4fv(P.U.rect,g.pack.data);gl.uniform1i(P.U.count,g.pack.count);
+    gl.uniform4f(P.U.a,q.radius*k,q.bevel,q.bevelMax*k,q.refract*k);gl.uniform4f(P.U.b,q.aberr,q.mag,q.spec,q.fres);gl.uniform4f(P.U.c,q.shadow*k,q.shadowK,q.theta,0);gl.uniform4f(P.U.t,...q.tint);gl.uniform4f(P.U.h,q.dot*k,q.halftone,0,0);
+    {const sn=g.snap,R=g.r;
+      if(sn){const Ls=sn.lens,Hm=sn.home,X=x=>(x-R.left)*k,Y=y=>h-(y-R.top)*k;
+        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,Ls.angle,Ls.round,Ls.wobble*k,Ls.phase);gl.uniform4f(P.U.l2,Ls.stretch,0,0,0);
+        if(Hm){gl.uniform4f(P.U.home,X(Hm.cx),Y(Hm.cy),Hm.hx*k,Hm.hy*k);gl.uniform4f(P.U.n,1,0,Ls.neck*k,Ls.smooth*k)}
+        else{gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,0,0,Ls.smooth*k)}}
+      else gl.uniform4f(P.U.n,-1,0,0,0);}
+    gl.bindVertexArray(P.vao);gl.drawArrays(gl.TRIANGLES,0,3);
+    gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(unit0);
+  }
   function applyState(){
     const state=shader.state||{};
     if(state.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
@@ -406,6 +547,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(gl&&GL){
       const hv=hostView(),hostClear=hv?.e.shader.clear;
       const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);
+      const glass=glassBegin(r,w,h);
       gl.viewport(0,0,w,h);gl.clearColor(...clear);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
       if(hv){
         const {H}=hv;gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.disable(gl.BLEND);gl.useProgram(H.p);gl.bindVertexArray(H.vao);
@@ -440,6 +582,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
       }
       drawPointsGL(proj,view,mdl,d);
+      if(glass)glassEnd(glass,w,h);
     }else if(ctx){
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);
       ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle=`rgb(${clear.slice(0,3).map(v=>Math.round(clamp(v)*255)).join(',')})`;ctx.fillRect(0,0,r.width,r.height);
