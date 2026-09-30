@@ -384,6 +384,8 @@ def template_asset_sources():
         'locus-shader.js': DISPLAY/'w'/'locus-shader.js',
         'navigation-aperture.js': DISPLAY/'z'/'navigation-aperture.js',
         'display-safe-area.js': DISPLAY/'z'/'display-safe-area.js',
+        'display-glass.js': DISPLAY/'z'/'display-glass.js',
+        'display-lens.js': DISPLAY/'z'/'display-lens.js',
         'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
         'favicon.svg': DISPLAY/'w'/'favicon.svg',
     }
