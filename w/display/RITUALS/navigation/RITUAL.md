@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.6"
+version: "2.7"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -112,7 +112,10 @@ The x/y rails are angular-velocity controls:
 - midpoint is zero;
 - holding sufficiently still locks the exact current value;
 - a latched value is not altered by later movement of the still-held pointer;
-- a new pointer-down picks it up again.
+- a new pointer-down picks it up again;
+- the knob shows the settle: while held still it swells and its outline morphs from a circle toward a triangle, arriving at the triangle exactly when the lock fires, and a locked knob rests as a triangle;
+- picking a locked knob up makes it a circle at once, and it morphs toward the triangle again as it is held still; moving more than the settle tolerance, or releasing before the lock, returns it toward the circle;
+- the picture is driven by the same still-time as the lock, never by a separate timer, so it cannot disagree with the lock; under reduced motion it jumps to the triangle at the lock.
 
 Every visible interlocutor-local field reads the same global orientation.
 

@@ -1,3 +1,5 @@
+<!-- retired 2026-09-30: spent. Its function was to wait for user acceptance on the live site. Philipp gave it in chat on 2026-09-30: "the hold to lock works". The gesture is live in z/world-view.js (AXIS_SETTLE_MS, dataset.latched), asserted by y/check.py, and the live page advertises it as 'pull anywhere · hold still → lock exact velocity'. The withdrawal it records is superseded: the latch returned and now has its real witness. Its lesson stands and was followed again today: witness against the real membrane, not only against state transitions. -->
+
 # INCOMING — minimap axis latch
 
 Status: nutrient / unearned interaction
