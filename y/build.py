@@ -386,6 +386,7 @@ def template_asset_sources():
         'display-safe-area.js': DISPLAY/'z'/'display-safe-area.js',
         'display-glass.js': DISPLAY/'z'/'display-glass.js',
         'display-lens.js': DISPLAY/'z'/'display-lens.js',
+        'display-label-ink.js': DISPLAY/'w'/'display-label-ink.js',
         'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
         'favicon.svg': DISPLAY/'w'/'favicon.svg',
     }

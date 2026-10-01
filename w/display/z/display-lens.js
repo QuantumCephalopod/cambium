@@ -1,120 +1,159 @@
-/* Display-owned goo lens.
- * A lens is a piece of glass pulled off the global compass: half as wide and as tall as the compass, joined to it by a
- * thinning neck of goo. Pulled past the tear distance it lets go and stays wherever it was released; brought back inside
- * the magnet's reach it is pulled home and docks. Held, it turns round; moving fast, it stretches along its motion; it
- * shivers when it stops. This module owns the physics (pure, testable) and the pointer surface; the drawing is the
- * glass pass in w/locus-shader.js, which reads snapshot().
- */
+/* A round glass drop belongs to one UI kind/layer. Its pointer surface and
+ * derived geometry are separate from the UI's own controls and field topology. */
 (function(root,factory){
-  'use strict';
-  const api=factory(root);
-  if(typeof module==='object'&&module.exports) module.exports=api;
+  'use strict';const api=factory(root);
+  if(typeof module==='object'&&module.exports)module.exports=api;
   else{root.SSSDisplayLens=api;if(typeof document==='object')api.start()}
 })(typeof globalThis==='object'?globalThis:this,function(root){
   'use strict';
-  /* first drafts in CSS px at a compass 240 px tall (U = 1); every distance scales with the compass */
-  const K=Object.freeze({stiff:130,damp:15,magnet:170,breakAt:230,neck:34,wobble:1,round:.78,mk:260,gap:8});
-  const REF_H=120; // half-height of the reference compass
-  const n=v=>Number.isFinite(+v)?+v:0;
-
-  function scaleOf(home){return home?Math.max(.4,Math.min(1.6,n(home.hy)/REF_H)):1}
-  function dockPoint(home,U){return {x:home.cx-home.hx-home.hx/2-K.gap*U,y:home.cy}}
-  function create(home){
-    const U=scaleOf(home),d=home?dockPoint(home,U):{x:0,y:0};
-    return {x:d.x,y:d.y,vx:0,vy:0,held:false,pid:null,gx:0,gy:0,px:d.x,py:d.y,round:0,roundV:0,stretch:0,stretchV:0,ang:0,wob:0,wph:0,docked:true,hx:home?home.hx/2:60,hy:home?home.hy:120,U};
+  const K=Object.freeze({stiff:180,damp:24,cursor:310,cursorReach:155,magnet:135,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
+  const n=v=>Number.isFinite(+v)?+v:0,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  function scaleOf(h){return h?clamp(Math.min(n(h.hx),n(h.hy))/100,.6,1.2):1}
+  function radiusOf(h,v){return v?clamp(Math.min(v.w,v.h)*.15,36,72):clamp(Math.min(h?.hx||100,h?.hy||100)*.62,36,72)}
+  function homesOf(h){return (Array.isArray(h)?h:h?[h]:[]).filter(q=>q&&q.hx>0&&q.hy>0)}
+  const idOf=h=>h.id||'surface';
+  function compatible(L,h){return (h.kind||'hud')===L.kind&&(h.layer||'hud')===L.layer}
+  function edgePoint(h,x,y){
+    const l=h.cx-h.hx,r=h.cx+h.hx,t=h.cy-h.hy,b=h.cy+h.hy;
+    const ps=[{x:l,y:clamp(y,t,b),nx:-1,ny:0,edge:'left'},{x:r,y:clamp(y,t,b),nx:1,ny:0,edge:'right'},
+      {x:clamp(x,l,r),y:t,nx:0,ny:-1,edge:'top'},{x:clamp(x,l,r),y:b,nx:0,ny:1,edge:'bottom'}];
+    ps.sort((a,c)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(c.x-x,c.y-y));
+    ps[0].distance=Math.hypot(ps[0].x-x,ps[0].y-y);return ps[0];
   }
-  /* one step of the physics; home = {cx,cy,hx,hy} of the compass in CSS px, or null when there is none to dock to */
-  function step(L,home,dt,view){
-    dt=Math.min(Math.max(n(dt),0),.033);if(!dt)return L;
-    const U=home?scaleOf(home):L.U;L.U=U;
-    if(home){L.hx=home.hx/2;L.hy=home.hy}
-    let ax=0,ay=0;
-    const dock=home?dockPoint(home,U):null,dist=dock?Math.hypot(dock.x-L.x,dock.y-L.y)||1e-3:Infinity,mag=K.magnet*U;
-    if(L.held){ax=K.stiff*(L.px-L.gx-L.x)-K.damp*L.vx;ay=K.stiff*(L.py-L.gy-L.y)-K.damp*L.vy}
-    else if(dock&&dist<mag){const f=1-dist/mag,ks=K.stiff*.9*(K.mk/260)*f;ax=ks*(dock.x-L.x)-K.damp*.75*L.vx;ay=ks*(dock.y-L.y)-K.damp*.75*L.vy}
-    else{ax=-K.damp*1.4*L.vx;ay=-K.damp*1.4*L.vy}
-    L.vx+=ax*dt;L.vy+=ay*dt;L.x+=L.vx*dt;L.y+=L.vy*dt;
-    /* the lens never leaves the screen: it stops against the border */
-    if(view&&view.w>0&&view.h>0){
-      const mx=Math.min(L.hx,view.w/2),my=Math.min(L.hy,view.h/2);
-      if(L.x<mx){L.x=mx;if(L.vx<0)L.vx=0}else if(L.x>view.w-mx){L.x=view.w-mx;if(L.vx>0)L.vx=0}
-      if(L.y<my){L.y=my;if(L.vy<0)L.vy=0}else if(L.y>view.h-my){L.y=view.h-my;if(L.vy>0)L.vy=0}
-    }
-    const d2=dock?Math.hypot(dock.x-L.x,dock.y-L.y):Infinity,sp=Math.hypot(L.vx,L.vy);
-    if(dock&&!L.held&&d2<4*U&&sp<30*U){L.x=dock.x;L.y=dock.y;L.vx=L.vy=0;L.docked=true}
-    else if(!dock||d2>6*U)L.docked=false;
-    if(sp>40*U){const ta=Math.atan2(-L.vy,L.vx),da=Math.atan2(Math.sin(ta-L.ang),Math.cos(ta-L.ang));L.ang+=da*Math.min(1,dt*12)}
-    const st=Math.min(.55,sp/(1100*U));L.stretchV+=(260*(st-L.stretch)-9*L.stretchV)*dt;L.stretch+=L.stretchV*dt;
-    L.roundV+=(200*((L.held?1:0)-L.round)-16*L.roundV)*dt;L.round+=L.roundV*dt;
-    const acc=Math.hypot(ax,ay);
-    L.wob=Math.max(L.wob*Math.exp(-dt*4),Math.min(7*U,acc*.0024*U+Math.abs(L.roundV)*2.2*U)*K.wobble);L.wph+=dt*14;
-    return L;
+  function anchor(h,edge,u){
+    const l=h.cx-h.hx,r=h.cx+h.hx,t=h.cy-h.hy,b=h.cy+h.hy;u=clamp(n(u),0,1);
+    if(edge==='right')return {x:r,y:t+2*h.hy*u,nx:1,ny:0};
+    if(edge==='top')return {x:l+2*h.hx*u,y:t,nx:0,ny:-1};
+    if(edge==='bottom')return {x:l+2*h.hx*u,y:b,nx:0,ny:1};
+    return {x:l,y:t+2*h.hy*u,nx:-1,ny:0};
   }
-  /* what the glass pass needs: the lens body, and the neck that joins it to the compass while they are near */
+  function along(h,p){return p.edge==='left'||p.edge==='right'?clamp((p.y-h.cy+h.hy)/(2*h.hy),0,1):clamp((p.x-h.cx+h.hx)/(2*h.hx),0,1)}
+  function dockPoint(h,U=1,edge=h?.edge||'left',u=.5,radius=60*U){const a=anchor(h,edge,u);return {x:a.x+a.nx*radius*.12,y:a.y+a.ny*radius*.12}}
+  function create(home,view){
+    const h=homesOf(home)[0]||null,base=radiusOf(h,view),d=h?dockPoint(h,base/60,h.edge||'left',.5,base):{x:(view?.w||600)/2,y:(view?.h||400)/2};
+    return {x:d.x,y:d.y,vx:0,vy:0,baseR:base,radius:base*K.docked,radiusV:0,hx:base*K.docked,hy:base*K.docked,U:base/60,
+      held:false,pid:null,px:d.x,py:d.y,docked:!!h,attached:!!h,homeId:h?idOf(h):null,edge:h?.edge||'left',u:.5,
+      kind:h?.kind||'hud',layer:h?.layer||'hud',ax:d.x,ay:d.y,round:1,stretch:0};
+  }
+  function nearest(L,hs){let best=null;for(const h of hs){if(!compatible(L,h))continue;const p=edgePoint(h,L.x,L.y);if(!best||p.distance<best.p.distance)best={h,p}}return best}
+  function step(L,home,dt,view,cursor){
+    const hs=homesOf(home);dt=clamp(n(dt),0,.06);if(!dt)return L;
+    if(view)L.baseR=radiusOf(null,view);L.U=L.baseR/60;
+    const parts=Math.max(1,Math.ceil(dt/(1/120))),d=dt/parts;
+    for(let i=0;i<parts;i++){
+      let h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q))||null;
+      if(!h){L.attached=false;L.docked=false}
+      const near=nearest(L,hs);
+      if(!L.attached&&near&&near.p.distance<(L.held?K.capture:K.magnet)*L.U){
+        h=near.h;L.homeId=idOf(h);L.edge=near.p.edge;L.u=along(h,near.p);L.attached=true;
+      }
+      const cd=cursor?.active?Math.hypot(cursor.x-L.x,cursor.y-L.y):Infinity,hover=!L.held&&cd<K.cursorReach*L.U;
+      if(h&&L.attached&&(L.held||hover)){const p=edgePoint(h,L.held?L.px:cursor.x,L.held?L.py:cursor.y);L.edge=p.edge;L.u=along(h,p)}
+      const a=h&&L.attached?anchor(h,L.edge,L.u):null;
+      if(a){L.ax=a.x;L.ay=a.y;if(Math.hypot(L.x-a.x,L.y-a.y)>K.breakAt*L.U){L.attached=false;L.docked=false}}
+      let ax=-K.damp*L.vx,ay=-K.damp*L.vy;
+      if(L.held){ax+=K.stiff*(L.px-L.x);ay+=K.stiff*(L.py-L.y)}
+      if(hover){const f=Math.pow(1-cd/(K.cursorReach*L.U),2);ax+=K.cursor*f*(cursor.x-L.x);ay+=K.cursor*f*(cursor.y-L.y)}
+      let dock=null;
+      if(h&&L.attached){
+        dock=dockPoint(h,L.U,L.edge,L.u,L.baseR);
+        if(view){dock.x=clamp(dock.x,L.radius,Math.max(L.radius,view.w-L.radius));dock.y=clamp(dock.y,L.radius,Math.max(L.radius,view.h-L.radius))}
+        const f=clamp(1-Math.hypot(dock.x-L.x,dock.y-L.y)/(K.breakAt*L.U),.1,1),k=L.held?K.stiff*.12:K.stiff*.85*f;
+        ax+=k*(dock.x-L.x);ay+=k*(dock.y-L.y);
+      }
+      L.vx+=ax*d;L.vy+=ay*d;L.x+=L.vx*d;L.y+=L.vy*d;
+      if(dock&&!L.held&&!hover&&Math.hypot(L.x-dock.x,L.y-dock.y)<2*L.U&&Math.hypot(L.vx,L.vy)<22*L.U){
+        L.docked=true;L.x=dock.x;L.y=dock.y;L.vx=L.vy=0;
+      }else if(L.held||hover||!L.attached)L.docked=false;
+      const target=L.baseR*(L.held||hover?1:L.docked?K.docked:K.released);
+      L.radiusV+=(180*(target-L.radius)-24*L.radiusV)*d;L.radius=clamp(L.radius+L.radiusV*d,8,120);L.hx=L.hy=L.radius;
+      if(view&&view.w>0&&view.h>0){
+        const rx=Math.min(L.radius,view.w/2),ry=Math.min(L.radius,view.h/2),x=clamp(L.x,rx,view.w-rx),y=clamp(L.y,ry,view.h-ry);
+        if(x!==L.x)L.vx=0;if(y!==L.y)L.vy=0;L.x=x;L.y=y;
+      }
+    }return L;
+  }
   function geometry(L,home){
-    const U=L.U,r=Math.max(0,Math.min(1,L.round)),rr=K.round*.7*L.hy,hx=L.hx*(1-r)+rr*r,hy=L.hy*(1-r)+rr*r;
-    let neck=0,smooth=Math.max(6*U,K.neck*U*.4),thin=1;
-    if(home){
-      const dock=dockPoint(home,U),gap=Math.hypot(dock.x-L.x,dock.y-L.y);
-      thin=Math.max(0,1-gap/(K.breakAt*U));
-      neck=thin>.02?K.neck*U*1.3*Math.pow(thin,1.5):0;
-      smooth=Math.max(6*U,K.neck*U*(.4+.6*thin));
-    }
-    return {x:L.x,y:L.y,hx,hy,round:r,angle:L.ang,wobble:L.wob,phase:L.wph,stretch:Math.max(0,L.stretch),neck,smooth,thin,docked:L.docked,held:L.held};
+    const h=homesOf(home).find(q=>idOf(q)===L.homeId&&compatible(L,q)),a=h&&L.attached?anchor(h,L.edge,L.u):null;
+    const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
+    return {x:L.x,y:L.y,hx:L.radius,hy:L.radius,round:1,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
+      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
-  function grab(L,x,y,pid){L.held=true;L.pid=pid;L.gx=x-L.x;L.gy=y-L.y;L.px=x;L.py=y;return L}
+  function grab(L,x,y,pid){L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
-  function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null}return L}
-  function contains(L,x,y){const g=geometry(L,null),s=Math.max(g.round,0);return Math.abs(x-L.x)<=g.hx+6&&Math.abs(y-L.y)<=g.hy+6&&s>=0}
+  function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null;L.docked=false}return L}
+  function contains(L,x,y){return Math.hypot(x-L.x,y-L.y)<=L.radius+6}
+  function pullFrom(L,h,x,y,pid){
+    if(!compatible(L,h))return false;
+    const p=edgePoint(h,x,y);L.homeId=idOf(h);L.edge=p.edge;L.u=along(h,p);L.attached=true;L.docked=true;
+    const d=dockPoint(h,L.U,L.edge,L.u,L.baseR);L.x=d.x;L.y=d.y;L.vx=L.vy=0;grab(L,x,y,pid);return true;
+  }
 
-  /* ---- the page: one state, one pointer surface, one loop ---- */
-  let state=null,el=null,started=false,last=0,homeNow=null,visible=false,reduced=false;
-  function compass(){
-    const doc=root.document;if(!doc)return null;
-    const mini=doc.getElementById('mini'),pocket=doc.getElementById('mini-pocket');
-    if(!mini||!pocket)return null;
-    const comp=doc.documentElement.dataset.composition||'single';
-    if(comp==='split'||comp==='grid')return {off:true};
-    if(mini.dataset.aperture!=='open')return {closed:true};
-    const r=pocket.getBoundingClientRect();
-    return r.width<8||r.height<8?{closed:true}:{cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2};
+  let state=null,el=null,started=false,last=0,homeNow=null,visible=false,cursor={active:false,x:0,y:0},pores=[];
+  function surfaces(){
+    const G=root.SSSDisplayGlass,doc=root.document;if(!G||!doc)return [];
+    const comp=doc.documentElement.dataset.composition||'single';if(comp==='split'||comp==='grid')return [];
+    const entries=G.collect(doc,root.getComputedStyle);
+    const outer=entries.filter((e,i)=>!entries.some((p,j)=>j!==i&&p.kind===e.kind&&p.layer===e.layer&&
+      p.rect.left<=e.rect.left&&p.rect.top<=e.rect.top&&p.rect.right>=e.rect.right&&p.rect.bottom>=e.rect.bottom&&
+      (p.rect.width>e.rect.width||p.rect.height>e.rect.height||j<i)));
+    return outer.map(e=>({id:e.id,ids:e.ids||[e.id],rect:e.rect,cx:e.rect.left+e.rect.width/2,
+      cy:e.rect.top+e.rect.height/2,hx:e.rect.width/2,hy:e.rect.height/2,kind:e.kind||'hud',layer:e.layer||'hud',
+      edge:e.role?.split(/\s+/).includes('top')?'bottom':'left'}));
+  }
+  function beginPointer(e,h){
+    if(e.button!==0||!state)return;
+    if(h){if(!state.docked||!pullFrom(state,h,e.clientX,e.clientY,e.pointerId))return}else grab(state,e.clientX,e.clientY,e.pointerId);
+    cursor={active:true,x:e.clientX,y:e.clientY};try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}
+    e.preventDefault();e.stopPropagation();
+  }
+  function connectPointer(target,home){
+    target.addEventListener('pointerdown',e=>beginPointer(e,typeof home==='function'?home():null));
+    target.addEventListener('pointermove',e=>{if(state)move(state,e.clientX,e.clientY,e.pointerId)});
+    const up=e=>{if(state)release(state,e.pointerId);cursor.active=false};
+    target.addEventListener('pointerup',up);target.addEventListener('pointercancel',up);
+  }
+  function updatePores(hs){
+    const wanted=new Set();
+    for(const h of hs){if(!state||!compatible(state,h))continue;
+      for(const side of ['left','right','top','bottom']){
+        const key=h.id+':'+side;wanted.add(key);let p=pores.find(v=>v.key===key);
+        if(!p){const node=document.createElement('div');node.className='display-glass-edge';node.setAttribute('aria-hidden','true');
+          node.style.cssText='position:fixed;z-index:38;touch-action:none;background:transparent;cursor:grab';
+          document.body.append(node);p={key,node,h,side};pores.push(p);connectPointer(node,()=>p.h)}
+        p.h=h;const r=h.rect,w=14;p.node.style.display=visible&&state.docked?'block':'none';
+        if(side==='left'||side==='right'){p.node.style.left=((side==='left'?r.left-w:r.left+r.width))+'px';p.node.style.top=r.top+'px';p.node.style.width=w+'px';p.node.style.height=r.height+'px'}
+        else{p.node.style.left=r.left+'px';p.node.style.top=((side==='top'?r.top-w:r.top+r.height))+'px';p.node.style.width=r.width+'px';p.node.style.height=w+'px'}
+      }
+    }for(const p of pores)if(!wanted.has(p.key))p.node.style.display='none';
   }
   function loop(ms){
-    const dt=last?(ms-last)/1000:0;last=ms;
-    const c=compass(),G=root.SSSDisplayGlass;
-    reduced=!(G&&G.enabled());
-    const off=!c||c.off||reduced;
-    homeNow=c&&c.cx!==undefined?c:null;
-    if(!state&&homeNow)state=create(homeNow);
+    const dt=last?(ms-last)/1000:0;last=ms;const G=root.SSSDisplayGlass,hs=surfaces(),off=!(G&&G.enabled())||!hs.length;
+    if(!state&&hs.length)state=create(hs.find(h=>h.id==='mini-pocket')||hs[0],{w:root.innerWidth,h:root.innerHeight});
     if(state){
-      if(off){state.held=false}
-      else step(state,homeNow,dt,{w:root.innerWidth,h:root.innerHeight});
-      /* closed compass with a docked lens: nothing to show; a free lens stays where it was put */
-      visible=!off&&!(c&&c.closed&&state.docked);
-      if(el){
-        const g=geometry(state,homeNow);
-        el.style.display=visible?'block':'none';
-        el.style.left=(state.x-g.hx-6)+'px';el.style.top=(state.y-g.hy-6)+'px';el.style.width=(g.hx*2+12)+'px';el.style.height=(g.hy*2+12)+'px';
-        el.style.borderRadius=(g.round>.5?'50%':'22px');
-      }
-    }
-    root.requestAnimationFrame(loop);
+      if(off){state.held=false;cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor);
+      homeNow=state.attached?hs.find(h=>h.id===state.homeId&&compatible(state,h))||null:null;visible=!off;
+      if(el){const g=geometry(state,hs);el.style.display=visible?'block':'none';el.style.cursor=state.held?'grabbing':'grab';
+        el.style.left=(state.x-g.hx)+'px';el.style.top=(state.y-g.hy)+'px';el.style.width=(g.hx*2)+'px';el.style.height=(g.hy*2)+'px';el.style.borderRadius='50%';
+        el.dataset.phase=state.held?'held':state.docked?'stored':state.attached?'joining':'free';el.dataset.layer=state.layer}
+    }updatePores(hs);root.requestAnimationFrame(loop);
   }
-  function snapshot(){
-    if(!state||!visible)return null;
-    return {lens:geometry(state,homeNow),home:homeNow};
-  }
+  function snapshot(){return state&&visible?{lens:geometry(state,homeNow),home:homeNow}:null}
   function start(){
     if(started||typeof document!=='object')return;started=true;
-    state=null;
-    el=document.createElement('div');el.id='display-lens';el.setAttribute('aria-hidden','true');
-    el.style.cssText='position:fixed;z-index:39;display:none;touch-action:none;cursor:grab;background:transparent;pointer-events:auto';
-    document.body.appendChild(el);
-    el.addEventListener('pointerdown',e=>{if(e.button!==0||!state)return;grab(state,e.clientX,e.clientY,e.pointerId);el.style.cursor='grabbing';try{el.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
-    el.addEventListener('pointermove',e=>{if(state)move(state,e.clientX,e.clientY,e.pointerId)});
-    const up=e=>{if(state)release(state,e.pointerId);el.style.cursor='grab'};
-    el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
+    el=document.createElement('div');el.id='display-lens';el.setAttribute('aria-label','Glass drop');el.setAttribute('role','button');el.tabIndex=0;
+    el.style.cssText='position:fixed;z-index:39;display:none;touch-action:none;cursor:grab;background:transparent;pointer-events:auto;border-radius:50%';
+    document.body.append(el);connectPointer(el);
+    root.addEventListener('pointermove',e=>{
+      const own=e.target===el||e.target?.classList?.contains('display-glass-edge');
+      const controls=!own&&e.target?.closest?.('button,a,input,label,[role="slider"],[data-display-occupancy]');
+      cursor={active:!controls&&e.pointerType!=='touch',x:e.clientX,y:e.clientY};
+    },{passive:true});
+    root.addEventListener('blur',()=>{cursor.active=false;if(state)release(state,state.pid)});
+    el.addEventListener('pointerleave',()=>{if(!state?.held)cursor.active=false});
+    el.addEventListener('keydown',e=>{if(!state)return;const a={ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-12],ArrowDown:[0,12]}[e.key];
+      if(a){state.docked=false;state.attached=false;state.x+=a[0];state.y+=a[1];e.preventDefault()}});
     root.requestAnimationFrame(loop);
   }
-  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint});
+  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom});
 });
