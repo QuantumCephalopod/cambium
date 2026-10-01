@@ -64,24 +64,40 @@ assert.strictEqual(s.attached,false,'nearby UI does not swallow every released d
 assert.ok(s.radius>65&&s.hx===s.hy);
 console.log('narrow-pane free-drop witness: PASS');
 
-/* Capture can fail or disappear: owning completion at the window still ends a drag. */
+/* The drop lets the world through: a click under it is replayed to what lies beneath; pressing on
+ * the drop and pulling takes it at once. Ownership and cancellation still hold. */
 const vm=require('vm'),fs=require('fs');
 function target(){return {style:{},dataset:{},events:{},classList:{contains:()=>false},setAttribute(){},
   addEventListener(type,fn){(this.events[type]??=[]).push(fn)},setPointerCapture(){throw Error('capture unavailable')},
-  fire(type,extra={}){const e={button:0,pointerId:1,clientX:400,clientY:300,currentTarget:this,target:this,preventDefault(){},stopPropagation(){},...extra};for(const f of this.events[type]||[])f(e)}}}
-const win=target(),nodes=[],frames=[];let glassOn=true;
-Object.assign(win,{innerWidth:1100,innerHeight:700,getComputedStyle:()=>({}),requestAnimationFrame:f=>frames.push(f),
+  dispatchEvent(ev){for(const f of this.events[ev.type]||[])f(ev);return true},
+  fire(type,extra={}){const e={type,button:0,pointerId:1,pointerType:'mouse',clientX:400,clientY:300,currentTarget:this,target:this,preventDefault(){},stopPropagation(){},...extra};for(const f of this.events[type]||[])f(e)}}}
+const win=target(),nodes=[],frames=[];let glassOn=true,clock=100;
+class PE{constructor(type,init){Object.assign(this,init);this.type=type}}
+Object.assign(win,{innerWidth:1100,innerHeight:700,PointerEvent:PE,getComputedStyle:()=>({}),requestAnimationFrame:f=>frames.push(f),
   document:{documentElement:{dataset:{}},body:{append:n=>nodes.push(n)},createElement:target},
   SSSDisplayGlass:{enabled:()=>glassOn,collect:()=>[{id:'top',kind:'hud',layer:'hud',role:'top',rect:{left:0,top:0,right:1100,bottom:120,width:1100,height:120}}]},module:{exports:{}}});
 win.globalThis=win;vm.runInNewContext(fs.readFileSync(require.resolve('./display-lens.js'),'utf8'),win);
-const controller=win.module.exports;controller.start();frames.shift()(100);
-const drop=nodes.find(n=>n.id==='display-lens'),tick=()=>frames.shift()(200);
-drop.fire('pointerdown');tick();assert.strictEqual(controller.snapshot().lens.held,true);
-drop.fire('pointerdown',{pointerId:2});win.fire('pointerup',{pointerId:2});
-assert.strictEqual(controller.snapshot().lens.held,true,'second pointer cannot take ownership or end the first drag');
+const controller=win.module.exports;controller.start();
+const tick=(ms=16)=>{clock+=ms;frames.shift()(clock)};tick();
+const drop=nodes.find(n=>n.id==='display-lens');
+assert.strictEqual(drop.style.cssText.includes('pointer-events:none'),true,'the drop never blocks the pointer');
+const L0=controller.snapshot().lens,at={clientX:L0.x,clientY:L0.y};
+const under=target();let downs=0;under.addEventListener('pointerdown',()=>downs++);
+win.fire('pointerdown',{...at,target:under});tick(60);win.fire('pointerup',{...at,target:under});
+assert.strictEqual(downs,1,'a click on the drop is replayed to what lies under it');
+assert.strictEqual(controller.snapshot().lens.held,false,'a click does not take the drop');
+win.fire('pointerdown',{...at,target:under});tick(900);win.fire('pointerup',{...at,target:under});
+assert.strictEqual(downs,2,'a still press, however long, is still a click that passes through');
+assert.strictEqual(controller.snapshot().lens.held,false);
+const hold=()=>{const l=controller.snapshot().lens;win.fire('pointerdown',{clientX:l.x,clientY:l.y,target:under});win.fire('pointermove',{clientX:l.x+12,clientY:l.y,target:under});tick()};
+hold();assert.strictEqual(controller.snapshot().lens.held,true,'pressing on the drop and pulling takes it at once');
+assert.strictEqual(downs,2,'a pull is not replayed beneath');
+win.fire('pointerup',{pointerId:2});
+assert.strictEqual(controller.snapshot().lens.held,true,'another pointer cannot end the hold');
 win.fire('pointerup');assert.strictEqual(controller.snapshot().lens.held,false);
 assert.notStrictEqual(drop.dataset.phase,'held','release phase is visible immediately');
-for(const type of ['pointercancel','lostpointercapture']){drop.fire('pointerdown');win.fire(type);assert.strictEqual(controller.snapshot().lens.held,false,type+' clears ownership')}
-drop.fire('pointerdown');win.fire('blur');assert.strictEqual(controller.snapshot().lens.held,false);
-drop.fire('pointerdown');glassOn=false;tick();glassOn=true;tick();assert.strictEqual(controller.snapshot().lens.held,false,'turning glass off cancels the drag');
-console.log('pointer ownership / capture failure / cancellation witness: PASS');
+for(const type of ['pointercancel','lostpointercapture']){hold();win.fire(type);assert.strictEqual(controller.snapshot().lens.held,false,type+' clears ownership')}
+hold();win.fire('blur');assert.strictEqual(controller.snapshot().lens.held,false);
+hold();glassOn=false;tick();glassOn=true;tick();assert.strictEqual(controller.snapshot().lens.held,false,'turning glass off cancels the drag');
+assert.ok(controller.snapshot().lens.mag>.11&&controller.snapshot().lens.mag<.12,'the drop magnifies by 13%');
+console.log('pass-through click / pull-to-take / ownership witness: PASS');

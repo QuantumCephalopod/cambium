@@ -8,7 +8,7 @@
   'use strict';
   /* The centre never follows the cursor: a nearby cursor only makes the flesh reach (a lobe from the anchored centre);
    * connected tissue draws a free drop home slowly. */
-  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,lobe:.42,reachStiff:140,reachDamp:17,homePull:.07,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
+  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,lobe:.42,reachStiff:140,reachDamp:17,homePull:.07,holdSlop:5,magnify:1.13,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
   const n=v=>Number.isFinite(+v)?+v:0,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function scaleOf(h){return h?clamp(Math.min(n(h.hx),n(h.hy))/100,.6,1.2):1}
   function radiusOf(h,v){return v?clamp(Math.min(v.w,v.h)*.15,36,72):clamp(Math.min(h?.hx||100,h?.hy||100)*.62,36,72)}
@@ -80,7 +80,7 @@
     const h=homesOf(home).find(q=>idOf(q)===L.homeId&&compatible(L,q)),a=h&&L.attached?anchor(h,L.edge,L.u):null;
     const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
     return {x:L.x,y:L.y,hx:L.radius,hy:L.radius,round:1,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
-      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,rx:n(L.fx),ry:n(L.fy),reachR:L.radius*K.lobe,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
+      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,rx:n(L.fx),ry:n(L.fy),reachR:L.radius*K.lobe,mag:1-1/K.magnify,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
   function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
@@ -104,21 +104,49 @@
       cy:e.rect.top+e.rect.height/2,hx:e.rect.width/2,hy:e.rect.height/2,kind:e.kind||'hud',layer:e.layer||'hud',
       edge:e.role?.split(/\s+/).includes('top')?'bottom':'left'}));
   }
-  function beginPointer(e,h){
-    if(e.button!==0||!state||(state.held&&state.pid!==e.pointerId))return;
-    if(h){if(!state.docked||!pullFrom(state,h,e.clientX,e.clientY,e.pointerId))return}else grab(state,e.clientX,e.clientY,e.pointerId);
-    cursor={active:true,x:e.clientX,y:e.clientY};try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}
-    e.preventDefault();e.stopPropagation();
+  /* The drop lets the world through: hover is never blocked and a direct click passes to whatever
+   * lies under it. Pressing on the drop and pulling takes it at once (or pulls it from a reservoir edge). */
+  let pending=null,replaying=false;
+  function underDrop(x,y){
+    if(!state||!visible)return null;
+    if(contains(state,x,y))return {pore:null};
+    if(state.docked)for(const p of pores){if(p.node.style.display==='none')continue;const r=p.box;if(r&&x>=r.l&&x<=r.r&&y>=r.t&&y<=r.b)return {pore:p}}
+    return null;
   }
-  function paintPhase(){if(el&&state){el.dataset.phase=state.held?'held':state.docked?'stored':state.attached?'joining':'free';el.style.cursor=state.held?'grabbing':'grab'}}
+  function replay(target,type,src,x,y){
+    if(!target||typeof root.PointerEvent!=='function')return;
+    replaying=true;
+    try{target.dispatchEvent(new root.PointerEvent(type,{bubbles:true,cancelable:true,composed:true,pointerId:src.pointerId,pointerType:src.pointerType||'mouse',isPrimary:src.isPrimary!==false,button:0,buttons:type==='pointerup'?0:1,clientX:x,clientY:y}))}
+    finally{replaying=false}
+  }
+  function activate(){
+    const p=pending;pending=null;if(!p||!state)return;
+    if(p.pore){if(!state.docked||!pullFrom(state,p.pore.h,p.x,p.y,p.id))return}else grab(state,p.x,p.y,p.id);
+    cursor={active:true,x:p.x,y:p.y};paintPhase();
+  }
+  function onDown(e){
+    if(replaying||e.button!==0||!state||state.held)return;
+    const hit=underDrop(e.clientX,e.clientY);if(!hit)return;
+    pending={id:e.pointerId,x:e.clientX,y:e.clientY,t0:last,target:e.target,src:e,pore:hit.pore};
+    e.stopPropagation();e.preventDefault();
+  }
+  function onMove(e){
+    if(replaying)return;
+    if(pending&&pending.id===e.pointerId&&Math.hypot(e.clientX-pending.x,e.clientY-pending.y)>K.holdSlop)activate();
+    if(state)move(state,e.clientX,e.clientY,e.pointerId);
+    const own=state?.held&&state.pid===e.pointerId;
+    const controls=!own&&e.target?.closest?.('button,a,input,label,[role="slider"],[data-display-occupancy]');
+    cursor={active:!controls&&e.pointerType!=='touch',x:e.clientX,y:e.clientY};
+  }
+  function onUp(e){
+    if(replaying)return;
+    if(pending&&pending.id===e.pointerId){const p=pending;pending=null;if(e.type==='pointerup')replay(p.target,'pointerdown',p.src,p.x,p.y);return}
+    endPointer(e);
+  }
+  function paintPhase(){if(el&&state){el.dataset.phase=state.held?'held':state.docked?'stored':state.attached?'joining':'free'}}
   function endPointer(e){
     if(!state?.held||state.pid!==e.pointerId)return;
     release(state,e.pointerId);cursor.active=false;paintPhase();
-  }
-  function connectPointer(target,home){
-    target.addEventListener('pointerdown',e=>beginPointer(e,typeof home==='function'?home():null));
-    target.addEventListener('pointermove',e=>{if(state)move(state,e.clientX,e.clientY,e.pointerId)});
-    for(const type of ['pointerup','pointercancel','lostpointercapture'])target.addEventListener(type,endPointer);
   }
   function updatePores(hs){
     const wanted=new Set();
@@ -126,11 +154,13 @@
       for(const side of ['left','right','top','bottom']){
         const key=h.id+':'+side;wanted.add(key);let p=pores.find(v=>v.key===key);
         if(!p){const node=document.createElement('div');node.className='display-glass-edge';node.setAttribute('aria-hidden','true');
-          node.style.cssText='position:fixed;z-index:38;touch-action:none;background:transparent;cursor:grab';
-          document.body.append(node);p={key,node,h,side};pores.push(p);connectPointer(node,()=>p.h)}
+          node.style.cssText='position:fixed;z-index:38;touch-action:none;background:transparent;pointer-events:none';
+          document.body.append(node);p={key,node,h,side};pores.push(p)}
         p.h=h;const r=h.rect,w=14;p.node.style.display=visible&&state.docked?'block':'none';
-        if(side==='left'||side==='right'){p.node.style.left=((side==='left'?r.left-w:r.left+r.width))+'px';p.node.style.top=r.top+'px';p.node.style.width=w+'px';p.node.style.height=r.height+'px'}
-        else{p.node.style.left=r.left+'px';p.node.style.top=((side==='top'?r.top-w:r.top+r.height))+'px';p.node.style.width=r.width+'px';p.node.style.height=w+'px'}
+        let l,t,W,H;
+        if(side==='left'||side==='right'){l=side==='left'?r.left-w:r.left+r.width;t=r.top;W=w;H=r.height}
+        else{l=r.left;t=side==='top'?r.top-w:r.top+r.height;W=r.width;H=w}
+        p.node.style.left=l+'px';p.node.style.top=t+'px';p.node.style.width=W+'px';p.node.style.height=H+'px';p.box={l,t,r:l+W,b:t+H};
       }
     }for(const p of pores)if(!wanted.has(p.key))p.node.style.display='none';
   }
@@ -138,9 +168,9 @@
     const dt=last?(ms-last)/1000:0;last=ms;const G=root.SSSDisplayGlass,hs=surfaces(),off=!(G&&G.enabled())||!hs.length;
     if(!state&&hs.length)state=create(hs.find(h=>h.id==='mini-pocket')||hs[0],{w:root.innerWidth,h:root.innerHeight});
     if(state){
-      if(off){release(state,state.pid);cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor);
+      if(off){pending=null;release(state,state.pid);cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor);
       homeNow=state.attached?hs.find(h=>h.id===state.homeId&&compatible(state,h))||null:null;visible=!off;
-      if(el){const g=geometry(state,hs);el.style.display=visible?'block':'none';el.style.cursor=state.held?'grabbing':'grab';
+      if(el){const g=geometry(state,hs);el.style.display=visible?'block':'none';
         el.style.left=(state.x-g.hx)+'px';el.style.top=(state.y-g.hy)+'px';el.style.width=(g.hx*2)+'px';el.style.height=(g.hy*2)+'px';el.style.borderRadius='50%';
         paintPhase();el.dataset.layer=state.layer}
     }updatePores(hs);root.requestAnimationFrame(loop);
@@ -149,17 +179,12 @@
   function start(){
     if(started||typeof document!=='object')return;started=true;
     el=document.createElement('div');el.id='display-lens';el.setAttribute('aria-label','Glass drop');el.setAttribute('role','button');el.tabIndex=0;
-    el.style.cssText='position:fixed;z-index:39;display:none;touch-action:none;cursor:grab;background:transparent;pointer-events:auto;border-radius:50%';
-    document.body.append(el);connectPointer(el);
-    for(const type of ['pointerup','pointercancel','lostpointercapture'])root.addEventListener(type,endPointer,{capture:true});
-    root.addEventListener('pointermove',e=>{
-      if(state)move(state,e.clientX,e.clientY,e.pointerId);
-      const own=e.target===el||e.target?.classList?.contains('display-glass-edge');
-      const controls=!own&&e.target?.closest?.('button,a,input,label,[role="slider"],[data-display-occupancy]');
-      cursor={active:!controls&&e.pointerType!=='touch',x:e.clientX,y:e.clientY};
-    },{passive:true});
-    root.addEventListener('blur',()=>{cursor.active=false;if(state){release(state,state.pid);paintPhase()}});
-    el.addEventListener('pointerleave',()=>{if(!state?.held)cursor.active=false});
+    el.style.cssText='position:fixed;z-index:39;display:none;touch-action:none;background:transparent;pointer-events:none;border-radius:50%';
+    document.body.append(el);
+    root.addEventListener('pointerdown',onDown,{capture:true});
+    root.addEventListener('pointermove',onMove,{capture:true,passive:true});
+    for(const type of ['pointerup','pointercancel','lostpointercapture'])root.addEventListener(type,onUp,{capture:true});
+    root.addEventListener('blur',()=>{pending=null;cursor.active=false;if(state){release(state,state.pid);paintPhase()}});
     el.addEventListener('keydown',e=>{if(!state)return;const a={ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-12],ArrowDown:[0,12]}[e.key];
       if(a){state.docked=false;state.attached=false;state.x+=a[0];state.y+=a[1];e.preventDefault()}});
     root.requestAnimationFrame(loop);

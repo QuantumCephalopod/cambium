@@ -67,6 +67,8 @@ const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
  * carries no point population. */
 const shader=Object.freeze({
   id:'shader:organism:papers',
+  /* Papers' body lives in its own canvases; handing them to the field lets Display's invariant glass refract them. */
+  composite:()=>state?.mounted?[state.environmentCanvas,state.canvas,state.textCanvas]:null,
   environment:false, /* Papers' own inquiry environment already embodies its host */
   clear:[0,0,0,0],
   fallbackAlpha:0,
@@ -140,7 +142,12 @@ function ensureShadow(){
   }
   return shadowPromise;
 }
+function relayoutWhenFaceReady(){
+  if(state?.faceRelayout||!document.fonts?.load)return;state.faceRelayout=true;
+  document.fonts.load('11px "SpriteSheet Mono"').then(()=>{if(!state)return;try{pretextModule?.clearCache?.()}catch(_){}state.wisdomPrepared=new Map();state.namesFor=null;state.names=new Map()}).catch(()=>{});
+}
 function ensurePretext(){
+  relayoutWhenFaceReady();
   if(pretextModule)return Promise.resolve(pretextModule);
   if(!pretextPromise){
     pretextPromise=import(pretextURL()).then(m=>{
@@ -353,7 +360,7 @@ function compile(gl,type,src){const s=gl.createShader(type);gl.shaderSource(s,sr
 function program(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
 
 function createRenderer(canvas){
-  const gl=canvas.getContext('webgl2',{alpha:true,antialias:true,premultipliedAlpha:false});
+  const gl=canvas.getContext('webgl2',{alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:true});
   if(!gl)return null;
   const V0=N.V0.map(v=>[...v]);
   const VS=`#version 300 es
@@ -462,7 +469,7 @@ function sitePalette(siteId){
 function createInquiryEnvironment(canvas){
   const parent=modules.get('organism:philosophy'),shader=parent?.shader;
   if(!shader?.fragment||!Fields?.paletteSet)return null;
-  const gl=canvas.getContext('webgl2',{alpha:false,antialias:true,premultipliedAlpha:false});if(!gl)return null;
+  const gl=canvas.getContext('webgl2',{alpha:false,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:true});if(!gl)return null;
   const VS=`#version 300 es
 precision highp float;
 uniform vec4 uQuat;
@@ -711,10 +718,11 @@ function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
 }
 function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+r[0]*f/z,y:height/2-r[1]*f/z,z:r[2]}}
 function projectWorldPoint(p,cameraZ,width,height){const z=cameraZ-p[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+p[0]*f/z,y:height/2-p[1]*f/z,z:p[2]}}
-function wisdomFont(width){return width<700?'500 11px system-ui, -apple-system, "Segoe UI", sans-serif':'500 13px system-ui, -apple-system, "Segoe UI", sans-serif'}
+function wisdomFont(width){return width<700?'500 11px "SpriteSheet Mono", system-ui, sans-serif':'500 13px "SpriteSheet Mono", system-ui, sans-serif'}
 function wisdomLineHeight(width){return width<700?17:20}
 function preparedWisdom(key,text,font){
   if(!pretextModule||!key||!text)return null;
+  text=globalThis.SSSDisplayType?.fold?.(text)??text; /* Display's face has A-Z: umlauts fold before layout */
   if(!(state.wisdomPrepared instanceof Map))state.wisdomPrepared=new Map();
   const cacheKey=`${key}\u0000${font}\u0000${text}`;
   if(!state.wisdomPrepared.has(cacheKey))state.wisdomPrepared.set(cacheKey,pretextModule.prepareWithSegments(text,font));
@@ -753,8 +761,8 @@ function updateOrganismInquiry(){
  * Edges: thread of letters (tapered) → fibres (the pointer bursts them) → woven sentence, edge turned level in front.
  * Faces: dust of their letters → woven disk, face turned frontal. Vertices: the letter they are; for a Holon the
  * vertex is its parent organism (a door). Metabolites: the light is the sentence asleep. */
-const BEING_FONT='500 12px system-ui, -apple-system, "Segoe UI", sans-serif',BEING_LH=15;
-const FACE_FONT='500 11px system-ui, -apple-system, "Segoe UI", sans-serif',FACE_LH=13.5;
+const BEING_FONT='500 12px "SpriteSheet Mono", system-ui, sans-serif',BEING_LH=15;
+const FACE_FONT='500 11px "SpriteSheet Mono", system-ui, sans-serif',FACE_LH=13.5;
 const BEING_TW=300,BEING_TR=BEING_TW*Math.sqrt(3)/6,BEING_CAN=[[0,0],[BEING_TW,0],[BEING_TW/2,BEING_TW*Math.sqrt(3)/2]],BEING_CEN=[BEING_TW/2,BEING_TR];
 const beingSegmenter=typeof Intl!=='undefined'&&Intl.Segmenter?new Intl.Segmenter():null;
 function graphemes(text){return beingSegmenter?[...beingSegmenter.segment(text)].map(x=>x.segment):Array.from(text)}
@@ -1011,7 +1019,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     Vt.glyphs.forEach((g,j)=>{const sw=j===0?1:clamp(Vt.open*1.6-(j/Math.max(1,n))*.6);
       if(j===0)beingSpring(g,(g0.tx+ox)*Vt.open-4*(1-Vt.open),(g0.ty+oy)*Vt.open-8*(1-Vt.open),.2,.68);else beingSpring(g,sw*(ox+g.tx),sw*(oy+g.ty),.2,.68);g.s=sw});
     const dim=open&&!isOpen?.45:1;
-    const vf=(g,j)=>(g.bold?'600 ':'400 ')+(j===0?'13px ':'12px ')+'system-ui, -apple-system, "Segoe UI", sans-serif';
+    const vf=(g,j)=>(g.bold?'600 ':'400 ')+(j===0?'13px ':'12px ')+'"SpriteSheet Mono", system-ui, sans-serif';
     inkText(ctx,Vt.glyphs,(g,j)=>j===0,'rgb(191,245,220)',()=>.95*alpha*dim,vf,p.x,p.y);
     if(Vt.open>.01)inkText(ctx,Vt.glyphs,(g,j)=>j>0&&g.s>=.35,'rgb(223,243,234)',g=>clamp((g.s-.35)*2)*alpha,vf,p.x,p.y);
   }
@@ -1029,7 +1037,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
       beingSpring(g,(1-sw)*(g.ix+Math.sin(now/600+j)*1.2)+sw*(ox+g.tx),(1-sw)*(g.iy+Math.cos(now/700+j)*1.2)+sw*(oy+g.ty));g.s=sw});
     const dim=open&&!isOpen?.25:1;
     inkDust(ctx,M.glyphs,g=>g.s<.35,.8,'rgb(255,244,214)',.85*alpha*dim,L.x,L.y);
-    if(M.open>.01)inkText(ctx,M.glyphs,g=>g.s>=.35,'rgb(255,244,214)',g=>clamp((g.s-.35)*2)*alpha,g=>(g.bold?'600 ':'400 ')+metPx+' system-ui, -apple-system, "Segoe UI", sans-serif',L.x,L.y);
+    if(M.open>.01)inkText(ctx,M.glyphs,g=>g.s>=.35,'rgb(255,244,214)',g=>clamp((g.s-.35)*2)*alpha,g=>(g.bold?'600 ':'400 ')+metPx+' "SpriteSheet Mono", system-ui, sans-serif',L.x,L.y);
   }
   canvas.dataset.wisdomState=labelCount?'visible':(lights.length?'contract-gap':'being');canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.textBeing='true';canvas.dataset.innerPath=beingDescribe(state.inner);
   canvas.dataset.beingEdges=String(B.edges.length);canvas.dataset.beingFaces=String(B.faces.length);
@@ -1040,15 +1048,16 @@ function drawWisdom(rect,cam,translate,metabolights,now){
  * identity (`id · title`) rests as a cluster of its letters on its body, so an organism too small to
  * see is still perceptible as its sleeping name; a peek unfolds the letters into the readable name and
  * leaving folds them back. The cluster is presence, not selection: entering still follows Descent. */
-const NAME_FONT='500 11px system-ui, -apple-system, "Segoe UI", sans-serif',NAME_LH=14,NAME_W=220;
-function nameGlyphs(rec){
+const NAME_FONT='500 11px "SpriteSheet Mono", system-ui, sans-serif',NAME_LH=14,NAME_W=220;
+function nameGlyphs(rec,L=null){
   if(state.namesFor!==state.records){state.names=new Map();state.namesFor=state.records}
-  const N0=state.names;let G=N0.get(rec.id);if(G)return G;
+  const fit=L?Math.max(60,Math.min(NAME_W,Math.round(L.r*1.3/10)*10)):0,N0=state.names,cacheKey=rec.id+'@'+fit;let G=N0.get(cacheKey);if(G)return G;
   const d=state.identities.get(rec.id),text=rec.id+' · '+String(d?.title||rec.title||'').trim();
-  const lines=beingLines('name·'+rec.id,text,NAME_FONT,Array.from({length:4},(_,j)=>({x:0,y:j*NAME_LH,w:NAME_W})));if(!lines.length)return null;
+  const lines=beingLines('name·'+rec.id,text,NAME_FONT,Array.from({length:4},(_,j)=>({x:0,y:j*NAME_LH,w:fit||NAME_W})));
+  if(!lines.length)return null;
   const g=beingGlyphs(state.textCanvas.getContext('2d'),lines,NAME_FONT,rec.id.length),n=g.length,ga=Math.PI*(3-Math.sqrt(5)),R=4+Math.sqrt(n)*.55;
   g.forEach((q,j)=>{const r=Math.sqrt(j/Math.max(1,n))*R;q.ix=Math.cos(j*ga)*r;q.iy=Math.sin(j*ga)*r;q.x=q.ix;q.y=q.iy});
-  G={id:rec.id,glyphs:g,open:0};N0.set(rec.id,G);return G;
+  G={id:rec.id,glyphs:g,open:0};N0.set(cacheKey,G);return G;
 }
 function drawNames(rect,now){
   const canvas=state.textCanvas,presence=1-backgroundPassage();
@@ -1057,25 +1066,34 @@ function drawNames(rect,now){
   const hov=state.hover&&!state.current&&!state.pointer?.moved?hitGlobal(state.hover.x,state.hover.y,rect.width,rect.height,now):'';
   if(!state.current)state.canvas.style.cursor=hov?'pointer':'';
   const sleep=[[],[]],taken=[];let count=0;
+  const L=lensLocal(state.textCanvas.getBoundingClientRect());
   ctx.textBaseline='top';
   for(const rec of state.records){
-    const G=nameGlyphs(rec);if(!G)continue;count++;
+    const G=nameGlyphs(rec,L);if(!G)continue;count++;
     const p=projectPoint(overviewCenterFor(rec,rect.width,now),q,FAR_Z,rect.width,rect.height);
     if(p.x<-40||p.x>rect.width+40||p.y<-40||p.y>rect.height+40)continue;
+    if(L&&!inLens(L,p.x,p.y,28)){G.open=0;continue}
     const isOpen=rec.id===hov;G.open=mix(G.open,isOpen?1:0,Math.min(1,dt*6));
     let ox=0,oy=0;const n=G.glyphs.length;
-    if(G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,NAME_LH)),r=inkRing(G,p.x,p.y,[0,1],12,b,rect,taken);
+    if(L&&G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,NAME_LH)),s=L.r*.72,w=b.x1-b.x0,h=b.y1-b.y0;
+      const cx=Math.max(L.x-s+w/2,Math.min(L.x+s-w/2,p.x)),cy=Math.max(L.y-s+h/2,Math.min(L.y+s-h/2,p.y+12+h/2));
+      ox=(w>2*s?L.x:cx)-p.x-(b.x0+b.x1)/2;oy=(h>2*s?L.y:cy)-p.y-(b.y0+b.y1)/2}
+    else if(G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,NAME_LH)),r=inkRing(G,p.x,p.y,[0,1],12,b,rect,taken);
       ox=Math.max(14-p.x-b.x0,Math.min(rect.width-14-p.x-b.x1,r.ox));oy=Math.max(80-p.y-b.y0,Math.min(rect.height-24-p.y-b.y1,r.oy));
       if(G.open>.15)taken.push({x:p.x+ox+b.x0,y:p.y+oy+b.y0,w:b.x1-b.x0,h:b.y1-b.y0})}else G.inkAt=null;
     G.glyphs.forEach((g,j)=>{const sw=clamp(G.open*1.6-(j/Math.max(1,n))*.6);
       beingSpring(g,(1-sw)*(g.ix+Math.sin(now/900+j)*.8)+sw*(ox+g.tx),(1-sw)*(g.iy+Math.cos(now/1000+j)*.8)+sw*(oy+g.ty));g.s=sw});
     sleep[rec.locus.startsWith(here)?0:1].push([G,p]);
-    if(G.open>.01)inkText(ctx,G.glyphs,g=>g.s>=.35,'rgb(226,244,235)',g=>clamp((g.s-.35)*2)*presence,g=>(g.bold?'600 ':'400 ')+'11px system-ui, -apple-system, "Segoe UI", sans-serif',p.x,p.y);
+    if(G.open>.01){if(L){ctx.save();ctx.beginPath();ctx.arc(L.x,L.y,Math.max(0,L.r-1),0,Math.PI*2);ctx.clip()}inkText(ctx,G.glyphs,g=>g.s>=.35,'rgb(226,244,235)',g=>clamp((g.s-.35)*2)*presence,g=>(g.bold?'600 ':'400 ')+'11px "SpriteSheet Mono", system-ui, sans-serif',p.x,p.y);if(L)ctx.restore()}
   }
   /* sleeping names are batched: one path per presence class, not one fill per organism */
+  /* the drop bounds everything: sleeping letters and the opened bloom live only in the space it contains */
+  if(L){ctx.save();ctx.beginPath();ctx.arc(L.x,L.y,Math.max(0,L.r-1),0,Math.PI*2);ctx.clip()}
   [[sleep[0],.42],[sleep[1],here?.12:.42]].forEach(([list,a])=>{if(!list.length||a*presence<=.004)return;ctx.beginPath();
     for(const [G,p] of list)for(const g of G.glyphs)if(g.s<.35)ctx.rect(p.x+g.x-.55,p.y+g.y-.55,1.1,1.1);
     ctx.globalAlpha=a*presence;ctx.fillStyle='rgb(206,240,224)';ctx.fill();ctx.globalAlpha=1});
+  if(L)ctx.restore();
+  canvas.dataset.lensGated=L?'1':'0';
   canvas.dataset.nameClusters=String(count);canvas.dataset.nameOpen=hov||'';
 }
 /* The realized chambers are the visible rank-1 Sierpiński body of Papers — the same container
@@ -1221,7 +1239,12 @@ function draw(now){
   state.raf=requestAnimationFrame(draw);
 }
 
-function hitGlobal(x,y,width,height,now=performance.now()){let best=null;const q=overviewOrientation();for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width,now),q,FAR_Z,width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),FAR_Z,height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
+/* The lens is the instrument and the LOD: organisms' particle letters exist, and organisms can be peeked
+ * or entered, only where Display's glass lens lies. Without a lens nothing is gated. */
+let lensAccess=null;
+function lensLocal(rect){const L=lensAccess?.();if(!L||!rect)return null;return {x:L.x-(rect.left||0),y:L.y-(rect.top||0),r:L.r}}
+function inLens(L,x,y,pad=0){return !L||Math.hypot(x-L.x,y-L.y)<=L.r+pad}
+function hitGlobal(x,y,width,height,now=performance.now()){if(!inLens(lensLocal(state.canvas.getBoundingClientRect()),x,y))return '';let best=null;const q=overviewOrientation();for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width,now),q,FAR_Z,width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),FAR_Z,height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
 function hitChild(x,y,width,height){
   if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
   /* projectPoint rotates its input before perspective. Pull the world translation
@@ -1264,10 +1287,11 @@ function initialize(host,projection,backgroundDrag=true,dependency=null){
   ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }
 
-function render({host,content,projection,backgroundDrag=true,dependency=null}={}){
+function render({host,content,projection,backgroundDrag=true,dependency=null,lens=null}={}){
+  lensAccess=typeof lens==='function'?lens:null;
   if(!host||!content||!projection?.groups||!projection?.phenotype||!N||!W)return false;
   host.hidden=false;content.replaceChildren();content.className='interlocutor-content papers-content';
-  const shared=host.querySelector('.interlocutor-background');if(shared){shared.style.opacity='0';shared.style.pointerEvents='none'}
+  const shared=host.querySelector('.interlocutor-background');if(shared)shared.style.pointerEvents='none';
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
   if(!state||state.host!==host)initialize(host,projection,backgroundDrag,dependency);else{state.dependency=dependency;if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.environmentCanvas.hidden=false;state.canvas.hidden=false;state.textCanvas.hidden=false;state.physiology.hidden=false;state.sourceInfo.hidden=false;state.chamberLabels.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
   return true;
