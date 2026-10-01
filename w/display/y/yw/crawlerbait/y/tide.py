@@ -112,7 +112,7 @@ def raw_capture_paths():
 
 
 def raw_records(value: dict) -> list:
-    if value.get("version") != 4 or value.get("source") != "cloudflare:httpRequestsAdaptive":
+    if value.get("version") not in (4, 5) or value.get("source") != "cloudflare:httpRequestsAdaptive":
         raise RuntimeError("invalid public traffic capture")
     provider = value.get("published_response") or {}
     zones = provider.get("data", {}).get("viewer", {}).get("zones", [])
@@ -122,22 +122,17 @@ def raw_records(value: dict) -> list:
 
 
 def traffic_identity(record: dict) -> dict:
+    public_id = str(record.get("beingId") or "")
+    if public_id:
+        return {"id": public_id}
+    # Legacy v4 captures are migrated in-place when possible, but replay remains able to
+    # derive the same artwork identity without carrying the recognition material forward.
     network = str(record.get("clientIPIdentity") or "")
     if not network:
-        raise RuntimeError("public traffic event is missing stable clientIPIdentity")
+        raise RuntimeError("public traffic event is missing artwork being identity")
     ua = str(record.get("userAgent") or "")
     basis = (network + "\x00" + ua).encode("utf-8", "replace")
-    return {
-        "id": sha256(basis).hexdigest()[:24],
-        "network_identity": network,
-        "user_agent": ua,
-    }
-
-
-def bump_set(counter: dict, value) -> None:
-    raw = str(value or "")
-    if raw:
-        counter[raw] = int(counter.get(raw, 0)) + 1
+    return {"id": sha256(basis).hexdigest()[:24]}
 
 
 def empty_route(path: str):
@@ -168,25 +163,17 @@ def assimilate_raw(state: dict, record: dict, source_file: str, source_index: in
     cid = identity["id"]
     route["crawlers"][cid] = int(route["crawlers"].get(cid, 0)) + 1
     crawler = state["crawlers"].setdefault(cid, {
-        **identity,
+        "id": cid,
         "events": 0,
         "first_seen": None,
         "last_seen": None,
         "baits": {},
-        "countries": {},
-        "asns": {},
-        "devices": {},
-        "verified_bot_categories": {},
     })
     crawler["events"] += 1
     crawler["baits"][path] = int(crawler["baits"].get(path, 0)) + 1
     if moment:
         crawler["first_seen"] = moment if not crawler["first_seen"] else min(crawler["first_seen"], moment)
         crawler["last_seen"] = moment if not crawler["last_seen"] else max(crawler["last_seen"], moment)
-    bump_set(crawler["countries"], record.get("clientCountryName"))
-    bump_set(crawler["asns"], record.get("clientAsn"))
-    bump_set(crawler["devices"], record.get("clientDeviceType"))
-    bump_set(crawler["verified_bot_categories"], record.get("verifiedBotCategory"))
 
     state["encounters"].append({
         "t": moment,
@@ -194,7 +181,6 @@ def assimilate_raw(state: dict, record: dict, source_file: str, source_index: in
         "path": path,
         "status": record.get("edgeResponseStatus"),
         "method": record.get("clientRequestHTTPMethodName"),
-        "query": record.get("clientRequestQuery"),
         "source_file": source_file,
         "source_index": source_index,
     })
@@ -257,7 +243,7 @@ def classify_beings(state: dict) -> None:
 def rebuild_state():
     legacy = replay_legacy()
     state = {
-        "version": 5,
+        "version": 6,
         "legacy_404_through": legacy.get("last_complete_end"),
         "raw_capture_start": None,
         "raw_capture_end": None,
@@ -266,6 +252,8 @@ def rebuild_state():
         "crawlers": {},
         "encounters": [],
     }
+    phenotype_parts: dict[str, list[str]] = {}
+    phenotype_samples: dict[str, int] = {}
 
     for path, old in legacy["routes"].items():
         route = state["routes"].setdefault(path, empty_route(path))
@@ -292,6 +280,23 @@ def rebuild_state():
         state["raw_requests"] += len(records)
         for index, record in enumerate(records):
             assimilate_raw(state, record, path.name, index)
+        for cid, phenotype in (value.get("phenotype_by_being") or {}).items():
+            if not isinstance(phenotype, dict):
+                continue
+            genome = str(phenotype.get("genome") or "")
+            if genome:
+                phenotype_parts.setdefault(cid, []).append(genome)
+            phenotype_samples[cid] = phenotype_samples.get(cid, 0) + int(phenotype.get("samples") or 0)
+
+    for cid, crawler in state["crawlers"].items():
+        parts = phenotype_parts.get(cid) or []
+        if parts:
+            crawler["genome"] = sha256(
+                ("crawlerbait:genome:v1\x00" + cid + "\x00" + "\x00".join(parts)).encode("utf-8")
+            ).hexdigest()
+        else:
+            crawler["genome"] = sha256(("crawlerbait:genome-legacy:v1\x00" + cid).encode("utf-8")).hexdigest()
+        crawler["phenotype_samples"] = phenotype_samples.get(cid, 0)
 
     state["encounters"].sort(key=lambda e: (e.get("t") or "", e["source_file"], e["source_index"]))
     classify_beings(state)
@@ -424,10 +429,12 @@ def projection_from(state: dict):
             "legacy_404_observations": sum(r["legacy_404_observations"] for r in routes),
         },
         "policy": {
-            "observation_domain": "all captured Cloudflare httpRequestsAdaptive web traffic",
+            "observation_domain": "functional HTTP encounter truth plus opaque auxiliary phenotype sensing",
             "semantic_filters": [],
-            "traffic_identity": "stable HMAC(clientIP) + exact userAgent tuple",
-            "network_identity": "clientIPIdentity = HMAC-SHA256(secret, canonical clientIP); literal clientIP never persists",
+            "never_captured": ["clientRequestQuery"],
+            "traffic_identity": "opaque artwork-local being ID derived transiently from private network recognition + exact User-Agent",
+            "recognition_publication": "literal IP, network pseudonym and exact User-Agent are not persisted in public traces",
+            "phenotype": "auxiliary provider dimensions enter only through keyed irreversible interference",
             "growth_gate": "none",
             "public_namespace": "/crawlerbait/",
             "bait_addressing": "shortest unique prefix of an unbounded stable path-identity stream in tetrahedral bait-space",
@@ -459,12 +466,12 @@ def projection_from(state: dict):
 
 def raw_public_manifest():
     files = []
+    versions = set()
     for path in raw_capture_paths():
         value = read_json(path)
         records = raw_records(value)
-        rel = (
-            "w/display/y/yw/crawlerbait/x/captures/" + path.name
-        )
+        versions.add(int(value.get("version") or 0))
+        rel = "w/display/y/yw/crawlerbait/x/captures/" + path.name
         files.append({
             "file": path.name,
             "window": value["window"],
@@ -475,13 +482,13 @@ def raw_public_manifest():
     return {
         "source": "crawlerbait/x/captures/*.traffic.json",
         "semantic_filters": [],
-        "fields": "every field Cloudflare advertised at capture time; literal clientIP is replaced before persistence by stable clientIPIdentity",
-        "client_ip_publication": {
-            "scheme": "hmac-sha256",
-            "domain": "crawlerbait:clientIP:v1",
-            "key_epoch": "v1",
-            "equality_preserved": True,
-            "literal_ip_persisted": False,
+        "capture_versions": sorted(versions),
+        "fields": "public functional encounters plus opaque keyed phenotype; clientRequestQuery is never captured",
+        "recognition_publication": {
+            "literal_client_ip": False,
+            "network_pseudonym": False,
+            "exact_user_agent": False,
+            "public_identity": "opaque artwork-local being ID",
         },
         "files": files,
     }
@@ -510,16 +517,16 @@ def render_public(state: dict):
         f'<p>{projection["summary"]["web_requests"]} raw requests · {projection["summary"]["crawlers"]} traffic beings · {projection["summary"]["baits"]} baits</p>'
         f'<h2>baits</h2><ul>{links}</ul>'
         '<p><a href="/crawlerbait/state.json">public organism state</a> · '
-        '<a href="/crawlerbait/traffic.json">public raw traffic captures</a></p>'
+        '<a href="/crawlerbait/traffic.json">metabolized encounter traces</a></p>'
     )
     (root / "index.html").write_text(page("crawlerbait", hub), encoding="utf-8")
 
     by_id = {c["id"]: c for c in projection["crawlers"]}
     for route in projection["routes"]:
         beings = "".join(
-            f'<li><code>{escape(by_id[item["id"]]["network_identity"])}</code> · '
-            f'<code>{escape(by_id[item["id"]]["user_agent"])}</code> · '
-            f'{item["events"]} events · <code>{escape(item["id"])}</code></li>'
+            f'<li><code>{escape(item["id"])}</code> · '
+            f'{escape(BEING_KINDS.get(by_id[item["id"]].get("kind"), "Being"))} · '
+            f'{item["events"]} events</li>'
             for item in route["crawlers"]
         ) or '<li class="dim">Only preserved legacy 404 evidence exists for this bait.</li>'
         body = (
@@ -534,7 +541,7 @@ def render_public(state: dict):
             f'<li>last seen: <code>{escape(str(route["last_seen"] or "—"))}</code></li>'
             '</ul>'
             f'<h2>traffic beings observed here</h2><ul>{beings}</ul>'
-            '<p><a href="/crawlerbait/traffic.json">field-complete public traffic captures ↗</a></p>'
+            '<p><a href="/crawlerbait/traffic.json">metabolized public encounter traces ↗</a></p>'
         )
         parts = local_bait_parts(route["path"])
         out = root / "bait" / Path(*parts) / "index.html" if parts else root / "receipt" / receipt_id(route["path"]) / "index.html"
@@ -551,7 +558,7 @@ def write_outputs(state: dict):
 
 def self_test():
     state = {
-        "version": 5,
+        "version": 6,
         "legacy_404_through": None,
         "raw_capture_start": "2026-09-18T00:00:00Z",
         "raw_capture_end": "2026-09-18T01:00:00Z",
@@ -562,13 +569,10 @@ def self_test():
     }
     r1 = {
         "datetime": "2026-09-18T00:01:00Z",
-        "clientIPIdentity": "ip:v1:1111111111111111111111111111111111111111111111111111111111111111",
-        "userAgent": "Crab/1",
+        "beingId": "0123456789abcdef01234567",
         "clientRequestPath": "/a",
-        "clientRequestQuery": "",
         "clientRequestHTTPMethodName": "GET",
         "edgeResponseStatus": 200,
-        "clientCountryName": "DE",
     }
     r2 = {**r1, "datetime": "2026-09-18T00:02:00Z", "clientRequestPath": "/b"}
     assimilate_raw(state, r1, "a.traffic.json", 0)
@@ -576,8 +580,10 @@ def self_test():
     state["raw_requests"] = 2
     assert len(state["crawlers"]) == 1
     crawler = next(iter(state["crawlers"].values()))
+    assert set(crawler) == {"id", "events", "first_seen", "last_seen", "baits"}
     assert set(crawler["baits"]) == {"/a", "/b"}
     assert len(state["encounters"]) == 2
+    assert all("query" not in e for e in state["encounters"])
     addresses = bait_addresses(state["routes"])
     assert len(set(addresses.values())) == 2
     legacy = "".join(
@@ -596,8 +602,12 @@ def self_test():
     assert being_kind([enc("/"), enc("/assets/x/a.js")]) == "x"
     classify_beings(state)
     assert crawler["kind"] == "z"
-    print("PASS · tide makes stable network-identity+UA beings span every bait they touched; no event ordering is invented; every being has exactly one kind")
-
+    legacy_record = {
+        "clientIPIdentity": "ip:v1:" + "1" * 64,
+        "userAgent": "Crab/1",
+    }
+    assert len(traffic_identity(legacy_record)["id"]) == 24
+    print("PASS · opaque artwork beings span Baits without publishing network pseudonym, exact UA or query")
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)

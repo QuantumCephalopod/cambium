@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'w/display/y/yw/crawlerbait/y/capture.py'
+      - 'w/display/y/yw/crawlerbait/y/migrate_privacy.py'
       - 'w/display/y/yw/crawlerbait/y/tide.py'
       - 'w/display/y/yw/crawlerbait/y/replay.py'
       - 'w/display/y/yw/crawlerbait/x/captures/manifest.json'
@@ -30,7 +31,35 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Capture every new raw Cloudflare HTTP event
+      - name: Condense legacy readable Traces before retirement
+        env:
+          CRAWLERBAIT_ID_KEY: ${{ secrets.CRAWLERBAIT_ID_KEY }}
+        run: |
+          set -euo pipefail
+          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --write
+          if [ -n "$(git status --porcelain -- 'w/display/y/yw/crawlerbait/x/captures' 'w/display/y/yw/crawlerbait/x/cursor.json')" ]; then
+            python3 w/display/y/yw/crawlerbait/y/tide.py --write
+            python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+            python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+            node w/display/y/yw/crawlerbait/z/render.test.cjs
+            python3 y/site-public.py --artifact _site
+            python3 y/check.py --artifact _site
+            SITE_DIR=_site node y/test-address.cjs
+            node w/display/z/site-fold.test.cjs
+            python3 y/site-public.py --artifact _site --check
+            git config user.name "crawlerbait tide"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- 'w/display/y/yw/crawlerbait'
+            git commit -m "crawlerbait: condense legacy provider traces into phenotype DNA"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          else
+            echo "legacy privacy migration already current"
+          fi
+
+      - name: Capture every new Cloudflare encounter
         env:
           CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
           CLOUDFLARE_ZONE_TAG: ${{ secrets.CLOUDFLARE_ZONE_TAG }}
@@ -39,12 +68,13 @@ jobs:
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/capture.py --write
 
-      - name: Witness raw capture law
+      - name: Witness capture and DNA law
         run: |
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
 
-      - name: Persist public raw Traces before downstream metabolism
+      - name: Persist metabolized Traces before downstream metabolism
         run: |
           set -euo pipefail
           if [ -z "$(git status --porcelain -- 'w/display/y/yw/crawlerbait/x/captures' 'w/display/y/yw/crawlerbait/x/cursor.json')" ]; then
@@ -53,7 +83,7 @@ jobs:
             git config user.name "crawlerbait tide"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -- 'w/display/y/yw/crawlerbait/x/captures'                        'w/display/y/yw/crawlerbait/x/cursor.json'
-            git commit -m "crawlerbait: capture public raw web traffic"
+            git commit -m "crawlerbait: capture metabolized web traffic"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main

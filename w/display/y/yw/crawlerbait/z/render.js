@@ -16,7 +16,7 @@ const KIND=Object.freeze({
 const STORY=Object.freeze([
   'Every request to this site is an encounter.',
   'The first time anyone asks for a path, a place condenses. When two places would collide, one divides and both sink a rank deeper.',
-  'Every visitor becomes a being. Its IP, hashed one way, is its DNA; its User-Agent only a mask.',
+  'Every visitor becomes a being. Private recognition condenses into an opaque body genome; the measurements themselves never enter the public skin.',
   'They walk the edges of that space — up onto long roads, down into fine ones — and give way to whoever has further to go.'
 ]);
 
@@ -87,7 +87,7 @@ function buildLife(projection){
   for(const c of crawlers){
     const k=KIND[c.kind]?c.kind:'x';totals[k]++;
     const es=(by.get(c.id)||[]).sort((a,b)=>a.t-b.t);if(!es.length)continue;
-    const dna=String(c.network_identity||c.id).replace(/^ip:v1:/,''),g=bytesOf(dna.padEnd(64,'0'));
+    const dna=String(c.genome||c.id),g=bytesOf(dna.padEnd(64,'0'));
     const days=new Set(es.map(e=>new Date(e.t).toISOString().slice(0,10))).size,baits=new Set(es.map(e=>e.a)).size;
     const b={id:c.id,k,events:c.events||es.length,days,baits};
     let cur=null;
@@ -492,8 +492,8 @@ function camCard(){
   HUD.cam.append(h,el('span','crawlerbait-cam-row',`heading for ${bait?.path||w.a}`),
     el('span','crawlerbait-cam-row crawlerbait-cam-next',nx===0?'walking now':nx===Infinity?'nothing left in its record':`next encounter in ${nx<90?Math.round(nx)+' s':Math.round(nx/60)+' min'} at this pace`),
     el('span','crawlerbait-cam-row',`${o.S.b.events} encounters · ${o.S.b.baits} baits · ${o.S.b.days} day${o.S.b.days>1?'s':''}`),
-    el('code','crawlerbait-cam-dna',`dna ${String(c.network_identity||o.S.b.id).replace(/^ip:v1:/,'').slice(0,24)}…`),
-    el('code','crawlerbait-cam-dna',`mask ${c.user_agent||'(none)'}`));
+    el('code','crawlerbait-cam-dna',`being ${o.S.b.id}`),
+    el('code','crawlerbait-cam-dna',`body ${String(c.genome||o.S.b.id).slice(0,24)}…`));
 }
 function paceText(x){const s=Math.pow(10,x);return s<1.5?'real time':s<60?'×'+s.toFixed(0):s<3600?(s/60).toFixed(s<600?1:0)+' min/s':s<DAY?(s/3600).toFixed(s<36000?1:0)+' h/s':(s/DAY).toFixed(1)+' d/s'}
 let hudTick=0;
@@ -584,10 +584,10 @@ function renderInspector(route){
       const being=crawlerById.get(item.id)||{};
       const row=el('div','crawlerbait-signature');
       const K=KIND[being.kind];
-      const who=el('code','',being.network_identity||item.id||'∅');
+      const who=el('code','',item.id||'∅');
       if(K){const tag=el('b','crawlerbait-kind-tag',K.name);tag.style.setProperty('--kind',K.ink);who.prepend(tag,' ')}
       row.append(who);
-      row.append(el('code','',being.user_agent||''));
+      row.append(el('code','',String(being.genome||item.id||'').slice(0,16)+'…'));
       row.append(el('span','',String(item.events||0)));
       list.append(row);
     }

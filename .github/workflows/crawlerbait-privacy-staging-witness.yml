@@ -1,0 +1,35 @@
+name: crawlerbait privacy staging witness
+
+on:
+  push:
+    branches: ['staging/crawlerbait-private-recognition']
+
+permissions:
+  contents: read
+
+jobs:
+  witness:
+    if: github.repository == 'QuantumCephalopod/cambium'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Witness capture and migration DNA
+        run: |
+          set -euo pipefail
+          python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+          node w/display/y/yw/crawlerbait/z/render.test.cjs
+
+      - name: Witness transitional v4 plus new membrane
+        run: |
+          set -euo pipefail
+          python3 y/site-public.py --artifact _site
+          python3 y/check.py --artifact _site
+          SITE_DIR=_site node y/test-address.cjs
+          node w/display/z/site-fold.test.cjs
+          python3 y/site-public.py --artifact _site --check
