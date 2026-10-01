@@ -70,3 +70,20 @@ for(const k of ['radius','bevel','bevelMax','refract','theta','aberr','mag','spe
 assert.ok(G.PARAMS.dot>0&&G.PARAMS.halftone>=0&&G.PARAMS.halftone<=1);
 assert.strictEqual(G.PARAMS.tint.length,4);assert.ok(Object.isFrozen(G.PARAMS.tint));
 console.log('display glass contract witness: PASS');
+
+/* Top overfill moves the free edge below the type and becomes one same-layer reservoir. */
+const topEntries=[
+  el({id:'top-a','data-display-occupancy':'top','data-display-glass-overfill':'42'},{left:0,top:0,width:500,height:60}),
+  el({id:'top-b','data-display-occupancy':'top','data-display-glass-overfill':'42'},{left:0,top:60,width:500,height:20}),
+];
+const topGlass=G.collect({querySelectorAll:()=>topEntries},style);
+assert.strictEqual(topGlass.length,1);
+assert.strictEqual(topGlass[0].rect.bottom,122);
+assert.deepStrictEqual(topGlass[0].ids,['top-a','top-b']);
+const otherLayer=el({id:'other-layer','data-display-occupancy':'top','data-display-glass-overfill':'42','data-display-glass-layer':'other'},{width:500,height:20});
+assert.strictEqual(G.collect({querySelectorAll:()=>[...topEntries,otherLayer]},style).length,2);
+const anonymous=[el({'data-display-glass':'on'}),el({'data-display-glass':'on'})];
+const first=G.collect({querySelectorAll:()=>anonymous},style).map(e=>e.id);
+assert.notStrictEqual(first[0],first[1]);
+assert.deepStrictEqual(G.collect({querySelectorAll:()=>anonymous},style).map(e=>e.id),first);
+console.log('glass top overfill and stable UI/layer identity witness: PASS');

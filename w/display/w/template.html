@@ -17,11 +17,11 @@
 <body>
 <a class="sr-only skip" href="#mini-trigger">skip to global navigation</a>
 <div id="noise" aria-hidden="true"></div><div id="veil" aria-hidden="true"></div>
-<header data-display-occupancy="top">
+<header id="display-header" data-display-occupancy="top" data-display-glass-overfill="42" data-display-glass-layer="hud">
   <button id="root-home" class="brand" type="button" aria-label="Return to global overview"><i></i><span>self-similar systems</span></button>
   <div class="lang" role="group" aria-label="Display / Sprache / language"><label class="inverse-control" title="Invert global colors"><input id="inverse-mode" type="checkbox" aria-label="Invert global colors"><span aria-hidden="true">◐</span></label><span>·</span><button data-lang="de" aria-pressed="false">DE</button><span>/</span><button data-lang="en" aria-pressed="true">EN</button></div>
 </header>
-<div id="display-membrane-status" data-display-occupancy="top">
+<div id="display-membrane-status" data-display-occupancy="top" data-display-glass-overfill="42" data-display-glass-layer="hud">
   <div id="route-mark">GLOBAL main:overview</div>
   <div id="status">persistent recursive display field</div>
   <div id="site-state" aria-live="polite"></div>
@@ -64,6 +64,7 @@
 <script src="assets/display-safe-area.js"></script>
 <script src="assets/display-glass.js"></script>
 <script src="assets/display-lens.js"></script>
+<script src="assets/display-label-ink.js"></script>
 /*__SITE_SCRIPTS__*/
 <script src="assets/navigation-aperture.js"></script>
 <script src="assets/display-runtime-v2.js"></script>

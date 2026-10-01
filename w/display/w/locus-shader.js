@@ -399,20 +399,18 @@ float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);retur
 float sdSeg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/max(dot(ba,ba),1e-4),0.,1.);return length(pa-ba*h);}
 mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
 /* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 angle/round/wobble/phase, uL2.x stretch */
-float sdLens(vec2 p){
-  vec2 q=p-uL0.xy,raw=q;
-  q=rot(uL1.x)*q;q*=vec2(1./(1.+uL2.x),1.+uL2.x);q=rot(-uL1.x)*q;
-  float r=mix(uA.x,min(uL0.z,uL0.w),uL1.y);
-  float d=sdBox(q,uL0.zw,r);
-  float th=atan(raw.y,raw.x);
-  return d+uL1.z*(sin(3.*th+uL1.w)+.5*sin(5.*th-1.3*uL1.w));
+float sdLens(vec2 p){return length(p-uL0.xy)-uL0.z;}
+float sdPanel(vec2 p,vec4 R){
+  vec2 q=p-R.xy;
+  if(R.y+R.w>uRes.y&&R.z*2.>uRes.x*.75)q.y+=sin(clamp(p.x/uRes.x,0.,1.)*3.14159)*uH.z;
+  return sdBox(q,R.zw,min(uA.x,min(R.z,R.w)));
 }
 float gooD(vec2 p){
   float d=sdLens(p);
   if(uN.x>.5){
-    float dA=sdBox(p-uHome.xy,uHome.zw,min(uA.x,min(uHome.z,uHome.w)));
+    float dA=sdPanel(p,uHome);
     d=smin(dA,d,uN.w);
-    if(uN.z>.5)d=smin(d,sdSeg(p,uHome.xy,uL0.xy)-uN.z,uN.w);
+    if(uN.z>.5)d=smin(d,sdSeg(p,uL2.yz,uL0.xy)-uN.z,uN.w);
   }
   return d;
 }
@@ -436,8 +434,8 @@ void main(){
   vec2 frag=gl_FragCoord.xy,h=vec2(.75,0.);
   for(int i=0;i<8;i++){
     if(i>=uCount)break;
-    vec4 R=uRect[i];vec2 p=frag-R.xy;float r=min(uA.x,min(R.z,R.w)),d=sdBox(p,R.zw,r);
-    vec2 n=vec2(sdBox(p+h.xy,R.zw,r)-sdBox(p-h.xy,R.zw,r),sdBox(p+h.yx,R.zw,r)-sdBox(p-h.yx,R.zw,r));n/=max(length(n),1e-4);
+    vec4 R=uRect[i];float d=sdPanel(frag,R);
+    vec2 n=vec2(sdPanel(frag+h.xy,R)-sdPanel(frag-h.xy,R),sdPanel(frag+h.yx,R)-sdPanel(frag-h.yx,R));n/=max(length(n),1e-4);
     surface(d,n,min(R.z,R.w),R.xy,frag);
   }
   if(uN.x>-.5){
@@ -459,7 +457,14 @@ void main(){
   c=mix(c,paper,dots(frag+vec2(1.7,.9),rimInk)*k*.5);
   outColor=vec4(c+gLit,1.);
 }`;
-  let SCENE=null,GLASS_PG=null,GLASS_OFF=false;
+  let SCENE=null,GLASS_PG=null,GLASS_OFF=false,labelInk=null;
+  function resetLabelInk(){labelInk?.reset();canvas.dataset.refractedLabels='0'}
+  function drawLabelInk(r,w,h){
+    const Ink=globalThis.SSSDisplayLabelInk;if(!Ink||!labelHost)return;
+    if(!labelInk)labelInk=Ink.create(gl,labelHost);
+    canvas.dataset.refractedLabels=labelInk.draw(r,w,h)?'1':'0';
+  }
+  addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null});
   function disposeScene(){if(!SCENE)return;gl.deleteFramebuffer(SCENE.ms);gl.deleteFramebuffer(SCENE.res);gl.deleteRenderbuffer(SCENE.rc);gl.deleteRenderbuffer(SCENE.rd);gl.deleteTexture(SCENE.tex);SCENE=null}
   function buildScene(w,h){
     disposeScene();
@@ -487,7 +492,7 @@ void main(){
     const Gm=globalThis.SSSDisplayGlass;
     if(GLASS_OFF||!Gm||!Gm.enabled())return null;
     const Ln=globalThis.SSSDisplayLens,snap=Ln?Ln.snapshot():null;
-    const pack=Gm.rects(r,{width:w,height:h},undefined,snap?['mini-pocket','mini-trigger']:null);
+    const pack=Gm.rects(r,{width:w,height:h},undefined,snap?.home?.ids||null);
     if(!pack.count&&!snap)return null;
     try{if(!SCENE||SCENE.w!==w||SCENE.h!==h)buildScene(w,h)}
     catch(err){console.warn('display glass unavailable for '+id,err);GLASS_OFF=true;disposeScene();gl.bindFramebuffer(gl.FRAMEBUFFER,null);return null}
@@ -506,11 +511,11 @@ void main(){
     gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);
     gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,S.tex);
     gl.useProgram(P.p);gl.uniform1i(P.U.scene,0);gl.uniform2f(P.U.res,w,h);gl.uniform4fv(P.U.rect,g.pack.data);gl.uniform1i(P.U.count,g.pack.count);
-    gl.uniform4f(P.U.a,q.radius*k,q.bevel,q.bevelMax*k,q.refract*k);gl.uniform4f(P.U.b,q.aberr,q.mag,q.spec,q.fres);gl.uniform4f(P.U.c,q.shadow*k,q.shadowK,q.theta,0);gl.uniform4f(P.U.t,...q.tint);gl.uniform4f(P.U.h,q.dot*k,q.halftone,0,0);
+    gl.uniform4f(P.U.a,q.radius*k,q.bevel,q.bevelMax*k,q.refract*k);gl.uniform4f(P.U.b,q.aberr,q.mag,q.spec,q.fres);gl.uniform4f(P.U.c,q.shadow*k,q.shadowK,q.theta,0);gl.uniform4f(P.U.t,...q.tint);gl.uniform4f(P.U.h,q.dot*k,q.halftone,(q.overfillWave||0)*k,0);
     {const sn=g.snap,R=g.r;
       if(sn){const Ls=sn.lens,Hm=sn.home,X=x=>(x-R.left)*k,Y=y=>h-(y-R.top)*k;
-        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,Ls.angle,Ls.round,Ls.wobble*k,Ls.phase);gl.uniform4f(P.U.l2,Ls.stretch,0,0,0);
-        if(Hm){gl.uniform4f(P.U.home,X(Hm.cx),Y(Hm.cy),Hm.hx*k,Hm.hy*k);gl.uniform4f(P.U.n,1,0,Ls.neck*k,Ls.smooth*k)}
+        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,0,1,0,0);gl.uniform4f(P.U.l2,0,X(Ls.ax),Y(Ls.ay),0);
+        if(Hm){const hp=g.Gm.derive([{rect:Hm.rect}],R,{width:w,height:h});gl.uniform4fv(P.U.home,hp.data.slice(0,4));gl.uniform4f(P.U.n,hp.count?1:0,0,Ls.neck*k,Ls.smooth*k)}
         else{gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,0,0,Ls.smooth*k)}}
       else gl.uniform4f(P.U.n,-1,0,0,0);}
     gl.bindVertexArray(P.vao);gl.drawArrays(gl.TRIANGLES,0,3);
@@ -540,10 +545,11 @@ void main(){
     }
   }
   function draw(ms){
-    if(element.hidden){restDone=false;requestAnimationFrame(draw);return}
+    if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
     refreshVisible();followStep(ms);const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
     const proj=ORTHO?orthographic(3.2*Math.tan(Math.PI/6.6),w/h,.1,20):perspective(Math.PI/3.3,w/h,.1,20),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
+    updateLabels();
     if(gl&&GL){
       const hv=hostView(),hostClear=hv?.e.shader.clear;
       const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);
@@ -582,14 +588,15 @@ void main(){
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
       }
       drawPointsGL(proj,view,mdl,d);
-      if(glass)glassEnd(glass,w,h);
+      if(glass){drawLabelInk(r,w,h);glassEnd(glass,w,h)}else resetLabelInk();
     }else if(ctx){
+      resetLabelInk();
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);
       ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle=`rgb(${clear.slice(0,3).map(v=>Math.round(clamp(v)*255)).join(',')})`;ctx.fillRect(0,0,r.width,r.height);
       for(const cell of cells){const pts=cell.tet.map(p=>project(p,r)),c=colors[geneIndex[cell.path[0]]??0];for(const f of faceIx){ctx.beginPath();ctx.moveTo(pts[f[0]].x,pts[f[0]].y);ctx.lineTo(pts[f[1]].x,pts[f[1]].y);ctx.lineTo(pts[f[2]].x,pts[f[2]].y);ctx.closePath();ctx.fillStyle=`rgba(${c.map(v=>Math.round(v*255)).join(',')},${alpha})`;ctx.fill();ctx.strokeStyle='rgba(241,239,233,.08)';ctx.stroke()}}
       drawPoints2D(r);
     }
-    updateLabels();requestAnimationFrame(draw)
+    requestAnimationFrame(draw)
   }
   const hasPoints=pointRecords.length>0;
   canvas.dataset.backgroundDrag=draggable?'true':'false';
