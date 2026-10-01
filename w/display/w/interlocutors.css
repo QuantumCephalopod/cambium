@@ -5,7 +5,7 @@
 .interlocutor-field-labels{position:absolute;inset:0;z-index:2;pointer-events:none}
 .field-label{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:baseline;gap:8px;color:rgba(241,239,233,.84);text-shadow:0 1px 14px #000;white-space:nowrap}
 .field-label span{font:8px/1 var(--mono);letter-spacing:.12em;opacity:.48}
-.field-label b{font:520 clamp(11px,.9vw,15px)/1 var(--sans);letter-spacing:-.03em}
+.field-label b{font:520 clamp(11px,.9vw,15px)/1 var(--sans);letter-spacing:0}
 .interlocutor-content{position:absolute;z-index:3;left:28px;bottom:28px;width:min(680px,calc(100% - 370px));max-height:72%;overflow:auto;scrollbar-width:thin;color:var(--fg);text-shadow:0 1px 18px rgba(0,0,0,.72)}
 html[data-composition="split"] #interlocutor-stage{display:grid}
 html[data-composition="split"][data-composition-axis="vertical"] #interlocutor-stage{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr}
