@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
-description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve public whole-web-traffic traces, a same-type bait population, stable traffic beings, and periodic field-complete acquisition without semantic filtering."
-version: "4.8"
+description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
+version: "4.9"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -15,9 +15,9 @@ Global placement is environment:
 Its current root constitution is:
 
 - `w · Baits / CREATE` — durable same-type path bodies in unbounded bait-space;
-- `x · Traces / COPY` — durable public whole-web-traffic evidence plus replayable derived state;
-- `z · Membrane / CONTROL` — public embodiment and the narrow capture-time secret boundary;
-- `y · Tide / CULTIVATE` — periodic acquisition of every new HTTP event/field the provider exposes.
+- `x · Traces / COPY` — replayable exact functional encounters plus opaque per-Being phenotype DNA;
+- `z · Membrane / CONTROL` — private sensing/recognition boundary and public artwork embodiment;
+- `y · Tide / CULTIVATE` — periodic bounded acquisition, metabolism, canonical persistence and deliberate post-change Display publication.
 
 `INDEX.yaml` names these four current vertex wholes and root `_cambium.yaml` carries their exact `4V / 6E / 4F / 1T` closure.
 
@@ -179,6 +179,8 @@ then:
 
 The scheduled tide runs every six hours. A change to capture/metabolism law also earns one immediate main-branch tide so the body need not wait for the next clock edge.
 
+A successful Tide that changed canonical Crawlerbait bytes has one further bounded mechanical consequence: after its final main-branch push has settled, it deliberately dispatches Display's `pages.yml` on `main`. GitHub explicitly suppresses ordinary workflow recursion from `GITHUB_TOKEN`-authored pushes, so those pushes are not treated as publication triggers. The explicit `workflow_dispatch` is the earned actuation edge: Crawlerbait finishes sensing/metabolism first; Display independently rebuilds, witnesses and deploys current main afterward. A no-change Tide dispatches nothing.
+
 ## address-space invariants
 
 - occupant identity is independent of address;
@@ -207,7 +209,8 @@ A Crawlerbait change closes only when:
 13. provider credentials and `CRAWLERBAIT_ID_KEY` never enter repository/public bytes;
 14. Bait identity survives address deepening;
 15. bait-space retains no terminal configured depth;
-16. exact build/address/tetrahedral/capture/replay/public witnesses pass.
+16. exact build/address/tetrahedral/capture/replay/public witnesses pass;
+17. when Tide changed canonical public tissue, a successful Display Pages deployment is witnessed after the final Tide-owned main commit rather than assumed from the push itself.
 
 Compression: **Crawlerbait publishes the Being and its lived relation, not the measurements by which it recognized the Being. Query never enters; private recognition becomes opaque artwork identity; rich provider dimensions become irreversible phenotype; Tide preserves exact functional encounters beneath that skin.**
 
@@ -221,3 +224,6 @@ Amended again (2026-09-29): Philipp — "the HUD could orient itself on the scre
 
 
 Version 4.8 publication-membrane correction (2026-10-01): query is never captured; literal IP, the stable network pseudonym and exact User-Agent are transient recognition material only; public continuity is the existing opaque artwork Being ID. Provider dimensions beyond the functional encounter core may shape a Being only through keyed irreversible phenotype interference. Cloudflare field-width pressure recurs through tetrahedral sensing shards, which are never heuristically joined into false exact events.
+
+
+Version 4.9 publication-actuation correction (2026-10-01): authoritative Tide successfully condensed the legacy v4 field surface into opaque phenotype DNA, caught up fresh Cloudflare traffic with no unrecoverable gap, and rebuilt Crawlerbait, but its own `GITHUB_TOKEN` pushes did not recursively trigger GitHub Pages. A changed Tide now deliberately dispatches `pages.yml` after its final canonical push; no-change tides do not. Root `_cambium.yaml` was reconciled with the already-earned private-recognition / opaque-phenotype physiology.

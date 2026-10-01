@@ -63,3 +63,20 @@ Compression:
 ## 2026-10-01 correction — condensation precedes retirement
 
 The first staging migration incorrectly reduced pre-v5 carriers to the functional five-field record while leaving `phenotype_by_being` empty. That would discard historical phenotype information and is not accepted. The corrected migration remains OPEN until authoritative Tide can use the real recognition key: query is excreted; recognition fields remain transient/private; every other historical provider observation is first collapsed into the same opaque phenotype domain, including nested structures, and only then may the readable carrier retire.
+
+
+## 2026-10-01 post-merge publication wound
+
+Authoritative v5 Tide then earned the data-side correction in production:
+- 73 legacy traffic carriers were condensed before readable retirement;
+- 13,154 functional records produced 13,154 historical phenotype samples;
+- fresh provider acquisition resumed through 2026-10-01T20:17:08Z with `unrecoverable_gap: null`;
+- query remained excluded from DNA and from fresh capture;
+- current public state rebuilt successfully.
+
+A separate mechanical publication wound remained: the Tide's canonical commits are pushed by GitHub Actions using the repository `GITHUB_TOKEN`. GitHub intentionally does not recursively start ordinary push-triggered workflows from those commits, so Display Pages can remain one Tide generation behind canonical Crawlerbait even though the Tide itself succeeded.
+
+Earned bounded correction:
+`changed Tide settles canonical main → explicit workflow_dispatch(pages.yml@main) → Display rebuild/witness/deploy`.
+
+No-change Tides must not dispatch Pages. This nutrient remains open until the explicit post-Tide Pages deployment is witnessed against the current canonical Crawlerbait state.
