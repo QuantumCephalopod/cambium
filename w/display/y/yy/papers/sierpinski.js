@@ -68,7 +68,7 @@ const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 const shader=Object.freeze({
   id:'shader:organism:papers',
   /* Papers' body lives in its own canvases; handing them to the field lets Display's invariant glass refract them. */
-  composite:()=>state?.mounted?[state.environmentCanvas,state.canvas,state.textCanvas]:null,
+  composite:()=>state?.mounted?[state.environmentCanvas,state.canvas,state.textCanvas,state.tissueCanvas]:null,
   environment:false, /* Papers' own inquiry environment already embodies its host */
   clear:[0,0,0,0],
   fallbackAlpha:0,
@@ -502,6 +502,7 @@ function makeStage(host){
   const environmentCanvas=document.createElement('canvas');environmentCanvas.className='papers-inquiry-environment-stage';environmentCanvas.setAttribute('aria-hidden','true');host.append(environmentCanvas);
   const canvas=document.createElement('canvas');canvas.className='papers-sierpinski-stage';canvas.setAttribute('aria-label','Papers recursive tetrahedral inquiry field');host.append(canvas);
   const textCanvas=document.createElement('canvas');textCanvas.className='papers-wisdom-stage';textCanvas.setAttribute('aria-label','Papers active metabolight wisdom');textCanvas.dataset.pretextVersion=PRETEXT_VERSION;host.append(textCanvas);
+  const tissueCanvas=document.createElement('canvas');tissueCanvas.className='papers-tissue-stage';tissueCanvas.setAttribute('aria-hidden','true');host.append(tissueCanvas);
   const physiology=document.createElement('section');physiology.className='papers-physiology';physiology.setAttribute('aria-label','How Papers lives');
   physiology.innerHTML='<small>HOW PAPERS LIVES</small><i class="papers-physiology-thesis">not a library: nothing is filed. every whole here is something only four chance-met organisms could earn together</i><canvas class="papers-physiology-canvas" aria-hidden="true"></canvas><div class="papers-physiology-phases"></div><div class="papers-physiology-copy"><b></b><span></span></div>';
   const physiologyPhases=physiology.querySelector('.papers-physiology-phases');
@@ -516,7 +517,7 @@ function makeStage(host){
   for(const gene of GENES){const n=document.createElement('button');n.type='button';n.className='papers-chamber-label';n.dataset.gene=gene;n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(state&&!state.current)setChamber(gene)});chamberLabels.append(n);chamberLabelNodes.set(gene,n)}
   const hud=document.createElement('div');hud.className='papers-sierpinski-hud';host.append(hud);
   const label=document.createElement('div');label.className='papers-sierpinski-label';host.append(label);
-  return {environmentCanvas,canvas,textCanvas,physiology,physiologyCanvas,physiologyPhases:[...physiologyPhases.children],physiologyTitle,physiologyCopy,sourceInfo,chamberLabels,chamberLabelNodes,hud,label};
+  return {environmentCanvas,canvas,textCanvas,tissueCanvas,physiology,physiologyCanvas,physiologyPhases:[...physiologyPhases.children],physiologyTitle,physiologyCopy,sourceInfo,chamberLabels,chamberLabelNodes,hud,label};
 }
 /* frame governor: a weak (CPU-only) machine keeps its motion smooth by lowering the GL canvases' internal
  * resolution; frame time is watched continuously and resolution climbs back when there is headroom. */
@@ -933,8 +934,28 @@ function inkText(ctx,glyphs,pick,color,alphaOf,fontOf,ox=0,oy=0){
   ctx.globalAlpha=1;
 }
 function inkAabb(corners){const xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys);return {x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y}}
+/* Text is tissue (Display RITUAL "Type is body"): inside an open organism every letter, dust or woven, is a
+ * body handed to Display's text-tissue engine with its own fat; neighbours fuse into one mass, faces into a
+ * web over the face, and Display's drop deflates the letters under it to their bare glyphs where they stand.
+ * Without a drop nothing is gated: letters are bare. Without the engine the old ink path draws them. */
+function tissueOn(){if(state.tissue===undefined){try{state.tissue=globalThis.SSSDisplayTextTissue?.create(state.tissueCanvas)||null}catch(_){state.tissue=null}}return !!state.tissue}
+function tissueGlyphs(glyphs,pick,place,size,fat,weight){
+  const T=state.tissueLetters;if(!T)return;
+  for(let j=0;j<glyphs.length;j++){const g=glyphs[j];if(!pick(g,j)||g.ch===' ')continue;const w=weight(g,j);if(w<=.01)continue;
+    const sz=typeof size==='function'?size(g,j):size,q=place(g,sz);T.push({ch:g.ch,x:q.x,y:q.y,cx:q.cx,cy:q.cy,angle:q.angle||0,size:sz*(q.scale||1),fat:typeof fat==='function'?fat(g,j):fat,weight:w})}
+}
+function flushTissue(rect){
+  if(!state.tissue)return;const L=lensLocal(state.textCanvas.getBoundingClientRect()),T=state.tissueLetters||[];
+  state.tissue.draw(T,{width:rect.width,height:rect.height,dpr:state.tissueDpr||1,presses:L?[{x:L.x,y:L.y,r:L.r}]:[],tissue:L?.3:0,ink:[.87,.95,.92],alpha:.62});
+  state.tissueCanvas.dataset.tissueLetters=String(T.length);state.tissueCanvas.dataset.tissuePressed=L?'1':'0';
+}
+/* where the drop lies, an opened sentence blooms inside the space it contains (its anchor pulled in, the block kept within) */
+function bindToDrop(Lz,ax,ay,b){const s=Lz.r*.72,w=b.x1-b.x0,h=b.y1-b.y0;
+  const cx=w>2*s?Lz.x:Math.max(Lz.x-s+w/2,Math.min(Lz.x+s-w/2,ax+(b.x0+b.x1)/2)),cy=h>2*s?Lz.y:Math.max(Lz.y-s+h/2,Math.min(Lz.y+s-h/2,ay+(b.y0+b.y1)/2));
+  return {ox:cx-ax-(b.x0+b.x1)/2,oy:cy-ay-(b.y0+b.y1)/2}}
 function drawWisdom(rect,cam,translate,metabolights,now){
-  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect);state.inkScale=Math.max(1,Math.round(d*2)/2);const canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
+  const LZ=lensLocal(state.textCanvas.getBoundingClientRect());
+  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect);state.inkScale=Math.max(1,Math.round(d*2)/2);state.tissueDpr=d;state.tissueLetters=tissueOn()?[]:null;const TS=!!state.tissueLetters;const canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
   canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
   const dt=Math.min(.05,Math.max(0,(now-(state.beingLast||now))/1000));state.beingLast=now;
   if(!state.current||!entity){canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
@@ -982,8 +1003,11 @@ function drawWisdom(rect,cam,translate,metabolights,now){
         if(near){const dx=lx-mlx,dy=ly-mly,dd=Math.hypot(dx,dy)||1,push=26*Math.exp(-((dd/38)**2));lx+=dx/dd*push;ly+=dy/dd*push}
         const sw=clamp(F.weave*1.5-(j/n)*.5);beingSpring(g,lx*(1-sw)+g.tx*sw,ly*(1-sw)+g.ty*sw);g.s=sw}
     });
-    inkDust(ctx,F.glyphs,g=>g.s<.4,.6,'rgb(191,245,220)',(.08+.32*F.stir)*alpha*dim);
-    if(F.weave>.01)inkText(ctx,F.glyphs,g=>g.s>=.4,'rgb(223,243,234)',g=>clamp((g.s-.4)*2)*alpha);
+    if(TS){const a=la*u[0]+lc*u[1],b=lb*u[0]+ld*u[1],c=la*v[0]+lc*v[1],e=lb*v[0]+ld*v[1],ang=Math.atan2(b,a),k=Math.hypot(a,b);
+      const place=(g,sz)=>({x:a*g.x+c*g.y+ox,y:b*g.x+e*g.y+oy,cx:a*(g.x+sz*.3)+c*(g.y+sz*.5)+ox,cy:b*(g.x+sz*.3)+e*(g.y+sz*.5)+oy,angle:ang,scale:k});
+      tissueGlyphs(F.glyphs,()=>true,place,g=>g.s<.4?6:11,g=>g.s<.4?3.2:.9,g=>(g.s<.4?.75+.25*F.stir:clamp((g.s-.4)*2))*alpha*dim)}
+    else{inkDust(ctx,F.glyphs,g=>g.s<.4,.6,'rgb(191,245,220)',(.08+.32*F.stir)*alpha*dim);
+    if(F.weave>.01)inkText(ctx,F.glyphs,g=>g.s>=.4,'rgb(223,243,234)',g=>clamp((g.s-.4)*2)*alpha)}
     ctx.restore();
   }
   ctx.textBaseline='alphabetic';
@@ -1003,8 +1027,10 @@ function drawWisdom(rect,cam,translate,metabolights,now){
       const lu=fu+wob*4*loose,lv=Math.sin(g.seed*3+now/800)*14*g.amp*loose,sw=clamp(E.weave*1.5-(j/n)*.5);
       beingSpring(g,lu*(1-sw)+g.tx*sw,lv*(1-sw)+g.ty*sw,.2,.68);g.s=sw});
     ctx.save();ctx.translate(c[0],c[1]);ctx.transform(ax[0],ax[1],pe[0],pe[1],0,0);ctx.font=BEING_FONT;
-    for(let band=0;band<5;band++)inkDust(ctx,E.glyphs,g=>g.s<.4&&Math.min(4,Math.floor(g.t*5))===band,g=>.35+.75*g.t,'rgb(191,245,220)',(.25+.6*E.unravel)*(.4+.6*(band+.5)/5)*alpha);
-    if(E.weave>.01)inkText(ctx,E.glyphs,g=>g.s>=.4,'rgb(223,243,234)',g=>clamp((g.s-.4)*2)*alpha);
+    if(TS){const ang=Math.atan2(ax[1],ax[0]),place=(g,sz)=>{const y=g.y-sz*.8;return {x:c[0]+ax[0]*g.x+pe[0]*y,y:c[1]+ax[1]*g.x+pe[1]*y,cx:c[0]+ax[0]*(g.x+sz*.3)+pe[0]*(y+sz*.5),cy:c[1]+ax[1]*(g.x+sz*.3)+pe[1]*(y+sz*.5),angle:ang}};
+      tissueGlyphs(E.glyphs,()=>true,place,g=>g.s<.4?5+4*g.t:12,g=>g.s<.4?2.4:.9,g=>(g.s<.4?(.4+.6*E.unravel)*(.5+.5*g.t):clamp((g.s-.4)*2))*alpha*dim)}
+    else{for(let band=0;band<5;band++)inkDust(ctx,E.glyphs,g=>g.s<.4&&Math.min(4,Math.floor(g.t*5))===band,g=>.35+.75*g.t,'rgb(191,245,220)',(.25+.6*E.unravel)*(.4+.6*(band+.5)/5)*alpha);
+    if(E.weave>.01)inkText(ctx,E.glyphs,g=>g.s>=.4,'rgb(223,243,234)',g=>clamp((g.s-.4)*2)*alpha)}
     ctx.restore();
   }
   // vertices: the letter they are; the sentence unfolds out of it, centered beneath
@@ -1013,15 +1039,17 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     const p=P[Vt.i],isOpen=beingSame(open,{kind:'vert',key:Vt.i});Vt.open=mix(Vt.open,isOpen?1:0,Math.min(1,dt*5));
     const n=Vt.glyphs.length,g0=Vt.glyphs[0];if(!g0)continue;
     let ox=-120,oy=18;
-    if(Vt.open>.02){const vb=Vt.bounds||(Vt.bounds=inkBounds(Vt.glyphs,BEING_LH)),r=inkRing(Vt,p.x,p.y,[0,1],10,vb,rect,taken);
+    if(LZ&&Vt.open>.02){const vb=Vt.bounds||(Vt.bounds=inkBounds(Vt.glyphs,BEING_LH)),q=bindToDrop(LZ,p.x,p.y,vb);ox=q.ox;oy=q.oy}
+    else if(Vt.open>.02){const vb=Vt.bounds||(Vt.bounds=inkBounds(Vt.glyphs,BEING_LH)),r=inkRing(Vt,p.x,p.y,[0,1],10,vb,rect,taken);
       ox=Math.max(16-p.x-vb.x0,Math.min(rect.width-16-p.x-vb.x1,r.ox));oy=Math.max(80-p.y-vb.y0,Math.min(rect.height-24-p.y-vb.y1,r.oy));
       if(Vt.open>.15)taken.push({x:p.x+ox+vb.x0,y:p.y+oy+vb.y0,w:vb.x1-vb.x0,h:vb.y1-vb.y0})}else Vt.inkAt=null;
     Vt.glyphs.forEach((g,j)=>{const sw=j===0?1:clamp(Vt.open*1.6-(j/Math.max(1,n))*.6);
       if(j===0)beingSpring(g,(g0.tx+ox)*Vt.open-4*(1-Vt.open),(g0.ty+oy)*Vt.open-8*(1-Vt.open),.2,.68);else beingSpring(g,sw*(ox+g.tx),sw*(oy+g.ty),.2,.68);g.s=sw});
     const dim=open&&!isOpen?.45:1;
     const vf=(g,j)=>(g.bold?'600 ':'400 ')+(j===0?'13px ':'12px ')+'"SpriteSheet Mono", system-ui, sans-serif';
-    inkText(ctx,Vt.glyphs,(g,j)=>j===0,'rgb(191,245,220)',()=>.95*alpha*dim,vf,p.x,p.y);
-    if(Vt.open>.01)inkText(ctx,Vt.glyphs,(g,j)=>j>0&&g.s>=.35,'rgb(223,243,234)',g=>clamp((g.s-.35)*2)*alpha,vf,p.x,p.y);
+    if(TS)tissueGlyphs(Vt.glyphs,(g,j)=>j===0||(Vt.open>.01&&g.s>=.35),(g,sz)=>({x:p.x+g.x,y:p.y+g.y,cx:p.x+g.x+sz*.3,cy:p.y+g.y+sz*.5}),(g,j)=>j===0?13:12,(g,j)=>j===0?.5:.9,(g,j)=>j===0?.95*alpha*dim:clamp((g.s-.35)*2)*alpha);
+    else{inkText(ctx,Vt.glyphs,(g,j)=>j===0,'rgb(191,245,220)',()=>.95*alpha*dim,vf,p.x,p.y);
+    if(Vt.open>.01)inkText(ctx,Vt.glyphs,(g,j)=>j>0&&g.s>=.35,'rgb(223,243,234)',g=>clamp((g.s-.35)*2)*alpha,vf,p.x,p.y)}
   }
   // metabolites: the light is the sentence asleep
   const cx=rect.width*.5,cy=rect.height*.5,metPx=(font.match(/\d+px/)||['12px'])[0];let labelCount=0,lineCount=0;
@@ -1030,14 +1058,16 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     const isOpen=beingSame(open,{kind:'met',key:L.id});M.open=mix(M.open,isOpen?1:0,Math.min(1,dt*6));
     let ux=L.x-cx,uy=L.y-cy;const ul=Math.hypot(ux,uy)||1;ux/=ul;uy/=ul;
     let ox=0,oy=0;const n=M.glyphs.length;
-    if(M.open>.02){const mb=M.bounds||(M.bounds=inkBounds(M.glyphs,BEING_LH)),r=inkRing(M,L.x,L.y,[ux,uy],22,mb,rect,taken);
+    if(LZ&&M.open>.02){const mb=M.bounds||(M.bounds=inkBounds(M.glyphs,BEING_LH)),q=bindToDrop(LZ,L.x,L.y,mb);ox=q.ox;oy=q.oy}
+    else if(M.open>.02){const mb=M.bounds||(M.bounds=inkBounds(M.glyphs,BEING_LH)),r=inkRing(M,L.x,L.y,[ux,uy],22,mb,rect,taken);
       ox=Math.max(14-L.x-mb.x0,Math.min(rect.width-14-L.x-mb.x1,r.ox));oy=Math.max(80-L.y-mb.y0,Math.min(rect.height-24-L.y-mb.y1,r.oy));
       if(M.open>.15)taken.push({x:L.x+ox+mb.x0,y:L.y+oy+mb.y0,w:mb.x1-mb.x0,h:mb.y1-mb.y0})}else M.inkAt=null;
     M.glyphs.forEach((g,j)=>{const sw=clamp(M.open*1.6-(j/Math.max(1,n))*.6);
       beingSpring(g,(1-sw)*(g.ix+Math.sin(now/600+j)*1.2)+sw*(ox+g.tx),(1-sw)*(g.iy+Math.cos(now/700+j)*1.2)+sw*(oy+g.ty));g.s=sw});
     const dim=open&&!isOpen?.25:1;
-    inkDust(ctx,M.glyphs,g=>g.s<.35,.8,'rgb(255,244,214)',.85*alpha*dim,L.x,L.y);
-    if(M.open>.01)inkText(ctx,M.glyphs,g=>g.s>=.35,'rgb(255,244,214)',g=>clamp((g.s-.35)*2)*alpha,g=>(g.bold?'600 ':'400 ')+metPx+' "SpriteSheet Mono", system-ui, sans-serif',L.x,L.y);
+    if(TS){const mpx=parseFloat(metPx)||12;tissueGlyphs(M.glyphs,()=>true,(g,sz)=>({x:L.x+g.x,y:L.y+g.y,cx:L.x+g.x+sz*.3,cy:L.y+g.y+sz*.5}),g=>g.s<.35?6:mpx,g=>g.s<.35?2.6:.9,g=>(g.s<.35?.9:clamp((g.s-.35)*2))*alpha*dim)}
+    else{inkDust(ctx,M.glyphs,g=>g.s<.35,.8,'rgb(255,244,214)',.85*alpha*dim,L.x,L.y);
+    if(M.open>.01)inkText(ctx,M.glyphs,g=>g.s>=.35,'rgb(255,244,214)',g=>clamp((g.s-.35)*2)*alpha,g=>(g.bold?'600 ':'400 ')+metPx+' "SpriteSheet Mono", system-ui, sans-serif',L.x,L.y)}
   }
   canvas.dataset.wisdomState=labelCount?'visible':(lights.length?'contract-gap':'being');canvas.dataset.wisdomLines=String(lineCount);canvas.dataset.textBeing='true';canvas.dataset.innerPath=beingDescribe(state.inner);
   canvas.dataset.beingEdges=String(B.edges.length);canvas.dataset.beingFaces=String(B.faces.length);
@@ -1231,7 +1261,7 @@ function draw(now){
     metaboliteCount=metabolights.length;organismEmberCount=structuralEmbers.length;
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
-  drawWisdom(rect,cam,translate,metabolights,now);drawNames(rect,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
+  drawWisdom(rect,cam,translate,metabolights,now);flushTissue(rect);drawNames(rect,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`)}
@@ -1282,7 +1312,7 @@ function attachInput(){
 function initialize(host,projection,backgroundDrag=true,dependency=null){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=createRenderer(stage.canvas);if(!renderer)return null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x])),environment=createInquiryEnvironment(stage.environmentCanvas);
-  state={host,projection,dependency,structure:built.structure,environmentCanvas:stage.environmentCanvas,environment,canvas:stage.canvas,textCanvas:stage.textCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},chamberFrom:null,chamberTo:null,chamberTransitionStart:0,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
+  state={host,projection,dependency,structure:built.structure,environmentCanvas:stage.environmentCanvas,environment,canvas:stage.canvas,textCanvas:stage.textCanvas,tissueCanvas:stage.tissueCanvas,physiology:stage.physiology,physiologyCanvas:stage.physiologyCanvas,physiologyPhases:stage.physiologyPhases,physiologyTitle:stage.physiologyTitle,physiologyCopy:stage.physiologyCopy,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},chamberFrom:null,chamberTo:null,chamberTransitionStart:0,pointer:null,mounted:true,raf:0,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
   state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.chamberPath='overview';state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextIdentity=PRETEXT_ID;state.textCanvas.dataset.pretextVersion=PRETEXT_VERSION;state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();state.raf=requestAnimationFrame(draw);return state;
 }

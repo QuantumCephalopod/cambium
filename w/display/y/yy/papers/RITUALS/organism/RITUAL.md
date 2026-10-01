@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.8"
+version: "2.9"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -172,6 +172,8 @@ Papers inhabits Display's shared Descent (navigation `Descent`) at every rank, i
 ## The lens is the instrument and the LOD
 
 Display's one invariant glass drop is Papers' instrument. Organisms' particle letters (their sleeping names) exist only where the drop lies over the field, and only organisms under the drop can be peeked or entered; everywhere else the field shows the primitive tetrahedral bodies. Papers draws no lens of its own: it reads the drop through the render context's `lens()` and hands its canvases to its field (`shader.composite()`), so the same glass refracts them. The drop makes visible, so an opened name blooms only in the space the drop contains: where it opens, bound inside the drop and clipped by it, never flown elsewhere. Container-first Descent is unchanged: a touch outside the drop falls through to chamber passage. Without a drop nothing is gated.
+
+Inside an open organism the words are tissue. Every letter of its faces, edges, vertices and metabolites, dust or woven, is a body with its own fat handed to Display's text-tissue engine: neighbours fuse into one mass, a face's dust becomes a web stretched over the face, a woven sentence is fat tissue, and the drop deflates whatever lies under it to bare letters where they stand. An opened vertex or metabolite sentence blooms inside the space the drop contains. Without a drop the letters are bare. The old ink path remains the fallback where the engine is absent.
 
 Papers speaks in Display's face: holon names, wisdom and woven text are set in SpriteSheet Mono and folded to its alphabet before Pretext lays them out.
 
@@ -504,3 +506,5 @@ Version 2.6 name-sleep + own-vertex correction (2026-09-28): organism names slee
 Version 2.7 organisms-as-bodies correction (2026-09-28): the one bounded flow law now holds at both scales in the body, as 2.1 already stated it: organisms repel one another inside their chamber the way metabolites repel inside their organism, and stay held within the chamber that bounds them (Philipp: "i would want them to be as reppellent to each other as their visual sibling, the metabolites").
 
 Version 2.8 lens-instrument correction (2026-10-01, Philipp: "die linse wird also zum instrument und gleichzeitig eingebautem LOD"): Display's glass drop gates Papers' particle letters, peek and entry, and bounds their computation; Papers' canvases are composited under the invariant glass (Display RITUAL 3.12). One layer deeper, the open organism's text as gooey tissue read through the lens remains OPEN in `_stomach`.
+
+Version 2.9 text-as-tissue correction (2026-10-01, Philipp: "gooey-particle->gooey-tissue->LENS displaced das mans lesen kann … für die fläche tatsächlich ne fläche … ein web das gooey über die fläche gespannt ist"): open-organism letters became tissue through Display's engine; faces became webs; the drop reads them.
