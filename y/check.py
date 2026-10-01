@@ -347,7 +347,7 @@ def main():
     check((pretext_root/'layout.js').is_file() and (pretext_root/'LICENSE').is_file() and (pretext_root/'VERSION.json').is_file(),'derived Display dependency bundle omitted pinned Pretext body')
     check(not (DISPLAY/'y'/'yy'/'papers'/'public'/'papers-pretext-0.0.9').exists(),'Papers still owns the superseded Pretext carrier')
     check("getElementById('commit')" not in runtime and 'pending=' not in runtime,'obsolete inspect→commit staging remains in Display runtime')
-    check("getElementById('display-dependencies')" in runtime and 'function dependency(identity' in runtime and 'dependency});' in runtime,'Display runtime does not expose identity-resolved dependencies to site-holons')
+    check("getElementById('display-dependencies')" in runtime and 'function dependency(identity' in runtime and 's.module.render({' in runtime and ',dependency,' in runtime,'Display runtime does not expose identity-resolved dependencies to site-holons')
     check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
     check('philosophy-global-site' in philosophy_render and 'requestGlobalTarget' in philosophy_render,'Philosophy mounted-address direct encounter missing')
