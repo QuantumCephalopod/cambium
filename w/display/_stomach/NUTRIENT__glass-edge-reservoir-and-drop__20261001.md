@@ -1,6 +1,6 @@
 # NUTRIENT — glass edge reservoirs, round drops, and refracted type — 2026-10-01
 
-status: OPEN / UNRESOLVED — admitted before implementation
+status: NARROWED — implemented and witnessed in staging; owner promotion remains open
 source: Philipp, session 33Β, with an annotated screenshot of sss.saarland
 scope: Display glass geometry, lens interaction, and field-label ink
 
@@ -30,3 +30,8 @@ The attached screenshot marks the existing top glass boundary red and a lower, g
 
 The lowered glass boundary leaves the header letters legible; the lens is round, gathers toward a nearby cursor, relaxes to a larger round drop on release, and joins/gets absorbed by eligible minimap and top UI edges. The field's actual label letters are refracted by the same glass pass. Exact-source tests and browser witnesses pass, then Philipp can review the whole result before canonical promotion.
 
+## staging digestion — 2026-10-01
+
+All four requested changes are implemented on `QuantumCephalopod/cambium:staging/display-goo-drops`. Navigation RITUAL 3.0 describes the earned mechanism. Display membrane run 36856839470 passed the full Linux build/check/address/artifact path at implementation commit `be5c9096b1e7f753ce6560484ac5dcb417e5f276`. Its digest-verified artifact was exercised with browser pointer gestures: circular stored overfill, tear to a free circle, larger release after cursor withdrawal, and return/join to minimap goo. The top edge is visibly lower; actual field-label ink is visibly refracted. The last drag-release defect was fixed and covered by window-completion/capture-loss/ownership tests.
+
+Philipp saw the preview and said it was looking good. Final hand taste across devices and deliberate canonical owner promotion remain open. HOME: `_root/display-round-glass-drops-staged-20261001T114446Z.json`; retain this nutrient until promotion/visitor witness closes the remaining exit.
