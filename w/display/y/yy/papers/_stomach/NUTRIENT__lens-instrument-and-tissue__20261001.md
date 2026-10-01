@@ -1,6 +1,6 @@
 # NUTRIENT — the lens is the instrument and the LOD; inside an organism text is gooey tissue — 2026-10-01
 
-status: NARROWED — 1 and 2 metabolized (Papers RITUAL 2.8, Display RITUAL 3.12; HOME papers-lens-instrument-20261001); open: 3 and 4, the open organism's text as gooey tissue read through the lens, and faces as woven gooey surfaces
+status: NARROWED — 1–4 metabolized (Papers RITUAL 2.8/2.9, Display RITUAL 3.12/3.13; HOMEs papers-lens-instrument-20261001, papers-text-as-tissue-20261001); open: metabolite sentences wider than the drop are laid out at their own width, edges at rest are still plain lines, and the look under Philipp's own eye
 
 narrowed 2026-10-01: Philipp corrected a drawn ring — "dont invent a new lens … its supposed to be the invariant one!!! the glass lens!!! from every other organism". The real gap was Display's: over a site with its own canvases there was no glass at all. Display now composites such canvases under its one glass.
 kind: Papers encounter (from Philipp), after Display RITUAL 3.11 "Type is body" (HOME display-type-is-body-20261001T160500Z)
