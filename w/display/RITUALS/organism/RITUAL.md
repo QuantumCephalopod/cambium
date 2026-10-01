@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.10"
+version: "3.11"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -96,6 +96,12 @@ Display realizes the shared Cambium distinction:
 Consumers bind to stable identity/capability, never to the current semantic address or repository path. `y/build.py` reacquires current Display `INDEX.yaml`, traverses only realized Display loci, inspects direct occupants there, and derives a public dependency projection. Traversal does not recursively crawl arbitrary folders and does not cross site-holon/independent-organism membranes. Runtime hands each site renderer one neutral `dependency(identity, member)` resolver; site-local code never needs to know whether the foreign body currently lives at `w`, a later descendant, or another lawfully regrown Display locus.
 
 Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives directly in unsplit `w · Embodiment`. Its native `VERSION.json` is the current identity witness. This does **not** split Embodiment and does not make Pretext a Display semantic vertex. If Embodiment later differentiates under real pressure, Cambium may move the same foreign identity to whichever earned child then accounts for it; the derived dependency projection changes while consumers remain unchanged.
+
+### Type is body
+
+Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet`), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its Mono build is the main type for both Display font tokens; every glyph sits centred in one fixed 704-unit cell, and fixed width is part of the face's identity, so a correction that lets letters drift out of their cells is a wound to the face. The alphabet is A–Z and space: rendered text is folded into it (`Ä→AE`, `Ö→OE`, `Ü→UE`, `ß→SS`, case kept) by `w/display-type.js`, and digits and marks fall back glyph by glyph to the next family. A subtree keeps its own spelling with `data-type-fold="off"`. Site-holons inherit the face unless their own style says otherwise.
+
+Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The first concrete physiology (per-glyph distance field, exponential smooth union, press) is carried in `_stomach/NUTRIENT__text-is-tissue-spritesheet__20261001.carrier/`; it grows into Display tissue with its first consumer, and Papers' particle → blown-up text is meant to become particle-goo → blown-up readable text.
 
 ### Acknowledged live circulation — delta recurs before snapshot
 
@@ -211,3 +217,5 @@ Version 3.8 continuous-focus correction (2026-09-29): a site shader may offer `f
 Version 3.9 rest-view correction (2026-09-30): a site shader may declare `view: {rest, projection}`. `rest` is a quaternion the shared orientation eases to when the site is shown (and back to Display's home when another site is shown, unless the witness has turned it since); `projection: 'orthographic'` makes the field and its hit-testing use a parallel projection matched to the perspective at the centre plane. Absent it nothing changes; Display names no site. First realized by Schattenseiten, whose works rest in the leaves of a depth-three body so that, along the shadow axis, the 8×8 sheet is one flat picture.
 
 Version 3.10 body-material correction (2026-09-30): a site shader may offer `body: {fragment, state}`, the material of its floating body in the overview, used in place of its field fragment/state. Absent, nothing changes; Display prescribes no look. First realized by Schattenseiten and Papers, whose field shaders draw (almost) nothing and so were labels only.
+
+Version 3.11 type-is-body correction (2026-10-01): Philipp's SpriteSheet Mono became Display's main face at `w · Embodiment` (identity `@sss/spritesheet` 1.0.1, cells re-centred and bearings made truthful), with rendered-text folding to its A–Z alphabet; letters-as-bodies became Display text law. The tissue engine is not yet grown: it waits for its first consumer.

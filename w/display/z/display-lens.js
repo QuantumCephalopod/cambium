@@ -6,7 +6,9 @@
   else{root.SSSDisplayLens=api;if(typeof document==='object')api.start()}
 })(typeof globalThis==='object'?globalThis:this,function(root){
   'use strict';
-  const K=Object.freeze({stiff:180,damp:24,cursor:310,cursorReach:155,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
+  /* The centre never follows the cursor: a nearby cursor only makes the flesh reach (a lobe from the anchored centre);
+   * connected tissue draws a free drop home slowly. */
+  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,lobe:.42,reachStiff:140,reachDamp:17,homePull:.07,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
   const n=v=>Number.isFinite(+v)?+v:0,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function scaleOf(h){return h?clamp(Math.min(n(h.hx),n(h.hy))/100,.6,1.2):1}
   function radiusOf(h,v){return v?clamp(Math.min(v.w,v.h)*.15,36,72):clamp(Math.min(h?.hx||100,h?.hy||100)*.62,36,72)}
@@ -33,7 +35,7 @@
     const h=homesOf(home)[0]||null,base=radiusOf(h,view),d=h?dockPoint(h,base/60,h.edge||'left',.5,base):{x:(view?.w||600)/2,y:(view?.h||400)/2};
     return {x:d.x,y:d.y,vx:0,vy:0,baseR:base,radius:base*K.docked,radiusV:0,hx:base*K.docked,hy:base*K.docked,U:base/60,
       held:false,pid:null,px:d.x,py:d.y,docked:!!h,attached:!!h,homeId:h?idOf(h):null,edge:h?.edge||'left',u:.5,
-      kind:h?.kind||'hud',layer:h?.layer||'hud',ax:d.x,ay:d.y,round:1,stretch:0};
+      kind:h?.kind||'hud',layer:h?.layer||'hud',ax:d.x,ay:d.y,round:1,stretch:0,fx:0,fy:0,fvx:0,fvy:0};
   }
   function nearest(L,hs){let best=null;for(const h of hs){if(!compatible(L,h))continue;const p=edgePoint(h,L.x,L.y);if(!best||p.distance<best.p.distance)best={h,p}}return best}
   function step(L,home,dt,view,cursor){
@@ -48,24 +50,25 @@
         h=near.h;L.homeId=idOf(h);L.edge=near.p.edge;L.u=along(h,near.p);L.attached=true;
       }
       const cd=cursor?.active?Math.hypot(cursor.x-L.x,cursor.y-L.y):Infinity,hover=!L.held&&cd<K.cursorReach*L.U;
-      if(h&&L.attached&&(L.held||hover)){const p=edgePoint(h,L.held?L.px:cursor.x,L.held?L.py:cursor.y);L.edge=p.edge;L.u=along(h,p)}
+      if(h&&L.attached&&L.held){const p=edgePoint(h,L.px,L.py);L.edge=p.edge;L.u=along(h,p)}
       const a=h&&L.attached?anchor(h,L.edge,L.u):null;
       if(a){L.ax=a.x;L.ay=a.y;if(Math.hypot(L.x-a.x,L.y-a.y)>K.breakAt*L.U){L.attached=false;L.docked=false}}
       let ax=-K.damp*L.vx,ay=-K.damp*L.vy;
       if(L.held){ax+=K.stiff*(L.px-L.x);ay+=K.stiff*(L.py-L.y)}
-      if(hover){const f=Math.pow(1-cd/(K.cursorReach*L.U),2);ax+=K.cursor*f*(cursor.x-L.x);ay+=K.cursor*f*(cursor.y-L.y)}
       let dock=null;
       if(h&&L.attached){
         dock=dockPoint(h,L.U,L.edge,L.u,L.baseR);
         if(view){dock.x=clamp(dock.x,L.radius,Math.max(L.radius,view.w-L.radius));dock.y=clamp(dock.y,L.radius,Math.max(L.radius,view.h-L.radius))}
-        const f=clamp(1-Math.hypot(dock.x-L.x,dock.y-L.y)/(K.breakAt*L.U),.1,1),k=L.held?K.stiff*.12:K.stiff*.85*f;
+        const f=clamp(1-Math.hypot(dock.x-L.x,dock.y-L.y)/(K.breakAt*L.U),.1,1),k=L.held?K.stiff*.12:L.docked?K.stiff*.85:K.stiff*K.homePull*f;
         ax+=k*(dock.x-L.x);ay+=k*(dock.y-L.y);
       }
       L.vx+=ax*d;L.vy+=ay*d;L.x+=L.vx*d;L.y+=L.vy*d;
-      if(dock&&!L.held&&!hover&&Math.hypot(L.x-dock.x,L.y-dock.y)<2*L.U&&Math.hypot(L.vx,L.vy)<22*L.U){
+      if(dock&&!L.held&&Math.hypot(L.x-dock.x,L.y-dock.y)<2*L.U&&Math.hypot(L.vx,L.vy)<22*L.U){
         L.docked=true;L.x=dock.x;L.y=dock.y;L.vx=L.vy=0;
-      }else if(L.held||hover||!L.attached)L.docked=false;
-      const target=L.baseR*(L.held||hover?1:L.docked?K.docked:K.released);
+      }else if(L.held||!L.attached)L.docked=false;
+      const target=L.baseR*(L.held?1:L.docked?K.docked:K.released);
+      {let tx=0,ty=0;if(hover){const vx=cursor.x-L.x,vy=cursor.y-L.y,len=Math.hypot(vx,vy)||1,f=1-cd/(K.cursorReach*L.U),w=f*f*(3-2*f),m=Math.min(len,K.reach*L.radius)*w;tx=vx/len*m;ty=vy/len*m}
+        L.fvx+=(K.reachStiff*(tx-L.fx)-K.reachDamp*L.fvx)*d;L.fvy+=(K.reachStiff*(ty-L.fy)-K.reachDamp*L.fvy)*d;L.fx+=L.fvx*d;L.fy+=L.fvy*d}
       L.radiusV+=(180*(target-L.radius)-24*L.radiusV)*d;L.radius=clamp(L.radius+L.radiusV*d,8,120);L.hx=L.hy=L.radius;
       if(view&&view.w>0&&view.h>0){
         const rx=Math.min(L.radius,view.w/2),ry=Math.min(L.radius,view.h/2),x=clamp(L.x,rx,view.w-rx),y=clamp(L.y,ry,view.h-ry);
@@ -77,7 +80,7 @@
     const h=homesOf(home).find(q=>idOf(q)===L.homeId&&compatible(L,q)),a=h&&L.attached?anchor(h,L.edge,L.u):null;
     const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
     return {x:L.x,y:L.y,hx:L.radius,hy:L.radius,round:1,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
-      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
+      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,rx:n(L.fx),ry:n(L.fy),reachR:L.radius*K.lobe,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
   function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
