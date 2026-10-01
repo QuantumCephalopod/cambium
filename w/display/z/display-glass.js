@@ -13,6 +13,8 @@
 })(typeof globalThis==='object'?globalThis:this,function(){
   'use strict';
   const MAX=8;
+  const anonymousIds=new WeakMap();let nextSurface=0;
+  function surfaceId(el){if(el.id)return el.id;if(!anonymousIds.has(el))anonymousIds.set(el,'glass-surface-'+(++nextSurface));return anonymousIds.get(el)}
   /* CSS pixels and radians, first drafts: one line each to tune by eye.
    *  radius   corner radius of a glass surface
    *  bevel    width of the curved edge, as a fraction of the surface's shorter side (capped by bevelMax)
@@ -26,7 +28,7 @@
    *  shadow   reach of the soft shadow around a surface, and shadowK its depth
    *  dot      halftone cell size in CSS px; halftone how much of the shadow and the rim is printed as dots (0 = smooth)
    *  tint     a faint dye, rgb + strength */
-  const PARAMS=Object.freeze({radius:22,bevel:.18,bevelMax:56,refract:34,theta:.25,aberr:.3,mag:.06,spec:0,fres:0,shadow:26,shadowK:.38,dot:4.5,halftone:.85,tint:Object.freeze([.62,.66,.72,.05])});
+  const PARAMS=Object.freeze({radius:22,bevel:.18,bevelMax:56,refract:34,theta:.25,aberr:.3,mag:.06,spec:0,fres:0,shadow:26,shadowK:.38,dot:4.5,halftone:.85,overfillWave:7,tint:Object.freeze([.62,.66,.72,.05])});
 
   function number(v){v=Number(v);return Number.isFinite(v)?v:0}
   function box(r={}){
@@ -78,11 +80,17 @@
     return Object.freeze({count:n,data,scale:sx});
   }
 
+  function surfaceRect(el,value){
+    const r=box(value),overfill=Math.max(0,Math.min(96,number(el.getAttribute('data-display-glass-overfill'))));
+    return overfill?box({left:r.left,top:r.top,width:r.width,height:r.height+overfill}):r;
+  }
   function visible(el,getStyle){
     const cs=getStyle?getStyle(el):null;
     if(cs&&(cs.display==='none'||cs.visibility==='hidden'||number(cs.opacity)<=.02))return null;
-    const r=el.getBoundingClientRect();
-    return r.width<2||r.height<2?null:{id:el.id||'',rect:{left:r.left,top:r.top,width:r.width,height:r.height}};
+    const r=surfaceRect(el,el.getBoundingClientRect());
+    return r.width<2||r.height<2?null:{id:surfaceId(el),ids:[surfaceId(el)],rect:r,role:el.getAttribute('data-display-occupancy')||'',
+      kind:el.getAttribute('data-display-glass-kind')||'hud',layer:el.getAttribute('data-display-glass-layer')||'hud',
+      overfill:number(el.getAttribute('data-display-glass-overfill'))};
   }
   /* The surfaces: occupied HUD surfaces unless they opt out, plus anything that opts in. */
   function collect(doc,getStyle){
@@ -94,7 +102,15 @@
       if(el.getAttribute('data-display-glass')==='off')continue;
       const v=visible(el,getStyle);if(v)out.push(v);
     }
-    return out;
+    const merged=[];
+    for(const e of out){
+      const top=e.overfill>0&&e.role.split(/\s+/).includes('top');
+      const sibling=top&&merged.find(v=>v.overfill>0&&v.role.split(/\s+/).includes('top')&&v.kind===e.kind&&v.layer===e.layer);
+      if(!sibling){merged.push(e);continue}
+      const a=sibling.rect,b=e.rect,left=Math.min(a.left,b.left),topY=Math.min(a.top,b.top),right=Math.max(a.right,b.right),bottom=Math.max(a.bottom,b.bottom);
+      sibling.rect=box({left,top:topY,width:right-left,height:bottom-topY});sibling.ids.push(...e.ids);
+    }
+    return merged;
   }
   function enabled(){
     try{return !(typeof matchMedia==='function'&&matchMedia('(prefers-reduced-transparency: reduce)').matches)}catch(_){return true}
@@ -104,7 +120,7 @@
   function rects(canvasRect,buffer,now,skip){
     const t=typeof now==='number'?now:(typeof performance==='object'?performance.now():0);
     if(!cache||t-cacheAt>6){cache=collect();cacheAt=t}
-    return derive(skip&&skip.length?cache.filter(e=>!skip.includes(e.id)):cache,canvasRect,buffer);
+    return derive(skip&&skip.length?cache.filter(e=>!e.ids.some(id=>skip.includes(id))):cache,canvasRect,buffer);
   }
-  return Object.freeze({MAX,PARAMS,derive,collect,rects,enabled});
+  return Object.freeze({MAX,PARAMS,derive,collect,rects,enabled,surfaceRect});
 });
