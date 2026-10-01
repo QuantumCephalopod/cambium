@@ -1,6 +1,8 @@
 # NUTRIENT — text is tissue: Philipp's SpriteSheet face as Display's main type, letters as inflating bodies — 2026-10-01
 
-status: OPEN — admitted for metabolism into a Display design invariant; nothing implemented in Display yet
+status: NARROWED — face, folding and letters-as-bodies law metabolized (organism RITUAL 3.11, `w/spritesheet/`, `w/display-type.js`; HOME display-type-is-body-20261001); open: the tissue engine and its first consumer (Papers)
+
+narrowed 2026-10-01: Philipp's "anders breaking w v und u" was a defect in the face itself — U V W X carried left bearings of −144/−160 and Z sat 122 units left of its cell. Display hosts 1.0.1 with every glyph re-centred and truthful bearings; this carrier keeps the handed-over 1.0.0 bytes.
 kind: display encounter (from Philipp), with a witnessed browser prototype
 source: Philipp, session 33Γ, 2026-10-01 (German and English, verbatim below)
 target: github.cambium → display (w · Embodiment type and text physiology; Papers as first consumer)
