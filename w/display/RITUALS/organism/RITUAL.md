@@ -132,6 +132,12 @@ A separately authored mount table is not semantic authority. Central Display run
 
 One immutable content-addressed asset bundle carries the shared visual generation; identity-owned static site apertures remain ordinary generated artifact files outside the reserved shared bundle namespace.
 
+### Materialized-shadow publication continuation
+
+The Pages workflow may wake after a successful canonical-main `papers static shadow materialization` run. This is a mechanical continuation, not another Display digestion. It reads the committed shadow and the last successful `github-pages` deployment before acting: an already-published shadow needs no deployment, and a superseded completion yields to the current source. A committed shadow left unpublished by an interrupted materializer tail remains eligible on the next successful completion. Missing source or an unavailable publication baseline is an explicit failure, never a fabricated no-change witness.
+
+This continuation builds the Pages event's own canonical commit, never the materializer's pre-push head or an untrusted branch. Ordinary push and deliberate dispatch retain their existing publication path. Live closure still requires a real materializer completion followed by its Pages deployment and a visitor witness.
+
 ## Persistent global physiology
 
 Display keeps alive across every encounter:
