@@ -1061,7 +1061,6 @@ function drawNames(rect,now){
   const sleep=[[],[]],taken=[];let count=0;
   const L=lensLocal(state.textCanvas.getBoundingClientRect());
   ctx.textBaseline='top';
-  if(L){ctx.save();ctx.beginPath();ctx.arc(L.x,L.y,Math.max(0,L.r-1),0,Math.PI*2);ctx.clip()}
   for(const rec of state.records){
     const G=nameGlyphs(rec);if(!G)continue;count++;
     const p=projectPoint(overviewCenterFor(rec,rect.width,now),q,FAR_Z,rect.width,rect.height);
@@ -1078,6 +1077,8 @@ function drawNames(rect,now){
     if(G.open>.01)inkText(ctx,G.glyphs,g=>g.s>=.35,'rgb(226,244,235)',g=>clamp((g.s-.35)*2)*presence,g=>(g.bold?'600 ':'400 ')+'11px system-ui, -apple-system, "Segoe UI", sans-serif',p.x,p.y);
   }
   /* sleeping names are batched: one path per presence class, not one fill per organism */
+  /* only the sleeping letters are bounded by the drop; an opened name is read whole */
+  if(L){ctx.save();ctx.beginPath();ctx.arc(L.x,L.y,Math.max(0,L.r-1),0,Math.PI*2);ctx.clip()}
   [[sleep[0],.42],[sleep[1],here?.12:.42]].forEach(([list,a])=>{if(!list.length||a*presence<=.004)return;ctx.beginPath();
     for(const [G,p] of list)for(const g of G.glyphs)if(g.s<.35)ctx.rect(p.x+g.x-.55,p.y+g.y-.55,1.1,1.1);
     ctx.globalAlpha=a*presence;ctx.fillStyle='rgb(206,240,224)';ctx.fill();ctx.globalAlpha=1});

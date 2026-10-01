@@ -398,7 +398,7 @@ float sdBox(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+mi
 float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);return min(a,b)-h*h*k*.25;}
 float sdSeg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/max(dot(ba,ba),1e-4),0.,1.);return length(pa-ba*h);}
 mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
-/* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z (flesh leaning toward the cursor), uL2.yz home anchor */
+/* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.yz home anchor */
 float sdLens(vec2 p){float d=length(p-uL0.xy)-uL0.z;if(uL1.z>.5)d=smin(d,sdSeg(p,uL0.xy,uL0.xy+uL1.xy)-uL1.z,max(uN.w,uL1.z));return d;}
 float sdPanel(vec2 p,vec4 R){
   vec2 q=p-R.xy;
@@ -419,11 +419,11 @@ float dots(vec2 fc,float ink){
   vec2 f=fract(rot(.7854)*fc/uH.x)-.5;float r=sqrt(clamp(ink,0.,1.))*.74,aa=fwidth(length(f))+1e-3;
   return 1.-smoothstep(r-aa,r+aa,length(f));
 }
-void surface(float d,vec2 n,float bevW,vec2 pc,vec2 p){
+void surface(float d,vec2 n,float bevW,vec2 pc,vec2 p,float mag){
   if(d>=0.){gShade=max(gShade,smoothstep(uC.x,0.,d)*uC.y);return;}
   float bev=clamp(uA.y*2.*bevW,2.,uA.z),t=clamp(-d/bev,0.,1.),edge=1.-t,slope=edge*edge;
   gShift+=cmul(n,vec2(cos(uC.z),sin(uC.z)))*min(uA.w,.9*bev)*slope;
-  gShift-=(p-pc)*uB.y;
+  gShift-=(p-pc)*mag;
   vec3 N=normalize(vec3(n*edge*1.4,1.));
   vec3 L1=normalize(vec3(-.45,.6,.66)),L2=normalize(vec3(.5,-.55,.65));
   gLit+=uB.z*(pow(max(dot(N,L1),0.),26.)+.45*pow(max(dot(N,L2),0.),26.))+uB.w*pow(1.-N.z,2.);
@@ -436,12 +436,12 @@ void main(){
     if(i>=uCount)break;
     vec4 R=uRect[i];float d=sdPanel(frag,R);
     vec2 n=vec2(sdPanel(frag+h.xy,R)-sdPanel(frag-h.xy,R),sdPanel(frag+h.yx,R)-sdPanel(frag-h.yx,R));n/=max(length(n),1e-4);
-    surface(d,n,min(R.z,R.w),R.xy,frag);
+    surface(d,n,min(R.z,R.w),R.xy,frag,uB.y);
   }
   if(uN.x>-.5){
     float d=gooD(frag);
     vec2 n=vec2(gooD(frag+h.xy)-gooD(frag-h.xy),gooD(frag+h.yx)-gooD(frag-h.yx));n/=max(length(n),1e-4);
-    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag);
+    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag,uL1.w>0.?uL1.w:uB.y);
   }
   vec3 c;
   c.r=texture(uScene,(frag+gShift*(1.-uB.x))/uRes).r;
@@ -535,7 +535,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.uniform4f(P.U.a,q.radius*k,q.bevel,q.bevelMax*k,q.refract*k);gl.uniform4f(P.U.b,q.aberr,q.mag,q.spec,q.fres);gl.uniform4f(P.U.c,q.shadow*k,q.shadowK,q.theta,0);gl.uniform4f(P.U.t,...q.tint);gl.uniform4f(P.U.h,q.dot*k,q.halftone,(q.overfillWave||0)*k,0);
     {const sn=g.snap,R=g.r;
       if(sn){const Ls=sn.lens,Hm=sn.home,X=x=>(x-R.left)*k,Y=y=>h-(y-R.top)*k;
-        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,(Ls.rx||0)*k,-(Ls.ry||0)*k,(Ls.reachR||0)*k,0);gl.uniform4f(P.U.l2,0,X(Ls.ax),Y(Ls.ay),0);
+        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,(Ls.rx||0)*k,-(Ls.ry||0)*k,(Ls.reachR||0)*k,Ls.mag||0);gl.uniform4f(P.U.l2,0,X(Ls.ax),Y(Ls.ay),0);
         if(Hm){const hp=g.Gm.derive([{rect:Hm.rect}],R,{width:w,height:h});gl.uniform4fv(P.U.home,hp.data.slice(0,4));gl.uniform4f(P.U.n,hp.count?1:0,0,Ls.neck*k,Ls.smooth*k)}
         else{gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,0,0,Ls.smooth*k)}}
       else gl.uniform4f(P.U.n,-1,0,0,0);}

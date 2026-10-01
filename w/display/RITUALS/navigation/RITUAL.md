@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.1"
+version: "3.2"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -135,9 +135,11 @@ In a single encounter the global navigator is a HUD, not a plate:
 - every occupied HUD surface (`data-display-occupancy`) is glass: the field behind it is refracted inside its rounded rectangle by one post pass in the field renderer; `data-display-glass="off"` opts a surface out, `"on"` opts one in; under `prefers-reduced-transparency` there is no glass;
 - the bend is pure displacement (no light point by default): a complex turn off the rim normal, dispersion that grows with the bend, and a magnified interior; the soft shadow and the rim are printed as a 45 degree halftone, never as a gradient, so dots carry what hard edges would pixelate;
 - one circular glass drop is stored as overfill on an eligible HUD edge; eligible reservoirs share its declared glass kind and layer. Any exposed edge can lend the drop, including the top HUD and compass. Its neck thins with distance and tears; a nearby cursor never moves its centre: only its flesh reaches toward the cursor (a lobe from the anchored centre), a held drop stays round, and release beyond the reservoir's reach leaves a larger circle. Release near an eligible edge connects it, and the connected tissue draws it back into storage slowly, over seconds; it stays inside the screen;
-- the drop is a pure-physics module (`z/display-lens.js`) plus one circular pointer surface and narrow edge strips. Only its owning pointer can move or release it; cancellation, capture loss, blur and glass removal end the grab. It is shown in single encounters and draws glass over the existing field;
+- the drop is a pure-physics module (`z/display-lens.js`). It never blocks the pointer: hover passes through it, a click on it is replayed to whatever lies beneath, a drag that moves at once reaches the field beneath; only a still press held for a moment takes the drop or pulls it from a reservoir edge. The drop magnifies what it covers by 13%, the HUD glass keeps its own gentler bend. Only its owning pointer can move or release it; cancellation, capture loss, blur and glass removal end the grab. It is shown in single encounters and draws glass over the existing field;
 - occupied top HUD surfaces may declare a bounded `data-display-glass-overfill` below their controls, with a curved free edge; safe-area witnesses include that visible overfill;
 - actual field-label ink is derived from DOM text and computed styles into the scene before refraction (`w/display-label-ink.js`). DOM text remains the semantic and hit-target source. Its duplicate pixels are suppressed only after a successful GPU draw and restored for disabled glass, fallback and disposal.
+
+Version 3.2 pass-through-drop correction (2026-10-01, Philipp): now that the drop is the invariant instrument over every organism it must let the world through: "ein click passed einfach durch, nur ein klick-hold activated den drop"; it magnifies by 13%.
 
 Version 3.1 anchored-drop correction (2026-10-01, Philipp): the drop's centre stays where it was left; a nearby cursor only makes its flesh reach; connected larger tissue pulls it home slowly.
 
