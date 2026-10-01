@@ -1,0 +1,33 @@
+{
+  "event_id": "display-invariant-glass-over-own-canvases-20261001T180000Z",
+  "home_at_utc": "2026-10-01T18:00:00Z",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "composite-site-canvases-under-invariant-glass",
+  "outcome": "PASS/EARNED in staging · SITES WITH THEIR OWN CANVASES GET THE ONE INVARIANT GLASS; RENDER CONTEXT CARRIES THE DROP'S LIVE GEOMETRY",
+  "changed_scope": [
+    "w/locus-shader.js: optional shader.composite() — the field draws the site's canvases into its glass scene and marks data-composite",
+    "x/display-runtime-v2.js: render context lens() → the drop's viewport geometry or null",
+    "RITUALS/organism 3.12"
+  ],
+  "context": {
+    "actor": "Mnemos, session 33Γ, with Philipp",
+    "carrier": "QuantumCephalopod/cambium staging branch staging/papers-lens-tissue-20261001, promoted by pull request to self-similar-systems/cambium",
+    "shared_root_law": {
+      "metabolism": "3.4",
+      "dive_in": "2.7",
+      "cambium": "3.3",
+      "drive": "1.5"
+    },
+    "source": "Philipp 2026-10-01: \"ehm dont invent a new lens lol 😃 its supposed to be th einvairant one!!! th eglass lens!!! from every other organism xD\"",
+    "witness": {
+      "unit": "all Display witnesses PASS",
+      "browser": "built artifact served locally: on entering Papers the field reports data-composite=1 and data-glass=2, the top HUD glass and the minimap glass refract Papers' own field, console clean; a real drag carried the glass drop over the Governance chamber, where organisms' sleeping-name letters appeared magnified inside the drop while the rest of the field showed only tetrahedral bodies"
+    },
+    "not_witnessed": [
+      "y/check.py on the artifact (bait tree excluded from this checkout)",
+      "frame cost of compositing three full-size canvases per frame on a CPU-only laptop",
+      "a site other than Papers using composite()"
+    ]
+  }
+}

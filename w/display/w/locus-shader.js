@@ -458,6 +458,27 @@ void main(){
   outColor=vec4(c+gLit,1.);
 }`;
   let SCENE=null,GLASS_PG=null,GLASS_OFF=false,labelInk=null;
+  /* SITE COMPOSITE — a site whose body lives in its own canvases may offer shader.composite()
+   * returning them in paint order. While glass is active the field draws them into its scene, so the
+   * same invariant glass (drop, HUD surfaces, rim) refracts the site's own pixels; the field marks
+   * itself data-composite="1" for that frame and the site decides how its originals step back. */
+  let COMP=null;const compTex=new Map();
+  function compositeSources(){if(typeof shader.composite!=='function')return null;try{const list=shader.composite();return Array.isArray(list)?list.filter(c=>c&&c.width>0&&c.height>0):null}catch(_){return null}}
+  function drawComposite(sources,w,h){
+    if(!COMP){const vs=`#version 300 es
+void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);}`,fs=`#version 300 es
+precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void main(){o=texture(uSrc,gl_FragCoord.xy/uRes);}`;
+      const p=gl.createProgram();for(const [t,src] of [[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);gl.shaderSource(sh,src);gl.compileShader(sh);gl.attachShader(p,sh)}gl.linkProgram(p);
+      COMP={p,vao:gl.createVertexArray(),src:gl.getUniformLocation(p,'uSrc'),res:gl.getUniformLocation(p,'uRes')}}
+    const unit0=gl.getParameter(gl.ACTIVE_TEXTURE);gl.activeTexture(gl.TEXTURE0);const tex0=gl.getParameter(gl.TEXTURE_BINDING_2D);
+    gl.viewport(0,0,w,h);gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+    gl.useProgram(COMP.p);gl.bindVertexArray(COMP.vao);gl.uniform1i(COMP.src,0);gl.uniform2f(COMP.res,w,h);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
+    for(const c of sources){let t=compTex.get(c);if(!t){t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);compTex.set(c,t)}
+      gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);gl.drawArrays(gl.TRIANGLES,0,3)}
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+    gl.disable(gl.BLEND);gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(unit0);
+  }
   function resetLabelInk(){labelInk?.reset();canvas.dataset.refractedLabels='0'}
   function drawLabelInk(r,w,h){
     const Ink=globalThis.SSSDisplayLabelInk;if(!Ink||!labelHost)return;
@@ -588,6 +609,7 @@ void main(){
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
       }
       drawPointsGL(proj,view,mdl,d);
+      {const comp=glass?compositeSources():null;if(comp?.length)drawComposite(comp,w,h);const on=comp?.length?'1':'0';if(canvas.dataset.composite!==on)canvas.dataset.composite=on}
       if(glass){drawLabelInk(r,w,h);glassEnd(glass,w,h)}else resetLabelInk();
     }else if(ctx){
       resetLabelInk();

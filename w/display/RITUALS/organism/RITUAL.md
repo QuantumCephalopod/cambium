@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.11"
+version: "3.12"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -68,7 +68,7 @@ Display owns:
 - shared tetrahedral body topology and geometric projection;
 - shared orientation coupling and global camera relation;
 - global site-space navigation, target-origin fold and membrane law;
-- neutral generic couplings required for arbitrary site-holons to inhabit that body — including one optional site layer: a site shader may carry `afterDraw`, which Display calls once per frame inside the site's own field, after geometry and floating bodies and before the point layer, lending it the current Descent frame (`proj`, `view`, `model`, `frame`, `container`, orientation, size). Display restores its framebuffer/viewport afterwards and contains a failing layer; what the layer draws means nothing to Display.
+- neutral generic couplings required for arbitrary site-holons to inhabit that body — including the live glass-drop geometry in every render context (`lens()` → viewport `{x, y, r, held, docked}` or null; Display lends where the drop lies, the site decides what it means), a site composite (a site whose body lives in its own canvases may offer `shader.composite()` returning them in paint order; while glass is active the field draws them into its scene so the same invariant glass refracts them, and marks itself `data-composite="1"` so the site's own style can let its originals step back), and one optional site layer: a site shader may carry `afterDraw`, which Display calls once per frame inside the site's own field, after geometry and floating bodies and before the point layer, lending it the current Descent frame (`proj`, `view`, `model`, `frame`, `container`, orientation, size). Display restores its framebuffer/viewport afterwards and contains a failing layer; what the layer draws means nothing to Display.
 
 The site-holon owns:
 - its public/local projection boundary;
@@ -219,3 +219,5 @@ Version 3.9 rest-view correction (2026-09-30): a site shader may declare `view: 
 Version 3.10 body-material correction (2026-09-30): a site shader may offer `body: {fragment, state}`, the material of its floating body in the overview, used in place of its field fragment/state. Absent, nothing changes; Display prescribes no look. First realized by Schattenseiten and Papers, whose field shaders draw (almost) nothing and so were labels only.
 
 Version 3.11 type-is-body correction (2026-10-01): Philipp's SpriteSheet Mono became Display's main face at `w · Embodiment` (identity `@sss/spritesheet` 1.0.1, cells re-centred and bearings made truthful), with rendered-text folding to its A–Z alphabet; letters-as-bodies became Display text law. The tissue engine is not yet grown: it waits for its first consumer.
+
+Version 3.12 invariant-glass-over-own-canvases correction (2026-10-01): a site that paints its own canvases (Papers) had no glass at all, neither HUD glass nor the drop, because the glass pass refracts only the field's scene. A site may now hand its canvases to its field through `shader.composite()`; the field composites them under the same glass. Every render context also carries `lens()`, the drop's live geometry, so a site can let the one invariant lens act as its instrument without drawing a lens of its own.

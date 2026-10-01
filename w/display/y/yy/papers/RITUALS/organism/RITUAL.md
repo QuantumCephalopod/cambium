@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.7"
+version: "2.8"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -168,6 +168,12 @@ Papers inhabits Display's shared Descent (navigation `Descent`) at every rank, i
 - inside a selected organism, its own simplices and metabolites are the next children;
 - hover peeks, click descends and locks, a gesture that enters no child ascends back through the container the witness came through — across the Papers membrane into its host the same way;
 - organisms refine inward; composed Holons grow with rank (composition outward) — the S-anchored `2^n` scale law is that distinction for Papers.
+
+## The lens is the instrument and the LOD
+
+Display's one invariant glass drop is Papers' instrument. Organisms' particle letters (their sleeping names) exist only where the drop lies over the field, and only organisms under the drop can be peeked or entered; everywhere else the field shows the primitive tetrahedral bodies. Papers draws no lens of its own: it reads the drop through the render context's `lens()` and hands its canvases to its field (`shader.composite()`), so the same glass refracts them. Container-first Descent is unchanged: a touch outside the drop falls through to chamber passage. Without a drop nothing is gated.
+
+The drop also bounds computation: letters outside it are neither laid out nor moved.
 
 ## Perceptual LOD is genealogical resolution
 
@@ -494,3 +500,5 @@ Version 2.5 anabolism-heart correction (2026-09-27): HOW PAPERS LIVES is retold 
 Version 2.6 name-sleep + own-vertex correction (2026-09-28): organism names sleep as clusters of their own letters over every body before selection and unfold on peek, so small organisms stay perceptible (Philipp: "otherwise there is no way of seeing anything below a certain holon size even exists"); chamber labels hang from their chamber's own outer corner (they had hung from corners shared with Genesis since 2.4); a woven face opens at one readable size at S ground as at every Holon rank.
 
 Version 2.7 organisms-as-bodies correction (2026-09-28): the one bounded flow law now holds at both scales in the body, as 2.1 already stated it: organisms repel one another inside their chamber the way metabolites repel inside their organism, and stay held within the chamber that bounds them (Philipp: "i would want them to be as reppellent to each other as their visual sibling, the metabolites").
+
+Version 2.8 lens-instrument correction (2026-10-01, Philipp: "die linse wird also zum instrument und gleichzeitig eingebautem LOD"): Display's glass drop gates Papers' particle letters, peek and entry, and bounds their computation; Papers' canvases are composited under the invariant glass (Display RITUAL 3.12). One layer deeper, the open organism's text as gooey tissue read through the lens remains OPEN in `_stomach`.

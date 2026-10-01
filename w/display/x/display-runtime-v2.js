@@ -7,6 +7,8 @@ const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
 const PROJECTIONS=JSON.parse(document.getElementById('site-projections').textContent);
 const DEPENDENCIES=JSON.parse(document.getElementById('display-dependencies').textContent);
 const GLOBAL_SCOPE='main';
+/* The glass drop's current viewport geometry (or null). Display lends where it lies; what it means over a site is the site's. */
+function lensNow(){const s=globalThis.SSSDisplayLens?.snapshot?.()?.lens;return s?{x:s.x,y:s.y,r:s.hx,held:!!s.held,docked:!!s.docked}:null}
 function dependency(identity,member=''){
   if(typeof identity!=='string'||!identity)throw new TypeError('dependency identity required');
   const dep=DEPENDENCIES?.[identity];if(!dep)throw new Error('unknown Display dependency identity: '+identity);
@@ -95,7 +97,7 @@ function render(path=W.view){
   for(const id of activeIds){
     const s=surfaces.get(id),spec=specs.get(id);if(!s||!spec)continue;
     const localPath=spec.manifestation?.background_inspect?(path||''):'';
-    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency});
+    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency,lens:lensNow});
   }
   composition();Safe.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
