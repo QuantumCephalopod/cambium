@@ -48,3 +48,14 @@ for(const edge of ['left','right','top','bottom']){
 s=L.create(map,view);s.vx=1e4;L.step(s,map,5,view);
 assert.ok(Number.isFinite(s.x)&&Number.isFinite(s.radius));
 console.log('round glass drop / cursor / UI edge absorption witness: PASS');
+
+/* A narrow pane still has room for a released drop between the reservoirs. */
+const smallView={w:360,h:480},smallMap={...map,cx:255,cy:365,hx:90,hy:110},smallTop={...top,cx:180,cy:54,hx:180,hy:54};
+s=L.create(smallTop,smallView);L.grab(s,s.x,s.y,1);
+for(let i=0;i<120;i++){L.move(s,75,300,1);L.step(s,[smallTop,smallMap],1/60,smallView)}
+assert.strictEqual(s.attached,false);
+L.release(s,1);
+for(let i=0;i<180;i++)L.step(s,[smallTop,smallMap],1/60,smallView);
+assert.strictEqual(s.attached,false,'nearby UI does not swallow every released drop');
+assert.ok(s.radius>65&&s.hx===s.hy);
+console.log('narrow-pane free-drop witness: PASS');
