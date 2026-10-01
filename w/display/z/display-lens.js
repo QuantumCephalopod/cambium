@@ -79,7 +79,7 @@
     return {x:L.x,y:L.y,hx:L.radius,hy:L.radius,round:1,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
       neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
-  function grab(L,x,y,pid){L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
+  function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
   function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null;L.docked=false}return L}
   function contains(L,x,y){return Math.hypot(x-L.x,y-L.y)<=L.radius+6}
@@ -102,16 +102,20 @@
       edge:e.role?.split(/\s+/).includes('top')?'bottom':'left'}));
   }
   function beginPointer(e,h){
-    if(e.button!==0||!state)return;
+    if(e.button!==0||!state||(state.held&&state.pid!==e.pointerId))return;
     if(h){if(!state.docked||!pullFrom(state,h,e.clientX,e.clientY,e.pointerId))return}else grab(state,e.clientX,e.clientY,e.pointerId);
     cursor={active:true,x:e.clientX,y:e.clientY};try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}
     e.preventDefault();e.stopPropagation();
   }
+  function paintPhase(){if(el&&state){el.dataset.phase=state.held?'held':state.docked?'stored':state.attached?'joining':'free';el.style.cursor=state.held?'grabbing':'grab'}}
+  function endPointer(e){
+    if(!state?.held||state.pid!==e.pointerId)return;
+    release(state,e.pointerId);cursor.active=false;paintPhase();
+  }
   function connectPointer(target,home){
     target.addEventListener('pointerdown',e=>beginPointer(e,typeof home==='function'?home():null));
     target.addEventListener('pointermove',e=>{if(state)move(state,e.clientX,e.clientY,e.pointerId)});
-    const up=e=>{if(state)release(state,e.pointerId);cursor.active=false};
-    target.addEventListener('pointerup',up);target.addEventListener('pointercancel',up);
+    for(const type of ['pointerup','pointercancel','lostpointercapture'])target.addEventListener(type,endPointer);
   }
   function updatePores(hs){
     const wanted=new Set();
@@ -131,11 +135,11 @@
     const dt=last?(ms-last)/1000:0;last=ms;const G=root.SSSDisplayGlass,hs=surfaces(),off=!(G&&G.enabled())||!hs.length;
     if(!state&&hs.length)state=create(hs.find(h=>h.id==='mini-pocket')||hs[0],{w:root.innerWidth,h:root.innerHeight});
     if(state){
-      if(off){state.held=false;cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor);
+      if(off){release(state,state.pid);cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor);
       homeNow=state.attached?hs.find(h=>h.id===state.homeId&&compatible(state,h))||null:null;visible=!off;
       if(el){const g=geometry(state,hs);el.style.display=visible?'block':'none';el.style.cursor=state.held?'grabbing':'grab';
         el.style.left=(state.x-g.hx)+'px';el.style.top=(state.y-g.hy)+'px';el.style.width=(g.hx*2)+'px';el.style.height=(g.hy*2)+'px';el.style.borderRadius='50%';
-        el.dataset.phase=state.held?'held':state.docked?'stored':state.attached?'joining':'free';el.dataset.layer=state.layer}
+        paintPhase();el.dataset.layer=state.layer}
     }updatePores(hs);root.requestAnimationFrame(loop);
   }
   function snapshot(){return state&&visible?{lens:geometry(state,homeNow),home:homeNow}:null}
@@ -144,12 +148,14 @@
     el=document.createElement('div');el.id='display-lens';el.setAttribute('aria-label','Glass drop');el.setAttribute('role','button');el.tabIndex=0;
     el.style.cssText='position:fixed;z-index:39;display:none;touch-action:none;cursor:grab;background:transparent;pointer-events:auto;border-radius:50%';
     document.body.append(el);connectPointer(el);
+    for(const type of ['pointerup','pointercancel','lostpointercapture'])root.addEventListener(type,endPointer,{capture:true});
     root.addEventListener('pointermove',e=>{
+      if(state)move(state,e.clientX,e.clientY,e.pointerId);
       const own=e.target===el||e.target?.classList?.contains('display-glass-edge');
       const controls=!own&&e.target?.closest?.('button,a,input,label,[role="slider"],[data-display-occupancy]');
       cursor={active:!controls&&e.pointerType!=='touch',x:e.clientX,y:e.clientY};
     },{passive:true});
-    root.addEventListener('blur',()=>{cursor.active=false;if(state)release(state,state.pid)});
+    root.addEventListener('blur',()=>{cursor.active=false;if(state){release(state,state.pid);paintPhase()}});
     el.addEventListener('pointerleave',()=>{if(!state?.held)cursor.active=false});
     el.addEventListener('keydown',e=>{if(!state)return;const a={ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-12],ArrowDown:[0,12]}[e.key];
       if(a){state.docked=false;state.attached=false;state.x+=a[0];state.y+=a[1];e.preventDefault()}});
