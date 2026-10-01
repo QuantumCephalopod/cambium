@@ -7,6 +7,9 @@ on:
       - 'w/display/y/yy/papers/materialize-shadow.py'
       - 'w/display/y/yy/papers/materialize-shadow.test.py'
       - '.github/workflows/papers-shadow-materializer-test.yml'
+      - '.github/workflows/pages.yml'
+      - 'y/pages-actuation.py'
+      - 'y/pages-actuation.test.py'
 
 permissions:
   contents: read
@@ -20,3 +23,4 @@ jobs:
         run: |
           python3 -m py_compile w/display/y/yy/papers/materialize-shadow.py
           python3 w/display/y/yy/papers/materialize-shadow.test.py
+          python3 y/pages-actuation.test.py
