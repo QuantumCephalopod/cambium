@@ -6,7 +6,7 @@
   else{root.SSSDisplayLens=api;if(typeof document==='object')api.start()}
 })(typeof globalThis==='object'?globalThis:this,function(root){
   'use strict';
-  const K=Object.freeze({stiff:180,damp:24,cursor:310,cursorReach:155,magnet:135,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
+  const K=Object.freeze({stiff:180,damp:24,cursor:310,cursorReach:155,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
   const n=v=>Number.isFinite(+v)?+v:0,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function scaleOf(h){return h?clamp(Math.min(n(h.hx),n(h.hy))/100,.6,1.2):1}
   function radiusOf(h,v){return v?clamp(Math.min(v.w,v.h)*.15,36,72):clamp(Math.min(h?.hx||100,h?.hy||100)*.62,36,72)}
