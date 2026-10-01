@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild Crawlerbait entirely from owned legacy evidence + immutable raw traffic captures."""
+"""Rebuild Crawlerbait entirely from owned legacy evidence + metabolized public traffic carriers."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -24,9 +24,9 @@ def self_test():
     state = T.rebuild_state()
     legacy = T.replay_legacy()
     assert set(legacy["routes"]).issubset(set(state["routes"]))
-    assert state["version"] == 5
+    assert state["version"] == 6
     assert state["raw_requests"] == len(state["encounters"])
-    print("PASS · replay rebuilds public web-traffic state locally with zero provider calls")
+    print("PASS · replay rebuilds metabolized public Crawlerbait state locally with zero provider calls")
 
 
 def main():

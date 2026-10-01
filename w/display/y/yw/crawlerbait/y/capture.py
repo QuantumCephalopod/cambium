@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture whole Cloudflare HTTP events into public Traces with stable keyed IP identity."""
+"""Capture exact functional encounters plus opaque phenotype interference without publishing recognition material."""
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -22,7 +22,24 @@ GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
 IDENTITY_SCHEME = "hmac-sha256"
 IDENTITY_DOMAIN = "crawlerbait:clientIP:v1"
 IDENTITY_KEY_EPOCH = "v1"
-IDENTITY_PUBLISHED_FIELD = "clientIPIdentity"
+PHENOTYPE_DOMAIN = "crawlerbait:phenotype:v1"
+NEVER_CAPTURE_FIELDS = {"clientRequestQuery"}
+CORE_FIELDS = (
+    "datetime",
+    "clientIP",
+    "userAgent",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus",
+)
+AUX_RECOGNITION_FIELDS = ("clientIP", "userAgent", "datetime")
+PUBLIC_RECORD_FIELDS = (
+    "datetime",
+    "beingId",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus",
+)
 
 
 def read_json(path: Path):
@@ -79,13 +96,95 @@ def client_ip_identity(key: bytes, value) -> str | None:
     return f"ip:{IDENTITY_KEY_EPOCH}:{digest}"
 
 
-def publish_provider_response(provider_response: dict, key: bytes) -> dict:
-    published = json.loads(json.dumps(provider_response))
-    for record in records_from_payload(published):
-        if "clientIP" in record:
-            literal = record.pop("clientIP")
-            record[IDENTITY_PUBLISHED_FIELD] = client_ip_identity(key, literal)
-    return published
+def public_being_id(key: bytes, client_ip, user_agent) -> str:
+    network = client_ip_identity(key, client_ip)
+    if not network:
+        raise RuntimeError("Cloudflare traffic event is missing clientIP for private recognition")
+    ua = str(user_agent or "")
+    return hashlib.sha256((network + "\x00" + ua).encode("utf-8", "replace")).hexdigest()[:24]
+
+
+def value_at(record: dict, path: list[str]):
+    value = record
+    for part in path:
+        if not isinstance(value, dict):
+            return None
+        value = value.get(part)
+    return value
+
+
+def tetra_chunks(items: list[str], capacity: int) -> list[list[str]]:
+    if capacity < 1:
+        raise RuntimeError("provider field limit leaves no room beyond recognition spine")
+    items = list(items)
+    if len(items) <= capacity:
+        return [items] if items else []
+    width = (len(items) + 3) // 4
+    out = []
+    for i in range(0, len(items), width):
+        out.extend(tetra_chunks(items[i:i + width], capacity))
+    return out
+
+
+def merge_tokens(target: dict[str, list[str]], source: dict[str, list[str]]) -> None:
+    for being_id, tokens in source.items():
+        target.setdefault(being_id, []).extend(tokens)
+
+
+def phenotype_tokens(key: bytes, records: list[dict]) -> dict[str, list[str]]:
+    """Collapse the actual returned auxiliary shard tree into opaque per-Being signal.
+
+    The auxiliary query contains only the private recognition spine plus the shard.
+    Strip the spine, then hash the complete remaining provider structure as returned,
+    including nested lists/objects. Nothing readable crosses the publication membrane.
+    """
+    out: dict[str, list[str]] = {}
+    for record in records:
+        being_id = public_being_id(key, record.get("clientIP"), record.get("userAgent"))
+        values = {
+            field: value
+            for field, value in record.items()
+            if field not in set(AUX_RECOGNITION_FIELDS)
+        }
+        material = json.dumps(values, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        token = hmac.new(
+            key,
+            (PHENOTYPE_DOMAIN + "\x00" + being_id + "\x00" + material).encode("utf-8", "replace"),
+            hashlib.sha256,
+        ).hexdigest()
+        out.setdefault(being_id, []).append(token)
+    return out
+
+
+def public_core_response(provider_response: dict, key: bytes) -> dict:
+    public_records = []
+    for record in records_from_payload(provider_response):
+        public_records.append({
+            "datetime": record.get("datetime"),
+            "beingId": public_being_id(key, record.get("clientIP"), record.get("userAgent")),
+            "clientRequestPath": record.get("clientRequestPath"),
+            "clientRequestHTTPMethodName": record.get("clientRequestHTTPMethodName"),
+            "edgeResponseStatus": record.get("edgeResponseStatus"),
+        })
+    return {"data": {"viewer": {"zones": [{"records": public_records}]}}}
+
+
+def public_genomes(key: bytes, being_ids: list[str], tokens: dict[str, list[str]]) -> dict[str, dict]:
+    out = {}
+    for being_id in sorted(set(being_ids) | set(tokens)):
+        parts = sorted(tokens.get(being_id) or [])
+        if parts:
+            digest = hashlib.sha256(
+                ("crawlerbait:public-phenotype:v1\x00" + being_id + "\x00" + "\x00".join(parts)).encode("utf-8")
+            ).hexdigest()
+        else:
+            digest = hmac.new(
+                key,
+                ("crawlerbait:public-phenotype-fallback:v1\x00" + being_id).encode("utf-8"),
+                hashlib.sha256,
+            ).hexdigest()
+        out[being_id] = {"genome": digest, "samples": len(parts)}
+    return out
 
 
 def graphql(token: str, query: str, variables: dict | None = None) -> dict:
@@ -263,34 +362,40 @@ def capture_filename(start: datetime, end: datetime) -> str:
     return f"{compact(start)}--{compact(end)}.traffic.json"
 
 
-def capture_payload(start: datetime, end: datetime, published_response: dict, captured_at: datetime,
-                    advertised_fields: list[str], selection: str, key_fingerprint: str) -> dict:
-    published_fields = [
-        IDENTITY_PUBLISHED_FIELD if field == "clientIP" else field
-        for field in advertised_fields
-    ]
+def capture_payload(start: datetime, end: datetime, public_response: dict, captured_at: datetime,
+                    advertised_fields: list[str], excluded_fields: list[str], core_fields: list[str],
+                    phenotype_groups: list[list[str]], genomes: dict[str, dict],
+                    key_fingerprint: str) -> dict:
     return {
-        "version": 4,
+        "version": 5,
         "source": "cloudflare:httpRequestsAdaptive",
         "captured_at": stamp(captured_at),
         "window": {"start": stamp(start), "end": stamp(end)},
         "semantic_filters": [],
         "transport_filter": "datetime range only",
-        "advertised_fields": advertised_fields,
-        "published_fields": published_fields,
-        "graphql_selection": selection,
+        "provider_advertised_fields": advertised_fields,
+        "never_captured_fields": excluded_fields,
+        "private_recognition_fields": ["clientIP", "userAgent"],
+        "public_record_fields": list(PUBLIC_RECORD_FIELDS),
+        "functional_provider_fields": core_fields,
+        "phenotype_field_shards": phenotype_groups,
         "publication_transform": {
-            "clientIP": {
-                "published_field": IDENTITY_PUBLISHED_FIELD,
-                "scheme": IDENTITY_SCHEME,
-                "domain": IDENTITY_DOMAIN,
+            "beingId": {
+                "scheme": "sha256(HMAC-SHA256(clientIP) || exact userAgent)",
+                "network_pseudonym_persisted": False,
+                "exact_user_agent_persisted": False,
+                "literal_client_ip_persisted": False,
                 "key_epoch": IDENTITY_KEY_EPOCH,
                 "key_fingerprint": key_fingerprint,
-                "literal_persisted": False,
-                "equality_preserved_within_key_epoch": True,
-            }
+            },
+            "phenotype": {
+                "scheme": "keyed irreversible field-interference",
+                "domain": PHENOTYPE_DOMAIN,
+                "raw_provider_values_persisted": False,
+            },
         },
-        "published_response": published_response,
+        "phenotype_by_being": genomes,
+        "published_response": public_response,
     }
 
 
@@ -308,22 +413,53 @@ def persist_capture(value: dict) -> tuple[Path, bool]:
     return path, True
 
 
-def freeze_window(token: str, zone: str, start: datetime, end: datetime, limit: int,
-                  fields: list[str], selection: str, captured_at: datetime, write: bool,
-                  key: bytes, key_fingerprint: str) -> list[dict]:
+def collect_aux_window(token: str, zone: str, start: datetime, end: datetime, limit: int,
+                       selection: str, key: bytes) -> dict[str, list[str]]:
     provider = graphql(token, raw_query(zone, start, end, limit, selection))
     records = records_from_payload(provider)
     duration = int((end - start).total_seconds())
     if len(records) >= limit and duration > 1:
         mid = start + timedelta(seconds=max(1, duration // 2))
+        out: dict[str, list[str]] = {}
+        merge_tokens(out, collect_aux_window(token, zone, start, mid, limit, selection, key))
+        merge_tokens(out, collect_aux_window(token, zone, mid, end, limit, selection, key))
+        return out
+    if len(records) >= limit:
+        raise RuntimeError("phenotype provider page remains saturated at one-second resolution")
+    return phenotype_tokens(key, records)
+
+
+def freeze_window(token: str, zone: str, start: datetime, end: datetime, limit: int,
+                  advertised_fields: list[str], core_fields: list[str], core_selection: str,
+                  aux_specs: list[tuple[list[str], str]],
+                  captured_at: datetime, write: bool, key: bytes, key_fingerprint: str) -> list[dict]:
+    provider = graphql(token, raw_query(zone, start, end, limit, core_selection))
+    records = records_from_payload(provider)
+    duration = int((end - start).total_seconds())
+    if len(records) >= limit and duration > 1:
+        mid = start + timedelta(seconds=max(1, duration // 2))
         return (
-            freeze_window(token, zone, start, mid, limit, fields, selection, captured_at, write, key, key_fingerprint)
-            + freeze_window(token, zone, mid, end, limit, fields, selection, captured_at, write, key, key_fingerprint)
+            freeze_window(token, zone, start, mid, limit, advertised_fields, core_fields, core_selection,
+                          aux_specs, captured_at, write, key, key_fingerprint)
+            + freeze_window(token, zone, mid, end, limit, advertised_fields, core_fields, core_selection,
+                            aux_specs, captured_at, write, key, key_fingerprint)
         )
     if len(records) >= limit:
-        raise RuntimeError("raw provider page remains saturated at one-second resolution")
-    published = publish_provider_response(provider, key)
-    value = capture_payload(start, end, published, captured_at, fields, selection, key_fingerprint)
+        raise RuntimeError("functional provider page remains saturated at one-second resolution")
+
+    public_response = public_core_response(provider, key)
+    being_ids = [record["beingId"] for record in records_from_payload(public_response)]
+    tokens: dict[str, list[str]] = {}
+    for _fields, selection in aux_specs:
+        merge_tokens(tokens, collect_aux_window(token, zone, start, end, limit, selection, key))
+    genomes = public_genomes(key, being_ids, tokens)
+
+    value = capture_payload(
+        start, end, public_response, captured_at, advertised_fields,
+        sorted(NEVER_CAPTURE_FIELDS), core_fields,
+        [fields for fields, _selection in aux_specs],
+        genomes, key_fingerprint,
+    )
     created = False
     if write:
         _, created = persist_capture(value)
@@ -333,6 +469,7 @@ def freeze_window(token: str, zone: str, start: datetime, end: datetime, limit: 
         "records": len(records),
         "file": capture_filename(start, end),
         "created": created,
+        "phenotype_shards": len(aux_specs),
     }]
 
 
@@ -356,6 +493,11 @@ def self_test():
                 {"name": "Request", "fields": [
                     {"name": "datetime", "type": {"kind": "SCALAR", "name": "DateTime"}},
                     {"name": "clientIP", "type": {"kind": "SCALAR", "name": "String"}},
+                    {"name": "userAgent", "type": {"kind": "SCALAR", "name": "String"}},
+                    {"name": "clientRequestPath", "type": {"kind": "SCALAR", "name": "String"}},
+                    {"name": "clientRequestHTTPMethodName", "type": {"kind": "SCALAR", "name": "String"}},
+                    {"name": "clientRequestQuery", "type": {"kind": "SCALAR", "name": "String"}},
+                    {"name": "edgeResponseStatus", "type": {"kind": "SCALAR", "name": "Int"}},
                     {"name": "nested", "type": {"kind": "OBJECT", "name": "Nested"}},
                 ]},
                 {"name": "Nested", "fields": [{"name": "score", "type": {"kind": "SCALAR", "name": "Int"}}]},
@@ -364,42 +506,44 @@ def self_test():
     }
     types, record_type = dataset_record_type(fake)
     assert resolve_available_field(types, record_type, "nested_score") == ["nested", "score"]
-    selection = render_selection(selection_tree([
-        resolve_available_field(types, record_type, field)
-        for field in ("datetime", "clientIP", "nested_score")
-    ]))
-    assert "nested { score }" in selection
+    assert tetra_chunks(list("abcdefghij"), 3) == [list("abc"), list("def"), list("ghi"), list("j")]
 
     key = identity_key("01" * 32)
-    same_a = client_ip_identity(key, "203.0.113.7")
-    same_b = client_ip_identity(key, "203.0.113.7")
-    other = client_ip_identity(key, "203.0.113.8")
-    assert same_a == same_b and same_a != other
-    assert client_ip_identity(key, "2001:0db8::1") == client_ip_identity(key, "2001:db8:0:0:0:0:0:1")
-    assert "203.0.113.7" not in same_a
+    a = public_being_id(key, "203.0.113.7", "Crab/1")
+    b = public_being_id(key, "203.0.113.7", "Crab/1")
+    c = public_being_id(key, "203.0.113.8", "Crab/1")
+    assert a == b and a != c
+    assert len(a) == 24
 
     provider = {"data": {"viewer": {"zones": [{"records": [{
         "datetime": "2026-09-18T00:00:01Z",
         "clientIP": "203.0.113.7",
-        "nested": {"score": 2},
+        "userAgent": "Crab/1",
+        "clientRequestPath": "/a",
+        "clientRequestHTTPMethodName": "GET",
+        "clientRequestQuery": "?secret=never-store-me",
+        "edgeResponseStatus": 200,
+        "nested": {"score": 2, "labels": ["alpha", "beta"]},
     }]}]}}}
-    published = publish_provider_response(provider, key)
-    record = records_from_payload(published)[0]
-    assert "clientIP" not in record
-    assert record["clientIPIdentity"] == same_a
-    assert records_from_payload(provider)[0]["clientIP"] == "203.0.113.7"
+    public = public_core_response(provider, key)
+    record = records_from_payload(public)[0]
+    assert set(record) == set(PUBLIC_RECORD_FIELDS)
+    assert record["beingId"] == a
+    assert "clientIP" not in record and "userAgent" not in record and "clientRequestQuery" not in record
 
-    t0 = datetime(2026, 9, 18, 0, 0, tzinfo=timezone.utc)
-    cap = capture_payload(
-        t0, t0 + timedelta(hours=1), published, t0,
-        ["datetime", "clientIP", "nested_score"], selection, identity_key_fingerprint(key),
-    )
-    assert cap["semantic_filters"] == []
-    assert cap["version"] == 4
-    assert cap["publication_transform"]["clientIP"]["literal_persisted"] is False
-    assert "clientIPIdentity" in cap["published_fields"]
-    assert "clientIP" not in records_from_payload(cap["published_response"])[0]
-    print("PASS · whole provider events persist publicly with stable HMAC network identity and no literal clientIP")
+    toks = phenotype_tokens(key, records_from_payload(provider))
+    genomes = public_genomes(key, [a], toks)
+    assert len(genomes[a]["genome"]) == 64 and genomes[a]["samples"] == 1
+    assert genomes[a]["genome"] != json.dumps({"nested": {"score": 2, "labels": ["alpha", "beta"]}}, sort_keys=True)
+    changed = json.loads(json.dumps(provider))
+    changed["data"]["viewer"]["zones"][0]["records"][0]["nested"]["labels"].append("gamma")
+    changed_genome = public_genomes(key, [a], phenotype_tokens(key, records_from_payload(changed)))[a]["genome"]
+    assert changed_genome != genomes[a]["genome"], "nested auxiliary structure must contribute to phenotype"
+
+    available = list(CORE_FIELDS) + ["clientRequestQuery", "nested_score"]
+    capture_fields = [field for field in available if field not in NEVER_CAPTURE_FIELDS]
+    assert "clientRequestQuery" not in capture_fields
+    print("PASS · private recognition becomes opaque public being + phenotype; query is never captured")
 
 
 def main():
@@ -428,7 +572,8 @@ def main():
 
     policy = read_json(POLICY_PATH)
     cursor = read_json(CURSOR_PATH)
-    previous_identity = (cursor.get("identity") or {}).get("key_fingerprint")
+    identity_meta = cursor.get("identity") or {}
+    previous_identity = identity_meta.get("key_fingerprint") or (identity_meta.get("clientIP") or {}).get("key_fingerprint")
     if previous_identity and previous_identity != key_fingerprint:
         raise SystemExit(
             "CRAWLERBAIT_ID_KEY changed while key_epoch is still v1; refusing to sever longitudinal identity"
@@ -440,15 +585,29 @@ def main():
     introspection = graphql(token, INTROSPECTION_QUERY)
     types, record_type = dataset_record_type(introspection)
 
-    fields = list(cfg["availableFields"])
+    advertised_fields = list(cfg["availableFields"])
+    captured_fields = [field for field in advertised_fields if field not in NEVER_CAPTURE_FIELDS]
+    missing_core = [field for field in CORE_FIELDS if field not in captured_fields]
+    if missing_core:
+        raise RuntimeError("provider no longer exposes required functional fields: " + ", ".join(missing_core))
+
+    resolved_by_field = {
+        field: resolve_available_field(types, record_type, field)
+        for field in captured_fields
+    }
+    core_fields = list(CORE_FIELDS)
+    core_selection = render_selection(selection_tree([resolved_by_field[field] for field in core_fields]))
+
     max_fields = int(cfg["maxNumberOfFields"])
-    if len(fields) > max_fields:
-        raise RuntimeError(
-            f"provider exposes {len(fields)} raw fields but permits only {max_fields} per request; "
-            "refusing to omit or heuristically join fields"
-        )
-    resolved = [resolve_available_field(types, record_type, field) for field in fields]
-    selection = render_selection(selection_tree(resolved))
+    recognition_spine = [field for field in AUX_RECOGNITION_FIELDS if field in captured_fields]
+    aux_fields = [field for field in captured_fields if field not in set(core_fields)]
+    aux_capacity = max_fields - len(recognition_spine)
+    aux_groups = tetra_chunks(aux_fields, aux_capacity)
+    aux_specs = []
+    for group in aux_groups:
+        requested = recognition_spine + group
+        selection = render_selection(selection_tree([resolved_by_field[field] for field in requested]))
+        aux_specs.append((group, selection))
 
     acquisition_now = datetime.now(timezone.utc) if not args.now else now
     end = acquisition_now - timedelta(minutes=int(policy["settle_delay_minutes"]))
@@ -462,7 +621,13 @@ def main():
         lost_gap = {"start": stamp(start), "end": stamp(retention_edge)}
         start = retention_edge
     if end <= start:
-        print(json.dumps({"status": "no-window", "cursor": stamp(start), "raw_fields": len(fields)}))
+        print(json.dumps({
+            "status": "no-window",
+            "cursor": stamp(start),
+            "provider_fields": len(advertised_fields),
+            "captured_fields": len(captured_fields),
+            "phenotype_shards": len(aux_specs),
+        }))
         return
 
     width_seconds = min(int(cfg["maxDuration"]), int(policy["max_window_hours"]) * 3600)
@@ -473,7 +638,8 @@ def main():
         stop = min(end, pointer + timedelta(seconds=width_seconds))
         leaves.extend(
             freeze_window(
-                token, zone, pointer, stop, limit, fields, selection,
+                token, zone, pointer, stop, limit,
+                advertised_fields, core_fields, core_selection, aux_specs,
                 acquisition_now, args.write, key, key_fingerprint,
             )
         )
@@ -486,15 +652,16 @@ def main():
             "raw_last_capture_end": stamp(end),
             "legacy_404_last_capture_end": cursor.get("legacy_404_last_capture_end")
                 or cursor.get("last_capture_end"),
-            "provider_available_fields": fields,
+            "provider_available_fields": advertised_fields,
+            "never_captured_fields": sorted(NEVER_CAPTURE_FIELDS),
             "identity": {
-                "clientIP": {
-                    "published_field": IDENTITY_PUBLISHED_FIELD,
-                    "scheme": IDENTITY_SCHEME,
-                    "domain": IDENTITY_DOMAIN,
-                    "key_epoch": IDENTITY_KEY_EPOCH,
-                    "key_fingerprint": key_fingerprint,
-                }
+                "key_fingerprint": key_fingerprint,
+                "scheme": IDENTITY_SCHEME,
+                "key_epoch": IDENTITY_KEY_EPOCH,
+                "literal_client_ip_persisted": False,
+                "network_pseudonym_persisted": False,
+                "exact_user_agent_persisted": False,
+                "public_identity": "opaque artwork-local beingId only",
             },
             "provider_limits": {
                 "maxDuration": int(cfg["maxDuration"]),
@@ -502,13 +669,17 @@ def main():
                 "maxPageSize": limit,
                 "notOlderThan": int(cfg["notOlderThan"]),
             },
+            "phenotype_shards": [group for group, _selection in aux_specs],
             "unrecoverable_gap": lost_gap,
         })
 
     print(json.dumps({
         "status": "captured",
         "window": {"start": stamp(start), "end": stamp(end)},
-        "raw_fields": len(fields),
+        "provider_fields": len(advertised_fields),
+        "captured_fields": len(captured_fields),
+        "never_captured_fields": sorted(NEVER_CAPTURE_FIELDS),
+        "phenotype_shards": len(aux_specs),
         "records": sum(item["records"] for item in leaves),
         "created_files": sum(int(item["created"]) for item in leaves),
         "chunks": leaves,

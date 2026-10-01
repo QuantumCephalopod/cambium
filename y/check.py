@@ -77,14 +77,29 @@ def main():
     crawler_style=(crawler/'z'/'style.css').read_text(encoding='utf-8')
     check('var(--display-safe-top)' in crawler_style,'Crawlerbait local panel does not consume Display safe-area contract')
     policy=json.loads((crawler/'z'/'policy.json').read_text(encoding='utf-8'))
-    ip_identity=policy.get('client_ip_identity') or {}
+    recognition=policy.get('recognition') or {}
+    phenotype=policy.get('phenotype') or {}
+    query_policy=policy.get('query') or {}
     check(
-        ip_identity.get('scheme')=='hmac-sha256'
-        and ip_identity.get('domain')=='crawlerbait:clientIP:v1'
-        and ip_identity.get('key_epoch')=='v1'
-        and ip_identity.get('published_field')=='clientIPIdentity'
-        and ip_identity.get('literal_ip_persisted') is False,
-        'Crawlerbait clientIP identity policy drifted'
+        policy.get('version')==5
+        and recognition.get('scheme')=='hmac-sha256'
+        and recognition.get('domain')=='crawlerbait:clientIP:v1'
+        and recognition.get('key_epoch')=='v1'
+        and recognition.get('literal_client_ip_persisted') is False
+        and recognition.get('network_pseudonym_persisted') is False
+        and recognition.get('exact_user_agent_persisted') is False
+        and recognition.get('public_identity')=='opaque artwork-local beingId',
+        'Crawlerbait private-recognition policy drifted'
+    )
+    check(
+        query_policy.get('captured') is False
+        and query_policy.get('field')=='clientRequestQuery',
+        'Crawlerbait query exclusion policy drifted'
+    )
+    check(
+        phenotype.get('raw_provider_values_persisted') is False
+        and phenotype.get('exact_event_join_claimed') is False,
+        'Crawlerbait phenotype publication policy drifted'
     )
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
     check((crawler/'y'/'tide.py').is_file(),'Crawlerbait local tide missing')
@@ -122,43 +137,71 @@ def main():
         window=value.get('window') or {}
         zones=(value.get('published_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
         records=zones[0].get('records') if len(zones)==1 else None
-        transform=(value.get('publication_transform') or {}).get('clientIP') or {}
+        version=value.get('version')
         check(
-            value.get('version')==4
+            version in (4,5)
             and value.get('source')=='cloudflare:httpRequestsAdaptive'
             and value.get('semantic_filters')==[]
             and isinstance(records,list),
             f'invalid whole-traffic capture {capture.name}'
         )
-        check(
-            transform.get('scheme')=='hmac-sha256'
-            and transform.get('domain')=='crawlerbait:clientIP:v1'
-            and transform.get('key_epoch')=='v1'
-            and transform.get('published_field')=='clientIPIdentity'
-            and transform.get('literal_persisted') is False
-            and transform.get('equality_preserved_within_key_epoch') is True,
-            f'invalid clientIP identity transform in {capture.name}'
-        )
-        fingerprint=transform.get('key_fingerprint')
-        check(isinstance(fingerprint,str) and len(fingerprint)==16,f'missing identity-key fingerprint in {capture.name}')
-        identity_fingerprints.add(fingerprint)
-        if 'clientIP' in (value.get('advertised_fields') or []):
+        if version==4:
+            transform=(value.get('publication_transform') or {}).get('clientIP') or {}
+            check(
+                transform.get('scheme')=='hmac-sha256'
+                and transform.get('domain')=='crawlerbait:clientIP:v1'
+                and transform.get('key_epoch')=='v1'
+                and transform.get('published_field')=='clientIPIdentity'
+                and transform.get('literal_persisted') is False
+                and transform.get('equality_preserved_within_key_epoch') is True,
+                f'invalid legacy clientIP identity transform in {capture.name}'
+            )
+            fingerprint=transform.get('key_fingerprint')
+            check(isinstance(fingerprint,str) and len(fingerprint)==16,f'missing identity-key fingerprint in {capture.name}')
+            identity_fingerprints.add(fingerprint)
+            if 'clientIP' in (value.get('advertised_fields') or []):
+                for record_index,record in enumerate(records):
+                    check('clientIP' not in record,f'literal clientIP persisted in {capture.name} record {record_index}')
+                    check('clientIPIdentity' in record,f'clientIPIdentity missing in legacy {capture.name} record {record_index}')
+        else:
+            transform=(value.get('publication_transform') or {}).get('beingId') or {}
+            check(
+                transform.get('network_pseudonym_persisted') is False
+                and transform.get('exact_user_agent_persisted') is False
+                and transform.get('literal_client_ip_persisted') is False,
+                f'private recognition leaked by transform declaration in {capture.name}'
+            )
+            fingerprint=transform.get('key_fingerprint')
+            if isinstance(fingerprint,str):
+                check(len(fingerprint)==16,f'invalid identity-key fingerprint in {capture.name}')
+                identity_fingerprints.add(fingerprint)
+            historical=value.get('historical_migration') or {}
+            check(
+                'clientRequestQuery' in (value.get('never_captured_fields') or [])
+                or historical.get('query_value_removed') is True,
+                f'query exclusion/removal is not witnessed in {capture.name}'
+            )
+            expected_fields={'datetime','beingId','clientRequestPath','clientRequestHTTPMethodName','edgeResponseStatus'}
             for record_index,record in enumerate(records):
-                check('clientIP' not in record,f'literal clientIP persisted in {capture.name} record {record_index}')
-                check('clientIPIdentity' in record,f'clientIPIdentity missing in {capture.name} record {record_index}')
+                check(set(record)==expected_fields,f'non-metabolized public fields remain in {capture.name} record {record_index}')
+                check(isinstance(record.get('beingId'),str) and bool(record.get('beingId')),f'opaque beingId missing in {capture.name} record {record_index}')
+                for forbidden in ('clientIP','clientIPIdentity','userAgent','clientRequestQuery'):
+                    check(forbidden not in record,f'{forbidden} leaked in {capture.name} record {record_index}')
         if raw_expected is not None:
             check(window.get('start')==raw_expected,f'Crawlerbait raw traffic gap before {capture.name}')
         raw_expected=window.get('end')
     if raw_captures:
-        check(len(identity_fingerprints)==1,'multiple HMAC key fingerprints split one raw identity epoch')
-        cursor_identity=(cursor.get('identity') or {}).get('clientIP') or {}
-        check(cursor_identity.get('key_fingerprint') in identity_fingerprints,'cursor identity key diverged from raw captures')
+        check(len(identity_fingerprints)<=1,'multiple HMAC key fingerprints split one raw identity epoch')
+        cursor_identity=cursor.get('identity') or {}
+        cursor_fingerprint=cursor_identity.get('key_fingerprint') or (cursor_identity.get('clientIP') or {}).get('key_fingerprint')
+        if identity_fingerprints:
+            check(cursor_fingerprint in identity_fingerprints,'cursor identity key diverged from captured identity epoch')
         check(cursor.get('raw_last_capture_end')==raw_expected,'raw traffic cursor is not exactly covered by immutable captures')
-        check(trace_state.get('version')==5 and trace_state.get('raw_capture_end')==raw_expected,'derived whole-traffic state is stale')
-        check((crawler/'z'/'public'/'crawlerbait'/'traffic.json').is_file(),'public raw traffic manifest missing')
+        check(trace_state.get('version') in (5,6) and trace_state.get('raw_capture_end')==raw_expected,'derived whole-traffic state is stale')
+        check((crawler/'z'/'public'/'crawlerbait'/'traffic.json').is_file(),'public metabolized traffic manifest missing')
     else:
-        check(cursor.get('raw_last_capture_end') is None,'raw cursor advanced without any canonical raw capture')
-        check(trace_state.get('version') in (4,5),'transitional trace state has unknown generation')
+        check(cursor.get('raw_last_capture_end') is None,'raw cursor advanced without any canonical traffic capture')
+        check(trace_state.get('version') in (4,5,6),'transitional trace state has unknown generation')
 
     retained=crawler/'x'/'retained-bootstrap'
     if (retained/'seal.json').is_file():
@@ -198,7 +241,7 @@ def main():
     public_files=public.site_public_files()
     check('crawlerbait/index.html' in public_files and 'crawlerbait/state.json' in public_files,'Crawlerbait machine-facing static hub missing')
     if raw_captures:
-        check('crawlerbait/traffic.json' in public_files,'Crawlerbait public raw-traffic manifest missing')
+        check('crawlerbait/traffic.json' in public_files,'Crawlerbait metabolized traffic manifest missing')
     check(all(not p.startswith('assets/') and p not in {'index.html','.nojekyll','CNAME'} for p in public_files),'site public surface escaped reserved artifact namespace')
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
