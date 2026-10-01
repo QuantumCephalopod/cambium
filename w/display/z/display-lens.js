@@ -8,7 +8,7 @@
   'use strict';
   /* The centre never follows the cursor: a nearby cursor only makes the flesh reach (a lobe from the anchored centre);
    * connected tissue draws a free drop home slowly. */
-  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,lobe:.42,reachStiff:140,reachDamp:17,homePull:.07,hold:240,holdSlop:6,magnify:1.13,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
+  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,lobe:.42,reachStiff:140,reachDamp:17,homePull:.07,holdSlop:5,magnify:1.13,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
   const n=v=>Number.isFinite(+v)?+v:0,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function scaleOf(h){return h?clamp(Math.min(n(h.hx),n(h.hy))/100,.6,1.2):1}
   function radiusOf(h,v){return v?clamp(Math.min(v.w,v.h)*.15,36,72):clamp(Math.min(h?.hx||100,h?.hy||100)*.62,36,72)}
@@ -104,9 +104,8 @@
       cy:e.rect.top+e.rect.height/2,hx:e.rect.width/2,hy:e.rect.height/2,kind:e.kind||'hud',layer:e.layer||'hud',
       edge:e.role?.split(/\s+/).includes('top')?'bottom':'left'}));
   }
-  /* The drop lets the world through: a click passes to whatever lies under it, a moving drag
-   * reaches the field beneath, hover is never blocked. Only a still press held for K.hold ms
-   * takes the drop (or pulls it from a reservoir edge). */
+  /* The drop lets the world through: hover is never blocked and a direct click passes to whatever
+   * lies under it. Pressing on the drop and pulling takes it at once (or pulls it from a reservoir edge). */
   let pending=null,replaying=false;
   function underDrop(x,y){
     if(!state||!visible)return null;
@@ -133,9 +132,7 @@
   }
   function onMove(e){
     if(replaying)return;
-    if(pending&&pending.id===e.pointerId&&Math.hypot(e.clientX-pending.x,e.clientY-pending.y)>K.holdSlop){
-      const p=pending;pending=null;replay(p.target,'pointerdown',p.src,p.x,p.y);
-    }
+    if(pending&&pending.id===e.pointerId&&Math.hypot(e.clientX-pending.x,e.clientY-pending.y)>K.holdSlop)activate();
     if(state)move(state,e.clientX,e.clientY,e.pointerId);
     const own=state?.held&&state.pid===e.pointerId;
     const controls=!own&&e.target?.closest?.('button,a,input,label,[role="slider"],[data-display-occupancy]');
@@ -169,7 +166,6 @@
   }
   function loop(ms){
     const dt=last?(ms-last)/1000:0;last=ms;const G=root.SSSDisplayGlass,hs=surfaces(),off=!(G&&G.enabled())||!hs.length;
-    if(pending&&ms-pending.t0>=K.hold)activate();
     if(!state&&hs.length)state=create(hs.find(h=>h.id==='mini-pocket')||hs[0],{w:root.innerWidth,h:root.innerHeight});
     if(state){
       if(off){pending=null;release(state,state.pid);cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor);

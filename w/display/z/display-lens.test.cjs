@@ -64,8 +64,8 @@ assert.strictEqual(s.attached,false,'nearby UI does not swallow every released d
 assert.ok(s.radius>65&&s.hx===s.hy);
 console.log('narrow-pane free-drop witness: PASS');
 
-/* The drop lets the world through: a click under it is replayed to what lies beneath, a moving
- * drag reaches the field, only a still hold takes the drop. Ownership and cancellation still hold. */
+/* The drop lets the world through: a click under it is replayed to what lies beneath; pressing on
+ * the drop and pulling takes it at once. Ownership and cancellation still hold. */
 const vm=require('vm'),fs=require('fs');
 function target(){return {style:{},dataset:{},events:{},classList:{contains:()=>false},setAttribute(){},
   addEventListener(type,fn){(this.events[type]??=[]).push(fn)},setPointerCapture(){throw Error('capture unavailable')},
@@ -86,13 +86,12 @@ const under=target();let downs=0;under.addEventListener('pointerdown',()=>downs+
 win.fire('pointerdown',{...at,target:under});tick(60);win.fire('pointerup',{...at,target:under});
 assert.strictEqual(downs,1,'a click on the drop is replayed to what lies under it');
 assert.strictEqual(controller.snapshot().lens.held,false,'a click does not take the drop');
-win.fire('pointerdown',{...at,target:under});win.fire('pointermove',{clientX:at.clientX+30,clientY:at.clientY,target:under});tick(400);
-assert.strictEqual(downs,2,'a moving drag reaches the field beneath');
-assert.strictEqual(controller.snapshot().lens.held,false,'a moving drag does not take the drop');
-win.fire('pointerup',{clientX:at.clientX+30,clientY:at.clientY,target:under});
-const hold=()=>{const l=controller.snapshot().lens;win.fire('pointerdown',{clientX:l.x,clientY:l.y,target:under});tick(120);tick(160)};
-hold();assert.strictEqual(controller.snapshot().lens.held,true,'a still hold takes the drop');
-assert.strictEqual(downs,2,'a hold is not replayed beneath');
+win.fire('pointerdown',{...at,target:under});tick(900);win.fire('pointerup',{...at,target:under});
+assert.strictEqual(downs,2,'a still press, however long, is still a click that passes through');
+assert.strictEqual(controller.snapshot().lens.held,false);
+const hold=()=>{const l=controller.snapshot().lens;win.fire('pointerdown',{clientX:l.x,clientY:l.y,target:under});win.fire('pointermove',{clientX:l.x+12,clientY:l.y,target:under});tick()};
+hold();assert.strictEqual(controller.snapshot().lens.held,true,'pressing on the drop and pulling takes it at once');
+assert.strictEqual(downs,2,'a pull is not replayed beneath');
 win.fire('pointerup',{pointerId:2});
 assert.strictEqual(controller.snapshot().lens.held,true,'another pointer cannot end the hold');
 win.fire('pointerup');assert.strictEqual(controller.snapshot().lens.held,false);
@@ -101,4 +100,4 @@ for(const type of ['pointercancel','lostpointercapture']){hold();win.fire(type);
 hold();win.fire('blur');assert.strictEqual(controller.snapshot().lens.held,false);
 hold();glassOn=false;tick();glassOn=true;tick();assert.strictEqual(controller.snapshot().lens.held,false,'turning glass off cancels the drag');
 assert.ok(controller.snapshot().lens.mag>.11&&controller.snapshot().lens.mag<.12,'the drop magnifies by 13%');
-console.log('pass-through click / drag / hold-to-take / ownership witness: PASS');
+console.log('pass-through click / pull-to-take / ownership witness: PASS');

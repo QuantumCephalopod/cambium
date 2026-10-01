@@ -171,7 +171,9 @@ Papers inhabits Display's shared Descent (navigation `Descent`) at every rank, i
 
 ## The lens is the instrument and the LOD
 
-Display's one invariant glass drop is Papers' instrument. Organisms' particle letters (their sleeping names) exist only where the drop lies over the field, and only organisms under the drop can be peeked or entered; everywhere else the field shows the primitive tetrahedral bodies. Papers draws no lens of its own: it reads the drop through the render context's `lens()` and hands its canvases to its field (`shader.composite()`), so the same glass refracts them. Container-first Descent is unchanged: a touch outside the drop falls through to chamber passage. Without a drop nothing is gated.
+Display's one invariant glass drop is Papers' instrument. Organisms' particle letters (their sleeping names) exist only where the drop lies over the field, and only organisms under the drop can be peeked or entered; everywhere else the field shows the primitive tetrahedral bodies. Papers draws no lens of its own: it reads the drop through the render context's `lens()` and hands its canvases to its field (`shader.composite()`), so the same glass refracts them. The drop makes visible, so an opened name blooms only in the space the drop contains: where it opens, bound inside the drop and clipped by it, never flown elsewhere. Container-first Descent is unchanged: a touch outside the drop falls through to chamber passage. Without a drop nothing is gated.
+
+Papers speaks in Display's face: holon names, wisdom and woven text are set in SpriteSheet Mono and folded to its alphabet before Pretext lays them out.
 
 The drop also bounds computation: letters outside it are neither laid out nor moved.
 
