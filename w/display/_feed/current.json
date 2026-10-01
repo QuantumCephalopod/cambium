@@ -25,17 +25,16 @@
   },
   "home": {
     "changed_scope": [
-      "z/display-glass.js (new): which surfaces are glass and their rectangles in the field's drawing buffer; parameters",
-      "z/display-lens.js (new): goo lens physics (pure) and its pointer surface",
-      "w/locus-shader.js: one post pass: multisampled scene target, resolve, one full-screen displacement pass with goo union, dispersion, magnification, halftone shadow and rim",
-      "w/template.html, y/build.py, y/check.py (+ two node tests), RITUALS/navigation 2.8 → 2.9",
-      "_stomach/NUTRIENT__glass-and-goo-lens__20260930.md admitted verbatim and narrowed; NUTRIENT__global-nav-hud-and-glass__20260930.md glass half pointed here",
-      "no INDEX, _cambium, site-holon or stills tissue touched"
+      ".github/workflows/pages.yml: trusted materializer completion wake and publication gate",
+      "y/pages-actuation.py + y/pages-actuation.test.py: source/deployment comparison and replay/failure witnesses",
+      ".github/workflows/papers-shadow-materializer-test.yml: actuation regression witness",
+      "RITUALS/organism/RITUAL.md: bounded publication continuation",
+      "_stomach/NUTRIENT__pages-actuation-after-materialize__20260927.md narrowed; retained until live closure"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · OCCUPIED HUD SURFACES ARE GLASS (PURE DISPLACEMENT, HALFTONE SHADOW AND RIM); A GOO LENS HANGS ON THE GLOBAL COMPASS"
+    "outcome": "PASS/EARNED · TESTED STAGING IMPLEMENTATION; DEFERRED · CANONICAL AUTOMATIC EDGE STILL UNWITNESSED"
   },
-  "observed_at_utc": "2026-09-30T21:55:02.909274Z",
+  "observed_at_utc": "2026-10-01T01:13:07.391428Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -51,7 +50,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-glass-goo-lens-20260930T215021Z",
+  "reflected_home_event": "display-pages-actuation-staged-20260930T235929Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -59,7 +58,7 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "9b1c0fe99704acd64d418e8fa92481118e0e0fa3dc339a2bc5ac6353e7b15748"
+      "sha256": "ee6be8aa5964bb7f4311d7067760860385f92458ab9cea7ec274a60f0d84c0db"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
@@ -90,6 +89,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "2a58c532c01c0ff0059764ccee1cb79e96ab646b"
+    "source_revision": "50f6e318cbba2bfa5857c67f9ca6f3991f6adbb9"
   }
 }
