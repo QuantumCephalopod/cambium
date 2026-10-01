@@ -1,0 +1,628 @@
+<title>SpriteSheet on sss</title>
+<style>
+/* Layout: the sss.saarland skin (near-black field, bone ink, mono HUD) — a live hero field, then stacked effect chambers */
+@font-face { font-family: "SpriteSheet"; src: url(data:font/woff2;base64,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) format("woff2"); font-display: block; }
+@font-face { font-family: "SpriteSheet Mono"; src: url(data:font/woff2;base64,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) format("woff2"); font-display: block; }
+:root {
+  color-scheme: dark;
+  --bg: #05070a;
+  --chamber: #0a0d11;
+  --fg: #f1efe9;
+  --dim: rgba(241,239,233,.48);
+  --faint: rgba(241,239,233,.16);
+  --papers: #9ad46f;
+  --schatten: #ece9e1;
+  --crawler: #8fb7c9;
+  --sprite: "SpriteSheet", "Courier New", monospace;
+  --spritemono: "SpriteSheet Mono", "Courier New", monospace;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: Inter, ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body { font-family: var(--sans); font-size: 15px; line-height: 1.5; padding-inline: 16px; padding-block: 0 56px; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1080px; margin-inline: auto; display: grid; gap: 22px; }
+.hud { display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: center; padding-block: 16px 12px; border-bottom: 1px solid var(--faint);
+  font: 9px/1.4 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--dim); }
+.hud b { color: var(--fg); font-weight: 500; letter-spacing: .16em; }
+.hud .live { color: var(--papers); }
+.hud .lang { margin-left: auto; }
+.hero { position: relative; min-height: min(78vh, 620px); border: 1px solid var(--faint); background: radial-gradient(120% 90% at 60% 30%, #0c1218 0%, var(--bg) 70%); overflow: hidden; }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.copy { position: absolute; left: 22px; right: 22px; bottom: 22px; max-width: 640px; pointer-events: none; display: grid; gap: 10px; }
+.kicker { font: 9px/1.45 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+.copy h1 { font-family: var(--sprite); font-weight: 400; font-size: clamp(30px, 6.6vw, 76px); line-height: .98; margin: 0; letter-spacing: .02em; text-wrap: balance; min-height: 1em; }
+.copy p { margin: 0; font-size: clamp(12.5px, 1.2vw, 15.5px); color: rgba(241,239,233,.72); max-width: 54ch; letter-spacing: -.01em; }
+.hint { position: absolute; top: 14px; right: 16px; font: 9px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); text-align: right; }
+.chamber { background: var(--chamber); border: 1px solid var(--faint); display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr); }
+.note { padding: 20px; border-right: 1px solid var(--faint); display: grid; align-content: start; gap: 10px; min-width: 0; }
+.note .tag { font: 9px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.note h2 { font-family: var(--sprite); font-weight: 400; font-size: 25px; line-height: 1.1; margin: 0; letter-spacing: .03em; }
+.note p { margin: 0; font-size: 13.5px; color: rgba(241,239,233,.66); }
+.stage { position: relative; min-width: 0; min-height: 340px; }
+.stage.tall { min-height: 440px; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.controls button { font: 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; background: transparent; color: var(--fg);
+  border: 1px solid var(--faint); padding: 7px 10px; cursor: pointer; }
+.controls button[aria-pressed="true"] { border-color: currentColor; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--papers); outline-offset: 2px; }
+label.range { display: grid; gap: 6px; font: 9.5px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+input[type=range] { width: 100%; accent-color: var(--papers); }
+.specimen { display: grid; gap: 18px; padding: 22px 20px; min-width: 0; }
+.specimen .row { display: grid; gap: 4px; }
+.specimen .row span { font: 9px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+.specimen .reg { font-family: var(--sprite); font-size: clamp(22px, 4vw, 40px); line-height: 1.15; overflow-wrap: anywhere; }
+.specimen .mono { font-family: var(--spritemono); font-size: clamp(18px, 3.2vw, 30px); line-height: 1.2; overflow-wrap: anywhere; color: var(--papers); }
+.specimen .gap { font-size: 13px; color: rgba(241,239,233,.66); max-width: 68ch; }
+.specimen code { font-family: var(--mono); color: var(--schatten); font-size: 12px; }
+.foot { font: 9.5px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+@media (max-width: 720px) {
+  .chamber { grid-template-columns: minmax(0, 1fr); }
+  .note { border-right: 0; border-bottom: 1px solid var(--faint); }
+  .stage { min-height: 300px; }
+  .hero { min-height: 560px; }
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;520&display=swap">
+
+<div class="wrap">
+  <header class="hud">
+    <b>&#9650; Self-similar systems</b>
+    <span>global main:overview</span>
+    <span class="live">persistent recursive display field</span>
+    <span>witness viewer · organism:philosophy</span>
+    <span class="lang">DE / <b>EN</b></span>
+  </header>
+
+  <section class="hero" aria-label="Overview field set in SpriteSheet">
+    <canvas id="body" aria-label="A tetrahedron whose vertices, edges and faces are made of text"></canvas>
+    <div class="hint">hover a face · it fills<br>drag to turn</div>
+    <div class="copy">
+      <div class="kicker">organism:philosophy · global address witness</div>
+      <h1 id="title" aria-label="Form Continuity Care Inquiry">FORM CONTINUITY CARE INQUIRY</h1>
+      <p>Faces focus recursive address cells. Actual global site-holons appear at their tree-derived addresses; their markers switch encounters directly.</p>
+    </div>
+  </section>
+
+  <section class="chamber" aria-labelledby="h-goo">
+    <div class="note">
+      <span class="tag" style="color:var(--fg)">tissue · lens</span>
+      <h2 id="h-goo">TEXT IS TISSUE</h2>
+      <p>Every letter is a body. Its own outline inflates, and letters that come close enough fuse like metaballs into one mass. The lens presses in: the letters under it deflate back to their bare shapes right where they stand, and their volume swells the letters around the press. Move across the field, or watch the lens wander.</p>
+      <label class="range" for="goo">tissue <input id="goo" type="range" min="0" max="1" step="0.01" value="0.75"></label>
+      <label class="range" for="lensr">lens <input id="lensr" type="range" min="0.12" max="0.45" step="0.01" value="0.24"></label>
+    </div>
+    <div class="stage tall"><canvas id="goo-gl" aria-label="Text fused into goo, cleared by a moving lens"></canvas></div>
+  </section>
+
+  <section class="chamber" aria-labelledby="h-veft">
+    <div class="note">
+      <span class="tag" style="color:var(--papers)">the field above</span>
+      <h2 id="h-veft">LETTER THREAD SURFACE BODY</h2>
+      <p>Papers' open text-physiology candidate, set in your face: a vertex is drawn as the glyph it is, an edge is one line of its sentence's letters, a face is a surface Pretext pours to the exact width of the triangle at every height, and the whole is the body. Label equals thing.</p>
+    </div>
+    <div class="specimen">
+      <div class="row"><span>w · vertex</span><div class="reg">F</div></div>
+      <div class="row"><span>w–x · edge, one thread</span><div class="mono">FORM CONTINUITY</div></div>
+      <div class="row"><span>why this font fits</span><div class="gap">Its strokes are already built from short orthogonal and diagonal steps. At thread size it reads like the site's address glyphs; at face size it reads like woven texture. One alphabet holds at every rank.</div></div>
+    </div>
+  </section>
+
+  <section class="chamber" aria-labelledby="h-pour">
+    <div class="note">
+      <span class="tag" style="color:var(--papers)">pour</span>
+      <h2 id="h-pour">SIERPINSKI POUR</h2>
+      <p>Each line is measured by Pretext to the exact width the triangle has at that height, minus the holes. Raise the depth and the same sentence re-pours into a finer body.</p>
+      <label class="range" for="depth">depth <input id="depth" type="range" min="0" max="3" step="1" value="2"></label>
+    </div>
+    <div class="stage"><canvas id="pour" aria-label="Text poured into a Sierpinski triangle"></canvas></div>
+  </section>
+
+  <section class="chamber" aria-labelledby="h-part">
+    <div class="note">
+      <span class="tag" style="color:var(--crawler)">part</span>
+      <h2 id="h-part">TEXT THAT PARTS</h2>
+      <p>A turning tetrahedron sits inside the paragraph. Every frame, each line asks Pretext how much fits on either side of the shape. Move across the field to carry it.</p>
+    </div>
+    <div class="stage"><canvas id="part" aria-label="Paragraph flowing around a rotating tetrahedron"></canvas></div>
+  </section>
+
+  <section class="chamber" aria-labelledby="h-sprite">
+    <div class="note">
+      <span class="tag" style="color:var(--schatten)">sprite</span>
+      <h2 id="h-sprite">SPRITE DECODE</h2>
+      <p>The mono build gives every glyph the same cell, so a holon name can step through the alphabet like frames on a sheet before it lands. Pick a holon.</p>
+      <div class="controls" role="group" aria-label="Holon">
+        <button type="button" data-word="PAPERS" aria-pressed="true" style="color:var(--papers)">Papers</button>
+        <button type="button" data-word="SCHATTENSEITEN" aria-pressed="false" style="color:var(--schatten)">Schattenseiten</button>
+        <button type="button" data-word="CRAWLERBAIT" aria-pressed="false" style="color:var(--crawler)">Crawlerbait</button>
+      </div>
+    </div>
+    <div class="stage"><canvas id="sprite" aria-label="Holon name decoding out of the alphabet"></canvas></div>
+  </section>
+
+  <section class="chamber" aria-labelledby="h-spec">
+    <div class="note">
+      <span class="tag" style="color:var(--dim)">specimen</span>
+      <h2 id="h-spec">THE FACE AT REST</h2>
+      <p>Both builds as they are, and what the site would still ask of them.</p>
+    </div>
+    <div class="specimen">
+      <div class="row"><span>Regular · natural widths</span><div class="reg">ABCDEFGHIJKLM NOPQRSTUVWXYZ</div></div>
+      <div class="row"><span>Mono · fixed cell</span><div class="mono">MNEMOS TETRIX SAARLAND</div></div>
+      <div class="row"><span>Gaps</span><div class="gap">A–Z and space only. Holon ids like <code>6H.dNMx</code>, counts like <code>79S · 66H</code>, and the middot would fall back. Umlauts fold the way you write them in the face: <code>gefällst → GEFAELLST</code>, <code>ü → UE</code>, <code>ß → SS</code> (the goo chamber already does this). So this mockup keeps SpriteSheet on names, faces and threads, and leaves ids and numbers to the mono HUD face.</div></div>
+    </div>
+  </section>
+
+  <div class="foot" id="engine">layout engine: loading pretext…</div>
+</div>
+
+<script type="module">
+const css = getComputedStyle(document.documentElement);
+const C = n => css.getPropertyValue(n).trim();
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Same @chenglou/pretext 0.0.9 body Display hosts in w · Embodiment; canvas fallback keeps the page alive if the CDN stalls.
+let P = null;
+try { P = await import("https://unpkg.com/@chenglou/pretext@0.0.9/dist/layout.js"); } catch (e) { P = null; }
+try { await Promise.all([document.fonts.load('40px "SpriteSheet"'), document.fonts.load('40px "SpriteSheet Mono"')]); } catch (e) {}
+document.getElementById("engine").textContent = P
+  ? "layout: @chenglou/pretext 0.0.9 — the same body Display hosts at w · Embodiment · every line measured before paint"
+  : "layout: canvas fallback (pretext did not load)";
+
+const mctx = document.createElement("canvas").getContext("2d");
+function prep(text, font) {
+  if (P) return { p: P.prepareWithSegments(text, font), font };
+  return { words: text.split(" "), font };
+}
+function nextLine(h, cursor, maxWidth) {
+  if (P) {
+    const line = P.layoutNextLine(h.p, cursor ?? { segmentIndex: 0, graphemeIndex: 0 }, maxWidth);
+    return line ? { text: line.text.trim(), width: line.width, end: line.end } : null;
+  }
+  mctx.font = h.font;
+  const i = cursor ?? 0; if (i >= h.words.length) return null;
+  let t = h.words[i], j = i + 1;
+  while (j < h.words.length && mctx.measureText(t + " " + h.words[j]).width <= maxWidth) t += " " + h.words[j++];
+  return { text: t, width: mctx.measureText(t).width, end: j };
+}
+function fit(canvas) {
+  const r = canvas.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+  const w = Math.max(1, Math.round(r.width * d)), h = Math.max(1, Math.round(r.height * d));
+  if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+  const ctx = canvas.getContext("2d"); ctx.setTransform(d, 0, 0, d, 0, 0);
+  return { ctx, w: r.width, h: r.height };
+}
+const mix = (c, pct) => `color-mix(in oklab, ${c} ${Math.max(0, Math.min(100, Math.round(pct)))}%, transparent)`;
+
+const SAY = {
+  w: "FORM GIVES A WHOLE ITS EDGES SO IT CAN BE MET ",
+  x: "CONTINUITY KEEPS A WHOLE REENTERABLE AS THE SAME WHOLE THROUGH REVISION MOVEMENT AND CHANGES OF EMBODIMENT ",
+  z: "CARE KEEPS THE CAPACITY TO CONTINUE ALIVE WHILE THINGS CHANGE ",
+  y: "INQUIRY NOTICES WHAT IT CANNOT YET ANSWER AND REACHES OUT ",
+};
+const CORPUS = "NOT A LIBRARY NOTHING IS FILED EVERY WHOLE HERE IS SOMETHING ONLY FOUR CHANCE MET ORGANISMS COULD EARN TOGETHER PARENTS NEVER DIE A VERTEX OF A HOLON IS ITS PARENT EMPTY SPACE ASCENDS LABEL EQUALS THING TEXT IS BODY ";
+
+// ---------- shared tetrahedron ----------
+const V = { w: [1, 1, 1], x: [1, -1, -1], z: [-1, 1, -1], y: [-1, -1, 1] };
+const NAMES = { w: "FORM", x: "CONTINUITY", z: "CARE", y: "INQUIRY" };
+const GENE = { w: "w", x: "x", z: "z", y: "y" };
+function project(rotA, rotB, cx, cy, R) {
+  const out = {};
+  for (const k in V) {
+    const [x, y, z] = V[k];
+    let X = x * Math.cos(rotA) - z * Math.sin(rotA), Z = x * Math.sin(rotA) + z * Math.cos(rotA);
+    let Y = y * Math.cos(rotB) - Z * Math.sin(rotB); Z = y * Math.sin(rotB) + Z * Math.cos(rotB);
+    const s = 1 / (1 - Z * 0.12);
+    out[k] = [cx + X * R * s, cy + Y * R * s, Z];
+  }
+  return out;
+}
+function triSpan(a, b, c, y) {
+  let lo = Infinity, hi = -Infinity;
+  for (const [p, q] of [[a, b], [b, c], [c, a]]) {
+    if ((p[1] - y) * (q[1] - y) <= 0 && p[1] !== q[1]) { const x = p[0] + (q[0] - p[0]) * (y - p[1]) / (q[1] - p[1]); lo = Math.min(lo, x); hi = Math.max(hi, x); }
+  }
+  return lo < hi ? [lo, hi] : null;
+}
+function inTri(p, a, b, c) {
+  const s = (p1, p2, p3) => (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1]);
+  const d1 = s(p, a, b), d2 = s(p, b, c), d3 = s(p, c, a);
+  return !((d1 < 0 || d2 < 0 || d3 < 0) && (d1 > 0 || d2 > 0 || d3 > 0));
+}
+
+// ---------- 1. hero: letter · thread · surface · body ----------
+const body = document.getElementById("body");
+const hp = { x: null, y: null, drag: false, lx: 0, ly: 0 };
+let rotA = 0.6, rotB = 0.35, spinV = 0.00018;
+body.addEventListener("pointerdown", e => { hp.drag = true; hp.lx = e.clientX; hp.ly = e.clientY; body.setPointerCapture(e.pointerId); });
+body.addEventListener("pointerup", () => { hp.drag = false; });
+body.addEventListener("pointermove", e => {
+  const r = body.getBoundingClientRect(); hp.x = e.clientX - r.left; hp.y = e.clientY - r.top;
+  if (hp.drag) { rotA += (e.clientX - hp.lx) * 0.008; rotB += (e.clientY - hp.ly) * 0.008; hp.lx = e.clientX; hp.ly = e.clientY; }
+});
+body.addEventListener("pointerleave", () => { hp.x = hp.y = null; hp.drag = false; });
+const faceText = {}; let faceFont = 0;
+let faceGlow = { wxz: 0, wxy: 0, wzy: 0, xzy: 0 };
+function drawBody(t, dt) {
+  const { ctx, w, h } = fit(body);
+  ctx.clearRect(0, 0, w, h);
+  if (!reduce && !hp.drag) rotA += spinV * dt;
+  const narrow = w < 640;
+  const cx = narrow ? w * 0.5 : w * 0.62, cy = narrow ? h * 0.36 : h * 0.44, R = Math.min(w, h) * (narrow ? 0.27 : 0.3);
+  const p = project(rotA, rotB, cx, cy, R);
+  const fs = Math.max(8, R / 15);
+  if (fs !== faceFont) { faceFont = fs; for (const k of ["wxz", "wxy", "wzy", "xzy"]) faceText[k] = prep((k.split("").map(c => SAY[c]).join("") + CORPUS).repeat(4), `${fs}px "SpriteSheet Mono"`); }
+  // faces: back to front; a face is front-facing when its outward normal points at the viewer
+  const faces = ["wxz", "wxy", "wzy", "xzy"].map(k => {
+    const [a, b, c] = k.split("").map(q => p[q]);
+    const z = (a[2] + b[2] + c[2]) / 3;
+    const hover = hp.x != null && inTri([hp.x, hp.y], a, b, c);
+    return { k, a, b, c, z, hover };
+  }).sort((m, n) => m.z - n.z);
+  let hovered = null; for (const f of faces) if (f.hover) hovered = f.k;
+  for (const f of faces) faceGlow[f.k] += ((hovered === f.k ? 1 : 0) - faceGlow[f.k]) * Math.min(1, dt / 160);
+  for (const f of faces) {
+    const g = faceGlow[f.k], depth = (f.z + 1.2) / 2.4;
+    ctx.beginPath(); ctx.moveTo(f.a[0], f.a[1]); ctx.lineTo(f.b[0], f.b[1]); ctx.lineTo(f.c[0], f.c[1]); ctx.closePath();
+    ctx.fillStyle = mix(C("--papers"), 2 + depth * 4 + g * 6); ctx.fill();
+    // surface: Pretext pours the face's sentences to the exact span at every height
+    ctx.save(); ctx.clip();
+    ctx.font = `${fs}px "SpriteSheet Mono"`; ctx.textBaseline = "top";
+    const top = Math.min(f.a[1], f.b[1], f.c[1]), bot = Math.max(f.a[1], f.b[1], f.c[1]);
+    let cur = null; const lh = fs * 1.08;
+    for (let y = top + 1; y + lh <= bot; y += lh) {
+      const s1 = triSpan(f.a, f.b, f.c, y + 1), s2 = triSpan(f.a, f.b, f.c, y + lh - 1);
+      if (!s1 || !s2) continue;
+      const lo = Math.max(s1[0], s2[0]) + 2, hi = Math.min(s1[1], s2[1]) - 2;
+      if (hi - lo < fs * 1.2) continue;
+      const line = nextLine(faceText[f.k], cur, hi - lo); if (!line) break; cur = line.end;
+      ctx.fillStyle = mix(C("--fg"), 9 + depth * 16 + g * 62);
+      ctx.fillText(line.text, (lo + hi) / 2 - line.width / 2, y);
+    }
+    ctx.restore();
+  }
+  // threads: each edge is one line of its two vertices' sentence, letter by letter along the edge
+  const edges = [["w", "x"], ["w", "z"], ["w", "y"], ["x", "z"], ["x", "y"], ["z", "y"]];
+  const tfs = Math.max(8, R / 13);
+  ctx.font = `${tfs}px "SpriteSheet Mono"`; ctx.textBaseline = "middle"; ctx.textAlign = "center";
+  const adv = mctxAdv(tfs);
+  for (const [a, b] of edges) {
+    const A = p[a], B = p[b], len = Math.hypot(B[0] - A[0], B[1] - A[1]);
+    const text = (NAMES[a] + " " + NAMES[b] + " ");
+    const n = Math.max(1, Math.floor((len - tfs * 3) / adv));
+    const ang = Math.atan2(B[1] - A[1], B[0] - A[0]), flip = Math.cos(ang) < 0 ? Math.PI : 0;
+    const depth = ((A[2] + B[2]) / 2 + 1.2) / 2.4;
+    const scroll = reduce ? 0 : Math.floor(t / 260);
+    for (let i = 0; i < n; i++) {
+      const u = (tfs * 1.5 + (i + 0.5) * adv) / len;
+      const x = A[0] + (B[0] - A[0]) * u, y = A[1] + (B[1] - A[1]) * u;
+      const ch = text[(i + scroll) % text.length];
+      ctx.save(); ctx.translate(x, y); ctx.rotate(ang + flip);
+      ctx.fillStyle = mix(C("--fg"), 30 + depth * 50);
+      ctx.fillText(ch, 0, 0); ctx.restore();
+    }
+  }
+  // letters: each vertex is drawn as the glyph it is, its gene beside it in the HUD face
+  const vfs = Math.max(20, R / 3.6);
+  for (const k of Object.keys(p).sort((m, n) => p[m][2] - p[n][2])) {
+    const [x, y, z] = p[k], depth = (z + 1.2) / 2.4;
+    ctx.font = `${vfs * (0.82 + depth * 0.3)}px "SpriteSheet"`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillStyle = C("--bg"); ctx.fillText(NAMES[k][0], x + 1, y + 1);
+    ctx.fillStyle = mix(C("--fg"), 45 + depth * 55); ctx.fillText(NAMES[k][0], x, y);
+    ctx.font = `9px ${C("--mono")}`; ctx.textAlign = "left"; ctx.fillStyle = mix(C("--fg"), 40 + depth * 30);
+    ctx.fillText(GENE[k] + "  " + NAMES[k], x + vfs * 0.45, y - vfs * 0.42);
+  }
+  ctx.textAlign = "left";
+}
+const advCache = new Map();
+function mctxAdv(fs) { if (!advCache.has(fs)) { mctx.font = `${fs}px "SpriteSheet Mono"`; advCache.set(fs, mctx.measureText("M").width); } return advCache.get(fs); }
+
+// ---------- 2. Sierpinski pour ----------
+const pour = document.getElementById("pour"), depthEl = document.getElementById("depth");
+function spans(x0, y0, size, depth, y, out) {
+  const h = size * Math.sqrt(3) / 2;
+  if (y < y0 || y > y0 + h) return;
+  if (depth === 0) { const half = size * ((y - y0) / h) / 2; out.push([x0 + size / 2 - half, x0 + size / 2 + half]); return; }
+  spans(x0 + size / 4, y0, size / 2, depth - 1, y, out);
+  spans(x0, y0 + h / 2, size / 2, depth - 1, y, out);
+  spans(x0 + size / 2, y0 + h / 2, size / 2, depth - 1, y, out);
+}
+const pourCache = new Map();
+function drawPour(t) {
+  const { ctx, w, h } = fit(pour);
+  ctx.clearRect(0, 0, w, h);
+  const depth = +depthEl.value, pad = 18;
+  const size = Math.min(w - pad * 2, (h - pad * 2) / (Math.sqrt(3) / 2));
+  const x0 = (w - size) / 2, y0 = (h - size * Math.sqrt(3) / 2) / 2;
+  const fs = Math.max(7, Math.round(size / (22 + depth * 14))), lh = fs * 1.05, font = `${fs}px "SpriteSheet Mono"`;
+  if (!pourCache.has(font)) pourCache.set(font, prep((SAY.w + SAY.x + SAY.z + SAY.y + CORPUS).repeat(30), font));
+  const handle = pourCache.get(font);
+  ctx.font = font; ctx.textBaseline = "top";
+  let cursor = null, row = 0;
+  for (let y = y0 + 2; y + lh <= y0 + size * Math.sqrt(3) / 2 + 1; y += lh, row++) {
+    const s = []; spans(x0, y0, size, depth, y + lh, s); s.sort((a, b) => a[0] - b[0]);
+    for (const [a, b] of s) {
+      if (b - a < fs * 0.8) continue;
+      const line = nextLine(handle, cursor, b - a); if (!line) break; cursor = line.end;
+      const k = reduce ? 0.9 : 0.5 + 0.5 * Math.max(0, Math.sin(row * 0.33 - t / 420));
+      ctx.fillStyle = mix(C("--papers"), 35 + k * 65);
+      ctx.fillText(line.text, (a + b) / 2 - line.width / 2, y);
+    }
+  }
+}
+
+// ---------- 3. text that parts ----------
+const part = document.getElementById("part");
+let partFS = 0, partHandle = null; const pp = { x: null, y: null };
+part.addEventListener("pointermove", e => { const r = part.getBoundingClientRect(); pp.x = e.clientX - r.left; pp.y = e.clientY - r.top; });
+part.addEventListener("pointerleave", () => { pp.x = pp.y = null; });
+function hullRange(pts, y0, y1) {
+  let lo = Infinity, hi = -Infinity;
+  for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+    const [ax, ay] = pts[i], [bx, by] = pts[j];
+    for (const yy of [y0, (y0 + y1) / 2, y1]) if ((ay - yy) * (by - yy) <= 0 && ay !== by) { const x = ax + (bx - ax) * (yy - ay) / (by - ay); lo = Math.min(lo, x); hi = Math.max(hi, x); }
+  }
+  for (const [x, y] of pts) if (y >= y0 && y <= y1) { lo = Math.min(lo, x); hi = Math.max(hi, x); }
+  return lo < hi ? [lo, hi] : null;
+}
+function drawPart(t) {
+  const { ctx, w, h } = fit(part);
+  ctx.clearRect(0, 0, w, h);
+  const fs = Math.round(Math.max(13, Math.min(19, w / 34))), lh = fs * 1.35, pad = 18, gutter = 12;
+  if (fs !== partFS) { partFS = fs; partHandle = prep((SAY.x + CORPUS + SAY.y).repeat(8), `${fs}px "SpriteSheet"`); }
+  const cx = pp.x ?? w * 0.52 + Math.sin(t / 2100) * w * 0.12, cy = pp.y ?? h * 0.5 + Math.cos(t / 2900) * h * 0.1;
+  const pr = project(t / 1700, t / 2600, cx, cy, Math.min(w, h) * 0.22), pts = Object.values(pr);
+  ["wxz", "wxy", "wzy", "xzy"].map(k => ({ k, z: k.split("").reduce((s, q) => s + pr[q][2], 0) })).sort((a, b) => a.z - b.z).forEach(({ k }, i) => {
+    const [a, b, c] = k.split("").map(q => pr[q]);
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(c[0], c[1]); ctx.closePath();
+    ctx.fillStyle = mix(C("--crawler"), 8 + i * 7); ctx.fill(); ctx.strokeStyle = mix(C("--crawler"), 55); ctx.lineWidth = 1; ctx.stroke();
+  });
+  ctx.font = `${fs}px "SpriteSheet"`; ctx.textBaseline = "top"; ctx.fillStyle = C("--fg");
+  let cursor = null;
+  for (let y = pad; y + lh <= h - pad; y += lh) {
+    const hole = hullRange(pts, y, y + lh);
+    const segs = hole ? [[pad, hole[0] - gutter], [hole[1] + gutter, w - pad]] : [[pad, w - pad]];
+    for (const [a, b] of segs) {
+      if (b - a < fs * 2.5) continue;
+      const line = nextLine(partHandle, cursor, b - a); if (!line) return; cursor = line.end;
+      ctx.fillText(line.text, hole && a === pad ? b - line.width : a, y);
+    }
+  }
+}
+
+// ---------- 4. sprite decode ----------
+const sprite = document.getElementById("sprite"), ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let word = "PAPERS", wordColor = C("--papers"), decodeStart = performance.now();
+document.querySelectorAll("[data-word]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-word]").forEach(o => o.setAttribute("aria-pressed", String(o === b)));
+  word = b.dataset.word; wordColor = getComputedStyle(b).color; decodeStart = performance.now();
+}));
+function drawSprite(t) {
+  const { ctx, w, h } = fit(sprite);
+  ctx.clearRect(0, 0, w, h);
+  const n = word.length, cell = Math.min((w - 36) / n, h * 0.42), fs = cell / 0.6875;
+  const x0 = (w - cell * n) / 2, y0 = h / 2 - fs * 0.5;
+  ctx.font = `${Math.max(10, fs * 0.22)}px "SpriteSheet Mono"`; ctx.textBaseline = "top"; ctx.fillStyle = mix(C("--fg"), 18);
+  for (let r = 0; r < 3; r++) ctx.fillText(ALPHA.slice(r * 9, r * 9 + 9).split("").join(" "), 18, 16 + r * Math.max(12, fs * 0.28));
+  ctx.font = `${fs}px "SpriteSheet Mono"`;
+  const el = reduce ? 1e9 : t - decodeStart;
+  for (let i = 0; i < n; i++) {
+    const target = word[i], settle = 260 + i * 90, settled = el >= settle;
+    const ch = settled ? target : ALPHA[(ALPHA.indexOf(target) - Math.floor((settle - el) / 45) + 26 * 8) % 26];
+    const x = x0 + i * cell;
+    ctx.strokeStyle = mix(C("--fg"), settled ? 10 : 30); ctx.lineWidth = 1; ctx.strokeRect(x + 1.5, y0 - fs * 0.08, cell - 3, fs * 1.02);
+    ctx.fillStyle = settled ? wordColor : mix(wordColor, 45);
+    mctx.font = ctx.font; ctx.fillText(ch, x + (cell - mctx.measureText(ch).width) / 2, y0);
+  }
+  ctx.font = `9.5px ${C("--mono")}`; ctx.fillStyle = C("--dim");
+  ctx.fillText(`${n} CELLS · ${Math.round(cell)}PX PITCH · MONO BUILD`, 18, h - 24);
+}
+
+// ---------- 5. goo that parts ----------
+// Umlauts fold the way Philipp writes them in the face: Ä→AE, Ö→OE, Ü→UE, ß→SS; anything else outside A–Z drops to space.
+const fold = s => s.toUpperCase().replace(/Ä/g, "AE").replace(/Ö/g, "OE").replace(/Ü/g, "UE").replace(/ẞ|ß/g, "SS").replace(/[^A-Z ]+/g, " ").replace(/ +/g, " ");
+const GOO_TEXT = fold("Du gefällst mir. Mir gefällst du. ") + SAY.x + SAY.z + fold("Nicht eine Bibliothek: nichts ist abgelegt. ") + CORPUS + SAY.y + SAY.w;
+const gooCv = document.getElementById("goo-gl"), gooEl = document.getElementById("goo"), lensEl = document.getElementById("lensr");
+const gp = { x: null, y: null };
+gooCv.addEventListener("pointermove", e => { const r = gooCv.getBoundingClientRect(); gp.x = e.clientX - r.left; gp.y = e.clientY - r.top; });
+gooCv.addEventListener("pointerdown", e => { const r = gooCv.getBoundingClientRect(); gp.x = e.clientX - r.left; gp.y = e.clientY - r.top; });
+gooCv.addEventListener("pointerleave", () => { gp.x = gp.y = null; });
+// Every letter is its own body: a signed distance field of the glyph itself. Inflating a letter offsets
+// its own outline; letters close enough fuse through an exponential smooth union (metaballs). No second layer.
+const gl = gooCv.getContext("webgl2", { antialias: false, premultipliedAlpha: true });
+const ALPH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", EM = 48, PAD = 64;
+let B = null;
+function edt1d(f, n, d, v, z) {
+  let k = 0; v[0] = 0; z[0] = -1e20; z[1] = 1e20;
+  for (let q = 1; q < n; q++) {
+    let s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
+    while (s <= z[k]) { k--; s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]); }
+    k++; v[k] = q; z[k] = s; z[k + 1] = 1e20;
+  }
+  k = 0;
+  for (let q = 0; q < n; q++) { while (z[k + 1] < q) k++; d[q] = (q - v[k]) * (q - v[k]) + f[v[k]]; }
+}
+function edt2d(g, w, h) {
+  const n = Math.max(w, h), f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+  for (let x = 0; x < w; x++) { for (let y = 0; y < h; y++) f[y] = g[y * w + x]; edt1d(f, h, d, v, z); for (let y = 0; y < h; y++) g[y * w + x] = d[y]; }
+  for (let y = 0; y < h; y++) { for (let x = 0; x < w; x++) f[x] = g[y * w + x]; edt1d(f, w, d, v, z); for (let x = 0; x < w; x++) g[y * w + x] = d[x]; }
+}
+function buildAtlas() {
+  const c = document.createElement("canvas"), x = c.getContext("2d", { willReadFrequently: true });
+  x.font = `${EM}px "SpriteSheet Mono"`;
+  const adv = Math.ceil(x.measureText("M").width), cw = adv + PAD * 2, ch = Math.ceil(EM * 1.15) + PAD * 2, cols = 6, rows = 5;
+  const out = new Uint8Array(cw * cols * ch * rows);
+  c.width = cw; c.height = ch;
+  for (let i = 0; i < ALPH.length; i++) {
+    x.clearRect(0, 0, cw, ch); x.font = `${EM}px "SpriteSheet Mono"`; x.textBaseline = "top"; x.fillStyle = "#fff"; x.fillText(ALPH[i], PAD, PAD);
+    const a = x.getImageData(0, 0, cw, ch).data, N = cw * ch, gin = new Float64Array(N), gout = new Float64Array(N);
+    for (let p = 0; p < N; p++) { const inside = a[p * 4 + 3] >= 128; gout[p] = inside ? 0 : 1e20; gin[p] = inside ? 1e20 : 0; }
+    edt2d(gout, cw, ch); edt2d(gin, cw, ch);
+    const ox = (i % cols) * cw, oy = Math.floor(i / cols) * ch, W = cw * cols;
+    for (let y = 0; y < ch; y++) for (let xx = 0; xx < cw; xx++) {
+      const p = y * cw + xx, sd = Math.sqrt(gout[p]) - Math.sqrt(gin[p]);
+      out[(oy + y) * W + ox + xx] = Math.max(0, Math.min(255, Math.round((0.5 + sd / (2 * PAD)) * 255)));
+    }
+  }
+  return { data: out, w: cw * cols, h: ch * rows, cw, ch, cols, rows };
+}
+if (gl) try {
+  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; };
+  const prog = (v, f) => { const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, v)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, f)); gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); return p; };
+  const bodyVS = `#version 300 es
+  layout(location=0) in vec4 iA; layout(location=1) in vec2 iB;
+  uniform vec2 res, cell, atlasPx; uniform float sc, pad, cols;
+  out vec2 vUV, vC; out float vR, vS;
+  void main(){
+    vec2 c=vec2(gl_VertexID&1,gl_VertexID>>1);
+    vec2 px=iA.xy-pad*sc+c*cell*sc;
+    vec2 o=vec2(mod(iA.z,cols),floor(iA.z/cols))*cell;
+    vUV=(o+c*cell)/atlasPx; vC=c; vR=iA.w; vS=iB.x;
+    vec2 n=px/res*2.-1.; gl_Position=vec4(n.x,-n.y,0.,1.);
+  }`;
+  const bodyFS = `#version 300 es
+  precision highp float;
+  uniform sampler2D A; uniform float sc, pad, scale;
+  in vec2 vUV, vC; in float vR, vS; out vec4 o;
+  void main(){
+    float d=(texture(A,vUV).r-.5)*2.*pad*sc;
+    float e=exp(min(-(d-vR)/vS,9.));
+    float edge=min(min(vC.x,1.-vC.x),min(vC.y,1.-vC.y));
+    o=vec4(e*smoothstep(0.,.12,edge)*scale);
+  }`;
+  const fullVS = `#version 300 es
+  void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0.,1.);}`;
+  const compFS = `#version 300 es
+  precision highp float;
+  uniform sampler2D F; uniform vec2 res; uniform float scale; uniform vec3 inkc, bg; out vec4 o;
+  void main(){
+    float S=texture(F,gl_FragCoord.xy/res).r/scale, L=log(max(S,1e-6));
+    float a=clamp(L/max(fwidth(L),1e-4)+.5,0.,1.);
+    o=vec4(mix(bg,inkc,a),1.);
+  }`;
+  const half = !!gl.getExtension("EXT_color_buffer_float");
+  const atlas = buildAtlas();
+  const at = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, at);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, atlas.w, atlas.h, 0, gl.RED, gl.UNSIGNED_BYTE, atlas.data);
+  for (const [p, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, p, v);
+  const field = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, field);
+  for (const [p, v] of [[gl.TEXTURE_MIN_FILTER, gl.NEAREST], [gl.TEXTURE_MAG_FILTER, gl.NEAREST], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, p, v);
+  const fb = gl.createFramebuffer(), vao = gl.createVertexArray(), buf = gl.createBuffer();
+  gl.bindVertexArray(vao); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 24, 0); gl.vertexAttribDivisor(0, 1);
+  gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 24, 16); gl.vertexAttribDivisor(1, 1);
+  gl.bindVertexArray(null);
+  const body = prog(bodyVS, bodyFS), comp = prog(fullVS, compFS);
+  const ul = (p, ns) => Object.fromEntries(ns.map(n => [n, gl.getUniformLocation(p, n)]));
+  B = { half, atlas, at, field, fb, vao, buf, body, comp, w: 0, h: 0, scale: half ? 1 : 1 / 16, empty: gl.createVertexArray(),
+    UB: ul(body, ["A", "res", "cell", "atlasPx", "sc", "pad", "cols", "scale"]), UC: ul(comp, ["F", "res", "scale", "inkc", "bg"]) };
+} catch (e) { console.warn("letter bodies unavailable", e); B = null; }
+
+let gooLayout = null;
+const lensPos = { x: 0, y: 0, init: false };
+function layoutGoo(w, h, fs) {
+  // the body is formatted on a square: one block of letters, centred in the field
+  const side = Math.min(w, h) - fs * 1.6, font = `${fs}px "SpriteSheet Mono"`, lh = fs * 1.08;
+  const handle = prep(GOO_TEXT.repeat(6), font);
+  mctx.font = font; const adv = mctx.measureText("M").width;
+  const cols = Math.floor(side / adv), rows = Math.floor(side / lh);
+  const x0 = (w - cols * adv) / 2, y0 = (h - rows * lh) / 2;
+  const glyphs = []; let cursor = null;
+  for (let row = 0; row < rows; row++) {
+    const line = nextLine(handle, cursor, cols * adv + 0.5); if (!line) break; cursor = line.end;
+    for (let i = 0; i < line.text.length; i++) if (line.text[i] !== " ")
+      glyphs.push({ ch: line.text[i], ci: ALPH.indexOf(line.text[i]), x: x0 + i * adv, y: y0 + row * lh, cx: x0 + (i + 0.5) * adv, cy: y0 + (row + 0.5) * lh,
+        fat: 1, p: 0, seed: ((Math.sin(glyphs.length * 12.9898 + row * 78.233) * 43758.5453) % 1 + 1) % 1 });
+  }
+  return { w, h, fs, font, glyphs, inst: new Float32Array(glyphs.length * 6) };
+}
+function drawGoo(t) {
+  const r = gooCv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+  const W = Math.max(1, Math.round(r.width * d)), H = Math.max(1, Math.round(r.height * d));
+  const fs = Math.round(Math.max(14, Math.min(24, r.width / 32)));
+  if (!gooLayout || gooLayout.w !== r.width || gooLayout.h !== r.height || gooLayout.fs !== fs) gooLayout = layoutGoo(r.width, r.height, fs);
+  const tx = gp.x ?? r.width * (0.5 + 0.28 * Math.sin(t / 3100)), ty = gp.y ?? r.height * (0.5 + 0.28 * Math.sin(t / 2300 + 1));
+  if (!lensPos.init) { lensPos.x = tx; lensPos.y = ty; lensPos.init = true; }
+  const k = gp.x != null ? 0.35 : 0.08; lensPos.x += (tx - lensPos.x) * k; lensPos.y += (ty - lensPos.y) * k;
+  const goo = +gooEl.value, LR = Math.min(r.width, r.height) * +lensEl.value;
+  // pressure deflates the letters under the press to their bare bodies and pushes them apart;
+  // their volume is handed to the letters around the press, which inflate further
+  const Gs = gooLayout.glyphs; let squeezed = 0, ring = 0;
+  for (const g of Gs) {
+    const dd = Math.hypot(g.cx - lensPos.x, g.cy - lensPos.y);
+    let pr = 1 - Math.min(1, dd / LR); pr = pr * pr * (3 - 2 * pr);
+    g.pt = pr; squeezed += pr;
+    g.b = dd > LR * 0.7 ? Math.exp(-(((dd - LR * 1.15) / (LR * 0.35)) ** 2)) : 0; ring += g.b;
+  }
+  const ease = reduce ? 1 : 0.18;
+  for (const g of Gs) {
+    const target = Math.min(1.7, (1 - g.pt) + (ring > 0 ? 0.6 * squeezed * g.b / ring : 0));
+    g.fat += (target - g.fat) * ease; g.p += (g.pt - g.p) * ease;
+  }
+  if (!B) {
+    const { ctx } = fit(gooCv); ctx.clearRect(0, 0, r.width, r.height); ctx.font = gooLayout.font; ctx.textBaseline = "top"; ctx.fillStyle = C("--fg");
+    for (const g of Gs) ctx.fillText(g.ch, g.x, g.y);
+    return;
+  }
+  const amp = fs * 0.07, tt = reduce ? 0 : t / 1000, r0 = goo * fs * 0.2, inst = gooLayout.inst;
+  Gs.forEach((g, i) => {
+    // position is sacred: letters never move off their place; under the press even the drift stills
+    const s = g.seed * 6.283, a = amp * (1 - g.p);
+    inst[i * 6] = (g.x + Math.sin(tt * (0.7 + g.seed) + s) * a) * d;
+    inst[i * 6 + 1] = (g.y + Math.cos(tt * (0.5 + g.seed * 0.8) + s * 1.7) * a * 0.8) * d;
+    inst[i * 6 + 2] = g.ci;
+    inst[i * 6 + 3] = g.fat * r0 * d;
+    inst[i * 6 + 4] = fs * d * (0.022 + 0.05 * goo * Math.min(1, g.fat));
+    inst[i * 6 + 5] = 0;
+  });
+  if (gooCv.width !== W || gooCv.height !== H) { gooCv.width = W; gooCv.height = H; }
+  if (B.w !== W || B.h !== H) {
+    gl.bindTexture(gl.TEXTURE_2D, B.field);
+    if (B.half) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, W, H, 0, gl.RGBA, gl.HALF_FLOAT, null);
+    else gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, W, H, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, B.fb); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, B.field, 0);
+    B.w = W; B.h = H;
+  }
+  gl.viewport(0, 0, W, H);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, B.fb); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+  gl.useProgram(B.body); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, B.at); gl.uniform1i(B.UB.A, 0);
+  gl.uniform2f(B.UB.res, W, H); gl.uniform2f(B.UB.cell, B.atlas.cw, B.atlas.ch); gl.uniform2f(B.UB.atlasPx, B.atlas.w, B.atlas.h);
+  gl.uniform1f(B.UB.sc, fs * d / EM); gl.uniform1f(B.UB.pad, PAD); gl.uniform1f(B.UB.cols, B.atlas.cols); gl.uniform1f(B.UB.scale, B.scale);
+  gl.bindVertexArray(B.vao); gl.bindBuffer(gl.ARRAY_BUFFER, B.buf); gl.bufferData(gl.ARRAY_BUFFER, inst, gl.DYNAMIC_DRAW);
+  gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, Gs.length);
+  gl.disable(gl.BLEND); gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.useProgram(B.comp); gl.bindVertexArray(B.empty); gl.bindTexture(gl.TEXTURE_2D, B.field); gl.uniform1i(B.UC.F, 0);
+  gl.uniform2f(B.UC.res, W, H); gl.uniform1f(B.UC.scale, B.scale);
+  gl.uniform3fv(B.UC.inkc, [0.96, 0.95, 0.93]); gl.uniform3fv(B.UC.bg, [0.02, 0.02, 0.025]);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+// ---------- title decode ----------
+const title = document.getElementById("title"), finalTitle = title.textContent, titleStart = performance.now();
+function drawTitle(t) {
+  const el = t - titleStart;
+  if (reduce || el > 2400) { if (title.textContent !== finalTitle) title.textContent = finalTitle; return; }
+  title.textContent = finalTitle.split("").map((c, i) => c === " " || el > 300 + i * 55 ? c : ALPHA[(Math.floor(el / 40) + i * 7) % 26]).join("");
+}
+
+// ---------- loop ----------
+const vis = new Map(), io = new IntersectionObserver(es => es.forEach(e => vis.set(e.target, e.isIntersecting)));
+[body, gooCv, pour, part, sprite].forEach(c => { vis.set(c, true); io.observe(c); });
+let last = performance.now();
+function frame(t) {
+  const dt = Math.min(64, t - last); last = t;
+  drawTitle(t);
+  if (vis.get(body)) drawBody(t, dt);
+  if (vis.get(gooCv)) drawGoo(t);
+  if (vis.get(pour)) drawPour(t);
+  if (vis.get(part)) drawPart(t);
+  if (vis.get(sprite)) drawSprite(t);
+  if (!reduce) requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+if (reduce) { addEventListener("resize", () => requestAnimationFrame(frame)); depthEl.addEventListener("input", () => requestAnimationFrame(frame)); body.addEventListener("pointermove", () => requestAnimationFrame(frame)); }
+</script>
