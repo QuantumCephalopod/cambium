@@ -59,3 +59,25 @@ for(let i=0;i<180;i++)L.step(s,[smallTop,smallMap],1/60,smallView);
 assert.strictEqual(s.attached,false,'nearby UI does not swallow every released drop');
 assert.ok(s.radius>65&&s.hx===s.hy);
 console.log('narrow-pane free-drop witness: PASS');
+
+/* Capture can fail or disappear: owning completion at the window still ends a drag. */
+const vm=require('vm'),fs=require('fs');
+function target(){return {style:{},dataset:{},events:{},classList:{contains:()=>false},setAttribute(){},
+  addEventListener(type,fn){(this.events[type]??=[]).push(fn)},setPointerCapture(){throw Error('capture unavailable')},
+  fire(type,extra={}){const e={button:0,pointerId:1,clientX:400,clientY:300,currentTarget:this,target:this,preventDefault(){},stopPropagation(){},...extra};for(const f of this.events[type]||[])f(e)}}}
+const win=target(),nodes=[],frames=[];let glassOn=true;
+Object.assign(win,{innerWidth:1100,innerHeight:700,getComputedStyle:()=>({}),requestAnimationFrame:f=>frames.push(f),
+  document:{documentElement:{dataset:{}},body:{append:n=>nodes.push(n)},createElement:target},
+  SSSDisplayGlass:{enabled:()=>glassOn,collect:()=>[{id:'top',kind:'hud',layer:'hud',role:'top',rect:{left:0,top:0,right:1100,bottom:120,width:1100,height:120}}]},module:{exports:{}}});
+win.globalThis=win;vm.runInNewContext(fs.readFileSync(require.resolve('./display-lens.js'),'utf8'),win);
+const controller=win.module.exports;controller.start();frames.shift()(100);
+const drop=nodes.find(n=>n.id==='display-lens'),tick=()=>frames.shift()(200);
+drop.fire('pointerdown');tick();assert.strictEqual(controller.snapshot().lens.held,true);
+drop.fire('pointerdown',{pointerId:2});win.fire('pointerup',{pointerId:2});
+assert.strictEqual(controller.snapshot().lens.held,true,'second pointer cannot take ownership or end the first drag');
+win.fire('pointerup');assert.strictEqual(controller.snapshot().lens.held,false);
+assert.notStrictEqual(drop.dataset.phase,'held','release phase is visible immediately');
+for(const type of ['pointercancel','lostpointercapture']){drop.fire('pointerdown');win.fire(type);assert.strictEqual(controller.snapshot().lens.held,false,type+' clears ownership')}
+drop.fire('pointerdown');win.fire('blur');assert.strictEqual(controller.snapshot().lens.held,false);
+drop.fire('pointerdown');glassOn=false;tick();glassOn=true;tick();assert.strictEqual(controller.snapshot().lens.held,false,'turning glass off cancels the drag');
+console.log('pointer ownership / capture failure / cancellation witness: PASS');

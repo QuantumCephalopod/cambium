@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.9"
+version: "3.0"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -134,8 +134,12 @@ In a single encounter the global navigator is a HUD, not a plate:
 
 - every occupied HUD surface (`data-display-occupancy`) is glass: the field behind it is refracted inside its rounded rectangle by one post pass in the field renderer; `data-display-glass="off"` opts a surface out, `"on"` opts one in; under `prefers-reduced-transparency` there is no glass;
 - the bend is pure displacement (no light point by default): a complex turn off the rim normal, dispersion that grows with the bend, and a magnified interior; the soft shadow and the rim are printed as a 45 degree halftone, never as a gradient, so dots carry what hard edges would pixelate;
-- a goo lens hangs on the global compass: half its width, all its height, joined to it by a neck that thins with distance and tears at `breakAt`; held it turns round, moving it stretches along its motion and shivers when it stops; released beyond the magnet's reach it stays where it was put, inside it it is pulled home and docks; it never leaves the screen;
-- the lens is a pure-physics module (`z/display-lens.js`) plus one pointer surface; it is shown in single encounters with the compass open or while away from it; it draws glass only, it does not yet show any organism.
+- one circular glass drop is stored as overfill on an eligible HUD edge; eligible reservoirs share its declared glass kind and layer. Any exposed edge can lend the drop, including the top HUD and compass. Its neck thins with distance and tears; a nearby cursor gathers the mass, a held drop stays round, and release beyond the reservoir's reach leaves a larger circle. Release near an eligible edge draws it back into storage; it stays inside the screen;
+- the drop is a pure-physics module (`z/display-lens.js`) plus one circular pointer surface and narrow edge strips. Only its owning pointer can move or release it; cancellation, capture loss, blur and glass removal end the grab. It is shown in single encounters and draws glass over the existing field;
+- occupied top HUD surfaces may declare a bounded `data-display-glass-overfill` below their controls, with a curved free edge; safe-area witnesses include that visible overfill;
+- actual field-label ink is derived from DOM text and computed styles into the scene before refraction (`w/display-label-ink.js`). DOM text remains the semantic and hit-target source. Its duplicate pixels are suppressed only after a successful GPU draw and restored for disabled glass, fallback and disposal.
+
+Version 3.0 glass-drop correction (2026-10-01): round mass, cursor attraction, larger released drops, same-kind/layer edge reservoirs, lowered top overfill and refracted field-label ink were implemented and exercised in staging. Canonical promotion remains owner-gated.
 
 ## Target-origin closure
 
