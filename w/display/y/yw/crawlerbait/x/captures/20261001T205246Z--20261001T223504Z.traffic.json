@@ -17,6 +17,12 @@
   "never_captured_fields": [
     "clientRequestQuery"
   ],
+  "organism_boundary_migration": {
+    "already_opaque_identity_preserved": true,
+    "foreign_site_holon_paths_literal": false,
+    "migrated_on": "2026-10-02",
+    "offered_resolution": "crawlerbait-owned-public-surface-v1"
+  },
   "phenotype_by_being": {
     "01be2f08378d7bd1a1af68a3": {
       "genome": "49582441820615efe10df64fc8fcc45d43a6103d12c42102cde85fd65dff6d2e",
@@ -208,9 +214,9 @@
       "domain": "crawlerbait:path:v1",
       "key_epoch": "v1",
       "offered_public_paths_literal": true,
-      "offered_resolution": "exact-source-owned-public-artifact-v1",
+      "offered_resolution": "crawlerbait-owned-public-surface-v1",
       "raw_unoffered_path_persisted": false,
-      "scheme": "literal offered path else HMAC-SHA256 opaque Bait path"
+      "scheme": "Crawlerbait-owned literal path else HMAC-SHA256 opaque Bait path"
     },
     "phenotype": {
       "domain": "crawlerbait:phenotype:v1",
@@ -227,35 +233,35 @@
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/assets/dd8c58b963ff926f/dependencies/chenglou-pretext/bidi.js",
+                "clientRequestPath": "/~/3c8c4c327dada9dbff6f5749",
                 "datetime": "2026-10-01T21:35:29Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/assets/dd8c58b963ff926f/dependencies/chenglou-pretext/analysis.js",
+                "clientRequestPath": "/~/2fcd8ab247919729ca48fa0a",
                 "datetime": "2026-10-01T21:35:29Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "619702e73c13040278807663",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
                 "datetime": "2026-10-01T22:18:29Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "c743bae26091a841e08f424a",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
                 "datetime": "2026-10-01T21:23:28Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
                 "datetime": "2026-10-01T21:35:19Z",
                 "edgeResponseStatus": 200
               },
@@ -269,14 +275,14 @@
               {
                 "beingId": "6e08002b606216e73f3838cf",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
                 "datetime": "2026-10-01T21:49:54Z",
                 "edgeResponseStatus": 301
               },
               {
                 "beingId": "01be2f08378d7bd1a1af68a3",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
                 "datetime": "2026-10-01T21:32:54Z",
                 "edgeResponseStatus": 200
               },
@@ -290,35 +296,35 @@
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/assets/dd8c58b963ff926f/dependencies/chenglou-pretext/line-break.js",
+                "clientRequestPath": "/~/31a212d1ff7d7c0048cd1a93",
                 "datetime": "2026-10-01T21:35:29Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/assets/dd8c58b963ff926f/dependencies/chenglou-pretext/line-text.js",
+                "clientRequestPath": "/~/45e2666ceb52d07f4088ff95",
                 "datetime": "2026-10-01T21:35:29Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/papers-shadow/current.json",
+                "clientRequestPath": "/~/1a3e60ee0c01251adb702de1",
                 "datetime": "2026-10-01T21:35:28Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/assets/dd8c58b963ff926f/dependencies/chenglou-pretext/layout.js",
+                "clientRequestPath": "/~/6317a7f560f83302f08d6ae0",
                 "datetime": "2026-10-01T21:35:28Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "1e01fae016b126a865d9e665",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/papers-shadow/genealogy-gap-repair.json",
+                "clientRequestPath": "/~/d4911f05fa5a5778bc089711",
                 "datetime": "2026-10-01T21:35:29Z",
                 "edgeResponseStatus": 200
               }

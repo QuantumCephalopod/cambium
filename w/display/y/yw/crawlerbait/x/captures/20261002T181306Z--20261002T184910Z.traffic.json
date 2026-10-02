@@ -11,6 +11,12 @@
   "never_captured_fields": [
     "clientRequestQuery"
   ],
+  "organism_boundary_migration": {
+    "already_opaque_identity_preserved": true,
+    "foreign_site_holon_paths_literal": false,
+    "migrated_on": "2026-10-02",
+    "offered_resolution": "crawlerbait-owned-public-surface-v1"
+  },
   "phenotype_by_being": {
     "19559f86a1a9dd8b5f451d35": {
       "genome": "8b1ac5077dae90a3d6211618dd65f514e310fbcaf694d46345826ac8ae9333b6",
@@ -210,9 +216,9 @@
       "domain": "crawlerbait:path:v1",
       "key_epoch": "v1",
       "offered_public_paths_literal": true,
-      "offered_resolution": "exact-source-owned-public-artifact-v1",
+      "offered_resolution": "crawlerbait-owned-public-surface-v1",
       "raw_unoffered_path_persisted": false,
-      "scheme": "literal offered path else HMAC-SHA256 opaque Bait path"
+      "scheme": "Crawlerbait-owned literal path else HMAC-SHA256 opaque Bait path"
     },
     "phenotype": {
       "domain": "crawlerbait:phenotype:v1",
@@ -285,14 +291,14 @@
               {
                 "beingId": "b4b67eda136c577d12070f41",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
                 "datetime": "2026-10-02T18:43:21Z",
                 "edgeResponseStatus": 200
               },
               {
                 "beingId": "b4cd9cbe5820712bcaff03c1",
                 "clientRequestHTTPMethodName": "GET",
-                "clientRequestPath": "/",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
                 "datetime": "2026-10-02T18:13:37Z",
                 "edgeResponseStatus": 404
               },
