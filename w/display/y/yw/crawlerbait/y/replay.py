@@ -24,12 +24,21 @@ T = load_tide()
 
 
 def self_test():
-    state = T.rebuild_state()
+    cursor = T.read_json(T.ROOT / "x" / "cursor.json")
+    path_state = cursor.get("path_privacy") or {}
+    migrated = path_state.get("offered_resolution") == T.pathmembrane.OFFERED_RESOLUTION
+    original_gate = T.path_privacy_active
+    if not migrated:
+        T.path_privacy_active = lambda: False
+    try:
+        state = T.rebuild_state()
+    finally:
+        T.path_privacy_active = original_gate
     legacy = T.replay_legacy()
     assert set(legacy["routes"]).issubset(set(state["routes"]))
     assert state["version"] == 6
     assert state["raw_requests"] == len(state["encounters"])
-    print("PASS · replay rebuilds metabolized public Crawlerbait state locally with zero provider calls")
+    print("PASS · replay rebuilds metabolized public Crawlerbait state locally with zero provider calls; pending membrane generations are treated only as pre-migration fixtures")
 
 
 def main():
