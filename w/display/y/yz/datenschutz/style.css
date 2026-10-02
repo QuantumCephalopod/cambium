@@ -13,3 +13,7 @@
 .datenschutz-kicker{margin:0;color:rgba(231,238,245,.55);font:600 .62rem/1.5 var(--mono);letter-spacing:.13em;text-transform:uppercase}
 .datenschutz-content p{margin:0;max-width:56ch;font:.95rem/1.65 var(--mono);color:rgba(231,238,245,.76)}
 .datenschutz-content a{width:max-content;color:#d8edff;text-decoration-thickness:1px;text-underline-offset:.25em}
+
+#legal-links{position:fixed;left:clamp(.75rem,2vw,1.4rem);bottom:clamp(.65rem,1.5vw,1rem);z-index:70;display:flex;gap:.8rem;pointer-events:auto;font:600 9px/1 var(--mono);letter-spacing:.11em;text-transform:uppercase}
+#legal-links a{color:rgba(238,242,237,.48);text-decoration:none}
+#legal-links a:hover,#legal-links a:focus-visible{color:rgba(238,242,237,.92);outline:none;text-decoration:underline;text-underline-offset:.28em}
