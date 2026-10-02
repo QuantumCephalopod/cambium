@@ -39,6 +39,8 @@ This README is a derived GitHub-facing projection of the living repository anato
 | `w` | Crawlerbait | `organism:crawlerbait` |
 | `x` | Schattenseiten | `organism:schattenseiten` |
 | `y` | Papers | `organism:papers` |
+| `z` | Datenschutz | `organism:datenschutz` |
+| `xz` | Impressum | `organism:impressum` |
 
 The physical `w/display/y/` population anatomy is mount truth. Each site-holon remains independently rooted behind the Display membrane.
 
