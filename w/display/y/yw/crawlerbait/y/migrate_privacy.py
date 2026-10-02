@@ -9,8 +9,11 @@ import hmac
 import importlib.util
 import json
 import os
+import sys
 
 HERE = Path(__file__).resolve().parent
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
 ROOT = HERE.parent
 CAPTURE_ROOT = ROOT / "x" / "captures"
 CURSOR_PATH = ROOT / "x" / "cursor.json"
