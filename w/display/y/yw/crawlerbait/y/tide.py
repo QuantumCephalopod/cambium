@@ -37,6 +37,13 @@ def observed_path(raw) -> str:
     return raw if isinstance(raw, str) else str(raw or "")
 
 
+def path_privacy_active() -> bool:
+    if not (ROOT / "x" / "cursor.json").is_file():
+        return False
+    cursor = read_json(ROOT / "x" / "cursor.json")
+    return (cursor.get("path_privacy") or {}).get("domain") == pathmembrane.PATH_DOMAIN
+
+
 # --- legacy 404 evidence: preserved, never extended ---------------------------------
 
 def normalize_legacy_state(value: dict) -> dict:
@@ -146,7 +153,7 @@ def empty_route(path: str):
 
 def assimilate_raw(state: dict, record: dict, source_file: str, source_index: int):
     path = observed_path(record.get("clientRequestPath", ""))
-    if not pathmembrane.public_path_shape_valid(path):
+    if path_privacy_active() and not pathmembrane.public_path_shape_valid(path):
         raise RuntimeError(f"public traffic event carries an unmediated request path: {path!r}")
     moment = str(record.get("datetime") or "")
     route = state["routes"].setdefault(path, empty_route(path))
