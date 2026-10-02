@@ -271,7 +271,14 @@ def main():
     registry=build.site_mounts()
     check(registry['version']==3 and registry['source']=='w/display/y tree','mount registry is not tree-derived')
     rel={(m['interlocutor'],m['scope'],m['address']) for m in registry['mounts']}
-    check(rel=={('organism:philosophy','main',''),('organism:crawlerbait','main','w'),('organism:papers','main','y'),('organism:schattenseiten','main','x')},'tree-derived mount relation changed')
+    check(rel=={
+        ('organism:philosophy','main',''),
+        ('organism:crawlerbait','main','w'),
+        ('organism:papers','main','y'),
+        ('organism:schattenseiten','main','x'),
+        ('organism:datenschutz','main','z'),
+        ('organism:impressum','main','xz'),
+    },'tree-derived mount relation changed')
     check(build.root_projection()['source']['organism']=='main-root','Philosophy projection identity changed')
     check(build.papers_projection()['source']=='papers/_feed','Papers projection boundary changed')
 
