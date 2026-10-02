@@ -1,26 +1,18 @@
 {
-  "identity": {
-    "exact_user_agent_persisted": false,
-    "key_epoch": "v1",
-    "key_fingerprint": "b353473d45ad5614",
-    "literal_client_ip_persisted": false,
-    "network_pseudonym_persisted": false,
-    "public_identity": "opaque artwork-local beingId only",
-    "scheme": "hmac-sha256"
-  },
-  "legacy_404_last_capture_end": "2026-09-18T11:13:56Z",
+  "captured_at": "2026-10-02T22:34:38Z",
+  "functional_provider_fields": [
+    "datetime",
+    "clientIP",
+    "userAgent",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
   "never_captured_fields": [
     "clientRequestQuery"
   ],
-  "path_privacy": {
-    "domain": "crawlerbait:path:v1",
-    "key_epoch": "v1",
-    "key_fingerprint": "b353473d45ad5614",
-    "offered_resolution": "crawlerbait-owned-public-surface-v1",
-    "raw_unoffered_path_persisted": false,
-    "scheme": "offered-literal / otherwise keyed opaque Bait path"
-  },
-  "phenotype_shards": [
+  "phenotype_by_being": {},
+  "phenotype_field_shards": [
     [
       "apiGatewayMatchedEndpoint",
       "apiGatewayMatchedHost",
@@ -86,7 +78,11 @@
       "zoneVersion"
     ]
   ],
-  "provider_available_fields": [
+  "private_recognition_fields": [
+    "clientIP",
+    "userAgent"
+  ],
+  "provider_advertised_fields": [
     "apiGatewayMatchedEndpoint",
     "apiGatewayMatchedHost",
     "cacheStatus",
@@ -157,14 +153,53 @@
     "webAssetsOperationId",
     "zoneVersion"
   ],
-  "provider_limits": {
-    "maxDuration": 2592000,
-    "maxNumberOfFields": 70,
-    "maxPageSize": 10000,
-    "notOlderThan": 2678400
+  "public_record_fields": [
+    "datetime",
+    "beingId",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
+  "publication_transform": {
+    "beingId": {
+      "exact_user_agent_persisted": false,
+      "key_epoch": "v1",
+      "key_fingerprint": "b353473d45ad5614",
+      "literal_client_ip_persisted": false,
+      "network_pseudonym_persisted": false,
+      "scheme": "sha256(HMAC-SHA256(clientIP) || exact userAgent)"
+    },
+    "clientRequestPath": {
+      "domain": "crawlerbait:path:v1",
+      "key_epoch": "v1",
+      "offered_public_paths_literal": true,
+      "offered_resolution": "crawlerbait-owned-public-surface-v1",
+      "raw_unoffered_path_persisted": false,
+      "scheme": "literal offered path else HMAC-SHA256 opaque Bait path"
+    },
+    "phenotype": {
+      "domain": "crawlerbait:phenotype:v1",
+      "raw_provider_values_persisted": false,
+      "scheme": "keyed irreversible field-interference"
+    }
   },
-  "raw_last_capture_end": "2026-10-02T22:24:38Z",
+  "published_response": {
+    "data": {
+      "viewer": {
+        "zones": [
+          {
+            "records": []
+          }
+        ]
+      }
+    }
+  },
+  "semantic_filters": [],
   "source": "cloudflare:httpRequestsAdaptive",
-  "unrecoverable_gap": null,
-  "version": 2
+  "transport_filter": "datetime range only",
+  "version": 5,
+  "window": {
+    "end": "2026-10-02T22:24:38Z",
+    "start": "2026-10-02T22:09:21Z"
+  }
 }
