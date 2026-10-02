@@ -63,15 +63,6 @@ jobs:
           cp "$FILTER_DIR/changed-refs" /tmp/changed-refs.txt
           awk 'NR>1 && $1 != $2 {print $1}' /tmp/commit-map.txt | sort -u > /tmp/changed-old-commits.txt
 
-      - name: Sync fork main to already-clean canonical main
-        run: |
-          set -euo pipefail
-          cd /tmp/fork.git
-          git fetch https://github.com/self-similar-systems/cambium.git refs/heads/main:refs/upstream-clean/main
-          ROOT_MAIN="$(git rev-parse refs/upstream-clean/main)"
-          git update-ref refs/heads/main "$ROOT_MAIN"
-          printf '%s\n' "$ROOT_MAIN" > /tmp/root-main-sha.txt
-
       - name: Audit rewritten fork refs and residue
         run: |
           set -euo pipefail
@@ -139,8 +130,6 @@ jobs:
           git ls-remote --heads --tags publish | awk '{print $2, $1}' | sort > /tmp/remote-refs-after.txt
           diff -u /tmp/refs-after.txt /tmp/remote-refs-after.txt
 
-          FORK_MAIN="$(awk '$1=="refs/heads/main" {print $2}' /tmp/remote-refs-after.txt)"
-          test "$FORK_MAIN" = "$(cat /tmp/root-main-sha.txt)"
 
       - name: Upload fork cleanup witness
         uses: actions/upload-artifact@v4
@@ -161,4 +150,3 @@ jobs:
             /tmp/fork-pull-refs-before.txt
             /tmp/affected-fork-pulls.txt
             /tmp/affected-fork-pull-count.txt
-            /tmp/root-main-sha.txt
