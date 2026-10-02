@@ -143,11 +143,12 @@ def main():
     check(isinstance(checkpoint_end,str),'Crawlerbait legacy checkpoint has no explicit end')
     check(cursor.get('version')==2 and cursor.get('source')=='cloudflare:httpRequestsAdaptive','Crawlerbait cursor is not canonical raw-traffic generation 2')
     path_state=cursor.get('path_privacy') or {}
+    legacy_path_migrated=path_state.get('domain')=='crawlerbait:path:v1'
     path_migrated=(
-        path_state.get('domain')=='crawlerbait:path:v1'
+        legacy_path_migrated
         and path_state.get('offered_resolution')==pathmembrane.OFFERED_RESOLUTION
     )
-    if path_migrated:
+    if legacy_path_migrated:
         check((checkpoint.get('privacy_migration') or {}).get('exact_user_agents_removed') is True,'Crawlerbait legacy checkpoint still carries readable User-Agent law')
         check(all('signatures' not in route for route in (checkpoint.get('routes') or {}).values()),'Crawlerbait legacy checkpoint still contains UA signature maps')
         check(all(pathmembrane.public_path_shape_valid(path) for path in (checkpoint.get('routes') or {})),'Crawlerbait legacy checkpoint contains an unmediated public path')
@@ -164,7 +165,7 @@ def main():
         check(window.get('start')==expected,f'Crawlerbait legacy 404 gap before {capture.name}')
         expected=window.get('end')
     check(cursor.get('legacy_404_last_capture_end')==expected,'legacy 404 cursor diverged from preserved captures')
-    if path_migrated:
+    if legacy_path_migrated:
         check(not legacy,'privacy-migrated legacy checkpoint still depends on raw capture carriers')
 
     raw_captures=sorted((crawler/'x'/'captures').glob('*.traffic.json'))
@@ -248,7 +249,7 @@ def main():
         seal=json.loads((retained/'seal.json').read_text(encoding='utf-8'))
         check(seal.get('sealed') is True,'Crawlerbait retained-history archive is not sealed')
         check((retained/'provider-settings.json').is_file(),'Crawlerbait retained-history provider settings missing')
-        if path_migrated:
+        if legacy_path_migrated:
             check(seal.get('raw_carriers_retired') is True,'Crawlerbait retained raw bootstrap carriers were not retired after privacy migration')
             check(not list(retained.glob('*.raw.json')),'Crawlerbait retained-bootstrap still contains readable raw files')
             check(seal.get('current_evidence')=='../checkpoint.json','Crawlerbait retained-bootstrap seal does not point at coalesced checkpoint evidence')
