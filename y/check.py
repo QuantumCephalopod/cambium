@@ -94,7 +94,8 @@ def main():
     recognition=policy.get('recognition') or {}
     phenotype=policy.get('phenotype') or {}
     query_policy=policy.get('query') or {}
-    path_policy=policy.get('path') or {}
+    check((crawler/'z'/'path-policy.json').is_file(),'Crawlerbait organism-local path policy missing')
+    path_policy=json.loads((crawler/'z'/'path-policy.json').read_text(encoding='utf-8'))
     check(
         policy.get('version')==6
         and recognition.get('scheme')=='hmac-sha256'
@@ -119,9 +120,10 @@ def main():
     check(
         path_policy.get('domain')=='crawlerbait:path:v1'
         and path_policy.get('raw_unoffered_path_persisted') is False
-        and path_policy.get('offered_public_paths_literal') is True
+        and path_policy.get('crawlerbait_owned_public_paths_literal') is True
         and path_policy.get('offered_resolution')=='crawlerbait-owned-public-surface-v1'
-        and path_policy.get('foreign_site_holon_paths_literal') is False,
+        and path_policy.get('foreign_site_holon_paths_literal') is False
+        and path_policy.get('host_public_artifact_traversed') is False,
         'Crawlerbait public path policy drifted'
     )
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
