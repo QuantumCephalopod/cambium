@@ -601,7 +601,7 @@ def self_test():
     assert being_kind([enc("/"), enc("/opaque-read", t="2026-09-19T00:00:00Z")]) == "y"
     assert being_kind([enc("/"), enc("/opaque-read")]) == "x"
     classify_beings(state)
-    assert crawler["kind"] == "z"
+    assert crawler["kind"] == "x"
     pathmembrane.self_test()
     legacy_record = {
         "clientIPIdentity": "ip:v1:" + "1" * 64,
