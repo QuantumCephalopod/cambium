@@ -49,7 +49,11 @@ def migrate_traffic_capture(value: dict, key: bytes) -> tuple[dict, int]:
     if value.get("version") != 5 or value.get("source") != "cloudflare:httpRequestsAdaptive":
         raise RuntimeError("path migration requires canonical v5 traffic capture")
     transform = (value.get("publication_transform") or {}).get("clientRequestPath") or {}
-    already = transform.get("domain") == P.PATH_DOMAIN and transform.get("raw_unoffered_path_persisted") is False
+    already = (
+        transform.get("domain") == P.PATH_DOMAIN
+        and transform.get("raw_unoffered_path_persisted") is False
+        and transform.get("offered_resolution") == P.OFFERED_RESOLUTION
+    )
 
     out = json.loads(json.dumps(value))
     changed = 0
@@ -65,6 +69,7 @@ def migrate_traffic_capture(value: dict, key: bytes) -> tuple[dict, int]:
             "migrated_on": "2026-10-02",
             "raw_unoffered_paths_removed": True,
             "offered_public_paths_remain_literal": True,
+            "offered_resolution": P.OFFERED_RESOLUTION,
             "query_in_path_transform": False,
         })
 
@@ -73,6 +78,7 @@ def migrate_traffic_capture(value: dict, key: bytes) -> tuple[dict, int]:
         "domain": P.PATH_DOMAIN,
         "raw_unoffered_path_persisted": False,
         "offered_public_paths_literal": True,
+        "offered_resolution": P.OFFERED_RESOLUTION,
         "key_epoch": C.IDENTITY_KEY_EPOCH,
     }
     for record in records:
@@ -231,6 +237,7 @@ def self_test():
     assert rows[1]["clientRequestPath"] == exact_asset
     assert rows[2]["clientRequestPath"].startswith("/~/")
     assert rows[3]["clientRequestPath"].startswith("/__live/~/")
+    assert migrated["publication_transform"]["clientRequestPath"]["offered_resolution"] == P.OFFERED_RESOLUTION
     assert "alice" not in json.dumps(migrated)
     again, changed_again = migrate_traffic_capture(migrated, key)
     assert changed_again == 0 and again == migrated
@@ -276,13 +283,18 @@ def main():
         retired_bootstrap, _seal = retire_retained_bootstrap()
 
     cursor = read_json(CURSOR_PATH)
-    cursor_changed = (cursor.get("path_privacy") or {}).get("domain") != P.PATH_DOMAIN
+    current_path_privacy = cursor.get("path_privacy") or {}
+    cursor_changed = (
+        current_path_privacy.get("domain") != P.PATH_DOMAIN
+        or current_path_privacy.get("offered_resolution") != P.OFFERED_RESOLUTION
+    )
     cursor["path_privacy"] = {
         "scheme": "offered-literal / otherwise keyed opaque Bait path",
         "domain": P.PATH_DOMAIN,
         "key_epoch": C.IDENTITY_KEY_EPOCH,
         "key_fingerprint": fp,
         "raw_unoffered_path_persisted": False,
+        "offered_resolution": P.OFFERED_RESOLUTION,
     }
     if args.write and cursor_changed:
         write_json(CURSOR_PATH, cursor)
@@ -296,6 +308,7 @@ def main():
         "legacy_capture_files_coalesced": len(legacy_files),
         "retained_bootstrap_raw_files_retired": retired_bootstrap,
         "path_domain": P.PATH_DOMAIN,
+        "offered_resolution": P.OFFERED_RESOLUTION,
     }, sort_keys=True))
 
 

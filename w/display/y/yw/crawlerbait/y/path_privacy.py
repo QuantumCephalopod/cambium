@@ -18,6 +18,7 @@ import importlib.util
 import re
 
 PATH_DOMAIN = "crawlerbait:path:v1"
+OFFERED_RESOLUTION = "exact-generated-public-artifact-v1"
 TOKEN_RE = re.compile(r"^[0-9a-f]{24}$")
 
 OWN_APERTURES = (
