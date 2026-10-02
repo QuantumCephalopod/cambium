@@ -2,6 +2,13 @@
 'use strict';
 const id='organism:impressum';
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
+(function exposeLegalLink(){
+  let nav=document.getElementById('legal-links');
+  if(!nav){nav=document.createElement('nav');nav.id='legal-links';nav.setAttribute('aria-label','Legal');document.body.append(nav)}
+  if(!document.getElementById('legal-link-impressum')){
+    const a=document.createElement('a');a.id='legal-link-impressum';a.href='/impressum/';a.textContent='Impressum';nav.append(a);
+  }
+})();
 const shader=Object.freeze({
   id:'shader:organism:impressum',
   clear:[0.012,0.016,0.014,1],
