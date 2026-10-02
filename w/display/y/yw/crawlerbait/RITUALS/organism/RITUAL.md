@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "4.9"
+version: "5.0"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -31,7 +31,7 @@ A bait at local address `<a>` is carried at:
 
 `crawlerbait/w/w<a>/bait.json`
 
-Bait identity is the observed HTTP path, never the folder address. Exact raw addresses exclude pile-up; collisions differentiate deeper. The deterministic address stream has no terminal configured depth. Its first 128 quaternary characters remain byte-for-byte compatible with the original SHA-256 carrier; later deterministic blocks extend only when deeper distinction is required.
+Bait identity is the public-path-membrane result of the observed HTTP path, never the folder address. A site-owned/offered public path remains literal; every other path becomes one stable keyed opaque Bait path before persistence. Exact raw addresses exclude pile-up; collisions differentiate deeper. The deterministic address stream has no terminal configured depth. Its first 128 quaternary characters remain byte-for-byte compatible with the original SHA-256 carrier; later deterministic blocks extend only when deeper distinction is required.
 
 At every finite population size deeper unoccupied addresses remain. New traffic can therefore keep differentiating bait-space without a capacity ceiling.
 
@@ -57,7 +57,9 @@ The functional provider fields are:
 
 Only the following metabolized public record survives:
 
-`datetime · beingId · clientRequestPath · clientRequestHTTPMethodName · edgeResponseStatus`
+`datetime · beingId · public-safe clientRequestPath · clientRequestHTTPMethodName · edgeResponseStatus`
+
+`clientRequestPath` crosses its own publication membrane before persistence. Paths that already name the operator's offered public surface remain literal because that surface is already public. Unknown/probed paths become `/~/<opaque>`. Own apertures (`/__live/`, `/repos/self-similar-systems/`) and Cloudflare foreign pores (`/cdn-cgi/`) retain only that structural prefix; their remainder becomes opaque. The transform is keyed under `crawlerbait:path:v1`, so arbitrary path strings are not dictionary-reversible from the public Bait.
 
 Recognition preserves existing Being continuity without publishing its substrate:
 - literal `clientIP` is canonicalized transiently and never persisted;
@@ -72,10 +74,7 @@ Each persisted `x/captures/*.traffic.json` carrier therefore contains replayable
 
 For the already-public pre-v5 current tree, retirement is ordered: **condense before deletion**. The first authoritative v5 Tide uses the existing recognition secret to read each v4 carrier once, excludes `clientRequestQuery` entirely from the phenotype, folds every other non-functional/non-recognition provider value — including nested arrays/objects — into the same keyed irreversible per-Being phenotype domain, witnesses that functional record count and Being continuity survive, and only then replaces the readable v4 carrier with its v5 encounter + DNA form. Earlier Git history is not rewritten or redescribed as private.
 
-Older material is preserved truthfully but is not extended:
-- `checkpoint.json`, `*.capture.json`, and `retained-bootstrap/` are historical filtered 404 aggregate evidence;
-- their counts remain distinct as `legacy_404_observations`;
-- they are never presented as whole-web-traffic and never added to canonical request counts.
+Older material is preserved truthfully but is not extended. After the authoritative path-privacy migration, the legacy filtered-404 evidence is coalesced into one aggregate `checkpoint.json`: counts/time bounds survive, exact legacy User-Agent strings are removed, and unoffered raw paths cross the same keyed Bait membrane. The obsolete `*.capture.json` and retained-bootstrap raw carriers then retire from the current tree; only the bootstrap seal remains as provenance. Legacy counts stay distinct as `legacy_404_observations` and are never added to canonical request counts.
 
 `x/state.json` is derived and replayable. Public traffic captures are source evidence; state is current metabolism.
 
@@ -87,7 +86,7 @@ One current **traffic Being** is still the same longitudinal relation previously
 
 Every canonical functional event is an encounter between:
 - one opaque artwork-local Being;
-- one Bait/path;
+- one public-safe Bait/path;
 - one time.
 
 Within any chosen time window, the Being's available body/territory is the set of Baits it touched inside that window. No historical A→B→C traversal is invented.
@@ -136,15 +135,17 @@ Two secrets remain non-public because they authorize/define future capture and c
 - Cloudflare acquisition credentials;
 - `CRAWLERBAIT_ID_KEY`.
 
-No literal IP, stable network pseudonym, exact User-Agent or query string belongs to public Crawlerbait state. `clientRequestQuery` is not captured at all. Other provider dimensions may affect the body only through irreversible keyed phenotype interference unless later organism-owned pressure separately earns a readable public distinction.
+No literal IP, stable network pseudonym, exact User-Agent, query string or arbitrary unoffered raw request path belongs to public Crawlerbait state. `clientRequestQuery` is not captured at all. Other provider dimensions may affect the body only through irreversible keyed phenotype interference unless later organism-owned pressure separately earns a readable public distinction.
 
-Observed HTTP paths remain public because they are Bait identity itself. They never become canonical folder taxonomy; their bodies inhabit tetrahedral bait-space.
+Offered site paths remain literal Bait labels because they are already public. Unknown/probed paths, private-aperture suffixes and foreign-pore suffixes are public only through their stable keyed Bait form. They never become canonical folder taxonomy; their bodies inhabit tetrahedral bait-space.
 
 ## y · Tide — bounded sensing, immediate metabolism
 
 `y/capture.py` performs the only recurring provider acquisition.
 
 `y/migrate_privacy.py` is a bounded one-time catabolic enzyme for pre-v5 current-tree Traces. It runs only under the authoritative Tide where `CRAWLERBAIT_ID_KEY` is available: readable legacy auxiliary values must first contribute to opaque DNA; query does not. Once no v4 carriers remain it is a no-op and may later retire after the migration obligation is closed.
+
+`y/migrate_path_privacy.py` is the bounded current-tree path/legacy cleanup enzyme. Under the same secret boundary it maps every already-owned unoffered request path to the public Bait membrane, coalesces legacy 404 counts into the sanitized checkpoint, removes exact legacy User-Agent signatures, and retires obsolete readable bootstrap/capture carriers only after count/window equality is witnessed.
 
 Each run:
 1. reacquires Cloudflare's live `httpRequestsAdaptive` settings and available fields;
@@ -153,7 +154,7 @@ Each run:
 4. reacquires the stable `CRAWLERBAIT_ID_KEY` from GitHub Actions and refuses silent key-epoch discontinuity;
 5. captures only not-yet-owned provider time;
 6. uses literal IP + exact User-Agent transiently to resolve the existing stable artwork-local `beingId`, then discards both plus the internal network pseudonym;
-7. captures the functional core as one exact public encounter carrier;
+7. maps the provider request path through `crawlerbait:path:v1`, leaving only offered public paths literal and making every other Bait path opaque, then captures the functional core as one exact public encounter carrier;
 8. partitions remaining provider-advertised dimensions through recursive tetrahedral field shards under the live `maxNumberOfFields` ceiling;
 9. converts each auxiliary shard observation immediately into keyed one-way phenotype interference and discards its readable values;
 10. recursively subdivides saturated provider time windows rather than accepting page truncation;
@@ -197,12 +198,12 @@ A Crawlerbait change closes only when:
 1. root `w/x/z/y` still realize Baits / Traces / Membrane / Tide and root `4V/6E/4F/1T` remains closed;
 2. `w` contains only addressed Bait bodies;
 3. future acquisition uses `httpRequestsAdaptive` with datetime bounds only and never requests `clientRequestQuery`;
-4. functional encounter truth preserves time, Bait path, artwork Being, method and status without publishing literal IP, network pseudonym or exact User-Agent;
+4. functional encounter truth preserves time, stable Bait identity, artwork Being, method and status without publishing literal IP, network pseudonym, exact User-Agent or arbitrary unoffered raw path material;
 5. accidental HMAC-key rotation is detected and refused rather than silently breaking longitudinal Being identity;
 6. auxiliary provider dimensions cross the publication membrane only as keyed irreversible phenotype interference;
 7. field-width pressure recurs through bounded tetrahedral shards rather than dropping dimensions or fabricating event joins;
 8. public provider windows persist before downstream metabolism;
-9. historical 404 evidence remains explicitly separate and is never extended;
+9. historical 404 evidence remains explicitly separate, coalesced, path-sanitized, free of exact User-Agent strings and never extended;
 10. `x/state.json` is replayable from metabolized public Traces without provider access or the HMAC key;
 11. every Being carries exactly one derived kind and one opaque body genome while recognition material remains absent from public state;
 12. the public membrane exposes current state plus direct access only to metabolized capture carriers;
@@ -212,7 +213,7 @@ A Crawlerbait change closes only when:
 16. exact build/address/tetrahedral/capture/replay/public witnesses pass;
 17. when Tide changed canonical public tissue, a successful Display Pages deployment is witnessed after the final Tide-owned main commit rather than assumed from the push itself.
 
-Compression: **Crawlerbait publishes the Being and its lived relation, not the measurements by which it recognized the Being. Query never enters; private recognition becomes opaque artwork identity; rich provider dimensions become irreversible phenotype; Tide preserves exact functional encounters beneath that skin.**
+Compression: **Crawlerbait publishes the Being and its lived relation, not the measurements or arbitrary path strings by which that relation was sensed. Query never enters; private recognition becomes opaque artwork identity; unoffered paths become opaque Baits; rich provider dimensions become irreversible phenotype; Tide preserves exact functional encounters beneath that skin.**
 
 Version 4.5 being-kinds correction (2026-09-29): every traffic being carries exactly one derived kind — Feeder / Harvester / Prober / Dweller — from its own encounters and our offered membrane, first match wins (Philipp: "tetrahedral split 4 kinds of beings, every being will definitvely fit into one of the 4"). Witnessed on owned Traces through 2026-09-28T13:56:03Z: 47 / 1320 / 506 / 184, no residue.
 
@@ -227,3 +228,6 @@ Version 4.8 publication-membrane correction (2026-10-01): query is never capture
 
 
 Version 4.9 publication-actuation correction (2026-10-01): authoritative Tide successfully condensed the legacy v4 field surface into opaque phenotype DNA, caught up fresh Cloudflare traffic with no unrecoverable gap, and rebuilt Crawlerbait, but its own `GITHUB_TOKEN` pushes did not recursively trigger GitHub Pages. A changed Tide now deliberately dispatches `pages.yml` after its final canonical push; no-change tides do not. Root `_cambium.yaml` was reconciled with the already-earned private-recognition / opaque-phenotype physiology.
+
+
+Version 5.0 path-privacy correction (2026-10-02): public Bait identity no longer means verbatim arbitrary request path. Offered site paths remain literal; unoffered/probed paths and private/foreign suffixes cross the keyed `crawlerbait:path:v1` membrane before persistence. The same act coalesces legacy 404 evidence, removes exact legacy User-Agent strings from the current tree and retires obsolete raw legacy carriers after count/window equality witness. Historical Git objects remain a separate explicit remediation boundary.
