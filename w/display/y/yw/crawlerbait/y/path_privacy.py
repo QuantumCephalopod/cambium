@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Stable public path membrane for Crawlerbait.
 
-Only paths that are actually present in the current generated Display + site
-public artifact remain literal. Namespace membership alone is never enough:
-an arbitrary request beneath /assets/, /papers-shadow/ or /crawlerbait/ is
-still private sensing unless that exact public path is currently offered.
-Everything else becomes a keyed opaque Bait path while preserving only the
-small structural prefixes required by the existing Being-kind law.
+Only source-owned paths that are actually present in the current generated
+Display + site public artifact remain literal. Observation-derived Crawlerbait
+pages under /crawlerbait/bait/ and /crawlerbait/receipt/ never confer offered
+status back onto the request material from which they were generated.
+Namespace membership alone is never enough: an arbitrary request beneath
+/assets/, /papers-shadow/ or /crawlerbait/ is still private sensing unless that
+exact source-owned public path is currently offered. Everything else becomes a
+keyed opaque Bait path while preserving only the small structural prefixes
+required by the existing Being-kind law.
 """
 from __future__ import annotations
 
@@ -18,7 +21,7 @@ import importlib.util
 import re
 
 PATH_DOMAIN = "crawlerbait:path:v1"
-OFFERED_RESOLUTION = "exact-generated-public-artifact-v1"
+OFFERED_RESOLUTION = "exact-source-owned-public-artifact-v1"
 TOKEN_RE = re.compile(r"^[0-9a-f]{24}$")
 
 OWN_APERTURES = (
@@ -27,6 +30,10 @@ OWN_APERTURES = (
 )
 FOREIGN_PORES = (
     "/cdn-cgi/",
+)
+OBSERVATION_DERIVED_PUBLIC_PREFIXES = (
+    "/crawlerbait/bait/",
+    "/crawlerbait/receipt/",
 )
 
 HERE = Path(__file__).resolve().parent
@@ -40,7 +47,7 @@ def canonical_path(value) -> str:
 
 @lru_cache(maxsize=1)
 def offered_public_paths() -> frozenset[str]:
-    """Exact current public artifact paths, including directory index aliases."""
+    """Exact source-owned public artifact paths, including directory index aliases."""
     spec = importlib.util.spec_from_file_location(
         "crawlerbait_display_site_public",
         SITE_PUBLIC_PATH,
@@ -54,6 +61,8 @@ def offered_public_paths() -> frozenset[str]:
     for rel in module.artifact_files():
         rel = str(rel).lstrip("/")
         public = "/" + rel
+        if public.startswith(OBSERVATION_DERIVED_PUBLIC_PREFIXES):
+            continue
         offered.add(public)
         if rel == "index.html":
             offered.add("/")
@@ -122,6 +131,15 @@ def self_test() -> None:
     assert assets, "current Display artifact must expose at least one exact asset"
     exact_asset = assets[0]
     assert public_path(key, exact_asset) == exact_asset
+    assert offered("/crawlerbait/")
+    assert offered("/crawlerbait/state.json")
+    assert offered("/crawlerbait/traffic.json")
+    assert not any(
+        path.startswith(OBSERVATION_DERIVED_PUBLIC_PREFIXES)
+        for path in current
+    )
+    derived = "/crawlerbait/bait/assets/b770d366221be02b/site-organism-papers.js/"
+    assert public_path(key, derived).startswith("/~/")
 
     # Namespace membership is not an offer. These must never remain readable
     # merely because they sit beneath a public-looking prefix.
@@ -147,8 +165,8 @@ def self_test() -> None:
     assert foreign.startswith("/cdn-cgi/~/")
     assert all(public_path_shape_valid(p) for p in (a, own, foreign, "/", exact_asset))
     print(
-        "PASS · only exact current public artifact paths remain literal; "
-        "namespace-only and arbitrary/private paths become stable keyed Bait paths"
+        "PASS · only exact source-owned public artifact paths remain literal; "
+        "observation-derived, namespace-only and arbitrary/private paths become stable keyed Bait paths"
     )
 
 
