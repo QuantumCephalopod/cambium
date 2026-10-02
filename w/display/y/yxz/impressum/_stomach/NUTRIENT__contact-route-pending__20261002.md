@@ -1,8 +1,12 @@
-# NUTRIENT — public contact route pending — 2026-10-02
+# NUTRIENT — public contact route — 2026-10-02
 
-status: OPEN
+status: METABOLIZED — END-TO-END WITNESSED / await publication HOME
 
-The operator identity and atelier address are supplied and admitted.
-The planned public electronic contact is `kontakt@sss.saarland`.
+Public electronic contact:
+- `contact@sss.saarland`
 
-Publication remains blocked until a real inbound test proves that this route reaches both intended independently recoverable destination inboxes.
+Witness from Philipp, chat 2026-10-03:
+- a test message to `contact@sss.saarland` arrived at both configured destination inboxes;
+- the Cloudflare Email Routing → `sss-legal-mail-fanout` → dual-destination path is therefore end-to-end witnessed.
+
+The contact publication gate is closed. Keep this carrier until the site publication itself reaches witnessed HOME, then retire it.
