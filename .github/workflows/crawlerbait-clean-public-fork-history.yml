@@ -1,0 +1,164 @@
+name: crawlerbait clean public fork history
+
+on:
+  push:
+    branches: [staging/crawlerbait-fork-cleanup-20261002]
+    paths:
+      - '.github/workflows/crawlerbait-clean-public-fork-history.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crawlerbait-clean-public-fork-history
+  cancel-in-progress: false
+
+jobs:
+  clean:
+    if: github.repository == 'QuantumCephalopod/cambium'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare rewrite tooling
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user 'git-filter-repo>=2.47'
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Freeze all public fork heads and tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REMOTE="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git ls-remote --heads --tags "$REMOTE" | awk '{print $2, $1}' | sort > /tmp/remote-refs-before.txt
+          awk '{print $1}' /tmp/remote-refs-before.txt > /tmp/ref-names-before.txt
+          wc -l /tmp/ref-names-before.txt | awk '{print $1}' > /tmp/ref-count-before.txt
+
+      - name: Rewrite every fork branch and tag in isolated mirror
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git clone --mirror "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/fork.git
+          cd /tmp/fork.git
+          git fetch origin '+refs/pull/*:refs/pull/*' || true
+
+          git for-each-ref --format='%(refname) %(objectname)' refs/pull | sort > /tmp/fork-pull-refs-before.txt || true
+
+          mapfile -t REFS < <(git for-each-ref --format='%(refname)' refs/heads refs/tags | sort)
+
+          git filter-repo \
+            --sensitive-data-removal \
+            --invert-paths \
+            --path w/display/y/yw/crawlerbait/x \
+            --path w/display/y/yw/crawlerbait/w/projection.json \
+            --path w/display/y/yw/crawlerbait/w/public \
+            --path-regex '^w/display/y/yw/crawlerbait/w/[wxzy]+/bait\.json$' \
+            --path w/display/y/yw/crawlerbait/z/projection.json \
+            --path w/display/y/yw/crawlerbait/z/public \
+            --refs "${REFS[@]}" 2>&1 | tee /tmp/filter-repo.log
+
+          FILTER_DIR="$(find /tmp/fork.git -type d -path '*/filter-repo' | head -n1)"
+          cp "$FILTER_DIR/commit-map" /tmp/commit-map.txt
+          cp "$FILTER_DIR/changed-refs" /tmp/changed-refs.txt
+          awk 'NR>1 && $1 != $2 {print $1}' /tmp/commit-map.txt | sort -u > /tmp/changed-old-commits.txt
+
+      - name: Sync fork main to already-clean canonical main
+        run: |
+          set -euo pipefail
+          cd /tmp/fork.git
+          git fetch https://github.com/self-similar-systems/cambium.git refs/heads/main:refs/upstream-clean/main
+          ROOT_MAIN="$(git rev-parse refs/upstream-clean/main)"
+          git update-ref refs/heads/main "$ROOT_MAIN"
+          printf '%s\n' "$ROOT_MAIN" > /tmp/root-main-sha.txt
+
+      - name: Audit rewritten fork refs and residue
+        run: |
+          set -euo pipefail
+          cd /tmp/fork.git
+          git for-each-ref --format='%(refname) %(objectname)' refs/heads refs/tags | sort > /tmp/refs-after.txt
+          awk '{print $1}' /tmp/refs-after.txt > /tmp/ref-names-after.txt
+          diff -u /tmp/ref-names-before.txt /tmp/ref-names-after.txt
+
+          printf '%s\n' \
+            777db7cd3432b6db4b8f737c25b1297c43dd637c \
+            dce931820a371ab15adbedfd9374a2527c727a3d \
+            f02e5eba212c7729a1acb0dce9cdf41324886668 \
+            0d819bb1e771384b9e04fde6dcde6e1f30810b10 \
+            > /tmp/known-tainted-blobs.txt
+
+          git for-each-ref --format='%(refname)' refs/heads refs/tags \
+            | git rev-list --objects --stdin \
+            > /tmp/reachable-head-tag-objects.txt
+
+          while read -r blob; do
+            if grep -q "^$blob " /tmp/reachable-head-tag-objects.txt; then
+              echo "::error::tainted blob still reachable from a public fork head/tag: $blob"
+              exit 1
+            fi
+          done < /tmp/known-tainted-blobs.txt
+
+          : > /tmp/affected-fork-pulls.txt
+          while read -r ref; do
+            [ -z "$ref" ] && continue
+            if git rev-list "$ref" | grep -Fxf /tmp/changed-old-commits.txt >/dev/null; then
+              printf '%s\n' "$ref" | sed -E 's#^refs/pull/([0-9]+)/(head|merge)$#\1#' >> /tmp/affected-fork-pulls.txt
+            fi
+          done < <(git for-each-ref --format='%(refname)' refs/pull | grep -E '^refs/pull/[0-9]+/(head|merge)$' || true)
+          sort -nu -o /tmp/affected-fork-pulls.txt /tmp/affected-fork-pulls.txt
+          wc -l /tmp/affected-fork-pulls.txt | awk '{print $1}' > /tmp/affected-fork-pull-count.txt
+
+      - name: Refuse concurrent fork mutation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REMOTE="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git ls-remote --heads --tags "$REMOTE" | awk '{print $2, $1}' | sort > /tmp/remote-refs-now.txt
+          diff -u /tmp/remote-refs-before.txt /tmp/remote-refs-now.txt
+
+      - name: Atomically publish rewritten fork refs with leases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd /tmp/fork.git
+          git remote add publish "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          ARGS=(--atomic)
+          SPECS=()
+          while read -r ref old; do
+            new="$(awk -v r="$ref" '$1==r {print $2}' /tmp/refs-after.txt)"
+            test -n "$new"
+            ARGS+=("--force-with-lease=$ref:$old")
+            SPECS+=("$new:$ref")
+          done < /tmp/remote-refs-before.txt
+
+          git push "${ARGS[@]}" publish "${SPECS[@]}"
+
+          git ls-remote --heads --tags publish | awk '{print $2, $1}' | sort > /tmp/remote-refs-after.txt
+          diff -u /tmp/refs-after.txt /tmp/remote-refs-after.txt
+
+          FORK_MAIN="$(awk '$1=="refs/heads/main" {print $2}' /tmp/remote-refs-after.txt)"
+          test "$FORK_MAIN" = "$(cat /tmp/root-main-sha.txt)"
+
+      - name: Upload fork cleanup witness
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawlerbait-public-fork-history-cleanup
+          if-no-files-found: error
+          path: |
+            /tmp/remote-refs-before.txt
+            /tmp/remote-refs-after.txt
+            /tmp/ref-count-before.txt
+            /tmp/refs-after.txt
+            /tmp/filter-repo.log
+            /tmp/commit-map.txt
+            /tmp/changed-refs.txt
+            /tmp/changed-old-commits.txt
+            /tmp/known-tainted-blobs.txt
+            /tmp/reachable-head-tag-objects.txt
+            /tmp/fork-pull-refs-before.txt
+            /tmp/affected-fork-pulls.txt
+            /tmp/affected-fork-pull-count.txt
+            /tmp/root-main-sha.txt
