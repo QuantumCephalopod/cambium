@@ -145,7 +145,7 @@ Exact Crawlerbait-owned public apertures may remain literal Bait labels. Every f
 
 `y/migrate_privacy.py` is a bounded one-time catabolic enzyme for pre-v5 current-tree Traces. It runs only under the authoritative Tide where `CRAWLERBAIT_ID_KEY` is available: readable legacy auxiliary values must first contribute to opaque DNA; query does not. Once no v4 carriers remain it is a no-op and may later retire after the migration obligation is closed.
 
-`y/migrate_path_privacy.py` is the bounded current-tree path/legacy cleanup enzyme. Under the same secret boundary it maps every already-owned unoffered request path to the public Bait membrane, coalesces legacy 404 counts into the sanitized checkpoint, removes exact legacy User-Agent signatures, and retires obsolete readable bootstrap/capture carriers only after count/window equality is witnessed.
+`y/migrate_path_privacy.py` is the spent exact-offer/legacy cleanup enzyme that established the earlier v5 current tree. `y/migrate_owned_path_membrane.py` is the bounded organism-boundary continuation: under the same secret boundary it preserves every already-opaque Bait identity, moves any still-literal foreign host path through the keyed membrane, updates the current checkpoint/cursor generation, and then becomes an idempotent no-op.
 
 Each run:
 1. reacquires Cloudflare's live `httpRequestsAdaptive` settings and available fields;
