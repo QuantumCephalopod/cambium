@@ -597,6 +597,7 @@ def self_test():
     assert being_kind([enc("/"), enc("/cdn-cgi/rum", method="POST", status=204)]) == "x"
     assert being_kind([enc("/"), enc(offered_asset, t="2026-09-19T00:00:00Z")]) == "y"
     assert being_kind([enc("/"), enc(offered_asset)]) == "x"
+    assert being_kind([enc("/"), enc("/crawlerbait/bait/assets/example/")]) == "z"
     classify_beings(state)
     assert crawler["kind"] == "z"
     pathmembrane.self_test()
