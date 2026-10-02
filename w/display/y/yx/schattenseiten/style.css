@@ -5,7 +5,7 @@
 .schattenseiten-content{
   --ink:#ecebe6;--dim:#9a9a94;--faint:#4d4d49;--paper:#0b1412;--edge:clamp(.9rem,2.2vw,1.6rem);
   position:absolute;inset:0;pointer-events:none;color:var(--ink);
-  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-shadow:0 0 6px var(--paper),0 0 14px var(--paper);
+  font-family:var(--mono);text-shadow:0 0 6px var(--paper),0 0 14px var(--paper);
 }
 .schattenseiten-content button,.schattenseiten-content input,.schattenseiten-content a{pointer-events:auto}
 .ss-hud-rail{
@@ -13,8 +13,8 @@
   width:min(15rem,40vw);display:flex;flex-direction:column;gap:1rem;overflow:hidden auto;scrollbar-width:none;
 }
 .ss-hud-rail::-webkit-scrollbar{display:none}
-.ss-hud-top{display:grid;grid-template-columns:repeat(2,max-content);gap:.25rem 1.1rem;padding-bottom:.55rem;border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
-.ss-hud-top h1{grid-column:1/-1;margin:0 0 .35rem;font:600 1.05rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase}
+.ss-hud-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.25rem 1.1rem;padding-bottom:.55rem;border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
+.ss-hud-top h1{grid-column:1/-1;margin:0 0 .35rem;font:600 1.05rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase}
 .ss-hud-stat{display:inline-flex;align-items:baseline;gap:.35rem}
 .ss-hud-stat b{font-weight:500;font-size:.82rem;font-variant-numeric:tabular-nums}
 .ss-hud-stat small{color:var(--dim);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase}
@@ -32,7 +32,7 @@
 .ss-hud-flat:hover,.ss-hud-flat:focus-visible{border-color:var(--ink);outline:none}
 .ss-hud-block{display:grid;gap:.4rem;pointer-events:auto}
 .ss-hud-label{display:flex;justify-content:space-between;gap:.8rem;color:var(--dim);font-size:.54rem;text-transform:uppercase;letter-spacing:.16em;padding-bottom:.25rem;border-bottom:1px solid color-mix(in srgb,var(--ink) 12%,transparent)}
-.ss-word{margin:0;font:1rem/1.35 ui-serif,Georgia,serif}
+.ss-word{margin:0;font:1rem/1.35 var(--sans)}
 .ss-way{color:var(--dim);font-size:.82rem}
 .ss-placeholder{font-style:italic;letter-spacing:.02em;opacity:.7}
 .ss-hud-series{grid-column:1/-1;color:var(--dim);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;margin-top:-.2rem}

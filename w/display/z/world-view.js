@@ -31,7 +31,7 @@ function drawTwin(){
    * complete realized address-space locally without turning every address into
    * a global destination. */
   for(const t of GLOBAL_TARGETS){
-    const p=miniProject(targetPoint(t)),active=targetActive(t),label=targetLabel(t);
+    const p=miniProject(targetPoint(t)),active=targetActive(t),label=globalThis.SSSDisplayType.fold(targetLabel(t));
     if(t.path===''){
       tc.lineWidth=active?2:1.3;tc.strokeStyle=active?'rgba(255,255,255,.98)':'rgba(241,239,233,.62)';tc.strokeRect(p.x-6,p.y-6,12,12);
       if(active){tc.beginPath();tc.arc(p.x,p.y,13,0,Math.PI*2);tc.strokeStyle='rgba(255,255,255,.42)';tc.stroke()}
@@ -39,9 +39,11 @@ function drawTwin(){
       const rad=active?6:4.6;tc.beginPath();tc.arc(p.x,p.y,rad,0,Math.PI*2);tc.fillStyle=active?'rgba(255,255,255,.98)':'rgba(241,239,233,.68)';tc.fill();
       if(active){tc.beginPath();tc.arc(p.x,p.y,rad+7,0,Math.PI*2);tc.strokeStyle='rgba(255,255,255,.58)';tc.stroke()}
     }
-    tc.fillStyle=active?'rgba(241,239,233,.86)':'rgba(241,239,233,.54)';tc.font=(active?'13':'11')+'px ui-monospace,monospace';tc.fillText(label,p.x+15,p.y+4);
+    tc.fillStyle=active?'rgba(241,239,233,.86)':'rgba(241,239,233,.54)';tc.font=(active?'13':'11')+'px "SpriteSheet Mono",ui-monospace,monospace';tc.fillText(label,p.x+15,p.y+4);
   }
 }
+/* Canvas ink must be repainted when the hosted face finishes loading. */
+if(document.fonts){document.fonts.ready.then(drawTwin);document.fonts.addEventListener('loadingdone',drawTwin)}
 function twinPoint(e){const r=twin.getBoundingClientRect();return {x:(e.clientX-r.left)*twin.width/r.width,y:(e.clientY-r.top)*twin.height/r.height}}
 function hitTarget(x,y){let best=null;for(const t of GLOBAL_TARGETS){const p=miniProject(targetPoint(t)),d=Math.hypot(x-p.x,y-p.y),limit=t.path===''?23:24;if(d<limit&&(!best||d<best.d))best={target:t,d}}return best?.target||null}
 function emitView(source){if(!nav)return;route.textContent='GLOBAL '+scopeId+':'+(activeGlobalAddress||'overview')+' · LOCAL VIEW '+(nav.view||'overview');miniState.textContent='global '+(activeGlobalAddress||'overview')+' · '+GLOBAL_TARGETS.length+' sites';dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
