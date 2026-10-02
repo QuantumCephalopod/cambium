@@ -54,7 +54,7 @@ def main():
     check(by_id['organism:crawlerbait']['manifestation']['background_drag'] is True,'Crawlerbait explicit background-drag test toggle is not true')
     check(by_id['organism:philosophy']['site_dir']==DISPLAY/'y'/'philosophy','Philosophy physical body not at display/y/philosophy')
     crawler=DISPLAY/'y'/'yw'/'crawlerbait'
-    pathmembrane=load_module(crawler/'y'/'path_privacy.py','crawlerbait_path_privacy')
+    pathmembrane=load_module(crawler/'y'/'path_membrane.py','crawlerbait_path_membrane')
     check(by_id['organism:crawlerbait']['site_dir']==crawler,'Crawlerbait physical body not at display/y/yw/crawlerbait')
     check(by_id['organism:papers']['site_dir']==DISPLAY/'y'/'yy'/'papers','Papers physical body not at display/y/yy/papers')
     datenschutz=DISPLAY/'y'/'yz'/'datenschutz'
@@ -119,12 +119,14 @@ def main():
     check(
         path_policy.get('domain')=='crawlerbait:path:v1'
         and path_policy.get('raw_unoffered_path_persisted') is False
-        and path_policy.get('offered_public_paths_literal') is True,
+        and path_policy.get('offered_public_paths_literal') is True
+        and path_policy.get('offered_resolution')=='crawlerbait-owned-public-surface-v1'
+        and path_policy.get('foreign_site_holon_paths_literal') is False,
         'Crawlerbait public path policy drifted'
     )
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
-    check((crawler/'y'/'path_privacy.py').is_file(),'Crawlerbait public path membrane missing')
-    check((crawler/'y'/'migrate_path_privacy.py').is_file(),'Crawlerbait path privacy migration enzyme missing')
+    check((crawler/'y'/'path_membrane.py').is_file(),'Crawlerbait organism-local path membrane missing')
+    check((crawler/'y'/'migrate_owned_path_membrane.py').is_file(),'Crawlerbait organism-boundary migration enzyme missing')
     check((crawler/'y'/'tide.py').is_file(),'Crawlerbait local tide missing')
     check((crawler/'y'/'replay.py').is_file(),'Crawlerbait local replay missing')
     check(not (crawler/'y'/'provider_raw_once.py').exists(),'obsolete one-time provider-raw freezer still exists')
@@ -138,7 +140,11 @@ def main():
     checkpoint_end=checkpoint.get('last_complete_end')
     check(isinstance(checkpoint_end,str),'Crawlerbait legacy checkpoint has no explicit end')
     check(cursor.get('version')==2 and cursor.get('source')=='cloudflare:httpRequestsAdaptive','Crawlerbait cursor is not canonical raw-traffic generation 2')
-    path_migrated=(cursor.get('path_privacy') or {}).get('domain')=='crawlerbait:path:v1'
+    path_state=cursor.get('path_privacy') or {}
+    path_migrated=(
+        path_state.get('domain')=='crawlerbait:path:v1'
+        and path_state.get('offered_resolution')==pathmembrane.OFFERED_RESOLUTION
+    )
     if path_migrated:
         check((checkpoint.get('privacy_migration') or {}).get('exact_user_agents_removed') is True,'Crawlerbait legacy checkpoint still carries readable User-Agent law')
         check(all('signatures' not in route for route in (checkpoint.get('routes') or {}).values()),'Crawlerbait legacy checkpoint still contains UA signature maps')
