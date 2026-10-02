@@ -212,22 +212,25 @@ def retire_retained_bootstrap() -> tuple[int, dict | None]:
 
 def self_test():
     key = C.identity_key("01" * 32)
+    exact_asset = next(iter(sorted(p for p in P.offered_public_paths() if p.startswith("/assets/"))))
     base = {
         "version": 5,
         "source": "cloudflare:httpRequestsAdaptive",
         "publication_transform": {},
         "published_response": {"data": {"viewer": {"zones": [{"records": [
             {"datetime": "2026-10-01T00:00:00Z", "beingId": "b" * 24, "clientRequestPath": "/reset/alice@example.org/token", "clientRequestHTTPMethodName": "GET", "edgeResponseStatus": 404},
-            {"datetime": "2026-10-01T00:00:01Z", "beingId": "b" * 24, "clientRequestPath": "/assets/site.js", "clientRequestHTTPMethodName": "GET", "edgeResponseStatus": 200},
-            {"datetime": "2026-10-01T00:00:02Z", "beingId": "b" * 24, "clientRequestPath": "/__live/private/secret", "clientRequestHTTPMethodName": "POST", "edgeResponseStatus": 200},
+            {"datetime": "2026-10-01T00:00:01Z", "beingId": "b" * 24, "clientRequestPath": exact_asset, "clientRequestHTTPMethodName": "GET", "edgeResponseStatus": 200},
+            {"datetime": "2026-10-01T00:00:02Z", "beingId": "b" * 24, "clientRequestPath": "/assets/not-offered-private-probe", "clientRequestHTTPMethodName": "GET", "edgeResponseStatus": 404},
+            {"datetime": "2026-10-01T00:00:03Z", "beingId": "b" * 24, "clientRequestPath": "/__live/private/secret", "clientRequestHTTPMethodName": "POST", "edgeResponseStatus": 200},
         ]}]}}},
     }
     migrated, changed = migrate_traffic_capture(base, key)
     rows = traffic_records(migrated)
-    assert changed == 2
+    assert changed == 3
     assert rows[0]["clientRequestPath"].startswith("/~/")
-    assert rows[1]["clientRequestPath"] == "/assets/site.js"
-    assert rows[2]["clientRequestPath"].startswith("/__live/~/")
+    assert rows[1]["clientRequestPath"] == exact_asset
+    assert rows[2]["clientRequestPath"].startswith("/~/")
+    assert rows[3]["clientRequestPath"].startswith("/__live/~/")
     assert "alice" not in json.dumps(migrated)
     again, changed_again = migrate_traffic_capture(migrated, key)
     assert changed_again == 0 and again == migrated

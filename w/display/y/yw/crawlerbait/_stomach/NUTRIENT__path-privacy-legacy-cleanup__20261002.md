@@ -1,6 +1,6 @@
 # NUTRIENT — path privacy + legacy current-tree cleanup — 2026-10-02
 
-status: OPEN / ADMITTED
+status: OPEN / ADMITTED — exact-offer re-migration required before history rewrite
 source: Philipp, chat 2026-10-02
 target: github.cambium → display → crawlerbait
 
@@ -40,3 +40,16 @@ Legacy cleanup:
 - public build/replay/capture tests pass;
 - Git history exposure remains explicitly open until separately remediated;
 - privacy notice publication remains blocked until a deliberate public controller contact is supplied.
+
+
+## 2026-10-02 correction — namespace is not an offer
+
+The pre-history-rewrite audit found one remaining current-tree wound: the first v5 implementation treated the entire `/assets/`, `/papers-shadow/` and `/crawlerbait/` namespaces as offered. That is broader than the earned law. An arbitrary probe such as `/assets/.env` is not offered merely because `/assets/` exists; a path containing private material beneath a public-looking prefix must not remain readable.
+
+Corrected invariant:
+
+`offered(raw_path) := raw_path is an exact URL in the current generated Display + site public artifact`
+
+Directory `index.html` aliases count as the same exact offer. Namespace prefix membership alone does not. Crawlerbait-generated bait existence does not retroactively turn the originally probed raw path into an offer.
+
+This correction must be applied by authoritative Tide to all current-tree traffic/checkpoint/Bait/state/public carriers before the Git-history remediation freezes its sanitized restore tree.

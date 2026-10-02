@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "settle_delay_minutes": 10,
   "max_window_hours": 24,
   "recognition": {
@@ -27,6 +27,8 @@
     "raw_unoffered_path_persisted": false,
     "offered_public_paths_literal": true,
     "own_aperture_prefix_only": true,
-    "foreign_pore_prefix_only": true
+    "foreign_pore_prefix_only": true,
+    "offered_resolution": "exact current generated Display + site public artifact path",
+    "namespace_prefix_alone_offered": false
   }
 }
