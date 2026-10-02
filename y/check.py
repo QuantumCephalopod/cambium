@@ -295,6 +295,13 @@ def main():
     check('crawlerbait/index.html' in public_files and 'crawlerbait/state.json' in public_files,'Crawlerbait machine-facing static hub missing')
     if raw_captures:
         check('crawlerbait/traffic.json' in public_files,'Crawlerbait metabolized traffic manifest missing')
+    check('impressum/index.html' in public_files,'Impressum public route missing')
+    check('privacy/index.html' in public_files,'Privacy public route missing')
+    impressum_public=public_files['impressum/index.html'].decode('utf-8')
+    privacy_public=public_files['privacy/index.html'].decode('utf-8')
+    check('contact@sss.saarland' in impressum_public,'Impressum public contact missing')
+    check('privacy@sss.saarland' in privacy_public,'Privacy public contact missing')
+    check('Katharinenstr. 6A, 1. OG' in impressum_public and 'Katharinenstr. 6A, 1. OG' in privacy_public,'public legal operator address drifted')
     check(all(not p.startswith('assets/') and p not in {'index.html','.nojekyll','CNAME'} for p in public_files),'site public surface escaped reserved artifact namespace')
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
