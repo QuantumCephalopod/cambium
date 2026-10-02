@@ -42,11 +42,13 @@ def main():
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
-    expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten'}
+    expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten','organism:datenschutz','organism:impressum'}
     check(set(by_id)==expected_sites,'unexpected Population site set')
     check(by_id['organism:philosophy']['address']=='','Philosophy must occupy site-space overview')
     check(by_id['organism:crawlerbait']['address']=='w','Crawlerbait must occupy site-space w / Form')
     check(by_id['organism:papers']['address']=='y','Papers must occupy site-space y')
+    check(by_id['organism:datenschutz']['address']=='z','Datenschutz must occupy site-space z / Care')
+    check(by_id['organism:impressum']['address']=='xz','Impressum must occupy site-space xz / Continuity × Care')
     check(by_id['organism:philosophy']['manifestation']['background_drag'] is True,'Philosophy did not inherit default background drag')
     check(by_id['organism:papers']['manifestation']['background_drag'] is True,'Papers did not inherit default background drag')
     check(by_id['organism:crawlerbait']['manifestation']['background_drag'] is True,'Crawlerbait explicit background-drag test toggle is not true')
@@ -55,6 +57,17 @@ def main():
     pathmembrane=load_module(crawler/'y'/'path_privacy.py','crawlerbait_path_privacy')
     check(by_id['organism:crawlerbait']['site_dir']==crawler,'Crawlerbait physical body not at display/y/yw/crawlerbait')
     check(by_id['organism:papers']['site_dir']==DISPLAY/'y'/'yy'/'papers','Papers physical body not at display/y/yy/papers')
+    datenschutz=DISPLAY/'y'/'yz'/'datenschutz'
+    impressum=DISPLAY/'y'/'yxz'/'impressum'
+    check(by_id['organism:datenschutz']['site_dir']==datenschutz,'Datenschutz physical body not at display/y/yz/datenschutz')
+    check(by_id['organism:impressum']['site_dir']==impressum,'Impressum physical body not at display/y/yxz/impressum')
+    for legal in (datenschutz,impressum):
+        check((legal/'INDEX.yaml').is_file(),f'{legal.name} phenotype missing')
+        build.validate_index(build.load_yaml(legal/'INDEX.yaml'))
+        build.validate_cambium(build.load_yaml(legal/'_cambium.yaml'),f'{legal.name}/_cambium.yaml')
+        check((legal/'RITUALS'/'organism'/'RITUAL.md').is_file(),f'{legal.name} local receptor missing')
+        check((legal/'_stomach').is_dir(),f'{legal.name} stomach missing')
+        check((legal/'_feed').is_dir(),f'{legal.name} feed missing')
     check((DISPLAY/'y'/'philosophy'/'INDEX.yaml').is_file(),'Philosophy local recursive body was not transplanted')
     check((DISPLAY/'y'/'philosophy'/'_cambium.yaml').is_file(),'Philosophy local constitution was not transplanted')
 
