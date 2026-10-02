@@ -10,7 +10,7 @@ import argparse
 import json
 import shutil
 
-import path_privacy as pathmembrane
+import path_membrane as pathmembrane
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -206,21 +206,28 @@ def status_code(value) -> int:
 
 
 def being_kind(encounters) -> str:
-    """w Feeder: an accepted write into our own apertures · z Prober: asked for what we never offer (incl. an unaccepted write) ·
-    y Dweller: returned on two or more days · x Harvester: took only what exists, within one day."""
+    """w Feeder: an accepted non-read encounter · z Prober: a rejected/edge-testing encounter ·
+    y Dweller: returned on two or more days · x Harvester: all other one-day reads.
+
+    Classification uses only the observed encounter itself. Crawlerbait does not
+    traverse sibling site-holon publication anatomy to decide what another
+    organism offered.
+    """
     if any(
-        pathmembrane.own_aperture(e["path"])
-        and str(e.get("method") or "").upper() not in READ_METHODS
+        str(e.get("method") or "").upper() not in READ_METHODS
         and 0 < status_code(e.get("status")) < 300
         for e in encounters
     ):
         return "w"
     if any(
-        (not pathmembrane.offered(e["path"]) and not pathmembrane.own_aperture(e["path"]) and not pathmembrane.foreign_pore(e["path"]))
-        or (pathmembrane.own_aperture(e["path"]) and str(e.get("method") or "").upper() not in READ_METHODS)
+        (400 <= status_code(e.get("status")) < 500)
+        or (
+            str(e.get("method") or "").upper() not in READ_METHODS
+            and not (0 < status_code(e.get("status")) < 300)
+        )
         for e in encounters
     ):
-        return "z"  # includes an unaccepted write into our apertures: writing is not offered to strangers
+        return "z"
     if len({str(e.get("t") or "")[:10] for e in encounters}) >= 2:
         return "y"
     return "x"
@@ -588,16 +595,11 @@ def self_test():
     assert identity_prefix("/a", 128) == legacy
     assert len(identity_prefix("/a", 513)) == 513
     enc = lambda path, t="2026-09-18T00:00:00Z", method="GET", status=200: {"path": path, "t": t, "method": method, "status": status}
-    offered_assets = sorted(p for p in pathmembrane.offered_public_paths() if p.startswith("/assets/"))
-    assert offered_assets
-    offered_asset = offered_assets[0]
-    assert being_kind([enc("/__live/home", method="POST", status=200), enc("/.env")]) == "w"
-    assert being_kind([enc("/__live/home", method="POST", status=409)]) == "z"
-    assert being_kind([enc("/"), enc("/.env", status=404)]) == "z"
-    assert being_kind([enc("/"), enc("/cdn-cgi/rum", method="POST", status=204)]) == "x"
-    assert being_kind([enc("/"), enc(offered_asset, t="2026-09-19T00:00:00Z")]) == "y"
-    assert being_kind([enc("/"), enc(offered_asset)]) == "x"
-    assert being_kind([enc("/"), enc("/crawlerbait/bait/assets/example/")]) == "z"
+    assert being_kind([enc("/opaque-write", method="POST", status=200)]) == "w"
+    assert being_kind([enc("/opaque-write", method="POST", status=409)]) == "z"
+    assert being_kind([enc("/"), enc("/opaque-probe", status=404)]) == "z"
+    assert being_kind([enc("/"), enc("/opaque-read", t="2026-09-19T00:00:00Z")]) == "y"
+    assert being_kind([enc("/"), enc("/opaque-read")]) == "x"
     classify_beings(state)
     assert crawler["kind"] == "z"
     pathmembrane.self_test()
