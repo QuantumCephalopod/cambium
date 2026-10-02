@@ -682,6 +682,8 @@ def main():
                 "domain": pathmembrane.PATH_DOMAIN,
                 "raw_unoffered_path_persisted": False,
                 "key_epoch": IDENTITY_KEY_EPOCH,
+                "key_fingerprint": key_fingerprint,
+                "offered_resolution": pathmembrane.OFFERED_RESOLUTION,
             },
             "provider_limits": {
                 "maxDuration": int(cfg["maxDuration"]),
