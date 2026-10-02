@@ -121,6 +121,25 @@ def legacy_groups(value: dict) -> list:
     raise RuntimeError("legacy capture has no groups")
 
 
+def checkpoint_path_migration_current(value: dict) -> bool:
+    routes = value.get("routes")
+    privacy = value.get("privacy_migration") or {}
+    if not isinstance(routes, dict):
+        return False
+    if (
+        privacy.get("path_domain") != P.PATH_DOMAIN
+        or privacy.get("raw_unoffered_paths_removed") is not True
+        or privacy.get("exact_user_agents_removed") is not True
+    ):
+        return False
+    for path, route in routes.items():
+        if not P.public_path_shape_valid(path):
+            return False
+        if not isinstance(route, dict) or P.canonical_path(route.get("path")) != path:
+            return False
+    return True
+
+
 def migrate_legacy_checkpoint(key: bytes) -> tuple[dict, int, int, list[Path]]:
     checkpoint = read_json(CHECKPOINT_PATH)
     routes = checkpoint.get("routes")
@@ -128,17 +147,20 @@ def migrate_legacy_checkpoint(key: bytes) -> tuple[dict, int, int, list[Path]]:
         raise RuntimeError("legacy checkpoint routes missing")
     before = sum(int(r.get("observed_404") or 0) for r in routes.values())
     out_routes: dict = {}
-    for raw_path, route in routes.items():
-        _merge_route(
-            out_routes,
-            raw_path,
-            int(route.get("observed_404") or 0),
-            route.get("first_observed_window"),
-            route.get("last_observed_window"),
-            route.get("materialized_at"),
-            bool(route.get("sampled")),
-            key,
-        )
+    if checkpoint_path_migration_current(checkpoint):
+        out_routes = json.loads(json.dumps(routes))
+    else:
+        for raw_path, route in routes.items():
+            _merge_route(
+                out_routes,
+                raw_path,
+                int(route.get("observed_404") or 0),
+                route.get("first_observed_window"),
+                route.get("last_observed_window"),
+                route.get("materialized_at"),
+                bool(route.get("sampled")),
+                key,
+            )
 
     expected = checkpoint.get("last_complete_end")
     legacy_files = sorted(CAPTURE_ROOT.glob("*.capture.json"))
@@ -181,6 +203,7 @@ def migrate_legacy_checkpoint(key: bytes) -> tuple[dict, int, int, list[Path]]:
         "privacy_migration": {
             "migrated_on": "2026-10-02",
             "path_domain": P.PATH_DOMAIN,
+            "offered_resolution": P.OFFERED_RESOLUTION,
             "raw_unoffered_paths_removed": True,
             "exact_user_agents_removed": True,
             "signature_dimension_retired": True,
@@ -230,6 +253,38 @@ def self_test():
             {"datetime": "2026-10-01T00:00:03Z", "beingId": "b" * 24, "clientRequestPath": "/__live/private/secret", "clientRequestHTTPMethodName": "POST", "edgeResponseStatus": 200},
         ]}]}}},
     }
+    exact_asset_route = {
+        "path": exact_asset,
+        "observed_404": 1,
+        "first_observed_window": None,
+        "last_observed_window": None,
+        "materialized_at": None,
+        "sampled": False,
+    }
+    opaque_path = "/~/" + "a" * 24
+    opaque_route = {
+        **exact_asset_route,
+        "path": opaque_path,
+    }
+    current_checkpoint = {
+        "routes": {
+            exact_asset: exact_asset_route,
+            opaque_path: opaque_route,
+        },
+        "privacy_migration": {
+            "path_domain": P.PATH_DOMAIN,
+            "raw_unoffered_paths_removed": True,
+            "exact_user_agents_removed": True,
+        },
+    }
+    assert checkpoint_path_migration_current(current_checkpoint)
+    unsafe_checkpoint = json.loads(json.dumps(current_checkpoint))
+    unsafe_checkpoint["routes"]["/assets/not-offered-private-probe"] = {
+        **exact_asset_route,
+        "path": "/assets/not-offered-private-probe",
+    }
+    assert not checkpoint_path_migration_current(unsafe_checkpoint)
+
     migrated, changed = migrate_traffic_capture(base, key)
     rows = traffic_records(migrated)
     assert changed == 3
