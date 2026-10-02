@@ -1,0 +1,217 @@
+name: crawlerbait publish history remediation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/crawlerbait-publish-history-remediation.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: crawlerbait-publish-history-remediation
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'self-similar-systems/cambium'
+    runs-on: ubuntu-latest
+    env:
+      EXPECTED_OFFER_RESOLUTION: exact-source-owned-public-artifact-v1
+    steps:
+      - name: Prepare rewrite tooling
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user 'git-filter-repo>=2.47'
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Freeze canonical sanitized present and remote refs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REMOTE="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          OPEN_PRS="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 1 --json number --jq 'length')"
+          test "$OPEN_PRS" = "0"
+
+          git ls-remote --heads --tags "$REMOTE" | awk '{print $2, $1}' | sort > /tmp/remote-refs-before.txt
+
+          git clone "https://github.com/$GITHUB_REPOSITORY.git" /tmp/current
+          cd /tmp/current
+          git rev-parse HEAD > /tmp/base-sha.txt
+          git rev-parse 'HEAD^{tree}' > /tmp/original-tree.txt
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("w/display/y/yw/crawlerbait")
+          expected="exact-source-owned-public-artifact-v1"
+          policy=json.loads((root/"z/policy.json").read_text())
+          cursor=json.loads((root/"x/cursor.json").read_text())
+          if (policy.get("path") or {}).get("offered_resolution") != expected:
+              raise SystemExit("policy is not at final source-owned offer resolution")
+          if (cursor.get("path_privacy") or {}).get("offered_resolution") != expected:
+              raise SystemExit("cursor is not at final source-owned offer resolution")
+          checkpoint=json.loads((root/"x/checkpoint.json").read_text())
+          routes=checkpoint.get("routes") or {}
+          if not routes or any(not p.startswith("/~/") for p in routes):
+              raise SystemExit("legacy checkpoint is not fully opaque")
+          PY
+
+          python3 y/site-public.py --artifact _site
+          python3 y/check.py --artifact _site
+          SITE_DIR=_site node y/test-address.cjs
+          node w/display/z/site-fold.test.cjs
+          python3 y/site-public.py --artifact _site --check
+          python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_path_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+          node w/display/y/yw/crawlerbait/z/render.test.cjs
+
+          tar -cf /tmp/crawlerbait-current.tar \
+            w/display/y/yw/crawlerbait/w \
+            w/display/y/yw/crawlerbait/x \
+            w/display/y/yw/crawlerbait/z/projection.json \
+            w/display/y/yw/crawlerbait/z/public
+
+      - name: Rewrite controlled branch and tag history in isolated mirror
+        run: |
+          set -euo pipefail
+          git clone --mirror "https://github.com/$GITHUB_REPOSITORY.git" /tmp/rewrite.git
+          cd /tmp/rewrite.git
+          git fetch origin '+refs/pull/*:refs/pull/*' || true
+
+          mapfile -t REFS < <(git for-each-ref --format='%(refname)' refs/heads refs/tags | sort)
+
+          git filter-repo \
+            --sensitive-data-removal \
+            --invert-paths \
+            --path w/display/y/yw/crawlerbait/x \
+            --path w/display/y/yw/crawlerbait/w/projection.json \
+            --path w/display/y/yw/crawlerbait/w/public \
+            --path-regex '^w/display/y/yw/crawlerbait/w/[wxzy]+/bait\.json$' \
+            --path w/display/y/yw/crawlerbait/z/projection.json \
+            --path w/display/y/yw/crawlerbait/z/public \
+            --refs "${REFS[@]}" 2>&1 | tee /tmp/filter-repo.log
+
+          FILTER_DIR="$(find /tmp/rewrite.git -type d -path '*/filter-repo' | head -n1)"
+          cp "$FILTER_DIR/commit-map" /tmp/commit-map.txt
+          cp "$FILTER_DIR/changed-refs" /tmp/changed-refs.txt
+          awk 'NR>1 && $1 != $2 {print $1}' /tmp/commit-map.txt | sort -u > /tmp/changed-old-commits.txt
+
+      - name: Restore exact sanitized current tree on rewritten main
+        run: |
+          set -euo pipefail
+          git --git-dir=/tmp/rewrite.git worktree add /tmp/rewritten-main refs/heads/main
+          cd /tmp/rewritten-main
+
+          rm -rf w/display/y/yw/crawlerbait/w w/display/y/yw/crawlerbait/x w/display/y/yw/crawlerbait/z/public
+          rm -f w/display/y/yw/crawlerbait/z/projection.json
+          tar -xf /tmp/crawlerbait-current.tar
+          git add -A
+
+          ORIGINAL="$(cat /tmp/original-tree.txt)"
+          REBUILT="$(git write-tree)"
+          printf 'original_tree=%s\nrebuilt_tree=%s\n' "$ORIGINAL" "$REBUILT" | tee /tmp/tree-witness.txt
+          test "$ORIGINAL" = "$REBUILT"
+
+          git config user.name "Crawlerbait history remediation"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "crawlerbait: restore sanitized present after history remediation"
+          git rev-parse HEAD > /tmp/rewritten-main-sha.txt
+          git --git-dir=/tmp/rewrite.git update-ref refs/heads/main "$(cat /tmp/rewritten-main-sha.txt)"
+
+          python3 y/site-public.py --artifact _site
+          python3 y/check.py --artifact _site
+          SITE_DIR=_site node y/test-address.cjs
+          node w/display/z/site-fold.test.cjs
+          python3 y/site-public.py --artifact _site --check
+          python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_path_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+          node w/display/y/yw/crawlerbait/z/render.test.cjs
+
+          git --git-dir=/tmp/rewrite.git for-each-ref --format='%(refname) %(objectname)' refs/heads refs/tags | sort > /tmp/refs-after.txt
+
+      - name: Build GitHub support residue witness
+        run: |
+          set -euo pipefail
+          cd /tmp/rewrite.git
+          : > /tmp/affected-pulls.txt
+          while read -r ref; do
+            [ -z "$ref" ] && continue
+            if git rev-list "$ref" | grep -Fxf /tmp/changed-old-commits.txt >/dev/null; then
+              printf '%s\n' "$ref" | sed -E 's#^refs/pull/([0-9]+)/(head|merge)$#\1#' >> /tmp/affected-pulls.txt
+            fi
+          done < <(git for-each-ref --format='%(refname)' refs/pull | grep -E '^refs/pull/[0-9]+/(head|merge)$' || true)
+          sort -nu -o /tmp/affected-pulls.txt /tmp/affected-pulls.txt
+          wc -l /tmp/affected-pulls.txt | awk '{print $1}' > /tmp/affected-pull-count.txt
+
+          FIRST_CHANGED="$(grep -A1 'First Changed Commit(s) is/are:' /tmp/filter-repo.log | tail -1 | xargs)"
+          printf '%s\n' "$FIRST_CHANGED" > /tmp/first-changed-commit.txt
+
+      - name: Refuse concurrent remote mutation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REMOTE="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git ls-remote --heads --tags "$REMOTE" | awk '{print $2, $1}' | sort > /tmp/remote-refs-now.txt
+          diff -u /tmp/remote-refs-before.txt /tmp/remote-refs-now.txt
+
+      - name: Atomically publish rewritten controlled refs with leases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd /tmp/rewrite.git
+          git remote add publish "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          LEASES=(--atomic)
+          SPECS=()
+          while read -r ref old; do
+            new="$(awk -v r="$ref" '$1==r {print $2}' /tmp/refs-after.txt)"
+            test -n "$new"
+            LEASES+=("--force-with-lease=$ref:$old")
+            SPECS+=("$new:$ref")
+          done < /tmp/remote-refs-before.txt
+
+          git push "${LEASES[@]}" publish "${SPECS[@]}"
+
+          git ls-remote --heads --tags publish | awk '{print $2, $1}' | sort > /tmp/remote-refs-after.txt
+          diff -u /tmp/refs-after.txt /tmp/remote-refs-after.txt
+
+      - name: Re-publish identical current Display from rewritten main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" --ref main
+
+      - name: Upload remediation witness
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawlerbait-published-history-remediation
+          if-no-files-found: error
+          path: |
+            /tmp/base-sha.txt
+            /tmp/original-tree.txt
+            /tmp/tree-witness.txt
+            /tmp/remote-refs-before.txt
+            /tmp/remote-refs-after.txt
+            /tmp/refs-after.txt
+            /tmp/filter-repo.log
+            /tmp/commit-map.txt
+            /tmp/changed-refs.txt
+            /tmp/changed-old-commits.txt
+            /tmp/first-changed-commit.txt
+            /tmp/affected-pulls.txt
+            /tmp/affected-pull-count.txt
+            /tmp/rewritten-main-sha.txt
