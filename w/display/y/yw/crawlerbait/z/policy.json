@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "settle_delay_minutes": 10,
   "max_window_hours": 24,
   "recognition": {
@@ -20,5 +20,13 @@
     "raw_provider_values_persisted": false,
     "field_width_resolution": "recursive tetrahedral 1→4 shards",
     "exact_event_join_claimed": false
+  },
+  "path": {
+    "scheme": "offered-literal / otherwise keyed opaque Bait path",
+    "domain": "crawlerbait:path:v1",
+    "raw_unoffered_path_persisted": false,
+    "offered_public_paths_literal": true,
+    "own_aperture_prefix_only": true,
+    "foreign_pore_prefix_only": true
   }
 }
