@@ -1,21 +1,15 @@
 ---
 name: impressum
 description: "Public operator-identity site-holon for sss.saarland; publish only witnessed operator and contact facts."
-version: "1.0"
+version: "1.1"
 ---
 
 # IMPRESSUM — local receptor
 
 This whole owns the public operator interface only. It does not absorb Datenschutz or other public/legal bodies.
 
-Current operator ground:
-- Philipp Remy Bartholomäus
-- Katharinenstr. 6A, 1. OG
-- 66115 Saarbrücken
-- Deutschland
+Current operator identity, service address and electronic contact are source-owned by this whole's `projection.json` and public aperture. Do not duplicate those personal/contact facts into receptor law.
 
-The 1. OG atelier is the public operator/service address supplied by Philipp. No other residential floor belongs to this body's public projection.
+The electronic contact route is `contact@sss.saarland`.
 
-Planned electronic contact: `kontakt@sss.saarland`.
-
-Publication gate: do not secrete a public route until the domain mailbox route is actually witnessed receiving mail at both intended independent destinations.
+Publication requires the public projection, public aperture and current contact route to agree, with end-to-end mail delivery witnessed before HOME.
