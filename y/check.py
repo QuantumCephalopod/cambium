@@ -42,19 +42,32 @@ def main():
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
-    expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten'}
+    expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten','organism:datenschutz','organism:impressum'}
     check(set(by_id)==expected_sites,'unexpected Population site set')
     check(by_id['organism:philosophy']['address']=='','Philosophy must occupy site-space overview')
     check(by_id['organism:crawlerbait']['address']=='w','Crawlerbait must occupy site-space w / Form')
     check(by_id['organism:papers']['address']=='y','Papers must occupy site-space y')
+    check(by_id['organism:datenschutz']['address']=='z','Datenschutz must occupy site-space z / Care')
+    check(by_id['organism:impressum']['address']=='xz','Impressum must occupy site-space xz / Continuity × Care')
     check(by_id['organism:philosophy']['manifestation']['background_drag'] is True,'Philosophy did not inherit default background drag')
     check(by_id['organism:papers']['manifestation']['background_drag'] is True,'Papers did not inherit default background drag')
     check(by_id['organism:crawlerbait']['manifestation']['background_drag'] is True,'Crawlerbait explicit background-drag test toggle is not true')
     check(by_id['organism:philosophy']['site_dir']==DISPLAY/'y'/'philosophy','Philosophy physical body not at display/y/philosophy')
     crawler=DISPLAY/'y'/'yw'/'crawlerbait'
-    pathmembrane=load_module(crawler/'y'/'path_privacy.py','crawlerbait_path_privacy')
+    pathmembrane=load_module(crawler/'y'/'path_membrane.py','crawlerbait_path_membrane')
     check(by_id['organism:crawlerbait']['site_dir']==crawler,'Crawlerbait physical body not at display/y/yw/crawlerbait')
     check(by_id['organism:papers']['site_dir']==DISPLAY/'y'/'yy'/'papers','Papers physical body not at display/y/yy/papers')
+    datenschutz=DISPLAY/'y'/'yz'/'datenschutz'
+    impressum=DISPLAY/'y'/'yxz'/'impressum'
+    check(by_id['organism:datenschutz']['site_dir']==datenschutz,'Datenschutz physical body not at display/y/yz/datenschutz')
+    check(by_id['organism:impressum']['site_dir']==impressum,'Impressum physical body not at display/y/yxz/impressum')
+    for legal in (datenschutz,impressum):
+        check((legal/'INDEX.yaml').is_file(),f'{legal.name} phenotype missing')
+        build.validate_index(build.load_yaml(legal/'INDEX.yaml'))
+        build.validate_cambium(build.load_yaml(legal/'_cambium.yaml'),f'{legal.name}/_cambium.yaml')
+        check((legal/'RITUALS'/'organism'/'RITUAL.md').is_file(),f'{legal.name} local receptor missing')
+        check((legal/'_stomach').is_dir(),f'{legal.name} stomach missing')
+        check((legal/'_feed').is_dir(),f'{legal.name} feed missing')
     check((DISPLAY/'y'/'philosophy'/'INDEX.yaml').is_file(),'Philosophy local recursive body was not transplanted')
     check((DISPLAY/'y'/'philosophy'/'_cambium.yaml').is_file(),'Philosophy local constitution was not transplanted')
 
@@ -81,7 +94,8 @@ def main():
     recognition=policy.get('recognition') or {}
     phenotype=policy.get('phenotype') or {}
     query_policy=policy.get('query') or {}
-    path_policy=policy.get('path') or {}
+    check((crawler/'z'/'path-policy.json').is_file(),'Crawlerbait organism-local path policy missing')
+    path_policy=json.loads((crawler/'z'/'path-policy.json').read_text(encoding='utf-8'))
     check(
         policy.get('version')==6
         and recognition.get('scheme')=='hmac-sha256'
@@ -106,12 +120,15 @@ def main():
     check(
         path_policy.get('domain')=='crawlerbait:path:v1'
         and path_policy.get('raw_unoffered_path_persisted') is False
-        and path_policy.get('offered_public_paths_literal') is True,
+        and path_policy.get('crawlerbait_owned_public_paths_literal') is True
+        and path_policy.get('offered_resolution')=='crawlerbait-owned-public-surface-v1'
+        and path_policy.get('foreign_site_holon_paths_literal') is False
+        and path_policy.get('host_public_artifact_traversed') is False,
         'Crawlerbait public path policy drifted'
     )
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
-    check((crawler/'y'/'path_privacy.py').is_file(),'Crawlerbait public path membrane missing')
-    check((crawler/'y'/'migrate_path_privacy.py').is_file(),'Crawlerbait path privacy migration enzyme missing')
+    check((crawler/'y'/'path_membrane.py').is_file(),'Crawlerbait organism-local path membrane missing')
+    check((crawler/'y'/'migrate_owned_path_membrane.py').is_file(),'Crawlerbait organism-boundary migration enzyme missing')
     check((crawler/'y'/'tide.py').is_file(),'Crawlerbait local tide missing')
     check((crawler/'y'/'replay.py').is_file(),'Crawlerbait local replay missing')
     check(not (crawler/'y'/'provider_raw_once.py').exists(),'obsolete one-time provider-raw freezer still exists')
@@ -125,8 +142,13 @@ def main():
     checkpoint_end=checkpoint.get('last_complete_end')
     check(isinstance(checkpoint_end,str),'Crawlerbait legacy checkpoint has no explicit end')
     check(cursor.get('version')==2 and cursor.get('source')=='cloudflare:httpRequestsAdaptive','Crawlerbait cursor is not canonical raw-traffic generation 2')
-    path_migrated=(cursor.get('path_privacy') or {}).get('domain')=='crawlerbait:path:v1'
-    if path_migrated:
+    path_state=cursor.get('path_privacy') or {}
+    legacy_path_migrated=path_state.get('domain')=='crawlerbait:path:v1'
+    path_migrated=(
+        legacy_path_migrated
+        and path_state.get('offered_resolution')==pathmembrane.OFFERED_RESOLUTION
+    )
+    if legacy_path_migrated:
         check((checkpoint.get('privacy_migration') or {}).get('exact_user_agents_removed') is True,'Crawlerbait legacy checkpoint still carries readable User-Agent law')
         check(all('signatures' not in route for route in (checkpoint.get('routes') or {}).values()),'Crawlerbait legacy checkpoint still contains UA signature maps')
         check(all(pathmembrane.public_path_shape_valid(path) for path in (checkpoint.get('routes') or {})),'Crawlerbait legacy checkpoint contains an unmediated public path')
@@ -143,7 +165,7 @@ def main():
         check(window.get('start')==expected,f'Crawlerbait legacy 404 gap before {capture.name}')
         expected=window.get('end')
     check(cursor.get('legacy_404_last_capture_end')==expected,'legacy 404 cursor diverged from preserved captures')
-    if path_migrated:
+    if legacy_path_migrated:
         check(not legacy,'privacy-migrated legacy checkpoint still depends on raw capture carriers')
 
     raw_captures=sorted((crawler/'x'/'captures').glob('*.traffic.json'))
@@ -227,7 +249,7 @@ def main():
         seal=json.loads((retained/'seal.json').read_text(encoding='utf-8'))
         check(seal.get('sealed') is True,'Crawlerbait retained-history archive is not sealed')
         check((retained/'provider-settings.json').is_file(),'Crawlerbait retained-history provider settings missing')
-        if path_migrated:
+        if legacy_path_migrated:
             check(seal.get('raw_carriers_retired') is True,'Crawlerbait retained raw bootstrap carriers were not retired after privacy migration')
             check(not list(retained.glob('*.raw.json')),'Crawlerbait retained-bootstrap still contains readable raw files')
             check(seal.get('current_evidence')=='../checkpoint.json','Crawlerbait retained-bootstrap seal does not point at coalesced checkpoint evidence')
@@ -249,7 +271,14 @@ def main():
     registry=build.site_mounts()
     check(registry['version']==3 and registry['source']=='w/display/y tree','mount registry is not tree-derived')
     rel={(m['interlocutor'],m['scope'],m['address']) for m in registry['mounts']}
-    check(rel=={('organism:philosophy','main',''),('organism:crawlerbait','main','w'),('organism:papers','main','y'),('organism:schattenseiten','main','x')},'tree-derived mount relation changed')
+    check(rel=={
+        ('organism:philosophy','main',''),
+        ('organism:crawlerbait','main','w'),
+        ('organism:papers','main','y'),
+        ('organism:schattenseiten','main','x'),
+        ('organism:datenschutz','main','z'),
+        ('organism:impressum','main','xz'),
+    },'tree-derived mount relation changed')
     check(build.root_projection()['source']['organism']=='main-root','Philosophy projection identity changed')
     check(build.papers_projection()['source']=='papers/_feed','Papers projection boundary changed')
 
@@ -266,6 +295,13 @@ def main():
     check('crawlerbait/index.html' in public_files and 'crawlerbait/state.json' in public_files,'Crawlerbait machine-facing static hub missing')
     if raw_captures:
         check('crawlerbait/traffic.json' in public_files,'Crawlerbait metabolized traffic manifest missing')
+    check('impressum/index.html' in public_files,'Impressum public route missing')
+    check('privacy/index.html' in public_files,'Privacy public route missing')
+    impressum_public=public_files['impressum/index.html'].decode('utf-8')
+    privacy_public=public_files['privacy/index.html'].decode('utf-8')
+    check('contact@sss.saarland' in impressum_public,'Impressum public contact missing')
+    check('privacy@sss.saarland' in privacy_public,'Privacy public contact missing')
+    check('Katharinenstr. 6A, 1. OG' in impressum_public and 'Katharinenstr. 6A, 1. OG' in privacy_public,'public legal operator address drifted')
     check(all(not p.startswith('assets/') and p not in {'index.html','.nojekyll','CNAME'} for p in public_files),'site public surface escaped reserved artifact namespace')
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "organism:datenschutz",
+  "title": "Datenschutz",
+  "local_scope": "datenschutz",
+  "shader": {
+    "id": "shader:organism:datenschutz",
+    "palette": [
+      0.64,
+      0.76,
+      0.86
+    ]
+  },
+  "manifestation": {
+    "background_inspect": false,
+    "background_drag": true
+  },
+  "projection": "projection.json",
+  "renderer": "render.js",
+  "style": "style.css"
+}

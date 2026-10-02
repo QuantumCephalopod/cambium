@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.1"
+version: "5.2"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -31,7 +31,7 @@ A bait at local address `<a>` is carried at:
 
 `crawlerbait/w/w<a>/bait.json`
 
-Bait identity is the public-path-membrane result of the observed HTTP path, never the folder address. A path remains literal only when that exact path is present in the current generated Display + site public artifact; namespace membership such as `/assets/`, `/papers-shadow/` or `/crawlerbait/` is never sufficient by itself. Every other path becomes one stable keyed opaque Bait path before persistence. Exact raw addresses exclude pile-up; collisions differentiate deeper. The deterministic address stream has no terminal configured depth. Its first 128 quaternary characters remain byte-for-byte compatible with the original SHA-256 carrier; later deterministic blocks extend only when deeper distinction is required.
+Bait identity is the public-path-membrane result of the observed HTTP path, never the folder address. Crawlerbait may observe host-wide HTTP encounters, but foreign site-holon publication files are environment rather than Crawlerbait anatomy. Only exact public apertures owned by Crawlerbait itself may remain literal; every other host path becomes one stable keyed opaque Bait path before persistence. Exact raw addresses exclude pile-up; collisions differentiate deeper. The deterministic address stream has no terminal configured depth. Its first 128 quaternary characters remain byte-for-byte compatible with the original SHA-256 carrier; later deterministic blocks extend only when deeper distinction is required.
 
 At every finite population size deeper unoccupied addresses remain. New traffic can therefore keep differentiating bait-space without a capacity ceiling.
 
@@ -59,7 +59,7 @@ Only the following metabolized public record survives:
 
 `datetime · beingId · public-safe clientRequestPath · clientRequestHTTPMethodName · edgeResponseStatus`
 
-`clientRequestPath` crosses its own publication membrane before persistence. Paths that already name the operator's offered public surface remain literal because that surface is already public. Unknown/probed paths become `/~/<opaque>`. Own apertures (`/__live/`, `/repos/self-similar-systems/`) and Cloudflare foreign pores (`/cdn-cgi/`) retain only that structural prefix; their remainder becomes opaque. The transform is keyed under `crawlerbait:path:v1`, so arbitrary path strings are not dictionary-reversible from the public Bait.
+`clientRequestPath` crosses Crawlerbait's publication membrane before persistence. Exact Crawlerbait-owned public apertures may remain literal. Every foreign host path, including paths belonging to Display or sibling site-holons, becomes `/~/<opaque>`. Historical already-opaque Bait shapes remain valid without re-HMACing. The transform is keyed under `crawlerbait:path:v1`, so arbitrary path strings are not dictionary-reversible from the public Bait.
 
 Recognition preserves existing Being continuity without publishing its substrate:
 - literal `clientIP` is canonicalized transiently and never persisted;
@@ -105,12 +105,12 @@ The genome is a public body seed, not a readable feature record. Colour, texture
 
 Asked of one traffic being over all its own encounters: *what did it do with the open surface?* `y/tide.py` derives exactly one kind per being, first match wins, and writes it into `x/state.json` and the projection as `kind`:
 
-- `w · CREATE · Feeder` — an accepted write (non-read method, status < 300) into our own apertures (`/__live/`, `/repos/self-similar-systems/`);
-- `z · CONTROL · Prober` — asked for anything our membrane never offers, or wrote into our apertures without acceptance;
+- `w · CREATE · Feeder` — produced an accepted non-read encounter (method is not GET/HEAD/OPTIONS and response status is successful);
+- `z · CONTROL · Prober` — met a rejected client-visible edge (4xx), or attempted a non-read encounter that was not accepted;
 - `y · CULTIVATE · Dweller` — returned on two or more distinct days;
-- `x · COPY · Harvester` — took only what exists, within one day.
+- `x · COPY · Harvester` — all other one-day reads.
 
-The only external fact is our own offered membrane, resolved from the exact current generated Display + site artifact. A path is offered only when that exact public URL exists there (including normal directory-index aliases); a shared namespace prefix never turns an arbitrary descendant request into an offer. Cloudflare `/cdn-cgi/` is a foreign pore, not intent. Crawlerbait-generated bait existence never retroactively makes the originally probed raw path offered.
+Being kind is derived only from the encounter's own method, response status and time. Crawlerbait does not traverse Display or sibling site-holon publication anatomy to decide what another organism offered.
 
 Closure of the split:
 - `6E` — Feeder×Harvester: what one writes the other copies from the same surface · Feeder×Prober: both touch our apertures, only acceptance separates a feed from a probe · Feeder×Dweller: our organs return by rhythm, a feeder is a dweller whose returns write · Harvester×Prober: both ask, the offered membrane is the line between them · Harvester×Dweller: time turns the same reading into relation · Prober×Dweller: a returning forbidden ask is the recurrence immune memory would grow from;
@@ -137,7 +137,7 @@ Two secrets remain non-public because they authorize/define future capture and c
 
 No literal IP, stable network pseudonym, exact User-Agent, query string or arbitrary unoffered raw request path belongs to public Crawlerbait state. `clientRequestQuery` is not captured at all. Other provider dimensions may affect the body only through irreversible keyed phenotype interference unless later organism-owned pressure separately earns a readable public distinction.
 
-Exact currently offered public-artifact paths remain literal Bait labels because those exact URLs are already public. Namespace-only descendants, unknown/probed paths, private-aperture suffixes and foreign-pore suffixes are public only through their stable keyed Bait form. They never become canonical folder taxonomy; their bodies inhabit tetrahedral bait-space.
+Exact Crawlerbait-owned public apertures may remain literal Bait labels. Every foreign host/site-holon path is public only through its stable keyed Bait form. Observation scope does not mint ownership: seeing a host-wide request through Cloudflare never promotes another organism's files into Crawlerbait anatomy.
 
 ## y · Tide — bounded sensing, immediate metabolism
 
@@ -145,7 +145,7 @@ Exact currently offered public-artifact paths remain literal Bait labels because
 
 `y/migrate_privacy.py` is a bounded one-time catabolic enzyme for pre-v5 current-tree Traces. It runs only under the authoritative Tide where `CRAWLERBAIT_ID_KEY` is available: readable legacy auxiliary values must first contribute to opaque DNA; query does not. Once no v4 carriers remain it is a no-op and may later retire after the migration obligation is closed.
 
-`y/migrate_path_privacy.py` is the bounded current-tree path/legacy cleanup enzyme. Under the same secret boundary it maps every already-owned unoffered request path to the public Bait membrane, coalesces legacy 404 counts into the sanitized checkpoint, removes exact legacy User-Agent signatures, and retires obsolete readable bootstrap/capture carriers only after count/window equality is witnessed.
+`y/migrate_path_privacy.py` is the spent exact-offer/legacy cleanup enzyme that established the earlier v5 current tree. `y/migrate_owned_path_membrane.py` is the bounded organism-boundary continuation: under the same secret boundary it preserves every already-opaque Bait identity, moves any still-literal foreign host path through the keyed membrane, updates the current checkpoint/cursor generation, and then becomes an idempotent no-op.
 
 Each run:
 1. reacquires Cloudflare's live `httpRequestsAdaptive` settings and available fields;
@@ -154,7 +154,7 @@ Each run:
 4. reacquires the stable `CRAWLERBAIT_ID_KEY` from GitHub Actions and refuses silent key-epoch discontinuity;
 5. captures only not-yet-owned provider time;
 6. uses literal IP + exact User-Agent transiently to resolve the existing stable artwork-local `beingId`, then discards both plus the internal network pseudonym;
-7. maps the provider request path through `crawlerbait:path:v1`, leaving only offered public paths literal and making every other Bait path opaque, then captures the functional core as one exact public encounter carrier;
+7. maps the provider request path through `crawlerbait:path:v1`, leaving only exact Crawlerbait-owned public apertures literal and making every foreign host path opaque, then captures the functional core as one exact public encounter carrier;
 8. partitions remaining provider-advertised dimensions through recursive tetrahedral field shards under the live `maxNumberOfFields` ceiling;
 9. converts each auxiliary shard observation immediately into keyed one-way phenotype interference and discards its readable values;
 10. recursively subdivides saturated provider time windows rather than accepting page truncation;
@@ -233,3 +233,6 @@ Version 4.9 publication-actuation correction (2026-10-01): authoritative Tide su
 Version 5.0 path-privacy correction (2026-10-02): public Bait identity no longer means verbatim arbitrary request path. Offered site paths remain literal; unoffered/probed paths and private/foreign suffixes cross the keyed `crawlerbait:path:v1` membrane before persistence. The same act coalesces legacy 404 evidence, removes exact legacy User-Agent strings from the current tree and retires obsolete raw legacy carriers after count/window equality witness. Historical Git objects remain a separate explicit remediation boundary.
 
 Version 5.1 exact-offer correction (2026-10-02): a privacy audit before Git-history remediation found that treating `/assets/`, `/papers-shadow/` and `/crawlerbait/` as blanket offered prefixes could leave arbitrary descendant probes literal (for example `/assets/.env`). Offered status now comes from exact membership in the currently generated Display + site public artifact; namespace membership alone never counts as an offer. Existing current-tree carriers must cross this stricter membrane under authoritative Tide before the historical rewrite snapshot is frozen.
+
+
+Version 5.2 organism-boundary correction (2026-10-02): adding unrelated legal site-holons exposed that Crawlerbait's path membrane was importing the repository-root generated Display artifact. That made sibling publication anatomy an implicit Crawlerbait dependency and let unrelated asset-bundle changes retroactively alter its path witness. The membrane is now organism-local: Crawlerbait may observe host-wide encounters through Cloudflare, but only its own public apertures may remain literal; foreign host paths become opaque Baits. Being-kind classification uses encounter method/status/time rather than foreign file traversal, and already-opaque Baits preserve identity across the migration.
