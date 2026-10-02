@@ -1,0 +1,16 @@
+[data-interlocutor="organism:impressum"] .impressum-content{
+  position:absolute;inset:0;display:grid;place-items:center;
+  padding:calc(var(--display-safe-top) + 2rem) 1.4rem calc(var(--display-safe-bottom) + 2rem);
+  pointer-events:none;color:#ecefe8
+}
+.impressum-content article{
+  pointer-events:auto;width:min(42rem,100%);display:grid;gap:1rem;
+  padding:clamp(1.2rem,4vw,3rem);
+  background:rgba(7,12,10,.52);backdrop-filter:blur(12px);
+  border:1px solid rgba(230,239,228,.12)
+}
+.impressum-content h1{margin:0;font:500 clamp(2rem,7vw,5rem)/.95 var(--mono);letter-spacing:-.04em}
+.impressum-kicker,.impressum-gate{margin:0;color:rgba(236,239,232,.56);font:600 .62rem/1.5 var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.impressum-operator{margin:.6rem 0 0;font:500 1.05rem/1.4 var(--mono)}
+.impressum-content address{white-space:pre-line;font:normal .95rem/1.65 var(--mono);color:rgba(236,239,232,.78)}
+.impressum-content a{width:max-content;color:#dff8df;text-decoration-thickness:1px;text-underline-offset:.25em}
