@@ -52,6 +52,7 @@ def main():
     check(by_id['organism:crawlerbait']['manifestation']['background_drag'] is True,'Crawlerbait explicit background-drag test toggle is not true')
     check(by_id['organism:philosophy']['site_dir']==DISPLAY/'y'/'philosophy','Philosophy physical body not at display/y/philosophy')
     crawler=DISPLAY/'y'/'yw'/'crawlerbait'
+    pathmembrane=load_module(crawler/'y'/'path_privacy.py','crawlerbait_path_privacy')
     check(by_id['organism:crawlerbait']['site_dir']==crawler,'Crawlerbait physical body not at display/y/yw/crawlerbait')
     check(by_id['organism:papers']['site_dir']==DISPLAY/'y'/'yy'/'papers','Papers physical body not at display/y/yy/papers')
     check((DISPLAY/'y'/'philosophy'/'INDEX.yaml').is_file(),'Philosophy local recursive body was not transplanted')
@@ -80,8 +81,9 @@ def main():
     recognition=policy.get('recognition') or {}
     phenotype=policy.get('phenotype') or {}
     query_policy=policy.get('query') or {}
+    path_policy=policy.get('path') or {}
     check(
-        policy.get('version')==5
+        policy.get('version')==6
         and recognition.get('scheme')=='hmac-sha256'
         and recognition.get('domain')=='crawlerbait:clientIP:v1'
         and recognition.get('key_epoch')=='v1'
@@ -101,7 +103,15 @@ def main():
         and phenotype.get('exact_event_join_claimed') is False,
         'Crawlerbait phenotype publication policy drifted'
     )
+    check(
+        path_policy.get('domain')=='crawlerbait:path:v1'
+        and path_policy.get('raw_unoffered_path_persisted') is False
+        and path_policy.get('offered_public_paths_literal') is True,
+        'Crawlerbait public path policy drifted'
+    )
     check((crawler/'y'/'capture.py').is_file(),'Crawlerbait provider capture missing')
+    check((crawler/'y'/'path_privacy.py').is_file(),'Crawlerbait public path membrane missing')
+    check((crawler/'y'/'migrate_path_privacy.py').is_file(),'Crawlerbait path privacy migration enzyme missing')
     check((crawler/'y'/'tide.py').is_file(),'Crawlerbait local tide missing')
     check((crawler/'y'/'replay.py').is_file(),'Crawlerbait local replay missing')
     check(not (crawler/'y'/'provider_raw_once.py').exists(),'obsolete one-time provider-raw freezer still exists')
@@ -115,6 +125,11 @@ def main():
     checkpoint_end=checkpoint.get('last_complete_end')
     check(isinstance(checkpoint_end,str),'Crawlerbait legacy checkpoint has no explicit end')
     check(cursor.get('version')==2 and cursor.get('source')=='cloudflare:httpRequestsAdaptive','Crawlerbait cursor is not canonical raw-traffic generation 2')
+    path_migrated=(cursor.get('path_privacy') or {}).get('domain')=='crawlerbait:path:v1'
+    if path_migrated:
+        check((checkpoint.get('privacy_migration') or {}).get('exact_user_agents_removed') is True,'Crawlerbait legacy checkpoint still carries readable User-Agent law')
+        check(all('signatures' not in route for route in (checkpoint.get('routes') or {}).values()),'Crawlerbait legacy checkpoint still contains UA signature maps')
+        check(all(pathmembrane.public_path_shape_valid(path) for path in (checkpoint.get('routes') or {})),'Crawlerbait legacy checkpoint contains an unmediated public path')
 
     legacy=sorted((crawler/'x'/'captures').glob('*.capture.json'))
     expected=checkpoint_end
@@ -128,6 +143,8 @@ def main():
         check(window.get('start')==expected,f'Crawlerbait legacy 404 gap before {capture.name}')
         expected=window.get('end')
     check(cursor.get('legacy_404_last_capture_end')==expected,'legacy 404 cursor diverged from preserved captures')
+    if path_migrated:
+        check(not legacy,'privacy-migrated legacy checkpoint still depends on raw capture carriers')
 
     raw_captures=sorted((crawler/'x'/'captures').glob('*.traffic.json'))
     raw_expected=None
@@ -187,6 +204,8 @@ def main():
                 check(isinstance(record.get('beingId'),str) and bool(record.get('beingId')),f'opaque beingId missing in {capture.name} record {record_index}')
                 for forbidden in ('clientIP','clientIPIdentity','userAgent','clientRequestQuery'):
                     check(forbidden not in record,f'{forbidden} leaked in {capture.name} record {record_index}')
+                if path_migrated:
+                    check(pathmembrane.public_path_shape_valid(str(record.get('clientRequestPath') or '')),f'unmediated request path leaked in {capture.name} record {record_index}')
         if raw_expected is not None:
             check(window.get('start')==raw_expected,f'Crawlerbait raw traffic gap before {capture.name}')
         raw_expected=window.get('end')
@@ -208,14 +227,19 @@ def main():
         seal=json.loads((retained/'seal.json').read_text(encoding='utf-8'))
         check(seal.get('sealed') is True,'Crawlerbait retained-history archive is not sealed')
         check((retained/'provider-settings.json').is_file(),'Crawlerbait retained-history provider settings missing')
-        files=seal.get('files')
-        check(isinstance(files,list) and files,'Crawlerbait retained-history seal has no raw files')
-        for name in files:
-            raw=retained/name
-            check(raw.is_file(),f'Crawlerbait retained-history raw file missing {name}')
-            value=json.loads(raw.read_text(encoding='utf-8'))
-            zones=(value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
-            check(value.get('source')=='cloudflare:httpRequestsAdaptiveGroups' and len(zones)==1 and isinstance(zones[0].get('groups'),list),f'invalid retained raw provider payload {name}')
+        if path_migrated:
+            check(seal.get('raw_carriers_retired') is True,'Crawlerbait retained raw bootstrap carriers were not retired after privacy migration')
+            check(not list(retained.glob('*.raw.json')),'Crawlerbait retained-bootstrap still contains readable raw files')
+            check(seal.get('current_evidence')=='../checkpoint.json','Crawlerbait retained-bootstrap seal does not point at coalesced checkpoint evidence')
+        else:
+            files=seal.get('files')
+            check(isinstance(files,list) and files,'Crawlerbait retained-history seal has no raw files')
+            for name in files:
+                raw=retained/name
+                check(raw.is_file(),f'Crawlerbait retained-history raw file missing {name}')
+                value=json.loads(raw.read_text(encoding='utf-8'))
+                zones=(value.get('provider_response') or {}).get('data',{}).get('viewer',{}).get('zones',[])
+                check(value.get('source')=='cloudflare:httpRequestsAdaptiveGroups' and len(zones)==1 and isinstance(zones[0].get('groups'),list),f'invalid retained raw provider payload {name}')
     bait_dirs=[p for p in (crawler/'w').iterdir() if p.is_dir()]
     check(bool(bait_dirs),'Crawlerbait bait-space has no addressed bait body')
     for locus in bait_dirs:
@@ -359,7 +383,9 @@ def main():
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')
+    result=subprocess.run(['python3',str(crawler/'y'/'path_privacy.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait path privacy self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'capture.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait capture self-test failed')
+    result=subprocess.run(['python3',str(crawler/'y'/'migrate_path_privacy.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait path migration self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'replay.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait replay self-test failed')
     result=subprocess.run(['node',str(crawler/'z'/'render.test.cjs')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait visualization witness failed')
