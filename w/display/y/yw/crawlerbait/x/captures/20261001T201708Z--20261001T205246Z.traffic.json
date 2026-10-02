@@ -1,0 +1,370 @@
+{
+  "captured_at": "2026-10-01T21:02:46Z",
+  "functional_provider_fields": [
+    "datetime",
+    "clientIP",
+    "userAgent",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
+  "historical_path_migration": {
+    "migrated_on": "2026-10-02",
+    "offered_public_paths_remain_literal": true,
+    "query_in_path_transform": false,
+    "raw_unoffered_paths_removed": true
+  },
+  "never_captured_fields": [
+    "clientRequestQuery"
+  ],
+  "phenotype_by_being": {
+    "1e01fae016b126a865d9e665": {
+      "genome": "aaf8e15b70b636dd55f4ae659237341a8a533258796ecf896a3d0a4faa2c6dd3",
+      "samples": 11
+    },
+    "38868bedafd74af0dcf309f8": {
+      "genome": "6a2e72c6ff30ffed016bc1774787d025749f93cfe1bca9df542ddd0461079d42",
+      "samples": 2
+    },
+    "6d0b433e90a0970a765c86a2": {
+      "genome": "c10035786a4f4c3221a6ebfaa37edc8349b53eb89b2f7132c6483d2d03c0371c",
+      "samples": 2
+    },
+    "7ce9575bf7980486074baaf6": {
+      "genome": "85fe022e1e4ebfa3f3cca70e918157cdcf78826b0dfce3c887c672de0d09bdd0",
+      "samples": 2
+    },
+    "cfc358c593a2cc717c00d4b9": {
+      "genome": "98c557266aef2237ffe4f498ae99fa9f62090c640bd1de7147fee7d064e0002f",
+      "samples": 1
+    },
+    "e410e84a25ee3e7cf1af3bb9": {
+      "genome": "f7b590237780b60f814825c6f23c1a5396abc7c6f2a713edbbf557cd21ddc371",
+      "samples": 1
+    }
+  },
+  "phenotype_field_shards": [
+    [
+      "apiGatewayMatchedEndpoint",
+      "apiGatewayMatchedHost",
+      "cacheStatus",
+      "clientASNDescription",
+      "clientAsn",
+      "clientCountryName",
+      "clientDeviceType",
+      "clientRequestHTTPHost",
+      "clientRequestHTTPProtocol",
+      "clientRequestScheme",
+      "clientSSLProtocol",
+      "date",
+      "datetimeFifteenMinutes",
+      "datetimeFiveMinutes",
+      "datetimeHour",
+      "datetimeMinute",
+      "edgeResponseContentTypeMatched",
+      "edgeResponseContentTypeMatchedByWildcard",
+      "edgeResponseContentTypeName",
+      "firewallForAiAnyPiiCategory",
+      "firewallForAiCustomTopicCategoriesScoresMin",
+      "firewallForAiCustomTopicCategories_score",
+      "firewallForAiCustomTopicCategories_topicLabel",
+      "firewallForAiInjectionScore",
+      "firewallForAiPiiCategories",
+      "firewallForAiUnsafeTopicCategories",
+      "httpApplicationVersion",
+      "leakedCredentialCheckResult",
+      "originResponseDurationMs",
+      "originResponseHeaderReceiveDurationMs",
+      "originResponseStatus",
+      "originTcpHandshakeDurationMs",
+      "originTlsHandshakeDurationMs",
+      "payPerCrawlStatus",
+      "productMatches_product",
+      "productMatches_ruleIds",
+      "productMatches_rulesetId",
+      "productMatches_rulesetVersion",
+      "rayName",
+      "requestSource",
+      "rulesMetadata_metadataKey",
+      "rulesMetadata_metadataValue",
+      "rulesMetadata_ruleId",
+      "schemaValidationLearnedOutcome",
+      "schemaValidationLearnedViolations_errorClass",
+      "schemaValidationLearnedViolations_errorDetail",
+      "schemaValidationLearnedViolations_location",
+      "schemaValidationLearnedViolations_target",
+      "schemaValidationUploadedOutcome",
+      "schemaValidationUploadedViolations_errorClass",
+      "schemaValidationUploadedViolations_errorDetail",
+      "schemaValidationUploadedViolations_location",
+      "schemaValidationUploadedViolations_target",
+      "securityAction",
+      "securitySource",
+      "sessionIdHash",
+      "userAgentBrowser",
+      "userAgentOS",
+      "verifiedBotCategory",
+      "webAssetsLabelsManaged",
+      "webAssetsOperationId",
+      "zoneVersion"
+    ]
+  ],
+  "private_recognition_fields": [
+    "clientIP",
+    "userAgent"
+  ],
+  "provider_advertised_fields": [
+    "apiGatewayMatchedEndpoint",
+    "apiGatewayMatchedHost",
+    "cacheStatus",
+    "clientASNDescription",
+    "clientAsn",
+    "clientCountryName",
+    "clientDeviceType",
+    "clientIP",
+    "clientRequestHTTPHost",
+    "clientRequestHTTPMethodName",
+    "clientRequestHTTPProtocol",
+    "clientRequestPath",
+    "clientRequestQuery",
+    "clientRequestScheme",
+    "clientSSLProtocol",
+    "date",
+    "datetime",
+    "datetimeFifteenMinutes",
+    "datetimeFiveMinutes",
+    "datetimeHour",
+    "datetimeMinute",
+    "edgeResponseContentTypeMatched",
+    "edgeResponseContentTypeMatchedByWildcard",
+    "edgeResponseContentTypeName",
+    "edgeResponseStatus",
+    "firewallForAiAnyPiiCategory",
+    "firewallForAiCustomTopicCategoriesScoresMin",
+    "firewallForAiCustomTopicCategories_score",
+    "firewallForAiCustomTopicCategories_topicLabel",
+    "firewallForAiInjectionScore",
+    "firewallForAiPiiCategories",
+    "firewallForAiUnsafeTopicCategories",
+    "httpApplicationVersion",
+    "leakedCredentialCheckResult",
+    "originResponseDurationMs",
+    "originResponseHeaderReceiveDurationMs",
+    "originResponseStatus",
+    "originTcpHandshakeDurationMs",
+    "originTlsHandshakeDurationMs",
+    "payPerCrawlStatus",
+    "productMatches_product",
+    "productMatches_ruleIds",
+    "productMatches_rulesetId",
+    "productMatches_rulesetVersion",
+    "rayName",
+    "requestSource",
+    "rulesMetadata_metadataKey",
+    "rulesMetadata_metadataValue",
+    "rulesMetadata_ruleId",
+    "schemaValidationLearnedOutcome",
+    "schemaValidationLearnedViolations_errorClass",
+    "schemaValidationLearnedViolations_errorDetail",
+    "schemaValidationLearnedViolations_location",
+    "schemaValidationLearnedViolations_target",
+    "schemaValidationUploadedOutcome",
+    "schemaValidationUploadedViolations_errorClass",
+    "schemaValidationUploadedViolations_errorDetail",
+    "schemaValidationUploadedViolations_location",
+    "schemaValidationUploadedViolations_target",
+    "securityAction",
+    "securitySource",
+    "sessionIdHash",
+    "userAgent",
+    "userAgentBrowser",
+    "userAgentOS",
+    "verifiedBotCategory",
+    "webAssetsLabelsManaged",
+    "webAssetsOperationId",
+    "zoneVersion"
+  ],
+  "public_record_fields": [
+    "datetime",
+    "beingId",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
+  "publication_transform": {
+    "beingId": {
+      "exact_user_agent_persisted": false,
+      "key_epoch": "v1",
+      "key_fingerprint": "b353473d45ad5614",
+      "literal_client_ip_persisted": false,
+      "network_pseudonym_persisted": false,
+      "scheme": "sha256(HMAC-SHA256(clientIP) || exact userAgent)"
+    },
+    "clientRequestPath": {
+      "domain": "crawlerbait:path:v1",
+      "key_epoch": "v1",
+      "offered_public_paths_literal": true,
+      "offered_resolution": "exact-source-owned-public-artifact-v1",
+      "raw_unoffered_path_persisted": false,
+      "scheme": "literal offered path else HMAC-SHA256 opaque Bait path"
+    },
+    "phenotype": {
+      "domain": "crawlerbait:phenotype:v1",
+      "raw_provider_values_persisted": false,
+      "scheme": "keyed irreversible field-interference"
+    }
+  },
+  "published_response": {
+    "data": {
+      "viewer": {
+        "zones": [
+          {
+            "records": [
+              {
+                "beingId": "6d0b433e90a0970a765c86a2",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-10-01T20:21:05Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "cfc358c593a2cc717c00d4b9",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-10-01T20:21:14Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/site-organism-crawlerbait.css",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/site-organism-schattenseiten.css",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/site-organism-philosophy.css",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "38868bedafd74af0dcf309f8",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-10-01T20:18:58Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "6d0b433e90a0970a765c86a2",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-10-01T20:21:05Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "7ce9575bf7980486074baaf6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-10-01T20:21:01Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/site-fold.js",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/navigation-physiology.js",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/address.js",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/root-view.css",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/site-organism-papers.css",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/locus-shader.js",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/display-lens.js",
+                "datetime": "2026-10-01T20:36:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e01fae016b126a865d9e665",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/assets/dd8c58b963ff926f/dependencies/sss-spritesheet/SpriteSheet-Regular.woff2",
+                "datetime": "2026-10-01T20:36:55Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "7ce9575bf7980486074baaf6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-10-01T20:21:02Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "38868bedafd74af0dcf309f8",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-10-01T20:18:59Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "e410e84a25ee3e7cf1af3bb9",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-10-01T20:40:49Z",
+                "edgeResponseStatus": 404
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "semantic_filters": [],
+  "source": "cloudflare:httpRequestsAdaptive",
+  "transport_filter": "datetime range only",
+  "version": 5,
+  "window": {
+    "end": "2026-10-01T20:52:46Z",
+    "start": "2026-10-01T20:17:08Z"
+  }
+}

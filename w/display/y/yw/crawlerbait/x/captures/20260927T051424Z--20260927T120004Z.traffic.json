@@ -1,0 +1,2336 @@
+{
+  "captured_at": "2026-09-27T12:10:04Z",
+  "current_law_never_captures": [
+    "clientRequestQuery"
+  ],
+  "functional_provider_fields": [
+    "datetime",
+    "clientIP",
+    "userAgent",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
+  "historical_migration": {
+    "auxiliary_values_collapsed_to_phenotype": true,
+    "exact_user_agent_removed": true,
+    "migrated_on": "2026-10-01",
+    "network_pseudonym_removed": true,
+    "note": "Current-tree migration only; earlier Git history was already public and is not rewritten.",
+    "query_value_removed": true,
+    "readable_auxiliary_values_removed_after_condensation": true,
+    "source_version": 4
+  },
+  "historical_path_migration": {
+    "migrated_on": "2026-10-02",
+    "offered_public_paths_remain_literal": true,
+    "query_in_path_transform": false,
+    "raw_unoffered_paths_removed": true
+  },
+  "never_captured_fields": [],
+  "phenotype_by_being": {
+    "010a24e1fdf6c9c75bb75090": {
+      "genome": "a68e2351085d47fad2dff5cc9a05f43d57c19cad17122344d4a5b8019e989323",
+      "samples": 1
+    },
+    "017238832a2fc614446de082": {
+      "genome": "0c6cd613e4770f41d1bcaed558cd951e647231c5f62da2645fba97cff4edda0c",
+      "samples": 1
+    },
+    "01be2f08378d7bd1a1af68a3": {
+      "genome": "867fd0dc3310910c03fabd8cfff5425f394473bf2ceb7c5fd02f0aadf4c441ec",
+      "samples": 1
+    },
+    "01f05c04bf3b9f4a6ee69b94": {
+      "genome": "2ea3c28fc2fcfe71883c5b68f97affbf100704febee8c496d443a7163585a835",
+      "samples": 6
+    },
+    "0dfdaecc5c3d0c2a9d124a8d": {
+      "genome": "9bc18f13ebc1c8944ede831bd51a6acdde171a51deae90849e4aabce10f15c36",
+      "samples": 1
+    },
+    "132089c4d1e9142dd6497844": {
+      "genome": "899ab954c076e6093752c4ed39afd3e869a8d80d718e2969697886bde90fbc46",
+      "samples": 1
+    },
+    "13690016e6494d0409a5ae1c": {
+      "genome": "2c3b1314046f7523421ab97f2d9095e94af8a24ebda18b368c82226c79f0c5be",
+      "samples": 1
+    },
+    "161fc5fee1f9c6404ea019ce": {
+      "genome": "a0fedcd576c8f36c75062a191fc326b8146db93d30cba223530acc410c888fca",
+      "samples": 1
+    },
+    "163a731bf3a45e21358cc8d2": {
+      "genome": "65112e45bb52a874d7a6b4bd84cc5817f33614a0d1615413321b7242ed7107c9",
+      "samples": 1
+    },
+    "1755da3a49fe8883ba1d0935": {
+      "genome": "5f49452ece4cb2a6060bb609eb88224ed63dba12a3edd3f25fde31bfdb298f33",
+      "samples": 1
+    },
+    "1adaa721538506b932eee9da": {
+      "genome": "d246ed96674ea90c6f5e9c31547a26bdbdb9423e03cb0de421a55033b7adda78",
+      "samples": 1
+    },
+    "1b995c3cdf04e8fe660cf302": {
+      "genome": "8294d1998199008d8002821bbdbe38be1097249dcb52274ff846eb0c9cdde712",
+      "samples": 1
+    },
+    "1d39e73a354711f1089af3cf": {
+      "genome": "92dc9ab62d2525724a36d406f45c307f9c6b3d43072e8b967869d42e621807c9",
+      "samples": 1
+    },
+    "1d8fd2b386cbf1f4d920b0cb": {
+      "genome": "169e8c263ad7c6b8772395264ff4f3fe7bec29caca3c1f2ce30652d146633ca9",
+      "samples": 1
+    },
+    "1e492b3393099dd6111c5c72": {
+      "genome": "652a98739674e4c3d963fcb77df91b0d5f2001a72a70fc626ce5431eb948a02d",
+      "samples": 1
+    },
+    "22f49355c0ff3b24ef8e4a13": {
+      "genome": "1ebf0c6e8ffc7ed9374d8469f454dbaa75d6a5cedf5e8d94b25083e5b60c2d08",
+      "samples": 1
+    },
+    "246209147976af6f65459d46": {
+      "genome": "43f0139f8aab6f4cddb445a88bbd4950de2d147d1318207a99009c97cdefce03",
+      "samples": 1
+    },
+    "26b28c902b9e81ac5bf7c6b3": {
+      "genome": "692f53a8d0d9901a79b864185642f0a6fb101a07d641f77c274c2567ed154d30",
+      "samples": 2
+    },
+    "27404f4d3a5f806ae6be9cc8": {
+      "genome": "31d8712f262163ae2bae22e8b2d757186f1f6c220d05838a38264828854702ec",
+      "samples": 1
+    },
+    "2fcc186f1fdca6cd09078ee2": {
+      "genome": "8089fe7d19062608b05980249dd35c1191f82421d435b8246bdc0ff2fe8b932b",
+      "samples": 2
+    },
+    "30dc5c0e305bcd78ed67a335": {
+      "genome": "0752ca2a00eb230d241dd762810eaf271b77aebd686aa4e58dfc8c2fbbaf6bfd",
+      "samples": 1
+    },
+    "39d3d5ed310e4beb9951218c": {
+      "genome": "21be710ab5ace1c626625e6c0f0419ebfc7a2e8ea39562e6a038813979a2700b",
+      "samples": 1
+    },
+    "3e8be9cc8f5bb2dd8c3b8aa8": {
+      "genome": "3ec3c2a2fb8213e65d75debb6735669ccf32e67eb4627b2aeabf6fbae7c6a672",
+      "samples": 1
+    },
+    "3ebc0740b4105503601f6bde": {
+      "genome": "b17b4e5f17f294724e54b1528e0a63f0f8057bd55af39add4498da3d60577e31",
+      "samples": 1
+    },
+    "45d4f2a8e1290b6df82f8b96": {
+      "genome": "4bfad7e7d5ec465ba087edb1d2df56e1a6cc0fc54ee5d451fe79606fdaf1b681",
+      "samples": 12
+    },
+    "47a29230474f2c1f184f7e6d": {
+      "genome": "179e60da0afcbb3e4c85b811cf4e36e28a12579c115f630da4f278868d93905d",
+      "samples": 1
+    },
+    "48e45f72cdaa10d80b89718a": {
+      "genome": "cd06e85dae8b0b0dee0f69e2126b421d0c03c3a612fab179425c80af67ed0662",
+      "samples": 1
+    },
+    "4cb645049bc22b6bb0ec595b": {
+      "genome": "d518b3ff29af3c161b72469ee37fdcc0cb4c3fd0e738f5a9af2ab4c9de0e148a",
+      "samples": 1
+    },
+    "4d2c4e6c6765ae4688da3213": {
+      "genome": "a74444e3b7de8fd218733e51af4526fb7a68941d7f0cb83f00679ce3d6af440e",
+      "samples": 1
+    },
+    "5024c4b4ee68f50375486ac7": {
+      "genome": "eedd80d4edb21c6bcf9984d99d87ac8bc058f24766abbc745913c3adc1bbd190",
+      "samples": 1
+    },
+    "563d182ec011ad894d9ba75d": {
+      "genome": "fad738a1aa7f2950a2865822d4e2ce6189662f85d0ef15f0a4617e66fcc053e1",
+      "samples": 1
+    },
+    "59c263cd973e4c036bfa86d1": {
+      "genome": "64babe7783311565d07209894485417200d5daf09bcfb8a867402acf1f9ad35b",
+      "samples": 1
+    },
+    "5bc9fdd538ae76722f965b08": {
+      "genome": "3996fd75b453c35eefd82f262adc76ac7e4a1dea25fb09f9d7d7186ae094eec8",
+      "samples": 1
+    },
+    "5e799495316e57f07453e0e6": {
+      "genome": "d5d76b58589146f79678d914c985a83e6e47fb29696e3c1a9dbec513a8e7efef",
+      "samples": 4
+    },
+    "65d1bc151db93417c2f3e184": {
+      "genome": "6478ee03a401c33c708fc09bd67839b8853df56f7288747f310d02622662a8a7",
+      "samples": 1
+    },
+    "68cf7c6463d54ecac4235339": {
+      "genome": "2e6ecd9e04fde7c3aeae7ac1fad2e03b4c8ee8eb5e3e8d5a8b707b3f42365e74",
+      "samples": 1
+    },
+    "702ce667366b55c7be5e47b6": {
+      "genome": "fd6f4e53d9a9fde4f37180c5f98df1b5dbeb406ed2108e52195daa194bd771b8",
+      "samples": 1
+    },
+    "70e5e81dc9fc2ad9fad689f8": {
+      "genome": "56dfb04fb003427bf20202b4d27966c8889e82e8698b055b9b7dc86b9a9b14d6",
+      "samples": 2
+    },
+    "714ec87c400cd8d00c5028ec": {
+      "genome": "6888985b4aa6d8aea6fffd2afcae11587066fa1c8592201656a05773ce79792c",
+      "samples": 3
+    },
+    "723913a8c02edca78526ba7c": {
+      "genome": "4c079cb0813f867a0c0c578f3d943b367fb0e59274432f35662e16c4f7535f5c",
+      "samples": 2
+    },
+    "72469c960d4d4b612b5d84d6": {
+      "genome": "0b8521d324e6cbda3565b40e42ef315aa793ab4640410fe45c851f2c2a7e87a3",
+      "samples": 1
+    },
+    "75d761c2ac8b1ea9b658f08d": {
+      "genome": "a44ce46bbe6894ecc5a1118f045ff762128879c1d8e0a03014404c403f620569",
+      "samples": 1
+    },
+    "7d345543f3870cfda270dea7": {
+      "genome": "9f21c922463ad45aee1b0cb41a0fd95a2459d944990fedf87d1055f3ed6ff325",
+      "samples": 1
+    },
+    "80449d68a6d9692c4c0b8bc7": {
+      "genome": "cca012df0609edf172a689c79193119e245850d8e745bf1d890fb0fef8e95912",
+      "samples": 1
+    },
+    "8075d17d1693ba55896ce29e": {
+      "genome": "be0c60264ee2ccf6f0c238f7778caebf955ebbac77e75885d31dec0cd197365b",
+      "samples": 2
+    },
+    "8610839ff93a36b687844014": {
+      "genome": "5d4513d2dc84effb11bd068f095f7abaa7753b6ade1ffe066962c358a329a298",
+      "samples": 1
+    },
+    "8873f12f276f400e69cfd4bb": {
+      "genome": "fe75f4fd11ace21e43196c9c4d60f84abb366fd34c13f4a86b74d66aa761189f",
+      "samples": 21
+    },
+    "8decc29ed7e2913a2023bf6d": {
+      "genome": "68dfd96a2bcf821c99680e55d22ad0fe112119b0ab7d566a5b31291781f72d3d",
+      "samples": 1
+    },
+    "92719c56ed2e400e67e718cf": {
+      "genome": "494d44c8d191c895b711be521d56e6ff57c5be9c7c5678017c533041aab63a2e",
+      "samples": 1
+    },
+    "953941d74c20028497c6e351": {
+      "genome": "82a0b2d9f97c2b4fe3a487b5ee2a903b9f4d375788aafcd1bb792355fbe69346",
+      "samples": 1
+    },
+    "95ec6f2bfc6dc109632da3a7": {
+      "genome": "b4171f11e7020a858925afb16df45dead56a7a20b3a4ce394c75bcb7bc6c0cbc",
+      "samples": 2
+    },
+    "9d324ee8dc52299635fba81d": {
+      "genome": "06302e67af9452f345d172fa165e13de1b7b3e5892614492d2eaad31069c354f",
+      "samples": 1
+    },
+    "9f2a20187d0fa2447d55d7d1": {
+      "genome": "f7b3ed9cfdfd45eeb35a36e4d4914cc4146670378e27d69bad53a6b99985a61b",
+      "samples": 1
+    },
+    "9f6e048b26ba26822d0dc98b": {
+      "genome": "2d37ba9f9e524e08d4c5681da4223d41e19a7fc6eb3636e82aca179877855e0d",
+      "samples": 26
+    },
+    "a010878b66bfa92c56af9db6": {
+      "genome": "688b9a7cc2b132aba80d7113927086d47e6b8368366f370f67a6277f830059bb",
+      "samples": 12
+    },
+    "a2f628cb0640d20f72a5ed1a": {
+      "genome": "2821e3c1f18f6734de8d171c574787674d5b2b686274c9fc165a99b52d6ffaeb",
+      "samples": 1
+    },
+    "a5290fba066ef801a0af6a0f": {
+      "genome": "c4cef2040fd0b3454b160923d05ce63296dfe6ae393b62a310540fcf42ccd641",
+      "samples": 1
+    },
+    "a68746f4b2bf026b42d0ea00": {
+      "genome": "f46cc60aba41dc278d2c98dc0345c819a73599740cb5248d2a42b511b72965d4",
+      "samples": 1
+    },
+    "aacac256694240a31616c76d": {
+      "genome": "eae89f1cb7ed11dc05e4b0ff85b60e79d5dd3fc768398bbd9a586aa8871e2134",
+      "samples": 40
+    },
+    "ae56a90f5a21d632871331a1": {
+      "genome": "756c2d9008af125acf0a4d175b749ddef69ca3fe1549b922ab36e30ab7ff2d99",
+      "samples": 1
+    },
+    "b4695ed694d3d9caf6f65c90": {
+      "genome": "a22c2be99f3bf1a07b038bdc356ab9024d2ac6dcf8100d0674e78f5b5fcec287",
+      "samples": 1
+    },
+    "b6d9bce251e1d0bc3bcf237d": {
+      "genome": "46ae076d7847dd91b84c72c9429dbf1e329c3cd00dffaa9a67cf04efdf2218d7",
+      "samples": 1
+    },
+    "b734626eef29c7552a5c261b": {
+      "genome": "105383948fccfb1971e2fb87840516ebb1e2fc7de94c973cd8f802e1f73bf101",
+      "samples": 2
+    },
+    "b7c2269797863e4638f9a549": {
+      "genome": "48611f0e6dcd0cb519b79ab24df64162725f165eb043e72bff4b671c5d548f55",
+      "samples": 7
+    },
+    "b7e411d3143814e92bb5cec1": {
+      "genome": "6aa964eb951e053862bda0ee4966aca1c19f87b41d9c1f01c198d1834f19f1a2",
+      "samples": 11
+    },
+    "b8470cf446b954430d240592": {
+      "genome": "a2255635c78b4fc5fa2626f4569bf717a6e23e92a8c983b001e204dc437a1143",
+      "samples": 1
+    },
+    "b9dab0b2854f80a71a42bcd1": {
+      "genome": "5ec078950fb17a112cc15b7fca54b0b7d782e1c71619b57cfdb37f873fd080df",
+      "samples": 1
+    },
+    "ba79f5addf6efb0b61ee7772": {
+      "genome": "a76f87efcade0ead0fb7af4b598d058559040e520bf950787c77dc6584005b9e",
+      "samples": 1
+    },
+    "c1adc9f3d834d5539d8beb3c": {
+      "genome": "8701eae6e157107e1df7c5b84f22fd2f3cb286947e5f83c29dc5ee0ec08a6bfc",
+      "samples": 1
+    },
+    "c6ae2474dd3a59c64dd3285e": {
+      "genome": "5070a4ae9636fcb227b38f9afddb1e4194c671dd3fcd66d959b63ab77c84d70b",
+      "samples": 1
+    },
+    "c6c5b43e4421c20301231ad0": {
+      "genome": "d052c15ac1f4a95d081396e4d013738b9b2871d2c210217a6400aab6f6d66def",
+      "samples": 1
+    },
+    "d32fe1985ce13e534fd7b35f": {
+      "genome": "eb0d4f0a488a7d627ed6d040b223286e51f2f0eb93f641151f416611f6b1ffa1",
+      "samples": 1
+    },
+    "d578d66b0e73167dc6c25ed4": {
+      "genome": "d6247c04a26d0ba37fd0c561b945ee4faec7a4db1037fb857aafd364e384fa1c",
+      "samples": 1
+    },
+    "d776cb82083c9eb196644910": {
+      "genome": "c2f0b29d230d228ae43302e73aeff602183c362402a4d6ae3e1240f4e62b2678",
+      "samples": 2
+    },
+    "db09927617f7b088fe333c98": {
+      "genome": "fdb137ba344bda1980c50f6fe4de02d13c003d64d3e5443b4e62ea6ce0d6b8f4",
+      "samples": 12
+    },
+    "db722d624d0c58469c4aae95": {
+      "genome": "dfde97b9202db52f89fc4f1ec99e10a53367877fde0f28cbda2f4d93ec77e211",
+      "samples": 1
+    },
+    "dcbbc9e265df2034780fbb65": {
+      "genome": "a0d8fedd0e633f56013f92a73bed834590dc56e65f6ce445cac9f6194cc80491",
+      "samples": 1
+    },
+    "df43205af1f0940348ab239c": {
+      "genome": "d59299909207a7191b4e94b3d74f0a31362470705cbb4c2625f1c421bf42bd6d",
+      "samples": 1
+    },
+    "df926c05bdb7c4fde291e4f7": {
+      "genome": "d42f8700a8f76acd7b3972364fcd3611ebb4a89c77f07cb5e0e65992a2a25181",
+      "samples": 2
+    },
+    "dfc9ee8534b3020144da7256": {
+      "genome": "7e304d654dd5f4afb9469b5f2615ddcb6964a2886d9ed8e47be0f41e7faaaecf",
+      "samples": 1
+    },
+    "e401e5cd38ff4ca9073c9c89": {
+      "genome": "30cd1dd5a5762e7f80cee644ac40e3aca0504ffd2fcbf9bd83bfa7b3d7f9ecde",
+      "samples": 1
+    },
+    "e877d850fce15adfe6e7fe86": {
+      "genome": "b6a907764952b04c7dde87247cba5b5c20c8a70dd1f7dceb50a60f495291eeb8",
+      "samples": 2
+    },
+    "e96fb8382ded171de9f88a3f": {
+      "genome": "4d904331b3bcaad039b79e8a59a5ff455464b01e3e120dbceb83275a04c62152",
+      "samples": 1
+    },
+    "f06319122f9fc8f192d25629": {
+      "genome": "b9cce4d9042d78544234bdf74df6d133ea37a1593f67f7589cae5786047ec323",
+      "samples": 1
+    },
+    "f32b0baaccc1d709fdf29fd7": {
+      "genome": "3fb3f5807d460b92e9093e2dc43baf9c236ac448a74816d3e89b307a36886d7b",
+      "samples": 10
+    },
+    "f50e2f747da5cc00b342fb5d": {
+      "genome": "0a102347f424da0276400e66ae47dcd83248cdd9c9bb9a496d91f8a5b34603d8",
+      "samples": 1
+    },
+    "f534858d61f5eded6c29ea9b": {
+      "genome": "eb9aa14de9ddbe5b8f71168c9c72aa48b3cfc0ef5a4872488c872cc57487ab31",
+      "samples": 1
+    },
+    "fc3fd75f9abfa9d612b20c70": {
+      "genome": "98245b16fe5d56ea11cf6b5c402ed374c20cc127f52fe69daa4fd5288123ce5e",
+      "samples": 1
+    },
+    "ffa9c1792313791b15a228ef": {
+      "genome": "2d3fa2475dfe9609c50bb3658b8bf11919b715a7e9266a66e8699fa3947df8eb",
+      "samples": 1
+    }
+  },
+  "phenotype_field_shards": [
+    [
+      "apiGatewayMatchedEndpoint",
+      "apiGatewayMatchedHost",
+      "cacheStatus",
+      "clientASNDescription",
+      "clientAsn",
+      "clientCountryName",
+      "clientDeviceType",
+      "clientRequestHTTPHost",
+      "clientRequestHTTPProtocol",
+      "clientRequestScheme",
+      "clientSSLProtocol",
+      "date",
+      "datetimeFifteenMinutes",
+      "datetimeFiveMinutes",
+      "datetimeHour",
+      "datetimeMinute",
+      "edgeResponseContentTypeMatched",
+      "edgeResponseContentTypeMatchedByWildcard",
+      "edgeResponseContentTypeName",
+      "firewallForAiAnyPiiCategory",
+      "firewallForAiCustomTopicCategoriesScoresMin",
+      "firewallForAiCustomTopicCategories_score",
+      "firewallForAiCustomTopicCategories_topicLabel",
+      "firewallForAiInjectionScore",
+      "firewallForAiPiiCategories",
+      "firewallForAiUnsafeTopicCategories",
+      "httpApplicationVersion",
+      "leakedCredentialCheckResult",
+      "originResponseDurationMs",
+      "originResponseHeaderReceiveDurationMs",
+      "originResponseStatus",
+      "originTcpHandshakeDurationMs",
+      "originTlsHandshakeDurationMs",
+      "payPerCrawlStatus",
+      "productMatches_product",
+      "productMatches_ruleIds",
+      "productMatches_rulesetId",
+      "productMatches_rulesetVersion",
+      "requestSource",
+      "rulesMetadata_metadataKey",
+      "rulesMetadata_metadataValue",
+      "rulesMetadata_ruleId",
+      "schemaValidationLearnedOutcome",
+      "schemaValidationLearnedViolations_errorClass",
+      "schemaValidationLearnedViolations_errorDetail",
+      "schemaValidationLearnedViolations_location",
+      "schemaValidationLearnedViolations_target",
+      "schemaValidationUploadedOutcome",
+      "schemaValidationUploadedViolations_errorClass",
+      "schemaValidationUploadedViolations_errorDetail",
+      "schemaValidationUploadedViolations_location",
+      "schemaValidationUploadedViolations_target",
+      "securityAction",
+      "securitySource",
+      "sessionIdHash",
+      "userAgentBrowser",
+      "userAgentOS",
+      "verifiedBotCategory",
+      "webAssetsLabelsManaged",
+      "webAssetsOperationId",
+      "zoneVersion"
+    ]
+  ],
+  "private_recognition_fields": [
+    "clientIP",
+    "userAgent"
+  ],
+  "provider_advertised_fields": [
+    "apiGatewayMatchedEndpoint",
+    "apiGatewayMatchedHost",
+    "cacheStatus",
+    "clientASNDescription",
+    "clientAsn",
+    "clientCountryName",
+    "clientDeviceType",
+    "clientIP",
+    "clientRequestHTTPHost",
+    "clientRequestHTTPMethodName",
+    "clientRequestHTTPProtocol",
+    "clientRequestPath",
+    "clientRequestQuery",
+    "clientRequestScheme",
+    "clientSSLProtocol",
+    "date",
+    "datetime",
+    "datetimeFifteenMinutes",
+    "datetimeFiveMinutes",
+    "datetimeHour",
+    "datetimeMinute",
+    "edgeResponseContentTypeMatched",
+    "edgeResponseContentTypeMatchedByWildcard",
+    "edgeResponseContentTypeName",
+    "edgeResponseStatus",
+    "firewallForAiAnyPiiCategory",
+    "firewallForAiCustomTopicCategoriesScoresMin",
+    "firewallForAiCustomTopicCategories_score",
+    "firewallForAiCustomTopicCategories_topicLabel",
+    "firewallForAiInjectionScore",
+    "firewallForAiPiiCategories",
+    "firewallForAiUnsafeTopicCategories",
+    "httpApplicationVersion",
+    "leakedCredentialCheckResult",
+    "originResponseDurationMs",
+    "originResponseHeaderReceiveDurationMs",
+    "originResponseStatus",
+    "originTcpHandshakeDurationMs",
+    "originTlsHandshakeDurationMs",
+    "payPerCrawlStatus",
+    "productMatches_product",
+    "productMatches_ruleIds",
+    "productMatches_rulesetId",
+    "productMatches_rulesetVersion",
+    "requestSource",
+    "rulesMetadata_metadataKey",
+    "rulesMetadata_metadataValue",
+    "rulesMetadata_ruleId",
+    "schemaValidationLearnedOutcome",
+    "schemaValidationLearnedViolations_errorClass",
+    "schemaValidationLearnedViolations_errorDetail",
+    "schemaValidationLearnedViolations_location",
+    "schemaValidationLearnedViolations_target",
+    "schemaValidationUploadedOutcome",
+    "schemaValidationUploadedViolations_errorClass",
+    "schemaValidationUploadedViolations_errorDetail",
+    "schemaValidationUploadedViolations_location",
+    "schemaValidationUploadedViolations_target",
+    "securityAction",
+    "securitySource",
+    "sessionIdHash",
+    "userAgent",
+    "userAgentBrowser",
+    "userAgentOS",
+    "verifiedBotCategory",
+    "webAssetsLabelsManaged",
+    "webAssetsOperationId",
+    "zoneVersion"
+  ],
+  "public_record_fields": [
+    "datetime",
+    "beingId",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
+  "publication_transform": {
+    "beingId": {
+      "exact_user_agent_persisted": false,
+      "key_epoch": "v1",
+      "key_fingerprint": "b353473d45ad5614",
+      "literal_client_ip_persisted": false,
+      "network_pseudonym_persisted": false,
+      "scheme": "legacy artwork identity preserved from private-recognition tuple"
+    },
+    "clientRequestPath": {
+      "domain": "crawlerbait:path:v1",
+      "key_epoch": "v1",
+      "offered_public_paths_literal": true,
+      "offered_resolution": "exact-source-owned-public-artifact-v1",
+      "raw_unoffered_path_persisted": false,
+      "scheme": "literal offered path else HMAC-SHA256 opaque Bait path"
+    },
+    "phenotype": {
+      "domain": "crawlerbait:phenotype:v1",
+      "raw_provider_values_persisted": false,
+      "scheme": "keyed irreversible field-interference",
+      "source_values_collapsed_before_retirement": true
+    }
+  },
+  "published_response": {
+    "data": {
+      "viewer": {
+        "zones": [
+          {
+            "records": [
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:59:38Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "723913a8c02edca78526ba7c",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:59:47Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:43:12Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:43:24Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "723913a8c02edca78526ba7c",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:59:56Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7c2269797863e4638f9a549",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T11:40:55Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:59:57Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:43:48Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:44:01Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "01f05c04bf3b9f4a6ee69b94",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:44:37Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:43:48Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:44:13Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7c2269797863e4638f9a549",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T11:40:33Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:43:36Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "714ec87c400cd8d00c5028ec",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/cc2231754728ce34dc03a5ed",
+                "datetime": "2026-09-27T11:21:25Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:45:37Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:42:55Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1e492b3393099dd6111c5c72",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:59:38Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/cc2231754728ce34dc03a5ed",
+                "datetime": "2026-09-27T11:35:53Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:44:49Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:42:56Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "30dc5c0e305bcd78ed67a335",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:58:21Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:44:37Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:59:48Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:20:42Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "d578d66b0e73167dc6c25ed4",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:21:06Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "5e799495316e57f07453e0e6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/30fd7bf274865063b48c908c",
+                "datetime": "2026-09-27T11:37:42Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:21:56Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "dfc9ee8534b3020144da7256",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:52:07Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:45:13Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "01f05c04bf3b9f4a6ee69b94",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:44:01Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:44:49Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:44:26Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8610839ff93a36b687844014",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:20:02Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:19:39Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:22:50Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "5bc9fdd538ae76722f965b08",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:33:01Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "22f49355c0ff3b24ef8e4a13",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:46:14Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1755da3a49fe8883ba1d0935",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:44:25Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "39d3d5ed310e4beb9951218c",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:22:17Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:45:25Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:35:52Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:19:38Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "132089c4d1e9142dd6497844",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:34:14Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "5e799495316e57f07453e0e6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/30fd7bf274865063b48c908c",
+                "datetime": "2026-09-27T09:42:43Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "714ec87c400cd8d00c5028ec",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/0d99fef165d419e2334ae00c",
+                "datetime": "2026-09-27T11:21:28Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "b4695ed694d3d9caf6f65c90",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:45:25Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:45:37Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "f50e2f747da5cc00b342fb5d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:43:49Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:43:25Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:37:30Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T11:37:37Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:43:12Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "7d345543f3870cfda270dea7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:33:01Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:44:13Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:45:00Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:21:55Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "714ec87c400cd8d00c5028ec",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:21:17Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:45:00Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:44:26Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "01f05c04bf3b9f4a6ee69b94",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:45:12Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:22:49Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/genealogy-gap-repair.json",
+                "datetime": "2026-09-27T11:37:37Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "ae56a90f5a21d632871331a1",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:29:36Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "65d1bc151db93417c2f3e184",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/a0b30e417d8b9aa85a499008",
+                "datetime": "2026-09-27T06:46:16Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/f32dfd51eae8e266660d2917",
+                "datetime": "2026-09-27T06:51:17Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/c5ac9694ad9bdff1ae9dcef1",
+                "datetime": "2026-09-27T06:51:21Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/ab7a38fe5498a1dd7c8ff9c3",
+                "datetime": "2026-09-27T06:51:24Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/5e049be02d6e62496a31fd66",
+                "datetime": "2026-09-27T06:51:26Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "13690016e6494d0409a5ae1c",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/~/960c67f546f70a4be2a8d404",
+                "datetime": "2026-09-27T07:13:53Z",
+                "edgeResponseStatus": 405
+              },
+              {
+                "beingId": "0dfdaecc5c3d0c2a9d124a8d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/90c7087f6514c2411780c148",
+                "datetime": "2026-09-27T06:53:28Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "b6d9bce251e1d0bc3bcf237d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:12:40Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/cc2231754728ce34dc03a5ed",
+                "datetime": "2026-09-27T08:34:19Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b734626eef29c7552a5c261b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:39:26Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:12:14Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8decc29ed7e2913a2023bf6d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1f11d07f9839a969308c0451",
+                "datetime": "2026-09-27T10:04:49Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "01be2f08378d7bd1a1af68a3",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T07:03:13Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/9749ab088751bb8d8270cd5f",
+                "datetime": "2026-09-27T07:16:18Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/946112e9ec19fcf9f1cd6c4c",
+                "datetime": "2026-09-27T07:16:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "4d2c4e6c6765ae4688da3213",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:32:56Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1adaa721538506b932eee9da",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:33:19Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "59c263cd973e4c036bfa86d1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:35:57Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "26b28c902b9e81ac5bf7c6b3",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T09:19:47Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:33:14Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T09:32:56Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/d03364e3020e32e2c2c54bfc",
+                "datetime": "2026-09-27T08:33:13Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f2a20187d0fa2447d55d7d1",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:27:52Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/7dc47c340464dc12db67b41d",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/b32bc75a688d98c3d2716a0c",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/24b37e6ff70c45a637f5107b",
+                "datetime": "2026-09-27T08:34:50Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/0d99fef165d419e2334ae00c",
+                "datetime": "2026-09-27T08:34:49Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/295418174d2bbb784275a03c",
+                "datetime": "2026-09-27T08:33:15Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T10:08:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/7c807592592a3b852e9ff994",
+                "datetime": "2026-09-27T10:08:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/10724be49b3bdfd1d0f10d79",
+                "datetime": "2026-09-27T10:08:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/ba7063f522fb1bd007f749b9",
+                "datetime": "2026-09-27T10:08:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/4f844a2aa9d9adacdef279a7",
+                "datetime": "2026-09-27T06:51:13Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/3be2a6023a35a52c6ae2655f",
+                "datetime": "2026-09-27T06:51:13Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/24d99b4192da147c71df3f13",
+                "datetime": "2026-09-27T06:51:13Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "ba79f5addf6efb0b61ee7772",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:28:44Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:29:13Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:43:36Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T09:52:07Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:13:39Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "1d8fd2b386cbf1f4d920b0cb",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:50:45Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7c2269797863e4638f9a549",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:28:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "e877d850fce15adfe6e7fe86",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:07:42Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "70e5e81dc9fc2ad9fad689f8",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-09-27T05:54:48Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "70e5e81dc9fc2ad9fad689f8",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/90c7087f6514c2411780c148",
+                "datetime": "2026-09-27T05:54:48Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/5c286e4a73cc9ef05a72877c",
+                "datetime": "2026-09-27T08:34:17Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/7dc47c340464dc12db67b41d",
+                "datetime": "2026-09-27T08:34:18Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:25:41Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/64a661fda029feae84120e07",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/cc2231754728ce34dc03a5ed",
+                "datetime": "2026-09-27T10:07:21Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/e31e32ba06c85d75af12f4b2",
+                "datetime": "2026-09-27T08:33:12Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/47a744fd15d9b4aabe872e68",
+                "datetime": "2026-09-27T08:33:11Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:13:40Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/genealogy-gap-repair.json",
+                "datetime": "2026-09-27T10:08:21Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/24b37e6ff70c45a637f5107b",
+                "datetime": "2026-09-27T10:08:21Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "d32fe1985ce13e534fd7b35f",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:14:02Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "d776cb82083c9eb196644910",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:13:27Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "5e799495316e57f07453e0e6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/30fd7bf274865063b48c908c",
+                "datetime": "2026-09-27T06:50:03Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:27:29Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/ff5064bf7dc697a0cb57dc99",
+                "datetime": "2026-09-27T08:33:12Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "fc3fd75f9abfa9d612b20c70",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:00:00Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "26b28c902b9e81ac5bf7c6b3",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T09:20:16Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "c1adc9f3d834d5539d8beb3c",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:33:51Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f534858d61f5eded6c29ea9b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:41:30Z",
+                "edgeResponseStatus": 401
+              },
+              {
+                "beingId": "b9dab0b2854f80a71a42bcd1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:34:55Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7c2269797863e4638f9a549",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T09:39:21Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "80449d68a6d9692c4c0b8bc7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1f11d07f9839a969308c0451",
+                "datetime": "2026-09-27T10:20:10Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "df43205af1f0940348ab239c",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:26:48Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "702ce667366b55c7be5e47b6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:17:29Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b8470cf446b954430d240592",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:04:46Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/56f9028e39abe14ff4c86cb0",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/d611cf76681b5d5230c794c9",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a5290fba066ef801a0af6a0f",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T09:15:07Z",
+                "edgeResponseStatus": 304
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T07:16:11Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T09:34:56Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "3e8be9cc8f5bb2dd8c3b8aa8",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:19:36Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "df926c05bdb7c4fde291e4f7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/f4a7048f440638089f0fb562",
+                "datetime": "2026-09-27T06:05:09Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/7194b3f46b4fd0a06d11b6c4",
+                "datetime": "2026-09-27T06:51:16Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/91708b0b4cc5505e513cc060",
+                "datetime": "2026-09-27T06:51:17Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/60c236657a112b8ceae4f140",
+                "datetime": "2026-09-27T06:51:17Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/a1f72a5039002e4be8a9a30e",
+                "datetime": "2026-09-27T06:51:32Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/e2ae4c4a82f11681dd2a5d9e",
+                "datetime": "2026-09-27T06:51:33Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "8075d17d1693ba55896ce29e",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T09:34:01Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "68cf7c6463d54ecac4235339",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:52:30Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:17:06Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:19:19Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "d776cb82083c9eb196644910",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:13:27Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/d882b8090082470e9d7dbcea",
+                "datetime": "2026-09-27T08:33:13Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "dcbbc9e265df2034780fbb65",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-09-27T07:40:01Z",
+                "edgeResponseStatus": 401
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:20:24Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "246209147976af6f65459d46",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:18:35Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "5e799495316e57f07453e0e6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/30fd7bf274865063b48c908c",
+                "datetime": "2026-09-27T08:44:02Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "01f05c04bf3b9f4a6ee69b94",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:19:18Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "3ebc0740b4105503601f6bde",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-09-27T09:51:07Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:33:15Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/aa78ce40db31e70f0b68fd2a",
+                "datetime": "2026-09-27T06:51:17Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/a772c429472196d9c18e50cc",
+                "datetime": "2026-09-27T06:51:18Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/c98d593aca2ad3de61eb244a",
+                "datetime": "2026-09-27T06:51:29Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "1d39e73a354711f1089af3cf",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T07:36:20Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/9fd617eff1d82d42dc61b6a5",
+                "datetime": "2026-09-27T08:33:16Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b734626eef29c7552a5c261b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:39:27Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/a57dc8ac0257b97535c53da7",
+                "datetime": "2026-09-27T08:33:15Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "47a29230474f2c1f184f7e6d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:54:44Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T11:20:43Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "a68746f4b2bf026b42d0ea00",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T09:11:16Z",
+                "edgeResponseStatus": 522
+              },
+              {
+                "beingId": "df926c05bdb7c4fde291e4f7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/f4a7048f440638089f0fb562",
+                "datetime": "2026-09-27T06:05:09Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:18:13Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "01f05c04bf3b9f4a6ee69b94",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:17:05Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "01f05c04bf3b9f4a6ee69b94",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:15:04Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/7e234b1f9a0b566bcbe3a02e",
+                "datetime": "2026-09-27T07:16:17Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:15:05Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:26:26Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "163a731bf3a45e21358cc8d2",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:49:45Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "ffa9c1792313791b15a228ef",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:36:19Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:28:22Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:18:12Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "953941d74c20028497c6e351",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:04:24Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7c2269797863e4638f9a549",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:28:22Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "48e45f72cdaa10d80b89718a",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:15:26Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T07:16:11Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:25:43Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/951f840447826b4322248573",
+                "datetime": "2026-09-27T08:33:12Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "b7c2269797863e4638f9a549",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T10:08:11Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T09:35:58Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "a2f628cb0640d20f72a5ed1a",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:51:44Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "2fcc186f1fdca6cd09078ee2",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/cc2231754728ce34dc03a5ed",
+                "datetime": "2026-09-27T09:19:54Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:29:14Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "45d4f2a8e1290b6df82f8b96",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:28:21Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T08:35:55Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "4cb645049bc22b6bb0ec595b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:35:17Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T09:49:22Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/7e234b1f9a0b566bcbe3a02e",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/d6f0e095468e0992f9f0c0df",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8873f12f276f400e69cfd4bb",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/3999def0d5043b28415a6157",
+                "datetime": "2026-09-27T10:07:20Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "017238832a2fc614446de082",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/~/d2e01127c96a7799b860f5b3",
+                "datetime": "2026-09-27T10:29:04Z",
+                "edgeResponseStatus": 403
+              },
+              {
+                "beingId": "1b995c3cdf04e8fe660cf302",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T07:40:01Z",
+                "edgeResponseStatus": 401
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/734e8eae4642bec6e824526f",
+                "datetime": "2026-09-27T06:51:20Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/c45bb9238da2fb3939588d24",
+                "datetime": "2026-09-27T06:51:21Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/10bddb643a48344766e58bb3",
+                "datetime": "2026-09-27T06:51:27Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/621fd6bd8dea0d0e6e94e7ad",
+                "datetime": "2026-09-27T06:51:28Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/0126ed94f8fb0eb7734adfa5",
+                "datetime": "2026-09-27T07:16:16Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/7dc47c340464dc12db67b41d",
+                "datetime": "2026-09-27T07:16:16Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/b32bc75a688d98c3d2716a0c",
+                "datetime": "2026-09-27T07:16:18Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/0954cecdf255247fe31fa066",
+                "datetime": "2026-09-27T07:16:19Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "f32b0baaccc1d709fdf29fd7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/d6f0e095468e0992f9f0c0df",
+                "datetime": "2026-09-27T07:16:19Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/0954cecdf255247fe31fa066",
+                "datetime": "2026-09-27T08:34:17Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/64a661fda029feae84120e07",
+                "datetime": "2026-09-27T08:34:17Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/a3e7c7277abe0966480cbea8",
+                "datetime": "2026-09-27T08:34:18Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:12:15Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "010a24e1fdf6c9c75bb75090",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:26:04Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "c6ae2474dd3a59c64dd3285e",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1b470b3e69ae2a386e9d1935",
+                "datetime": "2026-09-27T06:51:33Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "92719c56ed2e400e67e718cf",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/~/d2e01127c96a7799b860f5b3",
+                "datetime": "2026-09-27T11:00:30Z",
+                "edgeResponseStatus": 403
+              },
+              {
+                "beingId": "e96fb8382ded171de9f88a3f",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T06:34:13Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:27:27Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "c6c5b43e4421c20301231ad0",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:51:08Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "2fcc186f1fdca6cd09078ee2",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/cc2231754728ce34dc03a5ed",
+                "datetime": "2026-09-27T09:20:21Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "27404f4d3a5f806ae6be9cc8",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:00:30Z",
+                "edgeResponseStatus": 403
+              },
+              {
+                "beingId": "f06319122f9fc8f192d25629",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-09-27T08:51:36Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "8075d17d1693ba55896ce29e",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T09:34:00Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "db722d624d0c58469c4aae95",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:20:47Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7e411d3143814e92bb5cec1",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:26:24Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "e877d850fce15adfe6e7fe86",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:07:43Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "95ec6f2bfc6dc109632da3a7",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:52:06Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "b7c2269797863e4638f9a549",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T09:38:22Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T09:50:46Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "9d324ee8dc52299635fba81d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-09-27T07:28:34Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/17a5db3113cc9e93d68754f6",
+                "datetime": "2026-09-27T06:51:14Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/bdf7635d965ee8de524037b7",
+                "datetime": "2026-09-27T06:51:22Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/f36ef5627c82d1c2d1be50fa",
+                "datetime": "2026-09-27T06:51:25Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/efc1465e44e4ca51b21f94c9",
+                "datetime": "2026-09-27T06:51:28Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T09:33:52Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "563d182ec011ad894d9ba75d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T10:18:03Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/c7e39c1748c49d72185b0de0",
+                "datetime": "2026-09-27T06:51:29Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/0801b0572b30b9dcb0ea5bdc",
+                "datetime": "2026-09-27T06:51:30Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "9f6e048b26ba26822d0dc98b",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/35beadaebad37541e09ef34d",
+                "datetime": "2026-09-27T06:51:31Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "db09927617f7b088fe333c98",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/b43fc96c5a8775275c3feb66",
+                "datetime": "2026-09-27T08:33:14Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "aacac256694240a31616c76d",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/repos/self-similar-systems/~/2b27cfaac0f5ff1c8b675a9f",
+                "datetime": "2026-09-27T10:20:25Z",
+                "edgeResponseStatus": 204
+              },
+              {
+                "beingId": "5024c4b4ee68f50375486ac7",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T08:10:04Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "161fc5fee1f9c6404ea019ce",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T11:23:11Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "75d761c2ac8b1ea9b658f08d",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:32:10Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "e401e5cd38ff4ca9073c9c89",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/",
+                "datetime": "2026-09-27T11:21:02Z",
+                "edgeResponseStatus": 301
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/papers-shadow/current.json",
+                "datetime": "2026-09-27T08:34:49Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/919840b885956a91eb81c55a",
+                "datetime": "2026-09-27T08:34:50Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "a010878b66bfa92c56af9db6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/10724be49b3bdfd1d0f10d79",
+                "datetime": "2026-09-27T08:34:50Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "72469c960d4d4b612b5d84d6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T10:19:41Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "95ec6f2bfc6dc109632da3a7",
+                "clientRequestHTTPMethodName": "POST",
+                "clientRequestPath": "/__live/~/b079c6591e071894c0861245",
+                "datetime": "2026-09-27T09:49:20Z",
+                "edgeResponseStatus": 200
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "semantic_filters": [],
+  "source": "cloudflare:httpRequestsAdaptive",
+  "transport_filter": "datetime range only",
+  "version": 5,
+  "window": {
+    "end": "2026-09-27T12:00:04Z",
+    "start": "2026-09-27T05:14:24Z"
+  }
+}

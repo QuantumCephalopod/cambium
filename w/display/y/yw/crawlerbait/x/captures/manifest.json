@@ -1,0 +1,54 @@
+{
+  "version": 6,
+  "canonical_source": "cloudflare:httpRequestsAdaptive",
+  "functional_capture_law": "Persist exact functional encounter truth only after privacy transforms: datetime, opaque beingId, public-safe Bait path, method and status. clientRequestQuery is never requested.",
+  "recognition_law": {
+    "input": [
+      "canonical clientIP",
+      "exact userAgent"
+    ],
+    "public_output": "opaque artwork-local beingId",
+    "scheme": "private HMAC network recognition followed by existing artwork-ID derivation",
+    "domain": "crawlerbait:clientIP:v1",
+    "key_epoch": "v1",
+    "key_custody": "GitHub Actions secret CRAWLERBAIT_ID_KEY; never repository bytes",
+    "key_format": "64 hexadecimal characters / 32 random bytes",
+    "literal_client_ip_persisted": false,
+    "network_pseudonym_persisted": false,
+    "exact_user_agent_persisted": false,
+    "rotation_law": "A changed key with the same epoch is a continuity error and capture must fail."
+  },
+  "query_law": {
+    "field": "clientRequestQuery",
+    "captured": false,
+    "reason": "not required for Bait identity, Being continuity, Being kind, walk topology or current public embodiment"
+  },
+  "phenotype_law": {
+    "provider_dimensions": "all other currently advertised fields that can be lawfully sensed",
+    "field_width_resolution": "recursive tetrahedral 1→4 shards beneath provider maxNumberOfFields",
+    "publication": "keyed irreversible per-Being phenotype interference only",
+    "readable_provider_values_persisted": false,
+    "exact_event_join_claimed": false
+  },
+  "public_law": "Canonical traffic carriers in this public repository contain metabolized functional encounters plus opaque phenotype only; recognition material is absent.",
+  "bootstrap_law": "When the canonical cursor is uninitialized, capture begins at the live provider retention boundary and advances incrementally.",
+  "legacy_404_evidence": {
+    "checkpoint": "../checkpoint.json",
+    "retained_bootstrap": "../retained-bootstrap/seal.json",
+    "law": "Current-tree legacy 404 evidence is coalesced into one privacy-migrated aggregate checkpoint: exact User-Agent strings and unoffered raw paths are absent; obsolete raw bootstrap and legacy capture carriers retire after count/window witness."
+  },
+  "historical_note": "Earlier Git history published richer legacy/raw traces before the current privacy membrane. Current-tree cleanup does not itself erase historical Git objects; destructive history remediation remains a separate explicit operation.",
+  "path_law": {
+    "input": "provider clientRequestPath",
+    "public_output": "literal path only for already-offered site surface; otherwise stable keyed opaque Bait path",
+    "scheme": "HMAC-SHA256",
+    "domain": "crawlerbait:path:v1",
+    "key_epoch": "v1",
+    "raw_unoffered_path_persisted": false,
+    "own_aperture_prefix_only": true,
+    "foreign_pore_prefix_only": true,
+    "offered_resolution": "exact-source-owned-public-artifact-v1",
+    "namespace_prefix_alone_offered": false,
+    "observation_derived_bait_pages_confer_offer": false
+  }
+}
