@@ -25,16 +25,17 @@
   },
   "home": {
     "changed_scope": [
-      "z/display-lens.js: one round drop, cursor attraction, larger release, same-kind/layer edge storage, ownership and capture-loss recovery",
-      "z/display-glass.js + z/display-safe-area.js: lowered curved top overfill and truthful visible occupancy",
-      "w/display-label-ink.js + w/locus-shader.js: actual DOM-derived label pixels enter the refraction scene with safe fallback",
-      "w/template.html, y/build.py, y/check.py and meaningful regression witnesses",
-      "RITUALS/navigation 2.9 → 3.0; source nutrient narrowed"
+      "w/spritesheet/SpriteSheet-Mono.ttf and SpriteSheet-Mono.woff2: exact supplied v2 bytes at stable hosted member paths",
+      "w/spritesheet/VERSION.json and README.txt: package @sss/spritesheet 2.0.0, Mono 1024-unit em and fixed cells; Regular retained at 1.0.1",
+      "y/yx/schattenseiten/style.css: inherited main HUD face and a heading grid constrained to its existing rail",
+      "z/world-view.js: main-face minimap labels, rendered-text folding, repaint after font completion",
+      "RITUALS/organism 3.14: current Mono provenance and typography law",
+      "_stomach/NUTRIENT__spritesheet-mono-v2__20261002.md: source preserved and narrowed to canonical promotion"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED · VERIFIED STAGING IMPLEMENTATION AND BROWSER GESTURE; DEFERRED · OWNER PROMOTION"
+    "outcome": "PASS/EARNED in staging: supplied Mono v2 hosted unchanged; Schattenseiten HUD and minimap use the main face; local font, artifact, structure and behavior witnesses passed. Canonical owner promotion remains open."
   },
-  "observed_at_utc": "2026-10-01T11:51:46.469346Z",
+  "observed_at_utc": "2026-10-02T23:33:47.811253Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -50,15 +51,15 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-round-glass-drops-staged-20261001T114446Z",
+  "reflected_home_event": "display-spritesheet-mono-v2-20261002T232215Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "f08c8bc5667c5d7e39b784541e421cc779e85679a686f3a87328e17919d11f29"
+      "sha256": "90ce937d8e75031185eebd0316fe621e7bbd2c35be95c626ecd2b3d9c5c06cde"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "ee6be8aa5964bb7f4311d7067760860385f92458ab9cea7ec274a60f0d84c0db"
+      "sha256": "708e926d9471764ebd04655dab177cb672a9daadb4936b05e3e6692852352fcc"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
@@ -79,17 +80,22 @@
       "NUTRIENT__glass-and-goo-lens__20260930.md",
       "NUTRIENT__glass-edge-reservoir-and-drop__20261001.md",
       "NUTRIENT__global-nav-hud-and-glass__20260930.md",
+      "NUTRIENT__hash-return-to-overview__20261001.md",
+      "NUTRIENT__legal-site-holons__20261002.md",
       "NUTRIENT__pages-actuation-after-materialize__20260927.md",
       "NUTRIENT__philosophy-papers-bodies__20260930.md",
       "NUTRIENT__site-body-material__20260930.md",
       "NUTRIENT__site-rest-view__20260930.md",
+      "NUTRIENT__spritesheet-mono-v2__20261002.md",
       "NUTRIENT__text-is-body__20260927.md",
+      "NUTRIENT__text-is-tissue-spritesheet__20261001.carrier",
+      "NUTRIENT__text-is-tissue-spritesheet__20261001.md",
       "observations.md"
     ],
     "waste_direct_count": 18
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "f5d20c042c8fda14af3aee1311c533cb96ffb2b1"
+    "source_revision": "ba70c05000ec3299c35b21e581a80bab0362063d"
   }
 }
