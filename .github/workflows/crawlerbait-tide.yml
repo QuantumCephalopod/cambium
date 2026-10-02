@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'w/display/y/yw/crawlerbait/y/capture.py'
+      - 'w/display/y/yw/crawlerbait/y/path_privacy.py'
+      - 'w/display/y/yw/crawlerbait/y/migrate_path_privacy.py'
       - 'w/display/y/yw/crawlerbait/y/migrate_privacy.py'
       - 'w/display/y/yw/crawlerbait/y/tide.py'
       - 'w/display/y/yw/crawlerbait/y/replay.py'
@@ -66,6 +68,36 @@ jobs:
             echo "legacy privacy migration already current"
           fi
 
+      - name: Migrate public Bait paths and retire readable legacy 404 carriers
+        env:
+          CRAWLERBAIT_ID_KEY: ${{ secrets.CRAWLERBAIT_ID_KEY }}
+        run: |
+          set -euo pipefail
+          python3 w/display/y/yw/crawlerbait/y/path_privacy.py
+          python3 w/display/y/yw/crawlerbait/y/migrate_path_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_path_privacy.py --write
+          if [ -n "$(git status --porcelain -- 'w/display/y/yw/crawlerbait')" ]; then
+            python3 w/display/y/yw/crawlerbait/y/tide.py --write
+            python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+            python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+            node w/display/y/yw/crawlerbait/z/render.test.cjs
+            python3 y/site-public.py --artifact _site
+            python3 y/check.py --artifact _site
+            SITE_DIR=_site node y/test-address.cjs
+            node w/display/z/site-fold.test.cjs
+            python3 y/site-public.py --artifact _site --check
+            git config user.name "crawlerbait tide"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- 'w/display/y/yw/crawlerbait'
+            git commit -m "crawlerbait: cross request paths through privacy membrane"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+            echo "CRAWLERBAIT_CHANGED=true" >> "$GITHUB_ENV"
+          else
+            echo "path/legacy privacy migration already current"
+          fi
+
       - name: Capture every new Cloudflare encounter
         env:
           CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
@@ -80,6 +112,7 @@ jobs:
           set -euo pipefail
           python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
           python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_path_privacy.py --self-test
 
       - name: Persist metabolized Traces before downstream metabolism
         run: |
