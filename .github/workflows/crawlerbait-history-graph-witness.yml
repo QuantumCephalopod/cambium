@@ -1,0 +1,131 @@
+name: crawlerbait history graph witness
+
+on:
+  push:
+    branches: [staging/crawlerbait-maintenance-20261002]
+    paths:
+      - '.github/workflows/crawlerbait-history-graph-witness.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user 'git-filter-repo>=2.47'
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Freeze current canonical tree
+        run: |
+          set -euo pipefail
+          git clone https://github.com/self-similar-systems/cambium.git /tmp/current
+          cd /tmp/current
+          git rev-parse HEAD > /tmp/base-sha.txt
+          git rev-parse 'HEAD^{tree}' > /tmp/original-tree.txt
+          python3 y/site-public.py --artifact _site
+          python3 y/check.py --artifact _site
+          python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_path_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+          tar -cf /tmp/crawlerbait-current.tar \
+            w/display/y/yw/crawlerbait/w \
+            w/display/y/yw/crawlerbait/x \
+            w/display/y/yw/crawlerbait/z/projection.json \
+            w/display/y/yw/crawlerbait/z/public
+
+      - name: Rewrite old graph in isolated mirror
+        run: |
+          set -euo pipefail
+          git clone --mirror https://github.com/self-similar-systems/cambium.git /tmp/rewrite.git
+          cd /tmp/rewrite.git
+          git fetch origin '+refs/pull/*:refs/pull/*' || true
+          git for-each-ref --format='%(refname) %(objectname)' refs/heads refs/tags | sort > /tmp/refs-before.txt
+          git for-each-ref --format='%(refname) %(objectname)' refs/pull | sort > /tmp/pull-refs-before.txt
+
+          mapfile -t REFS < <(git for-each-ref --format='%(refname)' refs/heads refs/tags | sort)
+          git filter-repo \
+            --sensitive-data-removal \
+            --invert-paths \
+            --path w/display/y/yw/crawlerbait/x \
+            --path w/display/y/yw/crawlerbait/w/projection.json \
+            --path w/display/y/yw/crawlerbait/w/public \
+            --path-regex '^w/display/y/yw/crawlerbait/w/[wxzy]+/bait\.json$' \
+            --path w/display/y/yw/crawlerbait/z/projection.json \
+            --path w/display/y/yw/crawlerbait/z/public \
+            --refs "${REFS[@]}"
+
+          FILTER_DIR="$(find /tmp/rewrite.git -type d -path '*/filter-repo' | head -n1)"
+          cp "$FILTER_DIR/commit-map" /tmp/commit-map.txt
+          cp "$FILTER_DIR/changed-refs" /tmp/changed-refs.txt
+          git for-each-ref --format='%(refname) %(objectname)' refs/heads refs/tags | sort > /tmp/refs-after-filter.txt
+
+      - name: Restore exact current sanitized Crawlerbait on rewritten main
+        run: |
+          set -euo pipefail
+          git --git-dir=/tmp/rewrite.git worktree add /tmp/rewritten-main refs/heads/main
+          cd /tmp/rewritten-main
+          rm -rf w/display/y/yw/crawlerbait/w w/display/y/yw/crawlerbait/x w/display/y/yw/crawlerbait/z/public
+          rm -f w/display/y/yw/crawlerbait/z/projection.json
+          tar -xf /tmp/crawlerbait-current.tar
+          git add -A
+          ORIGINAL="$(cat /tmp/original-tree.txt)"
+          REBUILT="$(git write-tree)"
+          printf 'original_tree=%s\nrebuilt_tree=%s\n' "$ORIGINAL" "$REBUILT" | tee /tmp/tree-witness.txt
+          test "$ORIGINAL" = "$REBUILT"
+          git config user.name "Crawlerbait history witness"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "crawlerbait: restore sanitized present in rewrite witness"
+          git rev-parse HEAD > /tmp/rewritten-main-sha.txt
+          git --git-dir=/tmp/rewrite.git update-ref refs/heads/main "$(cat /tmp/rewritten-main-sha.txt)"
+
+      - name: Audit rewritten graph
+        run: |
+          set -euo pipefail
+          cd /tmp/rewrite.git
+          awk 'NR>1 && $1 != $2 {print $1}' /tmp/commit-map.txt | sort -u > /tmp/changed-old-commits.txt
+          : > /tmp/affected-pulls.txt
+          while read -r ref; do
+            [ -z "$ref" ] && continue
+            if git rev-list "$ref" | grep -Fxf /tmp/changed-old-commits.txt >/dev/null; then
+              printf '%s\n' "$ref" | sed -E 's#^refs/pull/([0-9]+)/(head|merge)$#\1#' >> /tmp/affected-pulls.txt
+            fi
+          done < <(git for-each-ref --format='%(refname)' refs/pull | grep -E '^refs/pull/[0-9]+/(head|merge)$' || true)
+          sort -nu -o /tmp/affected-pulls.txt /tmp/affected-pulls.txt
+          wc -l /tmp/affected-pulls.txt | awk '{print $1}' > /tmp/affected-pull-count.txt
+          git for-each-ref --format='%(refname) %(objectname)' refs/heads refs/tags | sort > /tmp/refs-after.txt
+
+          cd /tmp/rewritten-main
+          test "$(git rev-parse 'HEAD^{tree}')" = "$(cat /tmp/original-tree.txt)"
+          python3 y/site-public.py --artifact _site
+          python3 y/check.py --artifact _site
+          SITE_DIR=_site node y/test-address.cjs
+          node w/display/z/site-fold.test.cjs
+          python3 y/site-public.py --artifact _site --check
+          python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/migrate_path_privacy.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
+          python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+
+      - name: Upload witness
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawlerbait-history-graph-witness
+          path: |
+            /tmp/base-sha.txt
+            /tmp/original-tree.txt
+            /tmp/tree-witness.txt
+            /tmp/refs-before.txt
+            /tmp/refs-after-filter.txt
+            /tmp/refs-after.txt
+            /tmp/pull-refs-before.txt
+            /tmp/commit-map.txt
+            /tmp/changed-refs.txt
+            /tmp/changed-old-commits.txt
+            /tmp/affected-pulls.txt
+            /tmp/affected-pull-count.txt
+            /tmp/rewritten-main-sha.txt
