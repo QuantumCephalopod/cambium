@@ -43,7 +43,12 @@ with tempfile.TemporaryDirectory(prefix='display-relocation-') as td:
         assert papers_before['address'] == 'y'
 
         src = temp_display / 'y' / 'yy' / 'papers'
-        dst_parent = temp_display / 'y' / 'yz'
+        occupied = {site['address'] for site in before}
+        target_address = next(
+            a + b for a in 'wxzy' for b in 'wxzy'
+            if a + b not in occupied
+        )
+        dst_parent = temp_display / 'y' / ('y' + target_address)
         dst_parent.mkdir()
         shutil.move(str(src), str(dst_parent / 'papers'))
         (temp_display / 'y' / 'yy').rmdir()
@@ -56,14 +61,14 @@ with tempfile.TemporaryDirectory(prefix='display-relocation-') as td:
             'local_scope': papers_after['local_scope'], 'shader': papers_after['shader'],
             'manifestation': papers_after['manifestation'],
         }
-        assert papers_after['address'] == 'z'
+        assert papers_after['address'] == target_address
         assert body_after == body_before, 'relocation mutated Papers body bytes'
         assert identity_after == identity_before, 'relocation mutated Papers identity contract'
 
         registry = build.site_mounts()
         mount = next(m for m in registry['mounts'] if m['interlocutor'] == 'organism:papers')
-        assert mount == {'interlocutor':'organism:papers','scope':'main','address':'z'}
+        assert mount == {'interlocutor':'organism:papers','scope':'main','address':target_address}
     finally:
         build.DISPLAY, build.SITE_ROOT = old_display, old_site_root
 
-print('PASS · whole Papers body relocated y -> z with zero internal edits; tree alone remounted identity')
+print('PASS · whole Papers body relocated to a dynamically free site address with zero internal edits; tree alone remounted identity')
