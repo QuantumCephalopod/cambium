@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.13"
+version: "3.14"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -99,7 +99,7 @@ Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives direc
 
 ### Type is body
 
-Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet`), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its Mono build is the main type for both Display font tokens; every glyph sits centred in one fixed 704-unit cell, and fixed width is part of the face's identity, so a correction that lets letters drift out of their cells is a wound to the face. The alphabet is A–Z and space: rendered text is folded into it (`Ä→AE`, `Ö→OE`, `Ü→UE`, `ß→SS`, case kept) by `w/display-type.js`, and digits and marks fall back glyph by glyph to the next family. A subtree keeps its own spelling with `data-type-fold="off"`. Site-holons inherit the face unless their own style says otherwise.
+Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 2.0.0), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v2 build is the main type for both Display font tokens, with 1024 units per em; every glyph sits centred in one fixed 1024-unit cell, and fixed width is part of the face's identity, so a correction that lets letters drift out of their cells is a wound to the face. The alphabet is A–Z and space: rendered text is folded into it (`Ä→AE`, `Ö→OE`, `Ü→UE`, `ß→SS`, case kept) by `w/display-type.js`, and digits and marks fall back glyph by glyph to the next family. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
 
 Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
 
@@ -223,3 +223,5 @@ Version 3.11 type-is-body correction (2026-10-01): Philipp's SpriteSheet Mono be
 Version 3.12 invariant-glass-over-own-canvases correction (2026-10-01): a site that paints its own canvases (Papers) had no glass at all, neither HUD glass nor the drop, because the glass pass refracts only the field's scene. A site may now hand its canvases to its field through `shader.composite()`; the field composites them under the same glass. Every render context also carries `lens()`, the drop's live geometry, so a site can let the one invariant lens act as its instrument without drawing a lens of its own.
 
 Version 3.13 text-tissue correction (2026-10-01): the letters-as-bodies engine grew into `w · Embodiment` with its first consumer, Papers' open organisms.
+
+Version 3.14 font-v2 correction (2026-10-02): the supplied SpriteSheet Mono v2 bytes replace Mono under the same `@sss/spritesheet` identity and member paths, now package 2.0.0 with 1024-unit em and fixed cells; Regular remains 1.0.1. Schattenseiten's HUD inherits Display's main face, and global minimap canvas labels use it with the same rendered-text folding and a redraw after font loading. Text-tissue law, source spelling and navigation identity remain intact.
