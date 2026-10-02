@@ -10,6 +10,8 @@ import argparse
 import json
 import shutil
 
+import path_privacy as pathmembrane
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 BAIT_ROOT = ROOT / "w"
@@ -75,16 +77,11 @@ def assimilate_legacy(state: dict, groups: list, start: str, end: str):
             "last_observed_window": {"start": start, "end": end},
             "materialized_at": end,
             "sampled": False,
-            "signatures": {},
         })
         record["observed_404"] += count
         record["last_observed_window"] = {"start": start, "end": end}
         interval = float((group.get("avg") or {}).get("sampleInterval") or 1)
         record["sampled"] = bool(record.get("sampled") or interval > 1.000001)
-        ua = str(dims.get("userAgent") or "")
-        sid = sha256(ua.encode("utf-8", "replace")).hexdigest()[:16]
-        sig = record["signatures"].setdefault(sid, {"id": sid, "claimed_user_agent": ua, "observed_404": 0})
-        sig["observed_404"] += count
     return out
 
 
@@ -149,6 +146,8 @@ def empty_route(path: str):
 
 def assimilate_raw(state: dict, record: dict, source_file: str, source_index: int):
     path = observed_path(record.get("clientRequestPath", ""))
+    if not pathmembrane.public_path_shape_valid(path):
+        raise RuntimeError(f"public traffic event carries an unmediated request path: {path!r}")
     moment = str(record.get("datetime") or "")
     route = state["routes"].setdefault(path, empty_route(path))
     route["raw_requests"] += 1
@@ -188,20 +187,8 @@ def assimilate_raw(state: dict, record: dict, source_file: str, source_index: in
 
 # --- being kinds: one exhaustive CCCC split of what a traffic being did with the open surface --------------------
 # first match wins, so every being has exactly one kind; the only external fact used is our own offered membrane.
-OFFERED_EXACT = {"/", "/index.html", "/.nojekyll", "/favicon.ico", "/robots.txt", "/sitemap.xml"}
-OFFERED_PREFIXES = ("/assets/", "/papers-shadow/", "/crawlerbait/")
-OWN_APERTURES = ("/__live/", "/repos/self-similar-systems/")
-FOREIGN_PORES = ("/cdn-cgi/",)
 READ_METHODS = {"GET", "HEAD", "OPTIONS"}
 BEING_KINDS = {"w": "Feeder", "x": "Harvester", "z": "Prober", "y": "Dweller"}
-
-
-def offered(path: str) -> bool:
-    return (
-        path in OFFERED_EXACT
-        or path.startswith(OFFERED_PREFIXES)
-        or (path.startswith("/apple-touch-icon") and "/" not in path[1:])
-    )
 
 
 def status_code(value) -> int:
@@ -215,15 +202,15 @@ def being_kind(encounters) -> str:
     """w Feeder: an accepted write into our own apertures · z Prober: asked for what we never offer (incl. an unaccepted write) ·
     y Dweller: returned on two or more days · x Harvester: took only what exists, within one day."""
     if any(
-        e["path"].startswith(OWN_APERTURES)
+        pathmembrane.own_aperture(e["path"])
         and str(e.get("method") or "").upper() not in READ_METHODS
         and 0 < status_code(e.get("status")) < 300
         for e in encounters
     ):
         return "w"
     if any(
-        (not offered(e["path"]) and not e["path"].startswith(OWN_APERTURES) and not e["path"].startswith(FOREIGN_PORES))
-        or (e["path"].startswith(OWN_APERTURES) and str(e.get("method") or "").upper() not in READ_METHODS)
+        (not pathmembrane.offered(e["path"]) and not pathmembrane.own_aperture(e["path"]) and not pathmembrane.foreign_pore(e["path"]))
+        or (pathmembrane.own_aperture(e["path"]) and str(e.get("method") or "").upper() not in READ_METHODS)
         for e in encounters
     ):
         return "z"  # includes an unaccepted write into our apertures: writing is not offered to strangers
@@ -570,18 +557,18 @@ def self_test():
     r1 = {
         "datetime": "2026-09-18T00:01:00Z",
         "beingId": "0123456789abcdef01234567",
-        "clientRequestPath": "/a",
+        "clientRequestPath": "/~/" + "a" * 24,
         "clientRequestHTTPMethodName": "GET",
         "edgeResponseStatus": 200,
     }
-    r2 = {**r1, "datetime": "2026-09-18T00:02:00Z", "clientRequestPath": "/b"}
+    r2 = {**r1, "datetime": "2026-09-18T00:02:00Z", "clientRequestPath": "/~/" + "b" * 24}
     assimilate_raw(state, r1, "a.traffic.json", 0)
     assimilate_raw(state, r2, "a.traffic.json", 1)
     state["raw_requests"] = 2
     assert len(state["crawlers"]) == 1
     crawler = next(iter(state["crawlers"].values()))
     assert set(crawler) == {"id", "events", "first_seen", "last_seen", "baits"}
-    assert set(crawler["baits"]) == {"/a", "/b"}
+    assert set(crawler["baits"]) == {"/~/" + "a" * 24, "/~/" + "b" * 24}
     assert len(state["encounters"]) == 2
     assert all("query" not in e for e in state["encounters"])
     addresses = bait_addresses(state["routes"])
@@ -602,12 +589,13 @@ def self_test():
     assert being_kind([enc("/"), enc("/assets/x/a.js")]) == "x"
     classify_beings(state)
     assert crawler["kind"] == "z"
+    pathmembrane.self_test()
     legacy_record = {
         "clientIPIdentity": "ip:v1:" + "1" * 64,
         "userAgent": "Crab/1",
     }
     assert len(traffic_identity(legacy_record)["id"]) == 24
-    print("PASS · opaque artwork beings span Baits without publishing network pseudonym, exact UA or query")
+    print("PASS · opaque artwork beings span safe Baits without publishing recognition, exact UA, query or arbitrary raw paths")
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
