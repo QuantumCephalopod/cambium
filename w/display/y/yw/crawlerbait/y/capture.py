@@ -13,7 +13,7 @@ import os
 import urllib.error
 import urllib.request
 
-import path_privacy as pathmembrane
+import path_membrane as pathmembrane
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
