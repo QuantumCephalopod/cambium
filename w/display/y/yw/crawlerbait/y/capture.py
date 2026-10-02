@@ -400,6 +400,7 @@ def capture_payload(start: datetime, end: datetime, public_response: dict, captu
                 "domain": pathmembrane.PATH_DOMAIN,
                 "raw_unoffered_path_persisted": False,
                 "offered_public_paths_literal": True,
+                "offered_resolution": pathmembrane.OFFERED_RESOLUTION,
                 "key_epoch": IDENTITY_KEY_EPOCH,
             },
         },
