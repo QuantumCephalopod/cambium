@@ -13,6 +13,8 @@ import os
 import urllib.error
 import urllib.request
 
+import path_privacy as pathmembrane
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 POLICY_PATH = ROOT / "z" / "policy.json"
@@ -162,7 +164,7 @@ def public_core_response(provider_response: dict, key: bytes) -> dict:
         public_records.append({
             "datetime": record.get("datetime"),
             "beingId": public_being_id(key, record.get("clientIP"), record.get("userAgent")),
-            "clientRequestPath": record.get("clientRequestPath"),
+            "clientRequestPath": pathmembrane.public_path(key, record.get("clientRequestPath")),
             "clientRequestHTTPMethodName": record.get("clientRequestHTTPMethodName"),
             "edgeResponseStatus": record.get("edgeResponseStatus"),
         })
@@ -393,6 +395,13 @@ def capture_payload(start: datetime, end: datetime, public_response: dict, captu
                 "domain": PHENOTYPE_DOMAIN,
                 "raw_provider_values_persisted": False,
             },
+            "clientRequestPath": {
+                "scheme": "literal offered path else HMAC-SHA256 opaque Bait path",
+                "domain": pathmembrane.PATH_DOMAIN,
+                "raw_unoffered_path_persisted": False,
+                "offered_public_paths_literal": True,
+                "key_epoch": IDENTITY_KEY_EPOCH,
+            },
         },
         "phenotype_by_being": genomes,
         "published_response": public_response,
@@ -530,6 +539,9 @@ def self_test():
     assert set(record) == set(PUBLIC_RECORD_FIELDS)
     assert record["beingId"] == a
     assert "clientIP" not in record and "userAgent" not in record and "clientRequestQuery" not in record
+    assert record["clientRequestPath"].startswith("/~/")
+    assert "/a" not in record["clientRequestPath"]
+    assert pathmembrane.public_path_shape_valid(record["clientRequestPath"])
 
     toks = phenotype_tokens(key, records_from_payload(provider))
     genomes = public_genomes(key, [a], toks)
@@ -543,7 +555,8 @@ def self_test():
     available = list(CORE_FIELDS) + ["clientRequestQuery", "nested_score"]
     capture_fields = [field for field in available if field not in NEVER_CAPTURE_FIELDS]
     assert "clientRequestQuery" not in capture_fields
-    print("PASS · private recognition becomes opaque public being + phenotype; query is never captured")
+    pathmembrane.self_test()
+    print("PASS · private recognition, path membrane and phenotype are public-safe; query is never captured")
 
 
 def main():
@@ -662,6 +675,12 @@ def main():
                 "network_pseudonym_persisted": False,
                 "exact_user_agent_persisted": False,
                 "public_identity": "opaque artwork-local beingId only",
+            },
+            "path_privacy": {
+                "scheme": "offered-literal / otherwise keyed opaque Bait path",
+                "domain": pathmembrane.PATH_DOMAIN,
+                "raw_unoffered_path_persisted": False,
+                "key_epoch": IDENTITY_KEY_EPOCH,
             },
             "provider_limits": {
                 "maxDuration": int(cfg["maxDuration"]),
