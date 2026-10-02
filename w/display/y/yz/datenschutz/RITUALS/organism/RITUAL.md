@@ -1,23 +1,15 @@
 ---
 name: datenschutz
-description: "Public privacy site-holon for sss.saarland; expose only current source-grounded processing, rights and reachable remedies."
-version: "1.0"
+description: "Public privacy site-holon for sss.saarland."
+version: "1.1"
 ---
 
 # DATENSCHUTZ — local receptor
 
-This whole owns the public privacy notice only. It does not absorb the Impressum or operator-identity whole.
+This whole owns the public privacy notice only and remains distinct from Impressum.
 
-Current controller ground:
-- Philipp Remy Bartholomäus
-- Katharinenstr. 6A, 1. OG
-- 66115 Saarbrücken
-- Deutschland
+Current controller/contact facts live in this whole's source-owned projection. The finalized Drive notice is the publication source.
 
-Planned public privacy contact: `datenschutz@sss.saarland`.
+Retention uses actual purpose/necessity criteria; no calendar review promise is invented.
 
-The authoritative working notice remains the current Drive draft until this holon deliberately assimilates a final publication version.
-
-No invented calendar review duty is allowed. Retention must be described through actual purpose-bound periods or criteria that the processing can truthfully carry.
-
-Publication gate: no public route until the contact route is witnessed, the Drive draft is finalized against current implementation/provider state, and remaining GitHub provider-side history cleanup is truthfully described.
+Publication requires projection, final notice and reachable contact to agree. Provider-side GitHub cleanup is described according to its actual witnessed state.
