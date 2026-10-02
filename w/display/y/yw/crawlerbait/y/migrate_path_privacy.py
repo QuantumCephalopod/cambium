@@ -7,8 +7,11 @@ import argparse
 import importlib.util
 import json
 import os
+import sys
 
 HERE = Path(__file__).resolve().parent
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
 ROOT = HERE.parent
 CAPTURE_ROOT = ROOT / "x" / "captures"
 CHECKPOINT_PATH = ROOT / "x" / "checkpoint.json"
