@@ -14,3 +14,7 @@
 .impressum-operator{margin:.6rem 0 0;font:500 1.05rem/1.4 var(--mono)}
 .impressum-content address{white-space:pre-line;font:normal .95rem/1.65 var(--mono);color:rgba(236,239,232,.78)}
 .impressum-content a{width:max-content;color:#dff8df;text-decoration-thickness:1px;text-underline-offset:.25em}
+
+#legal-links{position:fixed;left:clamp(.75rem,2vw,1.4rem);bottom:clamp(.65rem,1.5vw,1rem);z-index:70;display:flex;gap:.8rem;pointer-events:auto;font:600 9px/1 var(--mono);letter-spacing:.11em;text-transform:uppercase}
+#legal-links a{color:rgba(238,242,237,.48);text-decoration:none}
+#legal-links a:hover,#legal-links a:focus-visible{color:rgba(238,242,237,.92);outline:none;text-decoration:underline;text-underline-offset:.28em}
