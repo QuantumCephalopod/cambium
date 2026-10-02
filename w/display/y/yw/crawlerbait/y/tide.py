@@ -588,12 +588,15 @@ def self_test():
     assert identity_prefix("/a", 128) == legacy
     assert len(identity_prefix("/a", 513)) == 513
     enc = lambda path, t="2026-09-18T00:00:00Z", method="GET", status=200: {"path": path, "t": t, "method": method, "status": status}
+    offered_assets = sorted(p for p in pathmembrane.offered_public_paths() if p.startswith("/assets/"))
+    assert offered_assets
+    offered_asset = offered_assets[0]
     assert being_kind([enc("/__live/home", method="POST", status=200), enc("/.env")]) == "w"
     assert being_kind([enc("/__live/home", method="POST", status=409)]) == "z"
     assert being_kind([enc("/"), enc("/.env", status=404)]) == "z"
     assert being_kind([enc("/"), enc("/cdn-cgi/rum", method="POST", status=204)]) == "x"
-    assert being_kind([enc("/"), enc("/robots.txt", t="2026-09-19T00:00:00Z")]) == "y"
-    assert being_kind([enc("/"), enc("/assets/x/a.js")]) == "x"
+    assert being_kind([enc("/"), enc(offered_asset, t="2026-09-19T00:00:00Z")]) == "y"
+    assert being_kind([enc("/"), enc(offered_asset)]) == "x"
     classify_beings(state)
     assert crawler["kind"] == "z"
     pathmembrane.self_test()
