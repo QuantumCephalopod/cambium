@@ -108,19 +108,26 @@ function render(path=W.view){
   document.documentElement.dataset.scope=GLOBAL_SCOPE;
 }
 /* Background inspection is local. Global encounter changes happen only through explicit global target events. */
+/* The address hash is an input as well as a witness: a typed, linked or restored
+ * #scope:address moves the global encounter there. A hash of another form
+ * (a skip link, a foreign anchor) is not an address and is left alone. */
+function hashFor(address){return '#'+encodeURIComponent(GLOBAL_SCOPE)+':'+encodeURIComponent(address||'overview')}
+function hashAddress(hash){const m=/^#([^:]*):(.*)$/.exec(hash||'');if(!m)return null;let scope,address;try{scope=decodeURIComponent(m[1]);address=decodeURIComponent(m[2])}catch(_){return null}return scope===GLOBAL_SCOPE?(address==='overview'?'':address):null}
+/* mode: true pushes a new entry; 'replace' gives the current entry (one the witness made by hand) its state. */
+function writeHistory(mode){if(mode&&!restoring)history[mode==='replace'?'replaceState':'pushState'](snap(),'',hashFor(activeAddress))}
 function setLocalView(path='',source='restore'){if(path)W.inspect(path,source);else W.clearInspection(source);render(W.view)}
 function enter(r,path,push=true){
   if(!r.interlocutors.length)return false;
   stack.push({activeIds:[...activeIds],activeAddress,localView:W.view});
   activeIds=r.interlocutors.map(x=>x.interlocutorId);activeAddress=path;
   W.clearInspection('encounter-change');syncGlobalNavigator();render('');
-  if(push&&!restoring)history.pushState(snap(),'','#'+encodeURIComponent(GLOBAL_SCOPE)+':'+encodeURIComponent(activeAddress||'overview'));
+  writeHistory(push);
   return true;
 }
 function navigateGlobal(path,push=true,origin=null){
   const r=resolveGlobal(path);if(!r.interlocutors.length)return false;
   const ids=r.interlocutors.map(x=>x.interlocutorId);
-  if(path===activeAddress&&sameIds(ids,activeIds)){if(inspectCapable())setLocalView('','global-current');return true}
+  if(path===activeAddress&&sameIds(ids,activeIds)){if(inspectCapable())setLocalView('','global-current');if(push==='replace')writeHistory('replace');return true}
   if(fold.busy)return false;
   fold.swap(()=>enter(r,path,push),{origin,from:activeAddress,to:path});return true;
 }
@@ -128,7 +135,7 @@ function leave(push=true){
   if(!stack.length)return navigateGlobal('',push,{x:innerWidth/2,y:innerHeight/2});
   const prev=stack.pop();activeIds=prev.activeIds;activeAddress=prev.activeAddress||'';syncGlobalNavigator();
   if(inspectCapable(activeIds)&&prev.localView)W.inspect(prev.localView,'return');else W.clearInspection('return');
-  render(W.view);if(push&&!restoring)history.pushState(snap(),'','#'+GLOBAL_SCOPE+':'+encodeURIComponent(activeAddress||'overview'));return true;
+  render(W.view);writeHistory(push);return true;
 }
 addEventListener('sss:view',e=>{if(e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'')});
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
@@ -150,8 +157,15 @@ addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});
 function receiveActivity(event){return activity.receive(event)}
 addEventListener('sss:activity',e=>{if(e.detail)receiveActivity(e.detail)});
-addEventListener('popstate',e=>{if(!e.state)return;restoring=true;try{activeIds=e.state.activeIds||[...ROOT_IDS];activeAddress=e.state.activeAddress||'';stack=e.state.stack||[];syncGlobalNavigator();if(inspectCapable(activeIds)&&e.state.localView)W.inspect(e.state.localView,'history');else W.clearInspection('history');render(W.view);reconcile()}finally{restoring=false}});
-Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlobalNavigator();history.replaceState(snap(),'','#'+GLOBAL_SCOPE+':overview');render('');
+/* An unresolvable address is answered by restoring the truthful current hash. */
+function followHash(){const address=hashAddress(location.hash);if(address===null)return;if(!navigateGlobal(address,'replace',{x:innerWidth/2,y:innerHeight/2}))writeHistory('replace')}
+addEventListener('popstate',e=>{if(!e.state){followHash();return}restoring=true;try{activeIds=e.state.activeIds||[...ROOT_IDS];activeAddress=e.state.activeAddress||'';stack=e.state.stack||[];syncGlobalNavigator();if(inspectCapable(activeIds)&&e.state.localView)W.inspect(e.state.localView,'history');else W.clearInspection('history');render(W.view)}finally{restoring=false}});
+/* Fallback for a substrate that changes the fragment without popstate; history traversal has already restored by the time it fires. */
+addEventListener('hashchange',()=>{const address=hashAddress(location.hash);if(address!==null&&address!==activeAddress&&!fold.busy)followHash()});
+const arrival=hashAddress(globalThis.location?.hash);
+Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlobalNavigator();history.replaceState(snap(),'',hashFor(''));render('');
+/* Arriving at #scope:address enters that encounter directly; overview stays beneath it, so ascent and Escape return there. */
+if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)enter(r,arrival,'replace')}
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
 globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();

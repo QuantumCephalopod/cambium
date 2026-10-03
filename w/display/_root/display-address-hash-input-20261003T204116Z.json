@@ -1,0 +1,57 @@
+{
+  "kind": "HOME",
+  "home_at_utc": "2026-10-03T20:41:16Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "event_id": "display-address-hash-input-20261003T204116Z",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "make-address-hash-an-input",
+  "outcome": "PASS/EARNED — the global #scope:address hash is now an input as well as a witness: arrival, hand-made change, back/forward and minimap pointer movement keep encounter and hash in step; two adjacent runtime faults repaired.",
+  "changed_scope": [
+    "x/display-runtime-v2.js: hashFor/hashAddress/writeHistory; popstate with null state follows the hash through navigateGlobal and the target-origin fold; hashchange fallback; arrival with #main:<address> enters it directly with overview beneath; an unresolvable address restores the truthful hash; non-address hashes (skip link) are left alone",
+    "x/display-runtime-v2.js: back/forward no longer throws ReferenceError: reconcile() was retired everywhere in #65 except the popstate handler, so every traversal threw after restoring",
+    "w/display-label-ink.js: computed font-stretch percentages map to canvas fontStretch keywords; previously every label collection set an invalid enum ('100%') and the browser warned and dropped it",
+    "tests: runtime hash-as-input cases; label-ink canvasStretch cases",
+    "RITUALS/navigation 3.3 `Address hash`; RITUALS/organism 3.17 persistent physiology line",
+    "_stomach/NUTRIENT__hash-return-to-overview__20261001.md → _waste/metabolized-hash-return-to-overview-20261001.md (exit met)",
+    "INDEX.yaml and _cambium.yaml unchanged"
+  ],
+  "context": {
+    "actor": "Claude Code session with Philipp, 2026-10-03",
+    "canonical_base_revision": "01a371571e6c5a2aca76faa2bcc705c212405a52",
+    "carrier": "self-similar-systems/cambium branch claude/bold-curie-oetiuh (Philipp named this session's org-repo branch as the carrier; owner merge promotes it)",
+    "shared_root_field": {
+      "dive_in": "2.8",
+      "metabolism": "3.5",
+      "cambium": "3.4",
+      "drive": "1.6"
+    },
+    "cause": "popstate handler returned on null state (every hand-made fragment navigation), and startup replaceState always wrote #main:overview over an arriving hash",
+    "structural_result": "NO SPLIT — Orientation's existing browser encounter/history body carries the change",
+    "witness": {
+      "unit": "node x/display-runtime-v2.test.cjs PASS (arrival, hand-made overview, hashchange fallback, unresolvable address, foreign anchor, other scope); node w/display-label-ink.test.cjs PASS",
+      "membrane": "y/site-public.py build, y/check.py, y/test-address.cjs, y/site-public.py --check (2932 files) PASS on the changed tree; bundle 3565ee7f22111968",
+      "browser": {
+        "engine": "Playwright Chromium (headless, software WebGL), served over 127.0.0.1",
+        "sequence": [
+          "index.html#main:y → Papers, hash #main:y",
+          "location.hash=#main:overview → Philosophy overview",
+          "back → Papers #main:y",
+          "forward → overview",
+          "#main:xz → Impressum",
+          "#main:wwwwzzzz → stays Impressum, hash restored to #main:xz",
+          "#mini-trigger → encounter unchanged, hash left alone",
+          "minimap pointer press on navTwin → Datenschutz, hash #main:z; back → overview"
+        ],
+        "site_errors_warnings": 0,
+        "filtered": "container-only software-WebGL fallback and GPU-stall driver notices",
+        "before_fix": "the first harness run (hash change applied; reconcile call and label-ink stretch still as on main) logged ReferenceError: reconcile is not defined on back/forward and repeated CanvasFontStretch '100%' warnings"
+      }
+    },
+    "not_witnessed": [
+      "a physical device / GPU browser",
+      "the live sss.saarland deployment after merge"
+    ],
+    "canonical_owner_promotion": "human merge only"
+  }
+}

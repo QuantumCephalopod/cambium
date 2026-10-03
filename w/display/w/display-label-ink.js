@@ -37,11 +37,15 @@
     record.users++;
     return ()=>{if(--record.users===0){record.node.remove();styles.delete(doc)}};
   }
+  /* Computed font-stretch is a percentage; canvas fontStretch accepts only the CSS keywords. */
+  const STRETCH={'50%':'ultra-condensed','62.5%':'extra-condensed','75%':'condensed','87.5%':'semi-condensed','100%':'normal','112.5%':'semi-expanded','125%':'expanded','150%':'extra-expanded','200%':'ultra-expanded'};
+  const STRETCH_KEYWORDS=new Set(Object.values(STRETCH));
+  function canvasStretch(value){const v=String(value||'normal').trim();return STRETCH_KEYWORDS.has(v)?v:(STRETCH[v]||'normal')}
   function paintStyle(cs){
     return {
       font:cs.font||`${cs.fontStyle||'normal'} ${cs.fontWeight||'400'} ${cs.fontSize||'12px'} ${cs.fontFamily||'sans-serif'}`,
       size:px(cs.fontSize)||12,color:cs.color||'#fff',letterSpacing:cs.letterSpacing||'normal',wordSpacing:cs.wordSpacing||'normal',
-      direction:cs.direction||'ltr',kerning:cs.fontKerning||'auto',stretch:cs.fontStretch||'normal',caps:cs.fontVariantCaps||'normal',
+      direction:cs.direction||'ltr',kerning:cs.fontKerning||'auto',stretch:canvasStretch(cs.fontStretch),caps:cs.fontVariantCaps||'normal',
       transform:cs.textTransform||'none',shadow:cs.textShadow||'none',decoration:cs.textDecorationLine||'none',
       decorationColor:cs.textDecorationColor||cs.color||'#fff',thickness:cs.textDecorationThickness||'auto',underlineOffset:cs.textUnderlineOffset||'auto'
     };
@@ -286,5 +290,5 @@
     }
     return Object.freeze({draw,reset,dispose});
   }
-  return Object.freeze({create,_test:Object.freeze({cacheKey,baseline,quads,collect,pack,shadows})});
+  return Object.freeze({create,_test:Object.freeze({canvasStretch,cacheKey,baseline,quads,collect,pack,shadows})});
 });

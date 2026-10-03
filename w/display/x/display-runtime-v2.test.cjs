@@ -6,7 +6,7 @@ const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'u
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
-function boot(version=1){
+function boot(version=1,hash=''){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[];
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
@@ -27,14 +27,15 @@ function boot(version=1){
   }
   const emit=(name,detail)=>{for(const fn of events.get(name)||[])fn({detail})};
   const W={view:'',language:'en',scopeId:'main',orientation:[1,0,0,0],setScope({id,projection}){this.scopeId=id;this.projection=projection},setGlobalTargets(targets){this.targets=targets},setActiveGlobalAddress(address,locus){this.activeGlobalAddress=address;this.activeGlobalLocus=locus},inspect(view){this.view=view;emit('sss:view',{scopeId:this.scopeId,path:view});return true},clearInspection(){this.view='';emit('sss:view',{scopeId:this.scopeId,path:''})}};
-  const context={Map,URL,console,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},history:{pushState(state,_,url){history.push({state,url})},replaceState(state,_,url){history.push({state,url})}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSSiteHolon:H,SSSSiteFold:{createFold:()=>({busy:false,swap(fn,details){swaps.push(details);return fn()}})},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({})},SSSInterlocutorModules:Modules};
+  const context={Map,URL,console,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSSiteHolon:H,SSSSiteFold:{createFold:()=>({busy:false,swap(fn,details){swaps.push(details);return fn()}})},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({})},SSSInterlocutorModules:Modules};
   vm.createContext(context);
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
   context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(){}}}};
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
-  return {runtime:context.SSSDisplayRuntime,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input};
+  const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
+  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input};
 }
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
@@ -73,4 +74,24 @@ once();assert.ok(f.swaps.length>=5);assert.ok(f.history.length>=5);assert.ok(f.u
 for(const [id,source] of f.sources)assert.equal(JSON.stringify(source),JSON.stringify(f.input[id]),'projection does not replace/mutate source');
 const next=boot(2);
 for(const id of ids.slice(0,3)){assert.equal(next.calls.get(id),1);assert.equal(next.projected.get(id).version,2);assert.notStrictEqual(next.projected.get(id),f.projected.get(id),'new source/re-entry resolves afresh')}
-console.log('display runtime: one source projection per entry, shared anatomy, repeated body/host callbacks, navigation/language/activity/remount and fresh re-entry PASS');
+/* The address hash is an input: arrival, a hand-made change, an unknown address and a foreign anchor. */
+const arrive=boot(1,'#main:w');
+assert.equal(arrive.runtime.state.activeAddress,'w','arrival at #main:w enters w');
+assert.equal(arrive.runtime.state.stack.length,1,'overview stays beneath the arrival');
+assert.equal(arrive.history.at(-1).kind,'replace');assert.equal(arrive.history.at(-1).url,'#main:w');
+assert.equal(arrive.history.filter(h=>h.kind==='push').length,0,'arrival makes no extra entry');
+const swaps=arrive.swaps.length;
+arrive.hand('#main:overview');assert.equal(arrive.runtime.state.activeAddress,'','a hand-made #main:overview returns to the overview');
+assert.equal(arrive.swaps.length,swaps+1,'through the same membrane fold');
+assert.equal(arrive.history.at(-1).kind,'replace');assert.equal(arrive.history.at(-1).state.activeAddress,'','the hand-made entry receives its state');
+arrive.hand('#main:y');assert.equal(arrive.runtime.state.activeAddress,'y');
+arrive.hand('#main:y','hashchange');assert.equal(arrive.swaps.length,swaps+2,'hashchange after popstate is a no-op');
+arrive.hand('#main:w','hashchange');assert.equal(arrive.runtime.state.activeAddress,'w','hashchange alone also moves the encounter');
+arrive.hand('#main:y');
+const before=arrive.history.length;
+arrive.hand('#main:zzzz');assert.equal(arrive.runtime.state.activeAddress,'y','an unresolvable address does not move the encounter');
+assert.equal(arrive.location.hash,'#main:y','and the truthful hash is restored');assert.equal(arrive.history.length,before+1);
+arrive.hand('#mini-trigger');assert.equal(arrive.location.hash,'#mini-trigger','a foreign anchor is left alone');assert.equal(arrive.runtime.state.activeAddress,'y');
+assert.equal(boot(1,'#main:zzzz').runtime.state.activeAddress,'','unresolvable arrival stays at the overview');
+assert.equal(boot(1,'#other:w').runtime.state.activeAddress,'','another scope is not this address');
+console.log('display runtime: one source projection per entry, shared anatomy, repeated body/host callbacks, navigation/language/activity/remount, fresh re-entry and hash-as-input PASS');
