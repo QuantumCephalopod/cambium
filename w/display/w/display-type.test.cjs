@@ -12,7 +12,11 @@ const mock={documentElement:{},defaultView:{getComputedStyle:()=>({fontSize:'20p
 assert.strictEqual(T.rootRemPx(mock),20,'browser/user root rem must remain the live root');
 assert.ok(Math.abs(T.rankPx(-1,mock)-20/Math.SQRT2)<1e-12);
 const css=fs.readFileSync(path.join(__dirname,'root-view.css'),'utf8');
-for(let r=-4;r<=4;r++)assert.ok(css.includes(T.rankVar(r)+':'+T.rankRem(r)),`missing CSS rank ${r}`);
+for(let r=-4;r<=4;r++){
+  const m=css.match(new RegExp(T.rankVar(r)+':([\\d.]+)rem'));
+  assert.ok(m,`missing CSS rank ${r}`);
+  assert.ok(Math.abs(Number(m[1])-T.rankFactor(r))<1e-12,`CSS rank ${r} diverges from power-of-two lattice`);
+}
 const htmlBody=(css.match(/html,body\{([^}]*)\}/)||[])[1]||'';
 assert.ok(!/font-size\s*:/.test(htmlBody),'Display must not force browser/user root font size');
 const displayRoot=path.join(__dirname,'..');
