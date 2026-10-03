@@ -1,3 +1,8 @@
+# SPENT SOURCE — Mono v2 canonical exit witnessed
+
+disposition: RETIRED — PR #163 owner merge, successful deployment 37080658990 and live exit witnessed by the foreground; canonical source f3b82fb.
+The complete historical source/landing note follows unchanged, including its then-open promotion state. Original source remains in backups and Git base; no font/carrier bytes are retired.
+
 # NUTRIENT — SpriteSheet Mono v2 and the Schattenseiten HUD — 2026-10-02
 
 status: NARROWED — font and HUD landed and locally witnessed in staging; canonical owner promotion remains open

@@ -1,6 +1,11 @@
 [data-interlocutor="organism:philosophy"]{pointer-events:none}
 [data-interlocutor="organism:philosophy"] .philosophy-content{pointer-events:none}
 [data-interlocutor="organism:philosophy"] .philosophy-content>section{position:relative;width:100%}
+/* The root encounter lends a compact introduction; the field remains primary. */
+.philosophy-content>.root{max-width:570px}
+.philosophy-content>.root .kicker{font:8px/1.45 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(241,239,233,.42);margin-bottom:8px}
+.philosophy-content>.root h1{font:520 clamp(14px,1.35vw,20px)/1.24 var(--sans);letter-spacing:0;margin:0;text-wrap:balance}
+.philosophy-content>.root p{font:400 clamp(10px,.9vw,12px)/1.55 var(--sans);letter-spacing:0;color:rgba(241,239,233,.48);max-width:100%;margin:10px 0 0}
 .philosophy-global-sites{position:absolute;inset:0;z-index:5;pointer-events:none}
 .philosophy-global-site{position:absolute;transform:translate(-50%,-50%);display:grid;gap:3px;justify-items:center;pointer-events:auto;cursor:pointer;padding:5px 7px;border:0;background:rgba(4,8,12,.34);backdrop-filter:blur(6px);color:rgba(241,239,233,.78);text-shadow:0 1px 12px #000;transition:opacity .14s ease,background .14s ease}
 .philosophy-global-site small{font:7px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(170,255,229,.54)}

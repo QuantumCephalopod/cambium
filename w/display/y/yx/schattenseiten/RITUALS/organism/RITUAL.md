@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Site-holon projection of Philipp's organ Schattenseiten: 49 shadows grown by one operation repeated at every rank, shown as floating tetrahedra in their genealogy."
-version: "1.0"
+version: "1.1"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -21,3 +21,7 @@ The two German sentences stay German in every language. The work's remaining tex
 ## Boundaries
 
 Media come only from `fat`, which fails closed. No names, places or texts beyond what the organ's feed admits. Mount: site-space `x`; relocation changes environment only.
+
+The sheet's texture cells use 512×512 pixels. Fat declares its smaller public media members in `media_variants["512"]`, keyed by the already-admitted relative source path. Choose the declared member before the network request, for textures and the bounded image panel; reducing an already-downloaded large file is not reduced transfer. A legacy feed without a declared variant keeps its admitted same-reserve source path. Variants are Fat-owned derivatives of the same admitted work; Display neither invents asset URLs nor edits the organ's works. Animated variants preserve the admitted motion and timing.
+
+Version 1.1 sized-media binding (2026-10-03): the public Fat variant declaration selects the actual 512-pixel file before fetching/decoding; sheet geometry, words, source identity, selection and animation meaning remain intact.

@@ -68,6 +68,26 @@ function fakeGL(){
   f.label.hidden=false;f.bold.style.visibility='hidden';assert.equal(T.collect(f.host,f.doc,e=>e.style).length,1);
 }
 
+/* Shared ancestors and repeated text under one element use one style snapshot per
+ * collection, while a later collection observes fresh opacity/paint/visibility. */
+{
+  const f=fixture(),calls=new Map();
+  f.label.nodes.push({data:' again',parentElement:f.bold,box:{...f.node.box,left:180,width:35}});
+  const styleFor=e=>{calls.set(e,(calls.get(e)||0)+1);return {...e.style}};
+  const first=T.collect(f.host,f.doc,styleFor);
+  assert.equal(first.length,3);assert.equal(calls.size,5);
+  assert.ok([...calls.values()].every(n=>n===1),'single collection reads each element/ancestor once');
+  near(first[1].opacity,.82);assert.equal(first[1].paint.color,f.bold.style.color);
+  calls.clear();f.label.style.opacity='.4';f.host.style.opacity='.5';f.bold.style.color='#f00';f.prefix.style.opacity='.2';
+  const next=T.collect(f.host,f.doc,styleFor);
+  assert.ok([...calls.values()].every(n=>n===1));
+  near(next[0].opacity,.2*.4*.5);near(next[1].opacity,.4*.5);
+  assert.equal(next[1].paint.color,'#f00');assert.equal(next[2].paint.color,'#f00');
+  calls.clear();f.host.parentElement.style.visibility='hidden';
+  assert.equal(T.collect(f.host,f.doc,styleFor).length,0,'later collection sees changed ancestor visibility');
+  assert.ok([...calls.values()].every(n=>n===1));
+}
+
 /* Off-origin canvases, DPR and padded UVs: quads follow the DOM box without changing
  * the canvas-sized coordinate frame or moving the semantic label itself. */
 {

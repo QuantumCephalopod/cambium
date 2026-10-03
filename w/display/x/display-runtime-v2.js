@@ -30,13 +30,16 @@ for(const id of specs.keys()){
   if(!canvas||!labelHost||!content) throw new Error('incomplete interlocutor surface: '+id);
   const module=Modules.get(id);if(!module) throw new Error('missing interlocutor module: '+id);
   if(!(id in PROJECTIONS)) throw new Error('missing interlocutor projection: '+id);
-  surfaces.set(id,{host,canvas,labelHost,content,module,projection:PROJECTIONS[id]});
+  /* This parsed source carrier is fixed for this runtime entry. Resolve its
+   * anatomy once; a new source/re-entry initializes a new runtime, not a frame. */
+  const projection=PROJECTIONS[id],fieldProjection=module.fieldProjection?module.fieldProjection(projection):projection;
+  surfaces.set(id,{host,canvas,labelHost,content,module,projection,fieldProjection});
 }
 const rootResolved=registry.resolve(GLOBAL_SCOPE,'',{width:innerWidth,height:innerHeight});
 if(!rootResolved.interlocutors.length) throw new Error('Display site-space has no overview interlocutor');
 const ROOT_IDS=rootResolved.interlocutors.map(x=>x.interlocutorId);
 const rootSurface=surfaces.get(ROOT_IDS[0]);
-const GLOBAL_PROJECTION=(rootSurface.module.fieldProjection?rootSurface.module.fieldProjection(rootSurface.projection):rootSurface.projection);
+const GLOBAL_PROJECTION=rootSurface.fieldProjection;
 if(!GLOBAL_PROJECTION?.root) throw new Error('overview interlocutor must expose the global address-space projection');
 const activity=H.createActivityBus(registry),fold=F.createFold(document.getElementById('tetra-fold'));
 const home=document.getElementById('root-home'),stateEl=document.getElementById('site-state'),stage=document.getElementById('interlocutor-stage');
@@ -51,7 +54,7 @@ function hostEnvironment(id){
   const m=registry.getMount(id);if(!m||m.scope!==GLOBAL_SCOPE||!activeIds.includes(id))return null;
   const from=stack.length?stack.at(-1).activeIds.find(x=>x!==id):null,hostId=from||ROOT_IDS.find(x=>x!==id);
   if(!hostId)return null;const hm=registry.getMount(hostId);if(!hm||!m.rawAddress.startsWith(hm.rawAddress)||m.rawAddress===hm.rawAddress)return null;
-  const hs=surfaces.get(hostId),shader=hs?.module?.shader,root=(hs?.module?.fieldProjection?hs.module.fieldProjection(hs.projection):hs?.projection)?.root;
+  const hs=surfaces.get(hostId),shader=hs?.module?.shader,root=hs?.fieldProjection?.root;
   if(!shader?.fragment||!root)return null;
   const path=m.rawAddress.slice(hm.rawAddress.length);
   return Object.freeze({hostId,shader,palette:specs.get(hostId)?.shader?.palette,path,place:placeIn(hostId,root,path)});
@@ -64,13 +67,13 @@ function floatingBodies(id){
   const out=[];
   for(const other of specs.keys()){
     if(ROOT_IDS.includes(other))continue;const m=registry.getMount(other);if(!m||m.scope!==GLOBAL_SCOPE||!m.rawAddress)continue;
-    const s2=surfaces.get(other),shader=s2?.module?.shader,root=(s2?.module?.fieldProjection?s2.module.fieldProjection(s2.projection):s2?.projection)?.root;
+    const s2=surfaces.get(other),shader=s2?.module?.shader,root=s2?.fieldProjection?.root;
     if((shader?.body?.fragment||shader?.fragment)&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette,title:specs.get(other)?.title||other});
   }
   return out;
 }
 for(const [id,surface] of surfaces){
-  const spec=specs.get(id),fieldProjection=surface.module.fieldProjection?surface.module.fieldProjection(surface.projection):surface.projection;
+  const spec=specs.get(id),fieldProjection=surface.fieldProjection;
   fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id)}));
 }
 let activeIds=[...ROOT_IDS],activeAddress='',stack=[],restoring=false;

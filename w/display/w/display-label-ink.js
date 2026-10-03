@@ -67,17 +67,19 @@
     return opacity;
   }
   function collect(host,doc,getStyle){
-    const runs=[];
+    const runs=[],computed=new Map();
+    // Opacity ancestors and paint may share elements; styles live for this collect only.
+    const styleFor=element=>{if(!computed.has(element))computed.set(element,getStyle(element));return computed.get(element)};
     for(const label of host.querySelectorAll('.field-label')){
       const walk=doc.createTreeWalker(label,4); // NodeFilter.SHOW_TEXT, including renderer-owned spans/b.
       for(let node=walk.nextNode();node;node=walk.nextNode()){
         if(!node.data||!node.data.trim())continue;
-        const element=node.parentElement,opacity=effectiveOpacity(element,host,getStyle);
+        const element=node.parentElement,opacity=effectiveOpacity(element,host,styleFor);
         if(opacity<=0)continue;
         const range=doc.createRange();range.selectNodeContents(node);
         const boxes=Array.from(range.getClientRects()).filter(r=>r.width>0&&r.height>0);
         if(!boxes.length)continue;
-        const paint=paintStyle(getStyle(element));
+        const paint=paintStyle(styleFor(element));
         if(boxes.length===1){runs.push({text:transformed(node.data,paint.transform),paint,rect:rect(boxes[0]),opacity});continue}
         // Wrapped runs: derive each line from character ranges rather than guessing wrap widths.
         let line=null,offset=0;
