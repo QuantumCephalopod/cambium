@@ -15,6 +15,23 @@ const css=fs.readFileSync(path.join(__dirname,'root-view.css'),'utf8');
 for(let r=-4;r<=4;r++)assert.ok(css.includes(T.rankVar(r)+':'+T.rankRem(r)),`missing CSS rank ${r}`);
 const htmlBody=(css.match(/html,body\{([^}]*)\}/)||[])[1]||'';
 assert.ok(!/font-size\s*:/.test(htmlBody),'Display must not force browser/user root font size');
+const displayRoot=path.join(__dirname,'..');
+const rankedCss=[
+  'w/root-view.css','w/interlocutors.css','z/site-runtime.css','z/navigation-aperture.css',
+  'y/philosophy/style.css','y/yw/crawlerbait/z/style.css','y/yx/schattenseiten/style.css',
+  'y/yy/papers/style.css','y/yy/papers/sierpinski.css','y/yz/datenschutz/style.css','y/yxz/impressum/style.css',
+  'y/yz/datenschutz/public/privacy/index.html','y/yxz/impressum/public/impressum/index.html',
+  'y/yw/crawlerbait/y/tide.py'
+];
+const arbitrary=/font(?:-size)?\s*:[^;}]*?(?:\d+(?:\.\d+)?(?:px|rem)|clamp\()/i;
+for(const rel of rankedCss){
+  const source=fs.readFileSync(path.join(displayRoot,rel),'utf8');
+  assert.ok(!arbitrary.test(source),rel+' contains a font size outside the shared rank lattice');
+}
+for(const rel of ['z/world-view.js','y/yy/papers/sierpinski.js']){
+  const source=fs.readFileSync(path.join(displayRoot,rel),'utf8');
+  assert.ok(!/["'`][^"'\n`]*\d+(?:\.\d+)?px\b/.test(source),rel+' contains a literal Canvas/Pretext pixel font');
+}
 assert.strictEqual(T.fold('Du gefällst mir. Mir gefällst du.'),'Du gefaellst mir. Mir gefaellst du.');
 assert.strictEqual(T.fold('ÄÖÜ äöü Grüße GROẞ'),'AEOEUE aeoeue Gruesse GROSS');
 assert.strictEqual(T.fold('79S · 66H'),'79S · 66H','digits and marks are left for per-glyph fallback');
