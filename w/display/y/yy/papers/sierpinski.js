@@ -656,7 +656,7 @@ function physiologyStory(ctx,w,h,phase,u,now){
   if(u<.18)physSelector(ctx,w,h,now,2,u>.1,1);else if(u<.52)physSelector(ctx,w,h,now,0,u>.26,1);else physSelector(ctx,w,h,now,0,u>.58,1);
   if(u>.26&&u<.52){const pts=PHYS_FAIL.map(i=>P.S[i]);physMeet(ctx,pts,failMeet*1.3,clamp(failMeet*1.6-.5),2,seg(.4,.46),1-failGone)}
   if(u>.58){const pts=PHYS_WIN.map(i=>P.S[i]),a=1-.55*born;physMeet(ctx,pts,winMeet*1.3,clamp(winMeet*1.6-.5),-1,0,a);
-    if(born>0){const c=[pts.reduce((s,p)=>s+p[0],0)/4,pts.reduce((s,p)=>s+p[1],0)/4];physGlow(ctx,c,4+10*born,.7*born);physStroke(ctx,physTet(c,h*.08*born,Math.sin(now*.0004)*.15),.8*born);physLabel(ctx,'1H',c[0]+h*.09,c[1]-h*.06,.8*born,'600 6.5px ui-monospace, monospace')}}
+    if(born>0){const c=[pts.reduce((s,p)=>s+p[0],0)/4,pts.reduce((s,p)=>s+p[1],0)/4];physGlow(ctx,c,4+10*born,.7*born);physStroke(ctx,physTet(c,h*.08*born,Math.sin(now*.0004)*.15),.8*born);physLabel(ctx,'1H',c[0]+h*.09,c[1]-h*.06,.8*born,monoFont(-3,600))}}
   const status=u<.1?'draw a rank at random…':u<.18?'2H: fewer than four alive → no meeting, draw again':u<.26?'draw again…':u<.32?'S: four distinct living organisms, drawn at random':u<.46?'every edge, face and the whole must need all four…':u<.52?'one face would need filler → UNDERDETERMINED · no birth':u<.58?'nothing is forced. draw again…':u<.64?'four more, at random':u<.76?'6 relations, 4 faces, 1 whole: each earned only together':u<.86?'closure → one 1H is born; the four parents stay alive':'chance meetings, earned wholes: rank n holds 4ⁿ sources';
   physStatus(ctx,w,h,status,1);
 }
@@ -1049,8 +1049,8 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     Vt.glyphs.forEach((g,j)=>{const sw=j===0?1:clamp(Vt.open*1.6-(j/Math.max(1,n))*.6);
       if(j===0)beingSpring(g,(g0.tx+ox)*Vt.open-4*(1-Vt.open),(g0.ty+oy)*Vt.open-8*(1-Vt.open),.2,.68);else beingSpring(g,sw*(ox+g.tx),sw*(oy+g.ty),.2,.68);g.s=sw});
     const dim=open&&!isOpen?.45:1;
-    const vf=(g,j)=>(g.bold?'600 ':'400 ')+(j===0?'13px ':'12px ')+'"SpriteSheet Mono", system-ui, sans-serif';
-    if(TS)tissueGlyphs(Vt.glyphs,(g,j)=>j===0||(Vt.open>.01&&g.s>=.35),(g,sz)=>({x:p.x+g.x,y:p.y+g.y,cx:p.x+g.x+sz*.3,cy:p.y+g.y+sz*.5}),(g,j)=>j===0?13:12,(g,j)=>j===0?.5:.9,(g,j)=>j===0?.95*alpha*dim:clamp((g.s-.35)*2)*alpha);
+    const vf=(g,j)=>{void j;return typeFont(-1,g.bold?600:400)};
+    if(TS)tissueGlyphs(Vt.glyphs,(g,j)=>j===0||(Vt.open>.01&&g.s>=.35),(g,sz)=>({x:p.x+g.x,y:p.y+g.y,cx:p.x+g.x+sz*.3,cy:p.y+g.y+sz*.5}),(g,j)=>{void g;void j;return typePx(-1)},(g,j)=>j===0?.5:.9,(g,j)=>j===0?.95*alpha*dim:clamp((g.s-.35)*2)*alpha);
     else{inkText(ctx,Vt.glyphs,(g,j)=>j===0,'rgb(191,245,220)',()=>.95*alpha*dim,vf,p.x,p.y);
     if(Vt.open>.01)inkText(ctx,Vt.glyphs,(g,j)=>j>0&&g.s>=.35,'rgb(223,243,234)',g=>clamp((g.s-.35)*2)*alpha,vf,p.x,p.y)}
   }
@@ -1117,7 +1117,7 @@ function drawNames(rect,now){
     G.glyphs.forEach((g,j)=>{const sw=clamp(G.open*1.6-(j/Math.max(1,n))*.6);
       beingSpring(g,(1-sw)*(g.ix+Math.sin(now/900+j)*.8)+sw*(ox+g.tx),(1-sw)*(g.iy+Math.cos(now/1000+j)*.8)+sw*(oy+g.ty));g.s=sw});
     sleep[rec.locus.startsWith(here)?0:1].push([G,p]);
-    if(G.open>.01){if(L){ctx.save();ctx.beginPath();ctx.arc(L.x,L.y,Math.max(0,L.r-1),0,Math.PI*2);ctx.clip()}inkText(ctx,G.glyphs,g=>g.s>=.35,'rgb(226,244,235)',g=>clamp((g.s-.35)*2)*presence,g=>(g.bold?'600 ':'400 ')+'11px "SpriteSheet Mono", system-ui, sans-serif',p.x,p.y);if(L)ctx.restore()}
+    if(G.open>.01){if(L){ctx.save();ctx.beginPath();ctx.arc(L.x,L.y,Math.max(0,L.r-1),0,Math.PI*2);ctx.clip()}inkText(ctx,G.glyphs,g=>g.s>=.35,'rgb(226,244,235)',g=>clamp((g.s-.35)*2)*presence,g=>typeFont(-1,g.bold?600:400),p.x,p.y);if(L)ctx.restore()}
   }
   /* sleeping names are batched: one path per presence class, not one fill per organism */
   /* the drop bounds everything: sleeping letters and the opened bloom live only in the space it contains */
