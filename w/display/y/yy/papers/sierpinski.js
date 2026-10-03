@@ -1081,7 +1081,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
  * identity (`id · title`) rests as a cluster of its letters on its body, so an organism too small to
  * see is still perceptible as its sleeping name; a peek unfolds the letters into the readable name and
  * leaving folds them back. The cluster is presence, not selection: entering still follows Descent. */
-const NAME_FONT='500 11px "SpriteSheet Mono", system-ui, sans-serif',NAME_LH=14,NAME_W=220;
+const NAME_FONT=typeFont(-1,500),NAME_LH=typePx(-1)*1.25,NAME_W=220;
 function nameGlyphs(rec,L=null){
   if(state.namesFor!==state.records){state.names=new Map();state.namesFor=state.records}
   const fit=L?Math.max(60,Math.min(NAME_W,Math.round(L.r*1.3/10)*10)):0,N0=state.names,cacheKey=rec.id+'@'+fit;let G=N0.get(cacheKey);if(G)return G;
