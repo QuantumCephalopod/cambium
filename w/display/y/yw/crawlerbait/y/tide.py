@@ -497,7 +497,7 @@ def raw_public_manifest():
 
 
 def page(title: str, body: str) -> str:
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>{escape(title)}</title><link rel="alternate" type="application/json" href="/crawlerbait/state.json"><style>:root{{color-scheme:dark}}body{{max-width:860px;margin:7vh auto;padding:24px;font:16px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;background:#071016;color:#d8e1df}}a{{color:#ff8a5b}}code{{color:#ffd3c2}}.dim{{color:#8fa29e}}li{{margin:.45rem 0;overflow-wrap:anywhere}}</style></head><body>{body}</body></html>'''
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>{escape(title)}</title><link rel="alternate" type="application/json" href="/crawlerbait/state.json"><style>:root{{--type-rn4:0.25rem;--type-rn3:0.3535533905932738rem;--type-rn2:0.5rem;--type-rn1:0.7071067811865476rem;--type-r0:1rem;--type-rp1:1.4142135623730951rem;--type-rp2:2rem;--type-rp3:2.8284271247461903rem;--type-rp4:4rem;color-scheme:dark}}body{{max-width:860px;margin:7vh auto;padding:24px;font:var(--type-r0)/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;background:#071016;color:#d8e1df}}h1{{font-size:var(--type-rp2)}}h2{{font-size:var(--type-rp1)}}a{{color:#ff8a5b}}code{{color:#ffd3c2}}.dim{{color:#8fa29e}}li{{margin:.45rem 0;overflow-wrap:anywhere}}</style></head><body>{body}</body></html>'''
 
 
 def render_public(state: dict):

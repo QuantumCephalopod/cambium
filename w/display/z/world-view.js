@@ -39,7 +39,7 @@ function drawTwin(){
       const rad=active?6:4.6;tc.beginPath();tc.arc(p.x,p.y,rad,0,Math.PI*2);tc.fillStyle=active?'rgba(255,255,255,.98)':'rgba(241,239,233,.68)';tc.fill();
       if(active){tc.beginPath();tc.arc(p.x,p.y,rad+7,0,Math.PI*2);tc.strokeStyle='rgba(255,255,255,.58)';tc.stroke()}
     }
-    tc.fillStyle=active?'rgba(241,239,233,.86)':'rgba(241,239,233,.54)';tc.font=(active?'13':'11')+'px "SpriteSheet Mono",ui-monospace,monospace';tc.fillText(label,p.x+15,p.y+4);
+    const labelPx=globalThis.SSSDisplayType.rankPx(-1,document);tc.fillStyle=active?'rgba(241,239,233,.86)':'rgba(241,239,233,.54)';tc.font=labelPx+'px "SpriteSheet Mono",ui-monospace,monospace';tc.fillText(label,p.x+15,p.y+4);
   }
 }
 /* Canvas ink must be repainted when the hosted face finishes loading. */

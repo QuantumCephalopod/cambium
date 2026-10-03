@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.15"
+version: "3.16"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -108,6 +108,24 @@ Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives direc
 Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 2.0.0), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v2 build is the main type for both Display font tokens, with 1024 units per em; every glyph sits centred in one fixed 1024-unit cell, and fixed width is part of the face's identity, so a correction that lets letters drift out of their cells is a wound to the face. The alphabet is A–Z and space: rendered text is folded into it (`Ä→AE`, `Ö→OE`, `Ü→UE`, `ß→SS`, case kept) by `w/display-type.js`, and digits and marks fall back glyph by glyph to the next family. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
 
 Entry-copy scale belongs to the site's actual mounted content class, not an obsolete carrier selector. The overview introduction remains secondary to the field, with bounded responsive type and a width tied to its real panel. `ch` is not a truthful main-alphabet cell here: it measures the zero glyph or its fallback measure, while this face has no zero glyph. Typography does not alter semantic labels, camera, body geometry or navigation.
+
+#### Fractal type scale — one half-octave lattice
+
+Display's type sizes use one self-similar power-of-two lattice rooted in the browser/user root font size:
+
+`size(r) = 1rem · 2^(r/2)`
+
+Two adjacent rank steps recover one exact octave. The browser/user owns `1rem`; Display never hard-sets the `html` root font size.
+
+The same relation is carried across rendering substrates:
+- CSS exposes the shared ranks as `--type-rn4 … --type-rp4`;
+- `w/display-type.js` exposes the same mathematical rank factor and derives Canvas/Pretext pixels from the **computed** root `rem`;
+- DOM, Canvas and Pretext consumers choose ranks from that one relation rather than maintaining a parallel pixel scale;
+- standalone public apertures realize the same relation locally and are not forced to import Display-internal CSS.
+
+Site-holons retain local typographic sovereignty: they choose which ranks they use and may shift a bounded local typographic origin when concrete local pressure requires it, but every locally shifted rank remains `local_origin · 2^(r/2)`. Philosophy's narrow overview uses `0.875rem` as its local origin so the compactness earned in PR #164 survives while the relation remains the same lattice.
+
+A non-lattice size is admissible only when concrete local functional pressure requires that exact exception; convenience or inherited arbitrary pixels do not create a second size ontology.
 
 Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
 
@@ -235,3 +253,5 @@ Version 3.13 text-tissue correction (2026-10-01): the letters-as-bodies engine g
 Version 3.14 font-v2 correction (2026-10-02): the supplied SpriteSheet Mono v2 bytes replace Mono under the same `@sss/spritesheet` identity and member paths, now package 2.0.0 with 1024-unit em and fixed cells; Regular remains 1.0.1. Schattenseiten's HUD inherits Display's main face, and global minimap canvas labels use it with the same rendered-text folding and a redraw after font loading. Text-tissue law, source spelling and navigation identity remain intact.
 
 Version 3.15 live-type-and-frame-work correction (2026-10-03): Philosophy's overview copy is bound to its mounted class with compact responsive typography. The generic runtime shares one derived anatomy per mounted source snapshot; own gene-label updates leave body labels alone, and label-ink style reads are reused only within the current collection. Source meaning, font bytes, dynamic rendering, geometry, glass and pointer identities remain intact.
+
+Version 3.16 fractal-type-scale correction (2026-10-03): Display type size is now one browser-rooted half-octave power-of-two lattice across shared CSS, site-holon DOM type, Canvas/Pretext ink and standalone public apertures. Site-holons choose ranks and may shift a local origin while preserving the same ratio; Philosophy's narrow origin preserves the compact PR #164 witness. `INDEX.yaml` and `_cambium.yaml` remain unchanged because no new structural distinction was earned.

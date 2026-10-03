@@ -142,7 +142,7 @@
   transform:translateX(-50%);
   width:max-content;
   max-width:210px;
-  font:8px/1 var(--mono);
+  font:var(--type-rn2)/1 var(--mono);
   letter-spacing:.13em;
   text-transform:uppercase;
   text-align:center;
@@ -156,7 +156,7 @@
   transform:translateX(-50%);
   width:210px;
   text-align:center;
-  font:8px/1.25 var(--mono);
+  font:var(--type-rn2)/1.25 var(--mono);
   letter-spacing:.08em;
   text-transform:uppercase;
   color:rgba(241,239,233,.58);
@@ -190,7 +190,7 @@
   bottom:-14px;
   transform:translateX(-50%);
   width:230px;
-  font:7px/1.25 var(--mono);
+  font:var(--type-rn2)/1.25 var(--mono);
   letter-spacing:.02em;
   text-align:center;
   color:rgba(241,239,233,.28);
@@ -226,8 +226,8 @@ html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket::before{display:block;content:"";position:absolute;inset:-22px;z-index:-1;clip-path:none;border:0;pointer-events:none;background:radial-gradient(closest-side,rgba(5,7,10,.6),rgba(5,7,10,.34) 58%,rgba(5,7,10,0))}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini[data-aperture="open"] #mini-pocket{transform:none;clip-path:none;pointer-events:none}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini-core{left:0;top:0;width:100%;height:100%;transform:none}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-title{left:calc(30px + var(--hud-t) / 2);top:0;max-width:calc(var(--hud-t) + 16px);font-size:7px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-state{left:calc(30px + var(--hud-t) / 2);top:12px;width:calc(var(--hud-t) + 16px);font-size:7px}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-title{left:calc(30px + var(--hud-t) / 2);top:0;max-width:calc(var(--hud-t) + 16px);font-size:var(--type-rn2)}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-state{left:calc(30px + var(--hud-t) / 2);top:12px;width:calc(var(--hud-t) + 16px);font-size:var(--type-rn2)}
 html:not([data-composition="split"]):not([data-composition="grid"]) #navTwin{left:30px;top:26px;width:var(--hud-t);height:var(--hud-t);filter:drop-shadow(0 0 5px rgba(5,7,10,.85))}
 html:not([data-composition="split"]):not([data-composition="grid"]) #navTwin:focus-visible{filter:drop-shadow(0 0 5px rgba(5,7,10,.85)) drop-shadow(0 0 10px rgba(255,255,255,.22))}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini .axis::before{background:rgba(241,239,233,.3)}
@@ -239,7 +239,7 @@ html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x::before{left:8px;right:8px;top:14px}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x .knob{top:14px}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x .axis-letter{top:10px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-help{left:30px;bottom:auto;top:calc(var(--hud-t) + 62px);transform:none;width:calc(var(--hud-t) - 12px);font-size:7px;text-align:left}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-help{left:30px;bottom:auto;top:calc(var(--hud-t) + 62px);transform:none;width:calc(var(--hud-t) - 12px);font-size:var(--type-rn2);text-align:left}
 @media(max-width:760px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:138px}}
 @media(max-width:520px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:118px}}
 /* a short viewport has no room under the header for the captions: keep the instruments, drop the words */
@@ -297,8 +297,8 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
   #navTwin{left:27px;top:28px;width:150px;height:150px}
   #mini #axis-x{left:43px;width:122px;bottom:4px}
   #mini #axis-y{left:4px;top:43px;height:122px}
-  #mini-title{top:0;font-size:7px}
-  #mini-state{top:13px;font-size:7px;width:180px}
+  #mini-title{top:0;font-size:var(--type-rn2)}
+  #mini-state{top:13px;font-size:var(--type-rn2);width:180px}
   #mini-help{display:none}
 }
 @media(max-width:520px){
