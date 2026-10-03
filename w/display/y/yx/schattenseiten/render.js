@@ -96,6 +96,12 @@ void main(){
  * turned, it breaks into faces. Nothing drifts. */
 const BODY={list:[],gl:null,dim:0,last:0,L:null};
 const SZ=512,LEVELS=10;
+/* Fat declares the sized member; choose it before requesting the bytes. */
+function mediaUrl(src){
+  const candidate=P?.media_variants?.[String(SZ)]?.[src];
+  const member=typeof candidate==='string'&&candidate&&!/^(?:[a-z]+:|\/)/i.test(candidate)&&!candidate.split('/').includes('..')?candidate:src;
+  return (P?.fat||'')+member;
+}
 const VS=`#version 300 es
 precision highp float;
 uniform mat4 uProj,uView,uModel;uniform vec4 uB[64];
@@ -138,7 +144,7 @@ function startLoading(gl,L){
   const queue=BODY.list.map((b,i)=>i);let running=0;
   const pump=()=>{
     while(running<5&&queue.length&&BODY.gl===gl){
-      const i=queue.shift(),url=(P?.fat||'')+BODY.list[i].src;running++;
+      const i=queue.shift(),url=mediaUrl(BODY.list[i].src);running++;
       (typeof createImageBitmap==='function'?fetchBitmap(url):legacyImage(url))
         .then(src=>{if(BODY.gl===gl)upload(gl,L,i,src);if(src.close)src.close()})
         .catch(()=>{}).finally(()=>{running--;pump()});
@@ -197,9 +203,9 @@ function showWork(w){
   if(!panel)return;panel.replaceChildren();panel.hidden=!w;if(!w)return;
   const t=T[lang()],n=String(w.source||'').replace('cluster','');
   const b=block(w.id,`${t.rank} ${w.rank} · ${t.row} ${w.row}`);b.append(el('p','ss-meta',w.source==='forest'?t.forest:t.from(n)));
-  if(w.cluster_positive){const f=el('figure','ss-cluster');for(const k of ['cluster_positive','cluster_negative']){const i=el('img');i.src=P.fat+w[k];i.alt='';i.decoding='async';f.append(i)}
+  if(w.cluster_positive){const f=el('figure','ss-cluster');for(const k of ['cluster_positive','cluster_negative']){const i=el('img');i.src=mediaUrl(w[k]);i.alt='';i.decoding='async';f.append(i)}
     f.append(el('figcaption','',t.cluster));b.append(f)}
-  if(w.animation){const i=el('img','ss-anim');i.src=P.fat+w.animation;i.alt='';i.decoding='async';b.append(i)}
+  if(w.animation){const i=el('img','ss-anim');i.src=mediaUrl(w.animation);i.alt='';i.decoding='async';b.append(i)}
   panel.append(b);
 }
 let LAST=null;

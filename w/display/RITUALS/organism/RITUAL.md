@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.14"
+version: "3.15"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -81,6 +81,12 @@ Therefore two site-holons may look and behave radically differently while the sa
 
 Default mutation law: if pressure originates in one site-holon, keep the change inside that body. Lift tissue into Display only when the change is genuinely specimen-agnostic, required by arbitrary future site-holons, and leaves semantic/local behavior in the site body. Central Display must never learn Papers-, Philosophy- or Crawlerbait-specific meaning merely to support their local expression.
 
+### Mounted anatomy and frame work
+
+The current static runtime parses one source snapshot per mounted site. Derive that site's `fieldProjection` once during mounted-field initialization and share the same projected anatomy between its own field, host environment and floating body. View, language, activity and address-remount movement do not recreate that source anatomy. A new source snapshot requires new mounted-field/runtime initialization; this is not a new in-place update API. Dynamic appearance and movement remain in source-owned render/shader hooks.
+
+Each field's gene-label update owns only its four gene labels; it must not hide autonomous body labels because those have no gene tag. Reuse the frame's canvas rectangle within that draw. Refracted label ink may reuse computed styles within one collection only, while reading current DOM text, geometry, opacity and source styles afresh in the next collection. Atlas identity, GL-state restoration, fallback paint and geometry remain intact.
+
 ### Identity-resolved foreign embodiment
 
 Display may host an intact foreign code body at the **currently truthful semantic locus** without tetrahedralizing that body's interior or inventing a new semantic container merely for custody. A foreign body remains one occupant until real local pressure earns finer Display addressability.
@@ -100,6 +106,8 @@ Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives direc
 ### Type is body
 
 Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 2.0.0), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v2 build is the main type for both Display font tokens, with 1024 units per em; every glyph sits centred in one fixed 1024-unit cell, and fixed width is part of the face's identity, so a correction that lets letters drift out of their cells is a wound to the face. The alphabet is A–Z and space: rendered text is folded into it (`Ä→AE`, `Ö→OE`, `Ü→UE`, `ß→SS`, case kept) by `w/display-type.js`, and digits and marks fall back glyph by glyph to the next family. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
+
+Entry-copy scale belongs to the site's actual mounted content class, not an obsolete carrier selector. The overview introduction remains secondary to the field, with bounded responsive type and a width tied to its real panel. `ch` is not a truthful main-alphabet cell here: it measures the zero glyph or its fallback measure, while this face has no zero glyph. Typography does not alter semantic labels, camera, body geometry or navigation.
 
 Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
 
@@ -225,3 +233,5 @@ Version 3.12 invariant-glass-over-own-canvases correction (2026-10-01): a site t
 Version 3.13 text-tissue correction (2026-10-01): the letters-as-bodies engine grew into `w · Embodiment` with its first consumer, Papers' open organisms.
 
 Version 3.14 font-v2 correction (2026-10-02): the supplied SpriteSheet Mono v2 bytes replace Mono under the same `@sss/spritesheet` identity and member paths, now package 2.0.0 with 1024-unit em and fixed cells; Regular remains 1.0.1. Schattenseiten's HUD inherits Display's main face, and global minimap canvas labels use it with the same rendered-text folding and a redraw after font loading. Text-tissue law, source spelling and navigation identity remain intact.
+
+Version 3.15 live-type-and-frame-work correction (2026-10-03): Philosophy's overview copy is bound to its mounted class with compact responsive typography. The generic runtime shares one derived anatomy per mounted source snapshot; own gene-label updates leave body labels alone, and label-ink style reads are reused only within the current collection. Source meaning, font bytes, dynamic rendering, geometry, glass and pointer identities remain intact.
