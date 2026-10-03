@@ -36,6 +36,11 @@ for(const rel of ['z/world-view.js','y/yy/papers/sierpinski.js']){
   const source=fs.readFileSync(path.join(displayRoot,rel),'utf8');
   assert.ok(!/["'`][^"'\n`]*\d+(?:\.\d+)?px\b/.test(source),rel+' contains a literal Canvas/Pretext pixel font');
 }
+const philosophy=fs.readFileSync(path.join(displayRoot,'y/philosophy/style.css'),'utf8');
+const origin=Number((philosophy.match(/--philosophy-type-r0:([\d.]+)rem/)||[])[1]);
+const below=Number((philosophy.match(/--philosophy-type-rn1:([\d.]+)rem/)||[])[1]);
+assert.ok(Math.abs(origin-.875)<1e-12,'Philosophy narrow origin must preserve PR #164 compactness');
+assert.ok(Math.abs(origin/below-Math.SQRT2)<1e-12,'Philosophy narrow ranks must remain on the shared half-octave lattice');
 assert.strictEqual(T.fold('Du gefällst mir. Mir gefällst du.'),'Du gefaellst mir. Mir gefaellst du.');
 assert.strictEqual(T.fold('ÄÖÜ äöü Grüße GROẞ'),'AEOEUE aeoeue Gruesse GROSS');
 assert.strictEqual(T.fold('79S · 66H'),'79S · 66H','digits and marks are left for per-glyph fallback');
