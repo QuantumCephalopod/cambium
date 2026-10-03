@@ -9,7 +9,17 @@
 })(typeof globalThis==='object'?globalThis:this,function(root){
   'use strict';
   const IDENTITY='@sss/spritesheet';
+  const ROOT_REM_FALLBACK=16;
   const FACES=[['SpriteSheet Mono','SpriteSheet-Mono.woff2'],['SpriteSheet','SpriteSheet-Regular.woff2']];
+  function rankFactor(rank){if(!Number.isInteger(rank))throw new TypeError('type rank must be an integer');return 2**(rank/2)}
+  function rankVar(rank){if(!Number.isInteger(rank))throw new TypeError('type rank must be an integer');return '--type-r'+(rank<0?'n'+Math.abs(rank):rank>0?'p'+rank:'0')}
+  function rankRem(rank){return rankFactor(rank)+'rem'}
+  function rootRemPx(doc=root.document){
+    if(!doc?.documentElement)return ROOT_REM_FALLBACK;
+    const view=doc.defaultView||root,px=parseFloat(view?.getComputedStyle?.(doc.documentElement)?.fontSize);
+    return Number.isFinite(px)&&px>0?px:ROOT_REM_FALLBACK;
+  }
+  function rankPx(rank,doc=root.document){return rootRemPx(doc)*rankFactor(rank)}
   const MAP={'Ä':'AE','Ö':'OE','Ü':'UE','ä':'ae','ö':'oe','ü':'ue','ß':'ss','ẞ':'SS'};
   const ANY=/[ÄÖÜäöüßẞ]/,ALL=/[ÄÖÜäöüßẞ]/g;
   const SKIP=new Set(['SCRIPT','STYLE','TEXTAREA','INPUT','NOSCRIPT']);
@@ -39,5 +49,5 @@
       for(const r of records){if(r.type==='characterData')foldNode(r.target);else for(const n of r.addedNodes)foldNode(n)}
     }).observe(document.body,{subtree:true,childList:true,characterData:true});
   }
-  return Object.freeze({IDENTITY,fold,foldNode,faceUrl,start});
+  return Object.freeze({IDENTITY,rankFactor,rankVar,rankRem,rootRemPx,rankPx,fold,foldNode,faceUrl,start});
 });
