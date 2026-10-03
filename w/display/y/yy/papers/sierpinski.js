@@ -166,7 +166,7 @@ function ensurePretext(){
 
 function typePx(rank){const T=globalThis.SSSDisplayType;if(!T?.rankPx)throw new Error('Display type scale missing');return T.rankPx(rank,document)}
 function typeFont(rank,weight=500,family='"SpriteSheet Mono", system-ui, sans-serif'){return weight+' '+typePx(rank)+'px '+family}
-function monoFont(rank,weight=400){return weight+' '+typePx(rank)+'px ui-monospace, monospace}
+function monoFont(rank,weight=400){return weight+' '+typePx(rank)+'px ui-monospace, monospace'}
 function clamp(x,a=0,b=1){return Math.max(a,Math.min(b,x))}
 function mix(a,b,t){return a+(b-a)*t}
 function mix3(a,b,t){return a.map((v,i)=>mix(v,b[i],t))}
