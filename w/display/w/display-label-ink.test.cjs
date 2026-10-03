@@ -1,6 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict');
 const Ink=require('./display-label-ink.js'),T=Ink._test;
+for(const [computed,keyword] of [['100%','normal'],['75%','condensed'],['125%','expanded'],['normal','normal'],['semi-condensed','semi-condensed'],['93%','normal'],[undefined,'normal']])assert.equal(T.canvasStretch(computed),keyword,'canvas stretch for '+computed);
 const near=(actual,expected)=>assert.ok(Math.abs(actual-expected)<1e-6,`${actual} != ${expected}`);
 
 function fixture(){

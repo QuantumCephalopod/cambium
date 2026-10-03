@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.4"
+version: "1.5"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -70,7 +70,7 @@ Display `y / Population` is itself a membrane into global page-organism site-spa
 
 `display:y ⟦ site-space:ε ⟧`
 
-Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current first population includes Philosophy at site-space overview, Crawlerbait at site-space `w / Form`, and Papers at site-space `y / Inquiry`.
+Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current population: Philosophy at site-space overview, Crawlerbait at `w / Form`, Schattenseiten at `x / Continuity`, Papers at `y / Inquiry`, Datenschutz at `z / Care`, and Impressum at the unnamed quotient midpoint `xz`. The Population tree remains the authority; this list only orients re-entry.
 
 Host continuity/orientation/renewal remain host interfaces across the Display boundary; they do not become Display child vertices merely because similar functional relations recur locally.
 

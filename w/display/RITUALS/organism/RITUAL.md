@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.16"
+version: "3.17"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -52,11 +52,14 @@ A site-holon is one movable body. Its `site.json` declares stable identity, loca
 
 Address is environment, not identity. Moving the whole body to another lawful Population address must remount it without editing its internal bytes.
 
-Current first bodies:
+Current bodies (the tree is the authority; this list only orients re-entry):
 
 - `w/display/y/philosophy/` -> global `ε / overview` -> `organism:philosophy`;
 - `w/display/y/yw/crawlerbait/` -> global `w / Form` -> `organism:crawlerbait`;
-- `w/display/y/yy/papers/` -> global `y / Inquiry` -> `organism:papers`.
+- `w/display/y/yx/schattenseiten/` -> global `x / Continuity` -> `organism:schattenseiten`;
+- `w/display/y/yy/papers/` -> global `y / Inquiry` -> `organism:papers`;
+- `w/display/y/yz/datenschutz/` -> global `z / Care` -> `organism:datenschutz`;
+- `w/display/y/yxz/impressum/` -> global `xz` -> `organism:impressum`. `xz` is a quotient midpoint with no semantic noun of its own; the address is given bare rather than inventing one.
 
 Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `y`. Crawlerbait remains locally rooted at `crawlerbait:ε`; its machine-facing HTTP bait routes are local public apertures, not additional global site-space addresses.
 
@@ -182,7 +185,7 @@ Display keeps alive across every encounter:
 - recursive split-cell centroid camera framing;
 - Descent: one container→content gesture at every rank and across membranes (navigation `Descent`);
 - target-origin tetrahedral closure transition;
-- activity receptor and browser encounter/history body.
+- activity receptor and browser encounter/history body, in which the `#scope:address` hash is both witness and input (navigation `Address hash`).
 
 Entering an interlocutor never hands the global minimap to its local recursive space; descent and ascent are one gesture on both sides of the membrane.
 
@@ -255,3 +258,5 @@ Version 3.14 font-v2 correction (2026-10-02): the supplied SpriteSheet Mono v2 b
 Version 3.15 live-type-and-frame-work correction (2026-10-03): Philosophy's overview copy is bound to its mounted class with compact responsive typography. The generic runtime shares one derived anatomy per mounted source snapshot; own gene-label updates leave body labels alone, and label-ink style reads are reused only within the current collection. Source meaning, font bytes, dynamic rendering, geometry, glass and pointer identities remain intact.
 
 Version 3.16 fractal-type-scale correction (2026-10-03): Display type size is now one browser-rooted half-octave power-of-two lattice across shared CSS, site-holon DOM type, Canvas/Pretext ink and standalone public apertures. Site-holons choose ranks and may shift a local origin while preserving the same ratio; Philosophy's narrow origin preserves the compact PR #164 witness. `INDEX.yaml` and `_cambium.yaml` remain unchanged because no new structural distinction was earned.
+
+Version 3.17 address-hash and re-entry-truth correction (2026-10-03): the global `#scope:address` hash became an input as well as a witness (navigation 3.3); back/forward no longer throws on a call left behind when `reconcile()` was retired; canvas label ink receives canvas `fontStretch` keywords instead of computed percentages. The current-body list now names all six physically mounted site-holons. `INDEX.yaml` and `_cambium.yaml` remain unchanged.

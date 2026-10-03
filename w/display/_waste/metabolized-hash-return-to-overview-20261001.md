@@ -1,3 +1,5 @@
+<!-- retired 2026-10-03 (HOME `display-address-hash-input-20261003T204116Z`): exit met. The hash is now an input as well as a witness (navigation RITUAL 3.3 `Address hash`, `x/display-runtime-v2.js`); a hand-made `#main:overview`, a deep link and back/forward were witnessed moving the encounter in Chromium. Cause: `popstate` with null state was ignored, and startup overwrote any arriving hash with overview. The status line below is the state at admission. -->
+
 # NUTRIENT — changing the address hash back to overview did not move the encounter — 2026-10-01
 
 status: OPEN — single observation, cause not investigated

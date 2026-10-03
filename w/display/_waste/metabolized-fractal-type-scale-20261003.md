@@ -1,3 +1,5 @@
+<!-- retired 2026-10-03 (HOME `display-reentry-truth-clearance-20261003T204116Z`): spent. Assimilated at HOME `display-fractal-type-scale-20261003T152316Z`, law carried by Display organism RITUAL 3.16, feed reflects that HOME, and owner promotion closed with the merge of `self-similar-systems/cambium#165`. Only the derived `_feed` referenced this carrier. The status line below is the state at assimilation. -->
+
 # NUTRIENT — fractal power-of-two type scale + blocked staging carry — 2026-10-03
 
 status: ASSIMILATED / HOME EARNED — fractal type lattice normalized in staging
