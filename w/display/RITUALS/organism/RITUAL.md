@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.20"
+version: "3.21"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -284,4 +284,6 @@ Version 3.18 canonical-ui-grid correction (2026-10-04): Display gained a specime
 
 Version 3.19 frame-clear/re-entry correction (2026-10-04): write masks/scissor are reset before full frame and host/point depth clears. Previously the custom bodies' written depth survived a masked clear after a transparent generic tail body, leaving stale occlusion across frames. Revealing a cached host also restores its current-container camera rather than keeping the prior body-entry zoom; explicit membrane zoom-out remains intact. Existing field/runtime contracts carry these repairs; no body geometry, material, topology or history semantics change is earned.
 
-Version 3.20 bounded interior preview (2026-10-04): an identity-owned optional `shader.preload` starts its admitted low-tier queue; `shader.preview` draws its interior under the existing host lens using the same body pose/model. Preview ink follows final glass sampling so nearest/pixelated media is not smoothed again; the site clips and restores context state. Site owns interior/media policy and Display names no site. No soft-lock, new geometry or topology is implied.
+Version 3.20 bounded interior preview (2026-10-04): an identity-owned optional `shader.preload` starts its admitted low-tier queue; `shader.preview` draws its interior under the existing host lens using the same body pose/model. The original post-glass placement bypassed the lens optics and is superseded by3.21 below. Site owns interior/media policy and Display names no site. No soft-lock, new geometry or topology is implied.
+
+Version 3.21 shared preview optics correction (2026-10-04): the site-owned interior renders into a transparent context-local input target before the final glass pass. The shared glass shader samples that target with the scene's exact magnification/refraction/channel offsets and masks it with the existing lens shape; tint, rim, shadow and specular response apply to both. Nearest low-tier source/input sampling remains compatible with these optics. The scene stays coarse outside the lens; preview target clears/reallocation/disposal remain field-owned. No duplicated site-specific optics, source policy, geometry or topology change.
