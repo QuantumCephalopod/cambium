@@ -13,7 +13,7 @@ Current Display law 3.17 and `_root/display-live-type-performance-sized-media-20
 
 > is live!!! checks gern mal aus... ich hab das gefühl die fontsize is too large was denkst du? wird bissi unübersichtlich am anfang <333 und kannst du mal nach perfomrance bottlenecks schaun? <33
 
-At admission on 2026-10-03, PR #163 was merged at `ba70c05000ec3299c35b21e581a80bab0362063d`; the then-current canonical source was `f3b82fb355d344a84f877bab3aa0a0231de436a0`. This is the dated admission witness; the cleanup base is 8ade3e65. Live overview was personally re-encountered before source inspection. The current source differs from the previous verified font head only in Display's derived feed.
+At admission on 2026-10-03, PR #163 was merged at `ba70c05000ec3299c35b21e581a80bab0362063d`; the then-current canonical source was `f3b82fb355d344a84f877bab3aa0a0231de436a0`. This is the dated admission witness; the cleanup base is 8ade3e65. At that admission, the live overview was personally re-encountered before source inspection. That Oct3 source differed from the previous verified font head only in Display's derived feed.
 
 ## exit
 
