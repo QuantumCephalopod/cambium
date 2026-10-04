@@ -1,6 +1,6 @@
 # UPLINK — Display canonical address state → Cambium — 2026-10-04
 
-status: OPEN / FOREIGN CHILD RETURN
+status: ASSIMILATED / HOST HOME EARNED
 kind: child→host dependency request + UPLINK
 source_organism: github.cambium → display
 source_home_event: display-canonical-ui-grid-20261004T111900Z
@@ -51,3 +51,24 @@ The following remain Display-local and must NOT become Cambium root law:
 - Display `INDEX.yaml` / `_cambium.yaml`: unchanged.
 
 The host must independently decide whether the bounded candidate is already law, a wording clarification, or a real mutation. Transport does not create host truth.
+
+
+## host assimilation — 2026-10-04
+
+**PASS / EARNED, bounded.**
+
+Cambium already owned unbounded recursive `1→4` addressability, fixed CCCC DNA, stable-address identity and child→host backpropagation. The Display return therefore did **not** earn a new split or new structural noun.
+
+The genuinely new host-level distinction is narrower:
+
+`recursive address state → deterministic carrier projection`
+
+and, when sufficient:
+
+`address-native delta → replay → independently derived carrier witness`
+
+Canonical textual serialization/sort order is now explicitly `w,x,y,z`; this is kept separate from the fixed semantic phase mapping `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE`.
+
+All Display-local geometry and UI grammar named in the refusal section remain refused.
+
+No root `INDEX.yaml` or `_cambium.yaml` change was earned.

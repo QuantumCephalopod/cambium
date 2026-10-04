@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.5"
+version: "1.6"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -24,7 +24,7 @@ Root `INDEX.yaml` remains:
 - `z · orientation`
 - `y · renewal`
 
-Root `_cambium.yaml` is the closed host `4V/6E/4F/1T`. Raw `w/x/z/y` folders are stable carrier addresses; mutable semantic nouns live in INDEX.
+Root `_cambium.yaml` is the closed host `4V/6E/4F/1T`. Raw recursive address symbols are canonically serialized/sorted as `w/x/y/z`; their fixed semantic DNA remains `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE`, and mutable semantic nouns live in INDEX.
 
 ## lifecycle shell
 
@@ -50,6 +50,22 @@ A parent→child membrane restart is structural law expressed by anatomy and rec
 The restart must not be represented by a bespoke semantic file type that exists only at one boundary. One-off `interface.md`, `ROLE.md`, or similar marker files are not organism primitives unless the same receptor is rank-invariantly part of the organism law. Structure is witnessed by actual carried tissue together with `INDEX`, `_cambium`, lifecycle shell and RITUALS.
 
 This law applies recursively at arbitrary rank. Child-specific implementation details do not backpropagate merely because the child learned them; only distinctions that remain valid under rank substitution belong here.
+
+### canonical address state and carrier projection
+
+A realized recursive address is canonical organism/state identity before any one carrier's coordinates. Textual address serialization/sort order is `w, x, y, z`; that communication order does **not** remap the inherited CCCC semantic DNA `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE`.
+
+When a carrier exposes a deterministic projection from recursive address state to geometry, layout or placement:
+
+- canonical state preserves the realized recursive addresses and the bounded occupancy/relations that current law actually needs;
+- screen pixels, voxels, canvas coordinates, provider rows/columns or other carrier coordinates are derived witnesses unless independent pressure earns them as semantic state;
+- potential descendants are not materialized merely because the projection can compute them;
+- when a mutation's carrier consequence is completely determined by an address-level change, that change may cross a membrane as a replayable address-native delta rather than as measured coordinates or a screenshot;
+- the receiving carrier must derive and witness its own projection. A child-specific command grammar, UI shape, axis convention or renderer never becomes Cambium law merely because the address delta is portable.
+
+Display's canonical UI grid is the first explicit witness of this relation: one exported recursive state reproduced the intended placement across viewport sizes while coordinates changed. Its concrete 2D `w x / y z` projection remains Display-local.
+
+Compression: **preserve the recursive address relation; derive the carrier coordinates; transmit the smallest replayable address delta.**
 
 ## differentiated Display child organ
 
