@@ -1,0 +1,200 @@
+{
+  "event_id": "display-frame-clear-and-host-reentry-20261004T140212Z",
+  "home_at_utc": "2026-10-04T14:02:12Z",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "repair-frame-clear-and-cached-host-reentry",
+  "outcome": "PASS/EARNED in staging — stale depth occlusion and retained host-entry zoom reproduced, generically repaired, native-checked and foreground browser-witnessed; canonical promotion/live acceptance remains open.",
+  "changed_scope": [
+    "w/locus-shader.js: complete-target clear reset before frame/host/point clears; existing arrival API restores current-container frame",
+    "x/display-runtime-v2.js: newly revealed identities re-enter through arrival API; same-identity language/activity repaint does not restart camera",
+    "w/locus-shader.test.cjs and x/display-runtime-v2.test.cjs: source-failing state/frame and re-entry regressions; y/check.py invokes new field witness",
+    "RITUALS/organism 3.18→3.19: current clear and cached-field re-entry responsibility",
+    "_stomach/NUTRIENT__custom-mounted-body-trail-artifact__20261003.md narrowed to witnessed staging repair and promotion/live limits"
+  ],
+  "context": {
+    "actor": "Forge source/implementation/tests + foreground Mnemos browser A/B/return QA with Philipp, 2026-10-04",
+    "canonical_base": "bef6eec993a7a86ea350e87937e78bc5f196f710",
+    "carrier": "QuantumCephalopod/cambium:staging/floating-body-state-repair-20261004",
+    "publication_authorization": "staging push to QuantumCephalopod/cambium and draft canonical PR only; no merge/deploy",
+    "shared_root_field": "Previously read complete Dive-in2.8/Metabolism3.5/Cambium3.4/Drive1.6; metadata confirms all four unchanged since Oct3",
+    "cause": {
+      "depth": "custom bodies write depth; transparent generic tail leaves depth mask false; later clear is masked, preserving stale occlusion. Direct overview composite=0 reproduces it.",
+      "camera": "body-entry camera target persists in hidden cached host; unchanged ε bypasses refresh. Only explicit membrane-ascent previously called arriveFrom; root-home/global/keyboard surface return did not."
+    },
+    "independent_readback": {
+      "canonical_base": "bef6eec993a7a86ea350e87937e78bc5f196f710",
+      "publication_authorization": "staging push to QuantumCephalopod/cambium and draft canonical PR only; no merge/deploy",
+      "source_digests": {
+        "w/display/w/locus-shader.js": {
+          "before_git_blob_sha256": "b50fb18f5be3cc5d0d309b03c118e82c8845d02f6ab95780c202fbf23ae0abc3",
+          "after_normalized_sha256": "877abde8f4e0addd73462d88a2d11a75c6a5b997e92efc2e6a918695e262910a"
+        },
+        "w/display/x/display-runtime-v2.js": {
+          "before_git_blob_sha256": "572ad66eb6489c6eddfc8b208749d5372da87fb0bc79a4bd918ac0f75b4c86f1",
+          "after_normalized_sha256": "62ffbcd657b992e34df33a72145c984a36b76388bf2a583aa8aff32978459de3"
+        },
+        "w/display/x/display-runtime-v2.test.cjs": {
+          "before_git_blob_sha256": "b598bae13f2358219a087aa44f418ed779ff0bb051670c6cb4d1f68f1ae8f4f4",
+          "after_normalized_sha256": "8554acd12925c998d31760eb09d92430798599dcbcc9027e6c02080f7a07c72a"
+        },
+        "w/display/RITUALS/organism/RITUAL.md": {
+          "before_git_blob_sha256": "b8fbab0c716c8ca602f09f21fc399485868bf48d66f89f2d05138eed7d85fbdf",
+          "after_normalized_sha256": "4b0907a681e3b8f269b58ed2f09e5153690741f27bd2609c778bf236856a332d"
+        },
+        "w/display/_stomach/NUTRIENT__custom-mounted-body-trail-artifact__20261003.md": {
+          "before_git_blob_sha256": "0e3877320cd8987a687637d34725d9356ba76f9da7c7868ca15252a8afbff398",
+          "after_normalized_sha256": "77c6838955a14aef496dfa627d44d1accdcf7ed64861d95bd0dadf771dd82c73"
+        },
+        "y/check.py": {
+          "before_git_blob_sha256": "13b545206899a433ee9d8da7a2d295de1f725ef62c3d66d52001862269e9ae21",
+          "after_normalized_sha256": "531c19f0275cadb9b727713431287fe85a0451bd0059e6299ee93d81b696cfc2"
+        }
+      },
+      "artifact": {
+        "canonical_base": "bef6eec993a7a86ea350e87937e78bc5f196f710",
+        "baseline_bundle": "eb548b32a7ec3a36",
+        "first_clear_only_bundle": "00837123662f5a83",
+        "final_bundle": "c92d0ec39b055cce",
+        "shared_native_files": 49,
+        "full_aperture_files": 56,
+        "changed_public_members_after_bundle_path_normalization": [
+          "assets/BUNDLE/display-runtime-v2.js",
+          "assets/BUNDLE/locus-shader.js",
+          "index.html"
+        ],
+        "final_shared_files_byte_identical_in_full_artifact": true,
+        "baseline_source_matches_exact_canonical_commit": true,
+        "source_only_preview": "http://127.0.0.1:56543/fix-return/",
+        "final_full_preview": "http://127.0.0.1:56543/fix-return-full/",
+        "immutable_comparison_paths": [
+          "base",
+          "fix",
+          "fix-return",
+          "fix-return-full"
+        ]
+      },
+      "native_check": {
+        "status": "pass",
+        "checks": 118082,
+        "bundle": "c92d0ec39b055cce",
+        "full_aperture_exact_check": "pass, all56 files",
+        "host_adapter": "only python3 token replaced with installed Python3 sys.executable; native scripts/args remain; outside sandbox allowed existing child-process witnesses"
+      },
+      "regressions": {
+        "original_source": "masked frame depth clear assertion fails",
+        "first_clear_only_source": "cached host re-entry retained body-entry zoom assertion fails",
+        "old_runtime": "root-home callback absent assertion fails",
+        "final_field": "pass, clear masks/pass targets and identity/geometry/order plus both opaque cohorts at both viewport sizes",
+        "final_runtime": "pass, cached-field root-home/global/Escape return, explicit membrane place override, no repaint restart"
+      },
+      "qa_evidence": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\qa-evidence.json",
+        "sha256": "89f98495f5270f1b023a07a2020947bb495e5a7ae0e5e016da799c702c78294f"
+      },
+      "scope": "Existing Display field/runtime; no site-body internals, navigation topology/history, unrelated performance, constitution, Tools, PR168 or old checkout changes"
+    },
+    "qa": {
+      "actor": "Foreground Mnemos CUA browser encounter; Forge received the report and independently read supplied image/file evidence, without operating that tab",
+      "date": "2026-10-04",
+      "desktop_viewport": [
+        1280,
+        800
+      ],
+      "mobile_emulated_viewport": [
+        390,
+        844
+      ],
+      "final_bundle": "c92d0ec39b055cce",
+      "witnessed": [
+        "original depth/occlusion defect reproduces on live and exact baseline",
+        "clear-only candidate restores visible bounded white/green bodies across repeated frames and overview rotation",
+        "pre-existing root-home retained-zoom/offscreen labels reproduce in baseline and clear-only candidate",
+        "combined candidate passes both Papers and Schattenseiten entry/root-home/settled overview at both dimensions",
+        "mobile rotation after final return is clean; labels return to ordinary screen coordinates",
+        "all five mounted neighbors remain in six-site population; large blue field faces are intended geometry",
+        "final candidate reports no new browser errors"
+      ],
+      "not_claimed": [
+        "physical phone GPU",
+        "actual Escape-route browser witness (navigator/focus consumed attempt; native callback test covers route)",
+        "site-owned host geometry redesign",
+        "sibling/outside-click topology correction",
+        "canonical merge/deployment or live production acceptance"
+      ],
+      "transient": "One earlier first-preview reload reported missing runtime dependencies and recovered; no startup cause is established. The first preview was rebuilt once for static apertures, which could cause a transport race. All final comparison paths are immutable.",
+      "screenshots": {
+        "baseline-desktop.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\baseline-desktop.jpg",
+          "sha256": "6b06e79d1de86ae161f625ea71e93363a0aa4b5562c40d1733eaff2c99ea346b",
+          "bytes": 130415
+        },
+        "baseline-desktop-rotated.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\baseline-desktop-rotated.jpg",
+          "sha256": "9b534b887a23cbde9c8087d9308706681093b9066599374ca6f420f02e021853",
+          "bytes": 130384
+        },
+        "baseline-mobile.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\baseline-mobile.jpg",
+          "sha256": "6211daa8aba83a71505975555f3055d3d6903660a068bcce0e058b87811aa5c6",
+          "bytes": 41805
+        },
+        "baseline-mobile-return-from-papers.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\baseline-mobile-return-from-papers.jpg",
+          "sha256": "aae92728df512a7dc07067f1bbc0ddf9eb47c3ad3634fb63066b323b721d160c",
+          "bytes": 37759
+        },
+        "fix-mobile-return-from-papers.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\fix-mobile-return-from-papers.jpg",
+          "sha256": "7f19858f3bad81404538dba884e4189a266504108e55703db0ac171650f7df18",
+          "bytes": 48769
+        },
+        "fix-mobile-return-from-schattenseiten.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\fix-mobile-return-from-schattenseiten.jpg",
+          "sha256": "de659e56d7c2c710b2999da03e45d61677079b4ef6f24e3d10c17fcb1111b158",
+          "bytes": 51799
+        },
+        "final-desktop.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-desktop.jpg",
+          "sha256": "7ef38ab1a8374468724985a8cb69ba4042997fd51ec9b166525f476f71c5b64d",
+          "bytes": 133438
+        },
+        "final-desktop-return-from-papers.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-desktop-return-from-papers.jpg",
+          "sha256": "dbcfa49dc262037c2a766fc5b3e72f60479bb7f295d1c1ba93057c2b75e3d04b",
+          "bytes": 133436
+        },
+        "final-desktop-return-from-schattenseiten.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-desktop-return-from-schattenseiten.jpg",
+          "sha256": "1730e4f56319cbbc267a46a6961e8ebe972be2cc732cba1c97e823aa9344bcc5",
+          "bytes": 133198
+        },
+        "final-mobile.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-mobile.jpg",
+          "sha256": "416b9a9c87af109841dfc3d08a3217244b3cce851f4f035e6f485ee1259c3b3e",
+          "bytes": 4365
+        },
+        "final-mobile-return-from-papers.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-mobile-return-from-papers.jpg",
+          "sha256": "f86417c8ee68a73b9b0fa967a62dfd42b8f5d9153a66fb8fe5fbf1b11ed9523c",
+          "bytes": 42091
+        },
+        "final-mobile-return-from-schattenseiten.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-mobile-return-from-schattenseiten.jpg",
+          "sha256": "6b54dfc63a244a7b820387a7a6fb8f7e49ecadd3a5635902fd9168fe336497ed",
+          "bytes": 42648
+        },
+        "final-mobile-rotated.jpg": {
+          "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-mobile-rotated.jpg",
+          "sha256": "11b7c045d74dd59f63f97643678268e3bd4ded668854fc7fd3116f49b4e9e3ea",
+          "bytes": 42043
+        }
+      }
+    },
+    "receipt_pointer": "C:\\MNEMOS\\tmp\\body-regression-33k\\repair-receipt.json",
+    "uncertainty": "Viewport emulation is not physical-device GPU coverage; Escape is unit/callback-covered, not browser-witnessed; one earlier preview reload transient remains unassigned; canonical promotion and actual deployed acceptance remain open.",
+    "preserved": "No site-specific runtime branch, body geometry/material/order, topology, history, lens feature, structure split or unrelated performance rewrite."
+  }
+}

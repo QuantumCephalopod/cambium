@@ -95,13 +95,16 @@ function globalTargets(){
 function syncGlobalNavigator(){const r=resolveGlobal(activeAddress);W.setGlobalTargets(globalTargets());W.setActiveGlobalAddress(activeAddress,r.locus)}
 function inspectCapable(ids=activeIds){return ids.some(id=>Boolean(specs.get(id)?.manifestation?.background_inspect))}
 function resetSurface(id){const s=surfaces.get(id);if(!s)return;if(typeof s.module.unmount==='function')s.module.unmount({host:s.host,content:s.content,projection:s.projection});else{s.host.hidden=true;s.content.replaceChildren()}}
+let renderedIds=new Set();
 function render(path=W.view){
   for(const id of surfaces.keys())resetSurface(id);
   for(const id of activeIds){
     const s=surfaces.get(id),spec=specs.get(id);if(!s||!spec)continue;
     const localPath=spec.manifestation?.background_inspect?(path||''):'';
     s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency,lens:lensNow});
+    if(!renderedIds.has(id))fieldById.get(id)?.arriveFrom(null);
   }
+  renderedIds=new Set(activeIds);
   composition();Safe.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
   stateEl.textContent='WITNESS viewer · global '+GLOBAL_SCOPE+':'+(activeAddress||'overview')+' · local '+local+' · '+activeIds.join(' + ');

@@ -1,14 +1,14 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const H=require('./site-holon.js'),N=require('../z/navigation-physiology.js');
-const runtimeSource=fs.readFileSync(path.join(__dirname,'display-runtime-v2.js'),'utf8');
+const runtimeSource=fs.readFileSync(process.env.RUNTIME_SOURCE||path.join(__dirname,'display-runtime-v2.js'),'utf8');
 const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'utf8');
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
 function boot(version=1,hash=''){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
-  const events=new Map(),elements=new Map(),history=[],swaps=[];
+  const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[];
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
@@ -32,10 +32,10 @@ function boot(version=1,hash=''){
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
-  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(){}}}};
+  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
-  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input};
+  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,home:elements.get('root-home'),key(event){for(const fn of events.get('keydown')||[])fn(event)}};
 }
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
@@ -94,4 +94,22 @@ assert.equal(arrive.location.hash,'#main:y','and the truthful hash is restored')
 arrive.hand('#mini-trigger');assert.equal(arrive.location.hash,'#mini-trigger','a foreign anchor is left alone');assert.equal(arrive.runtime.state.activeAddress,'y');
 assert.equal(boot(1,'#main:zzzz').runtime.state.activeAddress,'','unresolvable arrival stays at the overview');
 assert.equal(boot(1,'#other:w').runtime.state.activeAddress,'','another scope is not this address');
+/* Cached fields re-enter their current container on root-home/global return;
+ * ordinary language/activity repaint is not another arrival. Explicit membrane
+ * return still supplies its body/place after that generic restoration. */
+for(const address of ['w','y']){
+  const cycle=boot(),rootArrivals=()=>cycle.arrivals.filter(a=>a.id===ids[0]);
+  const before=rootArrivals().length;cycle.runtime.navigateGlobal(address);
+  cycle.home.click({preventDefault(){}});
+  assert.equal(cycle.runtime.state.activeAddress,'');
+  assert.equal(rootArrivals().length,before+1,'root-home reveals a cached zoom without reframing');
+  assert.equal(rootArrivals().at(-1).place,null,'root-home restores the truthful current container');
+  const stable=cycle.arrivals.length;cycle.emit('sss:language');cycle.runtime.receiveActivity({siteId:ids[0],kind:'fixture'});
+  assert.equal(cycle.arrivals.length,stable,'repaint resets an already-visible camera');
+  cycle.runtime.navigateGlobal(address);const beforeEscape=rootArrivals().length;
+  cycle.key({key:'Escape',preventDefault(){}});assert.equal(cycle.runtime.state.activeAddress,'');
+  assert.equal(rootArrivals().length,beforeEscape+1,'Escape return reveals a cached camera without reframing');
+  cycle.runtime.navigateGlobal(address);cycle.emit('sss:membrane-ascend',{id:address==='w'?ids[1]:ids[3]});
+  const explicit=rootArrivals().at(-1);assert(explicit.place?.k>0,'explicit membrane zoom-out lost its place');assert.equal(explicit.bodyId,address==='w'?ids[1]:ids[3]);
+}
 console.log('display runtime: one source projection per entry, shared anatomy, repeated body/host callbacks, navigation/language/activity/remount, fresh re-entry and hash-as-input PASS');
