@@ -1,24 +1,12 @@
 # Display interaction observations
 
-state: PARTIALLY DIGESTED / OPEN RESIDUE
+state: RESIDUAL / OPEN — achieved portions catabolized 2026-10-04
 
 This carrier preserves only empirical interaction pressure that still needs a future live implementation pass. Stable consequences already earned from these observations belong in `../RITUALS/navigation/RITUAL.md`, not here as duplicated doctrine.
 
-## assimilated into navigation law
+## surviving owner and return address
 
-The following observations have now become reusable Display-local navigation constraints:
-
-- losing sibling/parent/child orientation after entering a branch is disorienting; the global navigation organ must preserve recoverable ancestry and nearby movement;
-- touch rotation that fights page scrolling is a primary interaction failure, not a mobile afterthought;
-- a semantic place is the actual address vertex/locus on one tetrahedral net, not a cell centroid;
-- a whole occupying a locus is not represented by spawning another tetrahedron whose centroid sits at that locus;
-- same-locus occupants must not be scattered into invented micro-positions merely to make a diagram easier to read;
-- deeper navigation should open one realized rank at a time: focusing `x` can expose `xx/xw/xz/xy`, with `xx` preserving the `x` point under the quotient, rather than dumping the whole descendant subtree;
-- the large body should remain the complete material tetrahedral world while attention suppresses non-focused structure optically; clutter reduction is not license to crop away the whole or accumulate all labels/telemetry;
-- a wireframe is useful diagnostic tissue but was experienced as a regression when it replaced the accepted material/shader character of the public body;
-- the navigator twin must be the precise global address map: realized addresses clickable, twin enlarged on hover/focus for fine targeting, mouse reserved for address selection there, and the separate x/y velocity rails used for orientation.
-
-These consequences are now carried by `RITUALS/navigation/RITUAL.md` v0.2.
+Current Display `RITUALS/navigation/RITUAL.md` owns the assimilated navigation constraints; this carrier keeps the six empirical visual/touch questions verbatim.
 
 ## open residue for the next fresh visual pass
 
@@ -34,3 +22,5 @@ Do not solve these by speculation; test them by direct use of the next renderer:
 ## exit condition
 
 This nutrient leaves `_stomach` when the remaining interaction questions above have been exercised in a fresh implementation and their surviving consequences have either entered living Display tissue/ritual law or been explicitly rejected. Git history preserves the developmental path; this file does not need to become a permanent failure diary.
+
+The extracted preimage is at `../_waste/catabolized-observations-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.
