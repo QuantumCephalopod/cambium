@@ -7,8 +7,9 @@
   'use strict';
 
   const SCHEMA='sss.display.ui-grid.v1';
-  const GENES=Object.freeze(['w','x','y','z']);
-  const GENE_INDEX=Object.freeze({w:0,x:1,y:2,z:3});
+  // Canonical address serialization order. This is not the CCCC semantic phase order.
+  const ADDRESS_SYMBOLS=Object.freeze(['w','x','y','z']);
+  const ADDRESS_INDEX=Object.freeze({w:0,x:1,y:2,z:3});
   const QUADRANT=Object.freeze({
     w:[0,0], x:[1,0], y:[0,1], z:[1,1]
   });
@@ -19,12 +20,12 @@
   const rootLabel=a=>a||'ε';
   const addressOk=a=>typeof a==='string'&&/^[wxyz]*$/.test(a);
   const parentOf=a=>a? a.slice(0,-1):null;
-  const childrenOf=a=>GENES.map(g=>a+g);
+  const childrenOf=a=>ADDRESS_SYMBOLS.map(g=>a+g);
 
   function compareAddress(a,b){
     if(a.length!==b.length)return a.length-b.length;
     for(let i=0;i<a.length;i++){
-      const d=GENE_INDEX[a[i]]-GENE_INDEX[b[i]];
+      const d=ADDRESS_INDEX[a[i]]-ADDRESS_INDEX[b[i]];
       if(d)return d;
     }
     return 0;
@@ -251,7 +252,7 @@
   }
 
   return Object.freeze({
-    SCHEMA,GENES,rootLabel,parentOf,childrenOf,compareAddress,canonicalCells,
+    SCHEMA,ADDRESS_SYMBOLS,rootLabel,parentOf,childrenOf,compareAddress,canonicalCells,
     emptyState,initialState,normalizeState,bounds,coord,leafSet,isLeaf,spanInfo,
     split,coalesce,place,move,remove,updateElement,spanText,formatState,parseState,command
   });
