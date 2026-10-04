@@ -1,0 +1,214 @@
+{
+  "event_id": "display-nutrient-catabolism-20261004T104102Z",
+  "home_at_utc": "2026-10-04T10:41:02Z",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "catabolize-achieved-nutrient-portions",
+  "outcome": "PASS/EARNED in staging — completed portions leave active intake; unresolved choices and witnesses remain. Canonical owner promotion is pending.",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "changed_scope": [
+    "w/display/_stomach/INCOMING — care propagates.md -> w/display/_waste/catabolized-INCOMING — care propagates-20261004.md (NARROWED)",
+    "w/display/_stomach/observations.md -> w/display/_waste/catabolized-observations-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__axis-knob-settle-visual__20260930.md -> w/display/_waste/catabolized-NUTRIENT__axis-knob-settle-visual__20260930-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__field-layer-frame-hook__20260929.md -> w/display/_waste/catabolized-NUTRIENT__field-layer-frame-hook__20260929-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__site-rest-view__20260930.md -> w/display/_waste/catabolized-NUTRIENT__site-rest-view__20260930-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__site-body-material__20260930.md -> w/display/_waste/catabolized-NUTRIENT__site-body-material__20260930-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__continuous-focus__20260929.md -> w/display/_waste/catabolized-NUTRIENT__continuous-focus__20260929-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__glass-and-goo-lens__20260930.md -> w/display/_waste/catabolized-NUTRIENT__glass-and-goo-lens__20260930-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__global-nav-hud-and-glass__20260930.md -> w/display/_waste/catabolized-NUTRIENT__global-nav-hud-and-glass__20260930-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__glass-edge-reservoir-and-drop__20261001.md -> w/display/_waste/catabolized-NUTRIENT__glass-edge-reservoir-and-drop__20261001-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__live-type-density-and-performance__20261003.md -> w/display/_waste/catabolized-NUTRIENT__live-type-density-and-performance__20261003-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__philosophy-papers-bodies__20260930.md -> w/display/_waste/catabolized-NUTRIENT__philosophy-papers-bodies__20260930-20261004.md (NARROWED)",
+    "w/display/_stomach/NUTRIENT__text-is-tissue-spritesheet__20261001.md -> w/display/_waste/catabolized-NUTRIENT__text-is-tissue-spritesheet__20261001-20261004.md (NARROWED)"
+  ],
+  "context": {
+    "actor": "Forge appendage, Philipp-authorized repo-only cleanup 2026-10-04",
+    "base": "8ade3e65f6957e19b330789473e3bc2229f8285a",
+    "carrier": "QuantumCephalopod/cambium:staging/nutrient-catabolism-20261004",
+    "publication_authorization": "scoped staging push + draft PR; no canonical merge/deploy",
+    "shared_root_field": {
+      "dive_in": "2.8",
+      "metabolism": "3.5",
+      "cambium": "3.4",
+      "drive": "1.6"
+    },
+    "catabolism_home": "Drive 134M5WFP0BC-xjYJu6vEmIad-AMFQ-vPo v0.2",
+    "method": "TRACE owner/source/consumers; quotient achieved portions only; preserve exact preimage and residual return address; retain unresolved actual gates; no code/constitution/public copy change",
+    "changes": [
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/INCOMING — care propagates.md",
+        "waste": "w/display/_waste/catabolized-INCOMING — care propagates-20261004.md",
+        "preimage_sha256": "027492dc59a6771dcc6d4a6af114efa6512b15f77ddf375ecf1ede737df8ce43",
+        "preimage_bytes": 2913,
+        "active_bytes": 2436,
+        "retained_sections": [
+          "## unresolved residue",
+          "## exit condition"
+        ],
+        "evidence": "Current Philosophy `RITUALS/organism/RITUAL.md` 1.1, its `INDEX.yaml`/`_cambium.yaml`, and Display `RITUALS/organism/RITUAL.md` 3.17 carry the already-earned birth, language/address relation and Population custody. The six remaining questions below are preserved verbatim."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/observations.md",
+        "waste": "w/display/_waste/catabolized-observations-20261004.md",
+        "preimage_sha256": "d79f4e7026c736ea2ecf8e97b1d19b720c8bb043372fa4369d183e781b0df7b8",
+        "preimage_bytes": 3179,
+        "active_bytes": 1956,
+        "retained_sections": [
+          "## open residue for the next fresh visual pass",
+          "## exit condition"
+        ],
+        "evidence": "Current Display `RITUALS/navigation/RITUAL.md` owns the assimilated navigation constraints; this carrier keeps the six empirical visual/touch questions verbatim."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__axis-knob-settle-visual__20260930.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__axis-knob-settle-visual__20260930-20261004.md",
+        "preimage_sha256": "c91f7ea5cc63053a457e7104a72d8cf3d867fca9d74449cd0d8c94c82077658f",
+        "preimage_bytes": 2696,
+        "active_bytes": 1669,
+        "retained_sections": [
+          "## open"
+        ],
+        "evidence": "Current `z/world-view.js` knobShape/KNOB_SWELL and `w/root-view.css` and `_root/display-axis-knob-settle-visual-20260930T201201Z.json` witness the implemented mechanism. Display organism law 3.17 retains it. The remaining questions below stay open; material/geometry refinement and the Oct3 custom-body regression remain in their separate live nutrients."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__field-layer-frame-hook__20260929.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__field-layer-frame-hook__20260929-20261004.md",
+        "preimage_sha256": "5b8584aa4518390446d12f3dec73053ade658f26d4dcb71f9b3d0e3830a8428c",
+        "preimage_bytes": 2578,
+        "active_bytes": 1494,
+        "retained_sections": [
+          "## open"
+        ],
+        "evidence": "Current `w/locus-shader.js` shader.afterDraw and its framebuffer/viewport restoration and `_root/display-site-layer-frame-hook-20260929T101545Z.json` witness the implemented mechanism. Display organism law 3.17 retains it. The remaining questions below stay open; material/geometry refinement and the Oct3 custom-body regression remain in their separate live nutrients."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__site-rest-view__20260930.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__site-rest-view__20260930-20261004.md",
+        "preimage_sha256": "ae48f61e036fa3dbe2394f0ae53a71226404885306cc91eff9de519c55847364",
+        "preimage_bytes": 2564,
+        "active_bytes": 1571,
+        "retained_sections": [
+          "## open"
+        ],
+        "evidence": "Current `w/locus-shader.js` shader.view/orthographic and `z/world-view.js` easeTo/restoreHome and `_root/display-site-rest-view-20260930T172500Z.json` witness the implemented mechanism. Display organism law 3.17 retains it. The remaining questions below stay open; material/geometry refinement and the Oct3 custom-body regression remain in their separate live nutrients."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__site-body-material__20260930.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__site-body-material__20260930-20261004.md",
+        "preimage_sha256": "cb4c6b2861193ccf910e4f9a8d495bcef97270b3a526b3ff8fddb2a6ec8ca1e3",
+        "preimage_bytes": 2092,
+        "active_bytes": 1583,
+        "retained_sections": [
+          "## open"
+        ],
+        "evidence": "Current `w/locus-shader.js` b.shader.body and `x/display-runtime-v2.js` and `_root/display-site-body-material-20260930T184500Z.json` witness the implemented mechanism. Display organism law 3.17 retains it. The remaining questions below stay open; material/geometry refinement and the Oct3 custom-body regression remain in their separate live nutrients."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__continuous-focus__20260929.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__continuous-focus__20260929-20261004.md",
+        "preimage_sha256": "853158ff77ded14cd42de63c8cc26d59db94fea4940ae099dbdb44c13057470b",
+        "preimage_bytes": 1391,
+        "active_bytes": 1206,
+        "retained_sections": [
+          "## open"
+        ],
+        "evidence": "Current `w/locus-shader.js` shader.focus and Crawlerbait `z/render.js` camFocus embody the continuous camera under Display law 3.8, retained in 3.17. `_root/display-continuous-focus-20260929T115319Z.json` records the landing. The independent pools question remains below."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__glass-and-goo-lens__20260930.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__glass-and-goo-lens__20260930-20261004.md",
+        "preimage_sha256": "5ba1abe564076a1179f43798b175ac1938fe7fe75cacb6a068782475a13b83cc",
+        "preimage_bytes": 2687,
+        "active_bytes": 3139,
+        "retained_sections": [
+          "## open"
+        ],
+        "evidence": "`z/display-glass.js`, `z/display-lens.js`, `w/locus-shader.js`, `_root/display-glass-goo-lens-20260930T215021Z.json` and current navigation law own occupied-surface displacement and the drop. The fine-preview, image-release/preload and bright-field questions below remain separate."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__global-nav-hud-and-glass__20260930.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__global-nav-hud-and-glass__20260930-20261004.md",
+        "preimage_sha256": "03157789583aabbe22b021cb34efd670739efe42f957f0e8ef93fd3293b8c5ba",
+        "preimage_bytes": 4689,
+        "active_bytes": 2129,
+        "retained_sections": [],
+        "evidence": "`z/navigation-aperture.css`, `z/display-glass.js`, `w/locus-shader.js`, current navigation law and HOMEs `display-global-nav-hud-20260930T204252Z` / `display-glass-goo-lens-20260930T215021Z` carry both implemented halves; the old “nothing is built” paragraph is superseded."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__glass-edge-reservoir-and-drop__20261001.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__glass-edge-reservoir-and-drop__20261001-20261004.md",
+        "preimage_sha256": "ff27c918e50d23b87cebeafe905b9db6c273560b32cce33e8789ac25bf884d33",
+        "preimage_bytes": 3664,
+        "active_bytes": 2205,
+        "retained_sections": [
+          "## implementation boundary",
+          "## exit"
+        ],
+        "evidence": "Current `z/display-lens.js`, `w/locus-shader.js`, label ink and navigation law carry the staged mechanism recorded by `_root/display-round-glass-drops-staged-20261001T114446Z.json`. Canonical base 8ade3e65 includes it and Pages run 37181708836 completed successfully on that exact head. Those source/provider receipts do not replace the remaining real-hand/device/visitor witness."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__live-type-density-and-performance__20261003.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__live-type-density-and-performance__20261003-20261004.md",
+        "preimage_sha256": "77a749cf456ef8e02293f2a5208d92f88c33de3dd253a4e3af9dd8cd914544c9",
+        "preimage_bytes": 4148,
+        "active_bytes": 2253,
+        "retained_sections": [
+          "## source-faithful request",
+          "## exit"
+        ],
+        "evidence": "Current Display law 3.17 and `_root/display-live-type-performance-sized-media-20261003T111336Z.json` carry measured implementation plus exact staged build/CUA evidence. Canonical source includes the entry typography, frame-work and sized-media binding; Pages run 37181708836 is successful at 8ade3e65. Provider completion is not Fat-release or visitor acceptance."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__philosophy-papers-bodies__20260930.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__philosophy-papers-bodies__20260930-20261004.md",
+        "preimage_sha256": "4b48818bd737b2ece13e8d2031ad122037a7973da7dec67b30e455713e655f3e",
+        "preimage_bytes": 1403,
+        "active_bytes": 1828,
+        "retained_sections": [],
+        "evidence": "Current Papers `shader.body` plus Display `_root/display-site-body-material-20260930T184500Z.json` witness the first floating-material embodiment. Later `NUTRIENT__site-owned-host-body-geometry__20261003.md` and `NUTRIENT__custom-mounted-body-trail-artifact__20261003.md` own its sharper representation and corruption pressures; these remain live."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display",
+        "source": "w/display/_stomach/NUTRIENT__text-is-tissue-spritesheet__20261001.md",
+        "waste": "w/display/_waste/catabolized-NUTRIENT__text-is-tissue-spritesheet__20261001-20261004.md",
+        "preimage_sha256": "ccb385e1d5fae11f8d5db386f8e5f7004c6f90aae62eb13bc94b61a2898fb29f",
+        "preimage_bytes": 7785,
+        "active_bytes": 2958,
+        "retained_sections": [
+          "## known gaps",
+          "## relation to the watched invariant",
+          "## exit"
+        ],
+        "evidence": "Current `w/spritesheet/VERSION.json`, `w/display-type.js`, `w/display-text-tissue.js`, Display law 3.17 and HOMEs `display-type-is-body-20261001T160500Z` / `display-text-tissue-engine-20261001T204500Z` carry the face, folding and letters-as-bodies mechanism. Papers `sierpinski.js` is the consumer. The original `.carrier/` directory remains untouched pending its expressly retained disposition question."
+      }
+    ],
+    "revocation": "Reopen the smallest affected quotient if its surviving owner changes, current consumer needs an extracted distinction, or a countercase defeats its witness. Reacquire the cited preimage and living source first.",
+    "boundary": "Tools, old checkouts, backups and prior waste are excluded. No engineering, history rewrite, source data acquisition, legal copy edit or website publication performed."
+  }
+}
