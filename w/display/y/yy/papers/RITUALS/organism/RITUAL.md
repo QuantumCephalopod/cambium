@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.9"
+version: "3.0"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -324,6 +324,14 @@ Future Papers design work should default to Papers-local tissue. Elevate only a 
 This is the guardrail: **shape is conserved; phenomenology and living use are local.**
 
 Smoothness is part of the phenomenology. The baseline is a laptop without a GPU: rendering resolution may adapt to hold the frame rate, but motion must not stutter, and an idle frame writes nothing to the page it does not have to.
+
+### Bounded execution of the existing population law
+
+Physics keeps every organism and simulation tick, the same spring/drag/reach/timestep, deterministic coincident direction, equal/opposite force and chamber containment. Scalar scratch storage, invariant flow/rank/chamber frames and conservative axis rejection may reduce repeated work only while preserving the exact interacting pairs and reference motion.
+
+Background and selected inquiry bodies may reuse immutable ancestry/relative geometry and ember metadata in the finite existing LOD classes. Source/projection/inquiry replacement invalidates that support; a bounded LRU evicts cached support without capping organisms or recursion. Current position, scale, pixels, color/opacity, selection and fades still apply each draw. Instance and light buffers may retain allocations and upload the same admitted values once per draw; face and edge draws share their input.
+
+Viewport/lens admission precedes cold name-glyph layout. Cached off-lens names close without preparing or moving invisible letters, and re-entry prepares the same exact source text. No text-tissue/edge law, geometry, navigation, optics or source projection is redesigned here. CPU stage comparisons and reference checks earn local execution evidence; GPU time, universal frame rate, physical-device smoothness and deployed acceptance require their own contact.
 
 ## Living overview physiology
 

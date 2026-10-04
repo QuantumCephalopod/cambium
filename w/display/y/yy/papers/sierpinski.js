@@ -191,39 +191,51 @@ function rootFieldScale(width){return width<ROOT_FIELD_BREAKPOINT?ROOT_FIELD_MOB
 /* per-frame DOM witnesses write only on change, so an idle frame never dirties style/layout */
 function setData(el,key,value){value=String(value);if(el.dataset[key]!==value)el.dataset[key]=value}
 function setHud(html){if(state.hudHtml!==html){state.hudHtml=html;state.hud.innerHTML=html}}
+const flowInvariants=new WeakMap();
 function flowPoint(entity,now=performance.now()){
-  const points=[entity.motionA,entity.motionB,entity.motionC,entity.motionD].filter(Boolean);
+  let flow=flowInvariants.get(entity);
+  if(!flow||flow.a!==entity.motionA||flow.b!==entity.motionB||flow.c!==entity.motionC||flow.d!==entity.motionD){
+    flow={a:entity.motionA,b:entity.motionB,c:entity.motionC,d:entity.motionD,points:[entity.motionA,entity.motionB,entity.motionC,entity.motionD].filter(Boolean),phase:random01(entity.id,'flow-phase'),speed:mix(.72,1.28,random01(entity.id,'flow-speed'))};flowInvariants.set(entity,flow);
+  }
+  const points=flow.points;
   if(points.length<2)return entity.world;
-  const phase=random01(entity.id,'flow-phase')*points.length,speed=mix(.72,1.28,random01(entity.id,'flow-speed'));
+  const phase=flow.phase*points.length,speed=flow.speed;
   const u=((now/OVERVIEW_FLOW_PERIOD_MS)*speed+phase)%points.length,index=Math.floor(u),t=smooth(u-index);
-  const wander=mix3(points[index],points[(index+1)%points.length],t);
-  return mix3(entity.world,wander,OVERVIEW_WANDER);
+  const a=points[index],b=points[(index+1)%points.length],w=entity.world;
+  return [mix(w[0],mix(a[0],b[0],t),OVERVIEW_WANDER),mix(w[1],mix(a[1],b[1],t),OVERVIEW_WANDER),mix(w[2],mix(a[2],b[2],t),OVERVIEW_WANDER)];
 }
 /* One bounded flow law at every scale — organisms in their chamber, metabolites in their organism: a body is a
  * small mass drawn toward its own flow point and pushed away by every neighbour inside their shared reach, so
  * bodies spread apart by themselves and keep moving. Motion only — nothing gains or loses meaning by where it drifts. */
 const BODY_SPRING=6,BODY_PUSH=12.8,BODY_DRAG=4;
 function driftBodies(sim,items,dt,reach,spring=BODY_SPRING){
-  const bodies=items.map(it=>{let b=sim.bodies.get(it.id);if(!b){b={p:[...it.target],v:[0,0,0]};sim.bodies.set(it.id,b)}return b});
-  const force=bodies.map((b,i)=>sub(items[i].target,b.p).map(x=>x*spring));
+  const n=items.length,scratch=sim.scratch||(sim.scratch={bodies:[],force:new Float64Array(0)}),bodies=scratch.bodies;
+  bodies.length=n;if(scratch.force.length<n*3)scratch.force=new Float64Array(Math.max(n*3,scratch.force.length*2));const force=scratch.force;
+  for(let i=0;i<n;i++){const it=items[i];let b=sim.bodies.get(it.id);if(!b){b={p:[...it.target],v:[0,0,0]};sim.bodies.set(it.id,b)}bodies[i]=b;for(let k=0;k<3;k++)force[i*3+k]=(it.target[k]-b.p[k])*spring}
   for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
-    const R=reach(items[i],items[j]);let dv=sub(bodies[i].p,bodies[j].p),dist=Math.hypot(...dv);if(dist>=R)continue;
-    if(dist<1e-9){const a=random01(items[i].id,items[j].id)*Math.PI*2;dv=[Math.cos(a),Math.sin(a),.3];dist=Math.hypot(...dv)}
+    const R=reach(items[i],items[j]),a=bodies[i].p,b=bodies[j].p;let dx=a[0]-b[0],dy=a[1]-b[1],dz=a[2]-b[2];
+    /* An axis outside the same spherical reach cannot interact; no near pair is omitted. */
+    if(Math.abs(dx)>=R||Math.abs(dy)>=R||Math.abs(dz)>=R)continue;
+    let dist=Math.hypot(dx,dy,dz);if(dist>=R)continue;
+    if(dist<1e-9){const angle=random01(items[i].id,items[j].id)*Math.PI*2;dx=Math.cos(angle);dy=Math.sin(angle);dz=.3;dist=Math.hypot(dx,dy,dz)}
     const f=BODY_PUSH*(1-dist/R)*R/dist;
-    for(let k=0;k<3;k++){force[i][k]+=dv[k]*f;force[j][k]-=dv[k]*f}
+    force[i*3]+=dx*f;force[j*3]-=dx*f;force[i*3+1]+=dy*f;force[j*3+1]-=dy*f;force[i*3+2]+=dz*f;force[j*3+2]-=dz*f;
   }
   const drag=Math.exp(-BODY_DRAG*dt);
-  bodies.forEach((b,i)=>{for(let k=0;k<3;k++){b.v[k]=(b.v[k]+force[i][k]*dt)*drag;b.p[k]+=b.v[k]*dt}});
+  for(let i=0;i<n;i++){const b=bodies[i];for(let k=0;k<3;k++){b.v[k]=(b.v[k]+force[i*3+k]*dt)*drag;b.p[k]+=b.v[k]*dt}}
   return bodies;
 }
 function det3(a,b,c){return a[0]*(b[1]*c[2]-b[2]*c[1])-a[1]*(b[0]*c[2]-b[2]*c[0])+a[2]*(b[0]*c[1]-b[1]*c[0])}
+const tetFrames=new WeakMap();
 /* a body drifts inside the container that bounds it and never crosses it: outside → nearest-by-barycentric point on the tet */
 function holdInTet(body,tet){
-  const [a,b,c,d]=tet,e1=sub(a,d),e2=sub(b,d),e3=sub(c,d),r=sub(body.p,d),det=det3(e1,e2,e3);if(Math.abs(det)<1e-12)return false;
-  let l=[det3(r,e2,e3)/det,det3(e1,r,e3)/det,det3(e1,e2,r)/det];l.push(1-l[0]-l[1]-l[2]);
-  if(l.every(x=>x>=0))return false;
-  l=l.map(x=>Math.max(0,x));const s=l.reduce((u,v)=>u+v,0)||1;
-  body.p=[0,1,2].map(k=>(l[0]*a[k]+l[1]*b[k]+l[2]*c[k]+l[3]*d[k])/s);return true;
+  let frame=tetFrames.get(tet);if(!frame){const [a,b,c,d]=tet,e1=sub(a,d),e2=sub(b,d),e3=sub(c,d);frame={a,b,c,d,e1,e2,e3,det:det3(e1,e2,e3),r:[0,0,0]};tetFrames.set(tet,frame)}
+  const {a,b,c,d,e1,e2,e3,det,r}=frame;if(Math.abs(det)<1e-12)return false;
+  for(let k=0;k<3;k++)r[k]=body.p[k]-d[k];
+  let l0=det3(r,e2,e3)/det,l1=det3(e1,r,e3)/det,l2=det3(e1,e2,r)/det,l3=1-l0-l1-l2;
+  if(l0>=0&&l1>=0&&l2>=0&&l3>=0)return false;
+  l0=Math.max(0,l0);l1=Math.max(0,l1);l2=Math.max(0,l2);l3=Math.max(0,l3);const s=l0+l1+l2+l3||1;
+  for(let k=0;k<3;k++)body.p[k]=(l0*a[k]+l1*b[k]+l2*c[k]+l3*d[k])/s;return true;
 }
 /* Organisms obey the same law one scale up: each drifts toward its own chamber flow point and repels the organisms
  * sharing its chamber — reach grows with both bodies' 2^n size — and repulsion never crosses a chamber wall. A softer
@@ -234,9 +246,13 @@ const ORGANISM_REACH=.08,ORGANISM_SPRING=3;
 function driftOrganisms(now){
   if(!state?.records?.length)return;
   const sim=state.orgSim||(state.orgSim={bodies:new Map(),t:now}),dt=Math.min(.05,Math.max(0,(now-sim.t)/1000));sim.t=now;
-  const chambers=new Map();
-  for(const rec of state.records){const list=chambers.get(rec.locus)||[];list.push({id:rec.id,target:flowPoint(rec,now),size:bodyScaleFor(rec),tet:rec.tet});chambers.set(rec.locus,list)}
-  for(const items of chambers.values())driftBodies(sim,items,dt,(a,b)=>ORGANISM_REACH+a.size+b.size,ORGANISM_SPRING).forEach((b,i)=>{if(items[i].tet&&holdInTet(b,items[i].tet))b.v=b.v.map(v=>v*.5)});
+  let grouping=state.orgGrouping;
+  if(!grouping||grouping.records!==state.records){const chambers=new Map();for(const rec of state.records){const list=chambers.get(rec.locus)||[];list.push({id:rec.id,record:rec,target:rec.world,size:bodyScaleFor(rec),tet:rec.tet});chambers.set(rec.locus,list)}grouping=state.orgGrouping={records:state.records,chambers}}
+  for(const items of grouping.chambers.values()){
+    for(const item of items)item.target=flowPoint(item.record,now);
+    const bodies=driftBodies(sim,items,dt,(a,b)=>ORGANISM_REACH+a.size+b.size,ORGANISM_SPRING);
+    for(let i=0;i<bodies.length;i++){const b=bodies[i];if(items[i].tet&&holdInTet(b,items[i].tet))for(let k=0;k<3;k++)b.v[k]*=.5}
+  }
 }
 function overviewDriftPoint(entity,now=performance.now()){return state?.orgSim?.bodies.get(entity.id)?.p||flowPoint(entity,now)}
 function chamberFocus(){return state?.chamberFocus||{center:[0,0,0],scale:1}}
@@ -435,25 +451,33 @@ void main(){
   };
   function geom(data){const vao=gl.createVertexArray();gl.bindVertexArray(vao);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);gl.enableVertexAttribArray(loc.pos);gl.vertexAttribPointer(loc.pos,3,gl.FLOAT,false,12,0);return {vao,count:data.length/3}}
   const tri=geom(triangles),line=geom(lines);
-  function flatten(instances){const out=[];for(const x of instances)out.push(x.center[0],x.center[1],x.center[2],x.scale,x.color[0],x.color[1],x.color[2],x.color[3]);return out}
-  function bindInstances(geometry,data){
-    gl.bindVertexArray(geometry.vao);gl.bindBuffer(gl.ARRAY_BUFFER,instanceBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.DYNAMIC_DRAW);
+  let instanceData=new Float32Array(0),lightData=new Float32Array(0);
+  function uploadInstances(instances){
+    const length=instances.length*8;gl.bindBuffer(gl.ARRAY_BUFFER,instanceBuffer);
+    if(instanceData.length<length){instanceData=new Float32Array(Math.max(length,instanceData.length*2));gl.bufferData(gl.ARRAY_BUFFER,instanceData.byteLength,gl.DYNAMIC_DRAW)}
+    let i=0;for(const x of instances){instanceData[i++]=x.center[0];instanceData[i++]=x.center[1];instanceData[i++]=x.center[2];instanceData[i++]=x.scale;for(let k=0;k<4;k++)instanceData[i++]=x.color[k]}
+    gl.bufferSubData(gl.ARRAY_BUFFER,0,instanceData.subarray(0,length));
+  }
+  function bindInstances(geometry){
+    gl.bindVertexArray(geometry.vao);gl.bindBuffer(gl.ARRAY_BUFFER,instanceBuffer);
     const stride=32;
     gl.enableVertexAttribArray(loc.center);gl.vertexAttribPointer(loc.center,3,gl.FLOAT,false,stride,0);gl.vertexAttribDivisor(loc.center,1);
     gl.enableVertexAttribArray(loc.scale);gl.vertexAttribPointer(loc.scale,1,gl.FLOAT,false,stride,12);gl.vertexAttribDivisor(loc.scale,1);
     gl.enableVertexAttribArray(loc.color);gl.vertexAttribPointer(loc.color,4,gl.FLOAT,false,stride,16);gl.vertexAttribDivisor(loc.color,1);
   }
   function draw(instances,q,translate,proj,view,{faces=true}={}){
-    if(!instances.length)return;const data=flatten(instances);
+    if(!instances.length)return;uploadInstances(instances);
     gl.useProgram(p);gl.uniformMatrix4fv(loc.proj,false,proj);gl.uniformMatrix4fv(loc.view,false,view);gl.uniform4fv(loc.quat,new Float32Array(q));gl.uniform3fv(loc.translate,new Float32Array(translate));
     gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.enable(gl.DEPTH_TEST);
-    if(faces){gl.depthMask(false);bindInstances(tri,data);gl.drawArraysInstanced(gl.TRIANGLES,0,tri.count,instances.length)}
-    gl.depthMask(false);bindInstances(line,data);gl.drawArraysInstanced(gl.LINES,0,line.count,instances.length);gl.depthMask(true);
+    if(faces){gl.depthMask(false);bindInstances(tri);gl.drawArraysInstanced(gl.TRIANGLES,0,tri.count,instances.length)}
+    gl.depthMask(false);bindInstances(line);gl.drawArraysInstanced(gl.LINES,0,line.count,instances.length);gl.depthMask(true);
   }
   function drawLights(lights,q,translate,proj,view,time,dpr=1,gain=1){
     if(!lights.length)return;
-    const data=[];for(const x of lights)data.push(x.center[0],x.center[1],x.center[2],x.size*dpr,x.color[0],x.color[1],x.color[2],x.color[3]*gain,x.phase);
-    gl.bindVertexArray(lightVao);gl.bindBuffer(gl.ARRAY_BUFFER,lightBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.DYNAMIC_DRAW);
+    const length=lights.length*9;gl.bindVertexArray(lightVao);gl.bindBuffer(gl.ARRAY_BUFFER,lightBuffer);
+    if(lightData.length<length){lightData=new Float32Array(Math.max(length,lightData.length*2));gl.bufferData(gl.ARRAY_BUFFER,lightData.byteLength,gl.DYNAMIC_DRAW)}
+    let i=0;for(const x of lights){lightData[i++]=x.center[0];lightData[i++]=x.center[1];lightData[i++]=x.center[2];lightData[i++]=x.size*dpr;lightData[i++]=x.color[0];lightData[i++]=x.color[1];lightData[i++]=x.color[2];lightData[i++]=x.color[3]*gain;lightData[i++]=x.phase}
+    gl.bufferSubData(gl.ARRAY_BUFFER,0,lightData.subarray(0,length));
     const stride=36;
     for(const [at,size,off] of [[lightLoc.center,3,0],[lightLoc.size,1,12],[lightLoc.color,4,16],[lightLoc.phase,1,32]]){gl.enableVertexAttribArray(at);gl.vertexAttribPointer(at,size,gl.FLOAT,false,stride,off)}
     gl.useProgram(lightProgram);gl.uniformMatrix4fv(lightLoc.proj,false,proj);gl.uniformMatrix4fv(lightLoc.view,false,view);gl.uniform4fv(lightLoc.quat,new Float32Array(q));gl.uniform3fv(lightLoc.translate,new Float32Array(translate));gl.uniform1f(lightLoc.time,time);
@@ -711,14 +735,42 @@ function organismEmber(id,center,px,entity,selected=false){
   const alpha=clamp(.18+rank*.055+(hasMetabolites?.06:0),.18,.68);
   return {id,center,size,color:[...c,alpha],phase:random01(id,'organism-ember')*Math.PI*2,kind:rank===0?'source-ember':'organism-ember',rank};
 }
-function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
-  const ps=state.parents.get(id)||[],px=projectedPixels(scale,cameraZ,height),entity=state.identities.get(id),gene=entity?.gene||'x',pal=PALETTE[gene]||PALETTE.x;
-  if(entity)lights.push(organismEmber(id,center,px,entity,depth===0));
-  if(ps.length!==4||px<LOD_PX||depth>=MAX_DEPTH){
-    leaves.push({id,center,scale,color:[pal[0],pal[1],pal[2],.11+Math.min(.30,px/150)]});
-    return;
+const BODY_TEMPLATE_NODES=200000;
+function bodyTemplateCache(){
+  let c=state.bodyTemplates;
+  /* These owners replace their immutable projections on admission; a new inquiry body also invalidates ember metadata. */
+  if(!c||c.identities!==state.identities||c.parents!==state.parents||c.inquiry!==state.inquiryBodies||c.vertices!==state.renderer.V0){
+    c=state.bodyTemplates={identities:state.identities,parents:state.parents,inquiry:state.inquiryBodies,vertices:state.renderer.V0,templates:new Map(),metadata:new Map(),nodes:0};
   }
-  for(let i=0;i<4;i++)collectBody(ps[i],add(center,mul(state.renderer.V0[i],scale*.5)),scale*.5,cameraZ,height,leaves,lights,depth+1);
+  return c;
+}
+function bodyTemplate(id,scale,cameraZ,height,depth){
+  const c=bodyTemplateCache();let limit=0,s=scale;
+  while(depth+limit<MAX_DEPTH&&projectedPixels(s,cameraZ,height)>=LOD_PX){limit++;s*=.5}
+  const key=id+'@'+depth+'/'+limit;let t=c.templates.get(key);
+  if(t){c.templates.delete(key);c.templates.set(key,t);return t}
+  t=[];
+  function visit(id,offset,factor,level){
+    let meta=c.metadata.get(id);
+    if(!meta){const entity=state.identities.get(id),pal=PALETTE[entity?.gene||'x']||PALETTE.x,rank=rankNumber(entity?.rank),hasMetabolites=inquiryMetabolites(entity).length>0;
+      meta={entity,pal,rank,color:mix3(pal,[1.0,.90,.64],clamp(.40+rank*.035+(hasMetabolites?.08:0),.40,.64)),alpha:clamp(.18+rank*.055+(hasMetabolites?.06:0),.18,.68),phase:random01(id,'organism-ember')*Math.PI*2};c.metadata.set(id,meta)}
+    const ps=state.parents.get(id)||[],leaf=ps.length!==4||level>=limit;
+    t.push({id,offset,factor,level,leaf,meta});
+    if(!leaf)for(let i=0;i<4;i++)visit(ps[i],add(offset,mul(state.renderer.V0[i],factor*.5)),factor*.5,level+1);
+  }
+  visit(id,[0,0,0],1,0);
+  /* LRU bounds retained support, never the drawn population or recursion. Oversized entries remain uncached. */
+  while(c.nodes+t.length>BODY_TEMPLATE_NODES&&c.templates.size){const k=c.templates.keys().next().value;c.nodes-=c.templates.get(k).length;c.templates.delete(k)}
+  if(t.length<=BODY_TEMPLATE_NODES){c.templates.set(key,t);c.nodes+=t.length}
+  return t;
+}
+function collectBody(id,center,scale,cameraZ,height,leaves,lights,depth=0){
+  const template=bodyTemplate(id,scale,cameraZ,height,depth);
+  for(const node of template){
+    const {meta,factor}=node,localScale=scale*factor,px=projectedPixels(localScale,cameraZ,height),at=[center[0]+node.offset[0]*scale,center[1]+node.offset[1]*scale,center[2]+node.offset[2]*scale];
+    if(meta.entity)lights.push({id:node.id,center:at,size:clamp(6+meta.rank*4+Math.sqrt(Math.max(px,0))*.72+(depth+node.level===0?2:0),6,42),color:[meta.color[0],meta.color[1],meta.color[2],meta.alpha],phase:meta.phase,kind:meta.rank===0?'source-ember':'organism-ember',rank:meta.rank});
+    if(node.leaf)leaves.push({id:node.id,center:at,scale:localScale,color:[meta.pal[0],meta.pal[1],meta.pal[2],.11+Math.min(.30,px/150)]});
+  }
 }
 function projectPoint(p,q,cameraZ,width,height){const r=qRot(q,p),z=cameraZ-r[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+r[0]*f/z,y:height/2-r[1]*f/z,z:r[2]}}
 function projectWorldPoint(p,cameraZ,width,height){const z=cameraZ-p[2],f=(height/2)/Math.tan(FOV/2);return {x:width/2+p[0]*f/z,y:height/2-p[1]*f/z,z:p[2]}}
@@ -1102,10 +1154,12 @@ function drawNames(rect,now){
   const L=lensLocal(state.textCanvas.getBoundingClientRect());
   ctx.textBaseline='top';
   for(const rec of state.records){
-    const G=nameGlyphs(rec,L);if(!G)continue;count++;
     const p=projectPoint(overviewCenterFor(rec,rect.width,now),q,FAR_Z,rect.width,rect.height);
     if(p.x<-40||p.x>rect.width+40||p.y<-40||p.y>rect.height+40)continue;
-    if(L&&!inLens(L,p.x,p.y,28)){G.open=0;continue}
+    if(L&&!inLens(L,p.x,p.y,28)){
+      const fit=Math.max(60,Math.min(NAME_W,Math.round(L.r*1.3/10)*10)),G=state.namesFor===state.records?state.names?.get(rec.id+'@'+fit):null;if(G)G.open=0;continue;
+    }
+    const G=nameGlyphs(rec,L);if(!G)continue;count++;
     const isOpen=rec.id===hov;G.open=mix(G.open,isOpen?1:0,Math.min(1,dt*6));
     let ox=0,oy=0;const n=G.glyphs.length;
     if(L&&G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,NAME_LH)),s=L.r*.72,w=b.x1-b.x0,h=b.y1-b.y0;

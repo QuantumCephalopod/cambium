@@ -1,91 +1,24 @@
-# NUTRIENT — Papers performance pressure + LOD audit + runaway edge length — 2026-10-03
+# RESIDUAL — Papers edge law and remaining performance acceptance
 
-status: OPEN / ADMITTED
-source: Philipp, handwritten field notes 2026-10-03
-target: github.cambium → display → Papers
-related:
-- lens-as-instrument / lens-as-LOD
-- shared bounded flow law
-- text-as-tissue
-- Display performance work already landed outside this local pressure
+status: PARTIAL / BOUNDED CPU PASS WITNESSED IN STAGING / EDGE + LIVE ACCEPTANCE OPEN
+source: Philipp's 2026-10-03 field pressure; foreground-decided bounded performance packet 2026-10-04
 
-## encounter
+## earned bounded performance portion
 
-Live Papers still feels performance-heavy enough to require a dedicated local audit.
+Actual209 Sources/Holons were measured before structural redesign. Repeated physics/vector work and background/selected ancestry/ember construction were identified, then reduced with exact reference motion/output tests, source invalidation, finite existing LOD support and cold off-lens name admission. The same209 Node VM240-step comparison materially lowers these CPU stages; native119332/wrapper56 and untimed desktop overview/Governance/6H/lens/return smoke pass. One-body identity, full population, ticks, force/LOD constants, genealogy and source truth remain.
 
-The handwritten pressure was:
+## still open
 
-- "PERFORMANCE IS TANKING"
-- "NEEDS CAMBIUM SPLIT + LOD RULE"
-- edges can "EXPLODE PAST TARGET LENGTH" and should be length-locked.
+Owner promotion/deployed acceptance and actual remaining visitor/physical-device performance are not established by Node VM measurements. Browser smoke DPR1 differs from the earlier DPR1.5 baseline, with concurrent-checker/virtual-throttle timing excluded. Any remaining GPU/compositor/open-text-tissue/readability/mobile pressure needs its own measured evidence and foreground decision; no broad renderer migration, cap, freeze or new split was authorized here.
 
-These observations are admitted as pressure, not as a pre-decided structural split.
+A Cambium differentiation remains conditional on a persistent semantic/operational distinction that cannot be carried cleanly in the existing body, with a complete derived local closure. Slow performance alone does not authorize it. LOD always remains perceptual resolution of the same organism; selected/locked detail reveals earned structure.
 
-## performance boundary
+## runaway edge-length wound — unchanged decision gap
 
-Measure the real Papers workload first.
+Some edges can extend past their intended target length. A bounded target-length law still has to be derived from live body scale/geometry and witnessed at tested ranks; an arbitrary screen-pixel clamp is not earned. Preserve actual semantic endpoints, organism orientation, relation identity and recursive scale. This repair does not close that wound or rewrite its endpoints.
 
-The existing lens already earns one important LOD distinction: expensive particle/text detail can be bounded to the lens.
+## remaining acceptance
 
-The next act should identify what still dominates after that law is active, across representative desktop and mobile use.
+Reject any text-readability, genealogy, Descent or source-truth regression. Actual deployed/device contact and independently decided edge-length bounds remain required for their respective closures; initial measurement and the named bounded CPU work no longer await implementation.
 
-Do not claim GPU/CPU/FPS bottlenecks from intuition alone.
-
-Candidate surfaces to measure include only as hypotheses:
-
-- organism/metabolite motion;
-- text-tissue / Pretext layout and drawing;
-- relation/edge drawing;
-- repeated projection/layout work;
-- hidden/off-lens detail;
-- high-rank body count.
-
-## Cambium split is conditional
-
-A new Papers differentiation is earned only if measured pressure reveals a persistent semantic/operational distinction that cannot be carried cleanly inside the present body.
-
-"Performance is slow" by itself does not authorize a fourfold split.
-
-If a split becomes necessary, derive its local `4V / 6E / 4F / 1T` from the actual recurring responsibilities before materializing it.
-
-## LOD pressure
-
-LOD should reduce representation cost without erasing truth.
-
-At minimum:
-
-- off-lens detail should not be computed at the same fidelity as active readable detail unless required;
-- rank/distance/lens state may select a coarser representation of the **same organism**;
-- coarse representation must not become a different body-kind or ontology;
-- selected/locked detail reveals already-earned structure.
-
-## runaway edge-length wound
-
-Some Papers edges can visually extend past their intended target length.
-
-The relation needs a bounded target-length rule so an edge cannot grow/extrude without limit.
-
-The fix must preserve:
-
-- actual semantic endpoints;
-- organism orientation;
-- relation identity;
-- recursive scale relation.
-
-Do not solve a visual runaway by silently changing which vertices the relation connects.
-
-The exact target-length function is still to be derived from the live body scale/geometry and witnessed, rather than set as an arbitrary screen-pixel constant.
-
-## acceptance
-
-1. representative Papers performance is measured before structural redesign;
-2. remaining expensive work is identified by evidence;
-3. LOD lowers work while preserving one-body identity across resolutions;
-4. off-lens/off-focus detail is not unnecessarily computed at readable fidelity;
-5. no Cambium split occurs without a derived local closure;
-6. relation edges remain bounded near their truthful target length at every tested rank;
-7. bounding an edge never changes its semantic endpoints;
-8. desktop and mobile browser witnesses cover overview, lens/lock detail and an open organism;
-9. regressions in text readability, genealogy, Descent and source truth are rejected.
-
-This nutrient may later split into separate performance and edge-law meals if measurement proves they have independent owners.
+Original request: `../_waste/metabolized-NUTRIENT__performance-lod-and-edge-length__20261003-20261004T225640Z.md`; SHA-256 `f36cf554e262f504b37e2a93bc8faf1d3c1ce414e5a7001a682f0dec85b28dc6`. Historical HOME remains append-only.
