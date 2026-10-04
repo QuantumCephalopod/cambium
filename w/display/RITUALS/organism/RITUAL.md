@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.17"
+version: "3.18"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -40,7 +40,7 @@ Physical custody encodes global site address:
 - a site-holon under `w/display/y/y<address>/` occupies site-space `<address>`;
 - thus `w/display/y/yw/crawlerbait/` means Crawlerbait at global site-space `w`;
 - thus `w/display/y/yy/papers/` means Papers at global site-space `y`;
-- recursion continues by the same `{w,x,z,y}*` law.
+- recursion continues by the same `{w,x,y,z}*` serialized-address law.
 
 The outer first `y` is Display Population custody, not part of the restarted site address.
 
@@ -131,6 +131,20 @@ Site-holons retain local typographic sovereignty: they choose which ranks they u
 A non-lattice size is admissible only when concrete local functional pressure requires that exact exception; convenience or inherited arbitrary pixels do not create a second size ontology.
 
 Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
+
+### Canonical recursive UI field
+
+Display may project screen-space UI as one normalized recursive fourfold carrier without claiming that 2D screen geometry is Cambium ontology.
+
+- canonical textual address serialization/sort order is `w, x, y, z`; this is deliberately distinct from the fixed CCCC semantic phase relation `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE` and from any carrier-internal tetrahedral vertex-array order;
+- the 2D projection maps one split row-major as `w x / y z`; every current leaf may recur by the same `1→4` law without a predefined depth;
+- only realized splits exist in canonical state. Pixel rectangles are derived from `carrier bounds + recursive address`, never stored as the canonical address;
+- one UI element may occupy one current leaf or one contiguous rectangular union of adjacent same-rank leaves. A site may bind that occupied span as fill, centre or an edge (`north/south/west/east`); text therefore may be edge tissue rather than a freely positioned box;
+- splitting an occupied leaf is refused until its tissue moves; four direct sibling leaves coalesce only when none is further split or occupied;
+- canonical state is exportable/importable as realized split addresses plus identity-owned element spans. A mutation can therefore be replayed as address-native operations such as `split x`, `coalesce xy`, `place nav xw+xx …`, or `move title ww+wx -> yw+yx`;
+- an editor is only a projection/actuator of that state. It never becomes a second layout authority.
+
+First witness: `w/ui-grid.js` owns the pure address/state physiology (`sss.display.ui-grid.v1`), while `w/ui-grid-lab.html` is a specimen-agnostic manipulation surface. The lab is evidence and ongoing design instrument, not a new site-holon or semantic split.
 
 ### Acknowledged live circulation — delta recurs before snapshot
 
@@ -260,3 +274,6 @@ Version 3.15 live-type-and-frame-work correction (2026-10-03): Philosophy's over
 Version 3.16 fractal-type-scale correction (2026-10-03): Display type size is now one browser-rooted half-octave power-of-two lattice across shared CSS, site-holon DOM type, Canvas/Pretext ink and standalone public apertures. Site-holons choose ranks and may shift a local origin while preserving the same ratio; Philosophy's narrow origin preserves the compact PR #164 witness. `INDEX.yaml` and `_cambium.yaml` remain unchanged because no new structural distinction was earned.
 
 Version 3.17 address-hash and re-entry-truth correction (2026-10-03): the global `#scope:address` hash became an input as well as a witness (navigation 3.3); back/forward no longer throws on a call left behind when `reconcile()` was retired; canvas label ink receives canvas `fontStretch` keywords instead of computed percentages. The current-body list now names all six physically mounted site-holons. `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+
+Version 3.18 canonical-ui-grid correction (2026-10-04): Display gained a specimen-agnostic recursive screen-space carrier whose canonical state is address-native rather than pixel-native. Serialized addresses use `w,x,y,z`; the first 2D projection is row-major `w x / y z`; same-rank spans, edge anchors, lawful split/coalesce and deterministic address-delta commands are replayable through `w/ui-grid.js` and its lab. CCCC semantics and tetrahedral implementation order are explicitly not remapped; `INDEX.yaml` and `_cambium.yaml` remain unchanged.

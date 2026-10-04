@@ -1,6 +1,6 @@
 # NUTRIENT — canonical recursive UI grid + address-native mockup — 2026-10-04
 
-status: OPEN / UNRESOLVED
+status: ASSIMILATED / DISPLAY HOME EARNED — bounded Cambium backpropagation pending
 source: Philipp, chat 2026-10-04
 target: `self-similar-systems/cambium → w/display`
 requested carrier: writable staging fork `QuantumCephalopod/cambium`
@@ -64,3 +64,35 @@ Build a small interactive HTML mockup that can:
 9. preserve browser/user responsive geometry by deriving pixels from the normalized recursive field.
 
 Then challenge the result, assimilate only what is actually invariant, backpropagate the bounded Cambium consequence if earned, witness, HOME, and refresh feed separately.
+
+
+## assimilation — 2026-10-04
+
+**PASS / EARNED for Display.**
+
+The prototype killed the pixel-canonical alternative: the same exported state reproduced the same normalized layout at desktop and narrow viewport while pixel rectangles were derived afresh. The surviving Display invariant is:
+
+`canonical recursive address state → deterministic carrier projection → address-native mutation delta`
+
+Bounded realization:
+- serialized address order `w,x,y,z`;
+- 2D first split `w x / y z`;
+- arbitrary recursive leaf splitting with no fixed depth;
+- current-leaf or rectangular adjacent same-rank spans;
+- edge/centre/fill anchors, with text admissible as edge tissue;
+- occupied-leaf split refusal and unoccupied direct-sibling coalescence;
+- stable JSON state `sss.display.ui-grid.v1`;
+- replayable `split / coalesce / place / move / remove` commands.
+
+What did **not** survive as Cambium law: HTML controls, DOM/CSS styling, the 16:9 specimen frame, the inspector, the concrete 2D quadrant projection, element kinds, and Display typography rank controls. Those remain Display implementation/evidence.
+
+### witness
+
+- staging implementation head before HOME: `253662ccc508dc9f4ff7cbe5b436363b52c56cd8`;
+- GitHub Actions run `37198156991`: full Display membrane build, tree-addressed organism witness, address algebra, tetrahedral closure, byte verification and staging artifact upload PASS;
+- pure Node witness: canonical symbols `w,x,y,z`, exact normalized bounds, recursive leaves, lawful/illegal spans, occupied coalescence refusal, deterministic move command, JSON roundtrip PASS;
+- Chromium exact-byte harness at 1400×900 and 760×980: blank → `split ε` emitted `w,x,y,z`; recursive split; edge-text placement; `move text-1 ww+wx -> yw+yx`; export/import roundtrip; zero page exceptions and zero console warnings/errors;
+- container policy blocks direct `file://` navigation, so the browser harness injected the exact lab HTML and exact `ui-grid.js` bytes into a document; no product logic was changed for the witness;
+- Display `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+The child result changes a rank-invariant host distinction only at the compressed relation between recursive address state, deterministic projection and replayable address deltas. That bounded consequence is the sole pending Cambium UPLINK.
