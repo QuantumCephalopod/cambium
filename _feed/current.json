@@ -25,13 +25,16 @@
   },
   "home": {
     "changed_scope": [
-      "RITUALS/organism/RITUAL.md 1.5: current population line",
-      "INDEX.yaml and _cambium.yaml unchanged"
+      "root organism ritual 1.6: canonical textual address serialization/sort order w,x,y,z explicitly separated from fixed CCCC semantic phase mapping",
+      "root organism ritual 1.6: deterministic carrier coordinates are derived witnesses when recursive address state completely determines projection",
+      "root organism ritual 1.6: address-native deltas may cross membranes when sufficient to replay the carrier consequence; receiving carrier re-derives/witnesses its projection",
+      "Display-specific 2D grid geometry, UI spans, anchors, element kinds and command schema explicitly remain local",
+      "root INDEX.yaml and _cambium.yaml unchanged"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED — the root receptor's Display paragraph now names all six current site-holons instead of the first three."
+    "outcome": "PASS/EARNED — Cambium now states the carrier-invariant relation between canonical recursive address state, deterministic projection and replayable address-native deltas; no structural split was earned."
   },
-  "observed_at_utc": "2026-10-03T21:33:07.353157Z",
+  "observed_at_utc": "2026-10-04T11:25:00Z",
   "owner": "cambium",
   "phenotype": {
     "w": {
@@ -47,21 +50,23 @@
       "noun": "orientation"
     }
   },
-  "reflected_home_event": "cambium-receptor-population-truth-20261003T204116Z",
+  "reflected_home_event": "cambium-canonical-address-projection-20261004T112400Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "439a9e744c6331d0aa590a12fbfbebf3ba510b1bbf16adeb7109938bd24109fc"
+      "sha256": "341b2500baa45015cf4e3395d0f60841d6873b036020719670108d2a88a28582"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [],
+    "stomach_direct": [
+      "UPLINK__display-canonical-address-state__20261004.md"
+    ],
     "waste_direct_count": 6
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "d98eebc3d87f56c17973a4dbbab0842afebdd2b0"
+    "source_revision": "6afe9be2022189d2c9e7ef6d690ed54105381a1a"
   }
 }
