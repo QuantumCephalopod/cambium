@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Site-holon projection of Philipp's organ Schattenseiten: 49 shadows grown by one operation repeated at every rank, shown as floating tetrahedra in their genealogy."
-version: "1.2"
+version: "1.3"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -22,7 +22,7 @@ The two German sentences stay German in every language. The work's remaining tex
 
 Media come only from `fat`, which fails closed. No names, places or texts beyond what the organ's feed admits. Mount: site-space `x`; relocation changes environment only.
 
-Philosophy preloads only the55 static occupied-slot interiors (49 works plus six positive clusters) through Fat's declared `media_variants["64"]`. The droplet draws those same cached64 images with nearest sampling, clipped after final glass sampling so enlarged pixels remain unsmoothed. Preview GPU arrays are genuinely64×64; source/decode cache is revision+tier keyed and shared, while GPU textures/programs/VAOs stay context-local.
+Philosophy preloads only the55 static occupied-slot interiors (49 works plus six positive clusters) through Fat's declared `media_variants["64"]`. The droplet draws those same cached64 images with nearest source sampling into Display's transparent optical-input target. The shared glass pass supplies its normal magnification/refraction/edge deformation and lens clipping; the former post-glass bypass is superseded. Preview source GPU arrays are genuinely64×64; source/decode cache is revision+tier keyed and shared, while GPU textures/programs/VAOs stay context-local.
 
 Entering first displays completed64 data immediately, then alone permits a four-way progressive queue for declared512 images. A high image replaces only its corresponding low slot; high errors retain low. Leaving pauses queued high work and disposes the entered high GPU tier; revisit resumes unfinished permitted work and reuses completed decoded images. Host preview always stays64 even after a visit. Selected-work animation remains demand-driven in the entered site.
 
@@ -31,3 +31,5 @@ Missing/invalid declarations fail closed for both tiers and the image panel: no 
 Version 1.1 sized-media binding (2026-10-03): the public Fat variant declaration selects the actual 512-pixel file before fetching/decoding; sheet geometry, words, source identity, selection and animation meaning remain intact.
 
 Version 1.2 cached64/res-up binding (2026-10-04): strict low-only host/droplet preview, immediate shared64 entry then bounded entered512, context-local GPU ownership and revision-aware cache replace the former single512 resource/fallback physiology. Layout and source identity remain unchanged.
+
+Version1.3 shared optical-input correction (2026-10-04): the same low-only interior participates in the existing shared glass mapping instead of painting on top of it. Media tier gates/cache/entered res-up and source geometry remain unchanged.
