@@ -21,11 +21,11 @@ Current `w/spritesheet/VERSION.json`, `w/display-type.js`, `w/display-text-tissu
 
 ## relation to the watched invariant
 
-`NUTRIENT__text-is-body__20260927.md` waits for a second body to earn "text is body" before it is lifted into Display law. This nutrient is Philipp's direct ask to make it Display-wide, with an accepted concrete physiology. Whether that closes the watched condition, and what stays site-local in Papers, is for Display's metabolism to decide.
+The generic text-as-body / letters-as-bodies waiting is closed: Display’s current receptor explicitly carries the shared law (3.11) and engine (3.13). The distinct V/E/F/T candidate remains in `NUTRIENT__text-is-body__20260927.md`; its rank-invariant applicability is not earned merely by the generic law. Papers-local phenomenology and acceptance remain separate.
 
 ## exit
 
-Closes when Display metabolizes the face, the folding, and text-as-tissue into its own law and tissue (or narrows/refuses parts with reasons), and the carrier is retired after reference closure.
+Closes when the remaining performance/readability, glyph/fallback, V/E/F/T and original-carrier disposition questions are answered or explicitly rejected/superseded, and the carrier can retire after reference closure. Face, folding and the generic letters-as-bodies law are already earned.
 
 ## carrier and performance boundary
 

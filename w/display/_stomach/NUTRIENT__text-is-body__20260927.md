@@ -1,29 +1,17 @@
 # NUTRIENT — Text is body, not label — 2026-09-27
 
-status: OPEN / WATCHED INVARIANT CANDIDATE (not yet law)
+status: RESIDUAL / OPEN — achieved portions catabolized 2026-10-04
 kind: display phenomenology pressure
 source: Philipp
 target: github.cambium → display
 first witness: `y/yy/papers/_stomach/NUTRIENT__text-being-inquiry__20260927.md`
 
-## source-faithful pressure
 
-Every bit of text on the site should become alive. Text is not dead information laid on top of a
-body; it may be the body, and may become part of a larger organism. There is no "label + thing":
-label = thing. This is the clearest signal of what sss is trying to convey — life is not bound to
-substrate.
+## surviving owner and return address
 
-Display already carries one instance: a floating body's label "is selectable exactly like the
-body's face" (navigation 2.6).
+Current Display receptor 3.17 explicitly carries general text-as-body law from 3.11 and the letters-as-bodies engine from 3.13 (`w/display-text-tissue.js`, Papers consumer). Its source HOMEs are `display-type-is-body-20261001T160500Z` and `display-text-tissue-engine-20261001T204500Z`. This closes generic-law waiting while retaining the specific rank grammar below.
 
-## why watched, not admitted
-
-A Display invariant must be specimen-agnostic and required by arbitrary site-holons. Papers
-(metabolites, organism geometry) is the first witness. Lift into Display law when a second body
-(e.g. Philosophy's vertex nouns, Crawlerbait's traffic) earns the same need; until then the
-realization stays site-local and Pretext stays a neutral Embodiment dependency.
-
-## merged — global tetrahedral text physiology (Papers intake 2026-09-23)
+## remaining V/E/F/T candidate
 
 Carried here from `y/yy/papers/_waste/merged-global-tetrahedral-text-physiology__20260923.md`, because
 its target was always Display, not Papers. Its constraints stay live: text architecture as a global,
@@ -42,3 +30,9 @@ witnessed candidate from the Papers text-being prototype (candidate, not law):
 One primitive (letters as particles, Pretext as the layout carrier) at every rank; one gesture
 (hover peeks, click descends and locks, outside ascends); information folded into lower resolution,
 present, never absent.
+
+## exit
+
+Witness or reject the rank-invariant applicability of this specific V/E/F/T text grammar and its future site-local realizations. Do not wait again for generic text-as-body admission: current Display law already owns that distinction.
+
+The extracted preimage is at `../_waste/catabolized-NUTRIENT__text-is-body__20260927-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.

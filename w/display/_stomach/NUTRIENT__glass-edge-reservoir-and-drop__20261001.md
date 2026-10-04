@@ -13,7 +13,7 @@ Current `z/display-lens.js`, `w/locus-shader.js`, label ink and navigation law c
 - Preserve the existing field topology, Descent, native label identity and click targets, site sovereignty, and reduced-transparency fallback.
 - Treat the text pixels as derived ink in the existing glass scene; DOM text remains the semantic and hit-target source.
 - The same drop may detach from and return to eligible UI edges in its own layer. Do not cross a differently declared layer.
-- Keep the Crawlerbait subtree excluded from the local checkout.
+- Historical Oct1 implementation scope excluded the Crawlerbait subtree. That restriction does not govern this repo nutrient cleanup; no Crawlerbait implementation is changed by it.
 - Final size, attraction, merging feel and top contour need a real browser preview; parameters are not claimed accepted by prose or tests.
 
 ## exit

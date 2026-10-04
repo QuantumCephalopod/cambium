@@ -1,45 +1,21 @@
 # NUTRIENT — legal site-holons + resilient public contact — 2026-10-02
 
-status: OPEN / ADMITTED
+status: RESIDUAL / OPEN — achieved portions catabolized 2026-10-04
 source: Philipp, chat 2026-10-02
 target: github.cambium → display → Population
 kind: public legal membrane differentiation
 
-## encounter
 
-Philipp explicitly separates the public legal membrane into two autonomous site-holons rather than one shared legal page/container:
+## surviving owner and return address
 
-- one site-holon for **Impressum**;
-- one site-holon for **Datenschutz**.
+Current Impressum/Datenschutz receptors 1.1, their source-owned `projection.json` and public apertures, current Display 3.17 mounts, and the two active legal delivery/publication-gates records own the earned distinctions. No legal copy or contact configuration is changed.
 
-The Impressum operator identity supplied by Philipp is:
+## source-proved current choices
 
-Philipp Remy Bartholomäus
-Katharinenstr. 6A, 1. OG
-66115 Saarbrücken
+Impressum and Datenschutz are distinct mounted site-holons. Their projections select `contact@sss.saarland` and `privacy@sss.saarland`, superseding the initial provisional German local-parts. Impressum’s active `NUTRIENT__contact-route-pending__20261002.md` records Philipp’s Oct3 delivery to both inboxes; Datenschutz’s `NUTRIENT__publication-gates__20261002.md` records dual-inbox privacy delivery, finalized in-place Drive notice, purpose/necessity retention and the provider-GC-pending account. Neither route remains a configuration/test work queue.
 
-The `1. OG` is the atelier; the private residence on another floor is not to be published.
+## remaining publication/HOME boundary
 
-## contact pressure
+The legal owners’ explicit publication-HOME exits remain open. Canonical source and successful Pages run 37181708836 at 8ade3e65 are witnessed; this pass does not claim a new live legal-route/visitor verification or a completed owner HOME for publication. Reacquire both projections/public apertures and the actual delivered routes, then close only the remaining owner-local witness/HOME. Preserve separate legal identities, the atelier-only operator address and no invented annual review promise. Provider PR-ref/cache cleanup remains separate and pending.
 
-Public legal contact must not depend solely on Philipp's personal Google account. Desired public-domain addresses:
-
-- `kontakt@sss.saarland`
-- `datenschutz@sss.saarland`
-
-Incoming mail should reach two independently recoverable destination inboxes so loss of one personal Google account does not sever legal contact continuity.
-
-The public site must not claim these addresses are live until receipt has actually been tested.
-
-## retention correction
-
-Do not invent a periodic annual privacy-review promise merely for neatness. The public privacy notice should use lawful retention criteria / purpose-bound deletion conditions rather than a calendar obligation that is not operationally carried.
-
-## publication gate
-
-This branch may stage both holons and their public apertures, but publication remains blocked until:
-1. the public `@sss.saarland` contact routes are live and test-delivered;
-2. the Datenschutz text is updated from the current Drive draft against the final contact and current remediation state;
-3. the generated Display artifact and both public legal routes pass current witnesses.
-
-The two holons remain distinct identities and must not be collapsed into a generic Legal container.
+The extracted preimage is at `../_waste/catabolized-NUTRIENT__legal-site-holons__20261002-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.
