@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.1"
+version: "3.2"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -13,7 +13,7 @@ A site-holon is an autonomous interlocutor body encountered through Display Popu
 ## Four distinctions
 
 - **Witness** — viewer/person navigating Display.
-- **Address/path** — raw recursive genealogy through site-space `{w,x,z,y}*`.
+- **Address/path** — raw recursive genealogy through site-space `{w,x,y,z}*`.
 - **Locus** — canonical tetrahedral place obtained from the address quotient.
 - **Interlocutor/site-holon** — stable locally autonomous body whose identity survives placement changes.
 
@@ -69,6 +69,8 @@ Default locality rule:
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
+
+Display may additionally lend the neutral canonical UI-field projection described by the Display organism receptor. A site may use its recursive addresses/spans to place local presentation tissue, but the site's content, hierarchy, aesthetics and interaction meaning remain identity-owned. Address-derived layout is a shared carrier capability, not a requirement that every site expose the same UI.
 
 ## Global background-drag default
 
@@ -193,3 +195,6 @@ Version 2.9 site-layer correction (2026-09-29): a site-holon whose phenomenology
 Version 3.0 rest-view correction (2026-09-30): a site-holon may carry `shader.view = {rest, projection}` (see organism RITUAL 3.9). The site decides what its rest view means; Display only lends the quaternion, the parallel projection and the placement. A site whose meaning is a flat picture seen along an axis (Schattenseiten) uses it so; every other site is unchanged.
 
 Version 3.1 body-material correction (2026-09-30): a site whose field shader draws nothing gives its floating body a material through `shader.body` (see organism RITUAL 3.10); the material is the site's own.
+
+
+Version 3.2 canonical-ui-field correction (2026-10-04): site-holons may consume Display's address-native recursive UI carrier without surrendering local phenomenology. Global raw-address notation is stated canonically as `w,x,y,z`; no CCCC semantic remapping or site-template ontology is introduced.

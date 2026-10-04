@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.3"
+version: "3.4"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -14,7 +14,7 @@ Canonical identity/locus/body law is carried by `../site-holon/RITUAL.md`.
 
 ## Global field
 
-The global address alphabet is `{w,x,z,y}` recursively without fixed depth. Semantic place is the exact quotient vertex/locus. Potential recursion is not fabricated anatomy.
+The canonical serialized address alphabet/order is `{w,x,y,z}` recursively without fixed depth. Semantic place is the exact quotient vertex/locus. Potential recursion is not fabricated anatomy. This serialization order is not the fixed CCCC semantic phase order and does not require tetrahedral render code to reorder its internal vertex arrays.
 
 Camera focus is perceptual and distinct:
 
@@ -177,3 +177,6 @@ Version 2.4 floating-bodies correction (2026-09-26): organisms float as full-res
 Version 2.3 descent correction (2026-09-26): container→content descent became one Display invariant at every rank and across site-holon membranes — local child selection, relative centroid framing without zoom ceiling, two-level LOD with pooled deeper content, ascent back through the walked path, and the active interlocutor read from the innermost container. Supersedes the separation of local traversal from global navigation.
 
 Version 2.2 default background-drag correction (2026-09-18): shared background drag/orientation is now a Display-global site-holon default rather than a Philosophy/Papers special case. The site membrane may explicitly disable only its own background drag with `background_drag: false`; Philosophy-style inspection and global navigator controls remain separate capabilities.
+
+
+Version 3.4 canonical-address serialization correction (2026-10-04): raw/global textual addresses are now stated in canonical `w,x,y,z` serialization order. This is a communication/state-order invariant only; the existing CCCC semantic mapping and carrier-specific tetrahedral vertex enumeration remain unchanged.
