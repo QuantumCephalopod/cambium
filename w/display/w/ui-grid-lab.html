@@ -58,7 +58,7 @@ button{border:0;background:none;cursor:pointer}
 .round:hover{color:white;border-color:rgba(255,255,255,.38)}
 #toast{position:absolute;left:50%;bottom:.8rem;transform:translateX(-50%);padding:.42rem .7rem;border-radius:999px;background:rgba(18,20,21,.86);color:var(--muted);font-size:.68rem;opacity:0;transition:opacity .15s;pointer-events:none;z-index:50}
 #toast.show{opacity:1}
-#hint{position:absolute;left:.65rem;top:.62rem;color:rgba(255,255,255,.32);font-size:.62rem;letter-spacing:.06em;z-index:1;pointer-events:none}
+#hint{position:absolute;left:.65rem;top:.62rem;color:rgba(255,255,255,.32);font-size:.62rem;letter-spacing:.06em;z-index:1;pointer-events:none;transition:opacity .25s}
 #fileInput{display:none}
 .hidden{display:none!important}
 @media(max-width:800px){
@@ -295,7 +295,7 @@ function startFieldDrag(ev,id){
   drag={id,depth:info.depth,wc,hc,offsetX,offsetY,cells:null};
   const move=e=>{
     const q=point(e),max=scale,ox=clamp(Math.floor(q.x*scale)-offsetX,0,max-wc),oy=clamp(Math.floor(q.y*scale)-offsetY,0,max-hc);
-    const cells=rectCells(info.depth,ox,oy,wc,hc),ok=legalRect(cells);
+    const cells=rectCells(info.depth,ox,oy,wc,hc),ok=placementFree(id,cells);
     showGhost(cells,ok);
     drag.cells=ok?cells:null;
   };
@@ -313,7 +313,7 @@ function startResize(ev,id){
   resize={id,cells:null};
   const move=e=>{
     const p=point(e),x=clamp(Math.floor(p.x*scale),minX,scale-1),y=clamp(Math.floor(p.y*scale),minY,scale-1);
-    const cells=rectCells(info.depth,minX,minY,x-minX+1,y-minY+1),ok=legalRect(cells);
+    const cells=rectCells(info.depth,minX,minY,x-minX+1,y-minY+1),ok=placementFree(id,cells);
     showGhost(cells,ok);resize.cells=ok?cells:null;
   };
   const up=e=>{
