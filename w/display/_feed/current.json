@@ -25,17 +25,16 @@
   },
   "home": {
     "changed_scope": [
-      "w/ui-grid.js: pure canonical recursive address/grid state with w,x,y,z serialization, normalized bounds, split/coalesce/span/place/move/remove and JSON/command membrane",
-      "w/ui-grid-lab.html: specimen-agnostic interactive grid editor whose drawing is derived from exported state",
-      "w/ui-grid.test.cjs + y/check.py: native model witness",
-      "Display organism law 3.18: recursive UI field physiology and explicit address-order/CCCC-order separation",
-      "Navigation law 3.4 and site-holon law 3.2: canonical textual address serialization w,x,y,z without semantic remapping",
+      "w/ui-grid.js: schema v2 with layout metadata, named canonical spans, field-bound elements, @field command resolution and v1 migration",
+      "w/ui-grid-lab.html: finished interactive editor with field naming/list, human element IDs, field binding, JSON copy/download/upload/import and best-effort local autosave",
+      "w/ui-grid.test.cjs: v2 field-binding, replay, roundtrip and migration witness",
+      "Display organism law 3.19: named fields are communication aliases over canonical spans, never coordinates",
       "Display INDEX.yaml and _cambium.yaml unchanged"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED — Display now has one canonical address-native recursive UI carrier and deterministic editor/state membrane; bounded Cambium backpropagation remains separate."
+    "outcome": "PASS/EARNED — Display UI-grid v2 now exports portable named fields and deterministic field-bound element placements without making names a second coordinate system."
   },
-  "observed_at_utc": "2026-10-04T11:27:00Z",
+  "observed_at_utc": "2026-10-04T12:05:00Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -51,7 +50,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-canonical-ui-grid-20261004T111900Z",
+  "reflected_home_event": "display-ui-grid-named-fields-20261004T120300Z",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -59,7 +58,7 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "b8fbab0c716c8ca602f09f21fc399485868bf48d66f89f2d05138eed7d85fbdf"
+      "sha256": "2756b81a7e741dbb0f0626e7e6bc1b2a3666c24d6a75c3e889b72be0d8d8ec7d"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
@@ -94,12 +93,13 @@
       "NUTRIENT__text-is-body__20260927.md",
       "NUTRIENT__text-is-tissue-spritesheet__20261001.carrier",
       "NUTRIENT__text-is-tissue-spritesheet__20261001.md",
+      "NUTRIENT__ui-grid-named-fields__20261004.md",
       "observations.md"
     ],
     "waste_direct_count": 36
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "c6a9dd7d093a946cca303231a2433c7967522cf5"
+    "source_revision": "4814ad817236598b21cbe8bfea4586716c8d4695"
   }
 }
