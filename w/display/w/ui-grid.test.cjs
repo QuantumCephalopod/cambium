@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('assert');
 const G=require('./ui-grid.js');
-assert.deepStrictEqual(G.GENES,['w','x','y','z']);
+assert.deepStrictEqual(G.ADDRESS_SYMBOLS,['w','x','y','z']);
 assert.deepStrictEqual(G.bounds('w'),{x:0,y:0,w:.5,h:.5});
 assert.deepStrictEqual(G.bounds('x'),{x:.5,y:0,w:.5,h:.5});
 assert.deepStrictEqual(G.bounds('y'),{x:0,y:.5,w:.5,h:.5});
