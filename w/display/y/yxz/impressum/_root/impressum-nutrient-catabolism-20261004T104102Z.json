@@ -1,0 +1,42 @@
+{
+  "event_id": "impressum-nutrient-catabolism-20261004T104102Z",
+  "home_at_utc": "2026-10-04T10:41:02Z",
+  "organism": "impressum",
+  "entrypoint": "github.cambium...display.impressum",
+  "operation": "catabolize-achieved-nutrient-portions",
+  "outcome": "PASS/EARNED in staging — completed portions leave active intake; unresolved choices and witnesses remain. Canonical owner promotion is pending.",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "changed_scope": [
+    "w/display/y/yxz/impressum/_stomach/NUTRIENT__contact-route-current__20261002.md -> w/display/y/yxz/impressum/_waste/retired-NUTRIENT__contact-route-current__20261002-20261004.md (RETIRED)"
+  ],
+  "context": {
+    "actor": "Forge appendage, Philipp-authorized repo-only cleanup 2026-10-04",
+    "base": "8ade3e65f6957e19b330789473e3bc2229f8285a",
+    "carrier": "QuantumCephalopod/cambium:staging/nutrient-catabolism-20261004",
+    "publication_authorization": "scoped staging push + draft PR; no canonical merge/deploy",
+    "shared_root_field": {
+      "dive_in": "2.8",
+      "metabolism": "3.5",
+      "cambium": "3.4",
+      "drive": "1.6"
+    },
+    "catabolism_home": "Drive 134M5WFP0BC-xjYJu6vEmIad-AMFQ-vPo v0.2",
+    "method": "TRACE owner/source/consumers; quotient achieved portions only; preserve exact preimage and residual return address; retain unresolved actual gates; no code/constitution/public copy change",
+    "changes": [
+      {
+        "operation": "RETIRED",
+        "owner": "w/display/y/yxz/impressum",
+        "source": "w/display/y/yxz/impressum/_stomach/NUTRIENT__contact-route-current__20261002.md",
+        "waste": "w/display/y/yxz/impressum/_waste/retired-NUTRIENT__contact-route-current__20261002-20261004.md",
+        "preimage_sha256": "80a610040b8a73921bf2546871fce7310d83b5ac9dbdb5ea55dff5d0ce6b481e",
+        "preimage_bytes": 358,
+        "active_bytes": 0,
+        "surviving_owner": "w/display/y/yxz/impressum/_stomach/NUTRIENT__contact-route-pending__20261002.md",
+        "evidence": "The old sole exit was one end-to-end delivery test. The surviving sibling records Philipp’s later 2026-10-03 test delivery to both destinations and keeps the distinct publication-HOME exit; current Impressum receptor/projection select contact@sss.saarland."
+      }
+    ],
+    "revocation": "Reopen the smallest affected quotient if its surviving owner changes, current consumer needs an extracted distinction, or a countercase defeats its witness. Reacquire the cited preimage and living source first.",
+    "boundary": "Tools, old checkouts, backups and prior waste are excluded. No engineering, history rewrite, source data acquisition, legal copy edit or website publication performed."
+  }
+}
