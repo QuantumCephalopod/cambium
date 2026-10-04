@@ -1,0 +1,109 @@
+{
+  "event_id": "display-frame-repair-browser-return-20261004T141609Z",
+  "parent_event_id": "display-frame-clear-and-host-reentry-20261004T140212Z",
+  "home_at_utc": "2026-10-04T14:16:09Z",
+  "kind": "HOME_CORRECTION",
+  "delivery_state": "PARENT_HOME_DURABLE",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "append-later-independent-browser-return",
+  "outcome": "PASS/EARNED in staging — final full-aperture cold load also witnessed; exact QA limits preserved. Earlier source HOME remains closed and unchanged.",
+  "changed_scope": [
+    "later independent browser receipt bound to existing repair HOME; no runtime/public artifact mutation"
+  ],
+  "context": {
+    "actor": "Foreground Mnemos browser QA returned to Forge; Forge read exact receipt and hashes without claiming its own browser operation",
+    "browser_qa": {
+      "baseline": {
+        "head": "bef6eec993a7a86ea350e87937e78bc5f196f710",
+        "bundle": "eb548b32a7ec3a36",
+        "observed": [
+          "masked-depth body occlusion/trails",
+          "cached entry zoom after root-home return"
+        ]
+      },
+      "final": {
+        "bundle": "c92d0ec39b055cce",
+        "viewports": [
+          {
+            "width": 1280,
+            "height": 800
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "passes": [
+          "direct overview custom bodies visible",
+          "rotation without stale occlusion",
+          "Papers entry/root-home return at both sizes",
+          "Schattenseiten entry/root-home return at both sizes",
+          "normal overview scale after both return routes",
+          "full-aperture cold load"
+        ],
+        "limits": [
+          "viewport emulation, not physical phone GPU",
+          "Escape callback unit-covered; browser navigator consumed Escape",
+          "source-local preview lacks canonical Papers materialized shadow",
+          "one earlier mutable-preview reload failed during possible rebuild interval, recovered; final preview immutable"
+        ],
+        "screenshots": [
+          "baseline-desktop.jpg",
+          "baseline-mobile.jpg",
+          "baseline-mobile-return-from-papers.jpg",
+          "final-desktop-return-from-papers.jpg",
+          "final-desktop-return-from-schattenseiten.jpg",
+          "final-mobile-return-from-papers.jpg",
+          "final-mobile-return-from-schattenseiten.jpg",
+          "final-mobile-rotated.jpg",
+          "final-full-desktop.jpg"
+        ]
+      }
+    },
+    "source_receipt": {
+      "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\browser-qa.json",
+      "sha256": "a2313c2efe87c62d6e4f642f05a1d76e6d698abcfa78174bdbc55abe0f5d22dd"
+    },
+    "screenshots": {
+      "baseline-desktop.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\baseline-desktop.jpg",
+        "sha256": "6b06e79d1de86ae161f625ea71e93363a0aa4b5562c40d1733eaff2c99ea346b"
+      },
+      "baseline-mobile.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\baseline-mobile.jpg",
+        "sha256": "6211daa8aba83a71505975555f3055d3d6903660a068bcce0e058b87811aa5c6"
+      },
+      "baseline-mobile-return-from-papers.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\baseline-mobile-return-from-papers.jpg",
+        "sha256": "aae92728df512a7dc07067f1bbc0ddf9eb47c3ad3634fb63066b323b721d160c"
+      },
+      "final-desktop-return-from-papers.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-desktop-return-from-papers.jpg",
+        "sha256": "dbcfa49dc262037c2a766fc5b3e72f60479bb7f295d1c1ba93057c2b75e3d04b"
+      },
+      "final-desktop-return-from-schattenseiten.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-desktop-return-from-schattenseiten.jpg",
+        "sha256": "1730e4f56319cbbc267a46a6961e8ebe972be2cc732cba1c97e823aa9344bcc5"
+      },
+      "final-mobile-return-from-papers.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-mobile-return-from-papers.jpg",
+        "sha256": "f86417c8ee68a73b9b0fa967a62dfd42b8f5d9153a66fb8fe5fbf1b11ed9523c"
+      },
+      "final-mobile-return-from-schattenseiten.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-mobile-return-from-schattenseiten.jpg",
+        "sha256": "6b54dfc63a244a7b820387a7a6fb8f7e49ecadd3a5635902fd9168fe336497ed"
+      },
+      "final-mobile-rotated.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-mobile-rotated.jpg",
+        "sha256": "11b7c045d74dd59f63f97643678268e3bd4ded668854fc7fd3116f49b4e9e3ea"
+      },
+      "final-full-desktop.jpg": {
+        "path": "C:\\MNEMOS\\tmp\\body-regression-33k\\final-full-desktop.jpg",
+        "sha256": "d69b3af827697c9a05bc100c854ad192e3b00f4c8295325dea84b77755b34894"
+      }
+    },
+    "limits": "Source-local preview does not carry canonical materialized Papers shadow; shared host/body/return physiology is witnessed, not live research projection completeness. Viewport emulation is not physical-device GPU coverage; Escape browser route unclaimed; one earlier preview reload transient unassigned.",
+    "boundary": "No new source act, field mutation, canonical promotion/deployment, data projection repair or broader audit. Append-only evidence preserves earlier HOME identity."
+  }
+}
