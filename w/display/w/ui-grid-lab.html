@@ -337,7 +337,7 @@ function openFieldMenu(id,x,y){
   const items=[
     ['rename id',()=>{const n=prompt('field id',id);if(n)try{renameFieldId(id,n)}catch(e){toast(e.message,true)}}],
     ['refine ×4',()=>{try{refineField(id)}catch(e){toast(e.message,true)}}],
-    ['delete',()=>{try{state=G.removeField(state,id);persist();selectedField=null;render();toast('field removed')}catch(e){toast(e.message,true)},true]
+    ['delete',()=>{try{state=G.removeField(state,id);persist();selectedField=null;render();toast('field removed')}catch(e){toast(e.message,true)}},true]
   ];
   for(const [label,fn,danger] of items){const b=document.createElement('button');b.textContent=label;if(danger)b.className='danger';b.onclick=()=>{p.remove();menu=null;fn()};p.appendChild(b)}
   frame.appendChild(p);menu=p;
