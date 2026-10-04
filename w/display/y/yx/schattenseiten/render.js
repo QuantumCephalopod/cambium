@@ -36,6 +36,7 @@ let PROJECTED=null,PROJECTED_FOR=null;
 function fieldProjection(projection={}){
   /* the runtime asks every frame; the answer only changes with the projection */
   if(PROJECTED&&PROJECTED_FOR===projection)return PROJECTED;
+  const revision=(projection.fat||'')+'|'+JSON.stringify(projection.media_revisions||projection.media_variants||{})+'|'+JSON.stringify(projection.works||[]);if(REV!==revision){resetMedia();GENERATION++}REV=revision;
   P=projection;byId=new Map((projection.works||[]).map(w=>[w.id,w]));
   const points=[],seen=[0,0,0,0,0,0,0,0],noun=new Map(),clustered=new Set();
   BODY.list=[];
@@ -94,13 +95,41 @@ void main(){
 /* ============ bodies: one tetrahedron per shadow, the shadow on it ============
  * Seen along the body's own z (the rest view), the tetrahedron is a square and the shadow resolves;
  * turned, it breaks into faces. Nothing drifts. */
-const BODY={list:[],gl:null,dim:0,last:0,L:null};
-const SZ=512,LEVELS=10;
-/* Fat declares the sized member; choose it before requesting the bytes. */
-function mediaUrl(src){
-  const candidate=P?.media_variants?.[String(SZ)]?.[src];
-  const member=typeof candidate==='string'&&candidate&&!/^(?:[a-z]+:|\/)/i.test(candidate)&&!candidate.split('/').includes('..')?candidate:src;
+const BODY={list:[],dim:0,last:0};
+let ENTERED=false,REV='',GENERATION=0,entryGL=null;
+const CACHE=new Map(),QUEUES=new Map(),GPU=new Map();
+function mediaUrl(src,size=512){
+  const member=P?.media_variants?.[String(size)]?.[src];
+  if(typeof member!=='string'||!member||/^(?:[a-z]+:|\/)/i.test(member)||/[\\:%?#]/.test(member)||member.split('/').some(x=>!x||x.startsWith('.')||x.startsWith('_')))return null;
+  if(!member.startsWith('sizes/'+size+'/'))return null;
   return (P?.fat||'')+member;
+}
+function cacheKey(src,size){return GENERATION+'|'+size+'|'+mediaUrl(src,size)}
+function requestImage(src,size){
+  const url=mediaUrl(src,size);if(!url)return null;
+  const key=cacheKey(src,size);if(CACHE.has(key))return CACHE.get(key);
+  const item={key,url,size,status:'queued',bitmap:null,bytes:0};CACHE.set(key,item);
+  let q=QUEUES.get(size);if(!q){q={jobs:[],running:0};QUEUES.set(size,q)}q.jobs.push(item);pump(size);return item;
+}
+function pump(size){
+  const q=QUEUES.get(size);if(!q)return;
+  while(q.running<4&&q.jobs.length&&(size===64||ENTERED)){
+    const item=q.jobs.shift();q.running++;item.status='loading';
+    fetch(item.url,{mode:'cors'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(async blob=>{
+      item.bytes=blob.size;
+      if(typeof createImageBitmap==='function')return createImageBitmap(blob,{resizeWidth:size,resizeHeight:size,resizeQuality:'pixelated'});
+      return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{const c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;ctx.drawImage(image,0,0,size,size);URL.revokeObjectURL(image.src);resolve(c)};image.onerror=reject;image.src=URL.createObjectURL(blob)});
+    }).then(bitmap=>{if(CACHE.get(item.key)!==item){bitmap.close?.();return}item.bitmap=bitmap;item.status='ready'}).catch(()=>{item.status='failed'}).finally(()=>{q.running--;pump(size)});
+  }
+}
+function ensureTier(size){for(const b of BODY.list)requestImage(b.src,size);pump(size)}
+function disposeGPU(gl,record,highOnly=false){
+  for(const [size,L] of record.tiers)if(!highOnly||size===512){gl.deleteTexture(L.tex);record.tiers.delete(size)}
+  if(!highOnly){gl.deleteProgram(record.p);gl.deleteVertexArray(record.vao);GPU.delete(gl)}
+}
+function resetMedia(){
+  for(const [gl,record] of GPU)disposeGPU(gl,record);
+  for(const item of CACHE.values())item.bitmap?.close?.();CACHE.clear();for(const q of QUEUES.values())q.jobs=[];
 }
 const VS=`#version 300 es
 precision highp float;
@@ -113,9 +142,9 @@ void main(){vec4 b=uB[gl_InstanceID];vec3 l=V[S[gl_VertexID]];
   gl_Position=uProj*uView*w;}`;
 const FS=`#version 300 es
 precision highp float;precision highp sampler2DArray;
-uniform sampler2DArray uImg;uniform int uHot;uniform float uDim;uniform float uReady[64];
+uniform sampler2DArray uImg;uniform int uHot;uniform float uDim;uniform float uReady[64];uniform vec4 uClip;
 in vec2 vUV;in vec3 vW;flat in int vI;out vec4 o;
-void main(){float r=uReady[vI];if(r<.004)discard;
+void main(){if(uClip.w>.5&&distance(gl_FragCoord.xy,uClip.xy)>uClip.z)discard;float r=uReady[vI];if(r<.004)discard;
   vec3 c=texture(uImg,vec3(vUV,float(vI))).rgb;
   vec3 n=normalize(cross(dFdx(vW),dFdy(vW)));
   c*=mix(.62,1.,clamp(abs(n.z)*1.7320508,0.,1.));
@@ -125,66 +154,46 @@ void main(){float r=uReady[vI];if(r<.004)discard;
 function prog(gl,vs,fs){const p=gl.createProgram();for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const h=gl.createShader(t);gl.shaderSource(h,s);gl.compileShader(h);
   if(!gl.getShaderParameter(h,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(h));gl.attachShader(p,h)}gl.linkProgram(p);return p}
 
-/* Load-in: rows in genealogy order, a few at a time, decoded off the main thread straight to the texture size, each
- * fading in when it lands. Mipmaps are rebuilt once per burst, so the small bodies do not shimmer. */
-function upload(gl,L,i,src){
-  gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);
-  gl.texSubImage3D(gl.TEXTURE_2D_ARRAY,0,0,0,i,SZ,SZ,1,gl.RGBA,gl.UNSIGNED_BYTE,src);
-  L.target[i]=1;clearTimeout(L.mipTimer);
-  L.mipTimer=setTimeout(()=>{if(BODY.gl===gl){gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.generateMipmap(gl.TEXTURE_2D_ARRAY)}},140);
+/* Source/decode records are shared; every texture/program/VAO belongs to its GL context. */
+function tier(gl,size){
+  let record=GPU.get(gl);if(!record){record={p:prog(gl,VS,FS),vao:gl.createVertexArray(),tiers:new Map()};GPU.set(gl,record)}
+  let L=record.tiers.get(size);if(!L){L={tex:gl.createTexture(),ready:new Float32Array(64),uploaded:new Set(),size};record.tiers.set(size,L);
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.texStorage3D(gl.TEXTURE_2D_ARRAY,size===64?1:10,gl.RGBA8,size,size,BODY.list.length);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MIN_FILTER,size===64?gl.NEAREST:gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MAG_FILTER,size===64?gl.NEAREST:gl.LINEAR);}
+  let changed=false;
+  BODY.list.forEach((b,i)=>{const item=CACHE.get(cacheKey(b.src,size));if(item?.status==='ready'&&!L.uploaded.has(i)){
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.texSubImage3D(gl.TEXTURE_2D_ARRAY,0,0,0,i,size,size,1,gl.RGBA,gl.UNSIGNED_BYTE,item.bitmap);L.uploaded.add(i);L.ready[i]=1;changed=true;}});
+  if(changed&&size===512){gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.generateMipmap(gl.TEXTURE_2D_ARRAY)}
+  return {record,L};
 }
-function fetchBitmap(url){
-  return fetch(url,{mode:'cors'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()})
-    .then(b=>createImageBitmap(b,{resizeWidth:SZ,resizeHeight:SZ,resizeQuality:'medium'}));
-}
-function legacyImage(url){
-  return new Promise((res,rej)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=SZ;c.getContext('2d').drawImage(im,0,0,SZ,SZ);res(c)};im.onerror=rej;im.src=url});
-}
-function startLoading(gl,L){
-  const queue=BODY.list.map((b,i)=>i);let running=0;
-  const pump=()=>{
-    while(running<5&&queue.length&&BODY.gl===gl){
-      const i=queue.shift(),url=mediaUrl(BODY.list[i].src);running++;
-      (typeof createImageBitmap==='function'?fetchBitmap(url):legacyImage(url))
-        .then(src=>{if(BODY.gl===gl)upload(gl,L,i,src);if(src.close)src.close()})
-        .catch(()=>{}).finally(()=>{running--;pump()});
-    }
-  };
-  pump();
-}
-function layer(gl){
-  if(BODY.gl===gl)return BODY.L;
-  const L={p:prog(gl,VS,FS),vao:gl.createVertexArray(),tex:gl.createTexture(),ready:new Float32Array(64),target:new Float32Array(64),mipTimer:0};
-  gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.texStorage3D(gl.TEXTURE_2D_ARRAY,LEVELS,gl.RGBA8,SZ,SZ,64);
-  gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-  BODY.gl=gl;BODY.L=L;startLoading(gl,L);return L;
-}
-function afterDraw({gl,proj,view,model,ms}){
+function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1},high=false){
   if(!gl||!BODY.list.length)return;
-  const L=layer(gl),B=new Float32Array(64*4);
-  BODY.list.forEach((b,i)=>B.set([...b.world,b.size],i*4));
-  const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));BODY.last=ms;
-  for(let i=0;i<64;i++)L.ready[i]+=(L.target[i]-L.ready[i])*(1-Math.exp(-dt*7));
-  /* the entered shadow is its own world: the others recede on a damped ease, and return on ascent */
-  BODY.dim+=((selected?1:0)-BODY.dim)*(1-Math.exp(-dt*4));
-  gl.enable(gl.DEPTH_TEST);gl.depthMask(true);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.clear(gl.DEPTH_BUFFER_BIT);
-  gl.useProgram(L.p);gl.bindVertexArray(L.vao);
-  gl.uniformMatrix4fv(gl.getUniformLocation(L.p,'uProj'),false,proj);gl.uniformMatrix4fv(gl.getUniformLocation(L.p,'uView'),false,view);
-  gl.uniformMatrix4fv(gl.getUniformLocation(L.p,'uModel'),false,model);gl.uniform4fv(gl.getUniformLocation(L.p,'uB'),B);
-  gl.uniform1fv(gl.getUniformLocation(L.p,'uReady'),L.ready);
-  gl.uniform1i(gl.getUniformLocation(L.p,'uHot'),selected?BODY.list.findIndex(b=>b.work===selected):-1);
-  gl.uniform1f(gl.getUniformLocation(L.p,'uDim'),BODY.dim);
-  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.uniform1i(gl.getUniformLocation(L.p,'uImg'),0);
-  /* depth first, colour second: one fragment per pixel, so a fading body never blends its own hidden faces */
-  gl.colorMask(false,false,false,false);gl.depthFunc(gl.LESS);
-  gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,6,BODY.list.length);
-  gl.colorMask(true,true,true,true);gl.depthFunc(gl.LEQUAL);
-  gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,6,BODY.list.length);
-  gl.depthFunc(gl.LESS);gl.depthMask(false);gl.bindVertexArray(null);
+  const active=gl.getParameter(gl.ACTIVE_TEXTURE),program=gl.getParameter(gl.CURRENT_PROGRAM),vao=gl.getParameter(gl.VERTEX_ARRAY_BINDING),depth=gl.getParameter(gl.DEPTH_WRITEMASK),color=gl.getParameter(gl.COLOR_WRITEMASK),func=gl.getParameter(gl.DEPTH_FUNC),clear=gl.getParameter(gl.DEPTH_CLEAR_VALUE);
+  const flags=[gl.DEPTH_TEST,gl.BLEND,gl.SCISSOR_TEST].map(k=>[k,gl.isEnabled(k)]),blend=[gl.BLEND_SRC_RGB,gl.BLEND_DST_RGB,gl.BLEND_SRC_ALPHA,gl.BLEND_DST_ALPHA].map(k=>gl.getParameter(k));
+  gl.activeTexture(gl.TEXTURE0);const texture=gl.getParameter(gl.TEXTURE_BINDING_2D_ARRAY);
+  try{
+    const B=new Float32Array(64*4);BODY.list.forEach((b,i)=>B.set([...b.world,b.size],i*4));
+    const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));if(high){BODY.last=ms;BODY.dim+=((selected?1:0)-BODY.dim)*(1-Math.exp(-dt*4))}
+    gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    for(const size of (high?[64,512]:[64])){
+      const {record,L}=tier(gl,size);gl.useProgram(record.p);gl.bindVertexArray(record.vao);
+      gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uProj'),false,proj);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uView'),false,view);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uModel'),false,model);
+      gl.uniform4fv(gl.getUniformLocation(record.p,'uB'),B);gl.uniform1fv(gl.getUniformLocation(record.p,'uReady'),L.ready);
+      gl.uniform1i(gl.getUniformLocation(record.p,'uHot'),high&&selected?BODY.list.findIndex(b=>b.work===selected):-1);gl.uniform1f(gl.getUniformLocation(record.p,'uDim'),high?BODY.dim:0);
+      gl.uniform4f(gl.getUniformLocation(record.p,'uClip'),lens?(lens.x-rect.left)*dpr:0,lens?(rect.height-(lens.y-rect.top))*dpr:0,lens?lens.r*dpr:0,lens?1:0);
+      gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.uniform1i(gl.getUniformLocation(record.p,'uImg'),0);
+      gl.colorMask(false,false,false,false);gl.depthFunc(size===64?gl.LESS:gl.LEQUAL);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,6,BODY.list.length);
+      gl.colorMask(true,true,true,true);gl.depthFunc(gl.LEQUAL);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,6,BODY.list.length);
+    }
+  }finally{
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY,texture);gl.activeTexture(active);gl.useProgram(program);gl.bindVertexArray(vao);gl.depthMask(depth);gl.colorMask(...color);gl.depthFunc(func);gl.clearDepth(clear);gl.blendFuncSeparate(...blend);for(const [k,on] of flags)on?gl.enable(k):gl.disable(k);
+  }
 }
+function afterDraw(args){if(!ENTERED)return;entryGL=args.gl;ensureTier(64);ensureTier(512);drawSheet(args,true)}
+function preview(args){ensureTier(64);drawSheet(args,false)}
 /* Descent into one shadow: Display's continuous focus carries the camera until the body fills the view */
 function focus(){if(!selected)return null;const b=BODY.list.find(x=>x.work===selected);return b?{center:b.world,scale:1/(b.size*1.9)}:null}
-shader.afterDraw=afterDraw;shader.focus=focus;Object.freeze(shader);
+shader.afterDraw=afterDraw;shader.focus=focus;shader.preload=()=>ensureTier(64);shader.preview=preview;Object.freeze(shader);
 
 /* ============ site-owned HUD: every kind of information has a fixed place at the edges ============ */
 const el=(t,c,s)=>{const n=document.createElement(t);if(c)n.className=c;if(s!==undefined)n.textContent=s;return n};
@@ -203,16 +212,16 @@ function showWork(w){
   if(!panel)return;panel.replaceChildren();panel.hidden=!w;if(!w)return;
   const t=T[lang()],n=String(w.source||'').replace('cluster','');
   const b=block(w.id,`${t.rank} ${w.rank} · ${t.row} ${w.row}`);b.append(el('p','ss-meta',w.source==='forest'?t.forest:t.from(n)));
-  if(w.cluster_positive){const f=el('figure','ss-cluster');for(const k of ['cluster_positive','cluster_negative']){const i=el('img');i.src=mediaUrl(w[k]);i.alt='';i.decoding='async';f.append(i)}
+  if(w.cluster_positive){const f=el('figure','ss-cluster');for(const k of ['cluster_positive','cluster_negative']){const i=el('img');const url=mediaUrl(w[k]);if(!url)continue;i.src=url;i.alt='';i.decoding='async';f.append(i)}
     f.append(el('figcaption','',t.cluster));b.append(f)}
-  if(w.animation){const i=el('img','ss-anim');i.src=mediaUrl(w.animation);i.alt='';i.decoding='async';b.append(i)}
+  if(w.animation&&mediaUrl(w.animation)){const i=el('img','ss-anim');i.src=mediaUrl(w.animation);i.alt='';i.decoding='async';b.append(i)}
   panel.append(b);
 }
 let LAST=null;
 function render({host,content,projection}={}){
   if(!host||!content||!Array.isArray(projection?.works))return false;
   LAST={host,content,projection};
-  P=projection;host.hidden=false;content.className='interlocutor-content schattenseiten-content';content.replaceChildren();
+  P=projection;ENTERED=true;ensureTier(64);ensureTier(512);host.hidden=false;content.className='interlocutor-content schattenseiten-content';content.replaceChildren();
   const t=T[lang()],works=projection.works,ranks=projection.ranks||[],clusters=new Set(works.map(w=>w.cluster_positive).filter(Boolean)).size;
   // left — who this is and how it grew
   const top=el('div','ss-hud-top');top.append(el('h1','',tx(projection.title)||'Schattenseiten'),el('span','ss-hud-series','Schattenseiten'));
@@ -232,7 +241,8 @@ function render({host,content,projection}={}){
   content.append(rail,side,bottom);showWork(selected);return true;
 }
 addEventListener('sss:language',()=>{if(LAST&&LAST.content.isConnected)render(LAST)});
-function activateFieldPoint({point}={}){selected=point?.work||null;showWork(selected)}
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;panel=null;LAST=null}
+function activateFieldPoint({point}={}){if(!ENTERED)return;selected=point?.work||null;showWork(selected)}
+function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;panel=null;LAST=null;ENTERED=false;if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
+addEventListener('pagehide',resetMedia);
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
 })();

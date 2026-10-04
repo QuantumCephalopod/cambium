@@ -142,6 +142,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   if(!element||!canvas||!projection?.root)throw new Error('interlocutor field surface incomplete: '+id);
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
+  if(typeof shader.preload==='function')shader.preload();
   /* optional identity-owned rest view: {rest:[w,x,y,z], projection:'orthographic'} */
   const VIEW=shader.view&&typeof shader.view==='object'?shader.view:null,ORTHO=VIEW?.projection==='orthographic';let restDone=false;
   const structure=N.collectStructure(projection.root),colors=paletteSet(palette),pointRecords=fieldPointRecords(structure,projection),pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));
@@ -209,7 +210,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
           const place=placement(structure,b.path),bp=program(gl,(b.shader.body||b.shader).fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer(),g=bodyGeometry(N.collectStructure(b.root),place);
           gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g,gl.STATIC_DRAW);
           for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(bp,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
-          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],p:bp,vao:bvao,count:g.length/7,state:(b.shader.body||b.shader).state||{},colors:paletteSet(b.palette),U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}};
+          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],p:bp,vao:bvao,count:g.length/7,preview:b.shader.preview,state:(b.shader.body||b.shader).state||{},colors:paletteSet(b.palette),U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}};
         }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
         BODIES.set(b.id,B);
       }
@@ -618,6 +619,17 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       drawPointsGL(proj,view,mdl,d);
       {const comp=glass?compositeSources():null;if(comp?.length)drawComposite(comp,w,h);const on=comp?.length?'1':'0';if(canvas.dataset.composite!==on)canvas.dataset.composite=on}
       if(glass){drawLabelInk(r,w,h);glassEnd(glass,w,h)}else resetLabelInk();
+      /* Optional identity-owned interior, drawn after the final glass sampling so
+       * a pixelated preview is not smoothed a second time. The site clips its own
+       * ink to this existing lens; host pose/selection/navigation stay here. */
+      const ln=glass?.snap?.lens;
+      if(ln)for(const B of fb){
+        if(typeof B.preview!=='function')continue;
+        const center=project(B.pos,r),corners=N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),r)),radius=Math.max(...corners.map(p=>Math.hypot(p.x-center.x,p.y-center.y)));
+        if(Math.hypot(center.x-(ln.x-r.left),center.y-(ln.y-r.top))>radius+Math.min(ln.hx,ln.hy))continue;
+        const previewModel=model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k));
+        try{B.preview({gl,proj,view,model:previewModel,ms,rect:r,dpr:d,lens:{x:ln.x,y:ln.y,r:Math.min(ln.hx,ln.hy)}})}catch(err){canvas.dataset.previewError=String(err?.message||err)}
+      }
     }else if(ctx){
       resetLabelInk();
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);

@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Site-holon projection of Philipp's organ Schattenseiten: 49 shadows grown by one operation repeated at every rank, shown as floating tetrahedra in their genealogy."
-version: "1.1"
+version: "1.2"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -22,6 +22,12 @@ The two German sentences stay German in every language. The work's remaining tex
 
 Media come only from `fat`, which fails closed. No names, places or texts beyond what the organ's feed admits. Mount: site-space `x`; relocation changes environment only.
 
-The sheet's texture cells use 512×512 pixels. Fat declares its smaller public media members in `media_variants["512"]`, keyed by the already-admitted relative source path. Choose the declared member before the network request, for textures and the bounded image panel; reducing an already-downloaded large file is not reduced transfer. A legacy feed without a declared variant keeps its admitted same-reserve source path. Variants are Fat-owned derivatives of the same admitted work; Display neither invents asset URLs nor edits the organ's works. Animated variants preserve the admitted motion and timing.
+Philosophy preloads only the55 static occupied-slot interiors (49 works plus six positive clusters) through Fat's declared `media_variants["64"]`. The droplet draws those same cached64 images with nearest sampling, clipped after final glass sampling so enlarged pixels remain unsmoothed. Preview GPU arrays are genuinely64×64; source/decode cache is revision+tier keyed and shared, while GPU textures/programs/VAOs stay context-local.
+
+Entering first displays completed64 data immediately, then alone permits a four-way progressive queue for declared512 images. A high image replaces only its corresponding low slot; high errors retain low. Leaving pauses queued high work and disposes the entered high GPU tier; revisit resumes unfinished permitted work and reuses completed decoded images. Host preview always stays64 even after a visit. Selected-work animation remains demand-driven in the entered site.
+
+Missing/invalid declarations fail closed for both tiers and the image panel: no legacy original or512 fallback may broaden a preview request. This explicitly replaces version1.1's legacy original-path fallback. Variants remain Fat-owned derivatives; Display never invents paths, edits works or changes genealogy/pose/selection for resolution. Fat's actual64 producer merge/release must precede canonical consumer acceptance; staged local dependency proof is not production availability.
 
 Version 1.1 sized-media binding (2026-10-03): the public Fat variant declaration selects the actual 512-pixel file before fetching/decoding; sheet geometry, words, source identity, selection and animation meaning remain intact.
+
+Version 1.2 cached64/res-up binding (2026-10-04): strict low-only host/droplet preview, immediate shared64 entry then bounded entered512, context-local GPU ownership and revision-aware cache replace the former single512 resource/fallback physiology. Layout and source identity remain unchanged.

@@ -2,28 +2,38 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const source=fs.readFileSync(path.join(__dirname,'render.js'),'utf8');
 function node(tag){return {tag,className:'',children:[],append(...children){this.children.push(...children)},replaceChildren(...children){this.children=children},addEventListener(){}}}
-function fixture(variants){
-  const requests=[],modules=new Map();
-  const ctx={console,Map,Set,Math,Object,Array,Float32Array,setTimeout:()=>0,clearTimeout(){},addEventListener(){},document:{createElement:node},SSSInterlocutorModules:modules,SSSWorldView:{language:'en'},createImageBitmap(){},fetch(url){requests.push(url);return new Promise(()=>{})}};
-  vm.createContext(ctx);vm.runInContext(source,ctx,{filename:'schattenseiten/render.js'});
-  const projection={fat:'https://fat.invalid/x/organ/',works:[{id:'one',row:2,rank:2,source:'cluster 1',still:'still/one.webp',cluster_positive:'cluster_positive/one.webp',cluster_negative:'cluster_negative/one.webp',animation:'animation/one.webp'}],ranks:[],words:[],media_variants:variants};
-  const module=modules.get('organism:schattenseiten');module.fieldProjection(projection);
-  const noOp=()=>{};const gl=new Proxy({createProgram:()=>({}),createShader:()=>({}),createVertexArray:()=>({}),createTexture:()=>({}),getShaderParameter:()=>true,getUniformLocation:(_,name)=>name},{get(target,key){if(key in target)return target[key];return /^[A-Z_0-9]+$/.test(key)?key:noOp}});
-  module.shader.afterDraw({gl,proj:new Float32Array(16),view:new Float32Array(16),model:new Float32Array(16),ms:1000});
-  const host=node('host'),content=node('content');module.render({host,content,projection});
-  module.activateFieldPoint({point:{work:projection.works[0]}});
-  const images=[];function walk(n){if(n.tag==='img')images.push(n.src);for(const child of n.children||[])walk(child)}walk(content);
-  return {requests,images};
+function fakeGL(){
+  const owner={},alloc=[],uploads=[],deleted=[],enabled=new Set();let texture=null;
+  return new Proxy({alloc,uploads,deleted,filters:[],isEnabled:k=>enabled.has(k),enable:k=>enabled.add(k),disable:k=>enabled.delete(k),createProgram:()=>({owner}),createShader:()=>({owner}),createVertexArray:()=>({owner}),createTexture:()=>({owner}),deleteTexture:t=>{assert.equal(t.owner,owner);deleted.push(t)},deleteProgram(){},deleteVertexArray(){},getShaderParameter:()=>true,getUniformLocation:(_,name)=>name,
+    getParameter:k=>k==='COLOR_WRITEMASK'?[true,true,true,true]:k==='DEPTH_WRITEMASK'?false:k==='DEPTH_CLEAR_VALUE'?1:k==='DEPTH_FUNC'?'LESS':k==='ACTIVE_TEXTURE'?'TEXTURE0':null,
+    bindTexture(_,t){if(t)assert.equal(t.owner,owner);texture=t},texStorage3D(...args){alloc.push(args)},texSubImage3D(...args){assert.equal(texture.owner,owner);uploads.push(args)},depthMask(v){this.depth=v},clear(){assert.equal(this.depth,true)},uniform4f(k,...v){if(k==='uClip')this.clip=v},texParameteri(...v){(this.filters||=[]).push(v)},
+  },{get(target,key){if(key in target)return target[key];return /^[A-Z_0-9]+$/.test(key)?key:()=>{}}});
 }
-const mapping=Object.fromEntries(['still/one.webp','cluster_positive/one.webp','cluster_negative/one.webp','animation/one.webp'].map(p=>[p,'sizes/512/'+p]));
-const sized=fixture({'512':mapping});
-assert.deepEqual(sized.requests,['https://fat.invalid/x/organ/sizes/512/cluster_positive/one.webp','https://fat.invalid/x/organ/sizes/512/still/one.webp']);
-assert.deepEqual(sized.images,['https://fat.invalid/x/organ/sizes/512/cluster_positive/one.webp','https://fat.invalid/x/organ/sizes/512/cluster_negative/one.webp','https://fat.invalid/x/organ/sizes/512/animation/one.webp']);
-const legacy=fixture(undefined);
-assert.deepEqual(legacy.requests,['https://fat.invalid/x/organ/cluster_positive/one.webp','https://fat.invalid/x/organ/still/one.webp']);
-assert.deepEqual(legacy.images,['https://fat.invalid/x/organ/cluster_positive/one.webp','https://fat.invalid/x/organ/cluster_negative/one.webp','https://fat.invalid/x/organ/animation/one.webp']);
-for(const unsafe of ['','https://elsewhere.invalid/file.webp','../file.webp','/file.webp']){
-  const bad=fixture({'512':Object.fromEntries(Object.keys(mapping).map(p=>[p,unsafe]))});
-  assert.deepEqual(bad.requests,legacy.requests);assert.deepEqual(bad.images,legacy.images);
+async function tick(){for(let i=0;i<220;i++)await Promise.resolve()}
+function fixture({missing=false,highFail=false,holdHigh=false,bad64=null,bad512=null}={}){
+  const requests=[],modules=new Map(),works=Array.from({length:49},(_,i)=>({id:String(i),row:Math.floor(i/7)+1,rank:1,source:'forest',still:'still/'+i+'.webp',...(i>=7?{cluster_positive:'cluster_positive/'+Math.floor(i/7)+'.webp',cluster_negative:'cluster_negative/'+Math.floor(i/7)+'.webp'}:{}),...(i===0?{animation:'animation/0.webp'}:{})}));
+  const sources=new Set(works.flatMap(w=>[w.still,w.cluster_positive,w.cluster_negative,w.animation].filter(Boolean))),maps=Object.fromEntries([64,512].map(size=>[size,Object.fromEntries([...sources].map(s=>[s,'sizes/'+size+'/'+s]))]));if(missing)delete maps[64][works[0].still];
+  if(bad64!==null)maps[64][works[0].still]=bad64;
+  if(bad512!==null)for(const s of ['still/0.webp','animation/0.webp','cluster_negative/1.webp'])maps[512][s]=bad512;
+  const held=[];let running=0,peak=0;const ctx={console,Map,Set,Math,Object,Array,Float32Array,URL,setTimeout:()=>0,clearTimeout(){},addEventListener(){},document:{createElement:node},SSSInterlocutorModules:modules,SSSWorldView:{language:'en'},createImageBitmap:async(_,o)=>({width:o.resizeWidth,height:o.resizeHeight,close(){}}),fetch(url){requests.push(url);running++;peak=Math.max(peak,running);const response={ok:!(highFail&&url.includes('/512/')),status:503,blob:async()=>{running--;return {size:100}}};return holdHigh&&url.includes('/512/')?new Promise(resolve=>held.push(()=>resolve(response))):Promise.resolve(response)}};
+  vm.createContext(ctx);vm.runInContext(source,ctx);const module=modules.get('organism:schattenseiten'),projection={fat:'https://fat.invalid/x/',works,ranks:[],words:[],media_variants:maps,media_revisions:{64:'low-v1',512:'high-v1'}};module.fieldProjection(projection);return {module,projection,requests,peak:()=>peak,held};
 }
-console.log('Schattenseiten: declared 512 media selected before fetch and panel loading; legacy feed and same-reserve boundary PASS');
+(async()=>{
+  const f=fixture(),hostGL=fakeGL(),entryGL=fakeGL(),args=gl=>({gl,proj:new Float32Array(16),view:new Float32Array(16),model:new Float32Array(16),ms:1000,rect:{left:0,top:0,height:800},dpr:1,lens:{x:100,y:100,r:70}});
+  f.module.shader.preload();await tick();assert.equal(f.requests.length,55);assert(f.requests.every(x=>x.includes('/64/')&&!x.includes('animation')));assert(f.peak()<=4);
+  f.module.shader.preview(args(hostGL));assert.deepEqual(hostGL.alloc[0].slice(1),[1,'RGBA8',64,64,55]);assert.equal(hostGL.uploads.length,55);assert.equal(hostGL.clip[3],1);assert(hostGL.filters.some(x=>x[1]==='TEXTURE_MAG_FILTER'&&x[2]==='NEAREST'));
+  const host=node('host'),content=node('content');f.module.render({host,content,projection:f.projection});f.module.shader.afterDraw(args(entryGL));assert.equal(entryGL.uploads.length,55,'entry immediately uploads completed decoded low cache');assert.deepEqual(entryGL.alloc.map(x=>x.slice(1)),[[1,'RGBA8',64,64,55],[10,'RGBA8',512,512,55]]);
+  const images=()=>{const result=[];function walk(n){if(n.tag==='img')result.push(n.src);for(const c of n.children||[])walk(c)}walk(content);return result};
+  f.module.activateFieldPoint({point:{work:f.projection.works[0]}});assert.deepEqual(images(),['https://fat.invalid/x/sizes/512/animation/0.webp'],'animation loads only on selected-work demand');
+  f.module.activateFieldPoint({point:{work:f.projection.works[7]}});assert.deepEqual(images(),['https://fat.invalid/x/sizes/512/cluster_positive/1.webp','https://fat.invalid/x/sizes/512/cluster_negative/1.webp']);
+  await tick();assert.equal(f.requests.filter(x=>x.includes('/512/')).length,55);f.module.shader.afterDraw(args(entryGL));assert.equal(entryGL.uploads.length,110);
+  f.module.unmount({host,content});assert.equal(entryGL.deleted.length,1);const count=f.requests.length;f.module.shader.preview(args(hostGL));await tick();assert.equal(f.requests.length,count);assert.equal(hostGL.alloc.length,1,'host never allocates high after a visit');
+  f.module.render({host,content,projection:f.projection});await tick();assert.equal(f.requests.length,count,'revisit reuses completed queues');
+  const partial=fixture({missing:true});partial.module.shader.preload();await tick();assert.equal(partial.requests.length,54);assert(!partial.requests.some(x=>x.endsWith('still/0.webp')));
+  const previous=f.requests.length;f.module.fieldProjection({...f.projection,media_revisions:{64:'low-v2',512:'high-v1'}});f.module.shader.preload();await tick();assert.equal(f.requests.length,previous+55,'new source revision must invalidate decoded low cache');assert.equal(hostGL.deleted.length,1,'new revision disposes old context textures');
+  const failed=fixture({highFail:true});failed.module.shader.preload();await tick();failed.module.render({host,content,projection:failed.projection});await tick();const gl=fakeGL();failed.module.shader.afterDraw(args(gl));assert.equal(gl.uploads.length,55,'high errors retain low');
+  for(const bad of ['','https://outside.invalid/a.webp','../secret.webp','sizes/64/a/%2e%2e/secret.webp']){const low=fixture({bad64:bad});low.module.shader.preload();await tick();assert.equal(low.requests.length,54);assert(low.requests.every(x=>x.includes('/64/')))}
+  for(const bad of ['','https://outside.invalid/a.webp','../secret.webp','sizes/512/a/%2e%2e/secret.webp']){const high=fixture({bad512:bad});high.module.shader.preload();await tick();high.module.render({host,content,projection:high.projection});await tick();assert.equal(high.requests.filter(x=>x.includes('/512/')).length,54);high.module.activateFieldPoint({point:{work:high.projection.works[0]}});assert.equal(images().length,0,'bad panel declarations cannot escape/fallback')}
+  const early=fixture({holdHigh:true});early.module.shader.preload();await tick();early.module.render({host,content,projection:early.projection});assert.equal(early.held.length,4);early.module.unmount({host,content});early.held.splice(0).forEach(resolve=>resolve());await tick();assert.equal(early.requests.filter(x=>x.includes('/512/')).length,4,'exit must pause queued high');early.module.render({host,content,projection:early.projection});assert.equal(early.requests.filter(x=>x.includes('/512/')).length,8,'revisit resumes unfinished permitted queue');
+  console.log('PASS — cold64 fail-closed queue, 55 genuine64 GPU layers, shared entry cache, bounded entered512, retained low on failure, context ownership and revisit');
+})().catch(error=>{console.error(error);process.exitCode=1});

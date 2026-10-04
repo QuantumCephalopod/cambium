@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.19"
+version: "3.20"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -283,3 +283,5 @@ Version 3.17 address-hash and re-entry-truth correction (2026-10-03): the global
 Version 3.18 canonical-ui-grid correction (2026-10-04): Display gained a specimen-agnostic recursive screen-space carrier whose canonical state is address-native rather than pixel-native. Serialized addresses use `w,x,y,z`; the first 2D projection is row-major `w x / y z`; same-rank spans, edge anchors, lawful split/coalesce and deterministic address-delta commands are replayable through `w/ui-grid.js` and its lab. CCCC semantics and tetrahedral implementation order are explicitly not remapped; `INDEX.yaml` and `_cambium.yaml` remain unchanged.
 
 Version 3.19 frame-clear/re-entry correction (2026-10-04): write masks/scissor are reset before full frame and host/point depth clears. Previously the custom bodies' written depth survived a masked clear after a transparent generic tail body, leaving stale occlusion across frames. Revealing a cached host also restores its current-container camera rather than keeping the prior body-entry zoom; explicit membrane zoom-out remains intact. Existing field/runtime contracts carry these repairs; no body geometry, material, topology or history semantics change is earned.
+
+Version 3.20 bounded interior preview (2026-10-04): an identity-owned optional `shader.preload` starts its admitted low-tier queue; `shader.preview` draws its interior under the existing host lens using the same body pose/model. Preview ink follows final glass sampling so nearest/pixelated media is not smoothed again; the site clips and restores context state. Site owns interior/media policy and Display names no site. No soft-lock, new geometry or topology is implied.
