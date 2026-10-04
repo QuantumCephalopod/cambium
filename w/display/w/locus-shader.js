@@ -549,9 +549,15 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     if(state.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);
     gl.depthMask(state.depthWrite!==false);
   }
+  /* A clear obeys write masks and scissor too. A site's last transparent body,
+   * composite or ink pass may leave depth writes off; clear the complete target
+   * before applying the next draw's own state, never yesterday's depth. */
+  function prepareClear(){
+    gl.disable(gl.SCISSOR_TEST);gl.colorMask(true,true,true,true);gl.depthMask(true);gl.clearDepth(1);
+  }
   function drawPointsGL(proj,view,mdl,d){
     if(!PG)return;
-    gl.clear(gl.DEPTH_BUFFER_BIT);
+    prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.enable(gl.DEPTH_TEST);gl.depthMask(true);
     gl.useProgram(PG.p);gl.uniformMatrix4fv(PG.U.proj,false,proj);gl.uniformMatrix4fv(PG.U.view,false,view);gl.uniformMatrix4fv(PG.U.model,false,mdl);gl.uniform1f(PG.U.pointScale,d);gl.uniform3fv(PG.pal,new Float32Array(colors.flat()));gl.bindVertexArray(PG.vao);gl.drawArrays(gl.POINTS,0,PG.count);
   }
@@ -576,12 +582,12 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       const hv=hostView(),hostClear=hv?.e.shader.clear;
       const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);
       const glass=glassBegin(r,w,h);
-      gl.viewport(0,0,w,h);gl.clearColor(...clear);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+      gl.viewport(0,0,w,h);prepareClear();gl.clearColor(...clear);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
       if(hv){
         const {H}=hv;gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.disable(gl.BLEND);gl.useProgram(H.p);gl.bindVertexArray(H.vao);
         gl.uniform4fv(H.U.quat,new Float32Array(W.orientation));gl.uniform3fv(H.U.center,new Float32Array(hv.center));gl.uniform1f(H.U.span,hv.span);gl.uniform1f(H.U.region,hv.region);
         if(H.U.time)gl.uniform1f(H.U.time,ms*.001);if(H.U.focus)gl.uniform1f(H.U.focus,hv.region);if(H.U.resolution)gl.uniform2f(H.U.resolution,w,h);if(H.U.pal)gl.uniform3fv(H.U.pal,new Float32Array(H.colors.flat()));
-        gl.drawArrays(gl.TRIANGLES,0,3);gl.clear(gl.DEPTH_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLES,0,3);prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);
         canvas.dataset.hostView=hv.e.hostId;canvas.dataset.hostPath=hv.e.path;
       }else{delete canvas.dataset.hostView;delete canvas.dataset.hostPath}
       canvas.dataset.container=cur||'ε';canvas.dataset.visibleCells=String(cells.length);canvas.dataset.visibleContent=String(visible.length);
@@ -652,7 +658,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   requestAnimationFrame(draw);
   api=Object.freeze({
     id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
-    selectPoint,projectAddressCenter,get container(){return container()},arriveFrom(place,bodyId){if(place){const B=bodyId&&BODIES.get(bodyId),c=B?.pos||place.center;cam={from:{center:[...c],scale:1/place.k},to:frameFor(container()),start:performance.now()}}},get walk(){return [...walk]},descendTo,ascend,
+    selectPoint,projectAddressCenter,get container(){return container()},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
     get selectedPointId(){return selectedPointId},
     get points(){return pointRecords.map(p=>p.spec)},

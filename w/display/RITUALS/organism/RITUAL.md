@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.18"
+version: "3.19"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -89,6 +89,10 @@ Default mutation law: if pressure originates in one site-holon, keep the change 
 The current static runtime parses one source snapshot per mounted site. Derive that site's `fieldProjection` once during mounted-field initialization and share the same projected anatomy between its own field, host environment and floating body. View, language, activity and address-remount movement do not recreate that source anatomy. A new source snapshot requires new mounted-field/runtime initialization; this is not a new in-place update API. Dynamic appearance and movement remain in source-owned render/shader hooks.
 
 Each field's gene-label update owns only its four gene labels; it must not hide autonomous body labels because those have no gene tag. Reuse the frame's canvas rectangle within that draw. Refracted label ink may reuse computed styles within one collection only, while reading current DOM text, geometry, opacity and source styles afresh in the next collection. Atlas identity, GL-state restoration, fallback paint and geometry remain intact.
+
+The field owns complete target clearance independently of the last site's draw state. Before clearing a frame or the host/point depth pass, it enables color/depth writes, sets the depth clear value to one and disables scissor. Draw-specific state is applied afterwards. A transparent site body, glass/composite or ink pass may leave depth writes off without allowing its earlier depth to become a later frame's geometry. Existing identity, geometry, materials and draw order remain unchanged.
+
+Revealing a cached field restores its camera to the truthful current container through the existing arrival transition. A body-entry zoom is temporary passage, not container state. Ordinary language/activity repaint does not restart the camera; an explicit membrane return still starts from its supplied body/place and settles into the same current-container frame. Global addresses, encounter history and ascent topology are unchanged.
 
 ### Identity-resolved foreign embodiment
 
@@ -277,3 +281,5 @@ Version 3.17 address-hash and re-entry-truth correction (2026-10-03): the global
 
 
 Version 3.18 canonical-ui-grid correction (2026-10-04): Display gained a specimen-agnostic recursive screen-space carrier whose canonical state is address-native rather than pixel-native. Serialized addresses use `w,x,y,z`; the first 2D projection is row-major `w x / y z`; same-rank spans, edge anchors, lawful split/coalesce and deterministic address-delta commands are replayable through `w/ui-grid.js` and its lab. CCCC semantics and tetrahedral implementation order are explicitly not remapped; `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+Version 3.19 frame-clear/re-entry correction (2026-10-04): write masks/scissor are reset before full frame and host/point depth clears. Previously the custom bodies' written depth survived a masked clear after a transparent generic tail body, leaving stale occlusion across frames. Revealing a cached host also restores its current-container camera rather than keeping the prior body-entry zoom; explicit membrane zoom-out remains intact. Existing field/runtime contracts carry these repairs; no body geometry, material, topology or history semantics change is earned.
