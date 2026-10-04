@@ -1,0 +1,51 @@
+{
+  "kind": "HOME",
+  "home_at_utc": "2026-10-04T12:03:00Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "event_id": "display-ui-grid-named-fields-20261004T120300Z",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "finish-named-field-ui-grid-editor",
+  "outcome": "PASS/EARNED — Display UI-grid v2 now exports portable named fields and deterministic field-bound element placements without making names a second coordinate system.",
+  "changed_scope": [
+    "w/ui-grid.js: schema v2 with layout metadata, named canonical spans, field-bound elements, @field command resolution and v1 migration",
+    "w/ui-grid-lab.html: finished interactive editor with field naming/list, human element IDs, field binding, JSON copy/download/upload/import and best-effort local autosave",
+    "w/ui-grid.test.cjs: v2 field-binding, replay, roundtrip and migration witness",
+    "Display organism law 3.19: named fields are communication aliases over canonical spans, never coordinates",
+    "Display INDEX.yaml and _cambium.yaml unchanged"
+  ],
+  "context": {
+    "actor": "Philipp + Mnemos",
+    "canonical_base_revision": "7d5dba6d3bc44669ba27a1dce38bed5bdcd57624",
+    "staging_carrier": "QuantumCephalopod/cambium staging/display-ui-grid-named-fields-20261004",
+    "implementation_head_before_home": "4f6b9f0464c9d99bf9e8845ded355364c0b563bd",
+    "invariant": "name the span for communication; keep the addresses as geometric ground",
+    "schema": "sss.display.ui-grid.v2",
+    "backward_compatibility": "sss.display.ui-grid.v1 imports with empty field map",
+    "witness": {
+      "github_actions": {
+        "run_id": 37200594851,
+        "conclusion": "success"
+      },
+      "node": "ui-grid.test.cjs PASS",
+      "browser": {
+        "viewports": [
+          "1400x900",
+          "760x980"
+        ],
+        "operations": [
+          "split ε -> w,x,y,z",
+          "field @header = w+x",
+          "field @body = y+z",
+          "place title @header",
+          "move title @header -> @body",
+          "JSON export witness"
+        ],
+        "boundary": "exact standalone bytes injected into about:blank because local HTTP/file navigation is administrator-blocked",
+        "ui_error_records": 0
+      }
+    },
+    "backpropagation": "NO CHANGE — Cambium 1.6 already covers address-state/projection/delta portability",
+    "canonical_owner_promotion": "human merge only"
+  }
+}

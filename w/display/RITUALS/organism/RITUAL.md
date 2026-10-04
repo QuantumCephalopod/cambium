@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.18"
+version: "3.19"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -144,7 +144,21 @@ Display may project screen-space UI as one normalized recursive fourfold carrier
 - canonical state is exportable/importable as realized split addresses plus identity-owned element spans. A mutation can therefore be replayed as address-native operations such as `split x`, `coalesce xy`, `place nav xw+xx …`, or `move title ww+wx -> yw+yx`;
 - an editor is only a projection/actuator of that state. It never becomes a second layout authority.
 
-First witness: `w/ui-grid.js` owns the pure address/state physiology (`sss.display.ui-grid.v1`), while `w/ui-grid-lab.html` is a specimen-agnostic manipulation surface. The lab is evidence and ongoing design instrument, not a new site-holon or semantic split.
+First witness: `w/ui-grid.js` owns the pure address/state physiology, while `w/ui-grid-lab.html` is a specimen-agnostic manipulation surface. The lab is evidence and ongoing design instrument, not a new site-holon or semantic split.
+
+#### Named field aliases — human communication without coordinate duplication
+
+The portable grid state may name a lawful current span, for example `@header → ww+wx`.
+
+- a **field name is a stable human alias/binding**, not a second geometric address;
+- each field resolves to one lawful contiguous same-rank canonical span; two names may not claim the same span in one state;
+- an element may bind to a field identity. Its current cells are then derived from that field, so redefining `@header` deterministically relocates every bound element without changing their identities;
+- an element may remain directly bound to canonical cells when no named field is useful;
+- address-native commands may resolve `@field` aliases, e.g. `move title @header -> @body`; replay resolves both aliases through the exported canonical field map before deriving carrier geometry;
+- export schema `sss.display.ui-grid.v2` carries layout identity, realized splits, named fields and elements. Version-1 states remain importable and acquire an empty field map;
+- JSON download/upload/copy and browser-local autosave are editor transport conveniences. The exported state is portable; local browser storage is never authority.
+
+Compression: **name the span for communication; keep the addresses as geometric ground.**
 
 ### Acknowledged live circulation — delta recurs before snapshot
 
@@ -277,3 +291,6 @@ Version 3.17 address-hash and re-entry-truth correction (2026-10-03): the global
 
 
 Version 3.18 canonical-ui-grid correction (2026-10-04): Display gained a specimen-agnostic recursive screen-space carrier whose canonical state is address-native rather than pixel-native. Serialized addresses use `w,x,y,z`; the first 2D projection is row-major `w x / y z`; same-rank spans, edge anchors, lawful split/coalesce and deterministic address-delta commands are replayable through `w/ui-grid.js` and its lab. CCCC semantics and tetrahedral implementation order are explicitly not remapped; `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+
+Version 3.19 named-field communication correction (2026-10-04): the canonical UI grid advanced to `sss.display.ui-grid.v2`. Lawful address spans may carry stable human aliases such as `@header`; elements may bind to those aliases and follow field redefinition deterministically. Portable JSON now carries layout identity, named fields and element bindings, while v1 imports remain valid. Field names never become coordinates, and browser-local autosave remains non-authoritative. No Display structural split was earned.
