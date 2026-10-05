@@ -1,10 +1,11 @@
 (() => {
 'use strict';
-const Nav=globalThis.SSSDisplayNavigation,H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea;
+const Nav=globalThis.SSSDisplayNavigation,H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea,UI=globalThis.SSSUIGrid;
 const Modules=globalThis.SSSInterlocutorModules;
-if(!H||!F||!W||!Fields||!Safe||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
+if(!H||!F||!W||!Fields||!Safe||!UI||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
 const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
 const PROJECTIONS=JSON.parse(document.getElementById('site-projections').textContent);
+const UI_GRIDS=JSON.parse(document.getElementById('site-ui-grids').textContent);
 const DEPENDENCIES=JSON.parse(document.getElementById('display-dependencies').textContent);
 const GLOBAL_SCOPE='main';
 /* The glass drop's current viewport geometry (or null). Display lends where it lies; what it means over a site is the site's. */
@@ -17,7 +18,52 @@ function dependency(identity,member=''){
   if(path.startsWith('/')||path.split('/').some(x=>x==='..'))throw new Error('dependency member escaped its body: '+member);
   return new URL(dep.base+path,document.baseURI).href;
 }
-const registry=H.createRegistry(),specs=new Map(),surfaces=new Map();
+function surfaceRect(host){
+  const r=typeof host?.getBoundingClientRect==='function'?host.getBoundingClientRect():null;
+  if(r&&Number.isFinite(r.width)&&Number.isFinite(r.height)){
+    const left=Number(r.left)||0,top=Number(r.top)||0;
+    return {left,top,right:Number.isFinite(r.right)?r.right:left+r.width,bottom:Number.isFinite(r.bottom)?r.bottom:top+r.height,width:r.width,height:r.height};
+  }
+  return {left:0,top:0,right:innerWidth,bottom:innerHeight,width:innerWidth,height:innerHeight};
+}
+function safeCarrier(host){
+  const hr=surfaceRect(host),snap=Safe.snapshot?.()||{},vp=snap.viewport||{},ins=snap.insets||{};
+  const vw=Number(vp.width)||innerWidth,vh=Number(vp.height)||innerHeight;
+  const safe={left:Number(ins.left)||0,top:Number(ins.top)||0,right:vw-(Number(ins.right)||0),bottom:vh-(Number(ins.bottom)||0)};
+  const left=Math.max(hr.left,safe.left),top=Math.max(hr.top,safe.top),right=Math.min(hr.right,safe.right),bottom=Math.min(hr.bottom,safe.bottom);
+  return {x:Math.max(0,left-hr.left),y:Math.max(0,top-hr.top),w:Math.max(0,right-left),h:Math.max(0,bottom-top)};
+}
+function makeSiteUI(id,host,raw){
+  const state=UI.normalizeState(raw),bindings=new Map();
+  function field(name){
+    const info=UI.fieldInfo(state,name);
+    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds})});
+  }
+  function apply(el,name){
+    if(!el)throw new TypeError('UI field element required');
+    const info=field(name),c=safeCarrier(host),b=info.bounds;
+    Object.assign(el.style,{
+      position:'absolute',
+      left:(c.x+b.x*c.w)+'px',
+      top:(c.y+b.y*c.h)+'px',
+      width:(b.w*c.w)+'px',
+      height:(b.h*c.h)+'px',
+      right:'auto',
+      bottom:'auto'
+    });
+    if(el.dataset)el.dataset.uiField=name;
+    return el;
+  }
+  function bind(el,name){bindings.set(el,name);return apply(el,name)}
+  function refresh(){
+    for(const [el,name] of [...bindings]){
+      if(el.isConnected===false){bindings.delete(el);continue}
+      apply(el,name);
+    }
+  }
+  return Object.freeze({id,state,field,bind,refresh,get carrier(){return Object.freeze({...safeCarrier(host)})}});
+}
+const registry=H.createRegistry(),specs=new Map(),surfaces=new Map(),uiById=new Map();
 for(const s of SPEC.interlocutors||[]){
   const site=H.defineInterlocutor({id:s.id,localScope:s.local_scope,shader:s.shader,manifestation:s.manifestation,state:{activity:null}});
   registry.register(site);specs.set(site.id,s);
@@ -30,10 +76,11 @@ for(const id of specs.keys()){
   if(!canvas||!labelHost||!content) throw new Error('incomplete interlocutor surface: '+id);
   const module=Modules.get(id);if(!module) throw new Error('missing interlocutor module: '+id);
   if(!(id in PROJECTIONS)) throw new Error('missing interlocutor projection: '+id);
+  if(!(id in UI_GRIDS)) throw new Error('missing interlocutor UI grid: '+id);
   /* This parsed source carrier is fixed for this runtime entry. Resolve its
    * anatomy once; a new source/re-entry initializes a new runtime, not a frame. */
-  const projection=PROJECTIONS[id],fieldProjection=module.fieldProjection?module.fieldProjection(projection):projection;
-  surfaces.set(id,{host,canvas,labelHost,content,module,projection,fieldProjection});
+  const projection=PROJECTIONS[id],fieldProjection=module.fieldProjection?module.fieldProjection(projection):projection,ui=makeSiteUI(id,host,UI_GRIDS[id]);
+  uiById.set(id,ui);surfaces.set(id,{host,canvas,labelHost,content,module,projection,fieldProjection,ui});
 }
 const rootResolved=registry.resolve(GLOBAL_SCOPE,'',{width:innerWidth,height:innerHeight});
 if(!rootResolved.interlocutors.length) throw new Error('Display site-space has no overview interlocutor');
@@ -101,11 +148,11 @@ function render(path=W.view){
   for(const id of activeIds){
     const s=surfaces.get(id),spec=specs.get(id);if(!s||!spec)continue;
     const localPath=spec.manifestation?.background_inspect?(path||''):'';
-    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency,lens:lensNow});
+    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency,lens:lensNow,ui:s.ui});
     if(!renderedIds.has(id))fieldById.get(id)?.arriveFrom(null);
   }
   renderedIds=new Set(activeIds);
-  composition();Safe.refresh();
+  composition();Safe.refresh();for(const ui of uiById.values())ui.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
   stateEl.textContent='WITNESS viewer · global '+GLOBAL_SCOPE+':'+(activeAddress||'overview')+' · local '+local+' · '+activeIds.join(' + ');
   document.documentElement.dataset.scope=GLOBAL_SCOPE;
@@ -154,7 +201,7 @@ addEventListener('sss:membrane-ascend',e=>{
   const back=()=>{if(stack.length)leave();else{const r=resolveGlobal('');if(r.interlocutors.length)enter(r,'',true)}if(env)fieldById.get(env.hostId)?.arriveFrom(env.place,id)};
   fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});
 });
-addEventListener('sss:language',()=>{render(W.view)});addEventListener('resize',()=>{Safe.refresh();composition()});
+addEventListener('sss:language',()=>{render(W.view)});addEventListener('resize',()=>{Safe.refresh();composition();for(const ui of uiById.values())ui.refresh()});
 home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else setLocalView('','home')});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});
@@ -170,5 +217,5 @@ Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlob
 /* Arriving at #scope:address enters that encounter directly; overview stays beneath it, so ascent and Escape return there. */
 if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)enter(r,arrival,'replace')}
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
-globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
+globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();
