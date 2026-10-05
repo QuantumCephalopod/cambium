@@ -1,0 +1,39 @@
+{
+  "schema": "sss.display.ui-grid.v2",
+  "meta": {
+    "name": "organism:crawlerbait"
+  },
+  "splits": [
+    "",
+    "w",
+    "x",
+    "y",
+    "z"
+  ],
+  "fields": {
+    "rail": {
+      "cells": [
+        "ww",
+        "wy",
+        "yw"
+      ],
+      "label": "identity + reef"
+    },
+    "side": {
+      "cells": [
+        "xx",
+        "xz",
+        "zx"
+      ],
+      "label": "being + bait"
+    },
+    "bottom": {
+      "cells": [
+        "yz",
+        "zy"
+      ],
+      "label": "time"
+    }
+  },
+  "elements": {}
+}

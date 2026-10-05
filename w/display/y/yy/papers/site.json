@@ -1,11 +1,21 @@
 {
-  "version": 1,
+  "version": 2,
   "id": "organism:papers",
   "title": "Papers",
   "local_scope": "papers",
-  "shader": {"id": "shader:organism:papers", "palette": [0.62, 0.92, 0.42]},
-  "manifestation": {"background_inspect": false},
+  "shader": {
+    "id": "shader:organism:papers",
+    "palette": [
+      0.62,
+      0.92,
+      0.42
+    ]
+  },
+  "manifestation": {
+    "background_inspect": false
+  },
   "projection": "projection.json",
   "renderer": "sierpinski.js",
-  "style": "sierpinski.css"
+  "style": "sierpinski.css",
+  "ui_grid": "ui-grid.json"
 }

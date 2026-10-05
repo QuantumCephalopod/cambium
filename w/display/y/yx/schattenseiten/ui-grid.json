@@ -1,0 +1,39 @@
+{
+  "schema": "sss.display.ui-grid.v2",
+  "meta": {
+    "name": "organism:schattenseiten"
+  },
+  "splits": [
+    "",
+    "w",
+    "x",
+    "y",
+    "z"
+  ],
+  "fields": {
+    "rail": {
+      "cells": [
+        "ww",
+        "wy",
+        "yw"
+      ],
+      "label": "identity + ranks"
+    },
+    "side": {
+      "cells": [
+        "xx",
+        "xz",
+        "zx"
+      ],
+      "label": "selected work"
+    },
+    "bottom": {
+      "cells": [
+        "yz",
+        "zy"
+      ],
+      "label": "flat + relation"
+    }
+  },
+  "elements": {}
+}
