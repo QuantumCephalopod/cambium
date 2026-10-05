@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.2"
+version: "3.3"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -31,15 +31,18 @@ Current first bodies:
 
 - `w/display/y/philosophy/` -> `organism:philosophy @ ε`;
 - `w/display/y/yw/crawlerbait/` -> `organism:crawlerbait @ w`;
-- `w/display/y/yy/papers/` -> `organism:papers @ y`.
+- `w/display/y/yx/schattenseiten/` -> `organism:schattenseiten @ x`;
+- `w/display/y/yy/papers/` -> `organism:papers @ y`;
+- `w/display/y/yz/datenschutz/` -> `organism:datenschutz @ z`;
+- `w/display/y/yxz/impressum/` -> `organism:impressum @ xz`.
 
 The outer first `y` belongs to Display Population and is stripped at the membrane.
 
 ## Body contract
 
-A site-holon carries a `site.json` membrane declaration containing stable identity/title, local scope, shader identity, manifestation specialty, and paths to its body-local projection, renderer and style.
+A site-holon carries a `site.json` membrane declaration containing stable identity/title, local scope, shader identity, manifestation specialty, and paths to its body-local projection, renderer, style and canonical screen-space `ui_grid` carrier. The current contract is `site.json` v2.
 
-Those body-local members travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
+Those body-local members, including `ui-grid.json`, travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
 
 A site may contain further local organism anatomy beyond the site membrane. Philosophy currently carries its own INDEX, `_cambium`, RITUALS and lifecycle shell inside its body; other sites may carry only the local tissue their own closure has earned.
 
@@ -70,7 +73,11 @@ Promote tissue into Display only when the capability is genuinely site-agnostic 
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
 
-Display may additionally lend the neutral canonical UI-field projection described by the Display organism receptor. A site may use its recursive addresses/spans to place local presentation tissue, but the site's content, hierarchy, aesthetics and interaction meaning remain identity-owned. Address-derived layout is a shared carrier capability, not a requirement that every site expose the same UI.
+Every site-holon owns one canonical recursive UI-field state for the screen-space presentation tissue it actually carries. Display lends the neutral address algebra and projects those site-owned fields into the site's current safe carrier; the site's content, hierarchy, aesthetics, field names and interaction meaning remain identity-owned. A site with sparse screen UI may therefore carry only one field; sharing the measurement carrier never requires sharing a template.
+
+When canonical field state completely determines screen placement, site CSS/render code must not preserve a second independent absolute-pixel placement authority. Local styling may still own internal spacing, typography, overflow, material and functional geometry inside the field. A concrete local screen-space function that cannot truthfully be expressed by the current field law remains explicit exception pressure rather than silently falling back to arbitrary positioning.
+
+The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected labels, bodies, beings, chamber marks and other tissue whose position is derived from organism/world coordinates remain in that native frame. Global Display-owned membrane surfaces likewise remain Display tissue rather than being assigned to one site's local grid.
 
 ## Global background-drag default
 
@@ -198,3 +205,5 @@ Version 3.1 body-material correction (2026-09-30): a site whose field shader dra
 
 
 Version 3.2 canonical-ui-field correction (2026-10-04): site-holons may consume Display's address-native recursive UI carrier without surrendering local phenomenology. Global raw-address notation is stated canonically as `w,x,y,z`; no CCCC semantic remapping or site-template ontology is introduced.
+
+Version 3.3 canonical screen-measurement correction (2026-10-05): the optional capability became the common screen-space measurement membrane. `site.json` v2 names one identity-owned `ui_grid`; fields are local/content-agnostic spans projected by Display inside the current safe carrier. All six current bodies carry the invariant, while world/body geometry, semantic addresses, site meaning and local skins remain independent.

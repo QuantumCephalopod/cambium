@@ -67,3 +67,36 @@ Produce a live census of all current canonical site-holons and classify their vi
 - NO-UI — no site-local screen-space UI placement to migrate.
 
 Only after the census may the organism choose the smallest lawful migration order and dependency cone.
+
+
+## census — 2026-10-05
+
+Current canonical Population was reacquired from live `site.json` bodies, not folder-name assumptions:
+
+- Philosophy @ `ε` — **ADAPTABLE**: encounter copy is screen-space; global mounted-body markers remain world-derived.
+- Crawlerbait @ `w` — **ADAPTABLE**: left/right/bottom HUD tissue is screen-space; beings and field bodies remain world-derived.
+- Schattenseiten @ `x` — **ADAPTABLE**: HUD rail/selection/relation tissue is screen-space; artwork/body geometry remains identity-owned world geometry.
+- Impressum @ `xz` — **ADAPTABLE**: legal article is screen-space; global legal navigation remains Display/cross-site tissue.
+- Papers @ `y` — **ADAPTABLE**: HUD, physiology, selected label and Source inquiry are screen-space; tetrahedral canvases and chamber/body labels remain world-derived.
+- Datenschutz @ `z` — **ADAPTABLE**: privacy article is screen-space; global legal navigation remains Display/cross-site tissue.
+
+No current site consumed `SSSUIGrid` before this act; there is therefore one clean first-generation migration rather than competing layout schemas.
+
+## bounded ACT — staged 2026-10-05
+
+The migration is materialized in the writable staging carrier:
+
+- `w/ui-grid.js` evolves to `sss.display.ui-grid.v2` with named, content-agnostic fields while retaining v1 element replay for the editor lineage;
+- every current site moves to `site.json` v2 and carries its own `ui-grid.json`;
+- the build projects those states generically without central specimen knowledge;
+- the Display runtime derives field rectangles from `site surface ∩ live Display safe carrier` and hands each renderer a neutral `ui.bind(node, field)` membrane;
+- Philosophy, Crawlerbait, Schattenseiten, Impressum, Papers and Datenschutz bind only their screen-space tissue;
+- shared legacy pixel authority in `.interlocutor-content`, including the mobile `display:none` cutoff, is removed;
+- world/body geometry is deliberately untouched;
+- Display/site-holon receptors are staged as 3.22 / 3.3; no `INDEX.yaml` or `_cambium.yaml` mutation is earned.
+
+A source-carrier repair during staging removed one accidental duplicated `y/build.py` caused by a patch-string `$'` interpolation wound; current diff returns to the bounded intended build delta.
+
+## remaining closure
+
+Provider/native workflow witness and exact generated-browser acceptance remain open. Do not retire this nutrient or claim HOME merely because the source mutation exists.
