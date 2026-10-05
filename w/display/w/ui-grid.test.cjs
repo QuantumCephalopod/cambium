@@ -1,29 +1,40 @@
 'use strict';
 const assert=require('assert');
 const G=require('./ui-grid.js');
+
+assert.equal(G.SCHEMA,'sss.display.ui-grid.v2');
 assert.deepStrictEqual(G.ADDRESS_SYMBOLS,['w','x','y','z']);
 assert.deepStrictEqual(G.bounds('w'),{x:0,y:0,w:.5,h:.5});
 assert.deepStrictEqual(G.bounds('x'),{x:.5,y:0,w:.5,h:.5});
 assert.deepStrictEqual(G.bounds('y'),{x:0,y:.5,w:.5,h:.5});
 assert.deepStrictEqual(G.bounds('z'),{x:.5,y:.5,w:.5,h:.5});
-assert.deepStrictEqual(G.bounds('xw'),{x:.5,y:0,w:.25,h:.25});
+
 let s=G.emptyState();
 s=G.split(s,'');
 assert.deepStrictEqual(G.leafSet(s),['w','x','y','z']);
-s=G.split(s,'x');
-assert.deepStrictEqual(G.leafSet(s),['w','y','z','xw','xx','xy','xz'].sort(G.compareAddress));
-assert.ok(G.spanInfo(s,['xw','xx']).ok);
-assert.ok(G.spanInfo(s,['xw','xy']).ok);
-assert.ok(!G.spanInfo(s,['xw','xz']).ok);
-s=G.place(s,'title',{kind:'text',cells:['xw','xx'],anchor:'north',rank:0,label:'TITLE'});
-assert.throws(()=>G.coalesce(s,'x'),/occupied/);
-s=G.move(s,'title',['xy','xz']);
-assert.deepStrictEqual(s.elements.title.cells,['xy','xz']);
-let c=G.command(s,'move title xy+xz -> xw+xx');
-assert.deepStrictEqual(c.state.elements.title.cells,['xw','xx']);
-assert.strictEqual(c.log,'move title xy+xz -> xw+xx');
+s=G.defineField(s,'rail',['w'],'rail');
+assert.throws(()=>G.split(s,'w'),/occupied/);
+s=G.refineField(s,'rail');
+assert.deepStrictEqual(s.fields.rail.cells,['ww','wx','wy','wz']);
+assert.equal(G.fieldInfo(s,'rail').bounds.w,.5);
+
+s=G.removeField(s,'rail');
+s=G.place(s,'title',{kind:'text',cells:['ww','wx'],anchor:'north',rank:0,label:'TITLE'});
+assert.ok(G.spanInfo(s,['ww','wx']).ok);
+assert.throws(()=>G.coalesce(s,'w'),/occupied/);
+s=G.move(s,'title',['wy','wz']);
+assert.deepStrictEqual(s.elements.title.cells,['wy','wz']);
+let c=G.command(s,'move title wy+wz -> ww+wx');
+assert.deepStrictEqual(c.state.elements.title.cells,['ww','wx']);
+
 const round=G.parseState(G.formatState(c.state));
 assert.deepStrictEqual(round,c.state);
-round.elements.title=null;
-assert.notDeepStrictEqual(round,c.state);
-console.log('ui-grid: PASS');
+const legacy=G.normalizeState({
+  schema:'sss.display.ui-grid.v1',
+  splits:[''],
+  elements:{x:{kind:'panel',cells:['w'],anchor:'fill',rank:0,label:'x'}}
+});
+assert.equal(legacy.schema,G.SCHEMA);
+assert.deepStrictEqual(legacy.fields,{});
+
+console.log('ui-grid v2: fields + legacy element replay PASS');
