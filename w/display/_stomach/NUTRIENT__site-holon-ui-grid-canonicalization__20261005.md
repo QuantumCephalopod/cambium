@@ -1,0 +1,69 @@
+# NUTRIENT — site-holon UI-grid canonicalization — 2026-10-05
+
+status: OPEN / UNRESOLVED
+kind: Display-wide site-holon embodiment pressure
+source: Philipp live encounter + supplied `sss-ui-grid-direct.html`
+target: github.cambium → display
+owner: Display
+
+## source-faithful encounter
+
+Philipp identifies the already-earned canonical recursive UI-grid as the new mode of measurement for visitor-facing UI and requests that every current site-holon be brought canonically to that Display invariant.
+
+This is not a request to make every site-holon look alike.
+
+The pressure is:
+
+> every site-holon should express its screen-space UI placement through the same canonical recursive address state, while keeping its own phenomenology, renderer, content and local semantics.
+
+## supplied measurement carrier
+
+The supplied direct-manipulation specimen witnesses the intended carrier relation:
+
+- canonical address alphabet/order: `w,x,y,z`;
+- potential recursion: any current leaf may differentiate `1 → 4`;
+- first 2D projection: `w x / y z`;
+- normalized geometry is derived from recursive address, not stored as pixel identity;
+- a UI field occupies one current leaf or a contiguous rectangular union of adjacent same-rank leaves;
+- split/coalesce/move/refine operate on canonical addresses/spans;
+- JSON import/export preserves the address-native state;
+- direct manipulation is only an actuator/projection of that state, not a second layout authority.
+
+Current Display law already owns the invariant:
+
+`canonical recursive address state → deterministic carrier projection → address-native mutation delta`
+
+## requested canonicalization pressure
+
+Reacquire the current Population from canonical repository anatomy and inspect every mounted site-holon.
+
+For each site-holon:
+
+1. identify its actual visitor-facing UI surfaces;
+2. distinguish semantic/local phenomenology from carrier placement;
+3. map placement into canonical recursive UI addresses/spans;
+4. preserve site-local look/behavior while replacing independent pixel-position authority where the grid relation can fully determine placement;
+5. retain responsive geometry as a derived witness of address state;
+6. refuse migration where a concrete local function genuinely requires non-grid geometry, recording that exception rather than fabricating compliance;
+7. do not remap CCCC semantics, 3D tetrahedral geometry, global site-space address, or site identity.
+
+## challenge boundary
+
+Do not:
+- force all sites into one visual template;
+- infer semantic splits from screen layout;
+- make the UI-grid a new site-holon or ontology;
+- concatenate Display UI addresses with site semantic addresses;
+- rewrite identity-owned renderers merely for aesthetic uniformity;
+- preserve arbitrary pixels as canonical state when address state is sufficient.
+
+## first act requested
+
+Produce a live census of all current canonical site-holons and classify their visitor-facing UI placement as:
+
+- ADDRESS-NATIVE — already determined by canonical recursive UI state;
+- ADAPTABLE — current placement can be losslessly expressed by the invariant;
+- EXCEPTION-PRESSURE — some local functional geometry cannot yet be truthfully reduced to the grid;
+- NO-UI — no site-local screen-space UI placement to migrate.
+
+Only after the census may the organism choose the smallest lawful migration order and dependency cone.
