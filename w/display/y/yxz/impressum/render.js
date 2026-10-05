@@ -34,7 +34,7 @@ const fieldProjection=()=>Object.freeze({
 });
 let last=null;
 function tr(v,lang){return v&&typeof v==='object'?(v[lang]||v.de||v.en||''):(v||'')}
-function render({host,content,projection,language='de'}={}){
+function render({host,content,projection,language='de',ui=null}={}){
   if(!host||!content||!projection?.operator)return false;
   last={host,content,projection,language};
   host.hidden=false;
@@ -49,7 +49,7 @@ function render({host,content,projection,language='de'}={}){
   const gate=document.createElement('p'); gate.className='impressum-gate';
   gate.textContent=projection.contact.status==='live'?'':(language==='de'?'Kontakt-Route wird vor Veröffentlichung gewitnessed.':'Contact route is witnessed before publication.');
   article.append(kicker,h,name,address,mail,gate);
-  content.append(article);
+  content.append(article);if(ui)ui.bind(article,'article');
   return true;
 }
 function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();last=null}

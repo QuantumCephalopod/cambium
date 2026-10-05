@@ -32,7 +32,7 @@ const fieldProjection=()=>Object.freeze({
   root:Object.freeze({noun:'Datenschutz',de:'Datenschutz',en:'Privacy',children:Object.freeze({})}),
   points:Object.freeze([])
 });
-function render({host,content,projection,language='de'}={}){
+function render({host,content,projection,language='de',ui=null}={}){
   if(!host||!content||!projection?.controller)return false;
   host.hidden=false; content.className='interlocutor-content datenschutz-content'; content.replaceChildren();
   const article=document.createElement('article');
@@ -45,7 +45,7 @@ function render({host,content,projection,language='de'}={}){
     :(language==='de'?'Die öffentliche Datenschutzerklärung wird nach dem end-to-end Kontakt-Witness freigegeben.':'The public privacy notice is released after the end-to-end contact witness.');
   const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=projection.contact.email;
   const notice=document.createElement('a'); notice.href='/privacy/'; notice.textContent=language==='de'?'Datenschutzerklärung':'Privacy notice';
-  article.append(kicker,h,p,mail,notice); content.append(article); return true;
+  article.append(kicker,h,p,mail,notice); content.append(article); if(ui)ui.bind(article,'article'); return true;
 }
 function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren()}
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection}));
