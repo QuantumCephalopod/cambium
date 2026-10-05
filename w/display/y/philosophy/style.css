@@ -1,6 +1,6 @@
 [data-interlocutor="organism:philosophy"]{pointer-events:none}
 [data-interlocutor="organism:philosophy"] .philosophy-content{pointer-events:none}
-[data-interlocutor="organism:philosophy"] .philosophy-content>section{position:relative;width:100%}
+[data-interlocutor="organism:philosophy"] .philosophy-content>section{overflow:auto}
 /* The root encounter lends a compact introduction; the field remains primary. */
 .philosophy-content>.root{max-width:570px}
 .philosophy-content>.root .kicker{font:var(--type-rn2)/1.45 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(241,239,233,.42);margin-bottom:8px}

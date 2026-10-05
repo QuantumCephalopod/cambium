@@ -603,7 +603,7 @@ function renderInspector(route){
   signatures.append(list);
   inspectorHost.append(signatures);
 }
-function render({host,content,projection}={}){
+function render({host,content,projection,ui=null}={}){
   if(!host||!content||!projection?.summary)return false;
   if(Array.isArray(projection.encounters)&&projection!==lastProjection){lastProjection=projection;if(SIM.life&&SIM.life.key!==(projection.updated_at||''))SIM.life=null}
   host.hidden=false;
@@ -635,8 +635,8 @@ function render({host,content,projection}={}){
   inspectorHost=el('section','crawlerbait-inspector');
   side.append(inspectorHost);
 
-  content.append(rail,side);
-  if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom)}
+  content.append(rail,side);if(ui){ui.bind(rail,'rail');ui.bind(side,'side')}
+  if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom);if(ui)ui.bind(bottom,'bottom')}
   const selected=selectedAddress?routes.find(r=>r.address===selectedAddress):null;
   renderInspector(selected||null);
   return true;

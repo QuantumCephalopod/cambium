@@ -79,14 +79,14 @@ function renderMarkers(host){
   requestAnimationFrame(positionMarkers);
 }
 addEventListener('sss:orientation',positionMarkers);addEventListener('resize',positionMarkers);
-function render({host,content,projection,path='',language='en'}={}){
+function render({host,content,projection,path='',language='en',ui=null}={}){
   if(!host||!content||!projection?.root)return false;
   const node=path?nodeAt(projection.root,path):projection.root;
   host.hidden=false;content.className='interlocutor-content philosophy-content';content.replaceChildren();
   const copy=document.createElement('section');copy.className=path?'':'root';
   if(path)copy.innerHTML=`<div class="kicker">philosophy · inspect ${path}</div><h1>${node?.[language]||node?.noun||path}</h1><p>${node?.one?.[language]||''}</p>`;
   else copy.innerHTML=`<div class="kicker">organism:philosophy · global address witness</div><h1>Form · Continuity · Care · Inquiry</h1><p>${language==='de'?'Die Flächen fokussieren rekursive Adresszellen. Echte globale Site-Holons erscheinen an ihren tree-derived Adressen; ihre Marker wechseln direkt den Encounter.':'Faces focus recursive address cells. Actual global site-holons appear at their tree-derived addresses; their markers switch encounters directly.'}</p>`;
-  content.append(copy);markerLayer?.remove();markerLayer=null;return true; /* site labels are now Display body labels */
+  content.append(copy);if(ui)ui.bind(copy,'copy');markerLayer?.remove();markerLayer=null;return true; /* site labels are now Display body labels */
 }
 function unmount({host,content}={}){if(markerLayer)markerLayer.hidden=true;if(host)host.hidden=true;if(content)content.replaceChildren()}
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection:projection=>projection}));

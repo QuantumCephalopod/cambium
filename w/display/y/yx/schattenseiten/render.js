@@ -218,7 +218,7 @@ function showWork(w){
   panel.append(b);
 }
 let LAST=null;
-function render({host,content,projection}={}){
+function render({host,content,projection,ui=null}={}){
   if(!host||!content||!Array.isArray(projection?.works))return false;
   LAST={host,content,projection};
   P=projection;ENTERED=true;ensureTier(64);ensureTier(512);host.hidden=false;content.className='interlocutor-content schattenseiten-content';content.replaceChildren();
@@ -238,7 +238,7 @@ function render({host,content,projection}={}){
   flat.addEventListener('click',()=>globalThis.SSSWorldView?.easeTo?.(shader.view.rest,900));bottom.append(flat);
   if(projection.words?.[2])bottom.append(el('p','ss-word ss-way'+(projection.words[2].placeholder?' ss-placeholder':''),tx(projection.words[2])));
   if(projection.words?.[1])bottom.append(el('p','ss-word ss-mirror',tx(projection.words[1])));
-  content.append(rail,side,bottom);showWork(selected);return true;
+  content.append(rail,side,bottom);if(ui){ui.bind(rail,'rail');ui.bind(side,'side');ui.bind(bottom,'bottom')}showWork(selected);return true;
 }
 addEventListener('sss:language',()=>{if(LAST&&LAST.content.isConnected)render(LAST)});
 function activateFieldPoint({point}={}){if(!ENTERED)return;selected=point?.work||null;showWork(selected)}
