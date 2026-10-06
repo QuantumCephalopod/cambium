@@ -1,5 +1,5 @@
-/* Crawlerbait HUD: ink on the reef's own paper. Every kind of information has a fixed place at the edges;
-   nothing floats over the field in a box. Display's global surfaces are respected through the safe-area contract. */
+/* Crawlerbait HUD: ink on the reef's own paper. Screen placement comes from the site's canonical UI fields;
+   local CSS owns material and internal flow inside those fields. */
 .crawlerbait-content{
   --ink:#ece5d3;
   --dim:#8a867b;
@@ -16,9 +16,8 @@
 }
 .crawlerbait-content button,.crawlerbait-content input,.crawlerbait-content a{pointer-events:auto}
 
-/* The HUD is locked to the screen's borders (fixed, viewport-relative) so the centre of the reef stays free.
-   Display's own surfaces are respected through the safe-area contract: var(--display-safe-top) is the header,
-   var(--display-safe-bottom) the minimap's band on the right. */
+/* The reef keeps its centre free through identity-owned rail/side/bottom fields.
+   Display projects those spans through the current safe carrier; Crawlerbait owns no global pixel offsets. */
 .crawlerbait-hud-rail{
   display:flex;
   flex-direction:column;
@@ -104,10 +103,7 @@
 
 /* narrow: one column along the left border; the side panel folds under it */
 @media (max-width:720px){
-  .crawlerbait-hud-rail{max-height:42vh}
-  .crawlerbait-hud-top{grid-template-columns:repeat(4,max-content)}
   .crawlerbait-hud-through,.crawlerbait-hud-link,.crawlerbait-story{display:none}
-  .crawlerbait-hud-side{max-height:30vh}
   .crawlerbait-pace,.crawlerbait-pace-label,.crawlerbait-dim{display:none}
   .crawlerbait-clock{min-width:0}
 }
