@@ -17,7 +17,15 @@
         "wy",
         "yw"
       ],
-      "label": "identity + ranks"
+      "label": "identity + ranks",
+      "variants": {
+        "portrait": [
+          "ww",
+          "wx",
+          "xw",
+          "xx"
+        ]
+      }
     },
     "side": {
       "cells": [
@@ -25,14 +33,34 @@
         "xz",
         "zx"
       ],
-      "label": "selected work"
+      "label": "selected work",
+      "variants": {
+        "portrait": [
+          "wy",
+          "wz",
+          "xy",
+          "xz",
+          "yw",
+          "yx",
+          "zw",
+          "zx"
+        ]
+      }
     },
     "bottom": {
       "cells": [
         "yz",
         "zy"
       ],
-      "label": "flat + relation"
+      "label": "flat + relation",
+      "variants": {
+        "portrait": [
+          "yy",
+          "yz",
+          "zy",
+          "zz"
+        ]
+      }
     }
   },
   "elements": {}
