@@ -1,11 +1,22 @@
 {
-  "version": 1,
+  "version": 2,
   "id": "organism:schattenseiten",
   "title": "Schattenseiten",
   "local_scope": "schattenseiten",
-  "shader": {"id": "shader:organism:schattenseiten", "palette": [0.86, 0.86, 0.84]},
-  "manifestation": {"background_inspect": false, "background_drag": true},
+  "shader": {
+    "id": "shader:organism:schattenseiten",
+    "palette": [
+      0.86,
+      0.86,
+      0.84
+    ]
+  },
+  "manifestation": {
+    "background_inspect": false,
+    "background_drag": true
+  },
   "projection": "projection.json",
   "renderer": "render.js",
-  "style": "style.css"
+  "style": "style.css",
+  "ui_grid": "ui-grid.json"
 }

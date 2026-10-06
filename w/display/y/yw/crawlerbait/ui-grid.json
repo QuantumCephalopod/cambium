@@ -1,0 +1,67 @@
+{
+  "schema": "sss.display.ui-grid.v2",
+  "meta": {
+    "name": "organism:crawlerbait"
+  },
+  "splits": [
+    "",
+    "w",
+    "x",
+    "y",
+    "z"
+  ],
+  "fields": {
+    "rail": {
+      "cells": [
+        "ww",
+        "wy",
+        "yw"
+      ],
+      "label": "identity + reef",
+      "variants": {
+        "portrait": [
+          "ww",
+          "wx",
+          "xw",
+          "xx"
+        ]
+      }
+    },
+    "side": {
+      "cells": [
+        "xx",
+        "xz",
+        "zx"
+      ],
+      "label": "being + bait",
+      "variants": {
+        "portrait": [
+          "wy",
+          "wz",
+          "xy",
+          "xz",
+          "yw",
+          "yx",
+          "zw",
+          "zx"
+        ]
+      }
+    },
+    "bottom": {
+      "cells": [
+        "yz",
+        "zy"
+      ],
+      "label": "time",
+      "variants": {
+        "portrait": [
+          "yy",
+          "yz",
+          "zy",
+          "zz"
+        ]
+      }
+    }
+  },
+  "elements": {}
+}

@@ -1,0 +1,85 @@
+{
+  "schema": "sss.display.ui-grid.v2",
+  "meta": {
+    "name": "organism:papers"
+  },
+  "splits": [
+    "",
+    "w",
+    "x",
+    "y",
+    "z"
+  ],
+  "fields": {
+    "hud": {
+      "cells": [
+        "ww"
+      ],
+      "label": "inquiry status",
+      "variants": {
+        "portrait": [
+          "ww",
+          "wx",
+          "xw",
+          "xx"
+        ]
+      }
+    },
+    "physiology": {
+      "cells": [
+        "wy",
+        "yw"
+      ],
+      "label": "how Papers lives",
+      "variants": {
+        "portrait": [
+          "wy",
+          "wz",
+          "xy",
+          "xz",
+          "yw",
+          "yx",
+          "zw",
+          "zx"
+        ]
+      }
+    },
+    "label": {
+      "cells": [
+        "yz",
+        "zy"
+      ],
+      "label": "selected organism",
+      "variants": {
+        "portrait": [
+          "yy",
+          "yz",
+          "zy",
+          "zz"
+        ]
+      }
+    },
+    "sourceInquiry": {
+      "cells": [
+        "ww",
+        "wx",
+        "wy",
+        "wz",
+        "xw",
+        "xx",
+        "xy",
+        "xz",
+        "yw",
+        "yx",
+        "yy",
+        "yz",
+        "zw",
+        "zx",
+        "zy",
+        "zz"
+      ],
+      "label": "source inquiry"
+    }
+  },
+  "elements": {}
+}

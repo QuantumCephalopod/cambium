@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const H=require('./site-holon.js'),N=require('../z/navigation-physiology.js');
+const H=require('./site-holon.js'),N=require('../z/navigation-physiology.js'),UI=require('../w/ui-grid.js');
 const runtimeSource=fs.readFileSync(process.env.RUNTIME_SOURCE||path.join(__dirname,'display-runtime-v2.js'),'utf8');
 const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'utf8');
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
@@ -12,7 +12,8 @@ function boot(version=1,hash=''){
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
-  elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(input)});elements.set('display-dependencies',{textContent:'{}'});
+  const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id},splits:[''],fields:{slot:{cells:['w'],label:'slot'}},elements:{}}]));
+  elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(input)});elements.set('site-ui-grids',{textContent:JSON.stringify(grids)});elements.set('display-dependencies',{textContent:'{}'});
   for(const id of ['tetra-fold','root-home','site-state','interlocutor-stage'])elements.set(id,element());
   const hosts=new Map(ids.map(id=>{const host=element(),canvas=element(),labelHost=element(),content=element();host.querySelector=selector=>({'.interlocutor-background':canvas,'.interlocutor-field-labels':labelHost,'.interlocutor-content':content})[selector];return [id,host]}));
   const Modules=new Map();
@@ -27,7 +28,7 @@ function boot(version=1,hash=''){
   }
   const emit=(name,detail)=>{for(const fn of events.get(name)||[])fn({detail})};
   const W={view:'',language:'en',scopeId:'main',orientation:[1,0,0,0],setScope({id,projection}){this.scopeId=id;this.projection=projection},setGlobalTargets(targets){this.targets=targets},setActiveGlobalAddress(address,locus){this.activeGlobalAddress=address;this.activeGlobalLocus=locus},inspect(view){this.view=view;emit('sss:view',{scopeId:this.scopeId,path:view});return true},clearInspection(){this.view='';emit('sss:view',{scopeId:this.scopeId,path:''})}};
-  const context={Map,URL,console,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSSiteHolon:H,SSSSiteFold:{createFold:()=>({busy:false,swap(fn,details){swaps.push(details);return fn()}})},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({})},SSSInterlocutorModules:Modules};
+  const context={Map,URL,console,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>({busy:false,swap(fn,details){swaps.push(details);return fn()}})},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({})},SSSInterlocutorModules:Modules};
   vm.createContext(context);
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
@@ -41,6 +42,7 @@ const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
 once();assert.strictEqual(f.W.projection,f.projected.get('organism:origin'));
 for(const id of ids.slice(0,3))assert.strictEqual(f.options.get(id).projection,f.projected.get(id));
+const slotBounds=runtime.ui.get(ids[0]).field('slot').bounds;assert.equal(slotBounds.x,0);assert.equal(slotBounds.y,0);assert.equal(slotBounds.w,.5);assert.equal(slotBounds.h,.5);
 const plain=f.options.get('organism:plain').projection;assert.equal(plain.sourceMarker,'organism:plain');
 for(let frame=0;frame<30;frame++){
   const bodies=f.options.get('organism:origin').bodies();

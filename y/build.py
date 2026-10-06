@@ -14,6 +14,7 @@ DISPLAY = ROOT / 'w' / 'display'
 SITE_ROOT = DISPLAY / 'y'
 GENES = 'wxzy'
 SITE_ID = re.compile(r'^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$')
+UI_GRID_SCHEMA = 'sss.display.ui-grid.v2'
 
 
 def scalar(text):
@@ -230,9 +231,9 @@ def _site_address(site_dir):
 
 
 def _validate_site_manifest(site_dir, data):
-    required = {'version','id','title','local_scope','shader','manifestation','projection','renderer','style'}
-    if not isinstance(data, dict) or set(data) != required or data.get('version') != 1:
-        raise ValueError(f'{site_dir.relative_to(ROOT)}/site.json: invalid v1 site-holon contract')
+    required = {'version','id','title','local_scope','shader','manifestation','projection','renderer','style','ui_grid'}
+    if not isinstance(data, dict) or set(data) != required or data.get('version') != 2:
+        raise ValueError(f'{site_dir.relative_to(ROOT)}/site.json: invalid v2 site-holon contract')
     if not isinstance(data['id'], str) or not SITE_ID.match(data['id']):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid interlocutor identity')
     if not isinstance(data['title'], str) or not data['title'].strip():
@@ -286,6 +287,10 @@ def discover_sites():
         projection_path = _inside(site_dir, data['projection'])
         renderer_path = _inside(site_dir, data['renderer'])
         style_path = _inside(site_dir, data['style'])
+        ui_grid_path = _inside(site_dir, data['ui_grid'])
+        ui_grid = json.loads(ui_grid_path.read_text(encoding='utf-8'))
+        if not isinstance(ui_grid, dict) or ui_grid.get('schema') != UI_GRID_SCHEMA:
+            raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid canonical UI-grid carrier')
         projection = json.loads(projection_path.read_text(encoding='utf-8'))
         if data['id'] == 'organism:philosophy':
             validate_root_projection(projection)
@@ -299,6 +304,8 @@ def discover_sites():
             'projection_data': projection,
             'renderer_path': renderer_path,
             'style_path': style_path,
+            'ui_grid_path': ui_grid_path,
+            'ui_grid_data': ui_grid,
         })
 
     roots = [s for s in found if s['address'] == '']
@@ -360,6 +367,10 @@ def site_projections():
     return {s['id']: s['projection_data'] for s in discover_sites()}
 
 
+def site_ui_grids():
+    return {s['id']: s['ui_grid_data'] for s in discover_sites()}
+
+
 def _enc(v):
     return json.dumps(v, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('&','\\u0026')
 
@@ -387,6 +398,7 @@ def template_asset_sources():
         'display-glass.js': DISPLAY/'z'/'display-glass.js',
         'display-lens.js': DISPLAY/'z'/'display-lens.js',
         'display-label-ink.js': DISPLAY/'w'/'display-label-ink.js',
+        'ui-grid.js': DISPLAY/'w'/'ui-grid.js',
         'display-type.js': DISPLAY/'w'/'display-type.js',
         'display-text-tissue.js': DISPLAY/'w'/'display-text-tissue.js',
         'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
@@ -482,6 +494,7 @@ def render():
         '/*__SITE_STYLES__*/': _site_style_links(),
         '/*__SITE_REGISTRY__*/': _enc(site_mounts()),
         '/*__SITE_PROJECTIONS__*/': _enc(site_projections()),
+        '/*__SITE_UI_GRIDS__*/': _enc(site_ui_grids()),
         '/*__DISPLAY_DEPENDENCIES__*/': _enc(dependency_projection(bundle)),
         '/*__SITE_SCRIPTS__*/': _site_script_tags(),
     }
