@@ -18,6 +18,19 @@ s=G.refineField(s,'rail');
 assert.deepStrictEqual(s.fields.rail.cells,['ww','wx','wy','wz']);
 assert.equal(G.fieldInfo(s,'rail').bounds.w,.5);
 
+let v=G.normalizeState({
+  schema:G.SCHEMA,
+  splits:['','w','x','y','z'],
+  fields:{rail:{cells:['ww','wy','yw'],variants:{portrait:['ww','wx','xw','xx']},label:'rail'}},
+  elements:{}
+});
+assert.deepStrictEqual(v.fields.rail.variants.portrait,['ww','wx','xw','xx']);
+assert.equal(G.fieldInfo(v,'rail').bounds.w,.25);
+assert.equal(G.fieldInfo(v,'rail','portrait').bounds.w,1);
+assert.equal(G.fieldInfo(v,'rail','portrait').bounds.h,.25);
+assert.equal(G.fieldInfo(v,'rail','portrait').variant,'portrait');
+assert.throws(()=>G.refineField(v,'rail'),/carrier variants/);
+
 s=G.removeField(s,'rail');
 s=G.place(s,'title',{kind:'text',cells:['ww','wx'],anchor:'north',rank:0,label:'TITLE'});
 assert.ok(G.spanInfo(s,['ww','wx']).ok);
