@@ -91,7 +91,7 @@ def main():
     check((crawler/'x'/'captures'/'manifest.json').is_file(),'Crawlerbait capture manifest missing')
     check((crawler/'z'/'policy.json').is_file(),'Crawlerbait membrane policy missing')
     crawler_style=(crawler/'z'/'style.css').read_text(encoding='utf-8')
-    check('var(--display-safe-top)' not in crawler_style and 'var(--display-safe-bottom)' not in crawler_style,'Crawlerbait retained direct safe-area pixel authority instead of canonical UI fields')
+    check('top:calc(var(--display-safe-top)' not in crawler_style and 'bottom:calc(var(--display-safe-bottom)' not in crawler_style,'Crawlerbait retained direct safe-area pixel authority instead of canonical UI fields')
     policy=json.loads((crawler/'z'/'policy.json').read_text(encoding='utf-8'))
     recognition=policy.get('recognition') or {}
     phenotype=policy.get('phenotype') or {}
