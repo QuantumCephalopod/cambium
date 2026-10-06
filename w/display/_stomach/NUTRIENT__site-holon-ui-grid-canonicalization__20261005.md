@@ -1,6 +1,6 @@
 # NUTRIENT — site-holon UI-grid canonicalization — 2026-10-05
 
-status: OPEN / UNRESOLVED
+status: ACT COMPLETE / FINAL WITNESS PENDING
 kind: Display-wide site-holon embodiment pressure
 source: Philipp live encounter + supplied `sss-ui-grid-direct.html`
 target: github.cambium → display
@@ -100,3 +100,74 @@ A source-carrier repair during staging removed one accidental duplicated `y/buil
 ## remaining closure
 
 Provider/native workflow witness and exact generated-browser acceptance remain open. Do not retire this nutrient or claim HOME merely because the source mutation exists.
+
+
+## generated-artifact browser metabolism — 2026-10-06
+
+The native staging workflow became fully green on the address-native migration, then the exact generated `staging-display` artifacts were downloaded and rendered in system Chromium from their emitted HTML/CSS/JS bytes. The local execution membrane blocks localhost/file navigation, so the artifact was served into `about:blank` through an in-memory asset router; history was shimmed only because an origin-null document cannot write an https URL into native History. Site/runtime bytes themselves were not rewritten for the witness.
+
+### wounds exposed and repaired
+
+1. **settled occupied-region wound** — Display's navigator aperture changes visibility through CSS transition. Safe-area originally sampled only the mutation edge and could retain stale open-pocket geometry after closure. Shared `display-safe-area.js` now resamples occupied surfaces on `transitionend` / `transitioncancel`.
+
+2. **safe-carrier reprojection wound** — after the safe-area correctly changed, already-bound site UI fields retained their old rectangles. Generic Display runtime now refreshes all bound UI fields on `sss:safe-area`.
+
+3. **portrait topology pressure** — with those central wounds healed, Crawlerbait and Schattenseiten still proved that their broad-carrier left/right rail topology was lawful but not inhabitable on a tall safe carrier. This earned bounded carrier variants for the **same field identities**, not new fields or a new UI grammar.
+
+4. **Papers no-WebGL regression** — the Grid migration's new `ui.bind(state.hud,...)` dereferenced null when Papers could not create its WebGL renderer. Papers now cleanly refuses render when renderer initialization is unavailable rather than crashing Display. This witness substrate exposes no WebGL/WebGL2 even with software flags, so Papers' actual 3D visual body cannot be browser-accepted here; its canonical UI state remains covered by native algebra/build witnesses and its unavailable-renderer path now fails closed.
+
+### earned portrait carrier
+
+The first earned neutral carrier selector is:
+
+`portrait ⇐ safeCarrier.height > safeCarrier.width`
+
+No site name, device class or pixel breakpoint participates.
+
+All portrait spans use the already-realized rank-2 leaves:
+
+- top band: `ww+wx+xw+xx`
+- middle band: `wy+wz+xy+xz+yw+yx+zw+zx`
+- bottom band: `yy+yz+zy+zz`
+
+Crawlerbait and Schattenseiten bind `rail → top`, `side → middle`, `bottom → bottom`.
+Papers binds `hud → top`, `physiology → middle`, `label → bottom`; `sourceInquiry` retains its full-grid span.
+Philosophy, Datenschutz and Impressum retain their default spans.
+
+### exact artifact 842 phone witness
+
+Artifact: workflow run `37497346598`, head `02a4d903bad053f65c6617ad04b4a0607b1c5e49`, artifact digest `sha256:5f4a00a2efc4202e24aff0aa838cb74456f0adfba111c257eb3043b332789cf2`.
+
+At viewport `390 × 844`, with navigator closed and settled, Display safe-area resolved to approximately:
+
+`top=116 · right=62.39 · bottom=62.39 · left=0`
+
+leaving a site safe carrier of approximately `327.61 × 665.61`.
+
+**Crawlerbait**
+- `@rail / portrait`: `327.61 × 166.39`; scroll `328 × 166`
+- `@side / portrait`: `327.61 × 332.80`; scroll `328 × 333`
+- `@bottom / portrait`: `327.61 × 166.39`; scroll `328 × 165`
+- zero page errors.
+
+**Schattenseiten**
+- `@rail / portrait`: `327.61 × 166.39`; scroll `328 × 166`
+- `@side / portrait`: `327.61 × 332.80`; scroll `328 × 333`
+- `@bottom / portrait`: `327.61 × 166.39`; scroll `328 × 165`
+- zero page errors.
+
+**Philosophy**
+- `@copy / default`: approximately `163.80 × 332.80`; scroll `164 × 333`
+- zero page errors.
+
+**Datenschutz / Impressum**
+- `@article / default`: approximately `327.61 × 332.80`
+- article-internal overflow remains site-owned scroll/content tissue rather than a second screen-placement authority.
+- zero page errors.
+
+This browser witness also directly confirmed the central transition relation:
+`navigator occupancy settles → safe-area changes → bound field rectangles reproject`.
+
+## closure pressure remaining
+
+The source act, native workflow and all browser-witnessable site UI carriers now agree on one canonical measurement physiology. One final native workflow on the law-bearing/current staging head remains before durable HOME. Papers' 3D visual render is explicitly **not** claimed as visually witnessed in this WebGL-less local substrate; that limitation does not reopen the canonical field-state result, but remains evidence boundary in HOME.
