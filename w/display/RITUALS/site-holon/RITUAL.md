@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.3"
+version: "3.4"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -73,9 +73,9 @@ Promote tissue into Display only when the capability is genuinely site-agnostic 
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
 
-Every site-holon owns one canonical recursive UI-field state for the screen-space presentation tissue it actually carries. Display lends the neutral address algebra and projects those site-owned fields into the site's current safe carrier; the site's content, hierarchy, aesthetics, field names and interaction meaning remain identity-owned. A site with sparse screen UI may therefore carry only one field; sharing the measurement carrier never requires sharing a template.
+Every site-holon owns one canonical recursive UI-field state for the screen-space presentation tissue it actually carries. Display lends the neutral address algebra and projects those site-owned fields into the site's current safe carrier; the site's content, hierarchy, aesthetics, field names and interaction meaning remain identity-owned. Field identity is invariant across carrier shapes. When one fixed span cannot truthfully inhabit both broad and tall carriers, that same field may own bounded alternate lawful spans over the same realized leaves; the shared runtime selects among them only from neutral carrier state. The earned first variant is `portrait`, selected when the current safe carrier is taller than wide. A site with sparse screen UI may therefore carry only one field; sharing the measurement carrier never requires sharing a template.
 
-When canonical field state completely determines screen placement, site CSS/render code must not preserve a second independent absolute-pixel placement authority. Local styling may still own internal spacing, typography, overflow, material and functional geometry inside the field. A concrete local screen-space function that cannot truthfully be expressed by the current field law remains explicit exception pressure rather than silently falling back to arbitrary positioning.
+When canonical field state completely determines screen placement, site CSS/render code must not preserve a second independent absolute-pixel placement or extent authority. Local styling may still own internal spacing, typography, overflow, material and functional geometry inside the field. Carrier-relative variants remain address state, not responsive CSS geometry. A concrete local screen-space function that cannot truthfully be expressed by the current field law remains explicit exception pressure rather than silently falling back to arbitrary positioning.
 
 The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected labels, bodies, beings, chamber marks and other tissue whose position is derived from organism/world coordinates remain in that native frame. Global Display-owned membrane surfaces likewise remain Display tissue rather than being assigned to one site's local grid.
 
@@ -207,3 +207,6 @@ Version 3.1 body-material correction (2026-09-30): a site whose field shader dra
 Version 3.2 canonical-ui-field correction (2026-10-04): site-holons may consume Display's address-native recursive UI carrier without surrendering local phenomenology. Global raw-address notation is stated canonically as `w,x,y,z`; no CCCC semantic remapping or site-template ontology is introduced.
 
 Version 3.3 canonical screen-measurement correction (2026-10-05): the optional capability became the common screen-space measurement membrane. `site.json` v2 names one identity-owned `ui_grid`; fields are local/content-agnostic spans projected by Display inside the current safe carrier. All six current bodies carry the invariant, while world/body geometry, semantic addresses, site meaning and local skins remain independent.
+
+
+Version 3.4 carrier-shape correction (2026-10-06): the stable site-owned field name is now distinguished from the span it occupies on a particular neutral carrier shape. A field may carry a bounded `portrait` alternate span using the same canonical `w,x,y,z` realized leaves; Display selects it only when the current safe carrier is taller than wide. This is not a device breakpoint or second template. Rich Crawlerbait, Schattenseiten and Papers screen tissue earned top/middle/bottom portrait bands after exact generated-artifact browser witness showed their broad-carrier side rails were uninhabitable on a tall carrier. CSS may still alter internal local content but may not re-cap the canonical field extent.
