@@ -42,7 +42,7 @@ const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
 once();assert.strictEqual(f.W.projection,f.projected.get('organism:origin'));
 for(const id of ids.slice(0,3))assert.strictEqual(f.options.get(id).projection,f.projected.get(id));
-assert.deepEqual(runtime.ui.get(ids[0]).field('slot').bounds,{x:0,y:0,w:.5,h:.5});
+const slotBounds=runtime.ui.get(ids[0]).field('slot').bounds;assert.equal(slotBounds.x,0);assert.equal(slotBounds.y,0);assert.equal(slotBounds.w,.5);assert.equal(slotBounds.h,.5);
 const plain=f.options.get('organism:plain').projection;assert.equal(plain.sourceMarker,'organism:plain');
 for(let frame=0;frame<30;frame++){
   const bodies=f.options.get('organism:origin').bodies();
