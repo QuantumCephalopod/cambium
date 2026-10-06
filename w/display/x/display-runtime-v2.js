@@ -35,13 +35,14 @@ function safeCarrier(host){
 }
 function makeSiteUI(id,host,raw){
   const state=UI.normalizeState(raw),bindings=new Map();
-  function field(name){
-    const info=UI.fieldInfo(state,name);
-    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds})});
+  function carrierVariant(carrier){return carrier.h>carrier.w?'portrait':''}
+  function field(name,carrier=safeCarrier(host)){
+    const info=UI.fieldInfo(state,name,carrierVariant(carrier));
+    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds}),variant:info.variant||'default'});
   }
   function apply(el,name){
     if(!el)throw new TypeError('UI field element required');
-    const info=field(name),c=safeCarrier(host),b=info.bounds;
+    const c=safeCarrier(host),info=field(name,c),b=info.bounds;
     Object.assign(el.style,{
       position:'absolute',
       left:(c.x+b.x*c.w)+'px',
@@ -51,7 +52,7 @@ function makeSiteUI(id,host,raw){
       right:'auto',
       bottom:'auto'
     });
-    if(el.dataset)el.dataset.uiField=name;
+    if(el.dataset){el.dataset.uiField=name;el.dataset.uiVariant=info.variant}
     return el;
   }
   function bind(el,name){bindings.set(el,name);return apply(el,name)}
