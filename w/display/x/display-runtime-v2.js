@@ -201,7 +201,7 @@ addEventListener('sss:membrane-ascend',e=>{
   const back=()=>{if(stack.length)leave();else{const r=resolveGlobal('');if(r.interlocutors.length)enter(r,'',true)}if(env)fieldById.get(env.hostId)?.arriveFrom(env.place,id)};
   fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});
 });
-addEventListener('sss:language',()=>{render(W.view)});addEventListener('resize',()=>{Safe.refresh();composition();for(const ui of uiById.values())ui.refresh()});
+addEventListener('sss:language',()=>{render(W.view)});addEventListener('sss:safe-area',()=>{for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();for(const ui of uiById.values())ui.refresh()});
 home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else setLocalView('','home')});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});
