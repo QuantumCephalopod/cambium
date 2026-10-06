@@ -44,6 +44,8 @@ def main():
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
     expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten','organism:datenschutz','organism:impressum'}
     check(set(by_id)==expected_sites,'unexpected Population site set')
+    check(all(s.get('version')==2 and s.get('ui_grid')=='ui-grid.json' for s in sites),'site-holon v2 UI-grid membrane missing')
+    check(all((s.get('ui_grid_data') or {}).get('schema')=='sss.display.ui-grid.v2' for s in sites),'site-holon canonical UI-grid schema drifted')
     check(by_id['organism:philosophy']['address']=='','Philosophy must occupy site-space overview')
     check(by_id['organism:crawlerbait']['address']=='w','Crawlerbait must occupy site-space w / Form')
     check(by_id['organism:papers']['address']=='y','Papers must occupy site-space y')
@@ -89,7 +91,7 @@ def main():
     check((crawler/'x'/'captures'/'manifest.json').is_file(),'Crawlerbait capture manifest missing')
     check((crawler/'z'/'policy.json').is_file(),'Crawlerbait membrane policy missing')
     crawler_style=(crawler/'z'/'style.css').read_text(encoding='utf-8')
-    check('var(--display-safe-top)' in crawler_style,'Crawlerbait local panel does not consume Display safe-area contract')
+    check('var(--display-safe-top)' not in crawler_style and 'var(--display-safe-bottom)' not in crawler_style,'Crawlerbait retained direct safe-area pixel authority instead of canonical UI fields')
     policy=json.loads((crawler/'z'/'policy.json').read_text(encoding='utf-8'))
     recognition=policy.get('recognition') or {}
     phenotype=policy.get('phenotype') or {}
@@ -306,7 +308,7 @@ def main():
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
-    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
+    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','site-ui-grids','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
     check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')
     check(not (artifact/'papers/index.html').exists(),'Papers regressed to a separate document/page')
@@ -330,7 +332,8 @@ def main():
     check('center:[...record.center]' in nav,'camera focus is not recursive split-tet centroid')
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
     check('swingback' not in world.lower(),'automatic Philosophy swingback returned')
-    check("document.getElementById('site-registry')" in runtime and "document.getElementById('site-projections')" in runtime,'runtime is not fed by tree-derived registry/projections')
+    check("document.getElementById('site-registry')" in runtime and "document.getElementById('site-projections')" in runtime and "document.getElementById('site-ui-grids')" in runtime,'runtime is not fed by tree-derived registry/projections/UI grids')
+    check('function safeCarrier(host)' in runtime and 'function makeSiteUI(id,host,raw)' in runtime and 'ui:s.ui' in runtime and 'ui.refresh()' in runtime,'generic safe-carrier UI-grid projection missing from runtime')
     check(all(name not in runtime for name in expected_sites),'central runtime still names specimen identities')
     check(all(name not in safe for name in expected_sites),'safe-area contract still names specimen identities')
     check('SSSDisplaySafeArea' in runtime and 'safeArea:Safe.snapshot()' in runtime,'site modules do not receive the Display safe-area contract')
@@ -390,7 +393,8 @@ def main():
     check('CHAMBER_SHELL_ALPHA=.55' in papers_sierpinski and 'CHAMBER_FACE_ALPHA' in papers_sierpinski and 'outerCells(rect.width,CHAMBER_FACE_ALPHA)' in papers_sierpinski and '{faces:false}' in papers_sierpinski and 'rec.locus===here' in papers_sierpinski,'Papers visible rank-1 chamber body / container-first Descent witness regressed')
     check("state.canvas.dataset.chamberPath='overview'" in papers_sierpinski and 'state.canvas.dataset.chamberScale' in papers_sierpinski,'Papers chamber passage is not observable')
     check('physiology.innerHTML' in papers_sierpinski and 'papers-physiology-phases' in papers_sierpinski and 'papers-physiology-copy' in papers_sierpinski and 'papers-physiology-witness' not in papers_sierpinski,'Papers physiology animation/copy is not one peripheral unit')
-    check('.papers-physiology{position:absolute;left:28px;top:148px' in papers_sierpinski_css and '.papers-physiology-canvas{width:100%;height:100%;display:block;opacity:.68}' in papers_sierpinski_css,'Papers physiology is not coherently peripheral')
+    papers_grid=by_id['organism:papers']['ui_grid_data']
+    check(set(papers_grid.get('fields',{}))=={'hud','physiology','label','sourceInquiry'} and "ui.bind(state.physiology,'physiology')" in papers_sierpinski and '.papers-physiology-canvas{width:100%;height:100%;display:block;opacity:.68}' in papers_sierpinski_css and 'left:28px;top:148px' not in papers_sierpinski_css,'Papers physiology is not canonically peripheral through its UI field')
     check('projection?.source_meta?.[x.id]' in papers_sierpinski and 'EXTERNAL ORIGIN' in papers_sierpinski and 'COMPOSITION' in papers_sierpinski and 'papers-source-inquiry' in papers_sierpinski and 'PAPERS ORGANISM' not in papers_sierpinski and 'papers-source-metabolism' not in papers_sierpinski and 'papers-source-metabolism' not in papers_sierpinski_css,'Papers origin/genealogy surface regressed or redundant tetrahedral anatomy sidebar returned')
     check('function inquiryBody(id)' in papers_sierpinski and 'function inquiryMetabolites(entity)' in papers_sierpinski and 'function metaboliteWisdomText(metabolite)' in papers_sierpinski and 'function updateOrganismInquiry()' in papers_sierpinski and 'function updateSourceInquiry()' not in papers_sierpinski and 'function organismInquiryReceipt(id)' not in papers_sierpinski and 'TETRAHEDRAL BODY · PROJECTION GAP' not in papers_sierpinski,'Papers still forks Source/Holon display law or exposes generic tetrahedron-count filler as content')
     check("credit:'',metabolism:'',externals:[],parents" in papers_sierpinski and "const externals=Array.isArray(entity.externals)?entity.externals:[]" in papers_sierpinski and "externals.join('|')" in papers_sierpinski,'Papers unified inquiry renderer can still receive kind-shaped runtime identities with missing common fields')
