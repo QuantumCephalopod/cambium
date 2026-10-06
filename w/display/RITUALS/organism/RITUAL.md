@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.22"
+version: "3.23"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -143,11 +143,11 @@ Display projects site-holon screen-space UI through one normalized recursive fou
 - canonical textual address serialization/sort order is `w, x, y, z`; this is deliberately distinct from the fixed CCCC semantic phase relation `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE` and from any carrier-internal tetrahedral vertex-array order;
 - the 2D projection maps one split row-major as `w x / y z`; every current leaf may recur by the same `1→4` law without a predefined depth;
 - only realized splits exist in canonical state. Pixel rectangles are derived from `carrier bounds + recursive address`, never stored as the canonical address;
-- a named UI field may occupy one current leaf or one contiguous rectangular union of adjacent same-rank leaves. Field identity is site-owned and content-agnostic: the renderer may bind its own DOM/presentation tissue to that field without Display learning whether the tissue is a rail, article, inquiry surface, status, text or something else. Legacy typed elements remain editor/evidence carriers rather than the site contract;
+- a named UI field may occupy one current leaf or one contiguous rectangular union of adjacent same-rank leaves. Field identity is site-owned and content-agnostic: the renderer may bind its own DOM/presentation tissue to that field without Display learning whether the tissue is a rail, article, inquiry surface, status, text or something else. A field may additionally carry bounded **carrier variants**: alternate lawful same-rank spans over the same realized leaves. Variant selection is driven only by neutral carrier state, never site identity. The first earned selector is `portrait`, chosen when the current safe carrier is taller than wide; field identity and meaning do not change when its span changes. Legacy typed elements remain editor/evidence carriers rather than the site contract;
 - splitting an occupied leaf is refused until its tissue moves; four direct sibling leaves coalesce only when none is further split or occupied;
 - canonical state is exportable/importable as realized split addresses plus identity-owned field/element spans. A mutation can therefore be replayed as address-native operations such as `split x`, `coalesce xy`, `place nav xw+xx …`, or `move title ww+wx -> yw+yx`;
 - an editor is only a projection/actuator of that state. It never becomes a second layout authority;
-- the runtime derives current pixels from `site surface ∩ Display live safe carrier` followed by the site's normalized recursive field bounds. Responsive/split geometry is therefore a carrier witness, not canonical state;
+- the runtime derives current pixels from `site surface ∩ Display live safe carrier` followed by the site's normalized recursive field bounds. When the safe carrier changes—including after Display-owned occupancy transitions—the bound fields are reprojected from canonical state. Responsive/split geometry is therefore a carrier witness, not canonical state;
 - this law governs **screen-space presentation placement**. World/body geometry remains in its native frame: tetrahedral canvases, chamber/body labels, mounted-site markers, beings and other geometry whose position is derived from organism/world coordinates are not reminted as UI-grid addresses;
 - global Display-owned cross-site membrane surfaces remain Display tissue rather than being assigned to an arbitrary site's local grid.
 
@@ -293,3 +293,6 @@ Version 3.21 shared preview optics correction (2026-10-04): the site-owned inter
 
 
 Version 3.22 site-holon measurement correction (2026-10-05): every current site-holon now carries one identity-owned `sss.display.ui-grid.v2` measurement state for screen-space presentation. Fields are named/content-agnostic spans; Display derives their live rectangles from the site surface intersected with the global safe carrier, while site-local meaning and appearance remain sovereign. World/body-projected geometry and global Display membrane surfaces are explicitly outside this screen-space carrier. The six current bodies share one measurement law without becoming one template; `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+
+Version 3.23 carrier-variant correction (2026-10-06): browser witness exposed that one fixed same-rank span can be lawful yet uninhabitable when the neutral safe carrier changes aspect. Field identity therefore remains invariant while an identity-owned field may carry optional alternate lawful spans over the same realized recursive leaves. Display currently selects only the earned `portrait` variant from the actual safe-carrier relation `height > width`; no site identity, device class or pixel breakpoint enters the selector. Occupancy-transition settlement now refreshes the safe-area and bound fields reproject on `sss:safe-area`. Rich Crawlerbait, Schattenseiten and Papers HUD fields use top/middle/bottom portrait bands; Philosophy and the legal articles remain on their default spans. `INDEX.yaml` and `_cambium.yaml` remain unchanged.
