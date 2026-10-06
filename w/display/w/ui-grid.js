@@ -98,7 +98,7 @@
 
   function occupiedUnder(state,address){
     const inCells=cells=>(cells||[]).some(c=>c===address||c.startsWith(address));
-    return Object.values(state.fields||{}).some(f=>inCells(f.cells))
+    return Object.values(state.fields||{}).some(f=>inCells(f.cells)||Object.values(f.variants||{}).some(inCells))
       ||Object.values(state.elements||{}).some(e=>inCells(e.cells));
   }
 
@@ -133,6 +133,16 @@
     const info=spanInfo(state,out.cells);
     if(!info.ok)throw new Error('field '+id+': '+info.reason);
     out.cells=info.cells;
+    if(f?.variants!==undefined&&(f?.variants===null||typeof f.variants!=='object'||Array.isArray(f.variants)))throw new Error('field '+id+': variants must be an object');
+    const variants={};
+    for(const name of Object.keys(f?.variants||{}).sort()){
+      if(!/^[A-Za-z][A-Za-z0-9_-]*$/.test(name))throw new Error('field '+id+': invalid carrier variant '+name);
+      const cells=canonicalCells(Array.isArray(f.variants[name])?f.variants[name]:[]);
+      const vinfo=spanInfo(state,cells);
+      if(!vinfo.ok)throw new Error('field '+id+' variant '+name+': '+vinfo.reason);
+      variants[name]=vinfo.cells;
+    }
+    if(Object.keys(variants).length)out.variants=variants;
     return out;
   }
 
@@ -228,6 +238,7 @@
     state=normalizeState(state);
     const f=state.fields[id];
     if(!f)throw new Error('unknown field '+id);
+    if(Object.keys(f.variants||{}).length)throw new Error('field '+id+' has carrier variants; refine requires one unambiguous span');
     const kids=[];
     for(const c of f.cells){
       if(!isLeaf(state,c))throw new Error(c+' is not a current leaf');
@@ -245,11 +256,12 @@
     return normalizeState(state);
   }
 
-  function fieldInfo(state,id){
+  function fieldInfo(state,id,variant=''){
     state=normalizeState(state);
     const f=state.fields[id];
     if(!f)throw new Error('unknown field '+id);
-    return {...spanInfo(state,f.cells),id,label:f.label};
+    const used=variant&&f.variants?.[variant]?variant:'';
+    return {...spanInfo(state,used?f.variants[used]:f.cells),id,label:f.label,variant:used};
   }
 
   function place(state,id,spec){
