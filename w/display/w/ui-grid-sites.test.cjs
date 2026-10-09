@@ -27,6 +27,7 @@ for(const manifestPath of sites){
   const state=G.normalizeState(JSON.parse(fs.readFileSync(gridPath,'utf8')));
   assert.equal(state.schema,G.SCHEMA,manifest.id);
   assert.ok(Object.keys(state.fields).length>0,manifest.id+' has no screen-space field witness');
+  assert.ok(Object.values(state.fields).every(f=>Number.isInteger(f.z)&&f.z>=0),manifest.id+' lacks deterministic local depth');
   for(const id of Object.keys(state.fields))assert.ok(G.fieldInfo(state,id).ok,manifest.id+' @'+id);
 }
 
