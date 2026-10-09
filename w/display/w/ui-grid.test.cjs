@@ -13,7 +13,10 @@ let s=G.emptyState();
 s=G.split(s,'');
 assert.deepStrictEqual(G.leafSet(s),['w','x','y','z']);
 s=G.defineField(s,'rail',['w'],'rail');
-assert.throws(()=>G.split(s,'w'),/occupied/);
+const anchored=G.split(s,'w');
+assert.deepStrictEqual(anchored.fields.rail.cells,['w'],'a split leaves the earlier orientation address intact');
+assert.equal(G.fieldInfo(anchored,'rail').bounds.w,.5);
+assert.ok(!G.isLeaf(anchored,'w'));
 s=G.refineField(s,'rail');
 assert.deepStrictEqual(s.fields.rail.cells,['ww','wx','wy','wz']);
 assert.equal(G.fieldInfo(s,'rail').bounds.w,.5);
@@ -43,6 +46,11 @@ layered=G.defineField(layered,'third',['w'],'third');
 assert.equal(Object.keys(layered.fields).length,3);
 assert.deepStrictEqual(G.parseState(G.formatState(layered)),layered);
 assert.throws(()=>G.normalizeState({schema:G.SCHEMA,splits:[''],fields:{bad:{cells:['w'],z:-1}}}),/z must be/);
+const refinedOverlap=G.refineField(layered,'above');
+assert.deepStrictEqual(refinedOverlap.fields.behind.cells,['w']);
+assert.deepStrictEqual(refinedOverlap.fields.above.cells,['ww','wx','wy','wz']);
+assert.equal(G.fieldInfo(refinedOverlap,'behind').z,0);
+assert.throws(()=>G.coalesce(refinedOverlap,'w'),/occupied/);
 
 s=G.removeField(s,'rail');
 s=G.place(s,'title',{kind:'text',cells:['ww','wx'],anchor:'north',rank:0,label:'TITLE'});
@@ -63,4 +71,4 @@ const legacy=G.normalizeState({
 assert.equal(legacy.schema,G.SCHEMA);
 assert.deepStrictEqual(legacy.fields,{});
 
-console.log('ui-grid v2: address overlap + independent field z + legacy replay PASS');
+console.log('ui-grid v2: persistent orientation across splits + overlapping z fields PASS');

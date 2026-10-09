@@ -116,7 +116,7 @@
     if(!cells.length)return {ok:false,reason:'empty span'};
     const depth=cells[0].length;
     if(cells.some(c=>c.length!==depth))return {ok:false,reason:'span cells must have equal rank'};
-    if(cells.some(c=>!isLeaf(state,c)))return {ok:false,reason:'span cells must be current leaves'};
+    if(cells.some(c=>!isRealized(state,c)))return {ok:false,reason:'span addresses must be realized'};
     const coords=cells.map(coord);
     const xs=coords.map(c=>c.x),ys=coords.map(c=>c.y);
     const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
@@ -192,7 +192,7 @@
   function split(state,address){
     state=normalizeState(state);
     if(!isLeaf(state,address))throw new Error(rootLabel(address)+' is not a splittable leaf');
-    if(occupiedUnder(state,address))throw new Error(rootLabel(address)+' is occupied; move its tissue before split');
+    // Orientation references remain valid at their ancestor address after a split.
     state.splits=canonicalCells([...state.splits,address]);
     return normalizeState(state);
   }
@@ -238,9 +238,7 @@
     const kids=[];
     for(const c of f.cells){
       if(!isLeaf(state,c))throw new Error(c+' is not a current leaf');
-      const blockedByField=Object.entries(state.fields).some(([other,v])=>other!==id&&(v.cells||[]).includes(c));
-      const blockedByElement=Object.values(state.elements).some(e=>e.field!==id&&(e.cells||[]).includes(c));
-      if(blockedByField||blockedByElement)throw new Error(c+' has independently bound tissue');
+      // Independent fields referencing c remain at c; refinement moves only id.
       state.splits.push(c);
       kids.push(...childrenOf(c));
     }
