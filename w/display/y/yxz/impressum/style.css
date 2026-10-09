@@ -2,6 +2,8 @@
   position:absolute;inset:0;pointer-events:none;color:#ecefe8
 }
 .impressum-content article{
+  inline-size:min(49rem,calc(100vw - 1.5rem));
+  max-block-size:min(62dvh,38rem);
   pointer-events:auto;display:grid;gap:1rem;overflow:auto;
   padding:clamp(1.2rem,4vw,3rem);
   background:rgba(7,12,10,.52);backdrop-filter:blur(12px);

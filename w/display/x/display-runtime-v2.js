@@ -26,31 +26,32 @@ function surfaceRect(host){
   }
   return {left:0,top:0,right:innerWidth,bottom:innerHeight,width:innerWidth,height:innerHeight};
 }
+/* The screen lattice orients content; occupied regions do not subtract
+ * field capacity. The top membrane supplies a shared starting line, while
+ * right/bottom HUDs remain overlapping, independently layered surfaces. */
 function safeCarrier(host){
-  const hr=surfaceRect(host),snap=Safe.snapshot?.()||{},vp=snap.viewport||{},ins=snap.insets||{};
-  const vw=Number(vp.width)||innerWidth,vh=Number(vp.height)||innerHeight;
-  const safe={left:Number(ins.left)||0,top:Number(ins.top)||0,right:vw-(Number(ins.right)||0),bottom:vh-(Number(ins.bottom)||0)};
-  const left=Math.max(hr.left,safe.left),top=Math.max(hr.top,safe.top),right=Math.min(hr.right,safe.right),bottom=Math.min(hr.bottom,safe.bottom);
-  return {x:Math.max(0,left-hr.left),y:Math.max(0,top-hr.top),w:Math.max(0,right-left),h:Math.max(0,bottom-top)};
+  const hr=surfaceRect(host),snap=Safe.snapshot?.()||{},ins=snap.insets||{};
+  const top=Math.max(0,Math.min(hr.height,(Number(ins.top)||0)-hr.top));
+  return {x:0,y:top,w:hr.width,h:Math.max(0,hr.height-top)};
 }
 function makeSiteUI(id,host,raw){
   const state=UI.normalizeState(raw),bindings=new Map();
   function carrierVariant(carrier){return carrier.h>carrier.w?'portrait':''}
   function field(name,carrier=safeCarrier(host)){
     const info=UI.fieldInfo(state,name,carrierVariant(carrier));
-    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds}),variant:info.variant||'default'});
+    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds}),z:info.z,variant:info.variant||'default'});
   }
   function apply(el,name){
     if(!el)throw new TypeError('UI field element required');
     const c=safeCarrier(host),info=field(name,c),b=info.bounds;
+    // Do not force grid-cell width/height or wipe identity-owned insets.
+    // Stacking is deterministic within the site's isolated Display layer.
+    const tie=Object.keys(state.fields).sort().indexOf(name);
     Object.assign(el.style,{
       position:'absolute',
       left:(c.x+b.x*c.w)+'px',
       top:(c.y+b.y*c.h)+'px',
-      width:(b.w*c.w)+'px',
-      height:(b.h*c.h)+'px',
-      right:'auto',
-      bottom:'auto'
+      zIndex:String(4+info.z*64+tie)
     });
     if(el.dataset){el.dataset.uiField=name;el.dataset.uiVariant=info.variant}
     return el;
