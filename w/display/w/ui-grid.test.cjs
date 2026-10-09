@@ -31,6 +31,19 @@ assert.equal(G.fieldInfo(v,'rail','portrait').bounds.h,.25);
 assert.equal(G.fieldInfo(v,'rail','portrait').variant,'portrait');
 assert.throws(()=>G.refineField(v,'rail'),/carrier variants/);
 
+/* Overlap is lawful: identical orientation, independent functions and z. */
+let layered=G.normalizeState({schema:G.SCHEMA,splits:[''],fields:{
+  behind:{cells:['w'],label:'behind',z:0},
+  above:{cells:['w'],label:'above',z:3}
+},elements:{}});
+assert.deepStrictEqual(layered.fields.above.cells,layered.fields.behind.cells);
+assert.equal(G.fieldInfo(layered,'above').z,3);
+assert.equal(G.fieldInfo(layered,'behind').z,0);
+layered=G.defineField(layered,'third',['w'],'third');
+assert.equal(Object.keys(layered.fields).length,3);
+assert.deepStrictEqual(G.parseState(G.formatState(layered)),layered);
+assert.throws(()=>G.normalizeState({schema:G.SCHEMA,splits:[''],fields:{bad:{cells:['w'],z:-1}}}),/z must be/);
+
 s=G.removeField(s,'rail');
 s=G.place(s,'title',{kind:'text',cells:['ww','wx'],anchor:'north',rank:0,label:'TITLE'});
 assert.ok(G.spanInfo(s,['ww','wx']).ok);
@@ -50,4 +63,4 @@ const legacy=G.normalizeState({
 assert.equal(legacy.schema,G.SCHEMA);
 assert.deepStrictEqual(legacy.fields,{});
 
-console.log('ui-grid v2: fields + legacy element replay PASS');
+console.log('ui-grid v2: address overlap + independent field z + legacy replay PASS');

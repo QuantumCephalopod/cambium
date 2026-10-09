@@ -129,7 +129,9 @@
 
   function normalizeField(id,f,state){
     if(!/^[A-Za-z][A-Za-z0-9_-]*$/.test(id))throw new Error('invalid field id '+id);
-    const out={cells:canonicalCells(Array.isArray(f?.cells)?f.cells:[]),label:String(f?.label??id)};
+    const z=f?.z??0;
+    if(!Number.isInteger(z)||z<0||z>255)throw new Error('field '+id+': z must be an integer from 0 to 255');
+    const out={cells:canonicalCells(Array.isArray(f?.cells)?f.cells:[]),label:String(f?.label??id),z};
     const info=spanInfo(state,out.cells);
     if(!info.ok)throw new Error('field '+id+': '+info.reason);
     out.cells=info.cells;
@@ -177,12 +179,9 @@
     };
     validateSplitSet(s.splits);
     const base={schema:SCHEMA,meta:s.meta,splits:s.splits,fields:{},elements:{}};
-    const spans=new Map();
+    // Fields name orientation references, not exclusive rectangles.
     for(const id of Object.keys(raw.fields||{}).sort()){
-      const f=normalizeField(id,raw.fields[id],base),key=spanText(f.cells);
-      if(spans.has(key))throw new Error('duplicate field span '+id+' / '+spans.get(key));
-      spans.set(key,id);
-      s.fields[id]=f;
+      s.fields[id]=normalizeField(id,raw.fields[id],base);
     }
     for(const id of Object.keys(raw.elements||{}).sort()){
       s.elements[id]=normalizeElement(id,raw.elements[id],base,s.fields);
@@ -212,11 +211,8 @@
     state=normalizeState(state);
     const info=spanInfo(state,cells);
     if(!info.ok)throw new Error('field '+id+': '+info.reason);
-    const key=spanText(info.cells);
-    for(const [other,f] of Object.entries(state.fields)){
-      if(other!==id&&spanText(f.cells)===key)throw new Error('field '+id+': span already @'+other);
-    }
-    state.fields[id]={cells:info.cells,label:String(label??id)};
+    const priorZ=state.fields[id]?.z??0;
+    state.fields[id]={cells:info.cells,label:String(label??id),z:priorZ};
     for(const e of Object.values(state.elements)){
       if(e.field===id)e.cells=[...info.cells];
     }
@@ -261,7 +257,7 @@
     const f=state.fields[id];
     if(!f)throw new Error('unknown field '+id);
     const used=variant&&f.variants?.[variant]?variant:'';
-    return {...spanInfo(state,used?f.variants[used]:f.cells),id,label:f.label,variant:used};
+    return {...spanInfo(state,used?f.variants[used]:f.cells),id,label:f.label,z:f.z,variant:used};
   }
 
   function place(state,id,spec){
