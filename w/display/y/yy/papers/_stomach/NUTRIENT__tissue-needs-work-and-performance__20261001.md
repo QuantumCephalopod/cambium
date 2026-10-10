@@ -25,3 +25,13 @@ Philipp: performance first. Measure before changing: frame time with an organism
 ## exit
 
 Closes when the open-organism tissue reads well through the drop under Philipp's eye and holds frame rate on the CPU-only baseline, or when parts are narrowed with reasons.
+
+## Reentry — 2026-10-10 · Papers perceptual performance
+
+User re-activated the already-unresolved Papers visitor performance wound after the production-wide feed handoff: Papers remains markedly slow. Preserve the 2026-10-01 tissue/readability concerns above; today's bounded experiment changes neither text meaning nor body/flow semantics.
+
+Source inspection shows the overview creates a WebGL text-tissue context and copies its canvas even when no opened organism has admitted letters. Active drawing builds ancestry/embers outside the camera frustum and imposes a fixed `MAX_DEPTH=8` rather than an earned genealogy-depth / projected-pixel limit. Existing per-frame spring/reach physics must remain byte-for-byte unchanged.
+
+Candidate: keep the tissue context dormant until text is genuinely present, gate individual letter instances by the actual droplet with their material reach, omit the unused tissue composite and clear once on retreat. Cull *only wholly off-screen* recursive background geometry with conservative projected world bounds; preserve every organism, its simulation, point identity, and correct camera/selection. Resolve genealogy to the source-owned available rank and pixel-size threshold, not a universal 8-level ceiling. Document current source structure and proof separately from device FPS claims.
+
+Local pure-source prototype: rank-10 lineage, near/far visibility, lens-gated letters, dormant GPU and one-time clear PASS with extracted current production Papers JS; node microbench suggests fewer off-screen generated nodes, but is **not a browser/physical-device FPS witness**. Native CI, source/render test, glass optics and visitor acceptance remain pending. Keep this nutrient OPEN until earned.
