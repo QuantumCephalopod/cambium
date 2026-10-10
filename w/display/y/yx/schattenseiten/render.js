@@ -2,6 +2,8 @@
 'use strict';
 const id='organism:schattenseiten';
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
+const RH=globalThis.SSSRepresentationHandoff;
+if(!RH)throw new Error('Display representation handoff physiology required');
 
 /* ============ the sheet: an 8×8 grid, each slot a leaf of the tetrahedron ============
  * Depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid of
@@ -97,7 +99,7 @@ void main(){
  * turned, it breaks into faces. Nothing drifts. */
 const BODY={list:[],dim:0,last:0};
 let ENTERED=false,REV='',GENERATION=0,entryGL=null;
-const CACHE=new Map(),QUEUES=new Map(),GPU=new Map();
+const GPU=new Map(),MEDIA=new Map([[64,RH.create({limit:4})],[512,RH.create({limit:4,active:false})]]);
 function mediaUrl(src,size=512){
   const member=P?.media_variants?.[String(size)]?.[src];
   if(typeof member!=='string'||!member||/^(?:[a-z]+:|\/)/i.test(member)||/[\\:%?#]/.test(member)||member.split('/').some(x=>!x||x.startsWith('.')||x.startsWith('_')))return null;
@@ -107,29 +109,28 @@ function mediaUrl(src,size=512){
 function cacheKey(src,size){return GENERATION+'|'+size+'|'+mediaUrl(src,size)}
 function requestImage(src,size){
   const url=mediaUrl(src,size);if(!url)return null;
-  const key=cacheKey(src,size);if(CACHE.has(key))return CACHE.get(key);
-  const item={key,url,size,status:'queued',bitmap:null,bytes:0};CACHE.set(key,item);
-  let q=QUEUES.get(size);if(!q){q={jobs:[],running:0};QUEUES.set(size,q)}q.jobs.push(item);pump(size);return item;
+  const lane=MEDIA.get(size);
+  if(!lane)throw new Error('unadmitted local image resolution: '+size);
+  return lane.request(cacheKey(src,size),async()=>{
+    const response=await fetch(url,{mode:'cors'});
+    if(!response.ok)throw new Error('image HTTP '+response.status);
+    const blob=await response.blob();
+    if(typeof createImageBitmap==='function')return createImageBitmap(blob,{resizeWidth:size,resizeHeight:size,resizeQuality:'pixelated'});
+    return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{const c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;ctx.drawImage(image,0,0,size,size);URL.revokeObjectURL(image.src);resolve(c)};image.onerror=reject;image.src=URL.createObjectURL(blob)});
+  },{dispose:bitmap=>bitmap?.close?.()}); // Failed higher detail retains its low representation.
 }
-function pump(size){
-  const q=QUEUES.get(size);if(!q)return;
-  while(q.running<4&&q.jobs.length&&(size===64||ENTERED)){
-    const item=q.jobs.shift();q.running++;item.status='loading';
-    fetch(item.url,{mode:'cors'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(async blob=>{
-      item.bytes=blob.size;
-      if(typeof createImageBitmap==='function')return createImageBitmap(blob,{resizeWidth:size,resizeHeight:size,resizeQuality:'pixelated'});
-      return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{const c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;ctx.drawImage(image,0,0,size,size);URL.revokeObjectURL(image.src);resolve(c)};image.onerror=reject;image.src=URL.createObjectURL(blob)});
-    }).then(bitmap=>{if(CACHE.get(item.key)!==item){bitmap.close?.();return}item.bitmap=bitmap;item.status='ready'}).catch(()=>{item.status='failed'}).finally(()=>{q.running--;pump(size)});
-  }
+function ensureTier(size){
+  const lane=MEDIA.get(size);lane.setActive(size===64||ENTERED);
+  for(const b of BODY.list)requestImage(b.src,size);
 }
-function ensureTier(size){for(const b of BODY.list)requestImage(b.src,size);pump(size)}
 function disposeGPU(gl,record,highOnly=false){
   for(const [size,L] of record.tiers)if(!highOnly||size===512){gl.deleteTexture(L.tex);record.tiers.delete(size)}
   if(!highOnly){gl.deleteProgram(record.p);gl.deleteVertexArray(record.vao);GPU.delete(gl)}
 }
 function resetMedia(){
   for(const [gl,record] of GPU)disposeGPU(gl,record);
-  for(const item of CACHE.values())item.bitmap?.close?.();CACHE.clear();for(const q of QUEUES.values())q.jobs=[];
+  for(const lane of MEDIA.values())lane.clear();
+  MEDIA.get(512).setActive(false);
 }
 const VS=`#version 300 es
 precision highp float;
@@ -161,8 +162,8 @@ function tier(gl,size){
     gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.texStorage3D(gl.TEXTURE_2D_ARRAY,size===64?1:10,gl.RGBA8,size,size,BODY.list.length);
     gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MIN_FILTER,size===64?gl.NEAREST:gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MAG_FILTER,size===64?gl.NEAREST:gl.LINEAR);}
   let changed=false;
-  BODY.list.forEach((b,i)=>{const item=CACHE.get(cacheKey(b.src,size));if(item?.status==='ready'&&!L.uploaded.has(i)){
-    gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.texSubImage3D(gl.TEXTURE_2D_ARRAY,0,0,0,i,size,size,1,gl.RGBA,gl.UNSIGNED_BYTE,item.bitmap);L.uploaded.add(i);L.ready[i]=1;changed=true;}});
+  BODY.list.forEach((b,i)=>{const item=MEDIA.get(size).get(cacheKey(b.src,size));if(item?.status==='ready'&&!L.uploaded.has(i)){
+    gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.texSubImage3D(gl.TEXTURE_2D_ARRAY,0,0,0,i,size,size,1,gl.RGBA,gl.UNSIGNED_BYTE,item.value);L.uploaded.add(i);L.ready[i]=1;changed=true;}});
   if(changed&&size===512){gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.generateMipmap(gl.TEXTURE_2D_ARRAY)}
   return {record,L};
 }
@@ -242,7 +243,7 @@ function render({host,content,projection,ui=null}={}){
 }
 addEventListener('sss:language',()=>{if(LAST&&LAST.content.isConnected)render(LAST)});
 function activateFieldPoint({point}={}){if(!ENTERED)return;selected=point?.work||null;showWork(selected)}
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;panel=null;LAST=null;ENTERED=false;if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
+function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;panel=null;LAST=null;ENTERED=false;MEDIA.get(512).setActive(false);if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
 addEventListener('pagehide',resetMedia);
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
 })();
