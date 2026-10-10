@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source){
   const context={console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require('../../../z/navigation-physiology.js'),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -75,4 +75,56 @@ renderer.draw(instances,...args);assert.equal(events.filter(x=>x.kind==='upload'
 const allocated=events.filter(x=>x.kind==='allocate').length;renderer.draw(instances,...args,{faces:false});assert.equal(events.filter(x=>x.kind==='allocate').length,allocated);assert.equal(events.filter(x=>x.kind==='upload').length,2);
 const lights=[{center:[1,2,3],size:12,color:[.1,.2,.3,.4],phase:.5}];renderer.drawLights(lights,...args,1,1.5,.7);const upload=events.filter(x=>x.kind==='upload').at(-1);assert.deepEqual(upload.data,[...new Float32Array([1,2,3,18,.1,.2,.3,.4*.7,.5])]);const la=events.filter(x=>x.kind==='allocate').length;renderer.drawLights(lights,...args,2,1.5,.7);assert.equal(events.filter(x=>x.kind==='allocate').length,la);assert.deepEqual(events.filter(x=>x.kind==='depthMask').at(-1).args,[true]);
 console.log('Papers reused instance/light buffer values, single upload and draw-state checks PASS');
+/* Encounter-relative LOD: same source organisms; no off-screen descendant rendering. */
+const lod=load(),liveEntities=new Map(),liveRecords=[];
+for(const [id,world] of [['S.visible',[0,0,0]],['S.offscreen',[500,0,0]]]){
+  const entity={id,rank:'S',gene:'w',world};
+  liveEntities.set(id,entity);liveRecords.push(entity);
+}
+const visibleState={records:liveRecords,identities:liveEntities,parents:new Map(),inquiryBodies:{},
+  renderer:{V0},chamberFocus:{center:[0,0,0],scale:3},current:null};
+lod.setState(visibleState);
+const scoped=lod.populationBodies(1200,800,1,1,0,3.2);
+assert.equal(scoped.considered,1,'only the visible rank-level background organism earns geometry');
+assert.equal(scoped.leaves.length,1);
+assert.equal(liveRecords.length,2,'unseen organism remains in local truth');
+visibleState.chamberFocus.scale=1;
+assert.equal(lod.populationBodies(1200,800).considered,2,'resting overview needs no extra viewport scan');
+assert.equal(lod.populationInView([0,0,0],.02,1200,800,3.2,[1,0,0,0]),true);
+assert.equal(lod.populationInView([100,0,0],.02,1200,800,3.2,[1,0,0,0]),false);
+assert.equal(lod.populationInView([0,0,100],.02,1200,800,3.2,[1,0,0,0]),false);
+const roots=new Map(),genealogy=new Map();
+for(let i=0;i<4;i++)roots.set('S.'+i,{id:'S.'+i,rank:'S',gene:'w'});
+for(let rank=1;rank<=10;rank++){
+  const id=rank+'H.n',parent=rank===1?'S.0':(rank-1)+'H.n';
+  roots.set(id,{id,rank:rank+'H',gene:'w'});genealogy.set(id,[parent,'S.1','S.2','S.3']);
+}
+visibleState.identities=roots;visibleState.parents=genealogy;visibleState.bodyTemplates=null;
+lod.setState(visibleState);
+const deepLeaves=[],deepLights=[];
+lod.collectBody('10H.n',[0,0,0],10,3.2,720,deepLeaves,deepLights);
+assert(deepLeaves.some(x=>x.id==='S.0'),'true rank-10 genealogy remains traversable beyond old fixed depth 8');
+assert(deepLights.length>9);
+
+const ink=load(),calls=[],tissueCanvas={dataset:{}},textCanvas={getBoundingClientRect:()=>({left:0,top:0})};
+const tissueState={tissue:{draw(T){calls.push(T.length)}},tissueCanvas,textCanvas,tissueLive:false,mounted:true,
+  environmentCanvas:{},canvas:{},tissueDpr:1,tissueLens:{x:30,y:30,r:10},tissueLetters:[]};
+ink.setState(tissueState);
+const glyphs=[{ch:'A',x:30,y:30},{ch:'B',x:300,y:300}],place=g=>({x:g.x,y:g.y,cx:g.x,cy:g.y});
+ink.tissueGlyphs(glyphs,()=>true,place,5,1,()=>1);
+assert.equal(tissueState.tissueLetters.length,1,'outside-lens glyphs are not instanced');
+tissueState.tissueLens=null;tissueState.tissueLetters=[];
+ink.tissueGlyphs(glyphs,()=>true,place,5,1,()=>1);
+assert.equal(tissueState.tissueLetters.length,2,'without lens the same letters remain admissible');
+tissueState.tissueLetters=[];ink.flushTissue({width:800,height:600});
+assert.equal(calls.length,0,'idle overview avoids full-screen tissue pass');
+assert.equal(ink.shader.composite().length,3,'unused tissue canvas is not uploaded to glass');
+tissueState.tissueLetters=[{ch:'A'}];ink.flushTissue({width:800,height:600});
+assert.equal(ink.shader.composite().length,4,'active tissue remains in the shared glass');
+tissueState.tissueLetters=[];ink.flushTissue({width:800,height:600});
+ink.flushTissue({width:800,height:600});
+assert.deepEqual(calls,[1,0],'on exit the previous text clears exactly once');
+assert.equal(ink.shader.composite().length,3,'the spent tissue texture is no longer composited');
+console.log('Papers camera-relative LOD, rank-10 descent and bounded text-tissue compositing PASS');
+
 module.exports={load,referenceDrift,referenceFlow,referenceCollect,near};
