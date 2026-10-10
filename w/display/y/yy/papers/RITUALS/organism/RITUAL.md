@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.0"
+version: "3.1"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -177,7 +177,7 @@ Inside an open organism the words are tissue. Every letter of its faces, edges, 
 
 Papers speaks in Display's face: holon names, wisdom and woven text are set in SpriteSheet Mono and folded to its alphabet before Pretext lays them out.
 
-The drop also bounds computation: letters outside it are neither laid out nor moved.
+The drop also bounds computation: letters outside it are neither laid out nor moved. At runtime, the expensive text-tissue WebGL context is not initialized by an unopened overview; only an opened, readable selected organism admits tissue. Existing glyph fat/softness determines an allowance at the real droplet boundary before a letter becomes an instanced GPU body. A truly empty tissue canvas is omitted from the shared composite; previous tissue clears once when exiting. Failed context creation keeps the established local 2D ink fallback. The full source text remains unchanged.
 
 ## Perceptual LOD is genealogical resolution
 
@@ -193,6 +193,8 @@ The renderer may therefore:
 4. stop descending when projected child size falls below the perceptual threshold or source ground is reached.
 
 This law is intentionally GPU-native: one canonical tetra mesh may be instanced through arbitrarily deep recursive transforms. Computation should scale with **currently visible resolution**, not with the theoretical `4^n` depth of every organism in the field.
+
+The current native Papers implementation resolves genealogy to the actual identity's source-owned available rank and the projected-pixel threshold, not a universal renderer depth ceiling. A conservative projected enclosing bound lets the renderer omit wholly off-screen background organisms and their descendant draw instances. Omission is *only presentation*: source identity, motion simulation, membership, ancestry, off-screen encounter capacity and selected Descent are preserved. The resting overview takes the established path without adding a per-body visibility scan.
 
 For a public `S.*` inquiry body, the projection contract is the same rank grammar as any Papers organism but with source-local membership: optional bounded `vertices` name the four metabolized source-body partitions; `edges`, `faces`, `volume` and `metabolites` refer to those local members/addresses. A Source payload must not fabricate Papers-parent identities. Public summaries/spans remain bounded by the membrane; canonical external origin is linked outward rather than republishing the procured carrier.
 
@@ -516,3 +518,5 @@ Version 2.7 organisms-as-bodies correction (2026-09-28): the one bounded flow la
 Version 2.8 lens-instrument correction (2026-10-01, Philipp: "die linse wird also zum instrument und gleichzeitig eingebautem LOD"): Display's glass drop gates Papers' particle letters, peek and entry, and bounds their computation; Papers' canvases are composited under the invariant glass (Display RITUAL 3.12). One layer deeper, the open organism's text as gooey tissue read through the lens remains OPEN in `_stomach`.
 
 Version 2.9 text-as-tissue correction (2026-10-01, Philipp: "gooey-particle->gooey-tissue->LENS displaced das mans lesen kann … für die fläche tatsächlich ne fläche … ein web das gooey über die fläche gespannt ist"): open-organism letters became tissue through Display's engine; faces became webs; the drop reads them.
+
+Version 3.1 bounded Papers perceptual-work repair (staged 2026-10-10): opened inquiry earns its text-tissue GPU work, the shared glass receives only present tissue, and whole background organisms/recursive geometry are omitted only when conservatively outside the actual camera field. Earned genealogy depth and pixel threshold replace fixed MAX_DEPTH=8. Source, flow equations, visual materials, relative placement and visit semantics remain unchanged. Source, native physics/reference, rank-10/lens/culling unit, full checker and publication-build witnesses passed on QuantumCephalopod (run 38053418521). Browser/WebGL and user-perceived FPS/readability acceptance remain OPEN; do not claim full live-visual closure or retire the residual nutrient from that CI alone.
