@@ -6,14 +6,18 @@ const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'u
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
-function boot(version=1,hash='',insets={}){
+function boot(version=1,hash='',insets={},feedKinds={}){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
-  const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[];
+  const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
   const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id},splits:[''],fields:{slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
-  elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(input)});elements.set('site-ui-grids',{textContent:JSON.stringify(grids)});elements.set('display-dependencies',{textContent:'{}'});
+  const feedUrls=Object.fromEntries(Object.keys(feedKinds).map(id=>[id,'assets/0123456789abcdef/site-'+id.replace(':','-')+'-feed.json']));
+  const previews=Object.fromEntries(ids.map(id=>[id,feedKinds[id]?{schema:'sss.display.feed-preview.v1',identity:id,root:anatomy('preview '+id)}:input[id]]));
+  elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(previews)});
+  elements.set('site-feed-locations',{textContent:JSON.stringify(feedUrls)});
+  elements.set('site-ui-grids',{textContent:JSON.stringify(grids)});elements.set('display-dependencies',{textContent:'{}'});
   for(const id of ['tetra-fold','root-home','site-state','interlocutor-stage'])elements.set(id,element());
   const hosts=new Map(ids.map(id=>{const host=element(),canvas=element(),labelHost=element(),content=element();host.querySelector=selector=>({'.interlocutor-background':canvas,'.interlocutor-field-labels':labelHost,'.interlocutor-content':content})[selector];return [id,host]}));
   const Modules=new Map();
@@ -28,7 +32,14 @@ function boot(version=1,hash='',insets={}){
   }
   const emit=(name,detail)=>{for(const fn of events.get(name)||[])fn({detail})};
   const W={view:'',language:'en',scopeId:'main',orientation:[1,0,0,0],setScope({id,projection}){this.scopeId=id;this.projection=projection},setGlobalTargets(targets){this.targets=targets},setActiveGlobalAddress(address,locus){this.activeGlobalAddress=address;this.activeGlobalLocus=locus},inspect(view){this.view=view;emit('sss:view',{scopeId:this.scopeId,path:view});return true},clearInspection(){this.view='';emit('sss:view',{scopeId:this.scopeId,path:''})}};
-  const context={Map,URL,console,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>({busy:false,swap(fn,details){swaps.push(details);return fn()}})},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
+  function fetchFeed(url){
+    const target=Object.keys(feedUrls).find(id=>String(url).endsWith(feedUrls[id]));
+    assert(target,'unexpected feed URL '+String(url));fetches.push(target);
+    if(feedKinds[target]==='fail')return Promise.reject(new Error('offline'));
+    if(feedKinds[target]==='hold')return new Promise(resolve=>held.push(()=>resolve({ok:true,json:async()=>input[target]})));
+    return Promise.resolve({ok:true,json:async()=>input[target]});
+  }
+  const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>({busy:false,swap(fn,details){swaps.push(details);return fn()}})},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
   vm.createContext(context);
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
@@ -36,7 +47,7 @@ function boot(version=1,hash='',insets={}){
   context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
-  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,home:elements.get('root-home'),key(event){for(const fn of events.get('keydown')||[])fn(event)}};
+  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,stateEl:elements.get('site-state'),home:elements.get('root-home'),key(event){for(const fn of events.get('keydown')||[])fn(event)}};
 }
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
@@ -126,4 +137,43 @@ for(const address of ['w','y']){
   cycle.runtime.navigateGlobal(address);cycle.emit('sss:membrane-ascend',{id:address==='w'?ids[1]:ids[3]});
   const explicit=rootArrivals().at(-1);assert(explicit.place?.k>0,'explicit membrane zoom-out lost its place');assert.equal(explicit.bodyId,address==='w'?ids[1]:ids[3]);
 }
-console.log('display runtime: orientation-only carrier + independent extent/z + shared anatomy/navigation PASS');
+/* Real promise-based public feed boundary: same proxy identity; body materializes only after acquisition. */
+async function feedHandoffWitness(){
+  const drain=async()=>{for(let i=0;i<24;i++)await Promise.resolve()};
+  const feedId='organism:branch',f=boot(1,'',{}, {[feedId]:'hold'});
+  assert.equal(f.calls.has(feedId),false,'unentered feed must not project detailed anatomy');
+  assert.equal(f.options.has(feedId),false,'unentered feed must not allocate a field');
+  const before=f.options.get(ids[0]).bodies().find(b=>b.id===feedId).root;
+  assert.equal(before.noun,'preview '+feedId,'parent sees child-owned preview body');
+  assert.equal(f.runtime.navigateGlobal('w'),true);
+  assert.equal(f.runtime.state.activeAddress,'','parent must remain present during fetch');
+  assert.deepEqual([...f.runtime.pendingFeeds],[feedId]);
+  assert.deepEqual(f.fetches,[feedId]);
+  f.held.shift()();await drain();
+  assert.equal(f.runtime.state.activeAddress,'w');
+  assert.equal(f.calls.get(feedId),1,'full source processed only at encounter');
+  assert.equal(f.options.has(feedId),true);
+  assert.strictEqual(f.options.get(ids[0]).bodies().find(b=>b.id===feedId).root,before,'host preview is stable across handoff');
+  f.runtime.navigateGlobal('');f.runtime.navigateGlobal('w');
+  assert.deepEqual(f.fetches,[feedId],'revisit reuses acquired immutable feed');
+
+  const race=boot(1,'',{}, {[feedId]:'hold'});
+  race.runtime.navigateGlobal('w');race.home.click({preventDefault(){}});
+  race.held.shift()();await drain();
+  assert.equal(race.runtime.state.activeAddress,'','home cancels pending navigation without canceling harmless resource acquisition');
+
+  const failed=boot(1,'',{}, {[feedId]:'fail'});
+  failed.runtime.navigateGlobal('w');await drain();
+  assert.equal(failed.runtime.state.activeAddress,'','missing feed preserves parent');
+  assert.equal(failed.runtime.pendingFeeds.length,0,'failed feed may be retried');
+  assert.match(failed.stateEl.textContent,/FEED UNAVAILABLE/);
+
+  const arrival=boot(1,'#main:w',{}, {[feedId]:'hold'});
+  assert.equal(arrival.runtime.state.activeAddress,'','deep link begins with parent body');
+  arrival.held.shift()();await drain();
+  assert.equal(arrival.runtime.state.activeAddress,'w','deep link resumes when detailed feed is ready');
+  assert.equal(arrival.history.at(-1).kind,'replace');
+  assert.equal(arrival.history.at(-1).url,'#main:w');
+}
+feedHandoffWitness().then(()=>console.log('display runtime: orientation-only carrier + lazy feed identity handoff/navigation PASS'))
+  .catch(error=>{console.error(error);process.exitCode=1});

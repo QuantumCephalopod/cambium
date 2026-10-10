@@ -5,6 +5,7 @@ const Modules=globalThis.SSSInterlocutorModules;
 if(!H||!F||!W||!Fields||!Safe||!UI||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
 const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
 const PROJECTIONS=JSON.parse(document.getElementById('site-projections').textContent);
+const FEED_URLS=JSON.parse(document.getElementById('site-feed-locations')?.textContent||'{}');
 const UI_GRIDS=JSON.parse(document.getElementById('site-ui-grids').textContent);
 const DEPENDENCIES=JSON.parse(document.getElementById('display-dependencies').textContent);
 const GLOBAL_SCOPE='main';
@@ -79,17 +80,22 @@ for(const id of specs.keys()){
   const module=Modules.get(id);if(!module) throw new Error('missing interlocutor module: '+id);
   if(!(id in PROJECTIONS)) throw new Error('missing interlocutor projection: '+id);
   if(!(id in UI_GRIDS)) throw new Error('missing interlocutor UI grid: '+id);
-  /* This parsed source carrier is fixed for this runtime entry. Resolve its
-   * anatomy once; a new source/re-entry initializes a new runtime, not a frame. */
-  const projection=PROJECTIONS[id],fieldProjection=module.fieldProjection?module.fieldProjection(projection):projection,ui=makeSiteUI(id,host,UI_GRIDS[id]);
-  uiById.set(id,ui);surfaces.set(id,{host,canvas,labelHost,content,module,projection,fieldProjection,ui});
+  const preview=PROJECTIONS[id],deferred=Object.prototype.hasOwnProperty.call(FEED_URLS,id);
+  // A public _feed preview belongs to this child. Full source is not present yet.
+  // An unopted-in site keeps its existing eager source/renderer behavior.
+  const previewFieldProjection=deferred
+    ?(module.feedPreview?module.feedPreview(preview):preview)
+    :(module.fieldProjection?module.fieldProjection(preview):preview);
+  if(!previewFieldProjection?.root)throw new Error('site preview lacks a rooted body: '+id);
+  const projection=deferred?null:preview,fieldProjection=previewFieldProjection,ui=makeSiteUI(id,host,UI_GRIDS[id]);
+  uiById.set(id,ui);surfaces.set(id,{host,canvas,labelHost,content,module,projection,fieldProjection,previewFieldProjection,ui});
 }
 const rootResolved=registry.resolve(GLOBAL_SCOPE,'',{width:innerWidth,height:innerHeight});
 if(!rootResolved.interlocutors.length) throw new Error('Display site-space has no overview interlocutor');
 const ROOT_IDS=rootResolved.interlocutors.map(x=>x.interlocutorId);
 const rootSurface=surfaces.get(ROOT_IDS[0]);
 const GLOBAL_PROJECTION=rootSurface.fieldProjection;
-if(!GLOBAL_PROJECTION?.root) throw new Error('overview interlocutor must expose the global address-space projection');
+if(!rootSurface.projection||!GLOBAL_PROJECTION?.root) throw new Error('overview interlocutor must expose its full public root; an outer preview cannot replace site-space authority');
 const activity=H.createActivityBus(registry),fold=F.createFold(document.getElementById('tetra-fold'));
 const home=document.getElementById('root-home'),stateEl=document.getElementById('site-state'),stage=document.getElementById('interlocutor-stage');
 const fieldById=new Map();
@@ -116,14 +122,40 @@ function floatingBodies(id){
   const out=[];
   for(const other of specs.keys()){
     if(ROOT_IDS.includes(other))continue;const m=registry.getMount(other);if(!m||m.scope!==GLOBAL_SCOPE||!m.rawAddress)continue;
-    const s2=surfaces.get(other),shader=s2?.module?.shader,root=s2?.fieldProjection?.root;
+    const s2=surfaces.get(other),shader=s2?.module?.shader,root=s2?.previewFieldProjection?.root;
     if((shader?.body?.fragment||shader?.fragment)&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette,title:specs.get(other)?.title||other});
   }
   return out;
 }
-for(const [id,surface] of surfaces){
-  const spec=specs.get(id),fieldProjection=surface.fieldProjection;
-  fieldById.set(id,Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id)}));
+function activateField(id){
+  if(fieldById.has(id))return fieldById.get(id);
+  const surface=surfaces.get(id),spec=specs.get(id);
+  if(!surface?.projection)throw new Error('site detail not acquired: '+id);
+  if(surface.fieldProjection===surface.previewFieldProjection && FEED_URLS[id]){
+    surface.fieldProjection=surface.module.fieldProjection?surface.module.fieldProjection(surface.projection):surface.projection;
+  }
+  const field=Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:surface.fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id)});
+  fieldById.set(id,field);return field;
+}
+// Existing small/inlined bodies keep their established eager behavior.
+// Feed-opted children remain real mounted identities without GPU initialization.
+for(const [id,s] of surfaces)if(s.projection)activateField(id);
+const pendingFeeds=new Map();
+function acquireDetail(id){
+  const s=surfaces.get(id);if(!s)throw new Error('unknown site identity: '+id);
+  if(s.projection)return null;
+  if(pendingFeeds.has(id))return pendingFeeds.get(id);
+  const entry=FEED_URLS[id];
+  if(typeof entry!=='string'||!/^assets\/[a-f0-9]{16}\/site-[a-z0-9-]+-feed\.json$/.test(entry))throw new Error('untrusted feed source for '+id);
+  const promise=fetch(new URL(entry,document.baseURI),{credentials:'same-origin',cache:'force-cache'})
+    .then(response=>{if(!response.ok)throw new Error('feed HTTP '+response.status+' for '+id);return response.json()})
+    .then(detail=>{if(!detail||typeof detail!=='object'||Array.isArray(detail))throw new Error('malformed public feed for '+id);s.projection=detail;return detail})
+    .finally(()=>{pendingFeeds.delete(id)});
+  pendingFeeds.set(id,promise);return promise;
+}
+function acquireTarget(ids){
+  const jobs=ids.map(acquireDetail).filter(Boolean);
+  return jobs.length?Promise.all(jobs):null;
 }
 let activeIds=[...ROOT_IDS],activeAddress='',stack=[],restoring=false;
 function sameIds(a,b){return a.length===b.length&&a.every((x,i)=>x===b[i])}
@@ -170,18 +202,36 @@ function writeHistory(mode){if(mode&&!restoring)history[mode==='replace'?'replac
 function setLocalView(path='',source='restore'){if(path)W.inspect(path,source);else W.clearInspection(source);render(W.view)}
 function enter(r,path,push=true){
   if(!r.interlocutors.length)return false;
+  // Expensive per-site geometry is installed only at the membrane crossing,
+  // under the closing fold; the parent proxy has remained visible until now.
+  for(const e of r.interlocutors)activateField(e.interlocutorId);
   stack.push({activeIds:[...activeIds],activeAddress,localView:W.view});
   activeIds=r.interlocutors.map(x=>x.interlocutorId);activeAddress=path;
   W.clearInspection('encounter-change');syncGlobalNavigator();render('');
   writeHistory(push);
   return true;
 }
+let handoffIntent=0;
+function feedWound(error){
+  console.warn('Display feed handoff refused; prior encounter preserved',error);
+  stateEl.dataset.feedWound=String(error?.message||error);
+  stateEl.textContent='FEED UNAVAILABLE · RETRY THE ENCOUNTER';
+  writeHistory('replace');
+}
 function navigateGlobal(path,push=true,origin=null){
   const r=resolveGlobal(path);if(!r.interlocutors.length)return false;
-  const ids=r.interlocutors.map(x=>x.interlocutorId);
+  const ids=r.interlocutors.map(x=>x.interlocutorId),token=++handoffIntent;
   if(path===activeAddress&&sameIds(ids,activeIds)){if(inspectCapable())setLocalView('','global-current');if(push==='replace')writeHistory('replace');return true}
   if(fold.busy)return false;
-  fold.swap(()=>enter(r,path,push),{origin,from:activeAddress,to:path});return true;
+  const context={origin,from:activeAddress,to:path};
+  const acquired=acquireTarget(ids);
+  const swap=()=>fold.swap(()=>enter(r,path,push),context);
+  if(!acquired){swap();return true}
+  // The parent keeps displaying the child-owned preview while detail arrives.
+  stateEl.textContent='ACQUIRING PUBLIC FEED · '+path;
+  acquired.then(()=>{if(token!==handoffIntent)return;const launched=swap();if(launched&&typeof launched.catch==='function')launched.catch(feedWound)})
+          .catch(error=>{if(token===handoffIntent)feedWound(error)});
+  return true;
 }
 function leave(push=true){
   if(!stack.length)return navigateGlobal('',push,{x:innerWidth/2,y:innerHeight/2});
@@ -204,20 +254,33 @@ addEventListener('sss:membrane-ascend',e=>{
   fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});
 });
 addEventListener('sss:language',()=>{render(W.view)});addEventListener('sss:safe-area',()=>{for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();for(const ui of uiById.values())ui.refresh()});
-home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else setLocalView('','home')});
+home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{++handoffIntent;setLocalView('','home')}});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});
 function receiveActivity(event){return activity.receive(event)}
 addEventListener('sss:activity',e=>{if(e.detail)receiveActivity(e.detail)});
 /* An unresolvable address is answered by restoring the truthful current hash. */
 function followHash(){const address=hashAddress(location.hash);if(address===null)return;if(!navigateGlobal(address,'replace',{x:innerWidth/2,y:innerHeight/2}))writeHistory('replace')}
-addEventListener('popstate',e=>{if(!e.state){followHash();return}restoring=true;try{activeIds=e.state.activeIds||[...ROOT_IDS];activeAddress=e.state.activeAddress||'';stack=e.state.stack||[];syncGlobalNavigator();if(inspectCapable(activeIds)&&e.state.localView)W.inspect(e.state.localView,'history');else W.clearInspection('history');render(W.view)}finally{restoring=false}});
+addEventListener('popstate',e=>{
+  if(!e.state){followHash();return}
+  const desired=e.state,ids=desired.activeIds||[...ROOT_IDS],token=++handoffIntent;
+  const restore=()=>{
+    if(token!==handoffIntent)return;
+    for(const id of ids)activateField(id);
+    restoring=true;
+    try{activeIds=ids;activeAddress=desired.activeAddress||'';stack=desired.stack||[];syncGlobalNavigator();if(inspectCapable(activeIds)&&desired.localView)W.inspect(desired.localView,'history');else W.clearInspection('history');render(W.view)}
+    finally{restoring=false}
+  };
+  const acquired=acquireTarget(ids);
+  if(acquired)acquired.then(restore).catch(error=>{if(token===handoffIntent)feedWound(error)});
+  else restore();
+});
 /* Fallback for a substrate that changes the fragment without popstate; history traversal has already restored by the time it fires. */
 addEventListener('hashchange',()=>{const address=hashAddress(location.hash);if(address!==null&&address!==activeAddress&&!fold.busy)followHash()});
 const arrival=hashAddress(globalThis.location?.hash);
 Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlobalNavigator();history.replaceState(snap(),'',hashFor(''));render('');
 /* Arriving at #scope:address enters that encounter directly; overview stays beneath it, so ascent and Escape return there. */
-if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)enter(r,arrival,'replace')}
+if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)navigateGlobal(arrival,'replace')}
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
-globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
+globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingFeeds(){return [...pendingFeeds.keys()]},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();

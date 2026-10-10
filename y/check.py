@@ -308,11 +308,24 @@ def main():
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
-    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','site-ui-grids','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
+    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','site-feed-locations','site-ui-grids','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
     check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')
     check(not (artifact/'papers/index.html').exists(),'Papers regressed to a separate document/page')
     check((artifact/'crawlerbait/index.html').is_file() and (artifact/'crawlerbait/state.json').is_file(),'Crawlerbait static reef was not secreted into artifact')
+
+    # Generic child-owned feed contract: small preview in entry, full public source only in immutable site asset.
+    previews=build.site_projections(); feed_urls=build.site_feed_urls(build.asset_bundle_id())
+    check(set(feed_urls)=={'organism:crawlerbait','organism:papers'},'expected first feed-aware site boundaries missing')
+    check(all(previews[s]['schema']=='sss.display.feed-preview.v1'
+              and previews[s]['identity']==s and set(previews[s]['root']['children'])==set('wxzy')
+              for s in feed_urls),'child-owned feed preview identity/4V changed')
+    check(all(by_id[s]['projection_data'] is not previews[s] for s in feed_urls),'detail state reentered global preview')
+    check(len(actual.encode('utf-8')) < 600000,'global entry still carries detailed feed state')
+    check(all((artifact / url).is_file()
+              and (artifact / url).read_bytes()==by_id[s]['projection_path'].read_bytes()
+              for s,url in feed_urls.items()),'detailed site feed bytes drifted from child-owned source')
+    check(all(url.startswith(f'assets/{build.asset_bundle_id()}/') for url in feed_urls.values()),'site feed escaped immutable publication membrane')
 
     bundle=build.asset_bundle_id(); prefix=f'assets/{bundle}/'
     srcs={s.get('src') for s in p.scripts if s.get('src')}; styles={d.get('href') for d in p.links if d.get('rel')=='stylesheet'}; icons={d.get('href') for d in p.links if d.get('rel')=='icon'}

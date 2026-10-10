@@ -232,7 +232,7 @@ def _site_address(site_dir):
 
 def _validate_site_manifest(site_dir, data):
     required = {'version','id','title','local_scope','shader','manifestation','projection','renderer','style','ui_grid'}
-    if not isinstance(data, dict) or set(data) != required or data.get('version') != 2:
+    if not isinstance(data, dict) or not required <= set(data) or set(data) - required - {'feed_preview'} or data.get('version') != 2:
         raise ValueError(f'{site_dir.relative_to(ROOT)}/site.json: invalid v2 site-holon contract')
     if not isinstance(data['id'], str) or not SITE_ID.match(data['id']):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid interlocutor identity')
@@ -256,6 +256,8 @@ def _validate_site_manifest(site_dir, data):
         or ('background_drag' in manifestation and not isinstance(manifestation['background_drag'], bool))
     ):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid manifestation contract')
+    if 'feed_preview' in data and (not isinstance(data['feed_preview'], str) or not data['feed_preview'].startswith('_feed/')):
+        raise ValueError(f'{site_dir.relative_to(ROOT)}: feed_preview must be owned within local _feed')
     return {
         **data,
         'manifestation': {
@@ -292,6 +294,30 @@ def discover_sites():
         if not isinstance(ui_grid, dict) or ui_grid.get('schema') != UI_GRID_SCHEMA:
             raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid canonical UI-grid carrier')
         projection = json.loads(projection_path.read_text(encoding='utf-8'))
+        feed_preview = None
+        if data.get('feed_preview'):
+            preview_path = _inside(site_dir, data['feed_preview'])
+            if preview_path.stat().st_size > 16384:
+                raise ValueError(f'{site_dir.relative_to(ROOT)}: feed preview is not bounded')
+            feed_preview = json.loads(preview_path.read_text(encoding='utf-8'))
+            root = feed_preview.get('root') if isinstance(feed_preview, dict) else None
+            if (feed_preview.get('schema') != 'sss.display.feed-preview.v1'
+                    or feed_preview.get('identity') != data['id']
+                    or not isinstance(root, dict)
+                    or set(root.get('children', {})) != set(GENES)
+                    or any(not isinstance(root['children'][g], dict)
+                           or not isinstance(root['children'][g].get('noun'), str)
+                           or not root['children'][g]['noun']
+                           or root['children'][g].get('children') != {}
+                           for g in GENES)):
+                raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid child-owned feed preview')
+            if (site_dir / 'INDEX.yaml').is_file():
+                index = load_yaml(site_dir / 'INDEX.yaml')
+                if any(root['children'][g]['noun'] != index[g]['noun'] for g in GENES):
+                    raise ValueError(f'{site_dir.relative_to(ROOT)}: feed preview drifted from local INDEX')
+            elif isinstance(projection.get('phenotype'), dict):
+                if any(root['children'][g]['noun'] != projection['phenotype'][g] for g in GENES):
+                    raise ValueError(f'{site_dir.relative_to(ROOT)}: feed preview drifted from source phenotype')
         if data['id'] == 'organism:philosophy':
             validate_root_projection(projection)
         elif data['id'] == 'organism:papers':
@@ -302,6 +328,8 @@ def discover_sites():
             'physical_address': physical,
             'site_dir': site_dir,
             'projection_data': projection,
+            'projection_path': projection_path,
+            'feed_preview_data': feed_preview,
             'renderer_path': renderer_path,
             'style_path': style_path,
             'ui_grid_path': ui_grid_path,
@@ -364,7 +392,13 @@ def site_mounts():
 
 
 def site_projections():
-    return {s['id']: s['projection_data'] for s in discover_sites()}
+    # Child-owned _feed capsules orient parents; detailed source crosses only on encounter.
+    return {s['id']: s['feed_preview_data'] or s['projection_data'] for s in discover_sites()}
+
+
+def site_feed_urls(bundle):
+    return {s['id']: f'assets/{bundle}/site-{_slug(s["id"])}-feed.json'
+            for s in discover_sites() if s['feed_preview_data'] is not None}
 
 
 def site_ui_grids():
@@ -434,6 +468,10 @@ def dependency_asset_sources():
 
 def asset_sources():
     out=template_asset_sources()
+    # Immutable detailed feed bytes are emitted separately, never inside the global HTML.
+    for site in discover_sites():
+        if site['feed_preview_data'] is not None:
+            out[f'site-{_slug(site["id"])}-feed.json'] = site['projection_path']
     for name,source in dependency_asset_sources().items():
         if name in out:
             raise ValueError(f'Display dependency asset collides with membrane asset: {name}')
@@ -494,6 +532,7 @@ def render():
         '/*__SITE_STYLES__*/': _site_style_links(),
         '/*__SITE_REGISTRY__*/': _enc(site_mounts()),
         '/*__SITE_PROJECTIONS__*/': _enc(site_projections()),
+        '/*__SITE_FEED_URLS__*/': _enc(site_feed_urls(bundle)),
         '/*__SITE_UI_GRIDS__*/': _enc(site_ui_grids()),
         '/*__DISPLAY_DEPENDENCIES__*/': _enc(dependency_projection(bundle)),
         '/*__SITE_SCRIPTS__*/': _site_script_tags(),
