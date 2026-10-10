@@ -435,6 +435,7 @@ def template_asset_sources():
         'ui-grid.js': DISPLAY/'w'/'ui-grid.js',
         'display-type.js': DISPLAY/'w'/'display-type.js',
         'display-text-tissue.js': DISPLAY/'w'/'display-text-tissue.js',
+        'representation-handoff.js': DISPLAY/'x'/'representation-handoff.js',
         'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
         'favicon.svg': DISPLAY/'w'/'favicon.svg',
     }

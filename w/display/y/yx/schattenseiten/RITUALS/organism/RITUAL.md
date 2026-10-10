@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Site-holon projection of Philipp's organ Schattenseiten: 49 shadows grown by one operation repeated at every rank, shown as floating tetrahedra in their genealogy."
-version: "1.3"
+version: "1.4"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -33,3 +33,5 @@ Version 1.1 sized-media binding (2026-10-03): the public Fat variant declaration
 Version 1.2 cached64/res-up binding (2026-10-04): strict low-only host/droplet preview, immediate shared64 entry then bounded entered512, context-local GPU ownership and revision-aware cache replace the former single512 resource/fallback physiology. Layout and source identity remain unchanged.
 
 Version1.3 shared optical-input correction (2026-10-04): the same low-only interior participates in the existing shared glass mapping instead of painting on top of it. Media tier gates/cache/entered res-up and source geometry remain unchanged.
+
+Version 1.4 source-owned media through shared rank-relative handoff (staged 2026-10-10): the existing 55-slot genuine64 preview and entered512 queue now use Display Continuity's neutral acquisition/readiness/retirement physiology. The current media URLs, owner-owned bitmap decoder, context-local textures, per-slot fallback and local entry/res-up law remain Schattenseiten's. Failed high images remain failed until their source revision changes, avoiding repeated per-frame fetches. Native GPU-fixture checks passed; live browser visuals remain to witness.
