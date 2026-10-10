@@ -1,7 +1,7 @@
 # NUTRIENT — representation readiness and recursive handoff — 2026-10-10
 
-status: UNRESOLVED / NATIVE + GPU WITNESS REQUIRED
-owner: Display Continuity, with Sonnen... (Schattenseiten) and site-holon feedback
+status: NATIVE SOURCE/GL FIXTURE PASS · LIVE-BROWSER GPU WITNESS OPEN
+owner: Display Continuity; Schattenseiten and site-holon membranes supply substitution witnesses
 provenance: user request after confirming merged feed-preview stage; Schattenseiten 64→512 already a witnessed transition, while Display acquired detail with separate pending Map
 
 ## Source pressure
@@ -15,3 +15,10 @@ No new CCCC organ, no fixed 4/64/512 tiers, no universal renderer. No opacity tr
 
 ## Acceptance
 Pure utility tests including pending coalescence, paused queue, failures, revision invalidation, nested-rank instances and last-valid fallback; existing Schattenseiten GL fixture and Display route/deep-link fixture; generated-site validation + artifact check + public browser witness; preserve upstream merge control. If GPU visual witness unavailable keep wound in stomach and do not claim HOME.
+
+## Staging witness (2026-10-10)
+- QuantumCephalopod branch `staging/display-recursive-handoff-20261010` at `cc356ca6c03bf16fbd4281eea0ab3d52c07a7e68` passed the complete GitHub Display-native suite (https://github.com/QuantumCephalopod/cambium/actions/runs/38049211795).
+- Pure acquisition contract: keyed memoization, bounded concurrency, pause/resume, fallback, explicit retry, stale decode disposal, independent rank instances.
+- Schattenseiten GL fixture: preview55/64 cached source, entered55/512, per-slot high fail retains low, no per-frame failed-image retry, higher GPU tier retires on exit.
+- Global Display: lazy child-owned feed, deep-link navigation, retry and last-valid parent until detailed source is ready.
+- No production mutation. No source-relative performance data or real browser WebGL readiness proof; visual acceptance stays OPEN. Do not retire this nutrient or claim HOME on native CI alone.

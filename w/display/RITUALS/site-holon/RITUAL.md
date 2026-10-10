@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.5"
+version: "3.6"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -78,6 +78,10 @@ Every site-holon owns one canonical recursive UI-field state for the screen-spac
 When a canonical field determines screen placement, site CSS/render code must not secretly substitute independent absolute pixel *orientation*. Site styling may and must determine its own functional width/height, material, typography, scrolling, intrinsic overflow and visual behavior. An address may stay realized as its lattice cell subdivides more finely; overlap is not a conflict unless local interaction makes it one. Carrier variants remain address state rather than a second viewport-specific positioning system.
 
 The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected labels, bodies, beings, chamber marks and other tissue whose position is derived from organism/world coordinates remain in that native frame. Global Display-owned membrane surfaces likewise remain Display tissue rather than being assigned to one site's local grid.
+
+### Feed-owned rank-relative representations
+
+A site-holon may expose an optional bounded public `feed_preview` under its own `_feed`, while keeping the detailed projection and renderer body identity-owned. Its enclosing Display membrane represents the site through that preview until perceptual entry justifies acquiring detail. The public preview cannot claim private `_feed/current.json` or replace the actual site identity, source or root. Readiness belongs to the receiving browser's shared representation-continuity physiology; resolution/content thresholds and resource disposal stay with the child. The same relation holds inside a site at smaller rank, as in Schattenseiten's 64px→512px artwork. A failed higher representation preserves the last good low representation. No fixed rank limit, media family or duplicate renderer law is imposed.
 
 ## Global background-drag default
 
@@ -212,3 +216,5 @@ Version 3.3 canonical screen-measurement correction (2026-10-05): the optional c
 Version 3.4 carrier-shape correction (2026-10-06): the stable site-owned field name is now distinguished from the span it occupies on a particular neutral carrier shape. A field may carry a bounded `portrait` alternate span using the same canonical `w,x,y,z` realized leaves; Display selects it only when the current safe carrier is taller than wide. This is not a device breakpoint or second template. Rich Crawlerbait, Schattenseiten and Papers screen tissue earned top/middle/bottom portrait bands after exact generated-artifact browser witness showed their broad-carrier side rails were uninhabitable on a tall carrier. CSS may still alter internal local content but may not re-cap the canonical field extent.
 
 Version 3.5 orientation/extent/z distinction (staged 2026-10-09; browser witness pending): a field address names orientation only; independently sized field bodies may overlap, with deterministic local z. The navigator and other liquid Display surfaces are not capacity exclusions for all fields. Current source and native witnesses alone do not close visual acceptance.
+
+Version 3.6 recursive representation handoff (staged 2026-10-10): site-owned preview and local media tiers now share the same generic readiness/retirement law through Display Continuity. This is not a new site identity or public disclosure scope; GPU/browser performance acceptance remains open.

@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.24"
+version: "3.25"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -86,13 +86,23 @@ Default mutation law: if pressure originates in one site-holon, keep the change 
 
 ### Mounted anatomy and frame work
 
-The current static runtime parses one source snapshot per mounted site. Derive that site's `fieldProjection` once during mounted-field initialization and share the same projected anatomy between its own field, host environment and floating body. View, language, activity and address-remount movement do not recreate that source anatomy. A new source snapshot requires new mounted-field/runtime initialization; this is not a new in-place update API. Dynamic appearance and movement remain in source-owned render/shader hooks.
+An ordinary small site still resolves its source anatomy once at mounting. A site with child-owned `_feed/display-preview.json` can instead be represented by that bounded outer body in the parent while its detailed source stays outside the global HTML. Entering that site acquires its published immutable detailed projection, derives its full field once, and hands over under the existing membrane transition. The parent keeps the child's preview body for future visits. View, language and activity do not remint that source. A changed source revision requires truthful reentry, not an implicit overwrite of the existing organism. Dynamic appearance and movement remain in source-owned render/shader hooks.
 
 Each field's gene-label update owns only its four gene labels; it must not hide autonomous body labels because those have no gene tag. Reuse the frame's canvas rectangle within that draw. Refracted label ink may reuse computed styles within one collection only, while reading current DOM text, geometry, opacity and source styles afresh in the next collection. Atlas identity, GL-state restoration, fallback paint and geometry remain intact.
 
 The field owns complete target clearance independently of the last site's draw state. Before clearing a frame or the host/point depth pass, it enables color/depth writes, sets the depth clear value to one and disables scissor. Draw-specific state is applied afterwards. A transparent site body, glass/composite or ink pass may leave depth writes off without allowing its earlier depth to become a later frame's geometry. Existing identity, geometry, materials and draw order remain unchanged.
 
 Revealing a cached field restores its camera to the truthful current container through the existing arrival transition. A body-entry zoom is temporary passage, not container state. Ordinary language/activity repaint does not restart the camera; an explicit membrane return still starts from its supplied body/place and settles into the same current-container frame. Global addresses, encounter history and ascent topology are unchanged.
+
+### Rank-relative representation continuity
+
+One generic Display Continuity physiology (`x/representation-handoff.js`) owns the browser-local *readiness relation*: keyed acquisition, bounded queue, pause/resume, retry only on deliberate demand, retention of last valid representation and stale resource retirement. It owns **no** organism identity, body meaning, media type, fixed resolution list or traversal depth. The owner supplies its stable identity/revision key, acquisition function, resource disposal and perceptual LOD choice. Each membrane/rank may instantiate the same contract independently.
+
+Two executed substitutions:
+- at Display Population, the parent keeps the child's `_feed` preview while a source-owned immutable detailed projection is fetched on demand; only the child's actual entered field consumes full data;
+- inside Schattenseiten, the same physiology manages local 64px and 512px acquisition while image decoders and GPU textures remain Schattenseiten-owned, and the 64px body is held until each valid higher-resolution slot is ready.
+
+Public `_feed` advertises truthful available representations; loading and network readiness are transient runtime facts, **not** semantic feed state. A failed successor cannot erase its already-present lower representation. A lower rank can exist without a higher one. LOD thresholds, caching lifetime and shader/display materials remain owner-local. No global array of all potential descendants is implied.
 
 ### Identity-resolved foreign embodiment
 
@@ -298,3 +308,5 @@ Version 3.22 site-holon measurement correction (2026-10-05): every current site-
 Version 3.23 carrier-variant correction (2026-10-06): browser witness exposed that one fixed same-rank span can be lawful yet uninhabitable when the neutral safe carrier changes aspect. Field identity therefore remains invariant while an identity-owned field may carry optional alternate lawful spans over the same realized recursive leaves. Display currently selects only the earned `portrait` variant from the actual safe-carrier relation `height > width`; no site identity, device class or pixel breakpoint enters the selector. Occupancy-transition settlement now refreshes the safe-area and bound fields reproject on `sss:safe-area`. Rich Crawlerbait, Schattenseiten and Papers HUD fields use top/middle/bottom portrait bands; Philosophy and the legal articles remain on their default spans. `INDEX.yaml` and `_cambium.yaml` remain unchanged.
 
 Version 3.24 orientation-not-confinement correction (staged 2026-10-09; browser witness pending): screenshots of six live site-holons exposed grid spans mistakenly enforced as element capacities. Address orientation, site-owned extent, local field stacking, and independent upper Display liquid space are now distinguished. The repository's normalized UI state remains v2 and its CCCC DNA and canonical address symbols stay unchanged. Native tests do not alone certify visual closure.
+
+Version 3.25 generic readiness substitution (staged 2026-10-10): the same browser-local representation handoff physiology now runs for Display site detail and Schattenseiten image tiers. The first native unit/GL-fixture/site build passed on QuantumCephalopod; real-browser visual and runtime-performance witnesses are still pending. Current CCCC constitution and physical site-space anatomy are unchanged.
