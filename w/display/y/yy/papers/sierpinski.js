@@ -31,7 +31,6 @@ const FAR_Z=3.2;
 const FOV=Math.PI/3.3;
 const LOD_PX=7;
 const OPEN_MS=900;
-const MAX_DEPTH=8;
 const PRETEXT_ID='@chenglou/pretext';
 const PRETEXT_VERSION='0.0.9';
 const SHADOW_PATH='papers-shadow/current.json';
@@ -68,7 +67,7 @@ const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 const shader=Object.freeze({
   id:'shader:organism:papers',
   /* Papers' body lives in its own canvases; handing them to the field lets Display's invariant glass refract them. */
-  composite:()=>state?.mounted?[state.environmentCanvas,state.canvas,state.textCanvas,state.tissueCanvas]:null,
+  composite:()=>state?.mounted?[state.environmentCanvas,state.canvas,state.textCanvas,...(state.tissueLive?[state.tissueCanvas]:[])]:null,
   environment:false, /* Papers' own inquiry environment already embodies its host */
   clear:[0,0,0,0],
   fallbackAlpha:0,
@@ -746,7 +745,8 @@ function bodyTemplateCache(){
 }
 function bodyTemplate(id,scale,cameraZ,height,depth){
   const c=bodyTemplateCache();let limit=0,s=scale;
-  while(depth+limit<MAX_DEPTH&&projectedPixels(s,cameraZ,height)>=LOD_PX){limit++;s*=.5}
+  const available=Math.max(0,rankNumber(state.identities.get(id)?.rank)-depth);
+  while(limit<available&&projectedPixels(s,cameraZ,height)>=LOD_PX){limit++;s*=.5}
   const key=id+'@'+depth+'/'+limit;let t=c.templates.get(key);
   if(t){c.templates.delete(key);c.templates.set(key,t);return t}
   t=[];
@@ -995,13 +995,20 @@ function inkAabb(corners){const xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]),
  * Without a drop nothing is gated: letters are bare. Without the engine the old ink path draws them. */
 function tissueOn(){if(state.tissue===undefined){try{state.tissue=globalThis.SSSDisplayTextTissue?.create(state.tissueCanvas)||null}catch(_){state.tissue=null}}return !!state.tissue}
 function tissueGlyphs(glyphs,pick,place,size,fat,weight){
-  const T=state.tissueLetters;if(!T)return;
+  const T=state.tissueLetters;if(!T)return;const lens=state.tissueLens;
   for(let j=0;j<glyphs.length;j++){const g=glyphs[j];if(!pick(g,j)||g.ch===' ')continue;const w=weight(g,j);if(w<=.01)continue;
-    const sz=typeof size==='function'?size(g,j):size,q=place(g,sz);T.push({ch:g.ch,x:q.x,y:q.y,cx:q.cx,cy:q.cy,angle:q.angle||0,size:sz*(q.scale||1),fat:typeof fat==='function'?fat(g,j):fat,weight:w})}
+    const sz=typeof size==='function'?size(g,j):size,q=place(g,sz);
+    // Tissue is resolved only inside the lens, with allowance for the glyph's fat/soft fringe.
+    if(lens&&!inLens(lens,q.cx??q.x,q.cy??q.y,sz*(q.scale||1)*4))continue;
+    T.push({ch:g.ch,x:q.x,y:q.y,cx:q.cx,cy:q.cy,angle:q.angle||0,size:sz*(q.scale||1),fat:typeof fat==='function'?fat(g,j):fat,weight:w})}
 }
 function flushTissue(rect){
-  if(!state.tissue)return;const L=lensLocal(state.textCanvas.getBoundingClientRect()),T=state.tissueLetters||[];
+  if(!state.tissue)return;const T=state.tissueLetters||[];
+  // The last valid tissue keeps its current frame until the next one; exit clears exactly once.
+  if(!T.length&&!state.tissueLive)return;
+  const L=T.length?lensLocal(state.textCanvas.getBoundingClientRect()):null;
   state.tissue.draw(T,{width:rect.width,height:rect.height,dpr:state.tissueDpr||1,presses:L?[{x:L.x,y:L.y,r:L.r}]:[],tissue:L?.3:0,ink:[.87,.95,.92],alpha:.62});
+  state.tissueLive=T.length>0;
   state.tissueCanvas.dataset.tissueLetters=String(T.length);state.tissueCanvas.dataset.tissuePressed=L?'1':'0';
 }
 /* where the drop lies, an opened sentence blooms inside the space it contains (its anchor pulled in, the block kept within) */
@@ -1009,8 +1016,8 @@ function bindToDrop(Lz,ax,ay,b){const s=Lz.r*.72,w=b.x1-b.x0,h=b.y1-b.y0;
   const cx=w>2*s?Lz.x:Math.max(Lz.x-s+w/2,Math.min(Lz.x+s-w/2,ax+(b.x0+b.x1)/2)),cy=h>2*s?Lz.y:Math.max(Lz.y-s+h/2,Math.min(Lz.y+s-h/2,ay+(b.y0+b.y1)/2));
   return {ox:cx-ax-(b.x0+b.x1)/2,oy:cy-ay-(b.y0+b.y1)/2}}
 function drawWisdom(rect,cam,translate,metabolights,now){
-  const LZ=lensLocal(state.textCanvas.getBoundingClientRect());
-  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect);state.inkScale=Math.max(1,Math.round(d*2)/2);state.tissueDpr=d;state.tissueLetters=tissueOn()?[]:null;const TS=!!state.tissueLetters;const canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
+  const LZ=lensLocal(state.textCanvas.getBoundingClientRect());state.tissueLens=LZ;
+  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect);state.inkScale=Math.max(1,Math.round(d*2)/2);state.tissueDpr=d;const earned=Boolean(state.current&&state.pretextStatus==='ready'&&smooth(clamp((state.transition-.50)/.32))>.01);state.tissueLetters=earned&&tissueOn()?[]:null;const TS=!!state.tissueLetters;const canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
   canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
   const dt=Math.min(.05,Math.max(0,(now-(state.beingLast||now))/1000));state.beingLast=now;
   if(!state.current||!entity){canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
@@ -1190,15 +1197,29 @@ function outerCells(width,alphaBase=CHAMBER_SHELL_ALPHA){
   const focus=inquiryFrameFocus(),scale=rootFieldScale(width)*focus.scale,active=state?.chamberPath||'',recede=1-.75*backgroundPassage();
   return GENES.map((g,i)=>{const p=PALETTE[g],k=active?(active.startsWith(g)?1.6:.45):1,alpha=alphaBase*k*recede;return {center:mul(sub(mul(state.renderer.V0[i],.5),focus.center),scale),scale:.5*scale,color:[...mix3(p,[.86,1,.93],.62),alpha]}});
 }
-function populationBodies(width,height,bodyFade=1,lightFade=bodyFade,now=performance.now()){
-  const leaves=[],lights=[];
+/* A projected enclosing bound is a conservative witness for every descendant of the body.
+ * A body behind/outside the camera is retained in source and simulation, but not expanded
+ * into draw geometry until the witness can actually see it. */
+function populationInView(center,scale,width,height,cameraZ,q){
+  const p=qRot(q,center),z=cameraZ-p[2],span=scale*2;
+  if(z+span<=0)return false; // Even the outer shell lies behind the witness.
+  const near=z-span;if(near<=0)return true; // Touches the camera; refuse to over-cull.
+  const focal=(height/2)/Math.tan(FOV/2),x=width/2+p[0]*focal/z,y=height/2-p[1]*focal/z;
+  const radius=span*focal/near*(1+Math.max(Math.abs(p[0]),Math.abs(p[1]))/z)+128; // Ember/optical fringe.
+  return x>=-radius&&x<=width+radius&&y>=-radius&&y<=height+radius;
+}
+function populationBodies(width,height,bodyFade=1,lightFade=bodyFade,now=performance.now(),cameraZ=FAR_Z){
+  const leaves=[],lights=[],cull=Boolean(state.current)||inquiryFrameFocus().scale!==1,q=cull?overviewOrientation():null;let considered=0;
   for(const rec of state.records){
     if(rec.id===state.current?.id)continue;
-    collectBody(rec.id,overviewCenterFor(rec,width,now),overviewBodyScaleFor(rec,width),FAR_Z,height,leaves,lights);
+    const center=overviewCenterFor(rec,width,now),scale=overviewBodyScaleFor(rec,width);
+    if(cull&&!populationInView(center,scale,width,height,cameraZ,q))continue;
+    considered++;
+    collectBody(rec.id,center,scale,FAR_Z,height,leaves,lights);
   }
   for(const x of leaves)x.color[3]*=bodyFade;
   for(const x of lights)x.color[3]*=lightFade;
-  return {leaves,lights};
+  return {leaves,lights,considered};
 }
 
 function chamberChildren(){
@@ -1303,7 +1324,7 @@ function draw(now){
    * Inquiry passage is centripetal: the root/chamber world remains in its own frame
    * while the selected organism moves to center and the camera dives into its scale. */
   state.renderer.draw(outerCells(rect.width,CHAMBER_FACE_ALPHA),overviewQ,[0,0,0],proj,view,{faces:true});state.renderer.draw(outerCells(rect.width),overviewQ,[0,0,0],proj,view,{faces:false});
-  const fade=!state.current?1:(state.stack.length?NESTED_BACKGROUND_ALPHA:mix(1,BACKGROUND_FIELD_ALPHA,passage)),starFade=!state.current?1:mix(1,BACKGROUND_STAR_ALPHA,passage),population=populationBodies(rect.width,rect.height,fade,starFade,now);
+  const fade=!state.current?1:(state.stack.length?NESTED_BACKGROUND_ALPHA:mix(1,BACKGROUND_FIELD_ALPHA,passage)),starFade=!state.current?1:mix(1,BACKGROUND_STAR_ALPHA,passage),population=populationBodies(rect.width,rect.height,fade,starFade,now,cam);
   state.renderer.draw(population.leaves,overviewQ,[0,0,0],proj,view,{faces:true});
   state.renderer.drawLights(population.lights,overviewQ,[0,0,0],proj,view,now*.001,d,OVERVIEW_LIGHT_GAIN);
   let metaboliteCount=0,organismEmberCount=0,metabolights=[],translate=[0,0,0];
@@ -1320,7 +1341,7 @@ function draw(now){
   }
   drawWisdom(rect,cam,translate,metabolights,now);flushTissue(rect);drawNames(rect,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
-  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);
+  state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);setData(state.canvas,'populationResolved',population.considered);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`)}
   else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';setHud(`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}${state.chamberPath?'touch organism · empty space ascends':'touch a chamber to enter it'}</small>`)};
   state.raf=requestAnimationFrame(draw);
