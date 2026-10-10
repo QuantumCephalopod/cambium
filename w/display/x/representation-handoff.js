@@ -32,10 +32,10 @@
         }).finally(()=>{running--;pump()});
       }
     }
-    function request(key,acquire,{dispose:release}={}){
+    function request(key,acquire,{dispose:release,retryFailed=false}={}){
       if(typeof key!=='string'||!key||typeof acquire!=='function')throw new TypeError('representation requires stable key and acquisition function');
       const previous=records.get(key);
-      if(previous&&previous.status!=='failed')return previous;
+      if(previous&&(previous.status!=='failed'||!retryFailed))return previous;
       if(previous)records.delete(key); // Retry failed detail without changing fallback identity.
       let resolve,reject;
       const promise=new Promise((ok,bad)=>{resolve=ok;reject=bad});

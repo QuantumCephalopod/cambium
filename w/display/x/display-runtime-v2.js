@@ -1,8 +1,8 @@
 (() => {
 'use strict';
 const Nav=globalThis.SSSDisplayNavigation,H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea,UI=globalThis.SSSUIGrid;
-const Modules=globalThis.SSSInterlocutorModules;
-if(!H||!F||!W||!Fields||!Safe||!UI||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
+const Modules=globalThis.SSSInterlocutorModules,RH=globalThis.SSSRepresentationHandoff;
+if(!H||!F||!W||!Fields||!Safe||!UI||!RH||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
 const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
 const PROJECTIONS=JSON.parse(document.getElementById('site-projections').textContent);
 const FEED_URLS=JSON.parse(document.getElementById('site-feed-locations')?.textContent||'{}');
@@ -140,18 +140,16 @@ function activateField(id){
 // Existing small/inlined bodies keep their established eager behavior.
 // Feed-opted children remain real mounted identities without GPU initialization.
 for(const [id,s] of surfaces)if(s.projection)activateField(id);
-const pendingFeeds=new Map();
+const detailHandoff=RH.create({limit:2});
 function acquireDetail(id){
   const s=surfaces.get(id);if(!s)throw new Error('unknown site identity: '+id);
   if(s.projection)return null;
-  if(pendingFeeds.has(id))return pendingFeeds.get(id);
   const entry=FEED_URLS[id];
   if(typeof entry!=='string'||!/^assets\/[a-f0-9]{16}\/site-[a-z0-9-]+-feed\.json$/.test(entry))throw new Error('untrusted feed source for '+id);
-  const promise=fetch(new URL(entry,document.baseURI),{credentials:'same-origin',cache:'force-cache'})
+  const record=detailHandoff.request(id,()=>fetch(new URL(entry,document.baseURI),{credentials:'same-origin',cache:'force-cache'})
     .then(response=>{if(!response.ok)throw new Error('feed HTTP '+response.status+' for '+id);return response.json()})
-    .then(detail=>{if(!detail||typeof detail!=='object'||Array.isArray(detail))throw new Error('malformed public feed for '+id);s.projection=detail;return detail})
-    .finally(()=>{pendingFeeds.delete(id)});
-  pendingFeeds.set(id,promise);return promise;
+    .then(detail=>{if(!detail||typeof detail!=='object'||Array.isArray(detail))throw new Error('malformed public feed for '+id);s.projection=detail;return detail}),{retryFailed:true});
+  return record.promise;
 }
 function acquireTarget(ids){
   const jobs=ids.map(acquireDetail).filter(Boolean);
@@ -282,5 +280,5 @@ Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlob
 /* Arriving at #scope:address enters that encounter directly; overview stays beneath it, so ascent and Escape return there. */
 if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)navigateGlobal(arrival,'replace')}
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
-globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingFeeds(){return [...pendingFeeds.keys()]},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
+globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingFeeds(){return detailHandoff.pending()},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();

@@ -22,9 +22,10 @@ async function witness(){
   assert.equal(failed.status,'queued');
   high.setActive(true);await assert.rejects(failed.promise,/offline/);
   assert.equal(low.best([base.key]),base,'failure cannot erase fallback');
-  const retry=high.request('bad',()=>{attempts++;return 'ready'});
+  const retry=high.request('bad',()=>{attempts++;return 'ready'},{retryFailed:true});
   assert.notStrictEqual(retry,failed);assert.equal(await retry.promise,'ready');
   assert.equal(attempts,2,'failure may be retried without reminting identity');
+  assert.equal(high.request('bad',()=>{throw Error('should not retry ready')}),retry);
 
   const limited=H.create({limit:1}),a=later(),b=later(),ran=[];
   const one=limited.request('x',()=>{ran.push('x');return a.promise});
