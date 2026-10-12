@@ -77,3 +77,9 @@ This closes only the conceptual law's admission/derivation. Keep the earlier `NU
 ## Intended carrier lifecycle
 
 After law/source equivalence and a native repository witness: append the durable Display HOME; retire this **spent conceptual carrier** into owner `_waste` with exact preimage and this decision; leave the old operational nutrient in `_stomach`; then perform `_feed/current.json` refresh only by the existing `y/feed.py` mechanical projection, not by replacing earlier constitutional truth. No root-level semantic uplink: Display's existing host relation already supports identity-local semantics.
+
+---
+
+## WASTE custody after HOME — 2026-10-12
+
+The entire admitted+distilled+challenged preimage above is preserved unchanged. It is now **SPENT for the conceptual law only**. Display HOME: `_root/display-situated-instrument-20261012T151400Z.json` (`5692b854ff9083b36e0a52758fa8bd35c7c6e5eb`). Native witness: SUCCESS `38268207941`; no visual/soft-lock/morphing code was changed or declared complete. The distinct runtime/real-device wound continues at `../_stomach/NUTRIENT__lens-softlock-local-preview__20261003.md`. Do not reactivate this whole source carrier merely because that distinct implementation is still pending.
