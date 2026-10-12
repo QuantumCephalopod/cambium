@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.25"
+version: "3.26"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -83,6 +83,17 @@ The site-holon owns:
 Therefore two site-holons may look and behave radically differently while the same tetrahedral body moves isomorphically under one global orientation. Shader and local interaction are bound to interlocutor identity, never to global mount address.
 
 Default mutation law: if pressure originates in one site-holon, keep the change inside that body. Lift tissue into Display only when the change is genuinely specimen-agnostic, required by arbitrary future site-holons, and leaves semantic/local behavior in the site body. Central Display must never learn Papers-, Philosophy- or Crawlerbait-specific meaning merely to support their local expression.
+
+### One situated instrument — function arises in encounter
+
+The existing shared glass droplette is **one Display-owned instrument**, not just a magnifier, a menu of tools, or four separately instantiated lenses. Its stable physical/interaction identity stays Display-owned across site-space, recursive descent, locally earned deformation and return to free glass. **Its operative function is afforded by the actually encountered, independently rooted organism and the local body/relationship it presents.** Display lends physics, spatial contact/anchoring, glass composition and continuity; the contacted site owns *what the encounter means*, what structural affordance it can truthfully offer, and what portion of its source-owned representation is fit to show. A site may decline any richer function. This is a relation, not a new generic renderer, schema, substrate or semantic vertex.
+
+Current witnesses make the four situated possibilities intelligible: site-space `w / Form`, `x / Continuity`, `z / Care`, `y / Inquiry`. **These are present mounted site-space descriptions, not four hardcoded lens modes, an exhaustive tool taxonomy, or a remapping of Display's own w Embodiment / x Continuity / z Orientation / y Population CCCC DNA.** A site moved to another raw address keeps its intrinsic interpretation. At any recursive depth, the instrument may learn a different local function from a different genuine encounter without becoming another instrument.
+
+A contact may require more than optical enlargement. In Papers, the source-pressure example is: the same droplette approaches an actual vertex, edge or face; an identity-bound *soft-lock* may settle first, and **the droplette's own body**, not an independently exploded text element or screen overlay, may accommodate that topology and the site's authored readable tissue. A relation-driven deformation is distinct from a globally prescribed circle/capsule/triangle template. Readability must preserve full source wording; finite viewport limits and overflow/continuation require their own truthful implementation witness. The established pass-through click, hold-to-take, continuous focus, Descent/ascent, site-owned `_feed` availability/fallback, reduced-transparency and release laws remain constraints.
+
+This is an **assimilated conceptual/architectural boundary**, not a claim that soft-lock, per-simplex shape morph or readable accommodation already execute. The older Display `_stomach/NUTRIENT__lens-softlock-local-preview__20261003.md` remains open for body hit-testing, identity-following anchors, shape response, native and real-device acceptance. A new CCCC split, different source authority, extra overlay, per-site duplicate droplette or menu of Form/Continuity/Care/Inquiry modes is *not* earned by this encounter.
+
 
 ### Mounted anatomy and frame work
 
@@ -310,3 +321,5 @@ Version 3.23 carrier-variant correction (2026-10-06): browser witness exposed th
 Version 3.24 orientation-not-confinement correction (staged 2026-10-09; browser witness pending): screenshots of six live site-holons exposed grid spans mistakenly enforced as element capacities. Address orientation, site-owned extent, local field stacking, and independent upper Display liquid space are now distinguished. The repository's normalized UI state remains v2 and its CCCC DNA and canonical address symbols stay unchanged. Native tests do not alone certify visual closure.
 
 Version 3.25 generic readiness substitution (staged 2026-10-10): the same browser-local representation handoff physiology now runs for Display site detail and Schattenseiten image tiers. The first native unit/GL-fixture/site build passed on QuantumCephalopod; real-browser visual and runtime-performance witnesses are still pending. Current CCCC constitution and physical site-space anatomy are unchanged.
+
+Version 3.26 situated-function assimilation (2026-10-12): one already-global liquid instrument is given a context- and organism-owned *purpose*, not a new mode selector; site-space Form/Continuity/Care/Inquiry are current examples rather than universal modes or Display's root DNA. Local simplex shape/readability and soft-lock execution remain distinct unfinished wounds. No INDEX, _cambium, geometry or renderer change is implied.

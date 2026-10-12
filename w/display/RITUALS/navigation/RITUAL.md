@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.4"
+version: "3.5"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -142,6 +142,15 @@ In a single encounter the global navigator is a HUD, not a plate:
 - occupied top HUD surfaces may declare a bounded `data-display-glass-overfill` below their controls, with a curved free edge; safe-area witnesses include that visible overfill;
 - actual field-label ink is derived from DOM text and computed styles into the scene before refraction (`w/display-label-ink.js`). DOM text remains the semantic and hit-target source. Its duplicate pixels are suppressed only after a successful GPU draw and restored for disabled glass, fallback and disposal.
 
+### Situated-function boundary — not a second gesture or a mode dial
+
+The same physical droplette is an **instrument of encounter**. Display owns the common upper liquid body, movement, reservoir coupling, glass optics, continuity and neutral contact aperture. The currently contacted organism owns the locally afforded function and truthful source presentation. It may operate as an instrument of **Form, Continuity, Care or Inquiry** at the current named site-space encounters, but none of those names is a hardwired address-to-function dispatch rule. The located body/relationship, not the mere raw address, earns the response; a site may refuse it. One instrument retains identity through all such encounters.
+
+For an eligible local object, the intended interaction is free glass → site-offered candidate → optional soft-lock to **body identity**, not stale screen pixels → body-shape accommodation for that owner's specific geometry and readable tissue → release to free glass. In Papers the relevant local topology includes the actual vertex, edge and face; opening/reading should follow the lens relation rather than requiring an unrelated click-explosion and a second lens-drag. The droplette changes its own liquid boundary, not a floating panel, rigid template or universally prescribed simplex-shaped container. This is a **design constraint for future execution**; no exact threshold, path, shape tessellation, text-fit policy or pointer-event mutation is claimed by the 2026-10-12 law assimilation.
+
+No target means current free-lens behavior remains. Locking is neither global navigation nor a second Descent. Existing pointer pass-through/hold ownership, reduced-transparency fallback, reservoir kind/layer, compositing and per-site authority are unchanged until a separately witnessed implementation passes native/visual tests. The still-open 2026-10-03 soft-lock/preview nutrient owns that implementation pressure.
+
+
 Version 3.3 address-hash correction (2026-10-03): the hash became an input as well as a witness (`Address hash`), closing the observation that changing it back to overview left the encounter in place. Arrival with an address hash enters it directly instead of being overwritten to overview. The Population-derived target list names all six current site-holons.
 
 Version 3.2 pass-through-drop correction (2026-10-01, Philipp): now that the drop is the invariant instrument over every organism it must let the world through: "ein click passed einfach durch"; then, more exactly, "click-hold-pull = bubble": a pull takes it at once. It magnifies by 13%.
@@ -180,3 +189,5 @@ Version 2.2 default background-drag correction (2026-09-18): shared background d
 
 
 Version 3.4 canonical-address serialization correction (2026-10-04): raw/global textual addresses are now stated in canonical `w,x,y,z` serialization order. This is a communication/state-order invariant only; the existing CCCC semantic mapping and carrier-specific tetrahedral vertex enumeration remain unchanged.
+
+Version 3.5 situated droplette function (2026-10-12): inherit the organism-afforded purpose of one lens without hardcoding site modes, rewriting physical glass or pretending the pending soft-lock/shape-morph is already deployed.

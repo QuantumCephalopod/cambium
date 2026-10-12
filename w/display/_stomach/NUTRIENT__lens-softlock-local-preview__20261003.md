@@ -71,3 +71,9 @@ This pressure closes only when:
 10. at least two distinct site-holon consumers can use the same generic coupling without Display branching on their identities.
 
 No CCCC split is implied by intake alone.
+
+## Reentry distinction — 2026-10-12 situated instrument (open implementation)
+
+Philipp recognized the already shared droplette as *one instrument* whose function is locally afforded by its encounter: of Form, Continuity, Care or Inquiry at the respective currently named site-space examples, **not four hardcoded tools or address-derived modes**. This conceptual relation was distilled in the newer `NUTRIENT__situated-instrument__20261012.md` and is eligible for Display organism/navigation/site-holon law and a separate conceptual HOME.
+
+**Unresolved operational pressure stays here:** Papers' actual vertex/edge/face offers the lens a soft-lock, then the *lens itself* deforms until the organism's own Pretext/tissue is readable; no prior unrelated click-explosion, extra overlay, template or duplicated instrument. Identity-following contact, pointer/Descent compatibility, geometry/screen limits, substantive authored text, cross-site substitution, accessible fallback, real GPU and direct user visual acceptance remain to be witnessed. No 2026-10-12 law document is evidence these were implemented or tested.

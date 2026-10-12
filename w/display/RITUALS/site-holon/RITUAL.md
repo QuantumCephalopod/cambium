@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.6"
+version: "3.7"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -70,6 +70,9 @@ Default locality rule:
 `pressure in one site -> mutate that site first`
 
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
+
+A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens; the unresolved soft-lock and shape-fit mechanics remain Display-owned boundary pressure, not implemented promises.
+
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
 
@@ -218,3 +221,5 @@ Version 3.4 carrier-shape correction (2026-10-06): the stable site-owned field n
 Version 3.5 orientation/extent/z distinction (staged 2026-10-09; browser witness pending): a field address names orientation only; independently sized field bodies may overlap, with deterministic local z. The navigator and other liquid Display surfaces are not capacity exclusions for all fields. Current source and native witnesses alone do not close visual acceptance.
 
 Version 3.6 recursive representation handoff (staged 2026-10-10): site-owned preview and local media tiers now share the same generic readiness/retirement law through Display Continuity. This is not a new site identity or public disclosure scope; GPU/browser performance acceptance remains open.
+
+Version 3.7 situated-instrument sovereignty (2026-10-12): a body may lend its own function/contact/readability constraints to the globally invariant droplette. Four currently named site-space functions do not form a universal site `mode` enum or overwrite local recursion.
