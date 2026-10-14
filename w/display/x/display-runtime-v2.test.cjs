@@ -6,9 +6,11 @@ const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'u
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
-function boot(version=1,hash='',insets={},feedKinds={}){
+function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
+  const heldFolds=[];let foldBusy=false;
+  const fold={get busy(){return foldBusy},swap(fn,details){swaps.push(details);if(!holdFold)return fn();foldBusy=true;return new Promise((resolve,reject)=>heldFolds.push(()=>{try{resolve(fn())}catch(error){reject(error)}finally{foldBusy=false}}))}};
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
@@ -22,7 +24,7 @@ function boot(version=1,hash='',insets={},feedKinds={}){
   const hosts=new Map(ids.map(id=>{const host=element(),canvas=element(),labelHost=element(),content=element();host.querySelector=selector=>({'.interlocutor-background':canvas,'.interlocutor-field-labels':labelHost,'.interlocutor-content':content})[selector];return [id,host]}));
   const Modules=new Map();
   for(const id of ids){
-    const module={shader:{id,fragment:'identity-owned fragment'},render(payload){renders.push(payload);payload.host.hidden=false;assert.equal(payload.projection.sourceMarker,id);assert.equal(payload.projection.version,version);if(sources.has(id))assert.strictEqual(payload.projection,sources.get(id),'render retains the original source carrier')},unmount(payload){unmounts.push(payload);payload.host.hidden=true}};
+    const module={shader:{id,fragment:'identity-owned fragment'},render(payload){renders.push(payload);payload.host.hidden=false;if(renderKinds[id]==='throw')throw new Error('renderer unavailable');if(renderKinds[id]==='decline'){payload.host.hidden=true;return false}if(renderKinds[id]==='hidden'){payload.host.hidden=true;return}assert.equal(payload.projection.sourceMarker,id);assert.equal(payload.projection.version,version);if(sources.has(id))assert.strictEqual(payload.projection,sources.get(id),'render retains the original source carrier')},unmount(payload){unmounts.push(payload);payload.host.hidden=true}};
     if(id!=='organism:plain')module.fieldProjection=function(source){
       assert.strictEqual(this,module,'projection method retains its owning module');
       calls.set(id,(calls.get(id)||0)+1);sources.set(id,source);
@@ -39,7 +41,7 @@ function boot(version=1,hash='',insets={},feedKinds={}){
     if(feedKinds[target]==='hold')return new Promise(resolve=>held.push(()=>resolve({ok:true,json:async()=>input[target]})));
     return Promise.resolve({ok:true,json:async()=>input[target]});
   }
-  const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSRepresentationHandoff:RH,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>({busy:false,swap(fn,details){swaps.push(details);return fn()}})},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
+  const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSRepresentationHandoff:RH,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>fold},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
   vm.createContext(context);
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
@@ -47,7 +49,7 @@ function boot(version=1,hash='',insets={},feedKinds={}){
   context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
-  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,stateEl:elements.get('site-state'),home:elements.get('root-home'),key(event){for(const fn of events.get('keydown')||[])fn(event)}};
+  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
 }
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
@@ -174,6 +176,59 @@ async function feedHandoffWitness(){
   assert.equal(arrival.runtime.state.activeAddress,'w','deep link resumes when detailed feed is ready');
   assert.equal(arrival.history.at(-1).kind,'replace');
   assert.equal(arrival.history.at(-1).url,'#main:w');
+
+  /* Valid acquired detail is not a usable body when its owner refuses rendering.
+   * This reproduces live Papers in a WebGL-less browser without naming Papers. */
+  for(const kind of ['decline','hidden','throw']){
+    const kinds={[feedId]:kind},refused=boot(1,'',{}, {[feedId]:'hold'},kinds);
+    refused.W.inspect('x');
+    const oldUnmounts=refused.unmounts.filter(p=>p.host===refused.hosts.get(ids[0])).length;
+    refused.runtime.navigateGlobal('w');refused.held.shift()();await drain();
+    assert.equal(refused.runtime.state.activeAddress,'','renderer refusal preserves prior identity');
+    assert.equal(refused.W.view,'x','renderer refusal preserves prior local container');
+    assert.equal(refused.runtime.state.stack.length,0,'renderer refusal does not add a visit');
+    assert.equal(refused.location.hash,'#main:overview','renderer refusal restores truthful history');
+    assert.equal(refused.hosts.get(ids[0]).hidden,false,'the prior body remains visible');
+    assert.equal(refused.hosts.get(feedId).hidden,true,'the refused body is not visible');
+    assert.equal(refused.unmounts.filter(p=>p.host===refused.hosts.get(ids[0])).length,oldUnmounts,'failed candidate never unmounts the prior body');
+    assert.match(refused.stateEl.textContent,/ENCOUNTER UNAVAILABLE/);
+    kinds[feedId]='ready';assert.doesNotThrow(()=>refused.runtime.navigateGlobal('w'));await drain();
+    assert.equal(refused.runtime.state.activeAddress,'w','the same immutable body can retry');
+    assert.deepEqual(refused.fetches,[feedId],'render retry does not refetch ready detail');
+    assert.equal(refused.calls.get(feedId),1,'render retry does not remint source anatomy');
+  }
+
+  const historyKinds={},historyRefusal=boot(1,'',{}, {},historyKinds);
+  historyRefusal.runtime.navigateGlobal('w');const visited=historyRefusal.history.at(-1).state;
+  historyRefusal.runtime.navigateGlobal('');historyKinds[feedId]='decline';
+  assert.doesNotThrow(()=>historyRefusal.pop(visited,'#main:w'));
+  assert.equal(historyRefusal.runtime.state.activeAddress,'','history restoration also validates the renderer');
+  assert.equal(historyRefusal.hosts.get(ids[0]).hidden,false);
+  assert.equal(historyRefusal.location.hash,'#main:overview');
+
+  const leaveKinds={},leaveRefusal=boot(1,'',{}, {},leaveKinds);
+  leaveRefusal.runtime.navigateGlobal('w');leaveKinds[ids[0]]='decline';
+  assert.doesNotThrow(()=>leaveRefusal.key({key:'Escape',preventDefault(){}}));
+  assert.equal(leaveRefusal.runtime.state.activeAddress,'w','failed ascent preserves current identity');
+  assert.equal(leaveRefusal.runtime.state.stack.length,1,'failed ascent preserves return stack');
+  assert.equal(leaveRefusal.hosts.get(feedId).hidden,false);
+
+  const closing=boot(1,'',{}, {},{},true);
+  closing.runtime.navigateGlobal('w');closing.home.click({preventDefault(){}});
+  closing.heldFolds.shift()();await drain();
+  assert.equal(closing.runtime.state.activeAddress,'','home also cancels a fold already closing');
+  assert.equal(closing.runtime.state.stack.length,0);
+
+  const busy=boot(1,'',{}, {},{},true);
+  busy.runtime.navigateGlobal('w');assert.equal(busy.runtime.navigateGlobal('y'),false);
+  busy.heldFolds.shift()();await drain();
+  assert.equal(busy.runtime.state.activeAddress,'w','rejected busy navigation cannot replace the running intent');
+
+  const asyncRefusal=boot(1,'',{}, {},{[feedId]:'throw'},true);
+  asyncRefusal.runtime.navigateGlobal('w');asyncRefusal.heldFolds.shift()();await drain();
+  assert.equal(asyncRefusal.runtime.state.activeAddress,'','promise-based fold refusal rolls back');
+  assert.equal(asyncRefusal.hosts.get(ids[0]).hidden,false);
+  assert.match(asyncRefusal.stateEl.textContent,/ENCOUNTER UNAVAILABLE/);
 }
 feedHandoffWitness().then(()=>console.log('display runtime: orientation-only carrier + lazy feed identity handoff/navigation PASS'))
   .catch(error=>{console.error(error);process.exitCode=1});

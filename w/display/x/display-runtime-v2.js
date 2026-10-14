@@ -175,14 +175,20 @@ function syncGlobalNavigator(){const r=resolveGlobal(activeAddress);W.setGlobalT
 function inspectCapable(ids=activeIds){return ids.some(id=>Boolean(specs.get(id)?.manifestation?.background_inspect))}
 function resetSurface(id){const s=surfaces.get(id);if(!s)return;if(typeof s.module.unmount==='function')s.module.unmount({host:s.host,content:s.content,projection:s.projection});else{s.host.hidden=true;s.content.replaceChildren()}}
 let renderedIds=new Set();
-function render(path=W.view){
-  for(const id of surfaces.keys())resetSurface(id);
+let installingEncounter=false;
+function renderFailure(id,cause){const error=new Error('Body unavailable: '+id+(cause?.message?' · '+cause.message:''));error.code='RENDER_UNAVAILABLE';error.cause=cause;return error}
+function render(path=W.view,{retainPrior=false,requireReady=false}={}){
+  if(!retainPrior)for(const id of surfaces.keys())resetSurface(id);
   for(const id of activeIds){
     const s=surfaces.get(id),spec=specs.get(id);if(!s||!spec)continue;
     const localPath=spec.manifestation?.background_inspect?(path||''):'';
-    s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency,lens:lensNow,ui:s.ui});
-    if(!renderedIds.has(id))fieldById.get(id)?.arriveFrom(null);
+    let accepted;
+    try{accepted=s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency,lens:lensNow,ui:s.ui})}
+    catch(error){if(requireReady)throw renderFailure(id,error);throw error}
+    if(requireReady&&(accepted===false||s.host.hidden))throw renderFailure(id);
   }
+  if(retainPrior)for(const id of surfaces.keys())if(!activeIds.includes(id))resetSurface(id);
+  for(const id of activeIds)if(!renderedIds.has(id))fieldById.get(id)?.arriveFrom(null);
   renderedIds=new Set(activeIds);
   composition();Safe.refresh();for(const ui of uiById.values())ui.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
@@ -198,46 +204,67 @@ function hashAddress(hash){const m=/^#([^:]*):(.*)$/.exec(hash||'');if(!m)return
 /* mode: true pushes a new entry; 'replace' gives the current entry (one the witness made by hand) its state. */
 function writeHistory(mode){if(mode&&!restoring)history[mode==='replace'?'replaceState':'pushState'](snap(),'',hashFor(activeAddress))}
 function setLocalView(path='',source='restore'){if(path)W.inspect(path,source);else W.clearInspection(source);render(W.view)}
+/* Detail data is only one readiness boundary. Paint the candidate under the
+ * membrane before retiring the prior body, and roll back a refused renderer. */
+function installEncounter(ids,address,nextStack,localView='',source='encounter-change'){
+  const prior=snap(),priorRendered=new Set(renderedIds),priorText=stateEl.textContent;
+  installingEncounter=true;
+  try{
+    for(const id of ids)activateField(id);
+    activeIds=[...ids];activeAddress=address;stack=nextStack;syncGlobalNavigator();
+    if(inspectCapable(activeIds)&&localView)W.inspect(localView,source);else W.clearInspection(source);
+    render(W.view,{retainPrior:true,requireReady:true});
+  }catch(error){
+    for(const id of ids)if(!prior.activeIds.includes(id)){
+      try{resetSurface(id)}catch(cleanup){console.warn('refused body cleanup failed',cleanup)}
+      const s=surfaces.get(id);if(s)s.host.hidden=true;
+    }
+    activeIds=prior.activeIds;activeAddress=prior.activeAddress;stack=prior.stack;renderedIds=priorRendered;syncGlobalNavigator();
+    if(inspectCapable(activeIds)&&prior.localView)W.inspect(prior.localView,'refused-encounter');else W.clearInspection('refused-encounter');
+    composition();Safe.refresh();for(const ui of uiById.values())ui.refresh();stateEl.textContent=priorText;
+    throw error;
+  }finally{installingEncounter=false}
+}
 function enter(r,path,push=true){
   if(!r.interlocutors.length)return false;
   // Expensive per-site geometry is installed only at the membrane crossing,
   // under the closing fold; the parent proxy has remained visible until now.
-  for(const e of r.interlocutors)activateField(e.interlocutorId);
-  stack.push({activeIds:[...activeIds],activeAddress,localView:W.view});
-  activeIds=r.interlocutors.map(x=>x.interlocutorId);activeAddress=path;
-  W.clearInspection('encounter-change');syncGlobalNavigator();render('');
+  const nextStack=[...stack,{activeIds:[...activeIds],activeAddress,localView:W.view}];
+  installEncounter(r.interlocutors.map(x=>x.interlocutorId),path,nextStack);
   writeHistory(push);
   return true;
 }
 let handoffIntent=0;
 function feedWound(error){
-  console.warn('Display feed handoff refused; prior encounter preserved',error);
+  console.warn('Display representation handoff refused; prior encounter preserved',error);
   stateEl.dataset.feedWound=String(error?.message||error);
-  stateEl.textContent='FEED UNAVAILABLE · RETRY THE ENCOUNTER';
+  stateEl.textContent=(error?.code==='RENDER_UNAVAILABLE'?'ENCOUNTER UNAVAILABLE':'FEED UNAVAILABLE')+' · RETRY THE ENCOUNTER';
   writeHistory('replace');
 }
 function navigateGlobal(path,push=true,origin=null){
   const r=resolveGlobal(path);if(!r.interlocutors.length)return false;
-  const ids=r.interlocutors.map(x=>x.interlocutorId),token=++handoffIntent;
-  if(path===activeAddress&&sameIds(ids,activeIds)){if(inspectCapable())setLocalView('','global-current');if(push==='replace')writeHistory('replace');return true}
+  const ids=r.interlocutors.map(x=>x.interlocutorId);
   if(fold.busy)return false;
+  const token=++handoffIntent;
+  if(path===activeAddress&&sameIds(ids,activeIds)){if(inspectCapable())setLocalView('','global-current');if(push==='replace')writeHistory('replace');return true}
   const context={origin,from:activeAddress,to:path};
   const acquired=acquireTarget(ids);
-  const swap=()=>fold.swap(()=>enter(r,path,push),context);
-  if(!acquired){swap();return true}
+  const swap=()=>fold.swap(()=>token===handoffIntent?enter(r,path,push):false,context);
+  const launch=()=>{try{const result=swap();if(result&&typeof result.catch==='function')result.catch(error=>{if(token===handoffIntent)feedWound(error)})}catch(error){if(token===handoffIntent)feedWound(error)}};
+  if(!acquired){launch();return true}
   // The parent keeps displaying the child-owned preview while detail arrives.
   stateEl.textContent='ACQUIRING PUBLIC FEED · '+path;
-  acquired.then(()=>{if(token!==handoffIntent)return;const launched=swap();if(launched&&typeof launched.catch==='function')launched.catch(feedWound)})
+  acquired.then(()=>{if(token===handoffIntent)launch()})
           .catch(error=>{if(token===handoffIntent)feedWound(error)});
   return true;
 }
 function leave(push=true){
   if(!stack.length)return navigateGlobal('',push,{x:innerWidth/2,y:innerHeight/2});
-  const prev=stack.pop();activeIds=prev.activeIds;activeAddress=prev.activeAddress||'';syncGlobalNavigator();
-  if(inspectCapable(activeIds)&&prev.localView)W.inspect(prev.localView,'return');else W.clearInspection('return');
-  render(W.view);writeHistory(push);return true;
+  const prev=stack.at(-1);
+  try{installEncounter(prev.activeIds,prev.activeAddress||'',stack.slice(0,-1),prev.localView,'return');writeHistory(push);return true}
+  catch(error){feedWound(error);return false}
 }
-addEventListener('sss:view',e=>{if(e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'')});
+addEventListener('sss:view',e=>{if(installingEncounter||e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'')});
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
 /* Ascent past a site's own root continues through the membrane: the same
  * gesture returns to the container the witness came through. */
@@ -248,8 +275,8 @@ addEventListener('sss:membrane-ascend',e=>{
   const id=e.detail?.id;if(!id||!activeIds.includes(id)||fold.busy)return;
   if(!stack.length&&!activeAddress)return; /* already the outermost container: nothing to ascend into */
   const env=hostEnvironment(id);
-  const back=()=>{if(stack.length)leave();else{const r=resolveGlobal('');if(r.interlocutors.length)enter(r,'',true)}if(env)fieldById.get(env.hostId)?.arriveFrom(env.place,id)};
-  fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});
+  const back=()=>{let returned=false;if(stack.length)returned=leave();else{const r=resolveGlobal('');if(r.interlocutors.length)returned=enter(r,'',true)}if(returned&&env)fieldById.get(env.hostId)?.arriveFrom(env.place,id)};
+  try{const result=fold.swap(back,{origin:{x:innerWidth/2,y:innerHeight/2},from:activeAddress,to:''});if(result&&typeof result.catch==='function')result.catch(feedWound)}catch(error){feedWound(error)}
 });
 addEventListener('sss:language',()=>{render(W.view)});addEventListener('sss:safe-area',()=>{for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();for(const ui of uiById.values())ui.refresh()});
 home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{++handoffIntent;setLocalView('','home')}});
@@ -264,9 +291,9 @@ addEventListener('popstate',e=>{
   const desired=e.state,ids=desired.activeIds||[...ROOT_IDS],token=++handoffIntent;
   const restore=()=>{
     if(token!==handoffIntent)return;
-    for(const id of ids)activateField(id);
     restoring=true;
-    try{activeIds=ids;activeAddress=desired.activeAddress||'';stack=desired.stack||[];syncGlobalNavigator();if(inspectCapable(activeIds)&&desired.localView)W.inspect(desired.localView,'history');else W.clearInspection('history');render(W.view)}
+    try{installEncounter(ids,desired.activeAddress||'',desired.stack||[],desired.localView,'history')}
+    catch(error){restoring=false;feedWound(error)}
     finally{restoring=false}
   };
   const acquired=acquireTarget(ids);

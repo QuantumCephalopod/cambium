@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.5"
+version: "3.6"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -50,6 +50,8 @@ A target click performs the encounter transition immediately:
 `pointer target -> target-origin closure -> mounted encounter swap -> destination`
 
 There is no global inspect-then-commit step.
+
+Mounted movement inherits the receiving-renderer acceptance boundary from `../organism/RITUAL.md`. Entry, history restoration and ascent commit their new address/stack only after the candidate body accepts; refusal retains the prior visible encounter and its truthful return path. A new accepted home intent may cancel an unfinished fold; a request rejected while the fold is busy does not silently replace the running intent.
 
 ## Philosophy background inspection
 
