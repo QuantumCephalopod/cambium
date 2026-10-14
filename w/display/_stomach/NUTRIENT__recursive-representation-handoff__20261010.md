@@ -22,3 +22,13 @@ Pure utility tests including pending coalescence, paused queue, failures, revisi
 - Schattenseiten GL fixture: preview55/64 cached source, entered55/512, per-slot high fail retains low, no per-frame failed-image retry, higher GPU tier retires on exit.
 - Global Display: lazy child-owned feed, deep-link navigation, retry and last-valid parent until detailed source is ready.
 - No production mutation. No source-relative performance data or real browser WebGL readiness proof; visual acceptance stays OPEN. Do not retire this nutrient or claim HOME on native CI alone.
+
+## Live encounter — 2026-10-14
+
+Canonical snapshot `993eb47f233d255f7573e919548b1d4c2c851e54`; deployed browser scripts declare bundle `11c72e4a51907f68`, matching the snapshot's computed bundle. Chrome cloud viewport: 1363×936.
+
+At `https://sss.saarland/#main:y`, the live DOM first reported `ACQUIRING PUBLIC FEED · y` while the Philosophy host remained visible. After acquisition it reported `organism:papers`, but no interlocutor host was visible. Source inspection localizes the failure: Papers returns false and hides its host when its required WebGL renderer cannot initialize; Display's current render/enter path ignores that refusal and commits the new active identity. Existing canvas attributes and the untextured Schattenseiten field are consistent with the 2D fallback path in this browser; no direct GPU-driver/counter API is available.
+
+This is a bounded counterexample to readiness: valid detail data alone is insufficient if the receiving body cannot render it. New local question: may a declined, throwing or still-hidden candidate erase the last valid encounter? Test a generic transactional handoff that retains the prior body, local view, history/stack and current identity until all target renderers have actually accepted. A refused candidate must remain retryable without reminting its immutable source or refetching already-acquired detail. Site-specific renderer meaning and GPU fallback remain local.
+
+Native queue/stale-disposal, Schattenseiten GL fixtures and Display feed/navigation fixtures passed on this same snapshot. Browser GPU/tier-allocation, injected network failure, true media handoff and physical-device acceptance remain OPEN. Do not use this DOM-only counterexample as a full visual pass.

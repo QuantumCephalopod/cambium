@@ -42,3 +42,9 @@ Reacquire the current shared law and local body first. For a bounded historical 
 
 Close each outstanding local acceptance distinction only from an actual corresponding witness. Sediment recovered current meaning into the local receptor/current projection, append a new local HOME for the resulting local act, and retire only the residue whose source/reference duty has closed. This carrier stays unresolved while the evidence or local acceptance above remains open.
 
+
+## Source availability and browser encounter — 2026-10-14
+
+The current Fat publication feed still admits 49 works and declares 64/512 tiers, with 64 revision `sha256:9d111871cbebf9166c86ea5d2bd2180a3e4bbd877417fabafd3043e4c4ec862d`. Direct browser reads of the declared `sizes/64/still/01001.webp` and `sizes/512/still/01001.webp` completed at exactly 64×64 and 512×512. This earns sample producer availability only, not all-media availability or cross-origin consumer acceptance.
+
+Live Schattenseiten entry displayed its 49-work/3-rank/6-cluster/33-moving metadata and returned to Philosophy through root-home. The work imagery itself was not rendered in this cloud browser; canvas attributes match the current 2D fallback branch, so entered 64→512 GPU handoff, optical preview and high-tier GPU retirement remain unverified. The detailed handoff failure is owned by Display's existing representation-handoff intake. Native low/high/cache/failure/context/revisit fixtures passed; those witnesses keep their native-only scope.
