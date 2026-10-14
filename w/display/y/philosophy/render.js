@@ -80,7 +80,9 @@ function renderMarkers(host){
 }
 addEventListener('sss:orientation',positionMarkers);addEventListener('resize',positionMarkers);
 const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=text;return n};
-function fieldName(ui,path){const name=path?'locus-'+path:'copy';try{ui?.field(name);return name}catch(_){return 'copy'}}
+let describe=null;
+function fitDescription(){if(!describe?.el?.isConnected)return;const c=describe.ui.carrier,b=describe.ui.field('Description').bounds;describe.el.style.inlineSize=b.w*c.w+'px';describe.el.style.blockSize=b.h*c.h+'px';describe.ui.refresh()}
+addEventListener('resize',fitDescription);
 function render({host,content,projection,path='',language='en',ui=null}={}){
   if(!host||!content||!projection?.root)return false;
   const node=path?nodeAt(projection.root,path):projection.root,said=projection.expression?.[path]?.[language]||{};
@@ -96,7 +98,7 @@ function render({host,content,projection,path='',language='en',ui=null}={}){
     copy.append(el('p','hint',language==='de'?'Die Flächen fokussieren rekursive Adresszellen. Echte globale Site-Holons erscheinen an ihren tree-derived Adressen; ihre Marker wechseln direkt den Encounter.':'Faces focus recursive address cells. Actual global site-holons appear at their tree-derived addresses; their markers switch encounters directly.'));
   }
   content.append(copy);
-  if(ui){const name=fieldName(ui,path),b=ui.field(name).bounds;copy.style.inlineSize=`calc(${b.w*100}% - 1.5rem)`;ui.bind(copy,name)}
+  if(ui){describe={el:copy,ui};fitDescription();ui.bind(copy,'Description')}
   markerLayer?.remove();markerLayer=null;return true; /* site labels are now Display body labels */
 }
 function unmount({host,content}={}){if(markerLayer)markerLayer.hidden=true;if(host)host.hidden=true;if(content)content.replaceChildren()}

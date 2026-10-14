@@ -8,118 +8,63 @@
     "w",
     "x",
     "y",
-    "z"
+    "z",
+    "ww",
+    "wx",
+    "xw",
+    "xx",
+    "xz",
+    "zx",
+    "zz"
   ],
   "fields": {
-    "copy": {
-      "cells": [
-        "ww",
-        "wx",
-        "wy",
-        "wz"
-      ],
-      "label": "encounter copy",
-      "z": 1,
-      "variants": {
-        "portrait": [
-          "ww",
-          "wx",
-          "wy",
-          "wz",
-          "xw",
-          "xx",
-          "xy",
-          "xz"
-        ]
-      }
-    },
-    "locus-w": {
-      "cells": [
-        "ww",
-        "wx",
-        "wy",
-        "wz"
-      ],
-      "label": "locus w prose",
-      "variants": {
-        "portrait": [
-          "yw",
-          "yx",
-          "yy",
-          "yz",
-          "zw",
-          "zx",
-          "zy",
-          "zz"
-        ]
-      },
-      "z": 1
-    },
-    "locus-x": {
-      "cells": [
-        "xw",
-        "xx",
-        "xy",
-        "xz"
-      ],
-      "label": "locus x prose",
-      "variants": {
-        "portrait": [
-          "yw",
-          "yx",
-          "yy",
-          "yz",
-          "zw",
-          "zx",
-          "zy",
-          "zz"
-        ]
-      },
-      "z": 1
-    },
-    "locus-y": {
+    "Description": {
       "cells": [
         "yw",
         "yx",
         "yy",
         "yz"
       ],
-      "label": "locus y prose",
-      "variants": {
-        "portrait": [
-          "yw",
-          "yx",
-          "yy",
-          "yz",
-          "zw",
-          "zx",
-          "zy",
-          "zz"
-        ]
-      },
-      "z": 1
+      "label": "decript"
     },
-    "locus-z": {
+    "compass": {
       "cells": [
-        "zw",
-        "zx",
-        "zy",
-        "zz"
+        "zzw",
+        "zzx",
+        "zzy",
+        "zzz"
       ],
-      "label": "locus z prose",
-      "variants": {
-        "portrait": [
-          "yw",
-          "yx",
-          "yy",
-          "yz",
-          "zw",
-          "zx",
-          "zy",
-          "zz"
-        ]
-      },
-      "z": 1
+      "label": "compass"
+    },
+    "header": {
+      "cells": [
+        "www",
+        "wwx",
+        "wwy",
+        "wwz",
+        "wxw",
+        "wxx",
+        "wxy",
+        "wxz",
+        "xww",
+        "xwx",
+        "xwy",
+        "xwz",
+        "xxw",
+        "xxx",
+        "xxy",
+        "xxz"
+      ],
+      "label": "header"
+    },
+    "viewfocus": {
+      "cells": [
+        "wz",
+        "xy",
+        "yx",
+        "zw"
+      ],
+      "label": "view"
     }
   },
   "elements": {}

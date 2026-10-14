@@ -1,0 +1,30 @@
+{
+  "kind": "HOME",
+  "home_at_utc": "2026-10-14T23:45:00Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "event_id": "philosophy-prose-description-field-20261014T234500Z",
+  "parent_event_id": "philosophy-prose-grid-placement-20261014T231500Z",
+  "organism": "philosophy",
+  "entrypoint": "w/display/y/philosophy",
+  "operation": "place-prose-in-self-relative-description-field",
+  "outcome": "PASS/EARNED — Philosophy prose is publicly rendered in the shared site-holon layout's Description field (first-split y) on every resolution; it never meets the compass/minimap; nutrient exit met.",
+  "context": {
+    "correction": "the previous per-locus quadrants + portrait variants fought the grid instead of using it; owner supplied the shared site-holon layout: header top band, viewfocus centre, compass = zz, Description = y. The grid is self-relative, so y is always half width × half height and cannot collide with zz."
+  },
+  "changed_scope": [
+    "ui-grid.json = owner's site-holon layout (meta.name organism:philosophy); locus-* fields and portrait variants removed",
+    "render.js binds all prose to Description, sized from the field bounds and re-fitted on resize",
+    "style.css: prose sections scroll within their own field",
+    "receptor grid sentence rewritten to the Description law",
+    "_stomach/NUTRIENT__philosophy-prose-unrendered__20261014.md -> _waste/metabolized-*"
+  ],
+  "witness": {
+    "site_public_build_check_address_closure_bytes": "PASS",
+    "display_tests": "PASS",
+    "browser": "Description box desktop 1440x900 [0,514,720,386], tablet 820x1180 [0,654,410,526], phone 390x844 [0,480,195,364]; never intersects minimap/compass; longer bodies scroll in-field; no page errors"
+  },
+  "observation_not_acted": "Display's legal footer links (Privacy · Impressum) sit at the bottom-left inside Philosophy's Description region",
+  "remaining_open": [
+    "_stomach/NUTRIENT__papers-visual-body-in-philosophy__20260929.md"
+  ]
+}

@@ -61,7 +61,7 @@ Root-level expression configuration lives in `encounter.json`; leaf expression t
 
 Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Regenerate with `python3 y/build.py --derive-root-projection`; the build refuses any drift from that derivation.
 
-Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's recursive UI grid by the same address it speaks for: root mission/position → field `copy`; an inspected locus `g` → field `locus-g`, the four cells of grid quadrant `g`. Portrait carriers use full-width variants. Text never takes pointer authority from the field: faces and labels underneath remain the encounter surface.
+Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's self-relative recursive UI grid: Philosophy's grid follows the shared site-holon layout (`header` top band, `viewfocus` centre, `compass` = `zz`, `Description` = first-split `y`), and all prose — root mission/position or an inspected locus body — lives in `Description`, sized by that field's own bounds and scrolling within it. Because the grid is relative to its carrier, the same cells hold on every resolution; no device variants are needed.
 
 ## global address encounter
 
