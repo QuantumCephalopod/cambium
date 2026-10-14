@@ -21141,6 +21141,18 @@
       "last_seen": "2026-09-30T13:27:43Z",
       "phenotype_samples": 4
     },
+    "4e3d49c0b6d4b31e4ee98913": {
+      "baits": {
+        "/~/ecc06a945fc90ea6de0d89bb": 1
+      },
+      "events": 1,
+      "first_seen": "2026-10-14T16:38:34Z",
+      "genome": "96b2b3aa90bb47d2f98e739b13f348a5f9f05694c4db8fe95f10a50080c4733c",
+      "id": "4e3d49c0b6d4b31e4ee98913",
+      "kind": "z",
+      "last_seen": "2026-10-14T16:38:34Z",
+      "phenotype_samples": 1
+    },
     "4e48e35c79fe3b8eeafcb3f3": {
       "baits": {
         "/~/47042cd4a4c144c4174848a7": 1
@@ -46076,6 +46088,18 @@
       "last_seen": "2026-09-19T12:44:00Z",
       "phenotype_samples": 7
     },
+    "b295f98a2ea9c8db52c2288f": {
+      "baits": {
+        "/~/ecc06a945fc90ea6de0d89bb": 1
+      },
+      "events": 1,
+      "first_seen": "2026-10-14T16:47:41Z",
+      "genome": "f4b48e3418cc809512509c866ad0b53d89ee8864e0f82e6c603efe2f3983ed4c",
+      "id": "b295f98a2ea9c8db52c2288f",
+      "kind": "z",
+      "last_seen": "2026-10-14T16:47:41Z",
+      "phenotype_samples": 1
+    },
     "b2992969dc85aa3eda7e81e4": {
       "baits": {
         "/~/ecc06a945fc90ea6de0d89bb": 2
@@ -54961,6 +54985,18 @@
       "last_seen": "2026-09-27T11:21:06Z",
       "phenotype_samples": 1
     },
+    "d57cc4123618fb70a6de6fa0": {
+      "baits": {
+        "/~/ecc06a945fc90ea6de0d89bb": 1
+      },
+      "events": 1,
+      "first_seen": "2026-10-14T16:24:10Z",
+      "genome": "00a3f1177288b9d8d39c2911e9197feebc394e08272a0defa2298ad536a16054",
+      "id": "d57cc4123618fb70a6de6fa0",
+      "kind": "x",
+      "last_seen": "2026-10-14T16:24:10Z",
+      "phenotype_samples": 1
+    },
     "d5a968d96bdd32e42094e285": {
       "baits": {
         "/~/ecc06a945fc90ea6de0d89bb": 1
@@ -58843,15 +58879,15 @@
     },
     "e41dc06016f35814e3e63c79": {
       "baits": {
-        "/~/ecc06a945fc90ea6de0d89bb": 2
+        "/~/ecc06a945fc90ea6de0d89bb": 3
       },
-      "events": 2,
+      "events": 3,
       "first_seen": "2026-09-29T10:08:26Z",
-      "genome": "33edc4334a943b31f55c1054e1d5c2bcdb7644448951138185201df6d6718663",
+      "genome": "e811c582903a7dd413f8f2f900579a61799c1f4e9ce7fc497cee1b3e3bf1b6be",
       "id": "e41dc06016f35814e3e63c79",
-      "kind": "x",
-      "last_seen": "2026-09-29T10:08:27Z",
-      "phenotype_samples": 2
+      "kind": "y",
+      "last_seen": "2026-10-14T15:59:39Z",
+      "phenotype_samples": 3
     },
     "e42f869f264b188cc77466f5": {
       "baits": {
@@ -312016,12 +312052,48 @@
       "source_index": 111,
       "status": 404,
       "t": "2026-10-14T15:16:58Z"
+    },
+    {
+      "crawler": "e41dc06016f35814e3e63c79",
+      "method": "GET",
+      "path": "/~/ecc06a945fc90ea6de0d89bb",
+      "source_file": "20261014T152450Z--20261014T171147Z.traffic.json",
+      "source_index": 3,
+      "status": 200,
+      "t": "2026-10-14T15:59:39Z"
+    },
+    {
+      "crawler": "d57cc4123618fb70a6de6fa0",
+      "method": "GET",
+      "path": "/~/ecc06a945fc90ea6de0d89bb",
+      "source_file": "20261014T152450Z--20261014T171147Z.traffic.json",
+      "source_index": 2,
+      "status": 522,
+      "t": "2026-10-14T16:24:10Z"
+    },
+    {
+      "crawler": "4e3d49c0b6d4b31e4ee98913",
+      "method": "GET",
+      "path": "/~/ecc06a945fc90ea6de0d89bb",
+      "source_file": "20261014T152450Z--20261014T171147Z.traffic.json",
+      "source_index": 0,
+      "status": 401,
+      "t": "2026-10-14T16:38:34Z"
+    },
+    {
+      "crawler": "b295f98a2ea9c8db52c2288f",
+      "method": "GET",
+      "path": "/~/ecc06a945fc90ea6de0d89bb",
+      "source_file": "20261014T152450Z--20261014T171147Z.traffic.json",
+      "source_index": 1,
+      "status": 401,
+      "t": "2026-10-14T16:47:41Z"
     }
   ],
   "legacy_404_through": "2026-09-18T11:13:56Z",
-  "raw_capture_end": "2026-10-14T15:24:50Z",
+  "raw_capture_end": "2026-10-14T17:11:47Z",
   "raw_capture_start": "2026-08-18T15:42:27Z",
-  "raw_requests": 27392,
+  "raw_requests": 27396,
   "routes": {
     "/__live/~/7d461d62fe01d71bfea9a7d7": {
       "crawlers": {
@@ -442264,6 +442336,7 @@
         "4e0a8f32e288ecbc5c6dc14c": 2,
         "4e2319ff3fa002007b5a42f1": 20,
         "4e23f02ab414014919542a8c": 4,
+        "4e3d49c0b6d4b31e4ee98913": 1,
         "4e4d153745975d3d38483d2d": 2,
         "4e65f54f3a8fb9145f5bf7a3": 1,
         "4e6aae4074ef9249a4860e0a": 1,
@@ -443082,6 +443155,7 @@
         "b218e43996b5b902f6425f3d": 1,
         "b2684ea2bc39f5c69f7a2e91": 3,
         "b280ee37431d0e2ed402e1a8": 1,
+        "b295f98a2ea9c8db52c2288f": 1,
         "b2992969dc85aa3eda7e81e4": 2,
         "b30f5441300939e77aad941b": 1,
         "b3175e9a08efa1972e2b3063": 1,
@@ -443389,6 +443463,7 @@
         "d527b8aab10faef4011b85fb": 3,
         "d527cbf5b736510a65ab640e": 1,
         "d55748aed3f74491c8af5602": 1,
+        "d57cc4123618fb70a6de6fa0": 1,
         "d5a968d96bdd32e42094e285": 1,
         "d5bb086de4e121b5ae62c316": 1,
         "d5de36b0de317cc1ae188e1c": 1,
@@ -443511,7 +443586,7 @@
         "e401e5cd38ff4ca9073c9c89": 1,
         "e4075e1cdb312e75192034f0": 1,
         "e410e84a25ee3e7cf1af3bb9": 3,
-        "e41dc06016f35814e3e63c79": 2,
+        "e41dc06016f35814e3e63c79": 3,
         "e42f869f264b188cc77466f5": 2,
         "e43bc2c9567b0b05f00b68f3": 1,
         "e4417546681dce6a571b2612": 1,
@@ -443744,21 +443819,21 @@
         "ffe688a941e6119d64d0fb23": 1
       },
       "first_seen": "2026-09-13T20:02:54Z",
-      "last_seen": "2026-10-14T15:09:46Z",
+      "last_seen": "2026-10-14T16:47:41Z",
       "legacy_404_observations": 0,
       "path": "/~/ecc06a945fc90ea6de0d89bb",
-      "raw_requests": 4187,
+      "raw_requests": 4191,
       "statuses": {
-        "200": 2649,
+        "200": 2650,
         "301": 580,
         "304": 23,
-        "401": 271,
+        "401": 273,
         "403": 209,
         "404": 236,
         "405": 71,
         "499": 99,
         "503": 1,
-        "522": 48
+        "522": 49
       }
     },
     "/~/ecc443bad11db2cc46f473ea": {
