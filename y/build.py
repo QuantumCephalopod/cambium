@@ -188,10 +188,23 @@ def derive_root_projection(site_dir):
             'one': {'de': expressions['de']['question'], 'en': expressions['en']['question']},
             'children': {},
         }
+    encounter = json.loads((site_dir/'encounter.json').read_text(encoding='utf-8'))
+    languages = encounter['available_languages']
+    expression = {'': {l: {k: encounter['expressions'][l][k] for k in ('title', 'mission', 'position')} for l in languages}}
+    for gene in GENES:
+        content = json.loads((site_dir/gene/'content.json').read_text(encoding='utf-8'))
+        expression[gene] = {l: {'body': content['expressions'][l]['body']} for l in languages}
+    for address, langs in expression.items():
+        for l, fields in langs.items():
+            for k, v in fields.items():
+                texts = v if isinstance(v, list) else [v]
+                if not texts or any(not isinstance(t, str) or not t.strip() for t in texts):
+                    raise ValueError(f'{site_dir.name} expression {address or "ε"}/{l}/{k} is empty')
     return {
-        'source': {'organism': site['id'].split(':', 1)[1], 'derived_from': ['INDEX.yaml', '_cambium.yaml', 'w/x/z/y content.json']},
+        'source': {'organism': site['id'].split(':', 1)[1], 'derived_from': ['INDEX.yaml', '_cambium.yaml', 'encounter.json', 'w/x/z/y content.json']},
         'root': {'noun': site['title'], 'children': children},
         'constitution': constitution,
+        'expression': expression,
     }
 
 
