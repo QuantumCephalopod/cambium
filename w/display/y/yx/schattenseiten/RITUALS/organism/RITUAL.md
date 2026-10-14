@@ -1,12 +1,26 @@
 ---
 name: schattenseiten
-description: "Site-holon projection of Philipp's organ Schattenseiten: 49 shadows grown by one operation repeated at every rank, shown as floating tetrahedra in their genealogy."
-version: "1.4"
+description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
+version: "1.5"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
 
-This body is a **projection**, never a second ontology. The organ lives in Philipp's own organism; what it admits for publication is deposited in `fat` (self-similar-systems/fat, `x/philipp/schattenseiten/`), and `projection.json` is that deposit's `feed.json` plus the `fat` base URL. Refresh by copying the deposit feed again; never edit works here.
+This is the independently rooted repository body `organism:schattenseiten`, with local scope `schattenseiten`, encountered through Display Population at site-space `x`. The repository and source organism carry complementary tissue connected through an explicit publication dependency.
+
+Philipp's source organ owns the original works, words, genealogy and media declarations. What it admits for publication is deposited in `fat` (self-similar-systems/fat, `x/philipp/schattenseiten/`); `projection.json` carries that deposit's `feed.json` plus the `fat` base URL. Refresh source-admitted work data from that deposit; source authority remains there.
+
+This local organism owns the admitted projection's repository embodiment, renderer, style, UI fields, interaction, media acquisition/readiness and context-local resources. Being source-derived does not remove those local responsibilities or their lifecycle membrane. Source truth, local truth and Display's generic physiology remain related through their interfaces.
+
+## Local lifecycle and re-entry
+
+Enter the complete shared-root field, repository receptor and Display receptor before this local receptor. Re-enter the stable local body through `site.json`; `projection.json` is admitted work data, while `_feed/current.json` is this body's current self-presentation.
+
+All four lifecycle roles belong to this root: `_stomach/` holds unresolved local encounters, `_feed/` presents current local state, `_root/` carries append-oriented local HOME, and `_waste/` receives lawfully retired matter. Shared Metabolism and Drive govern their admission, return, projection and custody. Empty roles remain addressable through inert retention markers.
+
+A local act must return to this organism's own HOME. Source updates, Display HOME, Git events, native tests and publication events retain their actual owners and witness limits; they cannot stand in for local HOME. Shared geometry/optics/readiness law remains Display-owned, and only an affected dependency crosses back through an explicit host intake.
+
+Earlier local continuity lacks a recovered local HOME ledger. Existing Display-owned witnesses remain reachable through the bounded continuity nutrient in `_stomach`; their ownership and original limitations are preserved. The membrane repair closes today's repair only. Previously open producer, deployed/browser and device acceptance remains unresolved until actually witnessed.
 
 ## Body
 

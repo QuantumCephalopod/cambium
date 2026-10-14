@@ -3,7 +3,7 @@ kind: unresolved-encounter
 target: organism:schattenseiten
 source: user-chat
 received_at: 2026-10-14T14:44:52Z
-status: OPEN
+status: ASSIMILATED_WITH_RESIDUAL
 ---
 
 # Local membrane and continuity correction
@@ -25,3 +25,7 @@ The census found no local lifecycle shell at the mounted stable body `organism:s
 Inspect current local ownership and recoverable source-exact witnesses. Determine the smallest shell/receptor repair under the complete shared-root field and current repository/Display/local law. Preserve source-media authority and local identity. Earlier carrier events must not be retroactively promoted into organism-owned HOME or invented feed history.
 
 Exit condition: current local ownership and all four membrane roles are witnessed; the bounded resulting act has durable local HOME and a source-owned current projection; any earlier continuity still lacking evidence remains explicitly unresolved.
+
+## Bounded disposition
+
+The local membrane and ownership correction is assimilated. Source-faithful encounter remains above. Prior local continuity and live-media/device acceptance remain unresolved in `_stomach/NUTRIENT__prior-local-continuity__20261014.md`. Today's repair HOME closes only the witnessed local shell/receptor repair.
