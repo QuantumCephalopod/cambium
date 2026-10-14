@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.5"
+version: "3.6"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -150,6 +150,14 @@ For an eligible local object, the intended interaction is free glass → site-of
 
 No target means current free-lens behavior remains. Locking is neither global navigation nor a second Descent. Existing pointer pass-through/hold ownership, reduced-transparency fallback, reservoir kind/layer, compositing and per-site authority are unchanged until a separately witnessed implementation passes native/visual tests. The still-open 2026-10-03 soft-lock/preview nutrient owns that implementation pressure.
 
+### Soft-lock — earned mechanics (2026-10-14)
+
+- **Offer channel.** A site lends lock targets by identity through `SSSDisplayLens.offer(id,{kind,…})` / `withdraw(id)`; a getter returning nothing means the target is absent now. Display never learns what a target means.
+- **Two target kinds.** A `field` target is screen-space UI tissue placed by the recursive UI grid: the locked drop shares its exact rectangle with rounded corners. A `body` target is world/organism tissue: the drop keeps its released circle size and follows the body's projected centre (`field.projectBody(id)` is the neutral geometry hook).
+- **Lock** happens when a held drop is released over a target. **Unlock** happens when the drop is pulled again, or when its target is no longer present — then it unlocks exactly where it is and returns to a circle. A target that survives navigation or Descent keeps the lock.
+- **Optics.** A locked drop frames rather than enlarges (no magnification); the field outside it is gently blurred and dimmed. `data-display-lens-lock` on the document root names the current lock kind for site-local CSS.
+- Pass-through clicks, hold-to-take ownership, reservoirs, reduced-transparency fallback and per-site authority are unchanged.
+
 
 Version 3.3 address-hash correction (2026-10-03): the hash became an input as well as a witness (`Address hash`), closing the observation that changing it back to overview left the encounter in place. Arrival with an address hash enters it directly instead of being overwritten to overview. The Population-derived target list names all six current site-holons.
 
@@ -191,3 +199,5 @@ Version 2.2 default background-drag correction (2026-09-18): shared background d
 Version 3.4 canonical-address serialization correction (2026-10-04): raw/global textual addresses are now stated in canonical `w,x,y,z` serialization order. This is a communication/state-order invariant only; the existing CCCC semantic mapping and carrier-specific tetrahedral vertex enumeration remain unchanged.
 
 Version 3.5 situated droplette function (2026-10-12): inherit the organism-afforded purpose of one lens without hardcoding site modes, rewriting physical glass or pretending the pending soft-lock/shape-morph is already deployed.
+
+Version 3.6 soft-lock mechanics (2026-10-14, Philipp): the situated droplette gains its first executed relation. Sites offer identity-bound `field`/`body` targets; release over one locks; field locks share the exact grid rectangle (rounded), body locks keep the released circle and follow the body; a vanished target unlocks in place, a surviving one holds through Descent; locked glass does not magnify and mutes the world outside. Philosophy is the first consumer; the soft-lock nutrient stays open for a second consumer and real-device acceptance.

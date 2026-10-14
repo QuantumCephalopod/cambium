@@ -1,6 +1,6 @@
 # NUTRIENT — lens soft-lock + organism-local preview / LOD — 2026-10-03
 
-status: OPEN / ADMITTED
+status: OPEN / FIRST CONSUMER WITNESSED (2026-10-14) — second consumer + real-device acceptance open
 source: Philipp, handwritten field notes + clarification chat 2026-10-03
 target: github.cambium → display
 related:
@@ -77,3 +77,9 @@ No CCCC split is implied by intake alone.
 Philipp recognized the already shared droplette as *one instrument* whose function is locally afforded by its encounter: of Form, Continuity, Care or Inquiry at the respective currently named site-space examples, **not four hardcoded tools or address-derived modes**. This conceptual relation was distilled in the newer `NUTRIENT__situated-instrument__20261012.md` and is eligible for Display organism/navigation/site-holon law and a separate conceptual HOME.
 
 **Unresolved operational pressure stays here:** Papers' actual vertex/edge/face offers the lens a soft-lock, then the *lens itself* deforms until the organism's own Pretext/tissue is readable; no prior unrelated click-explosion, extra overlay, template or duplicated instrument. Identity-following contact, pointer/Descent compatibility, geometry/screen limits, substantive authored text, cross-site substitution, accessible fallback, real GPU and direct user visual acceptance remain to be witnessed. No 2026-10-12 law document is evidence these were implemented or tested.
+
+## Progress — 2026-10-14 (display-lens-softlock-20261014T235900Z)
+
+Executed in staging: specimen-agnostic offer channel; `field` locks share the exact grid rectangle (rounded); `body` locks keep the released circle and follow `projectBody`; release-over-target locks, pull or vanished target unlocks in place, surviving target holds through Descent; no magnification while locked; outside muting in the glass pass.
+
+Acceptance against this nutrient: (1) generic coupling ✓; (2) site owns which targets exist ✓ — finer *interior preview* through the lock is not yet offered by any site; (3) identity-following ✓; (4) separate from navigation/Descent ✓; (5) no target → free lens ✓; (6) bounded work — n/a until a site renders a finer interior; (7) field lock takes readable size without a full-screen overlay ✓; (8) unlock returns to ordinary physiology ✓; (9) pass-through/ownership unchanged ✓ (existing lens witnesses pass); (10) **one consumer only (Philosophy)** — open. Real GPU/device and Philipp's eye on the deployed membrane remain open.

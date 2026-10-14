@@ -101,3 +101,38 @@ hold();win.fire('blur');assert.strictEqual(controller.snapshot().lens.held,false
 hold();glassOn=false;tick();glassOn=true;tick();assert.strictEqual(controller.snapshot().lens.held,false,'turning glass off cancels the drag');
 assert.ok(controller.snapshot().lens.mag>.11&&controller.snapshot().lens.mag<.12,'the drop magnifies by 13%');
 console.log('pass-through click / pull-to-take / ownership witness: PASS');
+
+/* Soft-lock witnesses: field = exact rounded rectangle, body = released circle that follows,
+ * vanished target unlocks in place, pulling unlocks, locked glass does not magnify. */
+{
+  const runT=(s,sec,t)=>{for(let i=0;i<sec*120;i++)L.step(s,[],1/120,view,null,typeof t==='function'?t():t);return s};
+  const field={id:'site:Description',kind:'field',cx:300,cy:500,hx:180,hy:110,r:10};
+  let s=L.create(null,view);s.x=310;s.y=480;s.vx=s.vy=0;
+  assert.strictEqual(L.candidateAt(s,[field]),field,'a drop released inside a field rectangle finds it');
+  L.lockTo(s,field);runT(s,2,field);
+  let g=L.geometry(s,null);
+  assert.ok(Math.abs(g.x-300)<1&&Math.abs(g.y-500)<1,'field lock centres on the target');
+  assert.ok(Math.abs(g.hx-180)<1&&Math.abs(g.hy-110)<1,'field lock shares the exact dimension');
+  assert.strictEqual(g.round,0);assert.strictEqual(g.corner,10);assert.strictEqual(g.mag,0,'locked glass frames, it does not magnify');
+  assert.strictEqual(g.focus,1);assert.deepStrictEqual(g.lock,{id:'site:Description',kind:'field'});
+  assert.ok(L.contains(s,300+175,500+105)&&!L.contains(s,300+200,500),'pointer surface follows the rectangle');
+  const moved={...field,cx:420,cy:300};runT(s,2,moved);g=L.geometry(s,null);
+  assert.ok(Math.abs(g.x-420)<1&&Math.abs(g.y-300)<1,'lock follows target identity, not stale pixels');
+  const at={x:s.x,y:s.y};L.step(s,[],1/60,view,null,null);
+  assert.strictEqual(s.lock,null,'a vanished target unlocks');
+  assert.ok(Math.hypot(s.x-at.x,s.y-at.y)<2,'it unlocks where it is');
+  g=L.geometry(s,null);assert.strictEqual(g.round,1);assert.strictEqual(g.hx,g.hy,'and becomes a circle again');
+  assert.ok(g.mag>0,'free glass magnifies again');
+
+  const body={id:'site:papers',kind:'body',cx:600,cy:300,hx:24};
+  s=L.create(null,view);s.x=590;s.y=310;s.vx=s.vy=0;
+  assert.strictEqual(L.candidateAt(s,[field,body]),body,'a drop over a body finds the body');
+  L.lockTo(s,body);let p={...body};runT(s,2,()=>p);g=L.geometry(s,null);
+  assert.strictEqual(g.round,1);assert.ok(Math.abs(g.hx-s.baseR*L.K.released)<1,'body lock keeps the released circle size');
+  p={...body,cx:200,cy:420};runT(s,2,()=>p);
+  assert.ok(Math.hypot(s.x-200,s.y-420)<1&&s.lock,'body lock survives while the body persists and follows it');
+  L.grab(s,s.x,s.y,7);assert.strictEqual(s.lock,null,'pulling the drop unlocks it');L.release(s,7);
+  s.x=50;s.y=50;assert.strictEqual(L.candidateAt(s,[field,body]),null,'no target means free lens');
+  assert.throws(()=>L.offer('x',{kind:'field'}));assert.throws(()=>L.offer('',{kind:'body',point:()=>null}));
+  console.log('soft-lock field/body/vanish/follow/pull witness: PASS');
+}

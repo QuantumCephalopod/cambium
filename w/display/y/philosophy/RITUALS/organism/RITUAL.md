@@ -63,6 +63,8 @@ Philosophy presents only itself. `projection.json` is a derived surface of Philo
 
 Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's self-relative recursive UI grid: Philosophy's grid follows the shared site-holon layout (`header` top band, `viewfocus` centre, `compass` = `zz`, `Description` = first-split `y`), and all prose — root mission/position or an inspected locus body — lives in `Description`, sized by that field's own bounds and scrolling within it. Because the grid is relative to its carrier, the same cells hold on every resolution; no device variants are needed.
 
+Philosophy lends the shared droplette its lockable tissue and nothing more: the `Description` field (a `field` target — the drop takes its exact rounded rectangle) and each mounted site-holon body in its field (a `body` target). Offers are renewed on every render and withdrawn on unmount, so leaving Philosophy releases a lock while a descent inside Philosophy keeps a lock on a body that is still present.
+
 ## global address encounter
 
 Philosophy's background is a **read-only perceptual witness of Display's current global address-space**, not a second authority for global placement.
