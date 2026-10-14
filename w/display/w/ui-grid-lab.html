@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SSS canonical UI grid lab</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#161819;
+  --panel:#1c1f20;
+  --panel2:#222627;
+  --ink:#f2f1ed;
+  --muted:rgba(242,241,237,.58);
+  --hair:rgba(242,241,237,.18);
+  --hair2:rgba(242,241,237,.34);
+  --active:#42d985;
+  --activeSoft:rgba(66,217,133,.14);
+  --warn:#ffb86a;
+  --bad:#ff7c7c;
+  --mono:"SpriteSheet Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:14px/1.35 var(--mono)}
+button,input,select,textarea{font:inherit;color:inherit;background:#17191a;border:1px solid var(--hair2);border-radius:0}
+button{padding:.52rem .7rem;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button[data-active="1"]{border-color:var(--active);color:var(--active);background:var(--activeSoft)}
+input,select{padding:.5rem .55rem}
+textarea{width:100%;min-height:11rem;resize:vertical;padding:.6rem;line-height:1.45}
+.app{display:grid;grid-template-rows:auto minmax(0,1fr);min-height:100vh}
+.bar{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;padding:.65rem;border-bottom:1px solid var(--hair);background:#191b1c}
+.bar .sep{height:1.8rem;width:1px;background:var(--hair);margin:0 .2rem}
+.bar .readout{margin-left:auto;color:var(--muted);font-size:.78rem}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 23rem;min-height:0}
+.stageWrap{position:relative;display:grid;place-items:center;min-width:0;padding:1.2rem;overflow:auto;background:radial-gradient(circle at 50% 45%,#202425 0,#151718 66%)}
+.frame{position:relative;width:min(100%,1100px);aspect-ratio:16/9;border:1px solid rgba(255,255,255,.82);background:#202223;overflow:hidden;box-shadow:0 2rem 6rem rgba(0,0,0,.35)}
+.specimen{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(circle at 15% 24%,rgba(255,255,255,.7) 0 1px,transparent 1.4px),
+  radial-gradient(circle at 72% 64%,rgba(255,255,255,.18) 0 1px,transparent 1.2px),
+  linear-gradient(135deg,rgba(255,255,255,.02),transparent 45%)}
+.specimen::before{content:"SITE-HOLON · SPECIMEN";position:absolute;left:1rem;bottom:.75rem;font-size:.68rem;letter-spacing:.14em;color:rgba(255,255,255,.26)}
+.gridLayer{position:absolute;inset:0;z-index:10;pointer-events:none}
+.cell{position:absolute;border:1px solid rgba(255,255,255,.72);pointer-events:auto;cursor:crosshair;background:transparent;transition:background .08s,border-color .08s}
+.cell:hover{background:rgba(255,255,255,.035)}
+.cell.selected{background:rgba(66,217,133,.13);border-color:var(--active)}
+.cell.invalid{background:rgba(255,124,124,.12);border-color:var(--bad)}
+.cell .addr{position:absolute;left:.28rem;top:.22rem;font-size:.64rem;color:rgba(255,255,255,.56);text-shadow:0 1px 2px #000;pointer-events:none}
+.frame.hideAddresses .addr{display:none}
+.frame.hideGrid .cell{border-color:transparent}
+.frame.hideGrid .cell:not(.selected):not(.invalid){background:transparent}
+.elementLayer{position:absolute;inset:0;z-index:20;pointer-events:none}
+.el{position:absolute;pointer-events:auto;cursor:pointer;border:1px solid rgba(66,217,133,.78);background:rgba(66,217,133,.075);overflow:hidden;transition:box-shadow .1s,border-color .1s}
+.el.selected{box-shadow:0 0 0 2px var(--active) inset;border-color:var(--active)}
+.el.panel{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.42)}
+.el .inside{position:absolute;display:flex;min-width:0;min-height:0;padding:.45rem .55rem;white-space:normal;overflow:hidden}
+.el[data-anchor="fill"] .inside{inset:0;align-items:center;justify-content:center}
+.el[data-anchor="north"] .inside{left:0;right:0;top:0;align-items:flex-start;justify-content:flex-start}
+.el[data-anchor="south"] .inside{left:0;right:0;bottom:0;align-items:flex-end;justify-content:flex-start}
+.el[data-anchor="west"] .inside{left:0;top:0;bottom:0;align-items:flex-start;justify-content:flex-start;writing-mode:vertical-rl;transform:rotate(180deg)}
+.el[data-anchor="east"] .inside{right:0;top:0;bottom:0;align-items:flex-start;justify-content:flex-start;writing-mode:vertical-rl}
+.el[data-anchor="center"] .inside{inset:0;align-items:center;justify-content:center}
+.el.symbol .inside{font-size:1.6em}
+.inspector{border-left:1px solid var(--hair);background:var(--panel);overflow:auto;padding:.8rem;display:flex;flex-direction:column;gap:.9rem}
+.block{border-top:1px solid var(--hair);padding-top:.72rem}
+.block:first-child{border-top:0;padding-top:0}
+.h{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
+.row{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.row>*{min-width:0}
+.kv{display:grid;grid-template-columns:6rem minmax(0,1fr);gap:.35rem .5rem;align-items:center}
+.kv label{color:var(--muted);font-size:.77rem}
+.kv input,.kv select{width:100%}
+.stateLine{font-size:.78rem;color:var(--muted);word-break:break-all}
+.stateLine strong{color:var(--ink);font-weight:500}
+.command{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.4rem}
+.log{max-height:10rem;overflow:auto;border:1px solid var(--hair);background:#151718;padding:.45rem;font-size:.75rem}
+.log div{padding:.14rem 0;color:var(--muted)}
+.log div:last-child{color:var(--active)}
+.tip{font-size:.73rem;color:var(--muted);line-height:1.45}
+.error{color:var(--bad)!important}
+.good{color:var(--active)!important}
+@media(max-width:900px){
+  .workspace{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .inspector{border-left:0;border-top:1px solid var(--hair);max-height:none}
+  .bar .readout{width:100%;margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <button id="splitBtn">split leaf</button>
+    <button id="coalBtn">coalesce parent</button>
+    <span class="sep"></span>
+    <button data-add="text">+ text edge</button>
+    <button data-add="symbol">+ symbol</button>
+    <button data-add="panel">+ panel</button>
+    <button id="moveBtn">move selected</button>
+    <button id="removeBtn">remove element</button>
+    <span class="sep"></span>
+    <button id="addrBtn" data-active="1">addresses</button>
+    <button id="gridBtn" data-active="1">grid</button>
+    <button id="clearSelBtn">clear selection</button>
+    <button id="blankBtn">blank</button>
+    <button id="resetBtn">specimen</button>
+    <div class="readout" id="readout">ε</div>
+  </header>
+
+  <main class="workspace">
+    <section class="stageWrap">
+      <div class="frame" id="frame">
+        <div class="specimen"></div>
+        <div class="gridLayer" id="gridLayer"></div>
+        <div class="elementLayer" id="elementLayer"></div>
+      </div>
+    </section>
+
+    <aside class="inspector">
+      <section class="block">
+        <div class="h">canonical selection</div>
+        <div class="stateLine">cells · <strong id="selCells">—</strong></div>
+        <div class="stateLine">element · <strong id="selElement">—</strong></div>
+        <div class="tip" style="margin-top:.5rem">click = select one leaf · shift+click = toggle same-rank leaves · double-click = split · alt+click = coalesce its parent</div>
+      </section>
+
+      <section class="block">
+        <div class="h">element</div>
+        <div class="kv">
+          <label for="labelInput">label</label><input id="labelInput" disabled>
+          <label for="anchorSelect">anchor</label>
+          <select id="anchorSelect" disabled>
+            <option>fill</option><option>north</option><option>south</option><option>west</option><option>east</option><option>center</option>
+          </select>
+          <label for="rankInput">type rank</label><input id="rankInput" type="number" min="-4" max="4" step="1" disabled>
+        </div>
+      </section>
+
+      <section class="block">
+        <div class="h">command membrane</div>
+        <div class="command"><input id="commandInput" placeholder="move title ww+wx -> xy+xz"><button id="runCommandBtn">run</button></div>
+        <div class="tip" style="margin-top:.45rem">accepted: <code>split ε</code> · <code>coalesce x</code> · <code>place nav xw+xx text north -1</code> · <code>move nav xw+xx -> xy+xz</code> · <code>remove nav</code></div>
+        <div class="log" id="log" style="margin-top:.55rem"></div>
+      </section>
+
+      <section class="block">
+        <div class="h">canonical JSON</div>
+        <div class="row" style="margin-bottom:.45rem"><button id="exportBtn">refresh export</button><button id="importBtn">import</button><button id="copyBtn">copy</button></div>
+        <textarea id="json"></textarea>
+        <div class="tip">The JSON is the state. The drawing is only a projection of it.</div>
+      </section>
+    </aside>
+  </main>
+</div>
+<script src="./ui-grid.js"></script>
+<script>
+(()=>{
+'use strict';
+const G=globalThis.SSSUIGrid;
+if(!G)throw new Error('SSSUIGrid missing');
+const $=id=>document.getElementById(id);
+const frame=$('frame'),gridLayer=$('gridLayer'),elementLayer=$('elementLayer');
+let state=G.initialState();
+let selectedCells=[];
+let selectedElement=null;
+let showAddresses=true,showGrid=true;
+let serial=1;
+const history=[];
+
+function log(line,bad=false){
+  if(!line)return;
+  history.push({line,bad});
+  const el=document.createElement('div');el.textContent=line;if(bad)el.className='error';$('log').appendChild(el);$('log').scrollTop=$('log').scrollHeight;
+}
+function pct(v){return (v*100)+'%'}
+function currentSpan(){return G.spanInfo(state,selectedCells)}
+function nextId(kind){
+  let id;
+  do{id=kind+'-'+serial++}while(state.elements[id]);
+  return id;
+}
+function clearSelection(){selectedCells=[];render()}
+function selectElement(id){selectedElement=id;selectedCells=[];render()}
+function commit(next,line){state=G.normalizeState(next);selectedCells=[];log(line);render()}
+function fail(e){log('! '+(e&&e.message?e.message:String(e)),true)}
+
+function renderCells(){
+  gridLayer.replaceChildren();
+  const sel=new Set(selectedCells);
+  const info=currentSpan();
+  for(const address of G.leafSet(state)){
+    const b=G.bounds(address),d=document.createElement('div');
+    d.className='cell';
+    if(sel.has(address))d.classList.add(info.ok?'selected':'invalid');
+    d.style.left=pct(b.x);d.style.top=pct(b.y);d.style.width=pct(b.w);d.style.height=pct(b.h);
+    d.dataset.address=address;
+    const a=document.createElement('div');a.className='addr';a.textContent=G.rootLabel(address);d.appendChild(a);
+    d.addEventListener('click',e=>{
+      e.stopPropagation();
+      if(e.altKey){
+        const p=G.parentOf(address);if(p===null)return;
+        try{commit(G.coalesce(state,p),'coalesce '+G.rootLabel(p))}catch(err){fail(err)}
+        return;
+      }
+      if(e.shiftKey){
+        const sameDepth=selectedCells.length===0||selectedCells[0].length===address.length;
+        if(!sameDepth){selectedCells=[address]}
+        else selectedCells=sel.has(address)?selectedCells.filter(x=>x!==address):G.canonicalCells([...selectedCells,address]);
+      }else selectedCells=[address];
+      selectedElement=null;render();
+    });
+    d.addEventListener('dblclick',e=>{
+      e.preventDefault();e.stopPropagation();
+      try{commit(G.split(state,address),'split '+G.rootLabel(address))}catch(err){fail(err)}
+    });
+    gridLayer.appendChild(d);
+  }
+}
+
+function elementRect(e){return G.spanInfo(state,e.cells).bounds}
+function renderElements(){
+  elementLayer.replaceChildren();
+  for(const [id,e] of Object.entries(state.elements)){
+    const b=elementRect(e),d=document.createElement('div');
+    d.className='el '+e.kind+(selectedElement===id?' selected':'');
+    d.dataset.anchor=e.anchor;d.dataset.id=id;
+    d.style.left=pct(b.x);d.style.top=pct(b.y);d.style.width=pct(b.w);d.style.height=pct(b.h);
+    d.style.zIndex=e.kind==='panel'?1:e.kind==='text'?2:3;
+    const inside=document.createElement('div');inside.className='inside';inside.textContent=e.label||id;
+    inside.style.fontSize=Math.pow(2,e.rank/2)+'rem';
+    d.title=id+' · '+G.spanText(e.cells)+' · '+e.anchor+' · r'+e.rank;
+    d.appendChild(inside);
+    d.addEventListener('click',ev=>{ev.stopPropagation();selectElement(id)});
+    elementLayer.appendChild(d);
+  }
+}
+
+function renderInspector(){
+  $('selCells').textContent=selectedCells.length?G.spanText(selectedCells):'—';
+  $('selElement').textContent=selectedElement||'—';
+  const e=selectedElement?state.elements[selectedElement]:null;
+  for(const id of ['labelInput','anchorSelect','rankInput'])$(id).disabled=!e;
+  if(e){$('labelInput').value=e.label;$('anchorSelect').value=e.anchor;$('rankInput').value=e.rank}
+  else{$('labelInput').value='';$('anchorSelect').value='fill';$('rankInput').value='0'}
+  $('json').value=G.formatState(state);
+  $('readout').textContent=(selectedCells.length?G.spanText(selectedCells):'ε')+' · '+G.leafSet(state).length+' leaves · '+Object.keys(state.elements).length+' elements';
+  frame.classList.toggle('hideAddresses',!showAddresses);frame.classList.toggle('hideGrid',!showGrid);
+  $('addrBtn').dataset.active=showAddresses?'1':'0';$('gridBtn').dataset.active=showGrid?'1':'0';
+}
+function render(){renderCells();renderElements();renderInspector()}
+
+$('splitBtn').onclick=()=>{
+  if(selectedCells.length!==1)return fail(new Error('select exactly one leaf'));
+  try{const a=selectedCells[0];commit(G.split(state,a),'split '+G.rootLabel(a))}catch(e){fail(e)}
+};
+$('coalBtn').onclick=()=>{
+  if(selectedCells.length!==1)return fail(new Error('select one child leaf'));
+  const p=G.parentOf(selectedCells[0]);if(p===null)return fail(new Error('root has no parent'));
+  try{commit(G.coalesce(state,p),'coalesce '+G.rootLabel(p))}catch(e){fail(e)}
+};
+document.querySelectorAll('[data-add]').forEach(btn=>btn.onclick=()=>{
+  const info=currentSpan();if(!info.ok)return fail(new Error(info.reason));
+  const kind=btn.dataset.add,id=nextId(kind),anchor=kind==='text'?'north':kind==='symbol'?'center':'fill';
+  const label=kind==='text'?'TEXT EDGE':kind==='symbol'?'⊛':'PANEL';
+  try{commit(G.place(state,id,{kind,cells:info.cells,anchor,rank:kind==='symbol'?1:kind==='text'?-1:0,label}),`place ${id} ${G.spanText(info.cells)} ${kind} ${anchor} ${kind==='symbol'?1:kind==='text'?-1:0}`)}catch(e){fail(e)}
+});
+$('moveBtn').onclick=()=>{
+  if(!selectedElement)return fail(new Error('select an element first'));
+  const info=currentSpan();if(!info.ok)return fail(new Error(info.reason));
+  const from=G.spanText(state.elements[selectedElement].cells),to=G.spanText(info.cells);
+  try{commit(G.move(state,selectedElement,info.cells),`move ${selectedElement} ${from} -> ${to}`);selectedElement=null}catch(e){fail(e)}
+};
+$('removeBtn').onclick=()=>{
+  if(!selectedElement)return fail(new Error('select an element first'));
+  const id=selectedElement;try{commit(G.remove(state,id),'remove '+id);selectedElement=null}catch(e){fail(e)}
+};
+$('clearSelBtn').onclick=()=>{selectedCells=[];selectedElement=null;render()};
+$('addrBtn').onclick=()=>{showAddresses=!showAddresses;renderInspector()};
+$('gridBtn').onclick=()=>{showGrid=!showGrid;renderInspector()};
+$('blankBtn').onclick=()=>{state=G.emptyState();selectedCells=[];selectedElement=null;history.length=0;$('log').replaceChildren();log('state blank');render()};
+$('resetBtn').onclick=()=>{state=G.initialState();selectedCells=[];selectedElement=null;history.length=0;$('log').replaceChildren();log('state specimen');render()};
+
+$('labelInput').addEventListener('change',()=>{
+  if(!selectedElement)return;
+  try{state=G.updateElement(state,selectedElement,{label:$('labelInput').value});log(`set ${selectedElement} label`);render()}catch(e){fail(e)}
+});
+$('anchorSelect').addEventListener('change',()=>{
+  if(!selectedElement)return;
+  try{state=G.updateElement(state,selectedElement,{anchor:$('anchorSelect').value});log(`set ${selectedElement} anchor ${$('anchorSelect').value}`);render()}catch(e){fail(e)}
+});
+$('rankInput').addEventListener('change',()=>{
+  if(!selectedElement)return;
+  try{state=G.updateElement(state,selectedElement,{rank:Number($('rankInput').value)});log(`set ${selectedElement} rank ${$('rankInput').value}`);render()}catch(e){fail(e)}
+});
+
+$('runCommandBtn').onclick=()=>{
+  try{const r=G.command(state,$('commandInput').value);state=r.state;selectedCells=[];selectedElement=null;log(r.log);$('commandInput').value='';render()}catch(e){fail(e)}
+};
+$('commandInput').addEventListener('keydown',e=>{if(e.key==='Enter'){$('runCommandBtn').click();e.preventDefault()}});
+$('exportBtn').onclick=()=>{$('json').value=G.formatState(state);log('export state')};
+$('importBtn').onclick=()=>{try{state=G.parseState($('json').value);selectedCells=[];selectedElement=null;log('import state');render()}catch(e){fail(e)}};
+$('copyBtn').onclick=async()=>{
+  $('json').value=G.formatState(state);$('json').select();
+  try{await navigator.clipboard.writeText($('json').value);log('copy state')}catch(_){document.execCommand('copy');log('copy state')}
+};
+frame.addEventListener('click',()=>{selectedCells=[];selectedElement=null;render()});
+log('state specimen');render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "event_id": "display-spritesheet-mono-v2-20261002T232215Z",
+  "home_at_utc": "2026-10-02T23:22:15Z",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "update-spritesheet-mono-v2-and-schattenseiten-hud",
+  "outcome": "PASS/EARNED in staging: supplied Mono v2 hosted unchanged; Schattenseiten HUD and minimap use the main face; local font, artifact, structure and behavior witnesses passed. Canonical owner promotion remains open.",
+  "changed_scope": [
+    "w/spritesheet/SpriteSheet-Mono.ttf and SpriteSheet-Mono.woff2: exact supplied v2 bytes at stable hosted member paths",
+    "w/spritesheet/VERSION.json and README.txt: package @sss/spritesheet 2.0.0, Mono 1024-unit em and fixed cells; Regular retained at 1.0.1",
+    "y/yx/schattenseiten/style.css: inherited main HUD face and a heading grid constrained to its existing rail",
+    "z/world-view.js: main-face minimap labels, rendered-text folding, repaint after font completion",
+    "RITUALS/organism 3.14: current Mono provenance and typography law",
+    "_stomach/NUTRIENT__spritesheet-mono-v2__20261002.md: source preserved and narrowed to canonical promotion"
+  ],
+  "context": {
+    "actor": "Mnemos, session 33Η, with Philipp",
+    "carrier": "QuantumCephalopod/cambium, staging/spritesheet-mono-v2, for pull request into self-similar-systems/cambium main",
+    "shared_root_law": {
+      "dive_in": "2.7",
+      "metabolism": "3.4",
+      "cambium": "3.3",
+      "drive": "1.5",
+      "repository_organism": "1.4"
+    },
+    "source": {
+      "request": "Philipp asked for the repo Dive ritual first, the new supplied font version, and replacement of the old basic font in the Schattenseiten HUD.",
+      "carrier": "SpriteSheet-Mono-v2-package.zip",
+      "sha256": "051c6aa3eb101dbd0350bf86aef269814caf563c5896b0f4fc34e08c173c5079"
+    },
+    "base_revision": "b1be0af5c5593f1d03aa55e2e4ee85d28cdfb2c3",
+    "implementation_revision": "506c62173b17a4ae5287b3d9edb97ef3945e3b55",
+    "witness": {
+      "font": {
+        "ttf_sha256": "7f8e7c9368d935dcbc6e6d9cb5d91668b9505f9738a6f0ac360f222f4c3ca5df",
+        "woff2_sha256": "15cbc02ad7315f4caa27e867b468573c2f2b854402425f4beb0a79cc6426b9b7",
+        "units_per_em": 1024,
+        "advance": 1024,
+        "fixed_pitch": true,
+        "lowercase_metrics_match": true,
+        "bearings_match_outlines": true,
+        "max_center_error_units": 2,
+        "browser_specimen": "All A-Z cells measured exactly 32px at 32px font size; v2 loaded."
+      },
+      "build": {
+        "builder": "y/site-public.py",
+        "bundle": "67eb531c8bd88411",
+        "exact_nonbait_files": 56,
+        "native_check_status": "pass",
+        "native_checks": 112662,
+        "windows_adaptation": "UTF-8 enabled; python3 routed to the actual interpreter; all native tests executed. Only bait file-set/byte comparison reserved to Linux CI."
+      },
+      "behavior": "Display type-fold and focused minimap probes passed: face/fallback, umlaut folding, initial and completed font loads, unchanged target identities, geometry and pointer payload.",
+      "browser": "Fresh local artifact, Schattenseiten: SpriteSheet Mono visibly loaded. At 1280x800, title and rail widths/scroll widths are 240px, heading wraps to two lines. At 540x780, title and rail widths/scroll widths are 511px. Temporary viewport override reset."
+    },
+    "not_witnessed_at_home": [
+      "Linux staging CI full bait file-set/byte comparison and uploaded artifact",
+      "canonical owner promotion/merge and live publication"
+    ]
+  }
+}

@@ -3,12 +3,15 @@ const JSON_HEADERS = Object.freeze({
   "cache-control": "no-store"
 });
 const MAX_BODY_BYTES = 1024 * 1024;
+const EMPTY_PUBLIC_REVISION = "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945";
 const EVENT_ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$/;
 const UNIT_KEY = /^[A-Za-z0-9][A-Za-z0-9:._/-]{0,240}$/;
 const REVISION = /^sha256:[a-f0-9]{64}$/;
 const SHADOW_KEYS = Object.freeze({
   "organism:papers": "y/papers/current.json"
 });
+const MATERIALIZE_REPO = "self-similar-systems/cambium";
+const MATERIALIZE_WORKFLOW = "papers-shadow-materialize.yml";
 const ALLOWED_FIELDS = new Set([
   "event_id",
   "site_id",
@@ -194,8 +197,14 @@ async function valueRevision(value) {
   return sha256Revision(canonicalJson(value));
 }
 
+function revisionLedger(units) {
+  const ledger = Object.create(null);
+  for (const key of Object.keys(units).sort()) ledger[key] = units[key].revision;
+  return ledger;
+}
+
 async function stateRevision(units) {
-  const ledger = Object.keys(units).sort().map((key) => [key, units[key].revision]);
+  const ledger = Object.entries(revisionLedger(units));
   return sha256Revision(canonicalJson(ledger));
 }
 
@@ -250,6 +259,42 @@ function responseContext(packet, key, extra = {}) {
   };
 }
 
+async function queueMaterialization(env, packet, publicRevision) {
+  if (!env.GITHUB_ACTIONS_TOKEN) return false;
+  try {
+    const response = await fetch(
+      "https://api.github.com/repos/" + MATERIALIZE_REPO +
+      "/actions/workflows/" + MATERIALIZE_WORKFLOW + "/dispatches",
+      {
+        method: "POST",
+        headers: {
+          "accept": "application/vnd.github+json",
+          "authorization": "Bearer " + env.GITHUB_ACTIONS_TOKEN,
+          "content-type": "application/json",
+          "user-agent": "sss-live-materializer/1",
+          "x-github-api-version": "2022-11-28"
+        },
+        body: JSON.stringify({
+          ref: "main",
+          inputs: {
+            site_id: packet.site_id,
+            public_revision: publicRevision,
+            event_id: packet.event_id
+          }
+        })
+      }
+    );
+    if (response.status !== 204) {
+      console.error("same-origin materialization dispatch HTTP " + response.status);
+      throw new Error("same-origin materialization dispatch HTTP " + response.status);
+    }
+    return true;
+  } catch (error) {
+    console.error("same-origin materialization dispatch failed", error);
+    throw error;
+  }
+}
+
 async function writeState(env, key, packet, units, publicRevision, currentObject, mode) {
   const state = {
     version: 2,
@@ -270,7 +315,7 @@ async function writeState(env, key, packet, units, publicRevision, currentObject
     onlyIf: writeCondition(currentObject),
     httpMetadata: {
       contentType: "application/json; charset=utf-8",
-      cacheControl: "public, max-age=300"
+      cacheControl: "private, no-store"
     },
     customMetadata: {
       site_id: packet.site_id,
@@ -286,12 +331,14 @@ async function concurrentResult(env, key, packet, targetRevision) {
   const latest = await readCurrent(env.SHADOW, key, packet.site_id);
   const actual = latest.state?.public_revision ?? null;
   if (actual && actual === targetRevision) {
+    const materializationQueued = await queueMaterialization(env, packet, actual);
     return json(responseContext(packet, key, {
       ok: true,
       deduped: true,
       public_revision: actual,
       rich_write: false,
-      concurrent: true
+      concurrent: true,
+      materialization_queued: materializationQueued
     }));
   }
   return json(responseContext(packet, key, {
@@ -304,32 +351,41 @@ async function concurrentResult(env, key, packet, targetRevision) {
 
 async function applyDelta(env, key, packet, current) {
   const delta = packet.delta;
+  let baseUnits;
   if (!current.state) {
-    return json(responseContext(packet, key, {
-      ok: false,
-      error: "REBASE_REQUIRED",
-      actual_public_revision: null,
-      legacy_current: current.legacy
-    }), 409);
+    if (current.legacy || delta.base_public_revision !== EMPTY_PUBLIC_REVISION) {
+      return json(responseContext(packet, key, {
+        ok: false,
+        error: "REBASE_REQUIRED",
+        actual_public_revision: current.legacy ? null : EMPTY_PUBLIC_REVISION,
+        legacy_current: current.legacy
+      }), 409);
+    }
+    baseUnits = Object.create(null);
+  } else {
+    baseUnits = current.state.units;
   }
-  if (current.state.public_revision === delta.target_public_revision) {
+  if (current.state?.public_revision === delta.target_public_revision) {
+    const materializationQueued = await queueMaterialization(env, packet, delta.target_public_revision);
     return json(responseContext(packet, key, {
       ok: true,
       deduped: true,
       public_revision: delta.target_public_revision,
-      rich_write: false
+      rich_write: false,
+      materialization_queued: materializationQueued
     }));
   }
-  if (current.state.public_revision !== delta.base_public_revision) {
+  const actualBase = current.state?.public_revision ?? EMPTY_PUBLIC_REVISION;
+  if (actualBase !== delta.base_public_revision) {
     return json(responseContext(packet, key, {
       ok: false,
       error: "REBASE_REQUIRED",
-      actual_public_revision: current.state.public_revision
+      actual_public_revision: actualBase
     }), 409);
   }
 
   await verifyUnits(delta.upserts, "delta.upserts");
-  const units = cloneUnits(current.state.units);
+  const units = cloneUnits(baseUnits);
   for (const keyToDelete of delta.deletes) delete units[keyToDelete];
   for (const [unitKey, unit] of Object.entries(delta.upserts)) units[unitKey] = unit;
   const computed = await stateRevision(units);
@@ -344,23 +400,27 @@ async function applyDelta(env, key, packet, current) {
 
   const written = await writeState(env, key, packet, units, computed, current.object, "delta");
   if (!written.stored) return concurrentResult(env, key, packet, delta.target_public_revision);
+  const materializationQueued = await queueMaterialization(env, packet, computed);
   return json(responseContext(packet, key, {
     ok: true,
     deduped: false,
     public_revision: computed,
     rich_write: true,
-    mode: "delta"
+    mode: "delta",
+    materialization_queued: materializationQueued
   }));
 }
 
 async function applyReconcile(env, key, packet, current) {
   const reconcile = packet.reconcile;
   if (current.state?.public_revision === reconcile.target_public_revision) {
+    const materializationQueued = await queueMaterialization(env, packet, reconcile.target_public_revision);
     return json(responseContext(packet, key, {
       ok: true,
       deduped: true,
       public_revision: reconcile.target_public_revision,
-      rich_write: false
+      rich_write: false,
+      materialization_queued: materializationQueued
     }));
   }
   await verifyUnits(reconcile.units, "reconcile.units");
@@ -375,12 +435,14 @@ async function applyReconcile(env, key, packet, current) {
   }
   const written = await writeState(env, key, packet, reconcile.units, computed, current.object, "reconcile");
   if (!written.stored) return concurrentResult(env, key, packet, reconcile.target_public_revision);
+  const materializationQueued = await queueMaterialization(env, packet, computed);
   return json(responseContext(packet, key, {
     ok: true,
     deduped: false,
     public_revision: computed,
     rich_write: true,
-    mode: "reconcile"
+    mode: "reconcile",
+    materialization_queued: materializationQueued
   }));
 }
 
@@ -401,9 +463,11 @@ async function readPacket(request) {
 }
 
 export {
+  EMPTY_PUBLIC_REVISION,
   canonicalJson,
   publicPacket,
   readCurrent,
+  revisionLedger,
   stateRevision,
   valueRevision
 };
@@ -412,13 +476,79 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname !== "/__live/home") return new Response("not found", { status: 404 });
-    if (request.method !== "POST") return new Response("method not allowed", { status: 405 });
 
-    const expected = env.HOME_SECRET;
     const supplied = request.headers.get("Authorization");
-    if (!expected || supplied !== `Bearer ${expected}`) {
+
+    if (request.method === "GET" && url.searchParams.get("view") === "materialized") {
+      if (!env.MATERIALIZE_SECRET || supplied !== `Bearer ${env.MATERIALIZE_SECRET}`) {
+        return new Response("unauthorized", { status: 401 });
+      }
+      const siteId = url.searchParams.get("site_id") || "";
+      const keys = [...url.searchParams.keys()];
+      if (!(siteId in SHADOW_KEYS) || keys.some((key) => key !== "site_id" && key !== "view")) {
+        return json({ ok: false, error: "materialized state request is not admitted" }, 400);
+      }
+      try {
+        const current = await readCurrent(env.SHADOW, SHADOW_KEYS[siteId], siteId);
+        if (current.legacy || !current.state) {
+          return json({
+            ok: false,
+            site_id: siteId,
+            error: current.legacy ? "LEGACY_CURRENT_REQUIRES_RECONCILE" : "MATERIALIZED_STATE_UNAVAILABLE"
+          }, 409);
+        }
+        return json(current.state);
+      } catch (error) {
+        return json({
+          ok: false,
+          site_id: siteId,
+          error: error?.message || "materialized state read failed"
+        }, error instanceof TypeError ? 400 : (error?.status || 500));
+      }
+    }
+
+    if (!env.HOME_SECRET || supplied !== `Bearer ${env.HOME_SECRET}`) {
       return new Response("unauthorized", { status: 401 });
     }
+
+    if (request.method === "GET") {
+      const siteId = url.searchParams.get("site_id") || "";
+      if (!(siteId in SHADOW_KEYS) || [...url.searchParams.keys()].some((key) => key !== "site_id")) {
+        return json({ ok: false, error: "site_id is not admitted to the public shadow" }, 400);
+      }
+      const key = SHADOW_KEYS[siteId];
+      try {
+        const current = await readCurrent(env.SHADOW, key, siteId);
+        if (current.legacy) {
+          return json({
+            ok: false,
+            site_id: siteId,
+            key,
+            error: "LEGACY_CURRENT_REQUIRES_RECONCILE",
+            legacy_current: true,
+            public_revision: null,
+            unit_revisions: null
+          }, 409);
+        }
+        return json({
+          ok: true,
+          site_id: siteId,
+          key,
+          public_revision: current.state?.public_revision ?? EMPTY_PUBLIC_REVISION,
+          unit_revisions: current.state ? revisionLedger(current.state.units) : {},
+          empty_current: !current.state
+        });
+      } catch (error) {
+        return json({
+          ok: false,
+          site_id: siteId,
+          key,
+          error: error?.message || "live ledger read failed"
+        }, error instanceof TypeError ? 400 : (error?.status || 500));
+      }
+    }
+
+    if (request.method !== "POST") return new Response("method not allowed", { status: 405 });
 
     let packet;
     try { packet = await readPacket(request); }
@@ -431,12 +561,17 @@ export default {
       if (packet.reconcile) return await applyReconcile(env, key, packet, current);
       if (packet.delta) return await applyDelta(env, key, packet, current);
 
+      const publicRevision = current.state?.public_revision ?? (current.legacy ? null : EMPTY_PUBLIC_REVISION);
+      const materializationQueued = current.state
+        ? await queueMaterialization(env, packet, current.state.public_revision)
+        : false;
       return json(responseContext(packet, key, {
         ok: true,
         activity_only: true,
         rich_write: false,
-        public_revision: current.state?.public_revision ?? null,
-        legacy_current: current.legacy
+        public_revision: publicRevision,
+        legacy_current: current.legacy,
+        materialization_queued: materializationQueued
       }));
     } catch (error) {
       return json(responseContext(packet, key, {

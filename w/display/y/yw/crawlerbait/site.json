@@ -1,14 +1,14 @@
 {
-  "version": 1,
+  "version": 2,
   "id": "organism:crawlerbait",
   "title": "Crawlerbait",
   "local_scope": "crawlerbait",
   "shader": {
     "id": "shader:organism:crawlerbait",
     "palette": [
-      0.92,
-      0.34,
-      0.16
+      0.93,
+      0.9,
+      0.83
     ]
   },
   "manifestation": {
@@ -17,5 +17,7 @@
   },
   "projection": "z/projection.json",
   "renderer": "z/render.js",
-  "style": "z/style.css"
+  "style": "z/style.css",
+  "ui_grid": "ui-grid.json",
+  "feed_preview": "_feed/display-preview.json"
 }

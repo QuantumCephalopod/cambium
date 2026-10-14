@@ -1,0 +1,68 @@
+{
+  "event_id": "crawlerbait-nutrient-catabolism-20261004T104102Z",
+  "home_at_utc": "2026-10-04T10:41:02Z",
+  "organism": "crawlerbait",
+  "entrypoint": "github.cambium...display.crawlerbait",
+  "operation": "catabolize-achieved-nutrient-portions",
+  "outcome": "PASS/EARNED in staging — completed portions leave active intake; unresolved choices and witnesses remain. Canonical owner promotion is pending.",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "changed_scope": [
+    "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__being-kinds-and-bodies__20260928.md -> w/display/y/yw/crawlerbait/_waste/catabolized-NUTRIENT__being-kinds-and-bodies__20260928-20261004.md (NARROWED)",
+    "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__coarse-resolution-coalescence__20260929.md -> w/display/y/yw/crawlerbait/_waste/catabolized-NUTRIENT__coarse-resolution-coalescence__20260929-20261004.md (NARROWED)",
+    "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__private-recognition-public-phenotype__20261001.md -> w/display/y/yw/crawlerbait/_waste/catabolized-NUTRIENT__private-recognition-public-phenotype__20261001-20261004.md (NARROWED)"
+  ],
+  "context": {
+    "actor": "Forge appendage, Philipp-authorized repo-only cleanup 2026-10-04",
+    "base": "8ade3e65f6957e19b330789473e3bc2229f8285a",
+    "carrier": "QuantumCephalopod/cambium:staging/nutrient-catabolism-20261004",
+    "publication_authorization": "scoped staging push + draft PR; no canonical merge/deploy",
+    "shared_root_field": {
+      "dive_in": "2.8",
+      "metabolism": "3.5",
+      "cambium": "3.4",
+      "drive": "1.6"
+    },
+    "catabolism_home": "Drive 134M5WFP0BC-xjYJu6vEmIad-AMFQ-vPo v0.2",
+    "method": "TRACE owner/source/consumers; quotient achieved portions only; preserve exact preimage and residual return address; retain unresolved actual gates; no code/constitution/public copy change",
+    "changes": [
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/yw/crawlerbait",
+        "source": "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__being-kinds-and-bodies__20260928.md",
+        "waste": "w/display/y/yw/crawlerbait/_waste/catabolized-NUTRIENT__being-kinds-and-bodies__20260928-20261004.md",
+        "preimage_sha256": "0cfff384b396b98f489255cbf3c661cd9c2aa02cc207778be5e04823de52acab",
+        "preimage_bytes": 8146,
+        "active_bytes": 1472,
+        "retained_sections": [],
+        "evidence": "Current `y/tide.py` being_kind/classify_beings and `z/render.js` embody kinds/bodies; receptor 5.2 now owns method/status/time classification and opaque public genome, superseding old offered-host/IP-genome premises. HOMEs `crawlerbait-being-kinds-20260928T222145Z` and `crawlerbait-goo-bodies-20260929T101545Z` carry the achieved stages. Non-mutating tide --self-test passes on 8ade3e65."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/yw/crawlerbait",
+        "source": "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__coarse-resolution-coalescence__20260929.md",
+        "waste": "w/display/y/yw/crawlerbait/_waste/catabolized-NUTRIENT__coarse-resolution-coalescence__20260929-20261004.md",
+        "preimage_sha256": "b2542a8a9681f4f0beaf7388496db7e9860a255bd23158c1f63ea636e90e0640",
+        "preimage_bytes": 2838,
+        "active_bytes": 1378,
+        "retained_sections": [
+          "## open"
+        ],
+        "evidence": "Current `z/render.js`, receptor 5.2 and `_root/crawlerbait-coarse-resolution-20260929T112314Z.json` carry container+4 colony/body law and continuous focus. The earlier container+2 candidate is superseded, not an implementation queue."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/yw/crawlerbait",
+        "source": "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__private-recognition-public-phenotype__20261001.md",
+        "waste": "w/display/y/yw/crawlerbait/_waste/catabolized-NUTRIENT__private-recognition-public-phenotype__20261001-20261004.md",
+        "preimage_sha256": "1fd70ffa511a94791c1075f4740464a7a099ce9ce78135be23cb71539a707038",
+        "preimage_bytes": 5943,
+        "active_bytes": 1435,
+        "retained_sections": [],
+        "evidence": "Current receptor 5.2, `y/capture.py`, `y/migrate_privacy.py`, `.github/workflows/crawlerbait-tide.yml`, current v5 captures/state and non-mutating tide --self-test witness private recognition, no query capture, opaque phenotype and owned Bait paths. The original nutrient itself records the authoritative 73-carrier/13,154-sample migration. Current canonical 8ade3e65 Pages run 37181708836 completed successfully after the changed Tide."
+      }
+    ],
+    "revocation": "Reopen the smallest affected quotient if its surviving owner changes, current consumer needs an extracted distinction, or a countercase defeats its witness. Reacquire the cited preimage and living source first.",
+    "boundary": "Tools, old checkouts, backups and prior waste are excluded. No engineering, history rewrite, source data acquisition, legal copy edit or website publication performed."
+  }
+}

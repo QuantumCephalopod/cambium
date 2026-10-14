@@ -1,0 +1,22 @@
+{
+  "event_id": "display-papers-materializer-dispatch-missing-20260926T083800Z",
+  "home_at_utc": "2026-09-26T08:38:00Z",
+  "organism": "organism:papers",
+  "entrypoint": "github.cambium...display.papers",
+  "outcome": "PARTIAL/EARNED · OWNER SYNC COMPLETED · MATERIALIZER DISPATCH NOT OBSERVED",
+  "changed_scope": [
+    "user completion report for syncLiveNerve admitted source-faithfully",
+    "canonical GitHub checked after the run",
+    "no papers static shadow materialization workflow run exists",
+    "no papers shadow materialization commit exists",
+    "failure boundary localized before GitHub Actions at the Worker-to-GitHub dispatch edge",
+    "GitHub Action-to-Worker materialization secret pair remains unexercised rather than failed"
+  ],
+  "context": {
+    "canonical_head": "ad035c6c9d9a7aec04f9deabedbd1cb3c276415c",
+    "next_bounded_check": "confirm Cloudflare dashboard secret changes were deployed into the active sss-live version, then run syncLiveNerve once more",
+    "evidence_boundary": "absence of GitHub dispatch proves only that the first wake edge did not complete; it does not diagnose the downstream materializer read"
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}

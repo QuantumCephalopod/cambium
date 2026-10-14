@@ -1,0 +1,54 @@
+{
+  "event_id": "cambium-launch-retirement-witness-20260930T193459Z",
+  "home_at_utc": "2026-09-30T19:34:59Z",
+  "organism": "cambium",
+  "entrypoint": "github.cambium",
+  "operation": "witness-launch-retirement",
+  "outcome": "PASS/EARNED · SPENT FIRST-LAUNCH RECORD RETIRED ON 2026-09-27 NOW CARRIES ITS DURABLE HOME; ROOT SHELL PROJECTION CAUGHT UP",
+  "changed_scope": [
+    "_stomach/launch.md → _waste/metabolized-first-public-launch-20260927.md (commit 647313d, PR #116, 2026-09-27): retired as spent after Pages deploys, HTTPS serving, absence of noindex and a reachable Impressum were witnessed closed",
+    "RITUALS/organism/RITUAL.md current living pressure: the unresolved-launch line replaced by the closed-launch line pointing at the _waste record (same commit)",
+    "root _stomach holds only the inert .gitkeep after that retirement",
+    "this HOME is appended late, on 2026-09-30, as a witness to the 2026-09-27 act; it is not backdated and it mutates no INDEX, _cambium, receptor or Display/Papers tissue",
+    "cambium root current projection invalidated for asynchronous refresh by this HOME"
+  ],
+  "context": {
+    "actor": "Mnemos, session 33Α, with Philipp",
+    "carrier": "QuantumCephalopod/cambium staging branch mnemos/root-home-launch-retirement, promoted by pull request to self-similar-systems/cambium",
+    "shared_root_law": {
+      "metabolism": "3.3",
+      "dive_in": "2.7",
+      "cambium": "3.3",
+      "drive": "1.4"
+    },
+    "diagnosis": {
+      "symptom": "root _feed/current.json (observed_at 2026-09-18T19:38:13Z, reflecting cambium-repo-cleanliness-audit-20260918T193559Z) reports shell.stomach_direct [\"launch.md\"] and waste_direct_count 5, while the live root shell holds an empty stomach and six direct _waste records",
+      "mechanism": "y/feed.py refreshes a feed only when a new kind:HOME ring is added directly under _root; the 2026-09-27 retirement was an organism-owned act that appended no HOME, so the projector saw no HOME pressure and the shell fields of the feed kept their 2026-09-18 values",
+      "witness_of_mechanism": "python3 y/feed.py --before 647313d~1 --after 647313d printed: no new durable HOME pressure; feeds unchanged. The 2026-09-18 root HOME already records the same boundary: y/feed.py refreshes only newly durable HOME rings; ordinary commits leave feeds unchanged",
+      "root_home_additions_since_2026_09_18_audit": "none before this event",
+      "classification": "missing HOME for a completed root act, not a defect in y/feed.py"
+    },
+    "witness": {
+      "retirement_commit": "647313d",
+      "retirement_pr": 116,
+      "retirement_merged_on_org_main": "2026-09-27",
+      "live_root_stomach_direct": [],
+      "live_root_waste_direct": [
+        "metabolized-display-backprop-split-law-20260916.md",
+        "metabolized-first-contact.md",
+        "metabolized-first-public-launch-20260927.md",
+        "metabolized-repo-cleanliness-audit-20260918.md",
+        "metabolized-root-differentiation-20260905.md",
+        "retired-w-interface-20260916.md"
+      ],
+      "org_main_at_witness": "01ecfe2b96a77d4a80896bcc8b9a7d8807021239"
+    },
+    "not_witnessed": [
+      "a deliberate site-wide licence choice; the _waste record says it re-enters as its own nutrient if still wanted",
+      "the post-merge projection commit on self-similar-systems/cambium main; it is actuation after this HOME lands and is verified separately",
+      "whether any Display-local nutrient is spent; Display's own stomach is owned by Display and was not opened for this event"
+    ]
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}

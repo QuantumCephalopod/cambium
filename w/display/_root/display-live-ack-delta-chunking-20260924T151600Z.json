@@ -1,0 +1,38 @@
+{
+  "event_id": "display-live-ack-delta-chunking-20260924T151600Z",
+  "parent_event_id": "display-identity-address-custody-20260923T111130Z",
+  "home_at_utc": "2026-09-24T15:16:00Z",
+  "organism": "display",
+  "entrypoint": "w/display/x/live",
+  "outcome": "BLOCKED/EARNED · ACKNOWLEDGED DELTA RECURSION IMPLEMENTED + WITNESSED · CANONICAL PROMOTION / PROVIDER ACTIVATION OPEN",
+  "changed_scope": [
+    "Display live transport now treats keyed-unit delta from an acknowledged revision ledger as the only ordinary growth path; complete snapshots remain bounded recovery only",
+    "authenticated GET on the existing /__live/home route exposes only current public_revision plus opaque unit_key→unit_revision hashes so a producer can reacquire the actual Worker baseline without transferring semantic values",
+    "an empty R2 locus has a deterministic empty-ledger revision and may accept its first ordinary delta from that base",
+    "oversized cumulative differences require no second chunk protocol: the producer recursively subdivides the same ordinary delta into deterministic <=1 MiB chunks, ACKing each intermediate target revision before deriving the next",
+    "a single opaque unit larger than the request bound remains explicit unit-granularity pressure and is not silently split by Display",
+    "Worker regression run 36020182099 succeeded and witnesses authenticated revision-ledger read, empty-base delta, sequential chained deltas, stale-base refusal, dedupe, reconciliation, legacy protection, ETag race protection and bad-unit rejection",
+    "canonical Drive /papers/_feed.gs was mutated in place on stable Drive ID 1rKA3vxriCOYSWWu4-ubVTcYZqZyxIqWr to reacquire remote revision ledgers, compute changed units only, dynamically plan/send bounded ordinary deltas, persist ACK after every chunk and resume from remote state after rebase",
+    "local chunk-planner witness forced an 80-unit ~1.7 MiB difference into two bounded ordinary deltas; largest packet was 1,040,089 bytes under the 1,048,576-byte contract and final revision matched exactly",
+    "Display phenotype remains Embodiment / Continuity / Orientation / Population; no INDEX or _cambium structural change was earned"
+  ],
+  "context": {
+    "canonical_repo": "self-similar-systems/cambium",
+    "staging_repo": "QuantumCephalopod/cambium",
+    "prepared_branch": "mnemos/live-delta-chunking",
+    "canonical_parent": "21729c2f76187ff878d36dc59081d21a6130cca9",
+    "worker_witness_commit": "b95512c27da5792e647494b0877e6f9726713a75",
+    "worker_witness_run": 36020182099,
+    "worker_witness": "SUCCESS",
+    "canonical_drive_feed_id": "1rKA3vxriCOYSWWu4-ubVTcYZqZyxIqWr",
+    "canonical_drive_feed_size_bytes": 57470,
+    "remaining": [
+      "promote mnemos/live-delta-chunking into self-similar-systems/cambium:main so canonical cloudflare-live deployment updates the Worker",
+      "after Worker deployment, paste/deploy the already-canonical Drive _feed.gs into the bound /papers/_feed Apps Script project",
+      "run inspectLiveProjection → syncLiveNerve → backfillInquiryProjection and witness Source Inquiry convergence/public metabolights"
+    ],
+    "parent_uplink_required": false
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}

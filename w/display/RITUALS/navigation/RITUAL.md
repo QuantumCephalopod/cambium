@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "2.2"
+version: "3.5"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -14,7 +14,7 @@ Canonical identity/locus/body law is carried by `../site-holon/RITUAL.md`.
 
 ## Global field
 
-The global address alphabet is `{w,x,z,y}` recursively without fixed depth. Semantic place is the exact quotient vertex/locus. Potential recursion is not fabricated anatomy.
+The canonical serialized address alphabet/order is `{w,x,y,z}` recursively without fixed depth. Semantic place is the exact quotient vertex/locus. Potential recursion is not fabricated anatomy. This serialization order is not the fixed CCCC semantic phase order and does not require tetrahedral render code to reorder its internal vertex arrays.
 
 Camera focus is perceptual and distinct:
 
@@ -34,7 +34,10 @@ Current physical/semantic relation:
 
 - `w/display/y/philosophy/` -> site-space `ε` -> **PHILOSOPHY**;
 - `w/display/y/yw/crawlerbait/` -> site-space `w / Form` -> **CRAWLERBAIT**;
-- `w/display/y/yy/papers/` -> site-space `y / Inquiry` -> **PAPERS**.
+- `w/display/y/yx/schattenseiten/` -> site-space `x / Continuity` -> **SCHATTENSEITEN**;
+- `w/display/y/yy/papers/` -> site-space `y / Inquiry` -> **PAPERS**;
+- `w/display/y/yz/datenschutz/` -> site-space `z / Care` -> **DATENSCHUTZ**;
+- `w/display/y/yxz/impressum/` -> site-space `xz` (quotient midpoint, no noun) -> **IMPRESSUM**.
 
 The navigator labels targets by stable site identity/title, not by generic Philosophy vertex names.
 
@@ -50,7 +53,7 @@ There is no global inspect-then-commit step.
 
 ## Philosophy background inspection
 
-Philosophy separately embodies the realized global address-space and may inspect any realized address locally without moving the active global encounter.
+Philosophy's background inspection is Descent inside Philosophy's own container: selecting a child cell descends into it without moving the active global encounter.
 
 Therefore:
 
@@ -71,7 +74,21 @@ Examples:
 
 `site-space:w ⟦ crawlerbait:ε ⟧`
 
-The global minimap stays global while any site-holon is active. Papers-local recursion and Crawlerbait-local machine-facing routes never seize or extend the global site navigator. The universal coupling between global navigation and visible local fields is shared orientation only.
+Address spaces stay distinct across the membrane; the gesture does not. Crawlerbait-local machine-facing routes never become global navigation addresses.
+
+## Descent — one gesture at every rank
+
+The witness is always inside exactly one current container: a realized cell of the global field or an organism body floating in one. A container's content is its four children. Content propagates on every split (Cambium wood law, `ua^m ~ ua`), so every organism floats in every cell above its deepest realized address; the view's resolution only decides how finely it is sorted.
+
+- select: only the current container's children can be entered;
+- descend: the container is pushed onto the walked path and the child is framed at its centroid, relatively, with no absolute zoom ceiling; the camera moves there smoothly (~0.33 s), never teleports, and ascent moves back the same way;
+- render: geometry is drawn at full realized resolution — a Sierpinski body is cheap and each rank quadruples capacity, so depth settles. LOD governs content only: content below the container's children and their realized children coalesces into pools (Display invariant); a pool opens into its four sub-pools, never a flat list, and entering it fills the walked path through every intermediate container;
+- bodies: organisms float as bodies in their host, drawn with their own identity shader at full geometry and entered by selection. Content is two ranks smaller than the realized container carrying it; when that container splits, the content propagates into the finer child (self-child for content at the split point) and shrinks with it, keeping its own subdivision. A body drifts inside the space its container bounds and never crosses it. Every body carries a label attached to it; the label is selectable exactly like the body's face. Organisms refine inward; composed holons grow with rank (composition grows outward);
+- ascend: a gesture that enters no child pops the walked path — back through the container the witness came through;
+- membranes: entering or leaving a site-holon is the same gesture. Entering zooms into the body, then crosses under the target-origin fold; leaving crosses under the same fold and the host zooms out from the body it left. The active interlocutor is the organism whose container is innermost on the walked path; Continuity reads it rather than switching separately. The target-origin fold remains a loading cover at membrane crossings.
+
+The global minimap and x/y rails remain shared orientation controls. A fresh witness meets the navigator open (pinned); a click tucks it away.
+
 
 ## Raw address and quotient navigation
 
@@ -98,16 +115,79 @@ The x/y rails are angular-velocity controls:
 - midpoint is zero;
 - holding sufficiently still locks the exact current value;
 - a latched value is not altered by later movement of the still-held pointer;
-- a new pointer-down picks it up again.
+- a new pointer-down picks it up again;
+- the knob shows the settle: while held still it swells and its outline morphs from a circle toward a triangle, arriving at the triangle exactly when the lock fires, and a locked knob rests as a triangle;
+- picking a locked knob up makes it a circle at once, and it morphs toward the triangle again as it is held still; moving more than the settle tolerance, or releasing before the lock, returns it toward the circle;
+- the picture is driven by the same still-time as the lock, never by a separate timer, so it cannot disagree with the lock; under reduced motion it jumps to the triangle at the lock.
 
 Every visible interlocutor-local field reads the same global orientation.
+
+## Global navigator as HUD
+
+In a single encounter the global navigator is a HUD, not a plate:
+
+- ink on the field: no fill, no clip-path plate, no drop-shadow; a soft halo of the page's own dark sits behind the instruments and fades to nothing;
+- locked to the screen's borders on the same edge margin as site HUDs, so the centre stays free;
+- the side of the map (`--hud-t`) is the one size knob; every other measure derives from it;
+- the transparent area never captures the pointer; only the instruments do;
+- a closed navigator reserves only its corner mark through the safe-area contract, an open one only its own cluster;
+- split and grid encounters keep the seam aperture (plate, clip, bloom), because there the navigator lives on the shared seam between two fields.
+
+## Glass and the goo lens
+
+- every occupied HUD surface (`data-display-occupancy`) is glass: the field behind it is refracted inside its rounded rectangle by one post pass in the field renderer; `data-display-glass="off"` opts a surface out, `"on"` opts one in; under `prefers-reduced-transparency` there is no glass;
+- the bend is pure displacement (no light point by default): a complex turn off the rim normal, dispersion that grows with the bend, and a magnified interior; the soft shadow and the rim are printed as a 45 degree halftone, never as a gradient, so dots carry what hard edges would pixelate;
+- one circular glass drop is stored as overfill on an eligible HUD edge; eligible reservoirs share its declared glass kind and layer. Any exposed edge can lend the drop, including the top HUD and compass. Its neck thins with distance and tears; a nearby cursor never moves its centre: only its flesh reaches toward the cursor (a lobe from the anchored centre), a held drop stays round, and release beyond the reservoir's reach leaves a larger circle. Release near an eligible edge connects it, and the connected tissue draws it back into storage slowly, over seconds; it stays inside the screen;
+- the drop is a pure-physics module (`z/display-lens.js`). It never blocks the pointer: hover passes through it and a direct click on it is replayed to whatever lies beneath; pressing on the drop and pulling takes it at once, or pulls it from a reservoir edge. The drop magnifies what it covers by 13%, the HUD glass keeps its own gentler bend. Only its owning pointer can move or release it; cancellation, capture loss, blur and glass removal end the grab. It is shown in single encounters and draws glass over the existing field;
+- occupied top HUD surfaces may declare a bounded `data-display-glass-overfill` below their controls, with a curved free edge; safe-area witnesses include that visible overfill;
+- actual field-label ink is derived from DOM text and computed styles into the scene before refraction (`w/display-label-ink.js`). DOM text remains the semantic and hit-target source. Its duplicate pixels are suppressed only after a successful GPU draw and restored for disabled glass, fallback and disposal.
+
+### Situated-function boundary — not a second gesture or a mode dial
+
+The same physical droplette is an **instrument of encounter**. Display owns the common upper liquid body, movement, reservoir coupling, glass optics, continuity and neutral contact aperture. The currently contacted organism owns the locally afforded function and truthful source presentation. It may operate as an instrument of **Form, Continuity, Care or Inquiry** at the current named site-space encounters, but none of those names is a hardwired address-to-function dispatch rule. The located body/relationship, not the mere raw address, earns the response; a site may refuse it. One instrument retains identity through all such encounters.
+
+For an eligible local object, the intended interaction is free glass → site-offered candidate → optional soft-lock to **body identity**, not stale screen pixels → body-shape accommodation for that owner's specific geometry and readable tissue → release to free glass. In Papers the relevant local topology includes the actual vertex, edge and face; opening/reading should follow the lens relation rather than requiring an unrelated click-explosion and a second lens-drag. The droplette changes its own liquid boundary, not a floating panel, rigid template or universally prescribed simplex-shaped container. This is a **design constraint for future execution**; no exact threshold, path, shape tessellation, text-fit policy or pointer-event mutation is claimed by the 2026-10-12 law assimilation.
+
+No target means current free-lens behavior remains. Locking is neither global navigation nor a second Descent. Existing pointer pass-through/hold ownership, reduced-transparency fallback, reservoir kind/layer, compositing and per-site authority are unchanged until a separately witnessed implementation passes native/visual tests. The still-open 2026-10-03 soft-lock/preview nutrient owns that implementation pressure.
+
+
+Version 3.3 address-hash correction (2026-10-03): the hash became an input as well as a witness (`Address hash`), closing the observation that changing it back to overview left the encounter in place. Arrival with an address hash enters it directly instead of being overwritten to overview. The Population-derived target list names all six current site-holons.
+
+Version 3.2 pass-through-drop correction (2026-10-01, Philipp): now that the drop is the invariant instrument over every organism it must let the world through: "ein click passed einfach durch"; then, more exactly, "click-hold-pull = bubble": a pull takes it at once. It magnifies by 13%.
+
+Version 3.1 anchored-drop correction (2026-10-01, Philipp): the drop's centre stays where it was left; a nearby cursor only makes its flesh reach; connected larger tissue pulls it home slowly.
+
+Version 3.0 glass-drop correction (2026-10-01): round mass, cursor attraction, larger released drops, same-kind/layer edge reservoirs, lowered top overfill and refracted field-label ink were implemented and exercised in staging. Canonical promotion remains owner-gated.
 
 ## Target-origin closure
 
 Pointer navigation supplies the actual minimap target as membrane origin. Four facets converge on that point, encounter state changes only under full closure, then the destination is revealed by the inverse opening. Non-pointer/direct access may use viewport center as a neutral origin.
 
+## Address hash
+
+The browser hash `#<scope>:<address>` (`overview` for the empty address) witnesses the current global encounter, and it is also an input:
+
+- arriving with `#main:<address>` enters that encounter directly; the overview stays beneath it, so ascent and Escape return there (browser back leaves the page, as before);
+- a hash the witness changes by hand, through a link or through the address bar moves the encounter through the same target-origin fold, with the viewport centre as origin; that history entry receives the encounter state, so back/forward stay exact;
+- an address with no physically present site-holon does not move the encounter; the truthful current hash is restored;
+- a hash of another form (the skip link, a foreign anchor) is not an address and is left alone;
+- the hash names only the global encounter, never Philosophy's local inspection or a site's own interior.
+
 ## Compression
 
 **The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target. Site-local routes remain local and never silently become global navigation addresses.**
 
+Version 2.6 body-label correction (2026-09-26): bodies drift within their container's bounds and carry an attached label selectable like their face; Philosophy's separate site markers are retired.
+
+Version 2.5 content-rank correction (2026-09-26): content sits two ranks below its realized container and shrinks into finer children on split; leaving an organism uses the membrane fold and zooms out from the body; the navigator opens pinned by default.
+
+Version 2.4 floating-bodies correction (2026-09-26): organisms float as full-resolution bodies of one size in their host cell and are entered by selection; composed holons grow with rank; geometry is never LOD'd, only content; descent and ascent interpolate (~0.33 s).
+
+Version 2.3 descent correction (2026-09-26): container→content descent became one Display invariant at every rank and across site-holon membranes — local child selection, relative centroid framing without zoom ceiling, two-level LOD with pooled deeper content, ascent back through the walked path, and the active interlocutor read from the innermost container. Supersedes the separation of local traversal from global navigation.
+
 Version 2.2 default background-drag correction (2026-09-18): shared background drag/orientation is now a Display-global site-holon default rather than a Philosophy/Papers special case. The site membrane may explicitly disable only its own background drag with `background_drag: false`; Philosophy-style inspection and global navigator controls remain separate capabilities.
+
+
+Version 3.4 canonical-address serialization correction (2026-10-04): raw/global textual addresses are now stated in canonical `w,x,y,z` serialization order. This is a communication/state-order invariant only; the existing CCCC semantic mapping and carrier-specific tetrahedral vertex enumeration remain unchanged.
+
+Version 3.5 situated droplette function (2026-10-12): inherit the organism-afforded purpose of one lens without hardcoding site modes, rewriting physical glass or pretending the pending soft-lock/shape-morph is already deployed.

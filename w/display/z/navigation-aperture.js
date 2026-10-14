@@ -54,6 +54,8 @@ mini.dataset.axis=document.documentElement.dataset.compositionAxis||'';
 trigger.setAttribute('aria-expanded','false');
 pocket.setAttribute('aria-hidden','true');
 if('inert' in pocket) pocket.inert=true;
+/* A fresh witness meets the navigator open; it can be tucked away with a click. */
+setPinned(true);
 
 globalThis.SSSNavigationAperture=Object.freeze({
   open:()=>open('api'),

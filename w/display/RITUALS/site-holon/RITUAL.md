@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "2.4"
+version: "3.7"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -13,7 +13,7 @@ A site-holon is an autonomous interlocutor body encountered through Display Popu
 ## Four distinctions
 
 - **Witness** — viewer/person navigating Display.
-- **Address/path** — raw recursive genealogy through site-space `{w,x,z,y}*`.
+- **Address/path** — raw recursive genealogy through site-space `{w,x,y,z}*`.
 - **Locus** — canonical tetrahedral place obtained from the address quotient.
 - **Interlocutor/site-holon** — stable locally autonomous body whose identity survives placement changes.
 
@@ -31,15 +31,18 @@ Current first bodies:
 
 - `w/display/y/philosophy/` -> `organism:philosophy @ ε`;
 - `w/display/y/yw/crawlerbait/` -> `organism:crawlerbait @ w`;
-- `w/display/y/yy/papers/` -> `organism:papers @ y`.
+- `w/display/y/yx/schattenseiten/` -> `organism:schattenseiten @ x`;
+- `w/display/y/yy/papers/` -> `organism:papers @ y`;
+- `w/display/y/yz/datenschutz/` -> `organism:datenschutz @ z`;
+- `w/display/y/yxz/impressum/` -> `organism:impressum @ xz`.
 
 The outer first `y` belongs to Display Population and is stripped at the membrane.
 
 ## Body contract
 
-A site-holon carries a `site.json` membrane declaration containing stable identity/title, local scope, shader identity, manifestation specialty, and paths to its body-local projection, renderer and style.
+A site-holon carries a `site.json` membrane declaration containing stable identity/title, local scope, shader identity, manifestation specialty, and paths to its body-local projection, renderer, style and canonical screen-space `ui_grid` carrier. The current contract is `site.json` v2.
 
-Those body-local members travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
+Those body-local members, including `ui-grid.json`, travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
 
 A site may contain further local organism anatomy beyond the site membrane. Philosophy currently carries its own INDEX, `_cambium`, RITUALS and lifecycle shell inside its body; other sites may carry only the local tissue their own closure has earned.
 
@@ -68,7 +71,20 @@ Default locality rule:
 
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
 
+A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens; the unresolved soft-lock and shape-fit mechanics remain Display-owned boundary pressure, not implemented promises.
+
+
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
+
+Every site-holon owns one canonical recursive UI-field state for the screen-space presentation tissue it actually carries. Display lends the address algebra and projects site-owned field **orientation** into the local presentation plane; its canonical cells are reference coordinates, not exclusive regions or compulsory content dimensions. Field size, internal flow, clipping choices and interaction are identity-owned. Multiple fields may overlap and order themselves by an identity-owned integer `z`, without escaping the globally higher shared liquid presentation layer. Existing neutral `portrait` variants remain alternate orientation references for the same fields, selected only from carrier shape. The site can supply one field or many without borrowing a universal template.
+
+When a canonical field determines screen placement, site CSS/render code must not secretly substitute independent absolute pixel *orientation*. Site styling may and must determine its own functional width/height, material, typography, scrolling, intrinsic overflow and visual behavior. An address may stay realized as its lattice cell subdivides more finely; overlap is not a conflict unless local interaction makes it one. Carrier variants remain address state rather than a second viewport-specific positioning system.
+
+The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected labels, bodies, beings, chamber marks and other tissue whose position is derived from organism/world coordinates remain in that native frame. Global Display-owned membrane surfaces likewise remain Display tissue rather than being assigned to one site's local grid.
+
+### Feed-owned rank-relative representations
+
+A site-holon may expose an optional bounded public `feed_preview` under its own `_feed`, while keeping the detailed projection and renderer body identity-owned. Its enclosing Display membrane represents the site through that preview until perceptual entry justifies acquiring detail. The public preview cannot claim private `_feed/current.json` or replace the actual site identity, source or root. Readiness belongs to the receiving browser's shared representation-continuity physiology; resolution/content thresholds and resource disposal stay with the child. The same relation holds inside a site at smaller rank, as in Schattenseiten's 64px→512px artwork. A failed higher representation preserves the last good low representation. No fixed rank limit, media family or duplicate renderer law is imposed.
 
 ## Global background-drag default
 
@@ -114,9 +130,9 @@ Moving the entire body between lawful Population address folders must preserve e
 
 Killer witness:
 
-`display/y/yy/papers/ -> display/y/yx/papers/`
+`display/y/yy/papers/ -> display/y/yz/papers/`
 
-must change Papers global site address `y -> x` on rebuild with zero Papers-internal edits.
+must change Papers global site address `y -> z` on rebuild with zero Papers-internal edits.
 
 ## Exact raw occupancy versus quotient coalescence
 
@@ -138,11 +154,15 @@ For Crawlerbait:
 
 Relocation changes the outer environment only. It may never rewrite a site's local genealogy into fake concatenations such as `main:yy`.
 
-Local selection or traversal inside a site-holon likewise does not mutate its global mount or transfer the global navigator into local scope.
+Local descent inside a site-holon does not mutate its global mount. Ascent past the site's own root continues through the membrane into the container the witness came through (navigation `Descent`).
 
 ## Identity-owned embodiment
 
 Shader/background/manifestation belong to stable interlocutor identity, not global address. All visible local fields inherit shared Display orientation, while page-specific navigation/interaction remains owned by the page-organism.
+
+A site-holon floats as content inside its host's cell. Its field therefore stands in the host's environment at the locus: the host's geometry is not seen; the host's own shader, evaluated at the container the site occupies (region, place and span in host space, shared orientation), fills the entire space in which the site is witnessed, beneath the site's own body. Host = the container the witness came through, else the overview interlocutor. A site whose own renderer already embodies its host may refuse with shader `environment: false`.
+
+Seen from its host, a site-holon is a floating body: its own realized geometry at full resolution, drawn with its own identity shader, two ranks smaller than the realized container carrying it, whatever its internal depth, drifting within that container and carrying its title as an attached, selectable label (navigation `Descent`, bodies). Entering the body is Descent across the membrane; inside, the host is present only as that environment. A site whose generic identity shader draws nothing (its body lives in a custom renderer) is not yet visible as a floating body.
 
 A site-local shader may change color, transparency, grain, blur, density or other material qualities without changing the shared tetrahedral topology. Local interaction may manipulate or populate that same body without replacing global orientation or global site navigation.
 
@@ -152,7 +172,7 @@ Activity targets stable interlocutor identity, never global placement. Remountin
 
 ## Global navigation
 
-Only physically discovered site-holons become global minimap targets. Clicking one performs direct target-origin encounter movement. Philosophy's broad background inspection is a Philosophy-local specialty, not the site-holon primitive.
+Only physically discovered site-holons become global minimap targets. Clicking one performs direct target-origin encounter movement. Descent is the shared primitive; Philosophy's background inspection is Descent inside Philosophy.
 
 ## Closure
 
@@ -174,4 +194,32 @@ A site-holon change is accepted when:
 
 Version 2.3 global occupied-region correction (2026-09-18): a cooked cross-site collision pressure earned one specimen-agnostic Display safe-area contract. Global membrane surfaces expose their actual occupied rectangles plus derived conservative insets to every site render and as CSS variables; site-local presentation remains identity-owned, central Display does not branch on specimen identity, and concrete pixels remain implementation rather than ontology.
 
+Version 2.8 body-label correction (2026-09-26): floating bodies drift within their container and carry a selectable label.
+
+Version 2.7 content-rank correction (2026-09-26): floating bodies sit two ranks below their realized container.
+
+Version 2.6 floating-bodies correction (2026-09-26): site-holons are seen from their host as floating full-resolution bodies of one organism size and are entered by selection.
+
+Version 2.5 descent correction (2026-09-26): site-holons now share Display Descent, ascent crosses the site membrane back through the walked path, and a site's field shows its host seen from inside its locus with a local `environment: false` refusal.
+
 Version 2.4 global background-drag correction (2026-09-18): background tetrahedral drag became a default-true Display/site-holon invariant independent of background inspection. New site-holons inherit shared drag/orientation without local enabling code; an explicit local `background_drag: false` opts out only that site while global navigator orientation and local semantic interaction remain intact. Custom renderers receive the same effective toggle through the generic render contract.
+
+Version 2.9 site-layer correction (2026-09-29): a site-holon whose phenomenology needs more than shaded faces may carry `shader.afterDraw` and draw its own layer in its field's Descent frame (same camera, orientation and container) beneath Display's point layer. The layer owns no pointer: Descent, drag, pools and point selection remain the shared field's.
+
+Version 3.0 rest-view correction (2026-09-30): a site-holon may carry `shader.view = {rest, projection}` (see organism RITUAL 3.9). The site decides what its rest view means; Display only lends the quaternion, the parallel projection and the placement. A site whose meaning is a flat picture seen along an axis (Schattenseiten) uses it so; every other site is unchanged.
+
+Version 3.1 body-material correction (2026-09-30): a site whose field shader draws nothing gives its floating body a material through `shader.body` (see organism RITUAL 3.10); the material is the site's own.
+
+
+Version 3.2 canonical-ui-field correction (2026-10-04): site-holons may consume Display's address-native recursive UI carrier without surrendering local phenomenology. Global raw-address notation is stated canonically as `w,x,y,z`; no CCCC semantic remapping or site-template ontology is introduced.
+
+Version 3.3 canonical screen-measurement correction (2026-10-05): the optional capability became the common screen-space measurement membrane. `site.json` v2 names one identity-owned `ui_grid`; fields are local/content-agnostic spans projected by Display inside the current safe carrier. All six current bodies carry the invariant, while world/body geometry, semantic addresses, site meaning and local skins remain independent.
+
+
+Version 3.4 carrier-shape correction (2026-10-06): the stable site-owned field name is now distinguished from the span it occupies on a particular neutral carrier shape. A field may carry a bounded `portrait` alternate span using the same canonical `w,x,y,z` realized leaves; Display selects it only when the current safe carrier is taller than wide. This is not a device breakpoint or second template. Rich Crawlerbait, Schattenseiten and Papers screen tissue earned top/middle/bottom portrait bands after exact generated-artifact browser witness showed their broad-carrier side rails were uninhabitable on a tall carrier. CSS may still alter internal local content but may not re-cap the canonical field extent.
+
+Version 3.5 orientation/extent/z distinction (staged 2026-10-09; browser witness pending): a field address names orientation only; independently sized field bodies may overlap, with deterministic local z. The navigator and other liquid Display surfaces are not capacity exclusions for all fields. Current source and native witnesses alone do not close visual acceptance.
+
+Version 3.6 recursive representation handoff (staged 2026-10-10): site-owned preview and local media tiers now share the same generic readiness/retirement law through Display Continuity. This is not a new site identity or public disclosure scope; GPU/browser performance acceptance remains open.
+
+Version 3.7 situated-instrument sovereignty (2026-10-12): a body may lend its own function/contact/readability constraints to the globally invariant droplette. Four currently named site-space functions do not form a universal site `mode` enum or overwrite local recursion.

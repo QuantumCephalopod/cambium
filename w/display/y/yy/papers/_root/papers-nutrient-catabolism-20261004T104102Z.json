@@ -1,0 +1,91 @@
+{
+  "event_id": "papers-nutrient-catabolism-20261004T104102Z",
+  "home_at_utc": "2026-10-04T10:41:02Z",
+  "organism": "papers",
+  "entrypoint": "github.cambium...display.papers",
+  "operation": "catabolize-achieved-nutrient-portions",
+  "outcome": "PASS/EARNED in staging — completed portions leave active intake; unresolved choices and witnesses remain. Canonical owner promotion is pending.",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "changed_scope": [
+    "w/display/y/yy/papers/_stomach/NUTRIENT__shared-descent-invariant__20260926.md -> w/display/y/yy/papers/_waste/catabolized-NUTRIENT__shared-descent-invariant__20260926-20261004.md (NARROWED)",
+    "w/display/y/yy/papers/_stomach/NUTRIENT__lens-instrument-and-tissue__20261001.md -> w/display/y/yy/papers/_waste/catabolized-NUTRIENT__lens-instrument-and-tissue__20261001-20261004.md (NARROWED)",
+    "w/display/y/yy/papers/_stomach/NUTRIENT__text-being-inquiry__20260927.md -> w/display/y/yy/papers/_waste/catabolized-NUTRIENT__text-being-inquiry__20260927-20261004.md (NARROWED)",
+    "w/display/y/yy/papers/_stomach/NUTRIENT__source-inquiry-metabolite-projection__20260926.md -> w/display/y/yy/papers/_waste/catabolized-NUTRIENT__source-inquiry-metabolite-projection__20260926-20261004.md (NARROWED)"
+  ],
+  "context": {
+    "actor": "Forge appendage, Philipp-authorized repo-only cleanup 2026-10-04",
+    "base": "8ade3e65f6957e19b330789473e3bc2229f8285a",
+    "carrier": "QuantumCephalopod/cambium:staging/nutrient-catabolism-20261004",
+    "publication_authorization": "scoped staging push + draft PR; no canonical merge/deploy",
+    "shared_root_field": {
+      "dive_in": "2.8",
+      "metabolism": "3.5",
+      "cambium": "3.4",
+      "drive": "1.6"
+    },
+    "catabolism_home": "Drive 134M5WFP0BC-xjYJu6vEmIad-AMFQ-vPo v0.2",
+    "method": "TRACE owner/source/consumers; quotient achieved portions only; preserve exact preimage and residual return address; retain unresolved actual gates; no code/constitution/public copy change",
+    "changes": [
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/yy/papers",
+        "source": "w/display/y/yy/papers/_stomach/NUTRIENT__shared-descent-invariant__20260926.md",
+        "waste": "w/display/y/yy/papers/_waste/catabolized-NUTRIENT__shared-descent-invariant__20260926-20261004.md",
+        "preimage_sha256": "02cc6a1c118699d7e3563853b49e160c5a9256248d75056c91fae173cb2807ae",
+        "preimage_bytes": 3589,
+        "active_bytes": 1605,
+        "retained_sections": [
+          "## open (for Papers' own receptor)"
+        ],
+        "evidence": "Current Papers receptor 2.9 and HOMEs `display-papers-containers-story-20260927T180350Z` / `display-papers-own-vertex-name-bloom-20260928T0900Z` carry container-first passage and names. Actual `sierpinski.js` still creates its own inquiry environment, so renderer migration remains genuinely open."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/yy/papers",
+        "source": "w/display/y/yy/papers/_stomach/NUTRIENT__lens-instrument-and-tissue__20261001.md",
+        "waste": "w/display/y/yy/papers/_waste/catabolized-NUTRIENT__lens-instrument-and-tissue__20261001-20261004.md",
+        "preimage_sha256": "d10cdd78db6a02eeb546fcdb6ec796225e1b0e33a9c141785eac8e6886995f5e",
+        "preimage_bytes": 3875,
+        "active_bytes": 1999,
+        "retained_sections": [
+          "## exit"
+        ],
+        "evidence": "Papers receptor 2.9, `sierpinski.js` lens/composite/tissue path and HOMEs `papers-lens-instrument-20261001T180000Z` / `papers-text-as-tissue-20261001T204500Z` carry the implemented instrument, LOD and tissue stages. The latter HOME explicitly does not witness readable woven sentences by eye."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/yy/papers",
+        "source": "w/display/y/yy/papers/_stomach/NUTRIENT__text-being-inquiry__20260927.md",
+        "waste": "w/display/y/yy/papers/_waste/catabolized-NUTRIENT__text-being-inquiry__20260927-20261004.md",
+        "preimage_sha256": "bf3a8f4c43f7a03e4f7c6c4694dce8cb47acb7e57864d0c8b339355a8f14e8ab",
+        "preimage_bytes": 8089,
+        "active_bytes": 2095,
+        "retained_sections": [
+          "## residue — the exit condition of this nutrient",
+          "## encounter (2026-09-27, Philipp, after #123 went live)"
+        ],
+        "evidence": "Current Papers `sierpinski.js` glyph atlas/tissue/name paths, receptor 2.9 and HOMEs `display-papers-text-being-embodied-20260927T142303Z`, `display-papers-ink-membrane-20260927T152946Z`, `display-papers-containers-story-20260927T180350Z`, `display-papers-own-vertex-name-bloom-20260928T0900Z` carry embodiment, no-collision and measured-prefix/atlas/name consequences. The exact residual below remains live."
+      },
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/yy/papers",
+        "source": "w/display/y/yy/papers/_stomach/NUTRIENT__source-inquiry-metabolite-projection__20260926.md",
+        "waste": "w/display/y/yy/papers/_waste/catabolized-NUTRIENT__source-inquiry-metabolite-projection__20260926-20261004.md",
+        "preimage_sha256": "fb8226aca9f5eea20082096129c1825a9de20e1b66ef9e60c59b2920e31eb33f",
+        "preimage_bytes": 11687,
+        "active_bytes": 5444,
+        "retained_sections": [
+          "## bounded question",
+          "## expected locus of work",
+          "## acceptance / stop conditions",
+          "### still OPEN",
+          "## witness (2026-09-28, Mnemos reading the live visitor shadow)"
+        ],
+        "evidence": "Current Papers receptor 2.9 owns the common Source/Holon inquiry and source-owned projection boundary. The original carrier records already-deployed reader dialect repairs and live Inquiry 119/119, so its initial 39-missing-Source census is historical. Current source-owned completion, parser gaps and Source-metabolight visitor acceptance remain unverified here; the dated residual witness below is orientation, never today’s census."
+      }
+    ],
+    "revocation": "Reopen the smallest affected quotient if its surviving owner changes, current consumer needs an extracted distinction, or a countercase defeats its witness. Reacquire the cited preimage and living source first.",
+    "boundary": "Tools, old checkouts, backups and prior waste are excluded. No engineering, history rewrite, source data acquisition, legal copy edit or website publication performed."
+  }
+}

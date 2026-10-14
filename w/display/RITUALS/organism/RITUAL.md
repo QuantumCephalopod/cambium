@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.4"
+version: "3.26"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -40,7 +40,7 @@ Physical custody encodes global site address:
 - a site-holon under `w/display/y/y<address>/` occupies site-space `<address>`;
 - thus `w/display/y/yw/crawlerbait/` means Crawlerbait at global site-space `w`;
 - thus `w/display/y/yy/papers/` means Papers at global site-space `y`;
-- recursion continues by the same `{w,x,z,y}*` law.
+- recursion continues by the same `{w,x,y,z}*` serialized-address law.
 
 The outer first `y` is Display Population custody, not part of the restarted site address.
 
@@ -48,15 +48,18 @@ No empty address directories are fabricated. Physical site-holon presence determ
 
 ## Autonomous site-holon body
 
-A site-holon is one movable body. Its `site.json` declares stable identity, local scope, shader and manifestation contracts plus body-local projection/render/style members.
+A site-holon is one movable body. Its `site.json` declares stable identity, local scope, shader and manifestation contracts plus body-local projection/render/style members and one identity-owned canonical screen-space measurement carrier (`ui_grid`).
 
 Address is environment, not identity. Moving the whole body to another lawful Population address must remount it without editing its internal bytes.
 
-Current first bodies:
+Current bodies (the tree is the authority; this list only orients re-entry):
 
 - `w/display/y/philosophy/` -> global `ε / overview` -> `organism:philosophy`;
 - `w/display/y/yw/crawlerbait/` -> global `w / Form` -> `organism:crawlerbait`;
-- `w/display/y/yy/papers/` -> global `y / Inquiry` -> `organism:papers`.
+- `w/display/y/yx/schattenseiten/` -> global `x / Continuity` -> `organism:schattenseiten`;
+- `w/display/y/yy/papers/` -> global `y / Inquiry` -> `organism:papers`;
+- `w/display/y/yz/datenschutz/` -> global `z / Care` -> `organism:datenschutz`;
+- `w/display/y/yxz/impressum/` -> global `xz` -> `organism:impressum`. `xz` is a quotient midpoint with no semantic noun of its own; the address is given bare rather than inventing one.
 
 Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `y`. Crawlerbait remains locally rooted at `crawlerbait:ε`; its machine-facing HTTP bait routes are local public apertures, not additional global site-space addresses.
 
@@ -68,7 +71,7 @@ Display owns:
 - shared tetrahedral body topology and geometric projection;
 - shared orientation coupling and global camera relation;
 - global site-space navigation, target-origin fold and membrane law;
-- neutral generic couplings required for arbitrary site-holons to inhabit that body.
+- neutral generic couplings required for arbitrary site-holons to inhabit that body — including the live glass-drop geometry in every render context (`lens()` → viewport `{x, y, r, held, docked}` or null; Display lends where the drop lies, the site decides what it means), a site composite (a site whose body lives in its own canvases may offer `shader.composite()` returning them in paint order; while glass is active the field draws them into its scene so the same invariant glass refracts them, and marks itself `data-composite="1"` so the site's own style can let its originals step back), and one optional site layer: a site shader may carry `afterDraw`, which Display calls once per frame inside the site's own field, after geometry and floating bodies and before the point layer, lending it the current Descent frame (`proj`, `view`, `model`, `frame`, `container`, orientation, size). Display restores its framebuffer/viewport afterwards and contains a failing layer; what the layer draws means nothing to Display.
 
 The site-holon owns:
 - its public/local projection boundary;
@@ -80,6 +83,37 @@ The site-holon owns:
 Therefore two site-holons may look and behave radically differently while the same tetrahedral body moves isomorphically under one global orientation. Shader and local interaction are bound to interlocutor identity, never to global mount address.
 
 Default mutation law: if pressure originates in one site-holon, keep the change inside that body. Lift tissue into Display only when the change is genuinely specimen-agnostic, required by arbitrary future site-holons, and leaves semantic/local behavior in the site body. Central Display must never learn Papers-, Philosophy- or Crawlerbait-specific meaning merely to support their local expression.
+
+### One situated instrument — function arises in encounter
+
+The existing shared glass droplette is **one Display-owned instrument**, not just a magnifier, a menu of tools, or four separately instantiated lenses. Its stable physical/interaction identity stays Display-owned across site-space, recursive descent, locally earned deformation and return to free glass. **Its operative function is afforded by the actually encountered, independently rooted organism and the local body/relationship it presents.** Display lends physics, spatial contact/anchoring, glass composition and continuity; the contacted site owns *what the encounter means*, what structural affordance it can truthfully offer, and what portion of its source-owned representation is fit to show. A site may decline any richer function. This is a relation, not a new generic renderer, schema, substrate or semantic vertex.
+
+Current witnesses make the four situated possibilities intelligible: site-space `w / Form`, `x / Continuity`, `z / Care`, `y / Inquiry`. **These are present mounted site-space descriptions, not four hardcoded lens modes, an exhaustive tool taxonomy, or a remapping of Display's own w Embodiment / x Continuity / z Orientation / y Population CCCC DNA.** A site moved to another raw address keeps its intrinsic interpretation. At any recursive depth, the instrument may learn a different local function from a different genuine encounter without becoming another instrument.
+
+A contact may require more than optical enlargement. In Papers, the source-pressure example is: the same droplette approaches an actual vertex, edge or face; an identity-bound *soft-lock* may settle first, and **the droplette's own body**, not an independently exploded text element or screen overlay, may accommodate that topology and the site's authored readable tissue. A relation-driven deformation is distinct from a globally prescribed circle/capsule/triangle template. Readability must preserve full source wording; finite viewport limits and overflow/continuation require their own truthful implementation witness. The established pass-through click, hold-to-take, continuous focus, Descent/ascent, site-owned `_feed` availability/fallback, reduced-transparency and release laws remain constraints.
+
+This is an **assimilated conceptual/architectural boundary**, not a claim that soft-lock, per-simplex shape morph or readable accommodation already execute. The older Display `_stomach/NUTRIENT__lens-softlock-local-preview__20261003.md` remains open for body hit-testing, identity-following anchors, shape response, native and real-device acceptance. A new CCCC split, different source authority, extra overlay, per-site duplicate droplette or menu of Form/Continuity/Care/Inquiry modes is *not* earned by this encounter.
+
+
+### Mounted anatomy and frame work
+
+An ordinary small site still resolves its source anatomy once at mounting. A site with child-owned `_feed/display-preview.json` can instead be represented by that bounded outer body in the parent while its detailed source stays outside the global HTML. Entering that site acquires its published immutable detailed projection, derives its full field once, and hands over under the existing membrane transition. The parent keeps the child's preview body for future visits. View, language and activity do not remint that source. A changed source revision requires truthful reentry, not an implicit overwrite of the existing organism. Dynamic appearance and movement remain in source-owned render/shader hooks.
+
+Each field's gene-label update owns only its four gene labels; it must not hide autonomous body labels because those have no gene tag. Reuse the frame's canvas rectangle within that draw. Refracted label ink may reuse computed styles within one collection only, while reading current DOM text, geometry, opacity and source styles afresh in the next collection. Atlas identity, GL-state restoration, fallback paint and geometry remain intact.
+
+The field owns complete target clearance independently of the last site's draw state. Before clearing a frame or the host/point depth pass, it enables color/depth writes, sets the depth clear value to one and disables scissor. Draw-specific state is applied afterwards. A transparent site body, glass/composite or ink pass may leave depth writes off without allowing its earlier depth to become a later frame's geometry. Existing identity, geometry, materials and draw order remain unchanged.
+
+Revealing a cached field restores its camera to the truthful current container through the existing arrival transition. A body-entry zoom is temporary passage, not container state. Ordinary language/activity repaint does not restart the camera; an explicit membrane return still starts from its supplied body/place and settles into the same current-container frame. Global addresses, encounter history and ascent topology are unchanged.
+
+### Rank-relative representation continuity
+
+One generic Display Continuity physiology (`x/representation-handoff.js`) owns the browser-local *readiness relation*: keyed acquisition, bounded queue, pause/resume, retry only on deliberate demand, retention of last valid representation and stale resource retirement. It owns **no** organism identity, body meaning, media type, fixed resolution list or traversal depth. The owner supplies its stable identity/revision key, acquisition function, resource disposal and perceptual LOD choice. Each membrane/rank may instantiate the same contract independently.
+
+Two executed substitutions:
+- at Display Population, the parent keeps the child's `_feed` preview while a source-owned immutable detailed projection is fetched on demand; only the child's actual entered field consumes full data;
+- inside Schattenseiten, the same physiology manages local 64px and 512px acquisition while image decoders and GPU textures remain Schattenseiten-owned, and the 64px body is held until each valid higher-resolution slot is ready.
+
+Public `_feed` advertises truthful available representations; loading and network readiness are transient runtime facts, **not** semantic feed state. A failed successor cannot erase its already-present lower representation. A lower rank can exist without a higher one. LOD thresholds, caching lifetime and shader/display materials remain owner-local. No global array of all potential descendants is implied.
 
 ### Identity-resolved foreign embodiment
 
@@ -97,6 +131,72 @@ Consumers bind to stable identity/capability, never to the current semantic addr
 
 Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives directly in unsplit `w · Embodiment`. Its native `VERSION.json` is the current identity witness. This does **not** split Embodiment and does not make Pretext a Display semantic vertex. If Embodiment later differentiates under real pressure, Cambium may move the same foreign identity to whichever earned child then accounts for it; the derived dependency projection changes while consumers remain unchanged.
 
+### Type is body
+
+Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 2.0.0), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v2 build is the main type for both Display font tokens, with 1024 units per em; every glyph sits centred in one fixed 1024-unit cell, and fixed width is part of the face's identity, so a correction that lets letters drift out of their cells is a wound to the face. The alphabet is A–Z and space: rendered text is folded into it (`Ä→AE`, `Ö→OE`, `Ü→UE`, `ß→SS`, case kept) by `w/display-type.js`, and digits and marks fall back glyph by glyph to the next family. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
+
+Entry-copy scale belongs to the site's actual mounted content class, not an obsolete carrier selector. The overview introduction remains secondary to the field, with bounded responsive type and a width tied to its real panel. `ch` is not a truthful main-alphabet cell here: it measures the zero glyph or its fallback measure, while this face has no zero glyph. Typography does not alter semantic labels, camera, body geometry or navigation.
+
+#### Fractal type scale — one half-octave lattice
+
+Display's type sizes use one self-similar power-of-two lattice rooted in the browser/user root font size:
+
+`size(r) = 1rem · 2^(r/2)`
+
+Two adjacent rank steps recover one exact octave. The browser/user owns `1rem`; Display never hard-sets the `html` root font size.
+
+The same relation is carried across rendering substrates:
+- CSS exposes the shared ranks as `--type-rn4 … --type-rp4`;
+- `w/display-type.js` exposes the same mathematical rank factor and derives Canvas/Pretext pixels from the **computed** root `rem`;
+- DOM, Canvas and Pretext consumers choose ranks from that one relation rather than maintaining a parallel pixel scale;
+- standalone public apertures realize the same relation locally and are not forced to import Display-internal CSS.
+
+Site-holons retain local typographic sovereignty: they choose which ranks they use and may shift a bounded local typographic origin when concrete local pressure requires it, but every locally shifted rank remains `local_origin · 2^(r/2)`. Philosophy's narrow overview uses `0.875rem` as its local origin so the compactness earned in PR #164 survives while the relation remains the same lattice.
+
+A non-lattice size is admissible only when concrete local functional pressure requires that exact exception; convenience or inherited arbitrary pixels do not create a second size ontology.
+
+Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
+
+### Canonical recursive UI field
+
+Display projects site-holon screen-space UI through one normalized recursive fourfold carrier without claiming that 2D screen geometry is Cambium ontology. Every current site-holon carries its own canonical `ui-grid.json`; Display owns the address algebra and carrier projection while the site owns the names and meaning of its fields.
+
+- canonical textual address serialization/sort order is `w, x, y, z`; this is deliberately distinct from the fixed CCCC semantic phase relation `w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE` and from any carrier-internal tetrahedral vertex-array order;
+- the 2D projection maps one split row-major as `w x / y z`; every current leaf may recur by the same `1→4` law without a predefined depth;
+- only realized splits exist in canonical state. Pixel rectangles are derived from `carrier bounds + recursive address`, never stored as the canonical address;
+- a named UI field references one realized orientation cell or one contiguous rectangular union of same-rank realized cells. The reference is an address, **not finite content capacity or exclusive occupancy**. Multiple fields may reference the same region and may extend over one another; identity, content dimensions, and interaction remain site-owned. Optional bounded `portrait` variants move that same field's orientation reference on tall carriers without changing its identity or meaning. Legacy typed elements remain editor/evidence carriers rather than the site contract;
+- splitting a realized leaf refines positional precision and leaves any fields referencing the former leaf anchored to their still-realized ancestor address. Refinement of one overlapping field never displaces another. Coalescence refuses only when further subdivision or a descendant address reference would become invalid, not merely because rendered bodies overlap;
+- canonical state is exportable/importable as realized split addresses plus identity-owned field/element spans. A mutation can therefore be replayed as address-native operations such as `split x`, `coalesce xy`, `place nav xw+xx …`, or `move title ww+wx -> yw+yx`;
+- an editor is only a projection/actuator of that state. It never becomes a second layout authority;
+- the runtime projects a field's **orientation** from its canonical address onto the site-local orientation plane (the site surface below the shared top membrane). The plane is not a packing area: global bottom/right HUD occupancy does not subtract room from every field. Its normalized bounds locate the field, never assign compulsory element width/height. Intrinsic/functional extent belongs to the site. A field may carry local integer `z` (default 0) to order overlap deterministically within its own site stacking context; Display's glass/header/navigator/droplet remain on their separate upper presentation layer. Reprojection on viewport/safe-area changes preserves field identity and content geometry;
+- this law governs **screen-space presentation placement**. World/body geometry remains in its native frame: tetrahedral canvases, chamber/body labels, mounted-site markers, beings and other geometry whose position is derived from organism/world coordinates are not reminted as UI-grid addresses;
+- global Display-owned cross-site membrane surfaces remain Display tissue rather than being assigned to an arbitrary site's local grid.
+
+First witness: `w/ui-grid.js` owns the pure address/state physiology (`sss.display.ui-grid.v2`), while `w/ui-grid-lab.html` and the supplied direct-manipulation specimen are specimen-agnostic actuators/evidence. The lab is not a site-holon or semantic split. `site.json` v2 carries the site's own `ui_grid` member; the generic runtime hands renderers a neutral field binder and never names current specimens or their local field IDs.
+
+### Acknowledged live circulation — delta recurs before snapshot
+
+Display Continuity may carry a site-holon's admitted public state through an opaque keyed-unit transport, but transport growth must not require repeatedly resending the whole organism projection.
+
+The rank-invariant circulation law is:
+
+`source-owned unit map → actual Worker revision ledger → changed units only → acknowledged delta → next base`
+
+Rules:
+- the Worker may expose, only through the authenticated source membrane, the current `public_revision` and opaque `unit_key → unit_revision` hashes; it does not return semantic values through this handshake and does not become source authority;
+- a producer whose local ACK ledger is absent/corrupt reacquires that remote ledger rather than inventing a historical baseline or forcing a complete snapshot;
+- ordinary circulation compares the acknowledged ledger with current source-owned unit revisions and sends only changed opaque units and lawful deletes;
+- if one delta exceeds the bounded request size, the **same delta law recurs at smaller transport scale**: choose a deterministic subset of changed units that fits, compute the intermediate target revision, send/ACK it, then use that ACK as the next base;
+- every chunk is an ordinary delta. Chunking is not a second protocol, semantic subdivision, or organism anatomy;
+- a single opaque unit that exceeds the transport bound is explicit unit-granularity pressure and must not be silently split by Display;
+- the deterministic empty unit ledger is a lawful first base, so first publication may also grow through bounded deltas;
+- full-state reconciliation remains bounded legacy/integrity repair only. It is not the normal growth path for a state whose size may increase without bound;
+- asynchronous intermediate projections are truthful transport lag. Display must not claim final convergence until the source reaches the current source-owned public revision.
+
+Compression:
+
+> **Remember hashes, move differences, recurse the same delta when the difference is too large.**
+
 Do not invent a universal foreign-body manifest merely to generalize this first case. Extend identity witnessing only when another real foreign body proves the present native witness insufficient.
 
 ## Tree-derived public membrane
@@ -109,6 +209,12 @@ A separately authored mount table is not semantic authority. Central Display run
 
 One immutable content-addressed asset bundle carries the shared visual generation; identity-owned static site apertures remain ordinary generated artifact files outside the reserved shared bundle namespace.
 
+### Materialized-shadow publication continuation
+
+The Pages workflow may wake after a successful canonical-main `papers static shadow materialization` run. This is a mechanical continuation, not another Display digestion. It reads the committed shadow and the last successful `github-pages` deployment before acting: an already-published shadow needs no deployment, and a superseded completion yields to the current source. A committed shadow left unpublished by an interrupted materializer tail remains eligible on the next successful completion. Missing source or an unavailable publication baseline is an explicit failure, never a fabricated no-change witness.
+
+This continuation builds the Pages event's own canonical commit, never the materializer's pre-push head or an untrusted branch. Ordinary push and deliberate dispatch retain their existing publication path. Live closure still requires a real materializer completion followed by its Pages deployment and a visitor witness.
+
 ## Persistent global physiology
 
 Display keeps alive across every encounter:
@@ -119,10 +225,11 @@ Display keeps alive across every encounter:
 - default-true site-holon background drag with an identity-local explicit-false opt-out;
 - exact address/quotient geometry;
 - recursive split-cell centroid camera framing;
+- Descent: one container→content gesture at every rank and across membranes (navigation `Descent`);
 - target-origin tetrahedral closure transition;
-- activity receptor and browser encounter/history body.
+- activity receptor and browser encounter/history body, in which the `#scope:address` hash is both witness and input (navigation `Address hash`).
 
-Entering an interlocutor never hands the global navigator to its local recursive space.
+Entering an interlocutor never hands the global minimap to its local recursive space; descent and ascent are one gesture on both sides of the membrane.
 
 ## Navigation and local inspection
 
@@ -168,3 +275,51 @@ CI success alone is not browser closure.
 Version 3.3 background-orientation interaction correction (2026-09-18): the already-shared orientation field now owns default background drag across arbitrary site-holons. Local membranes may opt out with explicit false without changing global navigator orientation, site identity, geometry, inspection capability or locally owned interaction.
 
 Version 3.4 identity/address/custody correction (2026-09-23): Display now hosts foreign code bodies at their currently truthful semantic loci while consumers resolve stable identity through current live anatomy. The first realized case moves pinned Pretext intact into unsplit Embodiment and derives its public module location at build time; no Typography container or convenience split is introduced.
+
+
+Version 3.6 descent correction (2026-09-26): Descent entered persistent global physiology as the shared container→content gesture; the global minimap remains global.
+
+Version 3.5 acknowledged-live-circulation correction (2026-09-24): Continuity now treats complete snapshots as bounded recovery only. Producers reacquire the authenticated Worker unit-revision ledger, derive only source-owned differences, and recursively subdivide an oversized difference into sequential ordinary acknowledged-base deltas. Empty state has a deterministic revision base; one oversized opaque unit remains an explicit granularity wound rather than being silently split.
+
+Version 3.7 site-layer correction (2026-09-29): a site shader may draw its own layer inside its field's Descent frame through optional `afterDraw`; Descent, drag, pools, point selection and body entry stay Display's. First realized by Crawlerbait's beings (goo bodies walking bait-space).
+
+Version 3.8 continuous-focus correction (2026-09-29): a site shader may offer `focus()` → `{center, scale}`; Display eases its own camera toward it with a frame-rate-independent critically damped spring and glides back to the walked container when released. Descent steps are for the witness's own gestures, never for following motion (Philipp: chained steps made him nauseous).
+
+Version 3.9 rest-view correction (2026-09-30): a site shader may declare `view: {rest, projection}`. `rest` is a quaternion the shared orientation eases to when the site is shown (and back to Display's home when another site is shown, unless the witness has turned it since); `projection: 'orthographic'` makes the field and its hit-testing use a parallel projection matched to the perspective at the centre plane. Absent it nothing changes; Display names no site. First realized by Schattenseiten, whose works rest in the leaves of a depth-three body so that, along the shadow axis, the 8×8 sheet is one flat picture.
+
+Version 3.10 body-material correction (2026-09-30): a site shader may offer `body: {fragment, state}`, the material of its floating body in the overview, used in place of its field fragment/state. Absent, nothing changes; Display prescribes no look. First realized by Schattenseiten and Papers, whose field shaders draw (almost) nothing and so were labels only.
+
+Version 3.11 type-is-body correction (2026-10-01): Philipp's SpriteSheet Mono became Display's main face at `w · Embodiment` (identity `@sss/spritesheet` 1.0.1, cells re-centred and bearings made truthful), with rendered-text folding to its A–Z alphabet; letters-as-bodies became Display text law. The tissue engine is not yet grown: it waits for its first consumer.
+
+Version 3.12 invariant-glass-over-own-canvases correction (2026-10-01): a site that paints its own canvases (Papers) had no glass at all, neither HUD glass nor the drop, because the glass pass refracts only the field's scene. A site may now hand its canvases to its field through `shader.composite()`; the field composites them under the same glass. Every render context also carries `lens()`, the drop's live geometry, so a site can let the one invariant lens act as its instrument without drawing a lens of its own.
+
+Version 3.13 text-tissue correction (2026-10-01): the letters-as-bodies engine grew into `w · Embodiment` with its first consumer, Papers' open organisms.
+
+Version 3.14 font-v2 correction (2026-10-02): the supplied SpriteSheet Mono v2 bytes replace Mono under the same `@sss/spritesheet` identity and member paths, now package 2.0.0 with 1024-unit em and fixed cells; Regular remains 1.0.1. Schattenseiten's HUD inherits Display's main face, and global minimap canvas labels use it with the same rendered-text folding and a redraw after font loading. Text-tissue law, source spelling and navigation identity remain intact.
+
+Version 3.15 live-type-and-frame-work correction (2026-10-03): Philosophy's overview copy is bound to its mounted class with compact responsive typography. The generic runtime shares one derived anatomy per mounted source snapshot; own gene-label updates leave body labels alone, and label-ink style reads are reused only within the current collection. Source meaning, font bytes, dynamic rendering, geometry, glass and pointer identities remain intact.
+
+Version 3.16 fractal-type-scale correction (2026-10-03): Display type size is now one browser-rooted half-octave power-of-two lattice across shared CSS, site-holon DOM type, Canvas/Pretext ink and standalone public apertures. Site-holons choose ranks and may shift a local origin while preserving the same ratio; Philosophy's narrow origin preserves the compact PR #164 witness. `INDEX.yaml` and `_cambium.yaml` remain unchanged because no new structural distinction was earned.
+
+Version 3.17 address-hash and re-entry-truth correction (2026-10-03): the global `#scope:address` hash became an input as well as a witness (navigation 3.3); back/forward no longer throws on a call left behind when `reconcile()` was retired; canvas label ink receives canvas `fontStretch` keywords instead of computed percentages. The current-body list now names all six physically mounted site-holons. `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+
+Version 3.18 canonical-ui-grid correction (2026-10-04): Display gained a specimen-agnostic recursive screen-space carrier whose canonical state is address-native rather than pixel-native. Serialized addresses use `w,x,y,z`; the first 2D projection is row-major `w x / y z`; same-rank spans, edge anchors, lawful split/coalesce and deterministic address-delta commands are replayable through `w/ui-grid.js` and its lab. CCCC semantics and tetrahedral implementation order are explicitly not remapped; `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+Version 3.19 frame-clear/re-entry correction (2026-10-04): write masks/scissor are reset before full frame and host/point depth clears. Previously the custom bodies' written depth survived a masked clear after a transparent generic tail body, leaving stale occlusion across frames. Revealing a cached host also restores its current-container camera rather than keeping the prior body-entry zoom; explicit membrane zoom-out remains intact. Existing field/runtime contracts carry these repairs; no body geometry, material, topology or history semantics change is earned.
+
+Version 3.20 bounded interior preview (2026-10-04): an identity-owned optional `shader.preload` starts its admitted low-tier queue; `shader.preview` draws its interior under the existing host lens using the same body pose/model. The original post-glass placement bypassed the lens optics and is superseded by3.21 below. Site owns interior/media policy and Display names no site. No soft-lock, new geometry or topology is implied.
+
+Version 3.21 shared preview optics correction (2026-10-04): the site-owned interior renders into a transparent context-local input target before the final glass pass. The shared glass shader samples that target with the scene's exact magnification/refraction/channel offsets and masks it with the existing lens shape; tint, rim, shadow and specular response apply to both. Nearest low-tier source/input sampling remains compatible with these optics. The scene stays coarse outside the lens; preview target clears/reallocation/disposal remain field-owned. No duplicated site-specific optics, source policy, geometry or topology change.
+
+
+Version 3.22 site-holon measurement correction (2026-10-05): every current site-holon now carries one identity-owned `sss.display.ui-grid.v2` measurement state for screen-space presentation. Fields are named/content-agnostic spans; Display derives their live rectangles from the site surface intersected with the global safe carrier, while site-local meaning and appearance remain sovereign. World/body-projected geometry and global Display membrane surfaces are explicitly outside this screen-space carrier. The six current bodies share one measurement law without becoming one template; `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+
+Version 3.23 carrier-variant correction (2026-10-06): browser witness exposed that one fixed same-rank span can be lawful yet uninhabitable when the neutral safe carrier changes aspect. Field identity therefore remains invariant while an identity-owned field may carry optional alternate lawful spans over the same realized recursive leaves. Display currently selects only the earned `portrait` variant from the actual safe-carrier relation `height > width`; no site identity, device class or pixel breakpoint enters the selector. Occupancy-transition settlement now refreshes the safe-area and bound fields reproject on `sss:safe-area`. Rich Crawlerbait, Schattenseiten and Papers HUD fields use top/middle/bottom portrait bands; Philosophy and the legal articles remain on their default spans. `INDEX.yaml` and `_cambium.yaml` remain unchanged.
+
+Version 3.24 orientation-not-confinement correction (staged 2026-10-09; browser witness pending): screenshots of six live site-holons exposed grid spans mistakenly enforced as element capacities. Address orientation, site-owned extent, local field stacking, and independent upper Display liquid space are now distinguished. The repository's normalized UI state remains v2 and its CCCC DNA and canonical address symbols stay unchanged. Native tests do not alone certify visual closure.
+
+Version 3.25 generic readiness substitution (staged 2026-10-10): the same browser-local representation handoff physiology now runs for Display site detail and Schattenseiten image tiers. The first native unit/GL-fixture/site build passed on QuantumCephalopod; real-browser visual and runtime-performance witnesses are still pending. Current CCCC constitution and physical site-space anatomy are unchanged.
+
+Version 3.26 situated-function assimilation (2026-10-12): one already-global liquid instrument is given a context- and organism-owned *purpose*, not a new mode selector; site-space Form/Continuity/Care/Inquiry are current examples rather than universal modes or Display's root DNA. Local simplex shape/readability and soft-lock execution remain distinct unfinished wounds. No INDEX, _cambium, geometry or renderer change is implied.

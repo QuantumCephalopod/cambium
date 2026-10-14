@@ -1,3 +1,5 @@
+<!-- retired 2026-09-18, witnessed 2026-09-30: spent. Closed by HOME display-global-safe-area-contract-20260918T215315Z: the contract is live in x/display-runtime-v2.js and w/template.html, CI run 35397785734 succeeded, and the desktop and mobile browser witness recorded zero Papers/global overlap. This waste copy is byte-identical to the stomach copy that the 18 Sep retirement left behind (it copied and did not move); that stomach copy was removed on 2026-09-30. The status line below is the state at admission, not now. -->
+
 # NUTRIENT — global Display safe-area contract
 
 status: OPEN / UNRESOLVED

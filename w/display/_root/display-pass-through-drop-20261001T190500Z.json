@@ -1,0 +1,29 @@
+{
+  "event_id": "display-pass-through-drop-20261001T190500Z",
+  "home_at_utc": "2026-10-01T19:05:00Z",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "pass-through-drop-and-magnify",
+  "outcome": "PASS/EARNED in staging · THE DROP NO LONGER BLOCKS THE POINTER; HOLD TAKES IT; IT MAGNIFIES BY 13%",
+  "changed_scope": [
+    "z/display-lens.js: drop and edge strips are pointer-events none; a capture-phase press inside the drop waits; release before the hold replays the press to the element beneath, movement beyond 6 px replays it and lets the drag through, a still hold of 240 ms takes the drop or pulls it from a reservoir edge; geometry carries mag 1-1/1.13",
+    "w/locus-shader.js: each glass surface carries its own magnification; the drop uses its own, HUD glass keeps uB.y",
+    "z/display-lens.test.cjs: pass-through click, pass-through drag, hold-to-take and ownership witness",
+    "RITUALS/navigation 3.2",
+    "papers sierpinski.js: only sleeping letters are clipped to the drop; an opened name is read whole"
+  ],
+  "context": {
+    "actor": "Mnemos, session 33Γ, with Philipp",
+    "carrier": "QuantumCephalopod/cambium staging branch staging/papers-lens-tissue-20261001 (PR #149)",
+    "source": "Philipp 2026-10-01: \"jezt wo der drop invariant ist und man ihn überall nutzen kann -> er muss durchklickbar sein … nur ein klick-hold activated den drop … und der drop könnte leicht (13%) vergrößern\"",
+    "witness": {
+      "unit": "all Display witnesses PASS",
+      "browser": "built artifact over Papers: a held press took the drop (held true) and carried it; free over Governance the drop magnified its organisms; a real mouse hover inside the drop opened 1H.F8cX and 3H.zWu2 (the latter read whole beyond the drop edge); a real click inside the drop passed through and descended into chamber y while the drop stayed unheld"
+    },
+    "not_witnessed": [
+      "touch: long-press on a phone",
+      "a click-through landing on a DOM button that listens to click only (the replay sends pointerdown; the browser click follows the real up)",
+      "y/check.py locally (bait tree excluded)"
+    ]
+  }
+}

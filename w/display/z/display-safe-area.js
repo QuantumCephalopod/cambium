@@ -49,7 +49,7 @@
     if(!el||typeof el.getBoundingClientRect!=='function')return null;
     const cs=globalThis.getComputedStyle?getComputedStyle(el):null;
     if(cs&&(cs.display==='none'||cs.visibility==='hidden'||number(cs.opacity)<=.02))return null;
-    const r=el.getBoundingClientRect();
+    const raw=el.getBoundingClientRect(),r=globalThis.SSSDisplayGlass?.surfaceRect?SSSDisplayGlass.surfaceRect(el,raw):raw;
     if(r.width<.5||r.height<.5)return null;
     return {id:el.id||'',role:el.getAttribute('data-display-occupancy')||'',rect:r};
   }
@@ -76,6 +76,13 @@
     started=true;
     const occupancy=[...document.querySelectorAll('[data-display-occupancy]')];
     if(typeof ResizeObserver==='function'){resizeObserver=new ResizeObserver(schedule);for(const el of occupancy)resizeObserver.observe(el)}
+    /* Occupancy can change through CSS transitions driven by an ancestor state
+     * (the navigator aperture is the first witness). Mutation observes the edge,
+     * but settled opacity/transform is only truthful at transition completion. */
+    for(const el of occupancy){
+      el.addEventListener('transitionend',schedule,{passive:true});
+      el.addEventListener('transitioncancel',schedule,{passive:true});
+    }
     if(typeof MutationObserver==='function'){
       mutationObserver=new MutationObserver(schedule);
       for(const el of occupancy)mutationObserver.observe(el,{attributes:true,childList:true,subtree:true,characterData:true,attributeFilter:['class','hidden','aria-hidden','style']});
