@@ -407,7 +407,7 @@ float sdBox(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+mi
 float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);return min(a,b)-h*h*k*.25;}
 float sdSeg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/max(dot(ba,ba),1e-4),0.,1.);return length(pa-ba*h);}
 mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
-/* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.x field-lock corner+1 (0 = round drop), uL2.yz home anchor, uL2.w lock focus (mutes the world outside the drop) */
+/* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.x field-lock corner+1 (0 = round drop), uL2.yz home anchor, uL2.w field-lock focus (mutes the field beneath the drop so the target it frames reads) */
 float sdLens(vec2 p){float d=uL2.x>.5?sdBox(p-uL0.xy,uL0.zw,uL2.x-1.):length(p-uL0.xy)-uL0.z;if(uL1.z>.5)d=smin(d,sdSeg(p,uL0.xy,uL0.xy+uL1.xy)-uL1.z,max(uN.w,uL1.z));return d;}
 float sdPanel(vec2 p,vec4 R){
   vec2 q=p-R.xy;
@@ -466,11 +466,11 @@ void main(){
     c.r=mix(c.r,pr.r,pr.a*mask);c.g=mix(c.g,pg.g,pg.a*mask);c.b=mix(c.b,pb.b,pb.a*mask);
   }
   c=mix(c,uT.rgb,uT.a*gInside);
-  /* a locked drop frames its target: the world outside it is gently blurred and dimmed */
+  /* a field-locked drop frames its target: the field beneath the drop is blurred and dimmed so the target reads */
   if(uL2.w>0.&&uN.x>-.5){
-    float o=smoothstep(0.,10.,gooD(frag))*uL2.w;
-    if(o>0.){vec3 b=vec3(0.);for(int i=0;i<8;i++){float a=float(i)*.7854;b+=texture(uScene,(frag+gShift+vec2(cos(a),sin(a))*5.)/uRes).rgb;}
-      c=mix(c,b*(1./8.)*.5,o*.72);}
+    float o=(1.-smoothstep(-8.,0.,gooD(frag)))*uL2.w;
+    if(o>0.){vec3 b=vec3(0.);for(int i=0;i<8;i++){float a=float(i)*.7854;b+=texture(uScene,(frag+gShift+vec2(cos(a),sin(a))*6.)/uRes).rgb;}
+      c=mix(c,b*(1./8.)*.28,o*.82);}
   }
   /* the soft shadow and the rim are printed as ink, not blended: dots forgive pixels, and cost less than a gradient */
   vec3 ink=vec3(.014,.019,.027);

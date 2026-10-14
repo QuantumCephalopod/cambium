@@ -110,7 +110,7 @@
     const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
     const locked=L.lock?.kind||null,field=locked==='field';
     return {x:L.x,y:L.y,hx:field?L.hx:L.radius,hy:field?L.hy:L.radius,round:field?0:1,corner:field?L.corner:0,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
-      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:locked?0:L.radius*K.lobe,mag:locked?0:1-1/K.magnify,focus:locked?1:0,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
+      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:locked?0:L.radius*K.lobe,mag:locked?0:1-1/K.magnify,focus:field?1:0,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
   function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;unlock(L);L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
@@ -192,7 +192,7 @@
     endPointer(e);
   }
   function paintPhase(){if(el&&state){el.dataset.phase=state.held?'held':state.lock?'locked':state.docked?'stored':state.attached?'joining':'free';el.dataset.lock=state.lock?.kind||'';
-    const de=root.document?.documentElement;if(de){if(state.lock)de.dataset.displayLensLock=state.lock.kind;else delete de.dataset.displayLensLock}}}
+    const de=root.document?.documentElement;if(de){if(state.lock){de.dataset.displayLensLock=state.lock.kind;de.dataset.displayLensTarget=state.lock.id}else{delete de.dataset.displayLensLock;delete de.dataset.displayLensTarget}}}}
   function endPointer(e){
     if(!state?.held||state.pid!==e.pointerId)return;
     release(state,e.pointerId);cursor.active=false;

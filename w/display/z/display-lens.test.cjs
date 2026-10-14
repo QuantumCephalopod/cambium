@@ -129,6 +129,7 @@ console.log('pass-through click / pull-to-take / ownership witness: PASS');
   assert.strictEqual(L.candidateAt(s,[field,body]),body,'a drop over a body finds the body');
   L.lockTo(s,body);let p={...body};runT(s,2,()=>p);g=L.geometry(s,null);
   assert.strictEqual(g.round,1);assert.ok(Math.abs(g.hx-s.baseR*L.K.released)<1,'body lock keeps the released circle size');
+  assert.strictEqual(g.focus,0,'a body lock highlights the body itself: nothing beneath it is muted');
   p={...body,cx:200,cy:420};runT(s,2,()=>p);
   assert.ok(Math.hypot(s.x-200,s.y-420)<1&&s.lock,'body lock survives while the body persists and follows it');
   L.grab(s,s.x,s.y,7);assert.strictEqual(s.lock,null,'pulling the drop unlocks it');L.release(s,7);

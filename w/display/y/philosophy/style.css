@@ -12,6 +12,9 @@
 .philosophy-content>.locus h1{font:520 var(--type-r0)/1.24 var(--sans);letter-spacing:0;margin:0;text-wrap:balance}
 .philosophy-content>.locus p{font:400 var(--type-rn1)/1.6 var(--sans);letter-spacing:0;color:rgba(241,239,233,.7);margin:10px 0 0;hyphens:auto}
 .philosophy-content>.locus p.question{color:rgba(170,255,229,.78)}
+/* framed by the locked droplette, the Description reads at full strength over its muted field */
+[data-display-lens-target="organism:philosophy|Description"] .philosophy-content>section :is(h1,p,.kicker){color:#f4f1ea;text-shadow:0 0 1px #000,0 1px 10px rgba(0,0,0,.85)}
+[data-display-lens-target="organism:philosophy|Description"] .philosophy-content>.locus p.question{color:#aaffe5}
 /* PR #164's narrow compactness is a local origin shift, not a second scale:
    origin=.875rem; local size(r)=origin*2^(r/2). */
 @media(max-width:760px){
