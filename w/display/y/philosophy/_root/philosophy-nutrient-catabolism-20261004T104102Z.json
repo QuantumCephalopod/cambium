@@ -1,0 +1,45 @@
+{
+  "event_id": "philosophy-nutrient-catabolism-20261004T104102Z",
+  "home_at_utc": "2026-10-04T10:41:02Z",
+  "organism": "philosophy",
+  "entrypoint": "github.cambium...display.philosophy",
+  "operation": "catabolize-achieved-nutrient-portions",
+  "outcome": "PASS/EARNED in staging — completed portions leave active intake; unresolved choices and witnesses remain. Canonical owner promotion is pending.",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "changed_scope": [
+    "w/display/y/philosophy/_stomach/INCOMING — phenotype projection seam.md -> w/display/y/philosophy/_waste/catabolized-INCOMING — phenotype projection seam-20261004.md (NARROWED)"
+  ],
+  "context": {
+    "actor": "Forge appendage, Philipp-authorized repo-only cleanup 2026-10-04",
+    "base": "8ade3e65f6957e19b330789473e3bc2229f8285a",
+    "carrier": "QuantumCephalopod/cambium:staging/nutrient-catabolism-20261004",
+    "publication_authorization": "scoped staging push + draft PR; no canonical merge/deploy",
+    "shared_root_field": {
+      "dive_in": "2.8",
+      "metabolism": "3.5",
+      "cambium": "3.4",
+      "drive": "1.6"
+    },
+    "catabolism_home": "Drive 134M5WFP0BC-xjYJu6vEmIad-AMFQ-vPo v0.2",
+    "method": "TRACE owner/source/consumers; quotient achieved portions only; preserve exact preimage and residual return address; retain unresolved actual gates; no code/constitution/public copy change",
+    "changes": [
+      {
+        "operation": "NARROWED",
+        "owner": "w/display/y/philosophy",
+        "source": "w/display/y/philosophy/_stomach/INCOMING — phenotype projection seam.md",
+        "waste": "w/display/y/philosophy/_waste/catabolized-INCOMING — phenotype projection seam-20261004.md",
+        "preimage_sha256": "20fda27013a6767ec2ace1ddd912db080653931a8df6cf08b1cb0a318c12f0f0",
+        "preimage_bytes": 2580,
+        "active_bytes": 2190,
+        "retained_sections": [
+          "## open question — not decided here",
+          "## exit condition"
+        ],
+        "evidence": "Current Philosophy receptor 1.1 gives Population custody `w/display/y/philosophy/` and the explicit site-space overview boundary, so stale custody/interface pointers are closed. Its own Inquiry/Continuity/Care/Becoming phenotype versus `projection.json` main-root presentation remains unresolved."
+      }
+    ],
+    "revocation": "Reopen the smallest affected quotient if its surviving owner changes, current consumer needs an extracted distinction, or a countercase defeats its witness. Reacquire the cited preimage and living source first.",
+    "boundary": "Tools, old checkouts, backups and prior waste are excluded. No engineering, history rewrite, source data acquisition, legal copy edit or website publication performed."
+  }
+}

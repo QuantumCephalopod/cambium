@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import worker, { stateRevision, valueRevision } from "./src/index.js";
+import worker, { EMPTY_PUBLIC_REVISION, revisionLedger, stateRevision, valueRevision } from "./src/index.js";
 
 class R2Body {
   constructor(record) {
@@ -69,15 +69,29 @@ const packet = (event_id, extra = {}) => ({
 const unit = async (value) => ({ revision: await valueRevision(value), value });
 
 async function post(env, body) {
-  return worker.fetch(new Request("https://sss.saarland/__live/home", {
+  return worker.fetch(new Request("https://live.sss.saarland/__live/home", {
     method: "POST",
     headers: { Authorization: "Bearer secret", "content-type": "application/json" },
     body: JSON.stringify(body)
   }), env);
 }
 
+async function ledger(env, siteId = "organism:papers", secret = "secret") {
+  return worker.fetch(new Request("https://live.sss.saarland/__live/home?site_id=" + encodeURIComponent(siteId), {
+    method: "GET",
+    headers: { Authorization: "Bearer " + secret }
+  }), env);
+}
+
+async function materialized(env, secret = "materialize") {
+  return worker.fetch(new Request(
+    "https://live.sss.saarland/__live/home?site_id=organism%3Apapers&view=materialized",
+    { method: "GET", headers: { Authorization: "Bearer " + secret } }
+  ), env);
+}
+
 const bucket = new MockR2();
-const env = { HOME_SECRET: "secret", SHADOW: bucket };
+const env = { HOME_SECRET: "secret", MATERIALIZE_SECRET: "materialize", SHADOW: bucket };
 const units1 = { root: await unit({ count: 1 }), "holon:a": await unit({ title: "A" }) };
 const revision1 = await stateRevision(units1);
 
@@ -89,6 +103,48 @@ assert.equal(response.status, 200);
 assert.equal(result.mode, "reconcile");
 assert.equal(result.public_revision, revision1);
 assert.equal(bucket.putCount, 1);
+
+response = await materialized(env);
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.public_revision, revision1);
+assert.deepEqual(Object.keys(result.units).sort(), Object.keys(units1).sort());
+
+response = await materialized(env, "wrong");
+assert.equal(response.status, 401);
+
+response = await ledger(env);
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.public_revision, revision1);
+assert.deepEqual(result.unit_revisions, { ...revisionLedger(units1) });
+assert.equal(result.empty_current, false);
+
+response = await ledger(env, "organism:papers", "wrong");
+assert.equal(response.status, 401);
+
+const emptyBucket = new MockR2();
+const emptyEnv = { HOME_SECRET: "secret", SHADOW: emptyBucket };
+response = await ledger(emptyEnv);
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.public_revision, EMPTY_PUBLIC_REVISION);
+assert.deepEqual(result.unit_revisions, {});
+assert.equal(result.empty_current, true);
+
+response = await post(emptyEnv, packet("empty-base-delta", {
+  delta: {
+    base_public_revision: EMPTY_PUBLIC_REVISION,
+    target_public_revision: revision1,
+    upserts: units1,
+    deletes: []
+  }
+}));
+result = await response.json();
+assert.equal(response.status, 200);
+assert.equal(result.mode, "delta");
+assert.equal(result.public_revision, revision1);
+assert.equal(emptyBucket.putCount, 1);
 
 const richBefore = bucket.map.get("y/papers/current.json").body;
 response = await post(env, packet("activity-only", {
@@ -167,6 +223,11 @@ legacyBucket.map.set("y/papers/current.json", {
 });
 const legacyEnv = { HOME_SECRET: "secret", SHADOW: legacyBucket };
 const legacyBody = legacyBucket.map.get("y/papers/current.json").body;
+response = await ledger(legacyEnv);
+result = await response.json();
+assert.equal(response.status, 409);
+assert.equal(result.error, "LEGACY_CURRENT_REQUIRES_RECONCILE");
+
 response = await post(legacyEnv, packet("legacy-activity"));
 result = await response.json();
 assert.equal(result.activity_only, true);
@@ -228,5 +289,26 @@ response = await post(env, packet("bad-unit", {
 result = await response.json();
 assert.equal(response.status, 400);
 assert.match(result.error, /revision does not match/);
+
+// A GitHub materialization dispatch failure must remain unresolved/retryable.
+// Production has a token; simulate GitHub rejecting the workflow dispatch.
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => new Response("denied", { status: 403 });
+try {
+  const dispatchBucket = new MockR2();
+  const dispatchEnv = {
+    HOME_SECRET: "secret",
+    GITHUB_ACTIONS_TOKEN: "present",
+    SHADOW: dispatchBucket
+  };
+  response = await post(dispatchEnv, packet("dispatch-failure", {
+    reconcile: { target_public_revision: revision1, units: units1 }
+  }));
+  result = await response.json();
+  assert.equal(response.status, 500);
+  assert.match(result.error, /materialization dispatch/);
+} finally {
+  globalThis.fetch = originalFetch;
+}
 
 console.log("display live nerve regression witness: PASS");

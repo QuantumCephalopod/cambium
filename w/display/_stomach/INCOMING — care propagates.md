@@ -1,22 +1,13 @@
 # INCOMING — care propagates
 
-**state:** PARTIALLY DIGESTED / OPEN RESIDUE  
+**state:** RESIDUAL / OPEN — achieved portions catabolized 2026-10-04
 **source:** live Philipp ↔ Mnemos conversation, 2026-09-09  
 **scope:** remaining display-local first-contact / collaboration / immunity / transduction pressure  
 **authority:** unresolved nutrient only; closed consequences now live elsewhere
 
-## assimilated on 2026-09-09
+## surviving owner and return address
 
-This carrier previously held a broader philosophy/first-contact field. A bounded metabolism has now assimilated the following consequences:
-
-- shared root already carries the general care invariant;
-- the first public Philosophy organism has been born under fixed CCCC DNA as `Inquiry / Continuity / Care / Becoming`;
-- its four public questions are preserved as encounter expressions of those four loci;
-- Display has earned the invariant lateral page relation `address → CCCC → local concept → encounter question`;
-- Display has earned the translation rule `language != address`: German and English are expressions of one locus, not parallel organism branches;
-- Philosophy is admitted at `display:root ⟦ philosophy:root ⟧` without splitting Display.
-
-Those distinctions are no longer open food merely because this provenance carrier once contained them. Current anatomy/tissue now lives in `../philosophy/`, `../philosophy.interface.md`, and Display's local ritual.
+Current Philosophy `RITUALS/organism/RITUAL.md` 1.1, its `INDEX.yaml`/`_cambium.yaml`, and Display `RITUALS/organism/RITUAL.md` 3.17 carry the already-earned birth, language/address relation and Population custody. The six remaining questions below are preserved verbatim.
 
 ## unresolved residue
 
@@ -32,3 +23,5 @@ The following pressure remains genuinely open and therefore stays in `_stomach`:
 ## exit condition
 
 This residue leaves `_stomach` only when the remaining questions have been separately assimilated, split into narrower nutrients, or explicitly rejected/superseded. Do not reopen the already-closed Philosophy birth or language/address invariant merely because later implementation work changes their visual expression.
+
+The extracted preimage is at `../_waste/catabolized-INCOMING — care propagates-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.

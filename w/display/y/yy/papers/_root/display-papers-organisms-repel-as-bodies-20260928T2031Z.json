@@ -1,0 +1,45 @@
+{
+  "event_id": "display-papers-organisms-repel-as-bodies-20260928T2031Z",
+  "home_at_utc": "2026-09-28T20:31:24Z",
+  "organism": "organism:papers",
+  "entrypoint": "github.cambium...display.papers",
+  "outcome": "PASS/EARNED · ORGANISMS REPEL AS BODIES INSIDE THEIR CHAMBER · ONE FLOW LAW AT BOTH SCALES · RITUAL 2.7",
+  "changed_scope": [
+    "sierpinski.js: driftBodies — the metabolite spring+repulsion step extracted as one bounded flow law (spring toward own flow point, push from every neighbour inside a shared reach, drag); metaboliteRepel now calls it with unchanged constants (trajectory deviation 2e-17 against the previous code)",
+    "sierpinski.js: driftOrganisms — stepped once per frame in draw(); each organism drifts toward its own chamber flowPoint and repels only organisms in the same chamber, reach .08 + both bodies' 2^n scales, softer spring 3; holdInTet keeps every body inside its chamber tetrahedron; overviewDriftPoint reads the drifted body, so drawing, sleeping names, bodies and hit-testing see one position",
+    "sierpinski.js: buildRecords carries each record's chamber tet",
+    "y/check.py: witnesses the shared flow law, the per-frame organism step and chamber holding",
+    "RITUAL 2.7 assimilates organisms-as-bodies under the flow law 2.1 already stated",
+    "NUTRIENT__organisms-repel-as-bodies__20260928 admitted and metabolized in the same act, retired to _waste"
+  ],
+  "decisions_open_to_correction": [
+    "reach .08 root units and organism spring 3 (metabolites keep 6): tuned against the live 207-organism shadow — nearest-neighbour spacing ~16 px → ~33 px median at overview scale, 13/207 bodies grazing a chamber wall; spring 2 / reach .1 pinned 66 to walls",
+    "repulsion is chamber-local; organisms in different chambers never push one another",
+    "Governance still reads dense at its core because its 3H–5H holons are large bodies; their names now separate"
+  ],
+  "remaining_stomach": [
+    "NUTRIENT__shared-descent-invariant__20260926.md — Papers' renderer joining Display's shared Descent field",
+    "NUTRIENT__text-being-inquiry__20260927.md — turned-face threshold, where 1T lives, source-ground sidecar, CPU-only frame-time witness (now including the per-frame organism step, ~207 bodies, pairwise within chambers)",
+    "NUTRIENT__source-inquiry-metabolite-projection__20260926.md — 37 Sources without public metabolites (source-side reader)"
+  ],
+  "witness": {
+    "numeric": "node harness on the real extracted functions: metabolite path identical to the old law (max deviation 2.1e-17); 50 organisms born on one point spread to min spacing .031; maximum chamber escape 7.9e-17 (float noise on the wall)",
+    "browser": "Mnemos on a local y/build.py artifact: Continuity, Evolution and Genesis name-clusters stand apart and keep drifting between frames; data-name-clusters=207; hovering a cluster opened S.uIc5, and S.oLXI unfolded as its body drifted under the still pointer",
+    "checks": "node --check passes; every Papers check.py token (old and new) present by direct evaluation",
+    "not_witnessed": "full y/check.py (it walks Crawlerbait bait paths Windows cannot materialize — CI witnesses it); frame time on Philipp's CPU-only laptop"
+  },
+  "structural_growth": false,
+  "parent_uplink_required": false,
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "act": "organisms become bodies under the same bounded flow law as their metabolites",
+    "trigger": "Philipp, chat 2026-09-28 evening ('i would want them to be as reppellent to each other as their visual sibling, the metabolites')",
+    "renderer_changed": true,
+    "open_nutrients": [
+      "NUTRIENT__shared-descent-invariant__20260926.md",
+      "NUTRIENT__text-being-inquiry__20260927.md",
+      "NUTRIENT__source-inquiry-metabolite-projection__20260926.md"
+    ]
+  }
+}

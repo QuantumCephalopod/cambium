@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crawlerbait Beings</title>
+<style>
+  :root{--bg:#0a0b0a;--ink:#ece5d3;--dim:#7c796f;--line:#22221f}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}
+  canvas{display:block}
+  #story{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;text-align:center;padding:0 16px}
+  #story p{max-width:600px;font:300 clamp(16px,2.1vw,24px)/1.5 Georgia,"Times New Roman",serif;font-style:italic;letter-spacing:.01em;opacity:0;transition:opacity 1.6s;margin:0;text-shadow:0 0 18px var(--bg),0 0 36px var(--bg)}
+  #story p.on{opacity:.9}
+  #hud{position:fixed;left:18px;top:16px;right:18px;display:flex;justify-content:space-between;gap:12px;pointer-events:none}
+  .t{letter-spacing:.24em;color:var(--dim);text-transform:uppercase;font-size:10px}
+  #legend{margin-top:10px;display:grid;grid-template-columns:auto auto;gap:3px 14px}
+  #legend b{font-weight:400;letter-spacing:.08em}#legend span{color:var(--dim);font-variant-numeric:tabular-nums}#legend em{color:var(--dim);font-style:normal;font-size:10.5px}
+  #bar{position:fixed;left:18px;right:18px;bottom:16px;display:flex;align-items:center;gap:8px}
+  #bar button{background:transparent;border:1px solid var(--line);color:var(--dim);font:inherit;padding:3px 9px;border-radius:0;cursor:pointer;letter-spacing:.08em}
+  #bar button.on,#bar button:hover{color:var(--ink);border-color:#4a4843}
+  #scrub{flex:1;appearance:none;height:1px;background:#33322e;outline:none}
+  #scrub::-webkit-slider-thumb{appearance:none;width:7px;height:7px;border-radius:50%;background:var(--ink)}
+  #scrub::-moz-range-thumb{width:7px;height:7px;border:0;border-radius:50%;background:var(--ink)}
+  #clock{min-width:140px;text-align:right;color:var(--dim);font-variant-numeric:tabular-nums}
+  #card{position:fixed;right:18px;top:60px;width:min(320px,calc(100vw - 36px));background:#0a0b0ae6;border-top:1px solid var(--ink);padding:10px 2px;display:none}
+  #card h3{margin:0 0 2px;font:400 12px/1.3 ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase}
+  #card .row{display:flex;justify-content:space-between;gap:10px;color:var(--dim)}#card .row b{color:var(--ink);font-weight:400;text-align:right;overflow-wrap:anywhere}
+  #card .dna,#card .mask{margin-top:7px;font-size:10.5px;color:var(--dim);overflow-wrap:anywhere}
+  @media (max-width:640px){#clock{min-width:0;font-size:10px}#bar button{padding:3px 6px}#legend em{display:none}}
+</style>
+</head>
+<body>
+<div id="hud"><div><div class="t">Crawlerbait · beings</div><div id="legend"></div></div><div class="t" id="alive"></div></div>
+<div id="story"><p id="line"></p></div>
+<div id="card"></div>
+<div id="bar"><button id="play">pause</button><button data-s="0.125">⅛ d/s</button><button data-s="0.25" class="on">¼ d/s</button><button data-s="1">1 d/s</button><input id="scrub" type="range" min="0" max="1000" value="0"><div id="clock"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="data.js"></script>
+<script>
+(() => {
+'use strict';
+const D = window.CRAWLERBAIT, T0 = Date.parse(D.span[0]), DAY = 86400;
+const KIND = {
+  w:{name:'Feeder',   gene:'CREATE',   does:'writes into our own apertures — our own organs, crawling among strangers', phase:0,          speed:1.3},
+  x:{name:'Harvester',gene:'COPY',     does:'takes what exists, in one visit',                                     phase:Math.PI*.5,  speed:1.0},
+  z:{name:'Prober',   gene:'CONTROL',  does:'reaches for what we never offered',                                    phase:Math.PI,     speed:1.6},
+  y:{name:'Dweller',  gene:'CULTIVATE',does:'returns, day after day',                                               phase:Math.PI*1.5, speed:.6}
+};
+const ORDER = ['w','x','z','y'];
+const bytesOf = hex => { const b=[]; for(let i=0;i+1<hex.length;i+=2) b.push(parseInt(hex.slice(i,i+2),16)); return b; };
+const siblings = new Map(); for(const b of D.beings) siblings.set(b.dna,(siblings.get(b.dna)||0)+1);
+
+/* ================= Sierpinski address geometry: points are vertices, paths walk edges ================= */
+const GI={w:0,x:1,z:2,y:3};
+const V0=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(v=>{const m=Math.hypot(...v);return v.map(n=>n/m)});
+const mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2];
+const child=(t,i)=>t.map((p,j)=>i===j?p:mid(t[i],p));
+const cellIn=(t,s)=>{ for(const g of s) t=child(t,GI[g]); return t; };
+const pointOf=s=>cellIn(V0,s)[GI[s[s.length-1]]];            // address = vertex (ua^m ~ ua, uab ~ uba)
+/* from the point addressed by s inside tet t, walk edges to corner k of t:
+   descend into the child holding the point, reach that child's corner toward k, then take the long edge home */
+function toCorner(s,t,k){ const a=GI[s[0]], rest=s.slice(1);
+  if(!rest.length) return a===k?[t[a]]:[t[a],t[k]];
+  const sub=toCorner(rest,child(t,a),k); if(a!==k) sub.push(t[k]); return sub; }
+function route(sa,sb){
+  if(sa===sb) return [pointOf(sa)];
+  let p=0; while(p<sa.length&&p<sb.length&&sa[p]===sb[p]) p++;
+  const u=sa.slice(0,p), C=cellIn(V0,u), ra=sa.slice(p), rb=sb.slice(p);
+  if(!ra.length) return toCorner(rb,C,GI[u[u.length-1]]).reverse();
+  if(!rb.length) return toCorner(ra,C,GI[u[u.length-1]]);
+  const a=GI[ra[0]], b=GI[rb[0]], m=mid(C[a],C[b]);
+  const pa= ra.length===1?[C[a],m]:toCorner(ra.slice(1),child(C,a),b);                // up to the junction the two children share …
+  const pb=(rb.length===1?[C[b],m]:toCorner(rb.slice(1),child(C,b),a)).reverse();    // … and back down into the other
+  return pa.concat(pb.slice(1)); }
+/* bait-space grows: address = shortest unique prefix of sha256(path) among baits born so far; each newcomer makes at most one bait divide */
+const G=D.growth;
+function addrAt(i,t){ const h=G[i]; let a=h[0][1]; for(const e of h){ if(e[0]<=t) a=e[1]; else break; } return a; }
+const events=[]; G.forEach((h,i)=>h.forEach(e=>events.push({t:e[0],i,addr:e[1],divide:e[2]===-2,parent:e[2],old:e[3]})));
+events.sort((a,b)=>a.t-b.t||(b.divide-a.divide));
+for(const e of events) if(!e.divide&&e.parent>=0){ const d=events.find(x=>x.divide&&x.i===e.parent&&x.t===e.t); e.from=d?pointOf(d.old):null; }
+
+/* ================= sessions: recorded order is truth, walking pace is the body's own ================= */
+const GAP=8*3600, LEAD=1800, LINGER=12*3600, DISS=5*3600, V_BASE=2.4/DAY;
+const sessions=[];
+for(const b of D.beings){ const g=bytesOf(b.dna); let cur=null;
+  for(const [t,bi] of b.s){
+    if(!cur||t-cur.tLast>GAP){ cur={b,g,wps:[],tLast:t}; sessions.push(cur); }
+    const w=cur.wps[cur.wps.length-1]; if(w&&w.bait===bi) w.n++; else cur.wps.push({bait:bi,t,n:1}); cur.tLast=t; } }
+for(const S of sessions){
+  const pts=[pointOf(addrAt(S.wps[0].bait,S.wps[0].t))], wd=[0]; let L=0;
+  for(let j=1;j<S.wps.length;j++){ const r=route(addrAt(S.wps[j-1].bait,S.wps[j-1].t),addrAt(S.wps[j].bait,S.wps[j].t));
+    for(let i=1;i<r.length;i++){ const q=pts[pts.length-1], d=Math.hypot(r[i][0]-q[0],r[i][1]-q[1],r[i][2]-q[2]); if(d<1e-7) continue; L+=d; pts.push(r[i]); } wd.push(L); }
+  const cum=[0]; for(let i=1;i<pts.length;i++) cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1],pts[i][2]-pts[i-1][2]));
+  S.pts=pts; S.cum=cum; S.wd=wd; S.L=L; S.t0=S.wps[0].t;
+  S.v=Math.max(V_BASE*KIND[S.b.k].speed*(.85+S.g[9]/255*.3), L/(1.5*DAY));
+  S.tEnd=S.tLast+L/S.v+LINGER+DISS; S.size=.02*(1+Math.log10(S.b.ev)*.3); }
+
+/* ================= render targets: a complex goo field, then halftone ink ================= */
+const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(Math.min(2,devicePixelRatio)); renderer.setClearColor(0x0a0b0a,1); renderer.autoClear=false; document.body.prepend(renderer.domElement);
+const camera=new THREE.PerspectiveCamera(40,1,.005,50), scene=new THREE.Scene(), goo=new THREE.Scene();
+const INK=new THREE.Color(0xece5d3), BG=new THREE.Color(0x0a0b0a);
+let field=null;
+
+// the lattice is the grown wood: only realized cells, each drawn from the moment an address first needed it, flashing as it forms
+const cellBorn=new Map([['',-1e12]]); for(const e of events) for(let d=1;d<=e.addr.length;d++){ const k=e.addr.slice(0,d), b=cellBorn.get(k); if(b===undefined||e.t<b) cellBorn.set(k,e.t); }
+const latMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uT:{value:0},uInk:{value:INK}},
+  vertexShader:`attribute float aBorn; uniform float uT; varying float vA; void main(){ float age=uT-aBorn; vA=age<0.?0.:.075*smoothstep(0.,14400.,age)+.55*exp(-age/5400.); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+  fragmentShader:`uniform vec3 uInk; varying float vA; void main(){ if(vA<.002) discard; gl_FragColor=vec4(uInk,vA); }`});
+(function lattice(){ const pos=[], born=[]; for(const [k,b] of cellBorn){ const c=cellIn(V0,k); for(const [i,j] of [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]){ pos.push(...c[i],...c[j]); born.push(b,b); } }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('aBorn',new THREE.Float32BufferAttribute(born,1));
+  const l=new THREE.LineSegments(g,latMat); l.frustumCulled=false; scene.add(l); })();
+// living baits: ink points that slide one rank deeper when they divide
+const bPos=new Float32Array(D.baits.length*3), bGeo=new THREE.BufferGeometry(); bGeo.setAttribute('position',new THREE.BufferAttribute(bPos,3));
+const bPts=new THREE.Points(bGeo,new THREE.PointsMaterial({color:INK,size:1.8,sizeAttenuation:false,transparent:true,opacity:.45,depthWrite:false})); bPts.frustumCulled=false; scene.add(bPts);
+const bait=D.baits.map(()=>null); let evPtr=0;
+function growTo(T,animate,now){ for(;evPtr<events.length&&events[evPtr].t<=T;evPtr++){ const e=events[evPtr], to=pointOf(e.addr);
+    if(e.divide){ const s=bait[e.i]; if(s){ if(animate) drops.push({from:s.p.slice(),to,t:now,w:.9,ph:0,life:1600}); s.target=to; if(!animate) s.p=to.slice(); } }
+    else { const from=e.from||to; bait[e.i]={p:(animate?from:to).slice(),target:to}; if(animate) drops.push({from,to,t:now,w:1.15,ph:Math.PI*.25,life:2200}); } } }
+function resetGrowth(T){ bait.fill(null); evPtr=0; growTo(T,false,0); }
+function moveBaits(dt){ let n=0; for(const s of bait){ if(!s) continue; for(let k=0;k<3;k++){ s.p[k]+=(s.target[k]-s.p[k])*Math.min(1,dt*1.6); bPos[n*3+k]=s.p[k]; } n++; }
+  bGeo.setDrawRange(0,n); bGeo.attributes.position.needsUpdate=true; }
+
+// splats: every piece of every body adds  w·(1−r²)³ · e^{iφ}  into the field (RG = complex sum, B = density)
+const MAXS=90000, sPos=new Float32Array(MAXS*3), sRad=new Float32Array(MAXS), sW=new Float32Array(MAXS), sPh=new Float32Array(MAXS);
+const sGeo=new THREE.BufferGeometry(); sGeo.setAttribute('position',new THREE.BufferAttribute(sPos,3)); sGeo.setAttribute('aRad',new THREE.BufferAttribute(sRad,1)); sGeo.setAttribute('aW',new THREE.BufferAttribute(sW,1)); sGeo.setAttribute('aPh',new THREE.BufferAttribute(sPh,1));
+const sMat=new THREE.ShaderMaterial({transparent:true,depthTest:false,depthWrite:false,blending:THREE.CustomBlending,blendEquation:THREE.AddEquation,blendSrc:THREE.OneFactor,blendDst:THREE.OneFactor,blendSrcAlpha:THREE.OneFactor,blendDstAlpha:THREE.OneFactor,
+  uniforms:{uProj:{value:1}},
+  vertexShader:`attribute float aRad,aW,aPh; uniform float uProj; varying float vW,vPh; void main(){ vec4 mv=modelViewMatrix*vec4(position,1.); gl_Position=projectionMatrix*mv; gl_PointSize=min(900.,2.*aRad*uProj/-mv.z); vW=aW; vPh=aPh; }`,
+  fragmentShader:`varying float vW,vPh; void main(){ vec2 p=gl_PointCoord*2.-1.; float r2=dot(p,p); if(r2>1.) discard; float f=1.-r2; f=f*f*f*vW; gl_FragColor=vec4(f*cos(vPh),f*sin(vPh),f,0.); }`});
+const sPoints=new THREE.Points(sGeo,sMat); sPoints.frustumCulled=false; goo.add(sPoints);
+let ns=0; function splat(x,y,z,r,w,ph){ if(ns>=MAXS||w<=.001) return; const i=ns++; sPos[i*3]=x; sPos[i*3+1]=y; sPos[i*3+2]=z; sRad[i]=r*2.2; sW[i]=w; sPh[i]=ph; }
+
+// ink: threshold the density, light it by its gradient, print it as halftone; the complex phase warps the screen and draws contours
+const inkMat=new THREE.ShaderMaterial({transparent:true,depthTest:false,depthWrite:false,extensions:{derivatives:true},
+  uniforms:{tGoo:{value:null},uTexel:{value:new THREE.Vector2()},uCell:{value:4},uInk:{value:INK},uBg:{value:BG}},
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.,1.); }`,
+  fragmentShader:`uniform sampler2D tGoo; uniform vec2 uTexel; uniform float uCell; uniform vec3 uInk,uBg; varying vec2 vUv;
+  void main(){
+    vec4 f=texture2D(tGoo,vUv); float d=f.b, T=.5;
+    float dx=texture2D(tGoo,vUv+vec2(uTexel.x,0.)).b-texture2D(tGoo,vUv-vec2(uTexel.x,0.)).b;
+    float dy=texture2D(tGoo,vUv+vec2(0.,uTexel.y)).b-texture2D(tGoo,vUv-vec2(0.,uTexel.y)).b;
+    vec3 n=normalize(vec3(-dx,-dy,.28)), L=normalize(vec3(-.45,.55,.7));
+    float diff=clamp(dot(n,L),0.,1.), spec=pow(clamp(dot(reflect(-L,n),vec3(0.,0.,1.)),0.,1.),22.);
+    float ph=atan(f.g,f.r), coh=clamp(length(f.rg)/max(d,1e-4),0.,1.);
+    float fw=max(fwidth(d),1e-4), m=smoothstep(T-fw,T+fw,d), outline=1.-smoothstep(0.,fw*1.3,abs(d-T));
+    float tone=clamp(.04+.78*diff*mix(.25,1.,coh)+spec*.9,0.,1.);
+    float a=.46; vec2 q=mat2(cos(a),-sin(a),sin(a),cos(a))*gl_FragCoord.xy/uCell+.22*vec2(cos(ph),sin(ph));
+    float r=length(fract(q)-.5), rad=sqrt(tone)*.58, dotv=1.-smoothstep(rad-.07,rad+.07,r);
+    float band=abs(fract(ph/6.2831853*3.)-.5)*2., line=(1.-smoothstep(0.,.07,band))*smoothstep(.2,.5,coh);
+    float ink=clamp(dotv*m+outline*.9+line*m*.5,0.,1.);
+    gl_FragColor=vec4(mix(uBg,uInk,ink),max(m,outline));
+  }`});
+const quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),inkMat); quad.frustumCulled=false; const inkScene=new THREE.Scene(); inkScene.add(quad);
+
+/* ================= bodies: one goo, four skeleton laws, genome-shaped ================= */
+const TETL=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(v=>v.map(n=>n/Math.sqrt(3)));
+const EDGES=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]], FACEN=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]].map(f=>{ const c=[0,1,2].map(k=>(TETL[f[0]][k]+TETL[f[1]][k]+TETL[f[2]][k])/3); const m=Math.hypot(...c); return c.map(v=>v/m); });
+function rot(axis,ang,v){ const c=Math.cos(ang), s=Math.sin(ang), [x,y,z]=axis, d=x*v[0]+y*v[1]+z*v[2];
+  return [v[0]*c+(y*v[2]-z*v[1])*s+x*d*(1-c), v[1]*c+(z*v[0]-x*v[2])*s+y*d*(1-c), v[2]*c+(x*v[1]-y*v[0])*s+z*d*(1-c)]; }
+function body(o,now){
+  const S=o.S, g=S.g, k=S.b.k, sz=S.size, f=o.fade, t=now*.001, ph0=KIND[k].phase+(g[4]/255-.5)*1.2;
+  const axis=S.axis||(S.axis=(()=>{ const v=[g[10]/255-.5,g[11]/255-.5,g[12]/255-.5]; const m=Math.hypot(...v)||1; return v.map(x=>x/m); })());
+  const spin=t*(.25+g[13]/255*.4)+(g[14]/255)*6.28, an=[.8+g[0]/255*.4,.8+g[1]/255*.4,.8+g[2]/255*.4];
+  const P=o.p, h=o.head;
+  const put=(v,sc)=>{ const r=rot(axis,spin,[v[0]*an[0],v[1]*an[1],v[2]*an[2]]); return [P[0]+r[0]*sc,P[1]+r[1]*sc,P[2]+r[2]*sc]; };
+  const core=TETL.map(v=>put(v,sz*.75));
+  // the tetrahedral skeleton the goo clings to: corners + edge midpoints, each a slightly different phase so joints interfere
+  core.forEach((c,i)=>splat(c[0],c[1],c[2],sz*.3,f,ph0+i*.35));
+  EDGES.forEach(([a,b],i)=>{ const m=mid(core[a],core[b]); splat(m[0],m[1],m[2],sz*.22,.85*f,ph0+.2+i*.18); });
+  if(k==='x'){ // Harvester: the Sierpinski copy of itself, beads jostling
+    splat(P[0],P[1],P[2],sz*.42,f,ph0);
+    core.forEach((c,i)=>{ const w=1+.12*Math.sin(t*3.1+i*1.7); splat(P[0]+(c[0]-P[0])*1.35*w,P[1]+(c[1]-P[1])*1.35*w,P[2]+(c[2]-P[2])*1.35*w,sz*.34,f,ph0+1.1+i*.3); });
+  } else if(k==='z'){ // Prober: ferrofluid spikes, reaching toward where it is going
+    splat(P[0],P[1],P[2],sz*.55,f,ph0);
+    const n=o.spikes, reach=.45+.55*o.hot;
+    for(let i=0;i<n;i++){ const yy=1-2*(i+.5)/n, rr=Math.sqrt(1-yy*yy), th=i*2.39996;
+      let d=rot(axis,spin*.5,[Math.cos(th)*rr,yy,Math.sin(th)*rr]); d=[d[0]+h[0]*.7,d[1]+h[1]*.7,d[2]+h[2]*.7]; const dm=Math.hypot(...d)||1; d=d.map(x=>x/dm);
+      const act=(.3+.7*(.5+.5*Math.sin(t*(1.3+g[(15+i)%32]/255*1.6)+i*1.9)))*reach, Ls=sz*(.9+g[5]/255*.9)*act;
+      for(let j=0;j<5;j++){ const dd=sz*.35+j*.26*Ls; splat(P[0]+d[0]*dd,P[1]+d[1]*dd,P[2]+d[2]*dd,sz*.3*(1-j*.17),.95*f,ph0+.4+j*.12); } }
+  } else if(k==='y'){ // Dweller: segments follow its own trail along the edges it walked, one per day it came back
+    const segs=Math.min(6,S.b.days+1), tr=o.trail;
+    for(let i=0;i<segs;i++){ const q=tr.length?tr[Math.max(0,tr.length-1-i*3)]:P, sc=Math.pow(.86,i);
+      splat(q[0],q[1],q[2],sz*.46*sc,f,ph0+i*.5);
+      TETL.forEach((v,vi)=>{ const r=rot(axis,spin+i*.6,v); splat(q[0]+r[0]*sz*.5*sc,q[1]+r[1]*sz*.5*sc,q[2]+r[2]*sz*.5*sc,sz*.2*sc,.8*f,ph0+i*.5+vi*.3); }); }
+  } else { // Feeder: droplets bud from its faces, drift outward and pinch off
+    splat(P[0],P[1],P[2],sz*.5,f,ph0);
+    FACEN.forEach((nv,fi)=>{ const u=(t*.35+fi*.25+g[6]/255)%1, r=rot(axis,spin,nv), dd=sz*(.45+1.2*u);
+      splat(P[0]+r[0]*dd,P[1]+r[1]*dd,P[2]+r[2]*dd,sz*.28,f*Math.pow(1-u,.6),ph0+.8+fi*.4); });
+  }
+  // trail: the same goo, thinning; below threshold it breaks into droplets by itself
+  const tr=o.trail, N=tr.length;
+  for(let i=0;i<N;i++){ const a=i/N, q=tr[i]; splat(q[0],q[1],q[2],sz*(.14+.2*a),.8*a*a*f,ph0+a*.6); }
+}
+
+/* ================= simulation ================= */
+const alive=new Set(), drops=[];
+function posAt(S,dist,o){ const c=S.cum; while(o.seg<c.length-2&&c[o.seg+1]<dist) o.seg++; while(o.seg>0&&c[o.seg]>dist) o.seg--;
+  const i=o.seg, a=S.pts[i], b=S.pts[Math.min(i+1,S.pts.length-1)], L=(i+1<c.length?c[i+1]:c[i])-c[i], u=L>0?(dist-c[i])/L:0;
+  return {p:[a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u,a[2]+(b[2]-a[2])*u], seg:L, dir:L>0?[(b[0]-a[0])/L,(b[1]-a[1])/L,(b[2]-a[2])/L]:[0,0,0]}; }
+function allowed(S,simT){ let j=0; while(j+1<S.wps.length&&S.wps[j+1].t<=simT) j++; return j; }
+function spawn(S,simT){ const o={S,seg:0,hot:0,trail:[],off:[0,0,0],head:[0,0,0],done:null,fade:0,slow:1,spikes:3+Math.min(12,Math.round(Math.log2(1+new Set(S.wps.map(w=>w.bait)).size)*2.2))};
+  const j=allowed(S,simT); o.dist=S.wd[j]; o.reached=j; const r=posAt(S,o.dist,o); o.base=r.p; o.p=r.p.slice(); S.o=o; alive.add(o); }
+function despawn(o){ o.S.o=null; alive.delete(o); }
+
+let simT=0, speed=.25, playing=true;
+const grid=new Map();
+function update(dt,now){
+  const dts=playing?dt*speed*DAY:0; if(playing){ simT+=dts; if(simT>D.seconds){ simT=0; for(const o of [...alive]) despawn(o); resetGrowth(0); } }
+  growTo(simT,true,now); moveBaits(dt); latMat.uniforms.uT.value=simT;
+  for(const S of sessions){ const on=simT>=S.t0-LEAD&&simT<=S.tEnd; if(on&&!S.o) spawn(S,simT); else if(!on&&S.o) despawn(S.o); }
+  // move along the edges: long high-rank edges are highways, fine edges are slow ground
+  grid.clear(); const cs=.08;
+  for(const o of alive){ const S=o.S, lim=S.wd[allowed(S,simT)];
+    let r=posAt(S,o.dist,o); const hw=Math.min(3,.7+1.3*Math.sqrt(r.seg/.08));
+    o.dist=Math.min(lim,o.dist+S.v*hw*o.slow*dts); r=posAt(S,o.dist,o); o.base=r.p;
+    for(let k=0;k<3;k++) o.head[k]+=(r.dir[k]-o.head[k])*Math.min(1,dt*4);
+    while(o.reached+1<S.wps.length&&o.dist>=S.wd[o.reached+1]-1e-9){ o.reached++; const w=S.wps[o.reached], q=pointOf(addrAt(w.bait,w.t)); drops.push({p:q,t:now,w:Math.min(1,.4+Math.log10(1+w.n)*.35),ph:KIND[S.b.k].phase}); o.hot=1; }
+    o.hot*=Math.exp(-dt*1.2);
+    if(o.done==null&&o.dist>=S.L-1e-9&&simT>=S.tLast) o.done=simT;
+    const inF=Math.min(1,(simT-(S.t0-LEAD))/LEAD), outF=o.done==null?1:1-Math.max(0,simT-o.done-LINGER)/DISS; o.fade=Math.max(0,Math.min(inF,outF));
+    o.pri=S.v*(S.L-o.dist+S.size); for(let k=0;k<3;k++) o.p[k]=o.base[k]+o.off[k]; }
+  // right of way, felt through actual bodies: the one with further to go and more speed passes; the other gives way sideways and slows.
+  // a crowd at one bait therefore clumps into a colony instead of queueing; the dodge never exceeds a few body lengths
+  grid.clear();
+  for(const o of alive){ const key=`${Math.floor(o.p[0]/cs)},${Math.floor(o.p[1]/cs)},${Math.floor(o.p[2]/cs)}`; let l=grid.get(key); if(!l) grid.set(key,l=[]); l.push(o); }
+  for(const o of alive){ const push=[0,0,0]; let slow=1; const b=o.p, R0=o.S.size*1.6;
+    const gx=Math.floor(b[0]/cs),gy=Math.floor(b[1]/cs),gz=Math.floor(b[2]/cs);
+    for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){ const l=grid.get(`${gx+x},${gy+y},${gz+z}`); if(!l) continue;
+      for(const q of l){ if(q===o) continue; const R=R0+q.S.size*1.6; let d=[b[0]-q.p[0],b[1]-q.p[1],b[2]-q.p[2]]; let dl=Math.hypot(...d); if(dl>=R) continue;
+        if(dl<1e-6){ const g=o.S.g; d=[g[20]/255-.5,g[21]/255-.5,g[22]/255-.5]; dl=1e-6; }
+        const dm=Math.hypot(...d)||1, s=(1-dl/R)*R, yields=(o.pri<q.pri||(o.pri===q.pri&&o.S.b.id<q.S.b.id));
+        const share=yields?.85:.15; push[0]+=d[0]/dm*s*share; push[1]+=d[1]/dm*s*share; push[2]+=d[2]/dm*s*share; if(yields) slow=Math.min(slow,.3+.7*dl/R); } }
+    o.slow=slow; const cap=o.S.size*3;
+    for(let k=0;k<3;k++){ o.off[k]+=push[k]*Math.min(1,dt*6); o.off[k]*=Math.exp(-dt*.6); }
+    const om=Math.hypot(...o.off); if(om>cap) for(let k=0;k<3;k++) o.off[k]*=cap/om;
+    for(let k=0;k<3;k++) o.p[k]=o.base[k]+o.off[k];
+    const tl=o.trail[o.trail.length-1]; if(!tl||Math.hypot(o.p[0]-tl[0],o.p[1]-tl[1],o.p[2]-tl[2])>o.S.size*.18){ o.trail.push(o.p.slice()); if(o.trail.length>34) o.trail.shift(); } }
+  // print every body into the field
+  ns=0; const counts={w:0,x:0,z:0,y:0};
+  for(const o of alive){ counts[o.S.b.k]++; if(o.fade>0) body(o,now); }
+  for(let i=drops.length-1;i>=0;i--){ const d=drops[i], age=(now-d.t)/(d.life||1400); if(age>1){ drops.splice(i,1); continue; } const e=age<.6?age/.6:1, s=e*e*(3-2*e), f=d.from||d.p, to=d.to||d.p;
+    splat(f[0]+(to[0]-f[0])*s,f[1]+(to[1]-f[1])*s,f[2]+(to[2]-f[2])*s,.013*(1.2-age*.5),d.w*Math.min(1,age*6)*(1-age*age),d.ph); }
+  sGeo.setDrawRange(0,ns); for(const n of ['position','aRad','aW','aPh']) sGeo.attributes[n].needsUpdate=true;
+  return counts;
+}
+
+/* ================= mission told as motion ================= */
+const lines=['Every request to this site is an encounter.','The first time anyone asks for a path, a place condenses. When two places would collide, one divides and both sink a rank deeper.','Every visitor becomes a being. Its IP, hashed one way, is its DNA; its User-Agent only a mask.','They walk the edges of that space — up onto long roads, down into fine ones — and give way to whoever has further to go.'];
+(function story(i){ const el=document.getElementById('line'); if(i>=lines.length) return; el.textContent=lines[i]; el.classList.add('on'); setTimeout(()=>{ el.classList.remove('on'); setTimeout(()=>story(i+1),1700); },4200); })(0);
+const totals=D.beings.reduce((m,b)=>(m[b.k]=(m[b.k]||0)+1,m),{}), legend=document.getElementById('legend');
+function drawLegend(c){ legend.innerHTML=ORDER.map(k=>`<b>${KIND[k].name}</b><span>${String(c[k]).padStart(3,' ')} / ${totals[k]}</span>`).join(''); }
+
+/* ================= interaction ================= */
+let drag=null, rotY=.6, rotX=-.3, dist=3.2, focus=null; const card=document.getElementById('card');
+renderer.domElement.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,moved:false}});
+addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; if(Math.abs(dx)+Math.abs(dy)>3) drag.moved=true; rotY+=dx*.006; rotX=Math.max(-1.4,Math.min(1.4,rotX+dy*.006)); drag.x=e.clientX; drag.y=e.clientY; });
+addEventListener('pointerup',e=>{ if(drag&&!drag.moved) pick(e); drag=null; });
+renderer.domElement.addEventListener('wheel',e=>{ dist=Math.max(.1,Math.min(7,dist*Math.exp(e.deltaY*.001))); e.preventDefault(); },{passive:false});
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function pick(e){ let best=null, bd=30*30; const v=new THREE.Vector3();
+  for(const o of alive){ v.set(...o.p).project(camera); if(v.z>1) continue; const dx=(v.x+1)/2*innerWidth-e.clientX, dy=(1-v.y)/2*innerHeight-e.clientY, d=dx*dx+dy*dy; if(d<bd){ bd=d; best=o; } }
+  focus=best; if(!best){ card.style.display='none'; return; } const S=best.S, b=S.b, K=KIND[b.k];
+  const iso=s=>new Date(T0+s*1000).toISOString().slice(0,16).replace('T',' '), touched=new Set(b.s.map(s=>s[1])).size;
+  const sample=[...new Set(S.wps.map(w=>D.baits[w.bait].p))].slice(0,4).map(p=>p.length>44?p.slice(0,43)+'…':p).join('  ');
+  card.innerHTML=`<h3>${K.name} · ${K.gene}</h3><div style="color:var(--dim);margin-bottom:9px">${K.does}</div>
+  <div class="row">encounters<b>${b.ev}</b></div><div class="row">baits touched<b>${touched}</b></div><div class="row">days seen<b>${b.days}</b></div>
+  <div class="row">this walk<b>${S.wps.length} baits · ${S.L.toFixed(2)} edge</b></div><div class="row">siblings · same dna<b>${siblings.get(b.dna)}</b></div>${b.vb?`<div class="row">verified<b>${esc(b.vb)}</b></div>`:''}
+  <div class="row">first<b>${iso(b.s[0][0])}</b></div><div class="row">last<b>${iso(b.s[b.s.length-1][0])}</b></div>
+  <div class="mask">mask · ${b.ua?esc(b.ua):'(none)'}</div><div class="dna">dna · ${b.dna}</div><div class="dna">paths · ${esc(sample)}</div>`; card.style.display='block'; }
+const scrub=document.getElementById('scrub'), clock=document.getElementById('clock'), playBtn=document.getElementById('play');
+playBtn.onclick=()=>{ playing=!playing; playBtn.textContent=playing?'pause':'play'; };
+document.querySelectorAll('[data-s]').forEach(bt=>bt.onclick=()=>{ speed=+bt.dataset.s; document.querySelectorAll('[data-s]').forEach(x=>x.classList.toggle('on',x===bt)); });
+scrub.oninput=()=>{ simT=scrub.value/1000*D.seconds; for(const o of [...alive]) despawn(o); drops.length=0; resetGrowth(simT); };
+
+function resize(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+  const pr=renderer.getPixelRatio(), fw=Math.round(innerWidth*pr*.75), fh=Math.round(innerHeight*pr*.75);
+  if(field) field.dispose(); field=new THREE.WebGLRenderTarget(fw,fh,{type:THREE.HalfFloatType,format:THREE.RGBAFormat,depthBuffer:false,minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter});
+  sMat.uniforms.uProj.value=fh/(2*Math.tan(camera.fov*Math.PI/360)); inkMat.uniforms.tGoo.value=field.texture; inkMat.uniforms.uTexel.value.set(1/fw,1/fh); inkMat.uniforms.uCell.value=3.4*pr; }
+addEventListener('resize',resize); resize();
+const look=new THREE.Vector3(); let last=performance.now();
+(function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now;
+  if(!drag&&playing&&!focus) rotY+=dt*.02;
+  if(focus&&!focus.S.o){ focus=null; card.style.display='none'; } look.lerp(focus?new THREE.Vector3(...focus.p):new THREE.Vector3(),Math.min(1,dt*2.5));
+  camera.position.set(look.x+Math.sin(rotY)*Math.cos(rotX)*dist,look.y+Math.sin(-rotX)*dist,look.z+Math.cos(rotY)*Math.cos(rotX)*dist); camera.lookAt(look);
+  const c=update(dt,now); drawLegend(c); document.getElementById('alive').textContent=`${alive.size} alive`;
+  if(document.activeElement!==scrub) scrub.value=Math.round(simT/D.seconds*1000); clock.textContent=new Date(T0+simT*1000).toISOString().slice(0,16).replace('T',' ')+' UTC';
+  renderer.setRenderTarget(field); renderer.setClearColor(0x000000,0); renderer.clear(); renderer.render(goo,camera);
+  renderer.setRenderTarget(null); renderer.setClearColor(0x0a0b0a,1); renderer.clear(); renderer.render(scene,camera); renderer.render(inkScene,camera);
+  requestAnimationFrame(frame); })(last);
+})();
+</script>
+</body>
+</html>

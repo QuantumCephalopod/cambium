@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('assert');
+const T=require('./display-text-tissue.js');
+const press=[{x:100,y:100,r:50}];
+assert.strictEqual(T.pressAt(100,100,press),1,'the centre of a press deflates fully');
+assert.strictEqual(T.pressAt(151,100,press),0,'outside a press nothing changes');
+assert.ok(T.pressAt(125,100,press)>0&&T.pressAt(125,100,press)<1);
+assert.strictEqual(T.fatAfter(1,1),0,'a pressed letter is its bare glyph');
+assert.strictEqual(T.fatAfter(.8,0),.8,'an unpressed letter keeps its own fat');
+assert.strictEqual(T.pressAt(0,0,[]),0,'without a press nothing deflates');
+assert.strictEqual(T.create(null),null,'no canvas, no engine');
+console.log('text tissue press/fat witness: PASS');

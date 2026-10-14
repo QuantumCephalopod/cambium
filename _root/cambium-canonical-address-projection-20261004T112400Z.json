@@ -1,0 +1,43 @@
+{
+  "kind": "HOME",
+  "home_at_utc": "2026-10-04T11:24:00Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "event_id": "cambium-canonical-address-projection-20261004T112400Z",
+  "organism": "cambium",
+  "entrypoint": "github.cambium",
+  "operation": "backpropagate-canonical-address-projection",
+  "outcome": "PASS/EARNED — Cambium now states the carrier-invariant relation between canonical recursive address state, deterministic projection and replayable address-native deltas; no structural split was earned.",
+  "changed_scope": [
+    "root organism ritual 1.6: canonical textual address serialization/sort order w,x,y,z explicitly separated from fixed CCCC semantic phase mapping",
+    "root organism ritual 1.6: deterministic carrier coordinates are derived witnesses when recursive address state completely determines projection",
+    "root organism ritual 1.6: address-native deltas may cross membranes when sufficient to replay the carrier consequence; receiving carrier re-derives/witnesses its projection",
+    "Display-specific 2D grid geometry, UI spans, anchors, element kinds and command schema explicitly remain local",
+    "root INDEX.yaml and _cambium.yaml unchanged"
+  ],
+  "context": {
+    "source_child": "display",
+    "source_home_event": "display-canonical-ui-grid-20261004T111900Z",
+    "source_feed_revision": "ed9a424f4d15e78453488aa5dbeba106825c261e",
+    "admitted_uplink": "_stomach/UPLINK__display-canonical-address-state__20261004.md",
+    "parent_before_act": "8bf0240eb81c4d650459a917dc6127c73de2885b",
+    "invariant": "preserve recursive address relation; derive carrier coordinates; transmit the smallest replayable address delta",
+    "canonical_address_order": [
+      "w",
+      "x",
+      "y",
+      "z"
+    ],
+    "cccc_semantics_preserved": "w=CREATE · x=COPY · z=CONTROL · y=CULTIVATE",
+    "structural_result": "NO ROOT SPLIT — receptor clarification/backprop only; INDEX.yaml and _cambium.yaml unchanged.",
+    "refused": [
+      "Display 2D row-major w x / y z geometry",
+      "DOM/CSS/editor controls",
+      "same-rank rectangular UI spans",
+      "text/symbol/panel kinds",
+      "screen-edge anchors",
+      "Display type ranks",
+      "sss.display.ui-grid.v1 and concrete command syntax"
+    ],
+    "canonical_owner_promotion": "human merge only"
+  }
+}

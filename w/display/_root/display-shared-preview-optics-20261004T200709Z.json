@@ -1,0 +1,54 @@
+{
+  "event_id": "display-shared-preview-optics-20261004T200709Z",
+  "home_at_utc": "2026-10-04T20:07:09Z",
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "organism": "display",
+  "entrypoint": "github.cambium...display",
+  "operation": "correct-shared-optics-for-low-tier-preview",
+  "outcome": "PASS/EARNED in staging — real64 preview participates in shared lens optics; low-only gates retained. Canonical promotion remains open.",
+  "changed_scope": [
+    "w/locus-shader.js and test: context-local preview optical input and exact shared channel coordinate sampling",
+    "Display3.21/Schattenseiten1.3 receptor correction; new concise corrective HOME and owned residual/waste"
+  ],
+  "context": {
+    "actor": "Forge source/implementation/tests and foreground independent browser gesture QA, Philipp correction 2026-10-04",
+    "base": "807f001a75f20ed0260866566258d36e5c2bf6e9",
+    "superseded_delivery": "merged PR171 post-glass preview bypass; historical HOME retained",
+    "source_summary": "Separate transparent context-local preview target before final glass; preview RGB sampled at the exact scene red/green/blue gShift coordinates and existing sdLens mask; shared tint/rim/shadow/specular remain. Nearest64 input retained; coarse scene outside lens unchanged.",
+    "checks": {
+      "native": 119331,
+      "wrapper_files": 56,
+      "optical_input_execution_regression": "old post-pass source fails; corrected source passes",
+      "unchanged64_cache_and_runtime_suites": "pass"
+    },
+    "artifact": {
+      "bundle": "b4547434ba520250",
+      "only_index_fat_transport_override": true,
+      "canonical_index_sha256": "4d0c32fdc4e9d55edc470dc044643eb2c47ccb6709bc1f46dc3e8fc242069889",
+      "preview_index_sha256": "98d249dc04d9e0f9b772618a553d1a5644be792b517b2a7951bca6325ae93769"
+    },
+    "qa": {
+      "actor": "Foreground Mnemos CUA; Forge received/read screenshot and HTTP witness",
+      "viewport": [
+        1280,
+        720
+      ],
+      "gesture": "drop dragged from header [640,129] onto S body [575,500]",
+      "result": "interior visibly bends/chromatic edges; no preview/layer errors or console warnings",
+      "cold_requests64": 55,
+      "cold_encoded_bytes": 42194,
+      "cold512_original_other_requests": 0,
+      "screenshot": "C:\\MNEMOS\\tmp\\lens-optics-33k\\root-distorted-preview.jpg",
+      "screenshot_sha256": "e280ba06b8a502d9ed80d41ba04a09bb97b010f748ecd09d76e5f7b994308cc5"
+    },
+    "catabolism": {
+      "preimage_sha256": "df5f78d1d818ad9ea2ef18395125fc15799de8e8570515959443ecee0ab04042",
+      "waste": "C:\\MNEMOS\\.scratch\\cambium-lens-optics-33k\\w\\display\\_waste\\metabolized-shared-lens-preview-optics-20261004T200709Z.md",
+      "remaining": "owner promotion/live acceptance only"
+    },
+    "publication_authorization": "staging fork push + isolated follow-up draft, no merge/deploy",
+    "scope": "Shared optics input/compositor/tests/receptors/intake/HOME/feed only;64 source/cache/policy/entered512 and original geometry unchanged; no Papers performance modification",
+    "limits": "Staged transport override, physical phone GPU/deployed acceptance unclaimed; memory target is viewport compositing surface, not a higher media source tier."
+  }
+}

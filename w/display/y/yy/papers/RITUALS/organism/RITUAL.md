@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "2.1"
+version: "3.1"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -112,6 +112,7 @@ The public inquiry hierarchy is not rank-order prose.
 The embodiment is recursively self-similar:
 - Papers organisms float inside their truthful chamber/container under one deterministic bounded flow law;
 - metabolites float inside the selected organism's central interior under that **same packing/flow law at the next scale**;
+- metabolites are bodies, not pins: each is drawn toward its own flow point and repels every neighbour, so they separate by themselves and keep moving; where a metabolite drifts carries no meaning;
 - every surviving metabolite owns exactly one **metabolight**;
 - the metabolight and its Pretext-laid-out **title + compression** share one moving organism-local anchor, so rotating/moving the body carries the wisdom with it;
 - a one-per-organism visibility glow may remain as a faint **organism ember** for distant/LOD perception, especially for tiny Sources, but an ember is never a metabolight and carries no metabolite semantics.
@@ -132,6 +133,52 @@ Compression:
 
 The hand therefore learns one grammar: **drag the body whose scale you currently inhabit**.
 
+### Text is being — information folded into lower resolution
+
+Every simplex of a Papers organism is made of its own source-owned words. Text is not a label placed on a body; the words are the body at a finer resolution.
+
+- **organism** — before selection an organism's own name (`id · title`) is its identity asleep: its letters cluster on its body at every scale, so an organism too small to see is still perceptible as its sleeping name; a peek unfolds them into the readable name, leaving folds them back. The cluster is presence, not selection — entering still follows Descent;
+- **metabolite** — the metabolight is the metabolite's sentence asleep: its letters cluster into the light; opening unfolds them into title + compression; closing folds them back into light;
+- **edge (6E)** — the edge is a thread of its relation's letters, tapered toward the vertices; peeking loosens the fibres where the pointer touches; opening turns the body so the edge lies level in front and the fibres re-weave into the sentence;
+- **face (4F)** — the face is a surface of its relation's letters; peeking stirs them around the pointer; opening turns the face frontal and the letters weave into one disk of text at its incenter, levelled on screen;
+- **vertex (4V)** — the vertex is drawn as the letter it is (`w x z y`); its sentence unfolds out of that letter, centered beneath it;
+- **volume (1T)** — remains discoverable earning structure; its place in this grammar is still open.
+
+At rest nothing is written out: lines, faint dust, sleeping lights, four letters. Everything is present, folded, ready to be observed. **One piece is open at a time:** the locked piece, else the peeked one; everything else steps back.
+
+**Open text never collides.** An open or still-folding sentence takes free space around its own anchor — never over visible chrome, never over another open sentence. Receded chrome yields rather than repels, woven edges and faces stay on their own body wherever the screen allows, and chrome that open text must cover fades out rather than showing through. Placement is perception only; it never reorders or rewords the text.
+
+Vertices are doors. For `S.*` a vertex carries its source-body span and invariant — outward, toward the original work (the provenance handoff). For `nH` the four vertices *are* the four parent organisms — opening a vertex walks into the ancestor, recursively to Source ground.
+
+A woven face opens at one readable size at every rank: where framing leaves a small body (S ground) below full fill, the weave grows its text plane to the size a fully framed body gives.
+
+Word order and wording stay exact; motion settles before reading — a locked edge or face weaves only once the body has finished turning it level; missing words remain projection absence, never replacement text. Letters-as-particles and Pretext are the current carriers, not ontology.
+
+Compression:
+
+> **The words are the body at a finer resolution. Nothing is hidden; it is folded.**
+
+### Selection is Descent
+
+Papers inhabits Display's shared Descent (navigation `Descent`) at every rank, including inside one organism:
+
+`papers → chamber / subtet → organism → vertex | edge | face | metabolite`
+
+- nothing is selectable from the Papers overview; the witness first descends into a realized chamber and selects among the organisms it contains;
+- inside a selected organism, its own simplices and metabolites are the next children;
+- hover peeks, click descends and locks, a gesture that enters no child ascends back through the container the witness came through — across the Papers membrane into its host the same way;
+- organisms refine inward; composed Holons grow with rank (composition outward) — the S-anchored `2^n` scale law is that distinction for Papers.
+
+## The lens is the instrument and the LOD
+
+Display's one invariant glass drop is Papers' instrument. Organisms' particle letters (their sleeping names) exist only where the drop lies over the field, and only organisms under the drop can be peeked or entered; everywhere else the field shows the primitive tetrahedral bodies. Papers draws no lens of its own: it reads the drop through the render context's `lens()` and hands its canvases to its field (`shader.composite()`), so the same glass refracts them. The drop makes visible, so an opened name blooms only in the space the drop contains: where it opens, bound inside the drop and clipped by it, never flown elsewhere. Container-first Descent is unchanged: a touch outside the drop falls through to chamber passage. Without a drop nothing is gated.
+
+Inside an open organism the words are tissue. Every letter of its faces, edges, vertices and metabolites, dust or woven, is a body with its own fat handed to Display's text-tissue engine: neighbours fuse into one mass, a face's dust becomes a web stretched over the face, a woven sentence is fat tissue, and the drop deflates whatever lies under it to bare letters where they stand. An opened vertex or metabolite sentence blooms inside the space the drop contains. Without a drop the letters are bare. The old ink path remains the fallback where the engine is absent.
+
+Papers speaks in Display's face: holon names, wisdom and woven text are set in SpriteSheet Mono and folded to its alphabet before Pretext lays them out.
+
+The drop also bounds computation: letters outside it are neither laid out nor moved. At runtime, the expensive text-tissue WebGL context is not initialized by an unopened overview; only an opened, readable selected organism admits tissue. Existing glyph fat/softness determines an allowance at the real droplet boundary before a letter becomes an instanced GPU body. A truly empty tissue canvas is omitted from the shared composite; previous tissue clears once when exiting. Failed context creation keeps the established local 2D ink fallback. The full source text remains unchanged.
+
 ## Perceptual LOD is genealogical resolution
 
 A selected Source may additionally invert Papers genealogy and illuminate public Holon descendants that grew from it: `Source → descendants`. This is the same cross-organism lineage read in the opposite direction, not a replacement for the Source's own internal tetrahedral inquiry and not a new relation.
@@ -146,6 +193,8 @@ The renderer may therefore:
 4. stop descending when projected child size falls below the perceptual threshold or source ground is reached.
 
 This law is intentionally GPU-native: one canonical tetra mesh may be instanced through arbitrarily deep recursive transforms. Computation should scale with **currently visible resolution**, not with the theoretical `4^n` depth of every organism in the field.
+
+The current native Papers implementation resolves genealogy to the actual identity's source-owned available rank and the projected-pixel threshold, not a universal renderer depth ceiling. A conservative projected enclosing bound lets the renderer omit wholly off-screen background organisms and their descendant draw instances. Omission is *only presentation*: source identity, motion simulation, membership, ancestry, off-screen encounter capacity and selected Descent are preserved. The resting overview takes the established path without adding a per-body visibility scan.
 
 For a public `S.*` inquiry body, the projection contract is the same rank grammar as any Papers organism but with source-local membership: optional bounded `vertices` name the four metabolized source-body partitions; `edges`, `faces`, `volume` and `metabolites` refer to those local members/addresses. A Source payload must not fabricate Papers-parent identities. Public summaries/spans remain bounded by the membrane; canonical external origin is linked outward rather than republishing the procured carrier.
 
@@ -276,6 +325,16 @@ Future Papers design work should default to Papers-local tissue. Elevate only a 
 
 This is the guardrail: **shape is conserved; phenomenology and living use are local.**
 
+Smoothness is part of the phenomenology. The baseline is a laptop without a GPU: rendering resolution may adapt to hold the frame rate, but motion must not stutter, and an idle frame writes nothing to the page it does not have to.
+
+### Bounded execution of the existing population law
+
+Physics keeps every organism and simulation tick, the same spring/drag/reach/timestep, deterministic coincident direction, equal/opposite force and chamber containment. Scalar scratch storage, invariant flow/rank/chamber frames and conservative axis rejection may reduce repeated work only while preserving the exact interacting pairs and reference motion.
+
+Background and selected inquiry bodies may reuse immutable ancestry/relative geometry and ember metadata in the finite existing LOD classes. Source/projection/inquiry replacement invalidates that support; a bounded LRU evicts cached support without capping organisms or recursion. Current position, scale, pixels, color/opacity, selection and fades still apply each draw. Instance and light buffers may retain allocations and upload the same admitted values once per draw; face and edge draws share their input.
+
+Viewport/lens admission precedes cold name-glyph layout. Cached off-lens names close without preparing or moving invisible letters, and re-entry prepares the same exact source text. No text-tissue/edge law, geometry, navigation, optics or source projection is redesigned here. CPU stage comparisons and reference checks earn local execution evidence; GPU time, universal frame rate, physical-device smoothness and deployed acceptance require their own contact.
+
 ## Living overview physiology
 
 The overview is not a scatterplot of research objects. It is the first perceptual encounter with one living recursive Papers body.
@@ -299,6 +358,7 @@ Papers-local motion may make the body feel alive, but motion must not invent sem
 
 - every currently realized chamber may host a bounded local flow field without implying a deeper semantic subdivision;
 - specimen motion is perceptual packing/dynamics only and must remain inside the truthful chamber relation;
+- organisms are bodies, not pins, exactly like the metabolites inside them: each is drawn toward its own chamber flow point and repels every organism sharing its chamber, so they separate by themselves and keep drifting; repulsion never crosses a chamber wall, and where an organism drifts carries no meaning;
 - the same motion law must remain valid if Cambium later earns another split: child chambers inherit the law recursively rather than requiring rank- or depth-specific special cases;
 - movement should expose coherence and scale, not resemble unconstrained particle noise;
 - collapsed simplex particles, visible tetrahedra and recursively resolved bodies are one material family.
@@ -323,6 +383,8 @@ The relation is environmental, not constitutive:
 - reuse the Philosophy-owned shader/material decision for Inquiry rather than copying or re-authoring its fragment into Papers.
 
 Compression: **Papers floats inside Inquiry-space; Inquiry colors the surrounding world, it does not become Papers' body.**
+
+Display now carries this relation generically (site-holon: the host's shader evaluated at the container the site occupies). On migration onto shared Descent, Papers' own inquiry-environment carrier retires in favour of that host environment; the relation above is unchanged.
 
 The selected organism moves toward the perceptual center and inquiry zooms into its scale, but the previous-scale Papers body should remain perceptibly present as distant/background matter whenever projection permits.
 
@@ -351,7 +413,11 @@ The chamber transition must reuse the same recursive tetrahedral cell geometry a
 - do not derive semantic chamber identity from specimen packing, density, glow, or screen position;
 - if finer chamber structure is later actually realized, the same passage law recurs without rank-specific special cases.
 
-Uneven organism counts may make one chamber perceptually sparse, but sparse occupancy does not erase the chamber itself. Faint shell/edge embodiment may therefore witness all realized chambers without turning chamber geometry into a second semantic source.
+Uneven organism counts may make one chamber perceptually sparse, but sparse occupancy does not erase the chamber itself.
+
+**The chambers are Papers' visible rank-1 Sierpiński body** — the same container grammar every Display site shows, never invisible packing bins with floating labels: faint faces and clear edges, the current container brighter and the others receding, all of it stepping back while an organism is open. Chamber labels hang from their chamber's body — from the one vertex that chamber owns alone, its own outer corner, never a corner it shares with a sibling — and are selectable like its face. Geometry is always drawn at full realized resolution; when Papers earns a deeper split, the same body simply shows more cells.
+
+**Container first, and out through the membrane.** A gesture that enters nothing at Papers' own root ascends across the membrane into the container the witness came through, exactly as everywhere else. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
 
 ### Parent inquiry off-field
 
@@ -367,6 +433,8 @@ This is a membrane relation, not interior identity:
 ### Overview physiology — four living phases
 
 When no organism is selected, **the center remains empty field-space**. HOW PAPERS LIVES may appear only as one coherent peripheral unit whose animation, phase labels and active explanation stay visually together.
+
+**It explains what Papers is, told from Papers' own receptors, and its heart is anabolism.** The body is a population of living organisms of every rank; it reaches out; one real outside work arrives while its authors stay outside on a provenance thread; the work's *own* four parts earn 6 relations, 4 faces and 1 whole, collapse to what survives, and live on as one Source. Then the why: a random eligible rank is drawn — too few alive there, draw again; four distinct living organisms of it are drawn at random; they become one next-rank Holon only if every relation genuinely needs all four, otherwise no birth and the draw begins again. Parents are never consumed; repeat meetings stay allowed. Nothing is filed: every whole is something only four chance-met organisms could earn together. The story must never suggest a structure waiting for a missing piece — no such waiting exists.
 
 The explanation is grounded in the four current Papers pumps:
 
@@ -434,3 +502,21 @@ Version 2.0 content-priority correction (2026-09-24): surviving metabolites are 
 
 
 Version 2.1 self-similar metabolite embodiment correction (2026-09-24): the former one-light-per-organism “metabolight” is reclassified as a non-semantic organism ember used only for distant/LOD visibility. Actual metabolights are now one-to-one with surviving metabolites, packed and moved inside the selected organism by the same deterministic bounded flow logic used for organisms inside chambers. Each metabolight carries its own Pretext title+compression anchor. Generic tetrahedral counts are removed from permanent visitor-facing inquiry chrome; missing metabolite projection is a contract wound, while a truthful source-owned zero-metabolite result remains zero rather than being filled with derivation prose.
+
+Version 2.2 text-being + Descent digest (2026-09-27): every simplex of a Papers organism is made of its own words — metabolite lights are sleeping sentences, edges are threads of letters, faces are surfaces of letters, vertices are the letters they are; information rests folded in lower resolution and one piece is open at a time; selection is Display Descent continuing into the organism's own simplices; vertices are doors (provenance outward for `S.*`, ancestry downward for `nH`). Witnessed in a standalone S.-PYM prototype and realized in this body (#120, browser-witnessed live 2026-09-27); migration onto shared Descent remains OPEN (`_stomach`). Papers' inquiry-environment carrier is marked to retire in favour of Display's host environment at the locus.
+
+Version 2.3 ink-membrane + living-metabolite correction (2026-09-27): open text never collides with chrome or with other open text, receded chrome yields, and woven text stays on its body; metabolites repel one another as moving bodies; smoothness on a CPU-only laptop is the baseline, held by adaptive rendering resolution rather than by stutter.
+
+Version 2.4 visible-container + what-Papers-is correction (2026-09-27): the four chambers are drawn as Papers' visible rank-1 body and content is entered container-first; HOW PAPERS LIVES tells one continuous story of what Papers is; woven text is drawn from a cached glyph atlas so opening an edge or face stays cheap on CPU-only machines.
+
+Version 2.5 anabolism-heart correction (2026-09-27): HOW PAPERS LIVES is retold from Papers' own anabolism/metabolism receptors (random rank, random quartet, closure or no birth, parents never consumed); ascent at Papers' root crosses the membrane; woven text waits for the body to finish turning.
+
+Version 2.6 name-sleep + own-vertex correction (2026-09-28): organism names sleep as clusters of their own letters over every body before selection and unfold on peek, so small organisms stay perceptible (Philipp: "otherwise there is no way of seeing anything below a certain holon size even exists"); chamber labels hang from their chamber's own outer corner (they had hung from corners shared with Genesis since 2.4); a woven face opens at one readable size at S ground as at every Holon rank.
+
+Version 2.7 organisms-as-bodies correction (2026-09-28): the one bounded flow law now holds at both scales in the body, as 2.1 already stated it: organisms repel one another inside their chamber the way metabolites repel inside their organism, and stay held within the chamber that bounds them (Philipp: "i would want them to be as reppellent to each other as their visual sibling, the metabolites").
+
+Version 2.8 lens-instrument correction (2026-10-01, Philipp: "die linse wird also zum instrument und gleichzeitig eingebautem LOD"): Display's glass drop gates Papers' particle letters, peek and entry, and bounds their computation; Papers' canvases are composited under the invariant glass (Display RITUAL 3.12). One layer deeper, the open organism's text as gooey tissue read through the lens remains OPEN in `_stomach`.
+
+Version 2.9 text-as-tissue correction (2026-10-01, Philipp: "gooey-particle->gooey-tissue->LENS displaced das mans lesen kann … für die fläche tatsächlich ne fläche … ein web das gooey über die fläche gespannt ist"): open-organism letters became tissue through Display's engine; faces became webs; the drop reads them.
+
+Version 3.1 bounded Papers perceptual-work repair (staged 2026-10-10): opened inquiry earns its text-tissue GPU work, the shared glass receives only present tissue, and whole background organisms/recursive geometry are omitted only when conservatively outside the actual camera field. Earned genealogy depth and pixel threshold replace fixed MAX_DEPTH=8. Source, flow equations, visual materials, relative placement and visit semantics remain unchanged. Source, native physics/reference, rank-10/lens/culling unit, full checker and publication-build witnesses passed on QuantumCephalopod (run 38053418521). Browser/WebGL and user-perceived FPS/readability acceptance remain OPEN; do not claim full live-visual closure or retire the residual nutrient from that CI alone.

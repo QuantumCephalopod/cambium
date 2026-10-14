@@ -7,9 +7,14 @@ on:
       - 'staging/**'
       - 'hotfix/**'
   workflow_dispatch:
+  workflow_run:
+    workflows: ['papers static shadow materialization']
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: write
+  deployments: read
   pages: write
   id-token: write
 
@@ -19,18 +24,35 @@ concurrency:
 
 jobs:
   build:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.repository == 'self-similar-systems/cambium' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'workflow_dispatch' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.publication.outputs.publish }}
     steps:
       - name: Reacquire cambium
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - name: Resolve materializer publication pressure
+        id: publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 y/pages-actuation.py
 
       - name: Witness feed projector compatibility
+        if: steps.publication.outputs.publish == 'true'
         run: python3 y/feed.py --before HEAD --after HEAD
 
       - name: Project derived repository surfaces
-        if: github.event_name == 'push' && github.ref_name == 'main'
+        if: steps.publication.outputs.publish == 'true' && github.event_name == 'push' && github.ref_name == 'main'
         env:
           HOME_BEFORE: ${{ github.event.before }}
           EVENT_SHA: ${{ github.sha }}
@@ -64,30 +86,35 @@ jobs:
           if [ "${projected}" -ne 1 ]; then echo "::error::could not persist current derived projections after three bounded retries"; exit 1; fi
 
       - name: Witness repository projection
-        if: github.ref_name == 'main'
+        if: steps.publication.outputs.publish == 'true' && github.ref_name == 'main'
         run: python3 y/readme.py --check
 
       - name: Witness repository projection
-        if: github.ref_name == 'main'
+        if: steps.publication.outputs.publish == 'true' && github.ref_name == 'main'
         run: python3 y/readme.py --check
 
       - name: Build persistent Display membrane + site public surfaces
+        if: steps.publication.outputs.publish == 'true'
         run: python3 y/site-public.py --artifact _site
 
       - name: Witness tree-addressed Display organism
+        if: steps.publication.outputs.publish == 'true'
         run: python3 y/check.py --artifact _site
 
       - name: Witness address algebra
+        if: steps.publication.outputs.publish == 'true'
         run: SITE_DIR=_site node y/test-address.cjs
 
       - name: Witness tetrahedral closure
+        if: steps.publication.outputs.publish == 'true'
         run: node w/display/z/site-fold.test.cjs
 
       - name: Verify membrane bytes
+        if: steps.publication.outputs.publish == 'true'
         run: python3 y/site-public.py --artifact _site --check
 
       - name: Upload staging browser witness
-        if: github.repository == 'QuantumCephalopod/cambium'
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium'
         uses: actions/upload-artifact@v4
         with:
           name: staging-display
@@ -95,17 +122,17 @@ jobs:
           if-no-files-found: error
 
       - name: Configure GitHub Pages
-        if: github.repository == 'self-similar-systems/cambium'
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'self-similar-systems/cambium'
         uses: actions/configure-pages@v5
 
       - name: Upload display membrane
-        if: github.repository == 'self-similar-systems/cambium'
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'self-similar-systems/cambium'
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
 
   deploy:
-    if: github.repository == 'self-similar-systems/cambium'
+    if: github.repository == 'self-similar-systems/cambium' && needs.build.outputs.publish == 'true'
     needs: build
     runs-on: ubuntu-latest
     environment:

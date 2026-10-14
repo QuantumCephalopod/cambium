@@ -1,0 +1,33 @@
+{
+  "event_id": "display-live-materializer-dispatch-retry-20260926T105000Z",
+  "home_at_utc": "2026-09-26T10:50:00Z",
+  "organism": "organism:display",
+  "entrypoint": "github.cambium → display.x/live",
+  "outcome": "PASS/EARNED · FAILED MATERIALIZER DISPATCH REMAINS UNRESOLVED/RETRYABLE",
+  "changed_scope": [
+    "regression witness established that a rejected GitHub workflow dispatch was previously swallowed as materialization_queued:false under HTTP 200",
+    "queueMaterialization now rethrows rejected/request-failed dispatches instead of returning false",
+    "the existing Worker request handler therefore returns a server failure for an unresolved downstream publication edge",
+    "Papers Apps Script already classifies 5xx live delivery as retryable and preserves the live outbox for later wound retry",
+    "R2 accepted/current state remains durable; the retry concerns only the unclosed materialization edge"
+  ],
+  "witness": {
+    "regression_red_run": "36236811775 · FAILURE · expected 500, actual 200 after simulated GitHub dispatch HTTP 403",
+    "live_nerve_green_run": "36236857325 · SUCCESS",
+    "full_display_membrane_run": "36236880897 · SUCCESS",
+    "patch_head": "e069d1442877f214569f0e0c77e066c2a9a09b1e"
+  },
+  "unresolved": [
+    "canonical promotion and deployment",
+    "one production Papers sync/retry must witness a GitHub materializer run and same-origin static shadow advance"
+  ],
+  "structural_growth": false,
+  "parent_uplink_required": false,
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "invariant": "private accepted state may not be acknowledged as fully circulated while its required static-public materialization wake is unresolved",
+    "retry_path": "Worker 5xx → existing Papers LIVE_OUTBOX/retryLiveOutbox_ → current source state reacquired → deduped/current R2 state → materializer dispatch retried",
+    "staging_branch": "mnemos/papers-live-retry-20260926"
+  }
+}
