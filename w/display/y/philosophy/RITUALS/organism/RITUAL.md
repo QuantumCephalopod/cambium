@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.1"
+version: "1.2"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -57,6 +57,10 @@ Semantic identity is independent of language.
 
 Root-level expression configuration lives in `encounter.json`; leaf expression tissue lives at `w/x/z/y/content.json`.
 
+## projection
+
+Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Regenerate with `python3 y/build.py --derive-root-projection`; the build refuses any drift from that derivation.
+
 ## global address encounter
 
 Philosophy's background is a **read-only perceptual witness of Display's current global address-space**, not a second authority for global placement.
@@ -93,3 +97,5 @@ When an independently rooted project is admitted, preserve the form `philosophy:
 Compression: **one whole, four earned apertures, every realized place directly encounterable, expression freely translatable without translating identity.**
 
 Version 1.1 truthful global-address encounter correction (2026-09-19): Philosophy's background now treats Display Population as the sole global mount authority, derives mounted site markers at their actual recursive cell centroids, uses triangular cell faces as the local address hit-surface, and hands marker clicks directly to Display's existing global-navigation membrane. The semantic locus remains vertex-addressed and centroid camera focus is unchanged; only presentation and pointer affordance changed. The stale pre-Population interface/path wording was corrected to the current site-space overview boundary.
+
+Version 1.2 own-body projection correction (2026-10-14): the overview projection had been a frozen copy of the independently rooted Drive organism `main-root` (HOME 2026-09-09), so Philosophy's landing, global field labels and address inspection spoke main-root's Form/Continuity/Care/Inquiry over Philosophy's own Inquiry/Continuity/Care/Becoming. The copy is retired to `_waste`; the projection is now derived only from Philosophy's own body and drift-checked at build. No INDEX/_cambium/content change.

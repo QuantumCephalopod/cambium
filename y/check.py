@@ -281,7 +281,7 @@ def main():
         ('organism:datenschutz','main','z'),
         ('organism:impressum','main','xz'),
     },'tree-derived mount relation changed')
-    check(build.root_projection()['source']['organism']=='main-root','Philosophy projection identity changed')
+    check(build.root_projection()['source']['organism']=='philosophy','Philosophy projection is not derived from its own body')
     check(build.papers_projection()['source']=='papers/_feed','Papers projection boundary changed')
 
     build_source=(ROOT/'y/build.py').read_text(encoding='utf-8')

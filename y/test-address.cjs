@@ -17,9 +17,9 @@ const site=process.env.SITE_DIR?path.resolve(root,process.env.SITE_DIR):path.joi
 const html=fs.readFileSync(path.join(site,'index.html'),'utf8');
 const projMatch=html.match(/<script id="site-projections" type="application\/json">(.*?)<\/script>/s);ok(projMatch,'embedded site projection map missing');
 const projections=JSON.parse(projMatch[1]);const projection=projections['organism:philosophy'];ok(projection,'Philosophy projection missing from tree-derived site map');
-eq(projection.source.organism,'main-root');
+eq(projection.source.organism,'philosophy');
 eq(Object.keys(projection.root.children).sort(),['w','x','y','z']);
-eq(['w','x','z','y'].map(g=>projection.root.children[g].noun),['Form','Continuity','Care','Inquiry']);
+eq(['w','x','z','y'].map(g=>projection.root.children[g].noun),['Inquiry','Continuity','Care','Becoming']);
 const regMatch=html.match(/<script id="site-registry" type="application\/json">(.*?)<\/script>/s);ok(regMatch,'embedded tree-derived site registry missing');
 const registry=JSON.parse(regMatch[1]);eq(registry.source,'w/display/y tree');eq(new Set(registry.mounts.map(m=>m.address)),new Set(['','w','x','y','z','xz']));
 const mountById=Object.fromEntries(registry.mounts.map(m=>[m.interlocutor,m.address]));

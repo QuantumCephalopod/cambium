@@ -1,20 +1,23 @@
 {
   "source": {
-    "organism": "main-root",
-    "home": "main-root-cambium-split-20260909T204600Z",
-    "authority": "independently-rooted Drive organism"
+    "organism": "philosophy",
+    "derived_from": [
+      "INDEX.yaml",
+      "_cambium.yaml",
+      "w/x/z/y content.json"
+    ]
   },
   "root": {
-    "noun": "Self-Similar Systems",
+    "noun": "Philosophy",
     "children": {
       "w": {
-        "noun": "Form",
-        "de": "Form",
-        "en": "Form",
+        "noun": "Inquiry",
+        "de": "Erkundung",
+        "en": "Inquiry",
         "gene": "CREATE",
         "one": {
-          "de": "Realisierte Form: Forschung wird materiell, bildlich, sprachlich, rechnerisch oder organismisch gegenwärtig.",
-          "en": "Realized form: inquiry becomes materially, visually, linguistically, computationally, or organismically present."
+          "de": "Was daran möchten wir erforschen?",
+          "en": "What about it do we want to explore?"
         },
         "children": {}
       },
@@ -24,67 +27,56 @@
         "en": "Continuity",
         "gene": "COPY",
         "one": {
-          "de": "Kontinuität hält ein Ganzes durch Revision, Umzug und Verkörperungswechsel als dasselbe wiederbetretbar.",
-          "en": "Continuity keeps a whole re-enterable as the same whole through revision, movement, and changes of embodiment."
+          "de": "Was sind Self-Similar Systems?",
+          "en": "What are Self-Similar Systems?"
         },
         "children": {}
       },
       "z": {
         "noun": "Care",
-        "de": "Fürsorge",
+        "de": "Care",
         "en": "Care",
         "gene": "CONTROL",
         "one": {
-          "de": "Fürsorge begrenzt Veränderung so, dass Identität, Quellen, Grenzen und zukünftige Werdensfähigkeit nicht verbraucht werden.",
-          "en": "Care bounds change so identity, sources, boundaries, and future capacity are not consumed by the act."
+          "de": "Warum möchten wir daran forschen?",
+          "en": "Why do we want to research this?"
         },
         "children": {}
       },
       "y": {
-        "noun": "Inquiry",
-        "de": "Erkundung",
-        "en": "Inquiry",
+        "noun": "Becoming",
+        "de": "Werden",
+        "en": "Becoming",
         "gene": "CULTIVATE",
         "one": {
-          "de": "Erkundung ist Zukunftssinn: Was durch bisherige Begegnungen neu fragbar, wahrnehmbar oder machbar geworden ist.",
-          "en": "Inquiry is future-sense: what prior encounters have newly made askable, perceptible, or possible."
+          "de": "Was haben wir bereits erforscht?",
+          "en": "What have we already explored?"
         },
         "children": {}
       }
     }
   },
-  "occupancy": {
-    "w": ["morphogenetic-painting"],
-    "x": ["ternary", "mnemos-autobiography"],
-    "z": ["regeneration"],
-    "y": ["papers"]
-  },
-  "membranes": {
-    "provider": ["Google AI Studio"],
-    "unresolved": ["muses"],
-    "stomach": ["legacy"]
-  },
   "constitution": {
     "4V": {
-      "w": "Form",
-      "x": "Continuity",
-      "z": "Care",
-      "y": "Inquiry"
+      "w": "Inquiry generates questions and forms capable of changing what can subsequently be asked, perceived or made.",
+      "x": "Continuity preserves which whole is changing so transformation need not become replacement or identity collapse.",
+      "z": "Care constrains consequential relation so change can penetrate without becoming capture, extraction or indiscriminate rewriting.",
+      "y": "Becoming turns prior encounter into altered future capacity rather than leaving experience as an isolated event."
     },
     "6E": {
-      "wx": "A realized form can be revised, translated or rematerialized while remaining attributable to the same continuing work or organism.",
-      "wz": "Making can become consequential without treating participating wholes, sources or relations as disposable material; creation is bounded by care.",
-      "wy": "What is made becomes an instrument of further questioning: realized form can generate the next research pressure.",
-      "xz": "Identity can persist through change without freezing exact state because care protects lawful continuity and boundaries rather than static preservation.",
-      "xy": "The same practice can genuinely learn: new questions alter future capacity while continuity keeps that learning attributable to one whole.",
-      "zy": "Inquiry can penetrate deeply without becoming capture or indiscriminate rewriting because care governs what relation may change."
+      "wx": "Inquiry can revise an inherited position without severing the continuity that makes the revision belong to the same whole.",
+      "wz": "Inquiry can challenge a whole deeply while care keeps questioning from becoming entitlement, capture or indiscriminate rewriting.",
+      "wy": "Inquiry alters future capacity when what is asked and encountered changes what can subsequently be asked, perceived or made.",
+      "xz": "Continuity and care preserve the sovereignty of participating wholes while allowing consequential transformation without identity collapse.",
+      "xy": "The same whole can genuinely develop because continuity carries identity while becoming changes its capacities.",
+      "zy": "Care makes development viable by preserving the conditions under which participating wholes can continue becoming."
     },
     "4F": {
-      "wxz": "Stewarded realization: existing forms can be responsibly revised and preserved as the same whole, even without pressure to open a new question.",
-      "wxy": "Developmental experimentation: a continuing practice can make, test and learn through forms, but without care the relation can overrun boundaries or provenance.",
-      "wzy": "Bounded experimentation: forms can be made and questioned with relational care, but without continuity the results need not accumulate as development of the same practice.",
-      "xzy": "Responsible contemplation: a continuing, bounded inquiry can learn and orient, but without Form it need not externalize or instantiate anything that can answer back materially."
+      "wxz": "Bounded revision: inquiry can change a continuous whole while care constrains the relation, even if the change does not accumulate as future capacity.",
+      "wxy": "Developmental learning: inquiry can alter a continuous whole and sediment into becoming, even before a relational constraint on that change is supplied.",
+      "wzy": "Careful transformation: inquiry can generate change that care carries into becoming, even when persistence of the same individual is not guaranteed.",
+      "xzy": "Sustainable development: continuity, care and becoming can preserve and develop a whole coherently without requiring fresh inquiry."
     },
-    "1T": "Self-Similar Systems is a continuing artistic-scientific practice in which inquiry becomes actual form, form remains re-enterable through change, relation is governed by care, and the consequences of what is made alter what can be asked next."
+    "1T": "Reciprocal becoming: a whole can generate questions that change it, remain continuous through that change, regulate relation through care rather than capture, and metabolize what happens into greater capacity to become again."
   }
 }
