@@ -352,6 +352,13 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     const r=canvas.getBoundingClientRect(),cell=N.cellForPath(path||''),p=project(cell.center,r);
     return {path:path||'',x:p.x,y:p.y,z:p.z,width:r.width,height:r.height};
   }
+  /* neutral geometry: a mounted body's current projected centre and extent, or null when absent */
+  function projectBody(bodyId){
+    const B=BODIES.get(bodyId);if(!B?.p)return null;
+    const r=canvas.getBoundingClientRect(),c=project(B.pos,r);let ext=0;
+    for(const v of N.V0){const q=project(v.map((x,j)=>B.pos[j]+x*B.place.k),r);ext=Math.max(ext,Math.hypot(q.x-c.x,q.y-c.y))}
+    return {id:bodyId,x:c.x,y:c.y,z:c.z,r:ext,width:r.width,height:r.height};
+  }
   function hitPoint(x,y,rect){
     let best=null;
     for(const rec of visible){
@@ -400,8 +407,8 @@ float sdBox(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+mi
 float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);return min(a,b)-h*h*k*.25;}
 float sdSeg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/max(dot(ba,ba),1e-4),0.,1.);return length(pa-ba*h);}
 mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
-/* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.yz home anchor */
-float sdLens(vec2 p){float d=length(p-uL0.xy)-uL0.z;if(uL1.z>.5)d=smin(d,sdSeg(p,uL0.xy,uL0.xy+uL1.xy)-uL1.z,max(uN.w,uL1.z));return d;}
+/* uN: x lens+home on, y unused, z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.x field-lock corner+1 (0 = round drop), uL2.yz home anchor, uL2.w field-lock focus (mutes the field beneath the drop so the target it frames reads) */
+float sdLens(vec2 p){float d=uL2.x>.5?sdBox(p-uL0.xy,uL0.zw,uL2.x-1.):length(p-uL0.xy)-uL0.z;if(uL1.z>.5)d=smin(d,sdSeg(p,uL0.xy,uL0.xy+uL1.xy)-uL1.z,max(uN.w,uL1.z));return d;}
 float sdPanel(vec2 p,vec4 R){
   vec2 q=p-R.xy;
   if(R.y+R.w>uRes.y&&R.z*2.>uRes.x*.75)q.y+=sin(clamp(p.x/uRes.x,0.,1.)*3.14159)*uH.z;
@@ -443,7 +450,7 @@ void main(){
   if(uN.x>-.5){
     float d=gooD(frag);
     vec2 n=vec2(gooD(frag+h.xy)-gooD(frag-h.xy),gooD(frag+h.yx)-gooD(frag-h.yx));n/=max(length(n),1e-4);
-    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag,uL1.w>0.?uL1.w:uB.y);
+    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag,uL1.w>0.?uL1.w:(uL2.w>0.?0.:uB.y));
   }
   vec3 c;
   c.r=texture(uScene,(frag+gShift*(1.-uB.x))/uRes).r;
@@ -459,6 +466,12 @@ void main(){
     c.r=mix(c.r,pr.r,pr.a*mask);c.g=mix(c.g,pg.g,pg.a*mask);c.b=mix(c.b,pb.b,pb.a*mask);
   }
   c=mix(c,uT.rgb,uT.a*gInside);
+  /* a field-locked drop frames its target: the field beneath the drop is blurred and dimmed so the target reads */
+  if(uL2.w>0.&&uN.x>-.5){
+    float o=(1.-smoothstep(-8.,0.,gooD(frag)))*uL2.w;
+    if(o>0.){vec3 b=vec3(0.);for(int i=0;i<8;i++){float a=float(i)*.7854;b+=texture(uScene,(frag+gShift+vec2(cos(a),sin(a))*6.)/uRes).rgb;}
+      c=mix(c,b*(1./8.)*.28,o*.82);}
+  }
   /* the soft shadow and the rim are printed as ink, not blended: dots forgive pixels, and cost less than a gradient */
   vec3 ink=vec3(.014,.019,.027);
   float shadowInk=gShade*(1.-gInside),rimInk=gRim*.9;
@@ -576,7 +589,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.uniform4f(P.U.a,q.radius*k,q.bevel,q.bevelMax*k,q.refract*k);gl.uniform4f(P.U.b,q.aberr,q.mag,q.spec,q.fres);gl.uniform4f(P.U.c,q.shadow*k,q.shadowK,q.theta,0);gl.uniform4f(P.U.t,...q.tint);gl.uniform4f(P.U.h,q.dot*k,q.halftone,(q.overfillWave||0)*k,0);
     {const sn=g.snap,R=g.r;
       if(sn){const Ls=sn.lens,Hm=sn.home,X=x=>(x-R.left)*k,Y=y=>h-(y-R.top)*k;
-        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,(Ls.rx||0)*k,-(Ls.ry||0)*k,(Ls.reachR||0)*k,Ls.mag||0);gl.uniform4f(P.U.l2,0,X(Ls.ax),Y(Ls.ay),0);
+        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,(Ls.rx||0)*k,-(Ls.ry||0)*k,(Ls.reachR||0)*k,Ls.mag||0);gl.uniform4f(P.U.l2,Ls.round===0?(Ls.corner||0)*k+1:0,X(Ls.ax),Y(Ls.ay),Ls.focus||0);
         if(Hm){const hp=g.Gm.derive([{rect:Hm.rect}],R,{width:w,height:h});gl.uniform4fv(P.U.home,hp.data.slice(0,4));gl.uniform4f(P.U.n,hp.count?1:0,0,Ls.neck*k,Ls.smooth*k)}
         else{gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,0,0,Ls.smooth*k)}}
       else gl.uniform4f(P.U.n,-1,0,0,0);}
@@ -698,7 +711,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   requestAnimationFrame(draw);
   api=Object.freeze({
     id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
-    selectPoint,projectAddressCenter,get container(){return container()},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
+    selectPoint,projectAddressCenter,projectBody,get container(){return container()},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
     get selectedPointId(){return selectedPointId},
     get points(){return pointRecords.map(p=>p.spec)},
