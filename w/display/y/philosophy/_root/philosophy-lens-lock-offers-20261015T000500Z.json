@@ -8,6 +8,10 @@
   "entrypoint": "w/display/y/philosophy",
   "operation": "offer-lens-lock-targets",
   "outcome": "PASS/EARNED in staging — Philosophy is the first consumer of Display's droplette soft-lock: its Description field and mounted site-holon bodies are lockable.",
+  "context": {
+    "owner_direction": "Philipp 2026-10-14: Philosophy is the first consumer of the droplette soft-lock; grid-placed UI (Description) and mounted site-holon bodies are its lock targets",
+    "display_home": "display-lens-softlock-20261014T235900Z"
+  },
   "changed_scope": [
     "render.js offers organism:philosophy|Description (field) and organism:philosophy|<site> (body via projectBody) on render; withdraws on unmount",
     "receptor 1.2 gains the lock-offer sentence"
