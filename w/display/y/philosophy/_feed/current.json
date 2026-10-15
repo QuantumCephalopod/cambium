@@ -25,13 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "render.js offers organism:philosophy|Description (field) and organism:philosophy|<site> (body via projectBody) on render; withdraws on unmount",
-      "receptor 1.2 gains the lock-offer sentence"
+      "_stomach/NUTRIENT__papers-visual-body-in-philosophy__20260929.md -> _waste/metabolized-* (byte-identical)",
+      "no INDEX, _cambium, receptor, renderer or projection change"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED in staging — Philosophy is the first consumer of Display's droplette soft-lock: its Description field and mounted site-holon bodies are lockable."
+    "outcome": "PASS/SUPERSEDED — Papers already has a truthful visible body in Philosophy, owned by Papers and placed by Display; Philosophy draws nothing. Philosophy's stomach is empty."
   },
-  "observed_at_utc": "2026-10-15T01:21:49.934654Z",
+  "observed_at_utc": "2026-10-15T01:44:11.782205Z",
   "owner": "philosophy",
   "phenotype": {
     "w": {
@@ -47,7 +47,7 @@
       "noun": "Care"
     }
   },
-  "reflected_home_event": "philosophy-lens-lock-offers-20261015T000500Z",
+  "reflected_home_event": "philosophy-papers-body-answered-20261015T010000Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
@@ -57,13 +57,11 @@
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [
-      "NUTRIENT__papers-visual-body-in-philosophy__20260929.md"
-    ],
-    "waste_direct_count": 7
+    "stomach_direct": [],
+    "waste_direct_count": 8
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "5542dfcf8150454f466593c10a6a695ef25bb2cc"
+    "source_revision": "cda4bf2790d80d466b7316e27794737134ff71a6"
   }
 }
