@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.7"
+version: "3.8"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -44,7 +44,9 @@ A site-holon carries a `site.json` membrane declaration containing stable identi
 
 Those body-local members, including `ui-grid.json`, travel with the holon. Central Display runtime consumes a generic module contract and must not branch on site identity.
 
-A site may contain further local organism anatomy beyond the site membrane. Philosophy currently carries its own INDEX, `_cambium`, RITUALS and lifecycle shell inside its body; other sites may carry only the local tissue their own closure has earned.
+A site may contain further local organism anatomy beyond the site membrane, including only the semantic differentiation its own closure has earned. Every independently rooted site-holon carries its own local receptor and all four separately addressable lifecycle roles: `_stomach`, `_feed`, `_root` and `_waste`, under the shared-root field's shell and homecoming law. Empty roles may use inert retention markers. Missing roles are lifecycle debt, not a smaller legitimate membrane.
+
+Source-derived presentation and local organism ownership coexist. A site may carry public tissue admitted by another organism while owning its renderer, interaction, readiness and local continuity. The source's membrane and HOME do not replace the site's own membrane and HOME. Restore a missing local shell without inventing a semantic split, duplicating source anatomy or promoting another owner's history into local history.
 
 ### Identity-owned static public aperture
 
@@ -184,6 +186,7 @@ A site-holon change is accepted when:
 5. relocation still changes only environment, not body bytes;
 6. local traversal does not hijack global navigation or orientation law;
 7. public/browser witnesses exercise the actual generated body when visible behavior changes.
+8. the independently rooted body retains all four local lifecycle roles; source-derived content does not exempt it from local intake, HOME and current self-presentation.
 
 ## Compression
 

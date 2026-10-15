@@ -44,6 +44,11 @@ def main():
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
     expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten','organism:datenschutz','organism:impressum'}
     check(set(by_id)==expected_sites,'unexpected Population site set')
+    for site in sites:
+        site_root=site['site_dir']
+        check((site_root/'RITUALS'/'organism'/'RITUAL.md').is_file(),f"{site['title']} local organism receptor missing")
+        for shell in ('_stomach','_feed','_root','_waste'):
+            check((site_root/shell).is_dir(),f"{site['title']} lifecycle shell missing {shell}")
     check(all(s.get('version')==2 and s.get('ui_grid')=='ui-grid.json' for s in sites),'site-holon v2 UI-grid membrane missing')
     check(all((s.get('ui_grid_data') or {}).get('schema')=='sss.display.ui-grid.v2' for s in sites),'site-holon canonical UI-grid schema drifted')
     check(by_id['organism:philosophy']['address']=='','Philosophy must occupy site-space overview')
