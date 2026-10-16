@@ -25,12 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "w/display/y/philosophy/_stomach/INCOMING — phenotype projection seam.md -> w/display/y/philosophy/_waste/catabolized-INCOMING — phenotype projection seam-20261004.md (NARROWED)"
+      "_stomach/NUTRIENT__papers-visual-body-in-philosophy__20260929.md -> _waste/metabolized-* (byte-identical)",
+      "no INDEX, _cambium, receptor, renderer or projection change"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED in staging — completed portions leave active intake; unresolved choices and witnesses remain. Canonical owner promotion is pending."
+    "outcome": "PASS/SUPERSEDED — Papers already has a truthful visible body in Philosophy, owned by Papers and placed by Display; Philosophy draws nothing. Philosophy's stomach is empty."
   },
-  "observed_at_utc": "2026-10-04T10:45:40.652828Z",
+  "observed_at_utc": "2026-10-15T01:44:11.782205Z",
   "owner": "philosophy",
   "phenotype": {
     "w": {
@@ -46,23 +47,21 @@
       "noun": "Care"
     }
   },
-  "reflected_home_event": "philosophy-nutrient-catabolism-20261004T104102Z",
+  "reflected_home_event": "philosophy-papers-body-answered-20261015T010000Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "025545f19cc3368cf3a8e5f3d4f6b5636e95e7b81adb888e7125350e34367aee"
+      "sha256": "4929e2672776989fdf3fde583e2497184cf0a46b67afbafacc699c689f34ff95"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [
-      "INCOMING — phenotype projection seam.md"
-    ],
-    "waste_direct_count": 2
+    "stomach_direct": [],
+    "waste_direct_count": 8
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "HEAD"
+    "source_revision": "cda4bf2790d80d466b7316e27794737134ff71a6"
   }
 }

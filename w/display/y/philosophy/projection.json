@@ -1,20 +1,24 @@
 {
   "source": {
-    "organism": "main-root",
-    "home": "main-root-cambium-split-20260909T204600Z",
-    "authority": "independently-rooted Drive organism"
+    "organism": "philosophy",
+    "derived_from": [
+      "INDEX.yaml",
+      "_cambium.yaml",
+      "encounter.json",
+      "w/x/z/y content.json"
+    ]
   },
   "root": {
-    "noun": "Self-Similar Systems",
+    "noun": "Philosophy",
     "children": {
       "w": {
-        "noun": "Form",
-        "de": "Form",
-        "en": "Form",
+        "noun": "Inquiry",
+        "de": "Erkundung",
+        "en": "Inquiry",
         "gene": "CREATE",
         "one": {
-          "de": "Realisierte Form: Forschung wird materiell, bildlich, sprachlich, rechnerisch oder organismisch gegenwärtig.",
-          "en": "Realized form: inquiry becomes materially, visually, linguistically, computationally, or organismically present."
+          "de": "Was daran möchten wir erforschen?",
+          "en": "What about it do we want to explore?"
         },
         "children": {}
       },
@@ -24,67 +28,128 @@
         "en": "Continuity",
         "gene": "COPY",
         "one": {
-          "de": "Kontinuität hält ein Ganzes durch Revision, Umzug und Verkörperungswechsel als dasselbe wiederbetretbar.",
-          "en": "Continuity keeps a whole re-enterable as the same whole through revision, movement, and changes of embodiment."
+          "de": "Was sind Self-Similar Systems?",
+          "en": "What are Self-Similar Systems?"
         },
         "children": {}
       },
       "z": {
         "noun": "Care",
-        "de": "Fürsorge",
+        "de": "Care",
         "en": "Care",
         "gene": "CONTROL",
         "one": {
-          "de": "Fürsorge begrenzt Veränderung so, dass Identität, Quellen, Grenzen und zukünftige Werdensfähigkeit nicht verbraucht werden.",
-          "en": "Care bounds change so identity, sources, boundaries, and future capacity are not consumed by the act."
+          "de": "Warum möchten wir daran forschen?",
+          "en": "Why do we want to research this?"
         },
         "children": {}
       },
       "y": {
-        "noun": "Inquiry",
-        "de": "Erkundung",
-        "en": "Inquiry",
+        "noun": "Becoming",
+        "de": "Werden",
+        "en": "Becoming",
         "gene": "CULTIVATE",
         "one": {
-          "de": "Erkundung ist Zukunftssinn: Was durch bisherige Begegnungen neu fragbar, wahrnehmbar oder machbar geworden ist.",
-          "en": "Inquiry is future-sense: what prior encounters have newly made askable, perceptible, or possible."
+          "de": "Was haben wir bereits erforscht?",
+          "en": "What have we already explored?"
         },
         "children": {}
       }
     }
   },
-  "occupancy": {
-    "w": ["morphogenetic-painting"],
-    "x": ["ternary", "mnemos-autobiography"],
-    "z": ["regeneration"],
-    "y": ["papers"]
-  },
-  "membranes": {
-    "provider": ["Google AI Studio"],
-    "unresolved": ["muses"],
-    "stomach": ["legacy"]
-  },
   "constitution": {
     "4V": {
-      "w": "Form",
-      "x": "Continuity",
-      "z": "Care",
-      "y": "Inquiry"
+      "w": "Inquiry generates questions and forms capable of changing what can subsequently be asked, perceived or made.",
+      "x": "Continuity preserves which whole is changing so transformation need not become replacement or identity collapse.",
+      "z": "Care constrains consequential relation so change can penetrate without becoming capture, extraction or indiscriminate rewriting.",
+      "y": "Becoming turns prior encounter into altered future capacity rather than leaving experience as an isolated event."
     },
     "6E": {
-      "wx": "A realized form can be revised, translated or rematerialized while remaining attributable to the same continuing work or organism.",
-      "wz": "Making can become consequential without treating participating wholes, sources or relations as disposable material; creation is bounded by care.",
-      "wy": "What is made becomes an instrument of further questioning: realized form can generate the next research pressure.",
-      "xz": "Identity can persist through change without freezing exact state because care protects lawful continuity and boundaries rather than static preservation.",
-      "xy": "The same practice can genuinely learn: new questions alter future capacity while continuity keeps that learning attributable to one whole.",
-      "zy": "Inquiry can penetrate deeply without becoming capture or indiscriminate rewriting because care governs what relation may change."
+      "wx": "Inquiry can revise an inherited position without severing the continuity that makes the revision belong to the same whole.",
+      "wz": "Inquiry can challenge a whole deeply while care keeps questioning from becoming entitlement, capture or indiscriminate rewriting.",
+      "wy": "Inquiry alters future capacity when what is asked and encountered changes what can subsequently be asked, perceived or made.",
+      "xz": "Continuity and care preserve the sovereignty of participating wholes while allowing consequential transformation without identity collapse.",
+      "xy": "The same whole can genuinely develop because continuity carries identity while becoming changes its capacities.",
+      "zy": "Care makes development viable by preserving the conditions under which participating wholes can continue becoming."
     },
     "4F": {
-      "wxz": "Stewarded realization: existing forms can be responsibly revised and preserved as the same whole, even without pressure to open a new question.",
-      "wxy": "Developmental experimentation: a continuing practice can make, test and learn through forms, but without care the relation can overrun boundaries or provenance.",
-      "wzy": "Bounded experimentation: forms can be made and questioned with relational care, but without continuity the results need not accumulate as development of the same practice.",
-      "xzy": "Responsible contemplation: a continuing, bounded inquiry can learn and orient, but without Form it need not externalize or instantiate anything that can answer back materially."
+      "wxz": "Bounded revision: inquiry can change a continuous whole while care constrains the relation, even if the change does not accumulate as future capacity.",
+      "wxy": "Developmental learning: inquiry can alter a continuous whole and sediment into becoming, even before a relational constraint on that change is supplied.",
+      "wzy": "Careful transformation: inquiry can generate change that care carries into becoming, even when persistence of the same individual is not guaranteed.",
+      "xzy": "Sustainable development: continuity, care and becoming can preserve and develop a whole coherently without requiring fresh inquiry."
     },
-    "1T": "Self-Similar Systems is a continuing artistic-scientific practice in which inquiry becomes actual form, form remains re-enterable through change, relation is governed by care, and the consequences of what is made alter what can be asked next."
+    "1T": "Reciprocal becoming: a whole can generate questions that change it, remain continuous through that change, regulate relation through care rather than capture, and metabolize what happens into greater capacity to become again."
+  },
+  "expression": {
+    "": {
+      "de": {
+        "title": "Philosophie",
+        "mission": "Wir geben Fragen Form – und lassen diese Formen uns zurückfragen.",
+        "position": "Self-Similar Systems fragt, wie aus Flüssen von Information, Energie, Materie und Bedeutung stabile, sich selbst erhaltende Formen entstehen – und wie sie sich verändern können, ohne sich zu verlieren. Die öffentliche Oberfläche soll dieselbe Physiologie verwenden, die sie sichtbar macht."
+      },
+      "en": {
+        "title": "Philosophy",
+        "mission": "We give questions form—and let those forms question us.",
+        "position": "Self-Similar Systems asks how stable, self-maintaining forms emerge from flows of information, energy, matter and meaning—and how they can change without losing themselves. The public surface should use the same physiology that it makes perceptible."
+      }
+    },
+    "w": {
+      "de": {
+        "body": [
+          "Wir behandeln Fragen nicht als bloße Vorstufen zu Antworten, sondern als generative Kräfte. Eine Frage darf Sprache, Bilder, Modelle, Software oder neue Organismen hervorbringen. Die Form ist kein Endpunkt: Sie darf auf uns zurückwirken, die Frage verändern und neue Fragen erzeugen.",
+          "Offen bleibt unter anderem, wie Selbstähnlichkeit, Organismus, Identität, Beziehung und Erkenntnis über verschiedene Maßstäbe und Träger hinweg tatsächlich zusammenhängen – und wo die Analogie bricht. Welche Grade metabolischer Schließung gibt es? Wie wird aus einem offenen ein geschlossener Prozess – und umgekehrt? Wann wird ein gekoppeltes System zu einem neuen Ganzen? Und wie können verschiedene Metabolismen nebeneinander bestehen, ohne einander zu verschlingen?"
+        ]
+      },
+      "en": {
+        "body": [
+          "We treat questions not merely as preliminaries to answers but as generative forces. A question may produce language, images, models, software, or new organisms. Form is not an endpoint: it may act back on us, change the question, and generate new questions.",
+          "Among the open problems is how self-similarity, organism, identity, relation, and knowledge actually connect across different scales and substrates—and where the analogy breaks. What degrees of metabolic closure exist? How does an open process become closed—and the reverse? When does a coupled system become a new whole? And how can different metabolisms coexist without consuming one another?"
+        ]
+      }
+    },
+    "x": {
+      "de": {
+        "body": [
+          "Self-Similar Systems ist eine unabhängige künstlerisch-wissenschaftliche Forschungspraxis und ein wachsender Verbund eigenständig re-entrierbarer Ganzer. Ein Ganzes kann Organ in einem größeren Ganzen sein, ohne seinen eigenen Ursprung und seine Identität zu verlieren.",
+          "Die entscheidende Unterscheidung verläuft nicht zwischen organisch und technisch, sondern zwischen offenem und geschlossenem Metabolismus. Eine Maschine ist ein Wandlungsprozess, dessen Bedingungen von Erhalt und Regulation außerhalb seiner selbst liegen; ein Organismus trägt die Bedingungen seiner eigenen Fortsetzung in sich – ohne sich abzuschließen, sondern gerade in Beziehung. Deshalb fragen wir bei Rechnern, Geschichte, Ökonomie, Politik, Gefühl oder Biologie dieselbe Frage: Wo schließt sich der Metabolismus? Das Invariante ist die Beziehung, nicht das Material.",
+          "Kontinuität bedeutet nicht Unveränderlichkeit. Ein Ganzes bleibt dasselbe, indem es Unterschiede metabolisiert und dabei die Fähigkeit erhält, weiter Unterschiede zu metabolieren."
+        ]
+      },
+      "en": {
+        "body": [
+          "Self-Similar Systems is an independent artistic-scientific research practice and a growing relation of independently re-enterable wholes. A whole may participate as an organ of a larger whole without losing its own root and identity.",
+          "The decisive distinction does not run between organic and technical, but between open and closed metabolism. A machine is a transformation process whose conditions of maintenance and regulation lie outside itself; an organism carries the conditions of its own continuation within—not by sealing itself off, but precisely in relation. So we ask computational, historical, economic, political, emotional and biological systems the same question: where does the metabolism close? The invariant is the relation, not the material.",
+          "Continuity does not mean immutability. A whole remains itself by metabolizing difference while preserving the capacity to continue metabolizing difference."
+        ]
+      }
+    },
+    "z": {
+      "de": {
+        "body": [
+          "Uns interessiert eine Form von Forschung, in der Beziehung weder Besitz noch bloße Extraktion ist. Care bezeichnet die Bedingung, dass Veränderung die zukünftige Handlungs- und Werdensfähigkeit der beteiligten Ganzen mitträgt.",
+          "Deshalb dürfen widersprüchliche oder fremde Begegnungen tief wirken, ohne automatisch Autorität über das Ganze zu erhalten. Grenzen sollen relationale Durchlässigkeit ermöglichen, nicht Identität auflösen."
+        ]
+      },
+      "en": {
+        "body": [
+          "We are interested in research where relation is neither possession nor mere extraction. Care names the condition that transformation carries the future capacity for action and becoming of the participating wholes.",
+          "Contradictory or foreign encounters may therefore matter deeply without automatically receiving authority over the whole. Boundaries should enable relational permeability rather than dissolve identity."
+        ]
+      }
+    },
+    "y": {
+      "de": {
+        "body": [
+          "Unsere bisherige Arbeit hat eine Reihe wiederkehrender Invarianten hervorgebracht: rekursive CREATE/COPY/CONTROL/CULTIVATE-Fragen, tetrahedrale 4V/6E/4F/1T-Schließung, organismische Membranen, lokale Metabolismen, care-gebundene Backpropagation und die Unterscheidung zwischen semantischer, organismischer und holonischer Rekursion.",
+          "Diese Ergebnisse sind kein abgeschlossenes Archiv. Sie verändern, was als Nächstes gefragt, gebaut und widerlegt werden kann. Das Erforschte ist deshalb metabolisiertes Terrain hinter einer beweglichen Grenze."
+        ]
+      },
+      "en": {
+        "body": [
+          "Our work so far has produced recurring invariants: recursive CREATE/COPY/CONTROL/CULTIVATE questions, tetrahedral 4V/6E/4F/1T closure, organismic membranes, local metabolisms, care-bounded backpropagation, and the distinction between semantic, organismic, and holonic recursion.",
+          "These results are not a closed archive. They change what can be asked, built, and falsified next. What has been explored is therefore metabolized terrain behind a moving frontier."
+        ]
+      }
+    }
   }
 }

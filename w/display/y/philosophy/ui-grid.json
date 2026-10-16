@@ -8,18 +8,63 @@
     "w",
     "x",
     "y",
-    "z"
+    "z",
+    "ww",
+    "wx",
+    "xw",
+    "xx",
+    "xz",
+    "zx",
+    "zz"
   ],
   "fields": {
-    "copy": {
+    "Description": {
       "cells": [
-        "ww",
-        "wx",
-        "wy",
-        "wz"
+        "yw",
+        "yx",
+        "yy",
+        "yz"
       ],
-      "label": "encounter copy",
-      "z": 1
+      "label": "decript"
+    },
+    "compass": {
+      "cells": [
+        "zzw",
+        "zzx",
+        "zzy",
+        "zzz"
+      ],
+      "label": "compass"
+    },
+    "header": {
+      "cells": [
+        "www",
+        "wwx",
+        "wwy",
+        "wwz",
+        "wxw",
+        "wxx",
+        "wxy",
+        "wxz",
+        "xww",
+        "xwx",
+        "xwy",
+        "xwz",
+        "xxw",
+        "xxx",
+        "xxy",
+        "xxz"
+      ],
+      "label": "header"
+    },
+    "viewfocus": {
+      "cells": [
+        "wz",
+        "xy",
+        "yx",
+        "zw"
+      ],
+      "label": "view"
     }
   },
   "elements": {}

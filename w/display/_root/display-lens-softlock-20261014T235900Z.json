@@ -1,0 +1,25 @@
+{
+  "kind": "HOME",
+  "home_at_utc": "2026-10-14T23:59:00Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "event_id": "display-lens-softlock-20261014T235900Z",
+  "organism": "display",
+  "entrypoint": "w/display",
+  "operation": "execute-situated-droplette-soft-lock",
+  "outcome": "PASS/EARNED in staging — the shared droplette soft-locks to site-offered field/body targets; first consumer Philosophy; nutrient stays open for a second consumer and real-device acceptance.",
+  "context": {
+    "owner_direction": "Philipp 2026-10-14: grid-placed UI targets share their exact dimension (rounded); bodies keep the current drop size increase; navigation that removes the target unlocks the drop in place as a circle; a target surviving Descent keeps the lock; locked: no magnification, gentle outside muting",
+    "nutrient": "_stomach/NUTRIENT__lens-softlock-local-preview__20261003.md (progressed, not retired)"
+  },
+  "changed_scope": [
+    "z/display-lens.js: offer/withdraw channel, candidateAt/lockTo/unlock, locked stepping (field rectangle springs, body follow), lock on release, unlock on grab / vanished target / glass off, rect-aware pointer surface, phase 'locked', data-display-lens-lock",
+    "w/locus-shader.js: rounded-box lens SDF for field locks, no magnification while locked, blurred/dimmed world outside a locked drop; neutral projectBody(id) field hook",
+    "z/display-lens.test.cjs: soft-lock field/body/vanish/follow/pull witnesses",
+    "RITUALS/navigation 3.5 -> 3.6 (soft-lock mechanics)"
+  ],
+  "witness": {
+    "unit": "display-lens.test.cjs all PASS including soft-lock witness",
+    "browser_1440x900": "drag onto Philosophy Description -> locked field 720x386 exact, round 0, mag 0; navigate to Schattenseiten -> unlocked in place (360,707), circle, free; drag onto Papers body -> locked body circle; inspect y (Inquiry) -> lock held, drop (744,568) on body (743,569); no page errors",
+    "chain": "build/check/address/closure/bytes/readme PASS; all Display tests PASS"
+  }
+}

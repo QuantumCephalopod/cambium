@@ -166,26 +166,54 @@ def _validate_display_node(node, path):
             _validate_display_node(node['children'][gene], path + gene)
 
 
-def validate_root_projection(data):
-    expected = {'source','root','occupancy','membranes','constitution'}
-    if not isinstance(data, dict) or set(data) != expected:
-        raise ValueError('Philosophy projection has an unexpected shape')
-    source = data['source']
-    if set(source) != {'organism','home','authority'} or source['organism'] != 'main-root':
-        raise ValueError('Philosophy projection source identity is invalid')
-    root = data['root']
-    if not isinstance(root, dict) or set(root) != {'noun','children'} or root['noun'] != 'Self-Similar Systems':
-        raise ValueError('Philosophy projection root identity is invalid')
-    if set(root['children']) != set(GENES):
-        raise ValueError('Philosophy projection must expose exactly realized root 4V')
+def derive_root_projection(site_dir):
+    """Derive the overview projection only from the site's own INDEX, _cambium and locus content."""
+    index = load_yaml(site_dir/'INDEX.yaml'); validate_index(index)
+    constitution = load_yaml(site_dir/'_cambium.yaml'); validate_cambium(constitution, f'{site_dir.name} _cambium.yaml')
+    site = json.loads((site_dir/'site.json').read_text(encoding='utf-8'))
     names = {'w':'CREATE','x':'COPY','z':'CONTROL','y':'CULTIVATE'}
+    children = {}
     for gene in GENES:
-        _validate_display_node(root['children'][gene], gene)
-        if root['children'][gene]['gene'] != names[gene]:
-            raise ValueError(f'Philosophy projection {gene} remaps fixed CCCC DNA')
-    validate_cambium(data['constitution'], 'Philosophy projection constitution')
-    if set(data['occupancy']) != set(GENES):
-        raise ValueError('Philosophy projection occupancy must preserve four host loci')
+        if any(g in index[gene] for g in GENES):
+            raise ValueError(f'{site_dir.name}:{gene} realized a deeper rank that the overview projection cannot yet derive')
+        content = json.loads((site_dir/gene/'content.json').read_text(encoding='utf-8'))
+        if content.get('address') != gene or content.get('gene') != names[gene] or content.get('canonical_concept') != index[gene]['noun']:
+            raise ValueError(f'{site_dir.name}/{gene}/content.json disagrees with INDEX.yaml phenotype')
+        expressions = content['expressions']
+        children[gene] = {
+            'noun': index[gene]['noun'],
+            'de': expressions['de']['concept'],
+            'en': expressions['en']['concept'],
+            'gene': names[gene],
+            'one': {'de': expressions['de']['question'], 'en': expressions['en']['question']},
+            'children': {},
+        }
+    encounter = json.loads((site_dir/'encounter.json').read_text(encoding='utf-8'))
+    languages = encounter['available_languages']
+    expression = {'': {l: {k: encounter['expressions'][l][k] for k in ('title', 'mission', 'position')} for l in languages}}
+    for gene in GENES:
+        content = json.loads((site_dir/gene/'content.json').read_text(encoding='utf-8'))
+        expression[gene] = {l: {'body': content['expressions'][l]['body']} for l in languages}
+    for address, langs in expression.items():
+        for l, fields in langs.items():
+            for k, v in fields.items():
+                texts = v if isinstance(v, list) else [v]
+                if not texts or any(not isinstance(t, str) or not t.strip() for t in texts):
+                    raise ValueError(f'{site_dir.name} expression {address or "ε"}/{l}/{k} is empty')
+    return {
+        'source': {'organism': site['id'].split(':', 1)[1], 'derived_from': ['INDEX.yaml', '_cambium.yaml', 'encounter.json', 'w/x/z/y content.json']},
+        'root': {'noun': site['title'], 'children': children},
+        'constitution': constitution,
+        'expression': expression,
+    }
+
+
+def validate_root_projection(data, site_dir):
+    expected = derive_root_projection(site_dir)
+    for gene in GENES:
+        _validate_display_node(expected['root']['children'][gene], gene)
+    if data != expected:
+        raise ValueError(f'{site_dir.relative_to(ROOT)}/projection.json is not derived from its own body; regenerate with python3 y/build.py --derive-root-projection')
     return data
 
 
@@ -319,7 +347,7 @@ def discover_sites():
                 if any(root['children'][g]['noun'] != projection['phenotype'][g] for g in GENES):
                     raise ValueError(f'{site_dir.relative_to(ROOT)}: feed preview drifted from source phenotype')
         if data['id'] == 'organism:philosophy':
-            validate_root_projection(projection)
+            validate_root_projection(projection, site_dir)
         elif data['id'] == 'organism:papers':
             validate_papers_projection(projection)
         found.append({
@@ -603,7 +631,12 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--artifact', type=Path, default=ROOT/'_site')
     ap.add_argument('--check', action='store_true')
+    ap.add_argument('--derive-root-projection', action='store_true', help='rewrite the overview site projection from its own body')
     args = ap.parse_args()
+    if args.derive_root_projection:
+        site_dir = SITE_ROOT/'philosophy'
+        (site_dir/'projection.json').write_text(json.dumps(derive_root_projection(site_dir), ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+        print(f'derived {(site_dir/"projection.json").relative_to(ROOT)}'); return
     target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
         verify_artifact(target); print(f'display membrane exactly matches bundle {asset_bundle_id()}')
