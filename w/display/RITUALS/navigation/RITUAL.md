@@ -51,6 +51,8 @@ A target click performs the encounter transition immediately:
 
 There is no global inspect-then-commit step.
 
+Mounted movement inherits the receiving-renderer acceptance boundary from `../organism/RITUAL.md`. Entry, history restoration and ascent commit their new address/stack only after the candidate body accepts; refusal retains the prior visible encounter and its truthful return path. A new accepted home intent may cancel an unfinished fold; a request rejected while the fold is busy does not silently replace the running intent.
+
 ## Philosophy background inspection
 
 Philosophy's background inspection is Descent inside Philosophy's own container: selecting a child cell descends into it without moving the active global encounter.

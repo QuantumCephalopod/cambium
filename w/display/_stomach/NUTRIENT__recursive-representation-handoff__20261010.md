@@ -22,3 +22,23 @@ Pure utility tests including pending coalescence, paused queue, failures, revisi
 - Schattenseiten GL fixture: preview55/64 cached source, entered55/512, per-slot high fail retains low, no per-frame failed-image retry, higher GPU tier retires on exit.
 - Global Display: lazy child-owned feed, deep-link navigation, retry and last-valid parent until detailed source is ready.
 - No production mutation. No source-relative performance data or real browser WebGL readiness proof; visual acceptance stays OPEN. Do not retire this nutrient or claim HOME on native CI alone.
+
+## Live encounter — 2026-10-14
+
+Canonical snapshot `993eb47f233d255f7573e919548b1d4c2c851e54`; deployed browser scripts declare bundle `11c72e4a51907f68`, matching the snapshot's computed bundle. Chrome cloud viewport: 1363×936.
+
+At `https://sss.saarland/#main:y`, the live DOM first reported `ACQUIRING PUBLIC FEED · y` while the Philosophy host remained visible. After acquisition it reported `organism:papers`, but no interlocutor host was visible. Source inspection localizes the failure: Papers returns false and hides its host when its required WebGL renderer cannot initialize; Display's current render/enter path ignores that refusal and commits the new active identity. Existing canvas attributes and the untextured Schattenseiten field are consistent with the 2D fallback path in this browser; no direct GPU-driver/counter API is available.
+
+This is a bounded counterexample to readiness: valid detail data alone is insufficient if the receiving body cannot render it. New local question: may a declined, throwing or still-hidden candidate erase the last valid encounter? Test a generic transactional handoff that retains the prior body, local view, history/stack and current identity until all target renderers have actually accepted. A refused candidate must remain retryable without reminting its immutable source or refetching already-acquired detail. Site-specific renderer meaning and GPU fallback remain local.
+
+Native queue/stale-disposal, Schattenseiten GL fixtures and Display feed/navigation fixtures passed on this same snapshot. Browser GPU/tier-allocation, injected network failure, true media handoff and physical-device acceptance remain OPEN. Do not use this DOM-only counterexample as a full visual pass.
+
+## Bounded renderer acceptance repair — 2026-10-14
+
+The deployed Crawlerbait entry also retained Philosophy while acquiring detail and then exposed its own body. Papers instead committed its identity with no visible body. The source-exact DOM/screenshot witness is retained in `recursive-representation-handoff-20261014/witness.json`; the screenshot depicts the deployed defect, not a repaired candidate.
+
+A new generic regression reproduces Papers' refusal on the prior runtime. The staged repair accepts a mounted encounter only after all receiving renderers accept and leave their hosts visible. False/hidden/throw cases keep the prior body, local view, visit stack and truthful hash; retry reuses acquired immutable detail. History restoration and ascent obey the same boundary. Home cancellation is checked at the fold's actual mutation, while a busy rejected route cannot replace the running intent. Legacy visible hooks returning no value keep their existing contract. Site-owned rendering and hardware fallback stay local.
+
+Native regression, shared acquisition utility, Schattenseiten GL fixture, address and full generated-artifact checks passed. A separate bounded Display HOME records this renderer repair only. The original recursive GPU/visual acceptance is still OPEN, and this nutrient is not retired. Candidate browser acceptance could not be obtained: the browser URL policy rejected the local file fixture; no alternate surface or workaround was used. Owner promotion to the public HTTPS deployment and a new actual browser/GPU witness remain necessary.
+
+Child-owned source-sample availability and the bounded Schattenseiten encounter are recorded in that child's new local HOME. Their unresolved live media acceptance remains in its own intake. Parent uptake is limited to the shared receiving-renderer counterexample; no shared root DNA change or further ancestor backpropagation was earned.

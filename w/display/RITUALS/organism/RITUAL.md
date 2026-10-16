@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.26"
+version: "3.27"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -114,6 +114,8 @@ Two executed substitutions:
 - inside Schattenseiten, the same physiology manages local 64px and 512px acquisition while image decoders and GPU textures remain Schattenseiten-owned, and the 64px body is held until each valid higher-resolution slot is ready.
 
 Public `_feed` advertises truthful available representations; loading and network readiness are transient runtime facts, **not** semantic feed state. A failed successor cannot erase its already-present lower representation. A lower rank can exist without a higher one. LOD thresholds, caching lifetime and shader/display materials remain owner-local. No global array of all potential descendants is implied.
+
+At a mounted encounter handoff, acquired detail is only data readiness. The receiving site's renderer must also accept and leave its body visible before Display retires the prior encounter or commits its visit. A declined, throwing or still-hidden candidate preserves the prior body, local container, stack and truthful history; it reports unavailability and may retry using the already-acquired immutable source. The same acceptance boundary governs direct entry, history restoration and ascent. Display checks acceptance; the site owns rendering and any hardware-specific fallback.
 
 ### Identity-resolved foreign embodiment
 
@@ -323,3 +325,6 @@ Version 3.24 orientation-not-confinement correction (staged 2026-10-09; browser 
 Version 3.25 generic readiness substitution (staged 2026-10-10): the same browser-local representation handoff physiology now runs for Display site detail and Schattenseiten image tiers. The first native unit/GL-fixture/site build passed on QuantumCephalopod; real-browser visual and runtime-performance witnesses are still pending. Current CCCC constitution and physical site-space anatomy are unchanged.
 
 Version 3.26 situated-function assimilation (2026-10-12): one already-global liquid instrument is given a context- and organism-owned *purpose*, not a new mode selector; site-space Form/Continuity/Care/Inquiry are current examples rather than universal modes or Display's root DNA. Local simplex shape/readability and soft-lock execution remain distinct unfinished wounds. No INDEX, _cambium, geometry or renderer change is implied.
+
+
+Version 3.27 receiving-renderer acceptance correction (staged 2026-10-14): the live Papers handoff committed identity after its renderer refused. Mounted entry, history restoration and ascent now retain the prior valid encounter until the receiving body accepts. Site rendering/fallback stays local; original recursive GPU/visual acceptance remains open.

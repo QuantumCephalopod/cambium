@@ -1,0 +1,62 @@
+{
+  "recorded_at_utc": "2026-10-14T18:22:01.197582Z",
+  "kind": "bounded-live-browser-witness",
+  "source_snapshot": "993eb47f233d255f7573e919548b1d4c2c851e54",
+  "declared_asset_bundle": "11c72e4a51907f68",
+  "viewport": {
+    "width": 1363,
+    "height": 936
+  },
+  "observations": [
+    {
+      "route": "https://sss.saarland/#main:y",
+      "phase": "pending detail",
+      "status": "ACQUIRING PUBLIC FEED · y",
+      "visible_prior_host": "organism:philosophy"
+    },
+    {
+      "route": "https://sss.saarland/#main:y",
+      "phase": "settled detail",
+      "status": "WITNESS viewer · global main:y · local root · organism:papers",
+      "visible_interlocutor_hosts": [],
+      "screenshot": "live-papers-refusal.jpg",
+      "screenshot_sha256": "7a5aedfaeb411db2b665ddd9cca92a7450a65c118b31929633706b4db3f232f6"
+    },
+    {
+      "route": "https://sss.saarland/#main:w",
+      "phase": "pending detail",
+      "status": "ACQUIRING PUBLIC FEED · w",
+      "visible_prior_host": "organism:philosophy"
+    },
+    {
+      "route": "https://sss.saarland/#main:w",
+      "phase": "settled detail",
+      "status": "WITNESS viewer · global main:w · local root · organism:crawlerbait",
+      "visible_interlocutor_hosts": [
+        "organism:crawlerbait"
+      ]
+    },
+    {
+      "route": "https://sss.saarland/#main:x",
+      "phase": "settled entry",
+      "visible_interlocutor_hosts": [
+        "organism:schattenseiten"
+      ],
+      "metadata": {
+        "works": 49,
+        "ranks": 3,
+        "clusters": 6,
+        "moving": 33
+      },
+      "media": "work imagery absent; canvas attributes consistent with source 2D fallback",
+      "exit": "root-home returned to Philosophy"
+    }
+  ],
+  "inference": "Papers source refuses and hides its host when WebGL2 initialization fails; the runtime ignored that render result. Browser DOM and source agree on a receiving-renderer readiness failure. No GPU driver was queried.",
+  "limits": [
+    "Candidate code was not deployed or browser-witnessed. Browser rejected the local file fixture under its HTTP/HTTPS URL policy; no workaround attempted.",
+    "No physical-device acceptance, network fault injection, source-relative performance measurement, optical preview, real 64→512 GPU upgrade or GPU retirement witness.",
+    "The live bundle declaration matches the source-derived identifier; no byte-for-byte asset download comparison.",
+    "Extension metadata errors were observed separately; they do not establish a site renderer error."
+  ]
+}
