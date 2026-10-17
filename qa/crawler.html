@@ -1,4 +1,4 @@
-<!-- membrane bundle 14574ada34d2d99f; tree-addressed Display generation; physical Population anatomy is the mount truth. -->
+<!-- membrane bundle eca139ed96df74d6; tree-addressed Display generation; physical Population anatomy is the mount truth. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -575,6 +575,8 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
 .crawlerbait-story,.crawlerbait-legend{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}
 
 .crawlerbait-story{display:block!important}
+
+@media(max-width:720px){.crawlerbait-pace{display:block;flex:0 1 3rem}.crawlerbait-transport{gap:.45rem}.crawlerbait-clock{white-space:nowrap}}
 </style>
 <style>/* Schattenseiten HUD: pale ink over the host's dark field. Every kind of information has a fixed place at the
    edges; nothing floats over the field in a box, so the flat picture in the centre stays free. Same grammar as the
@@ -3954,7 +3956,7 @@ function step(dt,now,pxOf){
     const share=1-o.fine;if(share<=.001)continue;
     if(o.cell&&o.transit){droplet(o,now);continue}
     const key=o.cell||o.coarseKey;let c=cols.get(key);if(!c)cols.set(key,c={n:0,f:0,re:0,im:0});
-    const ph=KIND[o.facts.k].phase+(o.S.g[4]/255-.5)*.5,f=o.fade*share;c.n+=share;c.f+=f;c.re+=f*Math.cos(ph);c.im+=f*Math.sin(ph)}
+    const ph=KIND[o.facts.k].phase+(o.S.g[4]/255-.5)*.5,f=o.fade*share;c.n++;c.f+=f;c.re+=f*Math.cos(ph);c.im+=f*Math.sin(ph)}
   for(const [key,c] of cols)colony(key,c,now);
   SIM.resolved=resolved;SIM.colonies=cols.size;
   for(let i=SIM.drops.length-1;i>=0;i--){const d=SIM.drops[i],age=(now-d.t)/1400;if(age>1||!d.a.startsWith(C)){SIM.drops.splice(i,1);continue}
@@ -4048,6 +4050,7 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   const u0=performance.now();step(dt,ms,pxOf);SIM.perf.upd+=((performance.now()-u0)-SIM.perf.upd)*.05;SIM.perf.splats=SIM.ns;
   const screen=screenFrame(proj,view,model,width/(dpr||1),height/(dpr||1));
   updateInk(screen,ms,width,height,dpr||1,canvas);
+  if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
   if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
   const Lr=layerFor(gl);if(Lr.off){gl.canvas.dataset.gooLayer='off: '+Lr.off;camFollow(ms);tickHud();return}
   sizeTarget(Lr,width,height);
@@ -4102,7 +4105,7 @@ function screenFrame(proj,view,model,w,h){
 function triangleRows(tri,lh,pad=5){
   const rows=[],top=Math.min(...tri.map(p=>p.y)),bottom=Math.max(...tri.map(p=>p.y));
   const span=y=>{const xs=[];for(let i=0;i<3;i++){const a=tri[i],b=tri[(i+1)%3];if(y>=Math.min(a.y,b.y)&&y<Math.max(a.y,b.y))xs.push(a.x+(b.x-a.x)*(y-a.y)/(b.y-a.y))}return xs.sort((a,b)=>a-b)};
-  for(let y=top+pad;y+lh<bottom-pad;y+=lh){const a=span(y),b=span(y+lh);if(a.length<2||b.length<2)continue;const x=Math.max(a[0],b[0])+pad,right=Math.min(a.at(-1),b.at(-1))-pad;if(right-x>typePx(-1)*2)rows.push({x,y,w:right-x})}return rows;
+  for(let y=top+pad;y+lh<bottom-pad;y+=lh){const a=span(y),b=span(y+lh);if(a.length<2||b.length<2)continue;const x=Math.max(a[0],b[0])+pad,right=Math.min(a.at(-1),b.at(-1))-pad;if(right-x>Math.max(96,typePx(-1)*10))rows.push({x,y,w:right-x})}return rows;
 }
 function textPages(text,font,rows){
   const P=INK.pretext;if(!P||!rows.length)return [];
@@ -4436,12 +4439,12 @@ function unmount({host,content}={}){
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,
   // pure witnesses for tests: the walk law, the life built from a projection, and the frame cost of living it
   _law:Object.freeze({pointOf,route,buildLife,buildGrowth,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,KIND,
-    simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container=''}){
+    simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container='',changeAt=null,nextContainer=''}){
       SIM.life=buildLife(projection);resetTo(at*SIM.life.seconds);SIM.paceLog=SIM.paceCur=pace;SIM.playing=true;SIM.container=container;SIM.sizeK=Math.pow(1.02*Math.pow(2,container.length),-.75);
       const pxOf=(P,r)=>r*900;let worst=0,sum=0;
-      for(let i=0;i<frames;i++){const a=performance.now();step(dt,i*dt*1000,pxOf);const d=performance.now()-a;if(i>=frames/4){sum+=d;worst=Math.max(worst,d)}}
+      for(let i=0;i<frames;i++){if(i===changeAt)SIM.container=nextContainer;const a=performance.now();step(dt,i*dt*1000,pxOf);const d=performance.now()-a;if(i>=frames/4){sum+=d;worst=Math.max(worst,d)}}
       const cells=[...SIM.alive].map(o=>o.cell);
-      return {alive:SIM.alive.size,resolved:SIM.resolved,colonies:SIM.colonies,hidden:cells.filter(c=>c===null).length,cells,splats:SIM.ns,counts:{...SIM.counts},meanMs:sum/(frames-Math.floor(frames/4)),worstMs:worst};
+      return {alive:SIM.alive.size,resolved:SIM.resolved,colonies:SIM.colonies,hidden:cells.filter(c=>c===null).length,cells,fineShares:[...SIM.alive].map(o=>o.fine),splats:SIM.ns,counts:{...SIM.counts},meanMs:sum/(frames-Math.floor(frames/4)),worstMs:worst};
     }})}));
 })();
 </script>
