@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.30"
+version: "3.31"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -118,6 +118,8 @@ Two executed substitutions:
 Public `_feed` advertises truthful available representations; loading and network readiness are transient runtime facts, **not** semantic feed state. A failed successor cannot erase its already-present lower representation. A lower rank can exist without a higher one. LOD thresholds, caching lifetime and shader/display materials remain owner-local. No global array of all potential descendants is implied.
 
 At a mounted encounter handoff, acquired detail is only data readiness. The receiving site's renderer must also accept and leave its body visible before Display retires the prior encounter or commits its visit. A declined, throwing or still-hidden candidate preserves the prior body, local container, stack and truthful history; it reports unavailability and may retry using the already-acquired immutable source. The same acceptance boundary governs direct entry, history restoration and ascent. Display checks acceptance; the site owns rendering and any hardware-specific fallback.
+
+The existing Canvas2D field fallback retains the offered floating population at the same realized geometry, placement and drift, with the same localized identity labels, geometric contact and entry relation. It may reduce GLSL phenomenology to palette paint; it must not discard the offered bodies because their optional field GPU representation is unavailable. Withdrawn offers cease to be contactable and their labels are hidden. This does not supply a fallback for a site's independently owned renderer or certify shader/glass parity. The 2026-10-17 candidate has native wide/portrait and full-mesh witnesses; candidate visitor/device appearance remains open in its own intake.
 
 ### Identity-resolved foreign embodiment
 
