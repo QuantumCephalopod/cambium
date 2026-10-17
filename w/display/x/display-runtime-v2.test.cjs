@@ -28,7 +28,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
     if(id!=='organism:plain')module.fieldProjection=function(source){
       assert.strictEqual(this,module,'projection method retains its owning module');
       calls.set(id,(calls.get(id)||0)+1);sources.set(id,source);
-      const result={root:anatomy('projected '+id),version:source.version};projected.set(id,result);return result;
+      const result={root:{...anatomy('projected '+id),en:'English '+id,de:'Deutsch '+id},version:source.version};projected.set(id,result);return result;
     };
     Modules.set(id,module);
   }
@@ -54,6 +54,8 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
 once();assert.strictEqual(f.W.projection,f.projected.get('organism:origin'));
+assert.equal(f.W.targets.find(t=>t.path==='w').titles['organism:branch'],'English organism:branch');
+assert.equal(f.options.get('organism:origin').bodies().find(b=>b.id==='organism:branch').title,'English organism:branch');
 for(const id of ids.slice(0,3))assert.strictEqual(f.options.get(id).projection,f.projected.get(id));
 const slotBounds=runtime.ui.get(ids[0]).field('slot').bounds;assert.equal(slotBounds.x,0);assert.equal(slotBounds.y,0);assert.equal(slotBounds.w,.5);assert.equal(slotBounds.h,.5);
 assert.equal(runtime.ui.get(ids[0]).field('slot').z,2);
@@ -91,6 +93,7 @@ for(let frame=0;frame<30;frame++){
 }
 assert.strictEqual(f.collected[1],f.projected.get('organism:branch').root);
 f.W.language='de';f.emit('sss:language');assert.equal(f.renders.at(-1).language,'de');
+assert.equal(f.W.targets.find(t=>t.path==='wx').titles['organism:nested'],'Deutsch organism:nested');
 runtime.receiveActivity({siteId:'organism:nested',kind:'fixture',projectionChanged:true});assert.equal(f.pulses.get('organism:nested'),1);assert.equal(f.renders.at(-1).activity.kind,'fixture');
 assert.equal(runtime.navigateGlobal('y'),true);assert.strictEqual(f.renders.at(-1).projection,plain,'no-projector site keeps the source object');
 runtime.navigateGlobal('');f.W.inspect('x');assert.equal(f.renders.at(-1).path,'x');

@@ -1,14 +1,13 @@
-# Legal localisation — display
+# English legal localisation — deployed visitor witness remains
 
-Admitted: 2026-10-17, Philipp conversation: “the two privacy policy and impressum ... localisation ... german name and text ... localisation for english”.
-Source baseline: `3beab18aa8dc2202322f5167d0803a9b2cfc4a98` (merged Papers lens/catabolism).
+Source request: Philipp conversation 2026-10-17. Original admitted carrier is preserved exactly in `_waste/catabolized-NUTRIENT__legal-localisation__20261017.md`; intake commit `75ffe467af1e9bbd93ea38c6c2a574303b36f197`.
 
-## Owned pressure
+## Earned
 
-Generic owner-supplied translated names in global navigator and floating bodies; URL-carried language for return from static public apertures.
+Local source/native implementation is recorded by `_root/display-english-localisation-native-20261017T103824Z.json`: complete English legal apertures, owner-supplied translated names, mounted/footer links and URL-carried language. German substantive notices remain unchanged. Full native checker 225817 checks, address 38 assertions and exact artifact 10637 files passed; bundle `bd2aa4b04abe135f`. No new substantive legal assessment or provider cleanup is claimed.
 
-German source meaning, contact facts, stable organism identities and canonical addresses remain source-owned. Translation adds no retention promise, legal assessment, new tracking/storage or provider-remediation claim. English privacy copy must retain every section and qualification.
+## Remaining exit
 
-## Exit
+After owner promotion and successful canonical Pages publication, exercise the actual HTTPS visitor surface in both languages: global navigator/body labels and language selection/history/return. Include a narrow viewport. Compare delivered notice and contact/reference links with the owned source. Candidate browser/layout acceptance has not been earned by native tests.
 
-Admit before semantic edits; implement in the smallest owning cone; witness German/English switching, full copy, language-preserving links, source/build/address integrity; append local HOME then project _feed asynchronously. Candidate native/build acceptance and actual public browser acceptance are distinct. Keep any unearned publication witness as explicit residue.
+Keep this bounded residue until the visitor witness and local HOME/feed return are durable. Existing delivery/contact and provider-remediation histories remain distinct.
