@@ -1,13 +1,10 @@
-# English legal localisation — deployed visitor witness remains
+# Legal localisation — remaining visitor acceptance
 
-Source request: Philipp conversation 2026-10-17. Original admitted carrier is preserved exactly in `_waste/catabolized-NUTRIENT__legal-localisation__20261017.md`; intake commit `75ffe467af1e9bbd93ea38c6c2a574303b36f197`.
+Wide public visitor acceptance was earned on 2026-10-17 and is durable in `_root/display-ascent-legal-visitor-20261017T113513Z.json`; admitted preimage is preserved exactly at `_waste/catabolized-legal-localisation-wide-20261017.md`. German/English static text and ordered hrefs agree with source; mounted legal names and outgoing links follow the language. Public source baseline `b5a5e30304f4d5e5e451bc02ee0c139116e0bdb4`, successful canonical Pages run 39027880726.
 
-## Earned
+## Remaining
 
-Local source/native implementation is recorded by `_root/display-english-localisation-native-20261017T103824Z.json`: complete English legal apertures, owner-supplied translated names, mounted/footer links and URL-carried language. German substantive notices remain unchanged. Full native checker 225817 checks, address 38 assertions and exact artifact 10637 files passed; bundle `bd2aa4b04abe135f`. No new substantive legal assessment or provider cleanup is claimed.
+- Actual narrow-viewport visual/interaction witness remains OPEN. The current browser exposes a 1363×936 CSS viewport and no supported viewport resize; tested browser zoom keys left that viewport unchanged. No narrow or physical-device claim is made.
+- Floating-body label visual acceptance remains OPEN in this browser: no floating body labels were available in its DOM; native title/identity witnesses passed. Navigator ink/readability is not certified from native title transport alone.
 
-## Remaining exit
-
-After owner promotion and successful canonical Pages publication, exercise the actual HTTPS visitor surface in both languages: global navigator/body labels and language selection/history/return. Include a narrow viewport. Compare delivered notice and contact/reference links with the owned source. Candidate browser/layout acceptance has not been earned by native tests.
-
-Keep this bounded residue until the visitor witness and local HOME/feed return are durable. Existing delivery/contact and provider-remediation histories remain distinct.
+Keep this bounded residue until the remaining actual visitor witness and a local HOME/feed return are durable. Full source/native localisation and broad-screen public delivery are already witnessed; do not reimplement them.

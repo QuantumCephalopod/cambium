@@ -265,6 +265,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return true;
   }
   function ascend(source){
+    container(); // Reconcile a restored/inspected container before popping one rank.
     if(!walk.length){dispatchEvent(new CustomEvent('sss:membrane-ascend',{detail:{id,source}}));return false}
     walk.pop();const up=walk.at(-1)||'';
     if(scopeBound()){if(up)W.inspect(up,source);else W.clearInspection(source)}

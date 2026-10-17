@@ -10,9 +10,9 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e']}={}){
+function fixture({width=1280,height=800,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
-  const calls=[],frames=[],queue=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
+  const calls=[],frames=[],queue=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
   constants.forEach((n,i)=>gl[n]=100+i);gl.COLOR_BUFFER_BIT=1;gl.DEPTH_BUFFER_BIT=2;
   for(const kind of ['Program','Shader','VertexArray','Buffer','Texture','Framebuffer','Renderbuffer']){
@@ -46,8 +46,8 @@ function fixture({width=1280,height=800,glass=true,host=false,points=false,compo
   gl.uniformMatrix4fv=(loc,_,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
   function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(){},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
   const canvas=element();Object.assign(canvas,{width,height,getContext:()=>gl,getBoundingClientRect:()=>({left:0,top:0,width,height})});
-  const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(){},clearInspection(){}};
-  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(){},setTimeout(){},CustomEvent:class{},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
+  const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
+  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(){},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
   if(glass)context.SSSDisplayGlass={enabled:()=>true,rects:()=>({count:1,scale:1,data:new Float32Array(64)}),PARAMS:{radius:1,bevel:1,bevelMax:1,refract:1,aberr:1,mag:1,spec:1,fres:1,shadow:1,shadowK:1,theta:1,tint:[0,0,0,0],dot:1,halftone:1}};
   if(preview||lens)context.SSSDisplayLens={snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:null})};
   context.SSSDisplayLabelInk={create:()=>({draw:()=>true,reset(){},dispose(){}})};
@@ -61,10 +61,10 @@ function fixture({width=1280,height=800,glass=true,host=false,points=false,compo
   const shader={id:'fixture:field',fragment:fragment('field'),state:{blend:true,depthTest:true,depthWrite:false}};
   if(composite)shader.composite=()=>[{width:16,height:16}];
   if(layer)shader.afterDraw=()=>{gl.depthMask(false);gl.colorMask(false,false,false,false);gl.enable(gl.SCISSOR_TEST);gl.clearDepth(0)};
-  const projection={root,points:points?[{id:'point',gene:'w',kind:'source'}]:[]};
-  const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,shader,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
+  const projection={root:tree,points:points?[{id:'point',gene:'w',kind:'source'}]:[]};
+  const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,shader,inspectable,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
-  return {gl,canvas,api,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
+  return {gl,canvas,api,world,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
 }
 
 function assertClears(f){
@@ -140,4 +140,18 @@ console.log('PASS — actual shared-glass lock/shape uniforms preserve contacted
  assert.strictEqual(f.labels.children.find(n=>n.className==='field-label field-body-label'),label);
  assert.equal(label.querySelector('b').textContent,'Deutscher Name');
  assert.strictEqual(f.frames[1].find(c=>c.type==='draw'&&c.name.includes('// ordinary-a')).vao,draw.vao);
+}
+
+/* The same outside pointer gesture pops one realized local rank for mouse and
+ * touch. A restored view must be reconciled before the very first frame. */
+for(const pointerType of ['mouse','touch']){
+ const tree=anatomy();function anatomy(depth=0){return depth===3?{noun:'leaf',children:{}}:{noun:'cell',children:Object.fromEntries(N.GENES.map(g=>[g,anatomy(depth+1)]))}}
+ const f=fixture({tree,inspectable:true});f.world.view='wx';
+ assert.equal(f.api.ascend('restored'),true);assert.equal(f.world.view,'w');
+ f.frame(0);
+ const event={button:0,pointerId:7,pointerType,clientX:1,clientY:1,preventDefault(){}};
+ f.canvas.pointerdown(event);f.canvas.pointerup(event);
+ assert.equal(f.world.view,'','outside pops exactly one rank');
+ f.canvas.pointerdown(event);f.canvas.pointerup(event);
+ assert.equal(f.world.view,'');assert.equal(f.events.at(-1).type,'sss:membrane-ascend');
 }
