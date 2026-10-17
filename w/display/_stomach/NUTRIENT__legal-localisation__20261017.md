@@ -1,5 +1,12 @@
 # Legal localisation — remaining visitor acceptance
 
+## Current operative exit — 2026-10-17
+
+Check actual narrow CSS/article/body extent and link usability against the earlier clipping counterexample. Native title/text/link transport and broad public entry are earned; no physical phone or personal QA is required.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 Wide public visitor acceptance was earned on 2026-10-17 and is durable in `_root/display-ascent-legal-visitor-20261017T113513Z.json`; admitted preimage is preserved exactly at `_waste/catabolized-legal-localisation-wide-20261017.md`. German/English static text and ordered hrefs agree with source; mounted legal names and outgoing links follow the language. Public source baseline `b5a5e30304f4d5e5e451bc02ee0c139116e0bdb4`, successful canonical Pages run 39027880726.
 
 ## Remaining

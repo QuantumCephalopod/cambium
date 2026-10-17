@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.32"
+version: "3.33"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -257,6 +257,16 @@ The global navigator, orientation and browser history survive this swap.
 
 ## Closure / acceptance
 
+Acceptance belongs to the affected contract, not to a mandatory device or a recurring personal sign-off. Relevant narrow/wide carrier, pointer/touch/key, source/identity/navigation and rendering witnesses may close that contract without Philipp opening the site on a physical phone. Routine reversible parameter/visual choices are agent-owned decisions; a new concrete counterexample can reopen them. Only indispensable source facts, intent or authority require Philipp's input.
+
+Keep evidence scopes exact: native geometry/input fixtures, actual software-GLES shader execution, browser layout/interaction, hardware-specific behavior and measured frame time are different witnesses. An untested platform is a stated limit, not automatically another nutrient. Retain a technical question only when it names a concrete unresolved behavior, dependency or implementation with an actionable exit; never expand acceptance into an indefinite all-device/taste matrix. A known clipping, unreadable-content or performance defect still needs work and is not dismissed by this rule. Technical tool limitations remain agent-owned work, not a demand for the user to conduct QA.
+
+The optional offscreen GLES witness replays the existing production-field regression transport on a real software OpenGL ES implementation at wide/portrait dimensions. It compiles/links actual field/glass programs, checks actual depth-clear state and compares preview/optical pixels. Its declared procedural input does not certify a site's media release, browser CSS, physical-driver behavior or device FPS. If EGL is absent, that witness is explicitly unavailable rather than passed.
+
+Current bounded choices retain the520ms pointer settle, smoothstep circle-to-triangle swell and release/rearm behavior; keyboard operation remains a press/release control without an invented latch. The existing HUD/aperture placement, current focus/background separation, nearest realized hit relation and target-origin membrane transition remain the chosen embodiment. There is no new global blur layer, automatic rail relocation or compulsory second personal taste pass. Concrete label crowding, clipping and site-local readable tissue keep their actual implementation owners. The original1.0.0 font/prototype package is spent source, retired byte-for-byte after the current @sss/spritesheet body, fallback policy and engine were witnessed; its reversible carrier disposition needs no additional user decision.
+
+The existing inverse checkbox owns one ephemeral global material state: `html[data-inverse="true"]` inverts the composed Display colors through CSS. It does not change source colors, identities, language, addresses or orientation and introduces no storage. The old disconnected checkbox is a concrete repaired implementation gap, not a reason to demand user QA.
+
 A Display mutation closes only when:
 
 1. local `INDEX.yaml` and `_cambium.yaml` remain complete and coherent;
@@ -267,7 +277,7 @@ A Display mutation closes only when:
 6. optional identity-owned public secretion is copied only through the generic collision-safe hook;
 7. site-local shader/render/interaction divergence does not fork the shared tetrahedral geometry or global orientation law;
 8. exact generated artifact passes structural/address/closure witnesses;
-9. exact artifact is exercised in a real browser, including direct minimap pointer navigation;
+9. browser-owned behavior is exercised against the exact delivered code; relevant carrier/input/rendering contracts are checked at their own level, without a default physical-phone or personal-taste gate;
 10. target-origin closure surrounds the actual encounter swap;
 11. manual Philosophy orientation remains persistent;
 12. durable HOME is appended only after witnessed anatomy exists; `_feed` catch-up remains a separate mechanical consequence.
@@ -354,3 +364,5 @@ The chosen German/English expression travels in the ordinary `lang` URL query, i
 Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Native staging witnesses preserve identity, orientation, renderer refusal and root no-op; candidate browser/device acceptance remains open.
 
 Version 3.32 stomach-completion decisions (2026-10-17): current source and bounded proposals are reconciled; the overview does not mount itself, speculative focus/layer/rest extensions are declined without a consumer, and Papers’ specific V/E/F/T text grammar is not promoted to universal law. Native body buttons no longer inherit a permanent ARIA barrier; refused acquisition/rendering also restores the approached field camera. Browser/device acceptance stays in the live source-owned residues. Philosophy’s bilingual becoming example remains that site’s own leaf tissue. No new anatomy or ancestor backpropagation is earned.
+
+Version3.33 contract-acceptance correction (2026-10-17): Philipp removes default physical-phone/personal-approval gates. Exact native narrow/wide input and real software-GLES rendering witnesses close their bounded contracts; concrete CSS/readability/media/performance/geometry work remains agent-owned. The existing inverse control is connected. Earlier HOME evidence scopes remain immutable; unavailable platforms are limits rather than permanent duplicate nutrients. No anatomy or source-content changes are earned.

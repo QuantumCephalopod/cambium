@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.5"
+version: "1.6"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -49,3 +49,5 @@ Version 1.2 cached64/res-up binding (2026-10-04): strict low-only host/droplet p
 Version1.3 shared optical-input correction (2026-10-04): the same low-only interior participates in the existing shared glass mapping instead of painting on top of it. Media tier gates/cache/entered res-up and source geometry remain unchanged.
 
 Version 1.4 source-owned media through shared rank-relative handoff (staged 2026-10-10): the existing 55-slot genuine64 preview and entered512 queue now use Display Continuity's neutral acquisition/readiness/retirement physiology. The current media URLs, owner-owned bitmap decoder, context-local textures, per-slot fallback and local entry/res-up law remain Schattenseiten's. Failed high images remain failed until their source revision changes, avoiding repeated per-frame fetches. Native GPU-fixture checks passed; live browser visuals remain to witness.
+
+Version1.6 contract-acceptance inheritance (2026-10-17): Display3.33 supplies the bounded shared optics/readiness contract and removes default physical-phone/personal-approval gates. Actual local admitted-media, tier handoff and resource behavior remain this body’s technical responsibility. Shared procedural-input GLES execution is not local media acceptance. Earlier missing local HOME is a provenance limit, not an obligation to manufacture or endlessly recover history. Source works, projection, tier policy and renderer are unchanged.

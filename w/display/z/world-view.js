@@ -100,6 +100,9 @@ requestAnimationFrame(frame);
 
 function languageControls(){document.documentElement.lang=lang;document.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.lang===lang)))}
 languageControls();
+const inverseControl=document.getElementById('inverse-mode');
+function inverseControls(){document.documentElement.dataset.inverse=String(Boolean(inverseControl?.checked))}
+inverseControl?.addEventListener('change',inverseControls);inverseControls();
 document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{lang=b.dataset.lang==='de'?'de':'en';languageControls();const url=new URL(location.href);url.searchParams.set('lang',lang);history.replaceState(history.state,'',url.pathname+url.search+url.hash);dispatchEvent(new CustomEvent('sss:language',{detail:{language:lang}}))}));
 addEventListener('popstate',()=>{const next=new URL(location.href).searchParams.get('lang')==='de'?'de':'en';if(next===lang)return;lang=next;languageControls();dispatchEvent(new CustomEvent('sss:language',{detail:{language:lang}}))});
 document.querySelectorAll('[data-a11y-focus]').forEach(b=>b.addEventListener('click',()=>{const path=b.dataset.a11yFocus||'',target=GLOBAL_TARGETS.find(t=>t.path===path);if(target)requestGlobalTarget(target,'accessible-global-nav',{x:innerWidth/2,y:innerHeight/2})}));

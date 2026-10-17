@@ -1,5 +1,12 @@
 # NUTRIENT — Live type density and performance — 2026-10-03
 
+## Current operative exit — 2026-10-17
+
+Resolve concrete moving-label crowding and source-relative runtime cost where measured behavior warrants work; retain source-owned local Papers performance questions. No generic phone/FPS certification or personal typography sign-off is required.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 status: RESIDUAL / OPEN — achieved portions catabolized 2026-10-04
 kind: Display live typography and rendering encounter
 source: Philipp, session 33Η; live sss.saarland after Mono v2 promotion

@@ -1,5 +1,12 @@
 # NUTRIENT — UI-grid orientation without confinement — 2026-10-09
 
+## Current operative exit — 2026-10-17
+
+Confront the actual earlier CSS clipping/extent/stacking counterexample at broad/tall carriers with navigator open/closed. Mathematical orientation alone is not a browser CSS layout witness; obtaining that check is agent-owned work, not a request for a phone.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 status: UNRESOLVED / VISUAL WITNESS REQUIRED
 owner: Display
 source: user correction + six supplied production screenshots (Philosophy, Crawlerbait, Impressum, Datenschutz, Papers, Schattenseiten)

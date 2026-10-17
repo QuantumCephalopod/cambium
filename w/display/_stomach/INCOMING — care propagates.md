@@ -1,5 +1,12 @@
 # INCOMING — care propagates
 
+## Current operative exit — 2026-10-17
+
+Six concrete design/organism questions remain: collaboration, immunity distinctions, public derivation boundary, semantic language care, truthful modalities and an actual nested-project specimen. These are agent-owned reasoning/implementation, not a default request for Philipp to invent answers.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 **state:** RESIDUAL / OPEN — achieved portions catabolized 2026-10-04
 **source:** live Philipp ↔ Mnemos conversation, 2026-09-09  
 **scope:** remaining display-local first-contact / collaboration / immunity / transduction pressure  

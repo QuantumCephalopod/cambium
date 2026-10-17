@@ -1,5 +1,12 @@
 # NUTRIENT — Pages deploy does not follow a materializer commit — 2026-09-27
 
+## Current operative exit — 2026-10-17
+
+A genuine changed committed shadow must causally earn automatic Pages publication and visitor delivery. No artificial semantic delta or unrelated deploy can substitute; no physical device is relevant.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 status: CANONICAL IMPLEMENTATION + AUTOMATIC NO-CHANGE WITNESSED / CHANGED-SHADOW → DEPLOY → VISITOR EDGE OPEN
 kind: display publication-membrane mechanics
 source: Papers digest 2026-09-27 (closure of the Papers public-shadow circulation nutrient)
