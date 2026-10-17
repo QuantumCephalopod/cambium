@@ -6,8 +6,10 @@ const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModu
   let nav=document.getElementById('legal-links');
   if(!nav){nav=document.createElement('nav');nav.id='legal-links';nav.setAttribute('aria-label','Legal');document.body.append(nav)}
   if(!document.getElementById('legal-link-privacy')){
-    const a=document.createElement('a');a.id='legal-link-privacy';a.href='/privacy/';a.textContent='Privacy';nav.append(a);
+    const a=document.createElement('a');a.id='legal-link-privacy';nav.append(a);
   }
+  function localise(){const de=globalThis.SSSWorldView?.language==='de',a=document.getElementById('legal-link-privacy');a.href=de?'/privacy/':'/privacy/en/';a.textContent=de?'Datenschutz':'Privacy policy';a.hreflang=de?'de':'en'}
+  localise();addEventListener('sss:language',localise);
 })();
 const shader=Object.freeze({
   id:'shader:organism:datenschutz',
@@ -28,23 +30,23 @@ void main(){
   outColor=vec4(c,a+.09*rim);
 }`
 });
-const fieldProjection=()=>Object.freeze({
-  root:Object.freeze({noun:'Datenschutz',de:'Datenschutz',en:'Privacy',children:Object.freeze({})}),
+const fieldProjection=projection=>Object.freeze({
+  root:Object.freeze({noun:'Datenschutz',...projection.title,children:Object.freeze({})}),
   points:Object.freeze([])
 });
 function render({host,content,projection,language='de',ui=null}={}){
   if(!host||!content||!projection?.controller)return false;
   host.hidden=false; content.className='interlocutor-content datenschutz-content'; content.replaceChildren();
-  const article=document.createElement('article');
+  const article=document.createElement('article');article.lang=language;
   const kicker=document.createElement('p'); kicker.className='datenschutz-kicker'; kicker.textContent='organism:datenschutz';
-  const h=document.createElement('h1'); h.textContent=language==='de'?'Datenschutz':'Privacy';
+  const h=document.createElement('h1'); h.textContent=projection.title?.[language]||projection.title?.en||'Privacy policy';
   const p=document.createElement('p');
   const live=projection.contact?.status==='live';
   p.textContent=live
     ?(language==='de'?'Die Datenschutzerklärung ist veröffentlicht.':'The privacy notice is published.')
     :(language==='de'?'Die öffentliche Datenschutzerklärung wird nach dem end-to-end Kontakt-Witness freigegeben.':'The public privacy notice is released after the end-to-end contact witness.');
   const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=projection.contact.email;
-  const notice=document.createElement('a'); notice.href='/privacy/'; notice.textContent=language==='de'?'Datenschutzerklärung':'Privacy notice';
+  const notice=document.createElement('a'); notice.href=language==='de'?'/privacy/':'/privacy/en/'; notice.textContent=language==='de'?'Datenschutzerklärung':'Full privacy policy';
   article.append(kicker,h,p,mail,notice); content.append(article); if(ui)ui.bind(article,'article'); return true;
 }
 function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren()}

@@ -214,7 +214,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
         }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
         BODIES.set(b.id,B);
       }
-      if(B.p)out.push(B);
+      if(B.p){B.title=b.title||b.id;out.push(B)}
     }
     return out;
   }
@@ -224,6 +224,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(!n){n=document.createElement('button');n.type='button';n.className='field-label field-body-label';n.innerHTML='<b></b>';n.querySelector('b').textContent=B.title;
       n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();enterBody(B.id,{x:e.clientX,y:e.clientY})});
       (labelHost||element).append(n);bodyLabels.set(B.id,n)}
+    const ink=n.querySelector('b');if(ink.textContent!==B.title)ink.textContent=B.title;
     return n;
   }
   function enterBody(bodyId,origin){

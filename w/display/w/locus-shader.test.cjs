@@ -44,7 +44,7 @@ function fixture({width=1280,height=800,glass=true,host=false,points=false,compo
   gl.uniform1i=(loc,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniform4f=(loc,...value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniformMatrix4fv=(loc,_,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
-  function element(){return {hidden:false,dataset:{},style:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(){},querySelector(){return this.children[0]||{textContent:''}},querySelectorAll(){return this.children}}}
+  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(){},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
   const canvas=element();Object.assign(canvas,{width,height,getContext:()=>gl,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(){},clearInspection(){}};
   const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(){},setTimeout(){},CustomEvent:class{},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
@@ -64,7 +64,7 @@ function fixture({width=1280,height=800,glass=true,host=false,points=false,compo
   const projection={root,points:points?[{id:'point',gene:'w',kind:'source'}]:[]};
   const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,shader,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
-  return {gl,canvas,api,calls,frames,frame,order,bodies,host:hostElement,clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
+  return {gl,canvas,api,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
 }
 
 function assertClears(f){
@@ -129,3 +129,15 @@ for(const lock of [null,{kind:'body',id:'independent:body'},{kind:'field',id:'in
   assert.equal(glass.lensShape[0],15,'the body-owned rounded extent reaches the shared optical shader');
 }
 console.log('PASS — actual shared-glass lock/shape uniforms preserve contacted readable geometry');
+
+/* A language-only title change updates the existing label and keeps its GPU body. */
+{
+ const f=fixture();f.bodies.a.title='English name';f.frame(0);
+ const label=f.labels.children.find(n=>n.className==='field-label field-body-label');
+ assert.equal(label.querySelector('b').textContent,'English name');
+ const draw=f.frames[0].find(c=>c.type==='draw'&&c.name.includes('// ordinary-a'));
+ f.bodies.a.title='Deutscher Name';f.frame(1000);
+ assert.strictEqual(f.labels.children.find(n=>n.className==='field-label field-body-label'),label);
+ assert.equal(label.querySelector('b').textContent,'Deutscher Name');
+ assert.strictEqual(f.frames[1].find(c=>c.type==='draw'&&c.name.includes('// ordinary-a')).vao,draw.vao);
+}

@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.28"
+version: "3.29"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -330,3 +330,9 @@ Version 3.26 situated-function assimilation (2026-10-12): one already-global liq
 
 
 Version 3.27 receiving-renderer acceptance correction (staged 2026-10-14): the live Papers handoff committed identity after its renderer refused. Mounted entry, history restoration and ascent now retain the prior valid encounter until the receiving body accepts. Site rendering/fallback stays local; original recursive GPU/visual acceptance remains open.
+
+### Language belongs to expression
+
+Global target and floating-body names use the current language label on the site's already-owned field root (`de` / `en`), with its manifest title and stable identity as fallbacks. Translated labels do not rename identities, mounts, addresses or anatomy, and a language-only update does not remint GPU bodies. Navigator targets carry the derived current titles to consumers.
+
+The chosen German/English expression travels in the ordinary `lang` URL query, including history restoration and return from standalone public apertures. No cookie or browser storage is introduced. An unsupported/missing language retains the existing English default.
