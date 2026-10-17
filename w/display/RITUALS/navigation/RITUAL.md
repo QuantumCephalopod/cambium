@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.6"
+version: "3.7"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -157,6 +157,7 @@ No target means current free-lens behavior remains. Locking is neither global na
 - **Offer channel.** A site lends lock targets by identity through `SSSDisplayLens.offer(id,{kind,…})` / `withdraw(id)`; a getter returning nothing means the target is absent now. Display never learns what a target means.
 - **Two target kinds.** A `field` target is screen-space UI tissue placed by the recursive UI grid: the locked drop shares its exact rectangle with rounded corners. A `body` target is world/organism tissue: the drop keeps its released circle size and follows the body's projected centre (`field.projectBody(id)` is the neutral geometry hook).
 - **Lock** happens when a held drop is released over a target. **Unlock** happens when the drop is pulled again, or when its target is no longer present — then it unlocks exactly where it is and returns to a circle. A target that survives navigation or Descent keeps the lock.
+- An optional body-owned readable extent follows the organism receptor's contact law; it changes the same drop's bodily framing, not the visit stack or a provenance/lineage door. Keyboard and wheel continuation inside Papers' reading belong to that site's authored text, not global navigation.
 - **Optics.** A locked drop frames rather than enlarges (no magnification). For a `field` lock the field *beneath the drop* is blurred and dimmed so the framed target reads; the world outside the drop is untouched. A `body` lock mutes nothing — the body is what it highlights. `data-display-lens-lock` (kind) and `data-display-lens-target` (offered id) on the document root let the owning site highlight its own target tissue.
 - Pass-through clicks, hold-to-take ownership, reservoirs, reduced-transparency fallback and per-site authority are unchanged.
 

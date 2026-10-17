@@ -1,6 +1,6 @@
 # NUTRIENT — Pages deploy does not follow a materializer commit — 2026-09-27
 
-status: NARROWED / IMPLEMENTATION STAGED — LIVE AUTOMATIC EDGE STILL OPEN
+status: CANONICAL IMPLEMENTATION + AUTOMATIC NO-CHANGE WITNESSED / CHANGED-SHADOW → DEPLOY → VISITOR EDGE OPEN
 kind: display publication-membrane mechanics
 source: Papers digest 2026-09-27 (closure of the Papers public-shadow circulation nutrient)
 target: github.cambium → display (Pages pump)
@@ -37,3 +37,9 @@ materializer → Pages → visitor result remain unwitnessed; this carrier stays
 
 A materializer commit on canonical `main` is followed by exactly one Pages deploy of that tree with
 no human dispatch; superseded materializations may coalesce; visitor reads stay static.
+
+## Current source and provider reconciliation — 2026-10-17
+
+The completion wake and bounded publication-pressure guard are canonical through PR #145 (`93ce4c1b5`) and remain in current `.github/workflows/pages.yml` / `y/pages-actuation.py`. Automatic source-event reception is independently witnessed: materializer run 38652613873 completed successfully, then Pages run [38652674001](https://github.com/self-similar-systems/cambium/actions/runs/38652674001) was created with event `workflow_run` on 2026-10-14T23:12:50Z. The guard job succeeded; build/publication steps and the deploy job were skipped. This is a truthful no-change wake, not a deploy witness.
+
+Release the stale “canonical activation unwitnessed” claim. Keep the actual exit open: a changed committed shadow must earn automatic publication, the deployed artifact must contain that revision, and the visitor must read it without human dispatch. Existing workflow success, unrelated Tide-triggered deployment and unchanged-shadow skips cannot prove that edge. Original implementation HOME `display-pages-actuation-staged-20260930T235929Z` remains immutable.

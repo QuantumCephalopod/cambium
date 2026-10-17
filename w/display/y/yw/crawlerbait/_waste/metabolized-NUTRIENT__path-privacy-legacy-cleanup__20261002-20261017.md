@@ -53,3 +53,9 @@ Corrected invariant:
 Directory `index.html` aliases count as the same exact offer. Namespace prefix membership alone does not. Crawlerbait-generated bait existence does not retroactively turn the originally probed raw path into an offer.
 
 This correction must be applied by authoritative Tide to all current-tree traffic/checkpoint/Bait/state/public carriers before the Git-history remediation freezes its sanitized restore tree.
+
+## Current-source reconciliation encounter — 2026-10-17
+
+Canonical `42045c2bc62bc2903a22c63939ed1ffdc930629a` carries the exact-offer public-path membrane, v5 encounter/opaque-phenotype grammar, legacy aggregate checkpoint and repeated authoritative Tide generations. Its ancestry includes exact-offer/path-idempotence PR #160 (`2ff4e943f`), controlled-history/publication #161 (`857f9ba0c`) and legal-site publication #162 (`53c7d1363`); the source-owned Datenschutz body records controlled-ref rewrite and provider cleanup still pending. The active carrier's blanket “exact-offer re-migration required before history rewrite” is therefore inconsistent with this later source.
+
+Bounded question: witness current owned implementation/tests and retained legacy aggregate, then release only superseded current-tree/path-migration waiting. Preserve provider PR-ref/cache garbage collection and missing historical remediation HOME/audit as their separate existing unresolved history nutrient; preserve private-recognition/public visitor acceptance and publication-membrane design questions. No history rewrite, provider mutation, legal-copy change, secret acquisition or fabricated historical witness is authorized by this reconciliation.

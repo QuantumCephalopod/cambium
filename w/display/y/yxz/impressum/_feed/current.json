@@ -25,12 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "w/display/y/yxz/impressum/_stomach/NUTRIENT__contact-route-current__20261002.md -> w/display/y/yxz/impressum/_waste/retired-NUTRIENT__contact-route-current__20261002-20261004.md (RETIRED)"
+      "Owner-local spent publication nutrient moved to _waste",
+      "This append-only local publication HOME; no public/source/legal-copy mutation"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED in staging — completed portions leave active intake; unresolved choices and witnesses remain. Canonical owner promotion is pending."
+    "outcome": "PASS/EARNED — current delivered legal route agrees with owned public aperture and projection; existing mail-delivery witness retained; publication-only intake retired."
   },
-  "observed_at_utc": "2026-10-04T10:45:40.660107Z",
+  "observed_at_utc": "2026-10-17T09:56:07.825508Z",
   "owner": "impressum",
   "phenotype": {
     "w": {
@@ -46,7 +47,7 @@
       "noun": "Contact"
     }
   },
-  "reflected_home_event": "impressum-nutrient-catabolism-20261004T104102Z",
+  "reflected_home_event": "impressum-publication-witness-20261017T093950Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
@@ -56,13 +57,11 @@
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [
-      "NUTRIENT__contact-route-pending__20261002.md"
-    ],
-    "waste_direct_count": 1
+    "stomach_direct": [],
+    "waste_direct_count": 2
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "HEAD"
+    "source_revision": "dba12eb96f4b5e5de204aa065199e8a0475045b3"
   }
 }

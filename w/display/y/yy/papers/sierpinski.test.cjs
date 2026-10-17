@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source){
   const context={console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require('../../../z/navigation-physiology.js'),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -128,3 +128,47 @@ assert.equal(ink.shader.composite().length,3,'the spent tissue texture is no lon
 console.log('Papers camera-relative LOD, rank-10 descent and bounded text-tissue compositing PASS');
 
 module.exports={load,referenceDrift,referenceFlow,referenceCollect,near};
+
+/* Papers is the second consumer: actual authored parts, complete range paging,
+ * host-relative placement and lock lifecycle without a Descent mutation. */
+{
+  const reading=load(),Lens=require('../../../z/display-lens.js'),box={left:120,top:40,width:480,height:600,right:600,bottom:640};
+  const ctx={font:'',measureText:t=>({width:Array.from(t).length*7})};
+  const state={mounted:true,host:{hidden:false,getBoundingClientRect:()=>box},current:{id:'S.authored'},transition:1,inner:null,stack:['parent'],localQ:[1,0,0,0],
+    ui:{carrier:{x:0,y:60,w:480,h:540}},textCanvas:{dataset:{},getBoundingClientRect:()=>box,getContext:()=>ctx},wisdomPrepared:new Map()};
+  const sourceText=Array.from({length:900},(_,i)=>'word'+i).join(' ');
+  const B={id:'S.authored',verts:[{i:0,text:'w · Authored vertex'},{i:1,text:''}],edges:[{key:'wx',a:0,b:1,text:sourceText}],faces:[{key:'wxz',idx:[0,1,2],text:'A face actually earned by this source.'}]};
+  const G={P:[{x:40,y:70},{x:260,y:80},{x:140,y:300},{x:180,y:160}],front:{wxz:true},mets:[]};
+  reading.setState(state);reading.setLensAPI(Lens);
+  reading.setPretext({prepareWithSegments:text=>({chars:Array.from(text)}),layoutNextLineRange:(p,c,w)=>c.segmentIndex>=p.chars.length?null:{start:c.segmentIndex,end:{segmentIndex:Math.min(p.chars.length,c.segmentIndex+Math.max(1,Math.floor(w/7))),graphemeIndex:0}},materializeLineRange:(p,r)=>({text:p.chars.slice(r.start,r.end.segmentIndex).join(''),width:(r.end.segmentIndex-r.start)*7})});
+  const before=clone({inner:state.inner,stack:state.stack,localQ:state.localQ,current:state.current});
+  reading.syncPaperLens(B,G);assert.equal(Lens.resolveTargets().length,3,'missing authored vertex is not replaced by invented content');
+  assert.equal(state.lensReading,undefined,'offering parts does not acquire their readable layout');
+  const target=[...state.lensParts.values()].find(p=>p.kind==='edge'),resolved=Lens.resolveTargets(target.id).find(t=>t.id===target.id);
+  assert.equal(resolved.cx,box.left+150);assert.equal(resolved.cy,box.top+75);
+  const page=state.lensReading;assert.ok(page.pages>1);assert.equal(page.lines.map(l=>l.text).join(''),sourceText,'no fixed row budget drops authored text');
+  assert.ok(page.frame.left>=box.left&&page.frame.top>=box.top+60,'UI carrier is converted from host-local coordinates');
+  assert.ok(page.frame.left+page.frame.width<=box.right&&page.frame.top+page.frame.height<=box.bottom);
+  assert.ok(page.lines.every(l=>l.width<=page.width-2*page.pad));
+  const delivered=[];for(let i=0;i<page.pages;i++){delivered.push(...page.lines.slice(page.page*page.rows,(page.page+1)*page.rows).map(l=>l.text));reading.paperLensPage(1)}
+  assert.equal(delivered.join(''),sourceText);assert.equal(reading.paperLensPage(1),false);reading.paperLensPage(-Infinity);assert.equal(page.page,0);
+  assert.deepEqual(clone({inner:state.inner,stack:state.stack,localQ:state.localQ,current:state.current}),before,'contact and pagination do not navigate, rotate or mutate inquiry');
+  assert.equal(reading.paperLensReady({round:1,hx:40,hy:40},page),false,'prior representation stays valid while the drop is still growing');
+  assert.equal(reading.paperLensReady({round:0,hx:page.width/2,hy:page.height/2},page),true);
+  reading.setLens(()=>({x:300,y:200,r:40,hx:100,hy:40,round:0,corner:10,lock:{id:target.id,kind:'body'}}));
+  const local=reading.lensLocal(box);assert.equal(local.x,180);assert.equal(local.y,160);assert.equal(local.hx,100);assert.equal(local.lock.id,target.id);
+  assert.equal(reading.inLens(local,local.x+90,local.y),true);assert.equal(reading.inLens(local,local.x+100,local.y+40),false,'interaction follows rounded geometry rather than a lost circle radius');
+  const nodes={p:{textContent:''},small:{textContent:''}};state.lensReader={hidden:true,dataset:{},querySelector:s=>nodes[s]};state.tissueLetters=[];
+  Object.assign(ctx,{save(){},restore(){},setTransform(){},beginPath(){},roundRect(){},arc(){},clip(){},fillText(){}});
+  const shape={x:page.frame.left+page.width/2-box.left,y:page.frame.top+page.height/2-box.top,hx:page.width/2,hy:page.height/2,round:0,corner:page.pad,r:Math.min(page.width,page.height)/2};
+  reading.drawPaperLens(ctx,shape,target,{width:box.width,height:box.height},1);
+  assert.equal(nodes.p.textContent,sourceText,'assistive reading retains the complete admitted original');
+  assert.equal(state.lensReader.hidden,false);assert.ok(state.tissueLetters.length>0);
+  assert.equal(state.tissueLetters.map(g=>g.ch).join(''),page.lines.slice(0,page.rows).map(l=>l.text).join('').replace(/ /g,''),'the current page becomes actual bare letter bodies in the existing tissue plane');
+  assert.ok(state.tissueLetters.every(g=>g.fat===0),'the contacted fine representation is readable rather than inflated tissue');
+  G.P[0].x+=20;G.P[1].x+=20;reading.syncPaperLens(B,G);assert.equal(Lens.resolveTargets(target.id).find(t=>t.id===target.id).cx,box.left+170,'offered identity follows the moving body');
+  G.front.wxz=false;reading.syncPaperLens(B,G);assert.equal(Lens.resolveTargets().length,2,'a vanished face withdraws');
+  state.current=null;assert.equal(Lens.resolveTargets().length,0);reading.withdrawPaperLens();assert.equal(Lens.resolveTargets().length,0);
+  state.current={id:'S.authored'};state.ui.carrier.h=8;assert.equal(reading.paperLensReading(target).ready,false,'no unreadable tiny-screen substitute is fabricated');
+  console.log('Papers authored lens offers, full-text continuation, relocation, geometry and semantic non-mutation PASS');
+}

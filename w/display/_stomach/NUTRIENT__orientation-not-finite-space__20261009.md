@@ -23,3 +23,7 @@ Witnesses needed before durable HOME:
 - generated artifact build + check;
 - real browser screenshots at broad and tall dimensions, navigator open and closed;
 - no claim that visual clipping is repaired until those witnesses are seen.
+
+## Canonical-source reconciliation — 2026-10-17
+
+The orientation-only implementation is already canonical through PR #176 (`bf435de87`), present at `42045c2bc62bc2903a22c63939ed1ffdc930629a`, and provider-deployed by successful Pages run 39004025881. Its current native UI-grid/runtime/source assertions are source witnesses, so implementation and canonical promotion are no longer queued. No corresponding local HOME for that original visual implementation was recovered here; this reconciliation does not fabricate one. The broad/tall, navigator-open/closed visual acceptance requested above remains unearned by those source/provider facts. Keep the specific clipping/extent/stacking questions open until actually observed; the original six-site screenshots remain dated counterexamples, not today's verdict.

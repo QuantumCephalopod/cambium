@@ -12,7 +12,7 @@ Crawlerbait receptor 5.2/current safe tree and the later source-owned Datenschut
 
 ## later owner disposition
 
-The current Datenschutz source notice (`../..` via the live Population owner, `w/display/y/yz/datenschutz/public/privacy/index.html`) records that controlled public branch/tag refs in the canonical repository and operated fork were rewritten on 2026-10-02, and GitHub Support was asked for PR-ref/cache/server-side garbage collection. Its active publication-gates nutrient carries the same disposition. This supersedes the initial full-rewrite queue in this packet; source-owned records are the evidence here, not a fresh Forge audit of every historical ref.
+The current Datenschutz source notice (`../..` via the live Population owner, `w/display/y/yz/datenschutz/public/privacy/index.html`) records that controlled public branch/tag refs in the canonical repository and operated fork were rewritten on 2026-10-02, and GitHub Support was asked for PR-ref/cache/server-side garbage collection. Its source-owned publication HOME `datenschutz-publication-witness-20261017T093950Z` now records current delivered-route agreement while preserving that pending provider disposition. This supersedes the initial full-rewrite queue in this packet; source-owned records are the evidence here, not a fresh Forge audit of every historical ref.
 
 ## remaining provider/causal boundary
 
@@ -26,3 +26,9 @@ The current Datenschutz source notice (`../..` via the live Population owner, `w
 Do not publish old-history rollback/archive refs, erase unrelated law/code history, assert deletion from uncontrolled copies or force-update refs without a verified recovery-safe current-tree/history witness. Historical strategy and exact acceptance constraints remain reacquirable in the preimage. No rewrite, deletion, support message or remote-history mutation is performed here.
 
 The extracted preimage is at `../_waste/catabolized-NUTRIENT__git-history-remediation__20261002-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.
+
+## Current-tree acceptance reconciliation — 2026-10-17
+
+The old path-privacy/exact-offer re-migration queue is spent current-tree pressure and has moved source-faithfully to `../_waste/metabolized-NUTRIENT__path-privacy-legacy-cleanup__20261002-20261017.md`. At canonical `42045c2bc62bc2903a22c63939ed1ffdc930629a`, all 141 traffic captures use v5; all 29,096 functional records have exactly datetime / beingId / public Bait path / method / status fields. Owned path-shape validation passes all records and 527 checkpoint routes. Legacy checkpoint declares exact-UA/raw-unoffered-path removal, no signature maps remain, and no raw `*.capture.json` carriers remain. Current capture, exact-offer, migration, Tide and provider-free replay self-tests pass. The source-owned public notice and controller contacts are already published; no current-tree migration is re-run.
+
+This is today's bounded source witness, not a reconstructed historical migration audit or provider garbage-collection confirmation. The provider/causal boundary above remains OPEN. No secret, original raw request, old object ID, independent clone or support response is acquired, republished or mutated here. Crawlerbait's independent visitor-generation acceptance remains in `NUTRIENT__private-recognition-public-phenotype__20261001.md`.

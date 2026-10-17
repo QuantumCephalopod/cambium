@@ -52,14 +52,16 @@
     }return best?best.t:null;
   }
   function lockTo(L,t){if(!t)return L;L.lock={id:t.id,kind:t.kind};L.attached=false;L.docked=false;L.homeId=null;L.fx=L.fy=L.fvx=L.fvy=0;return L}
-  function unlock(L){if(!L.lock)return L;L.lock=null;L.radius=clamp(Math.min(L.hx,L.hy),8,120);L.radiusV=0;L.hxV=L.hyV=0;L.corner=0;L.hx=L.hy=L.radius;return L}
-  function stepLocked(L,t,d){
-    L.vx+=(K.stiff*(t.cx-L.x)-K.damp*L.vx)*d;L.vy+=(K.stiff*(t.cy-L.y)-K.damp*L.vy)*d;L.x+=L.vx*d;L.y+=L.vy*d;
+  function unlock(L){if(!L.lock)return L;L.lock=null;L.aperture=false;L.radius=clamp(Math.min(L.hx,L.hy),8,120);L.radiusV=0;L.hxV=L.hyV=0;L.corner=0;L.hx=L.hy=L.radius;return L}
+  function stepLocked(L,t,d,view){
+    const f=t.kind==='body'&&t.frame,shape=f||t;L.aperture=!!f;
+    L.vx+=(K.stiff*(shape.cx-L.x)-K.damp*L.vx)*d;L.vy+=(K.stiff*(shape.cy-L.y)-K.damp*L.vy)*d;L.x+=L.vx*d;L.y+=L.vy*d;
     L.fvx=L.fvy=0;L.fx+=(0-L.fx)*Math.min(1,d*12);L.fy+=(0-L.fy)*Math.min(1,d*12);
-    if(t.kind==='field'){
-      L.hxV+=(K.stiff*(t.hx-L.hx)-K.damp*L.hxV)*d;L.hyV+=(K.stiff*(t.hy-L.hy)-K.damp*L.hyV)*d;
+    if(t.kind==='field'||f){
+      L.hxV+=(K.stiff*(shape.hx-L.hx)-K.damp*L.hxV)*d;L.hyV+=(K.stiff*(shape.hy-L.hy)-K.damp*L.hyV)*d;
       L.hx=Math.max(8,L.hx+L.hxV*d);L.hy=Math.max(8,L.hy+L.hyV*d);
-      L.corner=Math.min(Number.isFinite(t.r)?t.r:14*L.U,L.hx,L.hy);L.radius=Math.min(L.hx,L.hy);
+      L.corner=Math.min(Number.isFinite(shape.r)?Math.max(0,shape.r):14*L.U,L.hx,L.hy);L.radius=Math.min(L.hx,L.hy);
+      if(f&&view){L.hx=Math.min(L.hx,Math.max(1,view.w/2));L.hy=Math.min(L.hy,Math.max(1,view.h/2));L.x=clamp(L.x,L.hx,Math.max(L.hx,view.w-L.hx));L.y=clamp(L.y,L.hy,Math.max(L.hy,view.h-L.hy));L.corner=Math.min(L.corner,L.hx,L.hy)}
     }else{
       const target=L.baseR*K.released;L.radiusV+=(180*(target-L.radius)-24*L.radiusV)*d;L.radius=clamp(L.radius+L.radiusV*d,8,120);L.hx=L.hy=L.radius;L.corner=0;
     }
@@ -70,7 +72,7 @@
     if(view)L.baseR=radiusOf(null,view);L.U=L.baseR/60;
     if(L.lock&&!L.held&&!(target&&target.id===L.lock.id))unlock(L);
     const parts=Math.max(1,Math.ceil(dt/(1/120))),d=dt/parts;
-    if(L.lock&&!L.held){for(let i=0;i<parts;i++)stepLocked(L,target,d);return L}
+    if(L.lock&&!L.held){for(let i=0;i<parts;i++)stepLocked(L,target,d,view);return L}
     for(let i=0;i<parts;i++){
       let h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q))||null;
       if(!h){L.attached=false;L.docked=false}
@@ -108,14 +110,14 @@
   function geometry(L,home){
     const h=homesOf(home).find(q=>idOf(q)===L.homeId&&compatible(L,q)),a=h&&L.attached?anchor(h,L.edge,L.u):null;
     const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
-    const locked=L.lock?.kind||null,field=locked==='field';
-    return {x:L.x,y:L.y,hx:field?L.hx:L.radius,hy:field?L.hy:L.radius,round:field?0:1,corner:field?L.corner:0,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
+    const locked=L.lock?.kind||null,field=locked==='field',shaped=field||!!(locked&&L.aperture);
+    return {x:L.x,y:L.y,hx:shaped?L.hx:L.radius,hy:shaped?L.hy:L.radius,round:shaped?0:1,corner:shaped?L.corner:0,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
       neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:locked?0:L.radius*K.lobe,mag:locked?0:1-1/K.magnify,focus:field?1:0,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
   function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;unlock(L);L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
   function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null;L.docked=false}return L}
-  function contains(L,x,y){return L.lock?.kind==='field'?Math.abs(x-L.x)<=L.hx+6&&Math.abs(y-L.y)<=L.hy+6:Math.hypot(x-L.x,y-L.y)<=L.radius+6}
+  function contains(L,x,y){if(L.lock&&(L.lock.kind==='field'||L.aperture)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+6}return Math.hypot(x-L.x,y-L.y)<=L.radius+6}
   function pullFrom(L,h,x,y,pid){
     if(!compatible(L,h))return false;
     const p=edgePoint(h,x,y);L.homeId=idOf(h);L.edge=p.edge;L.u=along(h,p);L.attached=true;L.docked=true;
@@ -132,12 +134,18 @@
     offers.set(id,spec);return id;
   }
   function withdraw(id){return offers.delete(id)}
-  function resolveTargets(){
+  function resolveTargets(lockedId=state?.lock?.id){
     const out=[];
     for(const [id,spec] of offers){
       try{
         if(spec.kind==='field'){const r=spec.rect();if(r&&r.width>0&&r.height>0)out.push({id,kind:'field',cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:spec.r})}
-        else{const p=spec.point();if(p&&Number.isFinite(p.x)&&Number.isFinite(p.y))out.push({id,kind:'body',cx:p.x,cy:p.y,hx:Number.isFinite(p.r)?p.r:24})}
+        else{const p=spec.point();if(p&&Number.isFinite(p.x)&&Number.isFinite(p.y)){
+          const t={id,kind:'body',cx:p.x,cy:p.y,hx:Number.isFinite(p.r)?p.r:24};
+          /* Readable extent is lent only by the contacted body. It is never a
+           * second hit area, a site-selected mode, or work for every candidate. */
+          if(id===lockedId&&typeof spec.frame==='function'){try{const r=spec.frame();if(r&&Number.isFinite(r.left)&&Number.isFinite(r.top)&&Number.isFinite(r.width)&&Number.isFinite(r.height)&&r.width>0&&r.height>0)t.frame={cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:r.r}}catch(_){/* retain the valid ordinary body if its finer extent is unavailable */}}
+          out.push(t);
+        }}
       }catch(_){/* a failing getter means absent */}
     }return out;
   }
@@ -241,5 +249,5 @@
       if(a){state.docked=false;state.attached=false;state.x+=a[0];state.y+=a[1];e.preventDefault()}});
     root.requestAnimationFrame(loop);
   }
-  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,offer,withdraw});
+  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,offer,withdraw,resolveTargets});
 });

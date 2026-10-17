@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.1"
+version: "3.2"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -179,9 +179,17 @@ Papers speaks in Display's face: holon names, wisdom and woven text are set in S
 
 The drop also bounds computation: letters outside it are neither laid out nor moved. At runtime, the expensive text-tissue WebGL context is not initialized by an unopened overview; only an opened, readable selected organism admits tissue. Existing glyph fat/softness determines an allowance at the real droplet boundary before a letter becomes an instanced GPU body. A truly empty tissue canvas is omitted from the shared composite; previous tissue clears once when exiting. Failed context creation keeps the established local 2D ink fallback. The full source text remains unchanged.
 
-## Perceptual LOD is genealogical resolution
+### Contacted inquiry through the shared drop
+
+Papers offers only present authored vertices, edges, front-facing faces and admitted metabolites of its currently selected organism to Display's shared lock channel. Stable identity follows the current projected part; a missing authored body is not filled with invented words. Contact never rotates the organism, opens a parent/provenance door, or changes selected inquiry/Descent.
+
+For a locked part, Papers measures its full source-owned wording through the existing Pretext carrier and lends a readable extent inside its current UI carrier. The same drop grows into that extent. Its ordinary representation remains until the extent is ready; readable letters then inhabit the existing Papers ink/tissue plane inside the actual rounded aperture. Work is limited to the contacted part and visible page. Source text is never silently cut to a fixed number of rows: longer passages continue by wheel or PageUp/PageDown, with Home/End for the first/last page; the complete original is also exposed as assistive reading tissue. Pull, disappearance or unmount releases the relation. A viewport too small for readable text declines the finer frame rather than inventing a compressed substitute.
+
+This second-consumer implementation is native-witnessed in staging. Real GPU/glass, visual parity, comfortable reading and physical-device performance remain acceptance wounds in the existing lens/tissue nutrients.
 
 A selected Source may additionally invert Papers genealogy and illuminate public Holon descendants that grew from it: `Source → descendants`. This is the same cross-organism lineage read in the opposite direction, not a replacement for the Source's own internal tetrahedral inquiry and not a new relation.
+
+## Perceptual LOD is genealogical resolution
 
 This is not a conventional low-poly/high-poly substitution. The outer tetrahedron and its recursively resolved parent bodies are the same organism at different perceptual resolutions.
 

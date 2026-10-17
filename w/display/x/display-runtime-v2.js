@@ -10,7 +10,7 @@ const UI_GRIDS=JSON.parse(document.getElementById('site-ui-grids').textContent);
 const DEPENDENCIES=JSON.parse(document.getElementById('display-dependencies').textContent);
 const GLOBAL_SCOPE='main';
 /* The glass drop's current viewport geometry (or null). Display lends where it lies; what it means over a site is the site's. */
-function lensNow(){const s=globalThis.SSSDisplayLens?.snapshot?.()?.lens;return s?{x:s.x,y:s.y,r:s.hx,held:!!s.held,docked:!!s.docked}:null}
+function lensNow(){const s=globalThis.SSSDisplayLens?.snapshot?.()?.lens;return s?{x:s.x,y:s.y,r:Math.min(s.hx,s.hy),hx:s.hx,hy:s.hy,round:s.round,corner:s.corner,lock:s.lock,held:!!s.held,docked:!!s.docked}:null}
 function dependency(identity,member=''){
   if(typeof identity!=='string'||!identity)throw new TypeError('dependency identity required');
   const dep=DEPENDENCIES?.[identity];if(!dep)throw new Error('unknown Display dependency identity: '+identity);
