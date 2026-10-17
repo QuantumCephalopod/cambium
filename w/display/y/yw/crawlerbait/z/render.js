@@ -585,7 +585,9 @@ function temporalField(){
   if(!lastProjection)return null;
   if(!SIM.life){SIM.life=buildLife(lastProjection);if(!SIM.life)return null;resetTo(0);growth=SIM.life.growth;fieldRevision=-1}
   growth=SIM.life.growth;const t=SIM.life.t0+SIM.simT*1000,i=growth.index(t);
-  if(fieldRevision!==i){fieldRevision=i;fieldCache={...fieldProjection({...lastProjection,encounters:undefined,routes:growth.routesAt(t)}),revision:lastProjection.updated_at+':'+i};}
+  if(fieldRevision!==i){fieldRevision=i;fieldCache={...fieldProjection({...lastProjection,encounters:undefined,routes:growth.routesAt(t)}),revision:lastProjection.updated_at+':'+i};
+    if(selectedAddress){const selected=fieldCache.points.find(p=>p.route.path===selectedAddress)?.route;if(!selected)selectedAddress='';renderInspector(selected||null)}
+  }
   return fieldCache;
 }
 function metric(label,value){
