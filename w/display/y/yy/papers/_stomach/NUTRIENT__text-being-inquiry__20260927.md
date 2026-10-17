@@ -5,7 +5,7 @@ kind: papers encounter
 source: Philipp, walking the live Papers body after the shared-descent nutrient
 target: github.cambium → display → papers
 related: NUTRIENT__shared-descent-invariant__20260926.md;
-display `_stomach/NUTRIENT__text-is-body__20260927.md` (watched Display-level candidate)
+Display `RITUALS/organism/RITUAL.md` (3.32 declines universal promotion of Papers’ V/E/F/T grammar; Papers’ own candidate and acceptance stay local)
 
 ## surviving owner and return address
 

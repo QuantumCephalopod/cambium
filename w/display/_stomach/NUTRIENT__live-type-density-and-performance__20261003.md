@@ -22,7 +22,7 @@ Document the evidence and resulting bounded change in local law plus HOME, with 
 ## remaining boundary
 
 - Moving body-label collision policy remains undecided.
-- Reacquire Fat owner release/current admitted sized declarations before claiming the Fat-first dependency closed. The old staging request was subsequently authorized and implemented; it is not “not started.”
+- Fat owner source was reacquired on 2026-10-17: its current signal declares the philipp/schattenseiten deposit (282 files, 143155366 bytes), and the admitted 49-work feed declares both64 and512 variants/revisions. The child’s Oct14 HOME separately decoded actual 01001 samples from both tiers. Source/declaration and bounded sample availability are earned; all-media release/consumer GPU agreement and optical/performance acceptance remain unclaimed.
 - Witness current visitor textures/typography and actual runtime behavior after that dependency. The prior measurements carry no universal FPS/GPU claim.
 
 The extracted preimage is at `../_waste/catabolized-NUTRIENT__live-type-density-and-performance__20261003-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.

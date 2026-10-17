@@ -4,7 +4,7 @@ status: OPEN / ADMITTED
 source: Philipp, live Philosophy overview + clarification chat 2026-10-03
 target: github.cambium → display → floating site-holon bodies
 related:
-- `NUTRIENT__site-body-material__20260930.md`
+- Display `RITUALS/organism/RITUAL.md` (implemented material hook and current overview-host boundary)
 - `NUTRIENT__lens-softlock-local-preview__20261003.md`
 - Papers and Schattenseiten local manifestations
 
