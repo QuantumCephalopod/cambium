@@ -13,13 +13,22 @@ def check(condition,why):
 
 class Page(html.parser.HTMLParser):
     def __init__(self):
-        super().__init__(); self.ids=[]; self.scripts=[]; self.links=[]; self.interlocutors=[]
+        super().__init__(); self.ids=[]; self.scripts=[]; self.links=[]; self.interlocutors=[]; self.label_hosts=[]; self.hidden_stack=[]
     def handle_starttag(self,tag,attrs):
         d=dict(attrs)
+        # Inactive site sections are hidden until mounted. A permanent ARIA
+        # barrier must not survive that activation around native body buttons.
+        hidden=d.get('aria-hidden')=='true' or any(v for _,v in self.hidden_stack)
+        if 'interlocutor-field-labels' in d.get('class','').split():self.label_hosts.append(hidden)
+        if tag not in {'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}:self.hidden_stack.append((tag,hidden))
         if 'id' in d:self.ids.append(d['id'])
         if 'data-interlocutor' in d:self.interlocutors.append(d['data-interlocutor'])
         if tag=='script':self.scripts.append(d)
         if tag=='link':self.links.append(d)
+    def handle_endtag(self,tag):
+        for i in range(len(self.hidden_stack)-1,-1,-1):
+            if self.hidden_stack[i][0]==tag:
+                del self.hidden_stack[i:]; break
 
 def load_module(path,name):
     spec=importlib.util.spec_from_file_location(name,path); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); return mod
@@ -313,6 +322,7 @@ def main():
     public.verify_artifact(artifact)
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
+    check(len(p.label_hosts)==len(expected_sites) and not any(p.label_hosts),'floating body buttons inherit a hidden accessibility subtree')
     for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','site-feed-locations','site-ui-grids','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
     check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')

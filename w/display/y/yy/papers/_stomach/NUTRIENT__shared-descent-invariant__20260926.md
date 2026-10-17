@@ -4,7 +4,7 @@ status: RESIDUAL / OPEN — achieved portions catabolized 2026-10-04
 kind: papers structural encounter
 source: Philipp, after living with Display Descent (#111–#114)
 target: github.cambium → display → papers
-related: display `_stomach/NUTRIENT__text-is-body__20260927.md` (text physiology, Pretext)
+related: Display `RITUALS/organism/RITUAL.md` (shared text/tissue physiology and site-owned semantic grammar; the former universal V/E/F/T proposal was declined in 3.32)
 
 ## surviving owner and return address
 

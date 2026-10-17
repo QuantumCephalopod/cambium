@@ -278,7 +278,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return true;
   }
   const geneLabels=[];
-  if(labelHost){labelHost.replaceChildren();for(const g of N.GENES){const n=document.createElement('div');n.className='field-label';n.dataset.gene=g;const node=nodeAt(projection.root,g);n.innerHTML=`<span>${g}</span><b>${node?.en||node?.noun||g}</b>`;labelHost.append(n);geneLabels.push(n)}}
+  if(labelHost){labelHost.replaceChildren();for(const g of N.GENES){const n=document.createElement('div');n.className='field-label';n.setAttribute('aria-hidden','true');n.dataset.gene=g;const node=nodeAt(projection.root,g);n.innerHTML=`<span>${g}</span><b>${node?.en||node?.noun||g}</b>`;labelHost.append(n);geneLabels.push(n)}}
   let selectedPointId='',hoverPointId='',down=null,api=null;
   let tooltip=null;
   if(pointRecords.length){

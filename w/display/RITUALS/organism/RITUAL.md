@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.31"
+version: "3.32"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -92,7 +92,7 @@ Current witnesses make the four situated possibilities intelligible: site-space 
 
 A contact may require more than optical enlargement. In Papers, the source-pressure example is: the same droplette approaches an actual vertex, edge or face; an identity-bound *soft-lock* may settle first, and **the droplette's own body**, not an independently exploded text element or screen overlay, may accommodate that topology and the site's authored readable tissue. A relation-driven deformation is distinct from a globally prescribed circle/capsule/triangle template. Readability must preserve full source wording; finite viewport limits and overflow/continuation require their own truthful implementation witness. The established pass-through click, hold-to-take, continuous focus, Descent/ascent, site-owned `_feed` availability/fallback, reduced-transparency and release laws remain constraints.
 
-This is an **assimilated conceptual/architectural boundary**, not a claim that soft-lock, per-simplex shape morph or readable accommodation already execute. The older Display `_stomach/NUTRIENT__lens-softlock-local-preview__20261003.md` remains open for body hit-testing, identity-following anchors, shape response, native and real-device acceptance. A new CCCC split, different source authority, extra overlay, per-site duplicate droplette or menu of Form/Continuity/Care/Inquiry modes is *not* earned by this encounter.
+The situated-function relation is assimilated. The generic offer channel and Philosophy/Papers consumers now have native witnesses for identity-following contact, measured readable frames and source-owned wording/continuation. The Display `_stomach/NUTRIENT__lens-softlock-local-preview__20261003.md` remains open for actual GPU, readability and device acceptance; its dated implementation gaps do not describe the current source. A new CCCC split, different source authority, extra overlay, per-site duplicate droplette or menu of Form/Continuity/Care/Inquiry modes is not earned by these encounters.
 
 
 ### Mounted anatomy and frame work
@@ -115,7 +115,7 @@ Two executed substitutions:
 - at Display Population, the parent keeps the child's `_feed` preview while a source-owned immutable detailed projection is fetched on demand; only the child's actual entered field consumes full data;
 - inside Schattenseiten, the same physiology manages local 64px and 512px acquisition while image decoders and GPU textures remain Schattenseiten-owned, and the 64px body is held until each valid higher-resolution slot is ready.
 
-Public `_feed` advertises truthful available representations; loading and network readiness are transient runtime facts, **not** semantic feed state. A failed successor cannot erase its already-present lower representation. A lower rank can exist without a higher one. LOD thresholds, caching lifetime and shader/display materials remain owner-local. No global array of all potential descendants is implied.
+Public `_feed` advertises truthful available representations; loading and network readiness are transient runtime facts, **not** semantic feed state. A failed successor cannot erase its already-present lower representation. If body contact has already started a camera approach, failed acquisition or a refused renderer returns the still-active field to its actual walked container through the existing arrival coupling; identity retention alone must not strand the prior world at the failed target’s scale. A lower rank can exist without a higher one. LOD thresholds, caching lifetime and shader/display materials remain owner-local. No global array of all potential descendants is implied.
 
 At a mounted encounter handoff, acquired detail is only data readiness. The receiving site's renderer must also accept and leave its body visible before Display retires the prior encounter or commits its visit. A declined, throwing or still-hidden candidate preserves the prior body, local container, stack and truthful history; it reports unavailability and may retry using the already-acquired immutable source. The same acceptance boundary governs direct entry, history restoration and ascent. Display checks acceptance; the site owns rendering and any hardware-specific fallback.
 
@@ -276,6 +276,16 @@ CI success alone is not browser closure.
 
 ## Compression
 
+### Bounded implementation decisions
+
+The current overview is Philosophy's own encounter, not an extra occupant inside itself. It hosts the other mounted site bodies; an additional floating Philosophy body requires an actual containing encounter. This settles the old self-body proposal without deciding how Philosophy would appear in a future parent. Papers/Schattenseiten's truthful host-facing geometry remains separate unresolved work; a material hook alone does not earn it.
+
+Continuous focus, site-owned layers and declared rest views are realized couplings. Focus-following pools, a new generic layer-picking hook, mandatory per-layer timing instrumentation and extra rest-axis controls are not current obligations without a concrete consumer/counterexample. Existing local interaction, explicit source offers and orientation restoration remain their live owners. Reopen a bounded proposal when actual pressure warrants it instead of retaining a hypothetical extension as perpetual food.
+
+Text-as-body and the shared letter-tissue engine remain earned. The particular V=letter / E=sentence thread / F=text surface / T=collapsed metabolite grammar is a Papers-local candidate, not a universal Display semantic constitution. A legal article or Philosophy's authored question does not acquire those semantic parts merely because it is rendered with glyphs. Display therefore declines promotion of that specific mapping to universal law; sites retain their authored semantics and may test their own local realization. This decision neither rejects Papers' tissue nor certifies its unresolved readability/performance.
+
+Interactive floating-body labels are native buttons. Their shared host must remain available to accessibility APIs when the site is mounted; only decorative gene labels carry `aria-hidden`. Renderer withdrawal hides the absent body's button as well as its contact geometry.
+
 **Display is a tetrahedrally differentiated oriented membrane. Embodiment gives autonomous interlocutors local worlds, Continuity preserves identity through relocation, Orientation makes the global recursive field navigable, and Population physically plants site-holons into that field. Display preserves one shared tetrahedral body and orientation law while each site-holon owns its projection, shader, rendering, local interaction and any earned static public aperture. The Population tree is mount truth: what is bodily present is globally reachable, while each holon remains locally itself.**
 
 Version 3.3 background-orientation interaction correction (2026-09-18): the already-shared orientation field now owns default background drag across arbitrary site-holons. Local membranes may opt out with explicit false without changing global navigator orientation, site identity, geometry, inspection capability or locally owned interaction.
@@ -342,3 +352,5 @@ The chosen German/English expression travels in the ordinary `lang` URL query, i
 ### Structural containment and visit continuity
 
 Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Native staging witnesses preserve identity, orientation, renderer refusal and root no-op; candidate browser/device acceptance remains open.
+
+Version 3.32 stomach-completion decisions (2026-10-17): current source and bounded proposals are reconciled; the overview does not mount itself, speculative focus/layer/rest extensions are declined without a consumer, and Papers’ specific V/E/F/T text grammar is not promoted to universal law. Native body buttons no longer inherit a permanent ARIA barrier; refused acquisition/rendering also restores the approached field camera. Browser/device acceptance stays in the live source-owned residues. Philosophy’s bilingual becoming example remains that site’s own leaf tissue. No new anatomy or ancestor backpropagation is earned.

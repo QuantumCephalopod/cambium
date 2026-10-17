@@ -256,6 +256,9 @@ function enter(r,path,push=true,parents=[]){
 let handoffIntent=0;
 function feedWound(error){
   console.warn('Display representation handoff refused; prior encounter preserved',error);
+  // Body contact begins a camera approach before acquisition/the fold. A refused
+  // target must return that still-active field to its walked container as well.
+  for(const id of activeIds)fieldById.get(id)?.arriveFrom(null);
   stateEl.dataset.feedWound=String(error?.message||error);
   stateEl.textContent=(error?.code==='RENDER_UNAVAILABLE'?'ENCOUNTER UNAVAILABLE':'FEED UNAVAILABLE')+' · RETRY THE ENCOUNTER';
   writeHistory('replace');

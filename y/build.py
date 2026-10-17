@@ -533,7 +533,7 @@ def _site_surfaces():
         rows.append(
             f'  <section class="interlocutor" data-interlocutor="{sid}" hidden>'
             f'<canvas class="interlocutor-background" aria-label="{title} local tetrahedral background"></canvas>'
-            f'<div class="interlocutor-field-labels" aria-hidden="true"></div>'
+            f'<div class="interlocutor-field-labels"></div>'
             f'<div class="interlocutor-content"></div></section>'
         )
     return '\n'.join(rows)

@@ -32,3 +32,9 @@ The actual-source regression failed on the admitted baseline (0 instead of 5 flo
 The live browser observation above describes the pre-repair deployment. The cloud browser could not reach the local HTTP candidate (`net::ERR_CONNECTION_REFUSED`); no candidate screenshot, layout/performance, narrow-device or physical-device acceptance is claimed. Preserve this residue until owner promotion and an actual visitor witness of the candidate. The legal-label/narrow-view and Papers renderer/media/optics wounds remain independently open.
 
 Persistent source correspondence: the native-tested local source commit above and GitHub commit cbbd4f45d6fbc2e0a9f95f0194224873b388d314 share tree 88da019ab0876974e6733232dfac75de926d79cb. The bounded carrier witness is ../_root/display-canvas2d-body-carrier-20261017T131032Z.json; it changes neither the original HOME nor its open acceptance boundary.
+
+## Deployed population and accessibility continuation — 2026-10-17
+
+Canonical PR #190 deployed bundle ab40c777a85baf22. A fresh 1363×936 cloud-browser encounter now paints the five floating bodies with attached labels; DE→EN preserves identity and yields Privacy policy / Legal notice. Actual label entry into Datenschutz succeeds at #main:z. This closes the original absent-population counterexample for this bounded visitor. It does not certify physical phones, GPU optics or all layouts.
+
+The deployed label host still has aria-hidden=true, hiding native body buttons from assistive traversal until browser focus incidentally exposes them. The completion candidate removes that host barrier and marks only decorative gene labels hidden; generated-HTML ancestry and actual-source button/withdrawal witnesses cover the native boundary. Public assistive/visual acceptance of this new correction remains open.

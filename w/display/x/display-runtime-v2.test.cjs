@@ -205,10 +205,13 @@ async function feedHandoffWitness(){
   assert.equal(race.runtime.state.activeAddress,'','home cancels pending navigation without canceling harmless resource acquisition');
 
   const failed=boot(1,'',{}, {[feedId]:'fail'});
+  const beforeFailedCamera=failed.arrivals.length;
   failed.runtime.navigateGlobal('w');await drain();
   assert.equal(failed.runtime.state.activeAddress,'','missing feed preserves parent');
   assert.equal(failed.runtime.pendingFeeds.length,0,'failed feed may be retried');
   assert.match(failed.stateEl.textContent,/FEED UNAVAILABLE/);
+  assert.equal(failed.arrivals.length,beforeFailedCamera+1,'acquisition failure restores the approached field, not only initial mounting');
+  assert.deepEqual(failed.arrivals.at(-1),{id:ids[0],place:null,bodyId:undefined},'acquisition failure also restores the active field camera');
 
   const arrival=boot(1,'#main:w',{}, {[feedId]:'hold'});
   assert.equal(arrival.runtime.state.activeAddress,'','deep link begins with parent body');
@@ -223,6 +226,7 @@ async function feedHandoffWitness(){
     const kinds={[feedId]:kind},refused=boot(1,'',{}, {[feedId]:'hold'},kinds);
     refused.W.inspect('x');
     const oldUnmounts=refused.unmounts.filter(p=>p.host===refused.hosts.get(ids[0])).length;
+    const oldArrivals=refused.arrivals.length;
     refused.runtime.navigateGlobal('w');refused.held.shift()();await drain();
     assert.equal(refused.runtime.state.activeAddress,'','renderer refusal preserves prior identity');
     assert.equal(refused.W.view,'x','renderer refusal preserves prior local container');
@@ -232,6 +236,8 @@ async function feedHandoffWitness(){
     assert.equal(refused.hosts.get(feedId).hidden,true,'the refused body is not visible');
     assert.equal(refused.unmounts.filter(p=>p.host===refused.hosts.get(ids[0])).length,oldUnmounts,'failed candidate never unmounts the prior body');
     assert.match(refused.stateEl.textContent,/ENCOUNTER UNAVAILABLE/);
+    assert.equal(refused.arrivals.length,oldArrivals+1,'renderer refusal restores the approached field, not only initial mounting');
+    assert.deepEqual(refused.arrivals.at(-1),{id:ids[0],place:null,bodyId:undefined},'a refused body restores the prior field camera to its walked container');
     kinds[feedId]='ready';assert.doesNotThrow(()=>refused.runtime.navigateGlobal('w'));await drain();
     assert.equal(refused.runtime.state.activeAddress,'w','the same immutable body can retry');
     assert.deepEqual(refused.fetches,[feedId],'render retry does not refetch ready detail');

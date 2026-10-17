@@ -44,7 +44,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.uniform1i=(loc,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniform4f=(loc,...value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniformMatrix4fv=(loc,_,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
-  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(){},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
+  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},attributes:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
   let inkPath=[];
   const ctx2d={beginPath(){inkPath=[]},moveTo(x,y){inkPath.push([x,y])},lineTo(x,y){inkPath.push([x,y])},fill(){calls.push({type:'fill2d',path:inkPath.map(p=>[...p]),style:this.fillStyle})}};
   for(const name of ['setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};
@@ -139,6 +139,8 @@ for(const [width,height] of [[1280,800],[390,844]]){
   f.bodies.c.root={noun:'deeper',children:{...root.children,w:root}};f.frame(0);
   const labels=()=>f.labels.children.filter(n=>n.className==='field-label field-body-label');
   assert.equal(labels().length,5,'Canvas2D lost the floating population and attached labels');
+  assert(f.labels.children.filter(n=>n.className==='field-label').every(n=>n.attributes['aria-hidden']==='true'),'decorative address labels repeat native semantic controls');
+  assert(labels().every(n=>n.type==='button'&&!n.attributes['aria-hidden']),'body entry must retain its native accessible button');
   assert.equal(f.frames[0].filter(c=>c.type==='fill2d').length,16+4*16+28,'fallback must paint all realized body triangles, including finer children');
   const first=f.api.projectBody('body:b');assert(first&&first.r>0,'fallback body has no geometric contact');
   const identity=labels()[1];f.bodies.b.title='Datenschutz';f.order.reverse();f.frame(2000);
@@ -153,6 +155,16 @@ for(const [width,height] of [[1280,800],[390,844]]){
   const before=f.events.length;identity.click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});f.flushTimers();assert.equal(f.events.length,before,'withdrawn label can still enter a stale body');
 }
 console.log('PASS — Canvas2D retains full offered bodies, localized labels, drift, face/label entry and withdrawal at wide and portrait carriers');
+/* A declined target returns through arriveFrom(null). Compare the real moving
+ * body projection with an otherwise identical field that never approached it. */
+for(const webgl of [false,true]){
+  const f=fixture({webgl,glass:false}),control=fixture({webgl,glass:false});
+  f.frame(0);control.frame(0);const before=f.api.projectBody('body:b');
+  f.clickBody(1);f.frame(330);control.frame(330);
+  assert(f.api.projectBody('body:b').r>before.r*1.5,'fixture did not approach the contacted body');
+  f.api.arriveFrom(null);f.frame(660);control.frame(660);
+  assert.deepEqual({...f.api.projectBody('body:b')},{...control.api.projectBody('body:b')},'camera recovery loses the original local container or moving body geometry');
+}
 console.log('PASS — actual shared-glass lock/shape uniforms preserve contacted readable geometry');
 
 /* A language-only title change updates the existing label and keeps its GPU body. */
