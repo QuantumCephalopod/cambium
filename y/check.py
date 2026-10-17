@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Structural witness for the tree-addressed Display organism."""
 from pathlib import Path
-import argparse, html.parser, importlib.util, json, os, subprocess
+import argparse, ctypes.util, html.parser, importlib.util, json, os, subprocess
 
 ROOT=Path(__file__).resolve().parent.parent
 DISPLAY=ROOT/'w'/'display'
@@ -451,6 +451,11 @@ def main():
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'JS syntax failure {source}')
     for test in ('z/world-view.test.cjs','y/yxz/impressum/render.test.cjs','y/yz/datenschutz/render.test.cjs','z/navigation-physiology.test.cjs','x/site-holon.test.cjs','x/display-runtime-v2.test.cjs','x/representation-handoff.test.cjs','z/site-fold.test.cjs','z/display-safe-area.test.cjs','z/display-glass.test.cjs','z/display-lens.test.cjs','w/display-type.test.cjs','w/ui-grid.test.cjs','w/ui-grid-sites.test.cjs','w/display-label-ink.test.cjs','w/locus-shader.test.cjs','y/yx/schattenseiten/render.test.cjs','y/yy/papers/sierpinski.test.cjs'):
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
+    if ctypes.util.find_library('EGL'):
+        result=subprocess.run(['python3',str(DISPLAY/'w/locus-shader.gles.test.py')],capture_output=True,text=True)
+        check(result.returncode==0,result.stderr or 'software GLES field/glass contract failed')
+    else:
+        print('Software GLES witness unavailable on this host; no real-shader execution claim.')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')
     result=subprocess.run(['python3',str(crawler/'y'/'path_privacy.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait path privacy self-test failed')

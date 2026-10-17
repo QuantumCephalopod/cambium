@@ -36,7 +36,7 @@ Old screenshot/HTTP scratch paths and their recorded hashes are recorded provena
 - The shared representation-handoff utility already passed native/GL fixtures; live browser/GPU and physical device acceptance remains open in current receptors and source intake.
 - Determine whether any further source-exact evidence permits recovery of earlier local distinctions. Preserve original owner and limits; missing evidence stays missing.
 
-Reacquire the current shared law and local body first. For a bounded historical question, open only the relevant source-owned record above. Shared optics/readiness acceptance stays in Display's own intake; its current live references are `_stomach/NUTRIENT__shared-lens-preview-optics__20261004.md`, `_stomach/NUTRIENT__schattenseiten-cached64-resup__20261004.md` and `_stomach/NUTRIENT__recursive-representation-handoff__20261010.md`.
+Reacquire the current shared law and local body first. For a bounded historical question, open only the relevant source-owned record above. Current shared optics/readiness law and source tests return to Display `RITUALS/organism/RITUAL.md`3.33. Generic shared acceptance carriers have closed; concrete consumer acceptance remains in Display `_stomach/NUTRIENT__schattenseiten-cached64-resup__20261004.md` and this local nutrient. The shared procedural-input GLES witness is not a witness of Schattenseiten media.
 
 ## Exit condition
 
@@ -53,3 +53,7 @@ Live Schattenseiten entry displayed its 49-work/3-rank/6-cluster/33-moving metad
 ## Bounded current sediment — 2026-10-14
 
 A new local HOME records only the declared 01001 64/512 producer samples, metadata entry and root-home return actually observed above. It closes neither earlier missing child-owned history nor optical/GPU/media acceptance. The shared host's receiving-renderer repair is Display-owned. No source content, local tier policy or renderer fallback was changed; the local residue remains OPEN.
+
+## Current operative boundary — 2026-10-17
+
+Inherit Display3.33 and Philipp’s clarified acceptance: no default physical-phone or personal-eye gate. The actual source-media/consumer/tier/resource behavior remains agent-owned technical work. Missing historical local HOME remains an honest provenance limit, not an endless reconstruction task; original records are never reminted. Sample producer availability already earned above is not a blanket current unavailability claim. Current wording supersedes dated generic hardware/taste waiting without changing any old witness scope.

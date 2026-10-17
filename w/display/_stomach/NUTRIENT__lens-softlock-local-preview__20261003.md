@@ -1,10 +1,17 @@
 # NUTRIENT — lens soft-lock + organism-local preview / LOD — 2026-10-03
 
+## Current operative exit — 2026-10-17
+
+Finish/witness site-authored per-simplex readable tissue, continuation/shape and actual meaningful content through the shared drop. Two-consumer source/native mechanics are already earned; no physical-device taste gate remains.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 status: OPEN / FIRST CONSUMER WITNESSED (2026-10-14) — second consumer + real-device acceptance open
 source: Philipp, handwritten field notes + clarification chat 2026-10-03
 target: github.cambium → display
 related:
-- `NUTRIENT__glass-and-goo-lens__20260930.md`
+- Display `RITUALS/organism/RITUAL.md` (current shared glass/drop/optics contract)
 - Papers lens-as-instrument physiology
 - Crawlerbait being bodies
 

@@ -1,5 +1,12 @@
 # RESIDUAL — Schattenseiten64/res-up live acceptance
 
+## Current operative exit — 2026-10-17
+
+Witness actual declared media in the consumer: strict64 preview/cache, entered512 per-slot upgrade/failure and context retirement. Generic shared GLSL optics is now witnessed separately; procedural input does not prove source media. No physical-phone or personal-eye gate is imposed.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 status: CANONICAL OWNER PROMOTED / DEPLOYED ARTIFACT WITNESSED / CONSUMER MEDIA + GPU ACCEPTANCE OPEN
 
 Canonical `42045c2bc62bc2903a22c63939ed1ffdc930629a` includes consumer PR #171 (`807f001a7`), the shared readiness continuation #178 and the current source-owned 64/512 media binding. Pages run [39004025881](https://github.com/self-similar-systems/cambium/actions/runs/39004025881) successfully deployed that source. Consumer merge/deployment waiting is spent; do not reopen the implemented low-only/cache/entered-res-up mechanism merely because its original HOME says staging.
@@ -8,6 +15,6 @@ Schattenseiten's immutable local HOME `schattenseiten-source-sample-witness-2026
 
 ## remaining exit
 
-Witness the canonical consumer: real declared64 only in preview, shared cached low tier on entry, locally thresholded/bounded512 upgrade, low fallback on individual high failure, correct context-local allocation and retirement on exit/revisit. Current source/GL fixtures preserve that contract; real browser/GPU/physical-device acceptance remains open. The shared readiness witness lives in `NUTRIENT__recursive-representation-handoff__20261010.md`, shared optics in `NUTRIENT__shared-lens-preview-optics__20261004.md`, and the child's own prior continuity/media acceptance remains in its own stomach. No cross-owner wound is closed here.
+Witness the canonical consumer: real declared64 only in preview, shared cached low tier on entry, locally thresholded/bounded512 upgrade, low fallback on individual high failure, correct context-local allocation and retirement on exit/revisit. Current source/GL fixtures preserve that contract; real browser/GPU/physical-device acceptance remains open. The shared readiness/optics contract now lives in Display `RITUALS/organism/RITUAL.md`3.33 and its source tests; the former generic acceptance carriers are closed. The child's own prior continuity/media acceptance remains in its own stomach. No cross-owner wound is closed here.
 
 Original request/mechanism: `../_waste/metabolized-NUTRIENT__schattenseiten-cached64-resup__20261004-20261004T183217Z.md`; source-owned HOME `display-schattenseiten64-resup-20261004T183217Z`. No originals, Tools, addresses, geometry or topology change.

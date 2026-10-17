@@ -1,5 +1,12 @@
 # NUTRIENT — site-owned host body geometry / canonical coarse manifestation — 2026-10-03
 
+## Current operative exit — 2026-10-17
+
+Implement truthful site-owned Papers/Schattenseiten coarse host geometry through one neutral coupling. Material substitution remains insufficient; this is actual code/body work, not acceptance taste.
+
+This supersedes generic physical-device/personal-approval waiting in the dated evidence below. The work remains with the agent; evidence limitations are preserved, and no observed defect is waived.
+
+
 status: OPEN / ADMITTED
 source: Philipp, live Philosophy overview + clarification chat 2026-10-03
 target: github.cambium → display → floating site-holon bodies

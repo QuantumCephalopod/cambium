@@ -21,3 +21,7 @@ The cited HUD/glass HOMEs leave actual eye/hand and device witnesses open: map/h
 Exercise these remaining interactions/appearances on the live body or explicitly reject/supersede their open choices. Do not reopen the already-implemented HUD or generic occupied-surface glass.
 
 The extracted preimage is at `../_waste/catabolized-NUTRIENT__global-nav-hud-and-glass__20260930-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.
+
+## Admitted real inverse-control counterexample — 2026-10-17
+
+Current live bundle7222f5ed7e9441aa at1363×936 exposes the native checkbox “Invert global colors”. Checking it changes its accessible checked state but leaves the rendered field/UI dark; source inspection finds the control only in template.html, with no controller or inverse CSS state. This is a concrete implementation gap, not a request for Philipp’s personal approval. Wire the existing global control once, preserve identity/orientation/language/addresses, and give it a real global visual consequence without source mutation or new storage. Native behavior/style witnesses must distinguish it from the old dead control. Browser delivery of the new candidate remains a separately bounded fact.
