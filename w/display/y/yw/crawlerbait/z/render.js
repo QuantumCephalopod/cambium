@@ -4,6 +4,7 @@ const id='organism:crawlerbait';
 const GENES=Object.freeze(['w','x','z','y']);
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 let inspectorHost=null,selectedAddress='',crawlerById=new Map(),lastProjection=null;
+let growth=null,fieldCache=null,fieldRevision=-1;
 
 /* ============ KINDS — one exhaustive CCCC split of what a being did (y/tide.py) ============
  * Each kind owns one quarter of the complex phase circle, and one riso ink. */
@@ -73,6 +74,52 @@ function route(sa,sb){
   const pb=(rb.length===1?[C[b],m]:toCorner(rb.slice(1),child(C,b),a)).reverse();
   return pa.concat(pb.slice(1))}
 
+/* The current prefix-free public addresses contain every digit needed to replay earlier
+ * collisions. Identity is the public path, never its changing address. Legacy sightings
+ * are a baseline, not invented exact births inside the whole-traffic clock. */
+function buildGrowth(routes=[]){
+  const histories=new Map(),leaves=new Map(),splits=new Set(),births=[];
+  const ordered=routes.filter(r=>/^[wxzy]+$/.test(r.address)).map(r=>({r,t:r.legacy_404_observations>0?-Infinity:(Date.parse(r.first_seen)||Infinity)}))
+    .sort((a,b)=>a.t-b.t||a.r.path.localeCompare(b.r.path));
+  const put=(r,a,t)=>{leaves.set(a,r);let h=histories.get(r.path);if(!h)histories.set(r.path,h=[]);h.push({t,a})};
+  for(const {r,t} of ordered){let a=r.address[0];
+    for(;;){const old=leaves.get(a);
+      if(old){leaves.delete(a);let n=a.length+1;while(old.address.slice(0,n)===r.address.slice(0,n))n++;
+        for(let d=a.length;d<n;d++)splits.add(a+r.address.slice(a.length,d));
+        put(old,old.address.slice(0,n),t);a=r.address.slice(0,n);break}
+      if(splits.has(a)){a=r.address.slice(0,a.length+1);continue}break}
+    put(r,a,t);births.push({r,t});
+  }
+  const upper=(list,t)=>{let lo=0,hi=list.length;while(lo<hi){const m=(lo+hi)>>>1;if(list[m].t<=t)lo=m+1;else hi=m}return lo};
+  return {births,histories,index:t=>upper(births,t),address(path,t){const h=histories.get(path);const i=h?upper(h,t):0;return i?h[i-1].a:null},
+    routesAt(t){return births.slice(0,upper(births,t)).map(({r})=>({...r,address:this.address(r.path,t)}))}};
+}
+function prefixFacts(events,t){
+  let lo=0,hi=events.length;while(lo<hi){const m=(lo+hi)>>>1;if(events[m].t<=t)lo=m+1;else hi=m}
+  return lo?events[lo-1].facts:{events:0,days:0,baits:0,k:'x'};
+}
+function publicFacts(events){
+  const days=new Set(),baits=new Set();let feeder=false,prober=false;
+  for(let i=0;i<events.length;i++){const e=events[i],status=Number(e.status)||0,read=['GET','HEAD','OPTIONS'].includes(String(e.method||'').toUpperCase());
+    days.add(Math.floor(e.t/86400000));baits.add(e.path||e.a);feeder ||= !read&&status>0&&status<300;
+    prober ||= status>=400&&status<500||!read&&!(status>0&&status<300);
+    e.facts={events:i+1,days:days.size,baits:baits.size,k:feeder?'w':prober?'z':days.size>1?'y':'x'};
+  }return events;
+}
+function walkGeometry(S){
+  const pts=[pointOf(S.wps[0].a)],wd=[0];let L=0;
+  for(let j=1;j<S.wps.length;j++){const r=route(S.wps[j-1].a,S.wps[j].a);
+    for(let i=1;i<r.length;i++){const q=pts.at(-1),d=Math.hypot(...r[i].map((v,k)=>v-q[k]));if(d<1e-7)continue;L+=d;pts.push(r[i])}wd.push(L)}
+  const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(...pts[i].map((v,k)=>v-pts[i-1][k])));
+  Object.assign(S,{pts,cum,wd,L});
+}
+function syncWalk(o,T){
+  const S=o.S,G=SIM.life.growth,revision=G.index(T);if(S.revision===revision)return;
+  const i=Math.min(o.reached,S.wps.length-1),span=(S.wd[i+1]??S.wd[i])-S.wd[i],u=span>0?(o.dist-S.wd[i])/span:0;
+  for(const w of S.wps)w.a=G.address(w.path,T)||G.histories.get(w.path)?.[0].a||w.a;
+  walkGeometry(S);o.dist=S.wd[i]+u*((S.wd[i+1]??S.wd[i])-S.wd[i]);o.seg=0;S.revision=revision;
+}
+
 /* ============ beings and their walks — recorded order is truth, pace is the body's own ============ */
 const DAY=86400,GAP=8*3600,LEAD=1800,LINGER=12*3600,DISS=5*3600,V_BASE=2.4/DAY,V_REAL=.035;
 const bytesOf=hex=>{const b=[];for(let i=0;i+1<hex.length;i+=2)b.push(parseInt(hex.slice(i,i+2),16));while(b.length<32)b.push(0);return b};
@@ -81,31 +128,28 @@ function buildLife(projection){
   const crawlers=Array.isArray(projection?.crawlers)?projection.crawlers:[];
   if(!enc.length||!crawlers.length)return null;
   const by=new Map();let t0=Infinity;
-  for(const e of enc){if(!e||typeof e.bait_address!=='string'||!/^[wxzy]+$/.test(e.bait_address))continue;const t=Date.parse(e.t);if(!isFinite(t))continue;if(t<t0)t0=t;let l=by.get(e.crawler);if(!l)by.set(e.crawler,l=[]);l.push({t,a:e.bait_address})}
+  for(const e of enc){if(!e||typeof e.bait_address!=='string'||!/^[wxzy]+$/.test(e.bait_address))continue;const t=Date.parse(e.t);if(!isFinite(t))continue;if(t<t0)t0=t;let l=by.get(e.crawler);if(!l)by.set(e.crawler,l=[]);l.push({t,a:e.bait_address,path:e.path,method:e.method,status:e.status})}
   const end=Date.parse(projection.raw_capture_end||projection.updated_at)||t0;
+  const G=buildGrowth(projection.routes||[]);
   const sessions=[],totals={w:0,x:0,z:0,y:0};
   for(const c of crawlers){
     const k=KIND[c.kind]?c.kind:'x';totals[k]++;
-    const es=(by.get(c.id)||[]).sort((a,b)=>a.t-b.t);if(!es.length)continue;
+    const es=publicFacts((by.get(c.id)||[]).sort((a,b)=>a.t-b.t));if(!es.length)continue;
     const dna=String(c.genome||c.id),g=bytesOf(dna.padEnd(64,'0'));
     const days=new Set(es.map(e=>new Date(e.t).toISOString().slice(0,10))).size,baits=new Set(es.map(e=>e.a)).size;
-    const b={id:c.id,k,events:c.events||es.length,days,baits};
+    const b={id:c.id,k,events:c.events||es.length,days,baits,history:es};
     let cur=null;
     for(const e of es){const t=Math.round((e.t-t0)/1000);
       if(!cur||t-cur.tLast>GAP){cur={b,g,wps:[],tLast:t};sessions.push(cur)}
-      const w=cur.wps[cur.wps.length-1];if(w&&w.a===e.a)w.n++;else cur.wps.push({a:e.a,t,n:1});cur.tLast=t}
+      const w=cur.wps[cur.wps.length-1];if(w&&w.a===e.a)w.n++;else cur.wps.push({a:e.a,path:e.path,t,n:1});cur.tLast=t}
   }
   for(const S of sessions){
-    const pts=[pointOf(S.wps[0].a)],wd=[0];let L=0;
-    for(let j=1;j<S.wps.length;j++){const r=route(S.wps[j-1].a,S.wps[j].a);
-      for(let i=1;i<r.length;i++){const q=pts[pts.length-1],d=Math.hypot(r[i][0]-q[0],r[i][1]-q[1],r[i][2]-q[2]);if(d<1e-7)continue;L+=d;pts.push(r[i])}wd.push(L)}
-    const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1],pts[i][2]-pts[i-1][2]));
-    S.pts=pts;S.cum=cum;S.wd=wd;S.L=L;S.t0=S.wps[0].t;
+    walkGeometry(S);const L=S.L;S.t0=S.wps[0].t;
     S.v=Math.max(V_BASE*KIND[S.b.k].speed*(.85+S.g[9]/255*.3),L/(1.5*DAY));
     S.tEnd=S.tLast+L/S.v+LINGER+DISS;S.size=.02*(1+Math.log10(Math.max(1,S.b.events))*.3);
   }
   sessions.sort((a,b)=>a.t0-b.t0);
-  return {key:projection.updated_at||'',t0,seconds:Math.max(1,Math.round((end-t0)/1000)),sessions,totals};
+  return {key:projection.updated_at||'',t0,seconds:Math.max(1,Math.round((end-t0)/1000)),sessions,totals,growth:G};
 }
 
 /* ============ simulation ============ */
@@ -123,12 +167,13 @@ function posAt(S,dist,o){const c=S.cum;while(o.seg<c.length-2&&c[o.seg+1]<dist)o
   const i=o.seg,a=S.pts[i],b=S.pts[Math.min(i+1,S.pts.length-1)],L=(i+1<c.length?c[i+1]:c[i])-c[i],u=L>0?(dist-c[i])/L:0;
   return {p:[a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u,a[2]+(b[2]-a[2])*u],seg:L,dir:L>0?[(b[0]-a[0])/L,(b[1]-a[1])/L,(b[2]-a[2])/L]:[0,0,0]}}
 function allowed(S,t,o){let j=o?o.j||0:0;if(o&&o.jt>t)j=0;while(j+1<S.wps.length&&S.wps[j+1].t<=t)j++;if(o){o.j=j;o.jt=t}return j}
-function spawn(S){const o={S,seg:0,hot:0,trail:[],off:[0,0,0],head:[0,0,0],done:null,fade:0,slow:1,spikes:3+Math.min(12,Math.round(Math.log2(1+new Set(S.wps.map(w=>w.a)).size)*2.2))};
+function spawn(S){const o={S,seg:0,hot:0,trail:[],off:[0,0,0],head:[0,0,0],done:null,fade:0,slow:1,fine:0,coarseKey:null,facts:prefixFacts(S.b.history,SIM.life.t0+SIM.simT*1000)};
   const j=allowed(S,SIM.simT,o);o.dist=S.wd[j];o.reached=j;const r=posAt(S,o.dist,o);o.base=r.p;o.p=r.p.slice();S.o=o;SIM.alive.add(o)}
 function despawn(o){o.S.o=null;SIM.alive.delete(o)}
 function resetTo(t){for(const o of [...SIM.alive])despawn(o);SIM.drops.length=0;SIM.simT=t;SIM.cursor=0}
+function bodySize(o){return .02*(1+Math.log10(Math.max(1,o.facts.events))*.3)}
 function body(o,now,pxOf){
-  const S=o.S,g=S.g,k=S.b.k,sz=S.size*SIM.sizeK,f=o.fade,t=now*.001,P=o.p;
+  const S=o.S,g=S.g,k=o.facts.k,sz=bodySize(o)*SIM.sizeK,f=o.fade*o.fine,t=now*.001,P=o.p;
   if(pxOf(P,sz)<4){const ph=KIND[k].phase;splat(P[0],P[1],P[2],sz*.62,f,ph);const tr=o.trail;for(let i=tr.length-1;i>=0;i-=3){const a=i/tr.length;splat(tr[i][0],tr[i][1],tr[i][2],sz*(.2+.22*a),.9*a*a*f,ph)}return}
   const ph0=KIND[k].phase+(g[4]/255-.5)*.5;
   const axis=S.axis||(S.axis=(()=>{const v=[g[10]/255-.5,g[11]/255-.5,g[12]/255-.5];const m=Math.hypot(...v)||1;return v.map(x=>x/m)})());
@@ -144,13 +189,13 @@ function body(o,now,pxOf){
     core.forEach((c,i)=>{const w=1+.12*Math.sin(t*3.1+i*1.7);splat(P[0]+(c[0]-P[0])*1.55*w,P[1]+(c[1]-P[1])*1.55*w,P[2]+(c[2]-P[2])*1.55*w,sz*.3,f,ph0+.1+i*.05)});
   }else if(k==='z'){ // Prober: Rosensweig spikes, one per distinct bait sought, reaching where it goes
     splat(P[0],P[1],P[2],sz*.55,f,ph0);
-    const n=o.spikes,reach=.45+.55*o.hot;
+    const n=3+Math.min(12,Math.round(Math.log2(1+o.facts.baits)*2.2)),reach=.45+.55*o.hot;
     for(let i=0;i<n;i++){const yy=1-2*(i+.5)/n,rr=Math.sqrt(1-yy*yy),th=i*2.39996;
       let d=rot(axis,spin*.5,[Math.cos(th)*rr,yy,Math.sin(th)*rr]);d=[d[0]+h[0]*.7,d[1]+h[1]*.7,d[2]+h[2]*.7];const dm=Math.hypot(...d)||1;d=d.map(x=>x/dm);
       const act=(.3+.7*(.5+.5*Math.sin(t*(1.3+g[(15+i)%32]/255*1.6)+i*1.9)))*reach,Ls=sz*(.9+g[5]/255*.9)*act;
       for(let j=0;j<6;j++){const dd=sz*.32+j*.3*Ls;splat(P[0]+d[0]*dd,P[1]+d[1]*dd,P[2]+d[2]*dd,sz*.26*(1-j*.15),.95*f,ph0+.05*j)}}
   }else if(k==='y'){ // Dweller: one segment per day it came back, following its own trail
-    const segs=Math.min(6,S.b.days+1),tr=o.trail;
+    const segs=Math.min(6,o.facts.days+1),tr=o.trail;
     for(let i=0;i<segs;i++){const q=tr.length?tr[Math.max(0,tr.length-1-i*3)]:P,sc=Math.pow(.86,i);
       splat(q[0],q[1],q[2],sz*.46*sc,f,ph0+i*.5);
       TETL.forEach((v,vi)=>{const r=rot(axis,spin+i*.6,v);splat(q[0]+r[0]*sz*.5*sc,q[1]+r[1]*sz*.5*sc,q[2]+r[2]*sz*.5*sc,sz*.2*sc,.8*f,ph0+i*.5+vi*.3)})}
@@ -184,7 +229,7 @@ function colony(key,c,now){
 }
 /* a being between colonies: one droplet of its own ink, thinning behind it */
 function droplet(o,now){
-  const G=colonyGeom(o.cell),r=G.edge*.075,ph=KIND[o.S.b.k].phase+(o.S.g[4]/255-.5)*.5,f=o.fade,tr=o.ctrail||[];
+  const G=colonyGeom(o.cell),r=G.edge*.075,ph=KIND[o.facts.k].phase+(o.S.g[4]/255-.5)*.5,f=o.fade,tr=o.ctrail||[];
   if(o.transit)splat(o.cp[0],o.cp[1],o.cp[2],r,f,ph);
   for(let i=0;i<tr.length;i++){const a=(i+1)/tr.length,q=tr[i];splat(q[0],q[1],q[2],r*(.45+.45*a),.8*a*a*f,ph)}
 }
@@ -202,13 +247,13 @@ function step(dt,now,pxOf){
   while(SIM.cursor<ss.length&&ss[SIM.cursor].t0-LEAD<=T){const S=ss[SIM.cursor++];if(T<=S.tEnd&&!S.o)spawn(S)}
   for(const o of SIM.alive)if(T>o.S.tEnd||T<o.S.t0-LEAD)despawn(o);
   const K=SIM.sizeK,C=SIM.container,H=C.length+BEING_RANKS,crowd=new Map();
-  for(const o of SIM.alive){const S=o.S,lim=S.wd[allowed(S,T,o)];
+  for(const o of SIM.alive){const S=o.S;o.facts=prefixFacts(S.b.history,L.t0+T*1000);syncWalk(o,L.t0+T*1000);const lim=S.wd[allowed(S,T,o)];
     let r=posAt(S,o.dist,o);const hw=Math.min(3,.7+1.3*Math.sqrt(r.seg/.08));
     // never before a recorded time; at slow pace the body still crawls at its own real speed
     o.dist=Math.min(lim,o.dist+Math.max(S.v*dts,SIM.playing?V_REAL*dt:0)*hw*o.slow);
     r=posAt(S,o.dist,o);o.base=r.p;
     for(let k=0;k<3;k++)o.head[k]+=(r.dir[k]-o.head[k])*Math.min(1,dt*4);
-    while(o.reached+1<S.wps.length&&o.dist>=S.wd[o.reached+1]-1e-9){o.reached++;const w=S.wps[o.reached];SIM.drops.push({a:w.a,p:pointOf(w.a),t:now,w:Math.min(1,.4+Math.log10(1+w.n)*.35),ph:KIND[S.b.k].phase});o.hot=1}
+    while(o.reached+1<S.wps.length&&o.dist>=S.wd[o.reached+1]-1e-9){o.reached++;const w=S.wps[o.reached];SIM.drops.push({a:w.a,p:pointOf(w.a),t:now,w:Math.min(1,.4+Math.log10(1+w.n)*.35),ph:KIND[o.facts.k].phase});o.hot=1}
     o.hot*=Math.exp(-dt*1.2);
     if(o.done==null&&o.dist>=S.L-1e-9&&T>=S.tLast)o.done=T;
     const inF=Math.min(1,(T-(S.t0-LEAD))/LEAD),outF=o.done==null?1:1-Math.max(0,T-o.done-LINGER)/DISS;o.fade=Math.max(0,Math.min(inF,outF));
@@ -216,10 +261,10 @@ function step(dt,now,pxOf){
     /* COARSE RESOLUTION — Display's pool law, applied to beings: a being is its own body only while the bait it
      * last touched lies within the viewed resolution (container + 2 ranks); deeper, it belongs to the colony of
      * that rank's cell; outside the container it is not drawn. Coalesced beings keep walking but pay no body. */
-    const a=S.wps[o.reached].a;o.cell=a.startsWith(C)?(a.length<=H?'':a.slice(0,H)):null;
+    const a=S.wps[o.reached].a;o.coarseKey=a.slice(0,H);o.cell=a.startsWith(C)?(a.length<=H?'':a.slice(0,H)):null;
     if(o.cell)crowd.set(o.cell,(crowd.get(o.cell)||0)+1)}
   // coalescence is joining: a being alone in its cell has nothing to join and stays itself
-  for(const o of SIM.alive){if(o.cell&&(crowd.get(o.cell)<2||o===CAM.o))o.cell='';if(o.cell!==''&&o.trail.length){o.trail.length=0;o.off[0]=o.off[1]=o.off[2]=0}}
+  for(const o of SIM.alive){if(o.cell&&(crowd.get(o.cell)<2||o===CAM.o||lockedBeing()===o.S.b.id))o.cell='';if(o.cell!==''&&o.trail.length){o.trail.length=0;o.off[0]=o.off[1]=o.off[2]=0}}
   /* COARSE WALK — a coalesced being still walks, at the viewed resolution: every change of its rank-H cell is one
    * coarse step, taken along the Sierpinski edges between the two cells. Six fine steps may become two coarse ones,
    * but they still happen: a droplet pinches off one colony and flows into the next. */
@@ -257,13 +302,16 @@ function step(dt,now,pxOf){
     const om=Math.sqrt(o.off[0]*o.off[0]+o.off[1]*o.off[1]+o.off[2]*o.off[2]);if(om>cap)for(let k=0;k<3;k++)o.off[k]*=cap/om;
     for(let k=0;k<3;k++)o.p[k]=o.base[k]+o.off[k];
     const tl=o.trail[o.trail.length-1];if(!tl||Math.hypot(o.p[0]-tl[0],o.p[1]-tl[1],o.p[2]-tl[2])>o.S.size*K*.18){o.trail.push(o.p.slice());if(o.trail.length>34)o.trail.shift()}}
+  // Resolution blends complementary shares; changing container does not cut a body away.
+  for(const o of SIM.alive){const target=o.cell===''?1:0;o.fine+=(target-o.fine)*(1-Math.exp(-dt*7));if(Math.abs(target-o.fine)<.001)o.fine=target}
   // print every body into the field
   SIM.ns=0;const counts={w:0,x:0,z:0,y:0},cols=new Map();let resolved=0;
-  for(const o of SIM.alive){counts[o.S.b.k]++;if(o.fade<=0||o.cell===null)continue;
-    if(o.cell===''){resolved++;body(o,now,pxOf);continue}
-    if(o.transit||(o.ctrail&&o.ctrail.length)){droplet(o,now);if(o.transit)continue}
-    let c=cols.get(o.cell);if(!c)cols.set(o.cell,c={n:0,f:0,re:0,im:0});
-    const ph=KIND[o.S.b.k].phase+(o.S.g[4]/255-.5)*.5;c.n++;c.f+=o.fade;c.re+=o.fade*Math.cos(ph);c.im+=o.fade*Math.sin(ph)}
+  for(const o of SIM.alive){counts[o.facts.k]++;if(o.fade<=0||o.cell===null)continue;
+    if(o.fine>.001){resolved++;body(o,now,pxOf)}
+    const share=1-o.fine;if(share<=.001)continue;
+    if(o.cell&&o.transit){droplet(o,now);continue}
+    const key=o.cell||o.coarseKey;let c=cols.get(key);if(!c)cols.set(key,c={n:0,f:0,re:0,im:0});
+    const ph=KIND[o.facts.k].phase+(o.S.g[4]/255-.5)*.5,f=o.fade*share;c.n++;c.f+=f;c.re+=f*Math.cos(ph);c.im+=f*Math.sin(ph)}
   for(const [key,c] of cols)colony(key,c,now);
   SIM.resolved=resolved;SIM.colonies=cols.size;
   for(let i=SIM.drops.length-1;i>=0;i--){const d=SIM.drops[i],age=(now-d.t)/1400;if(age>1||!d.a.startsWith(C)){SIM.drops.splice(i,1);continue}
@@ -318,11 +366,12 @@ function link(gl,v,f){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl
 function layerFor(gl){
   if(LAYER&&LAYER.gl===gl)return LAYER;
   if(!gl.getExtension('EXT_color_buffer_float')){LAYER={gl,off:'EXT_color_buffer_float unavailable'};return LAYER}
-  const sp=link(gl,SPLAT_V,SPLAT_F),ip=link(gl,INK_V,INK_F),vao=gl.createVertexArray(),buf=gl.createBuffer();
+  const sp=link(gl,SPLAT_V,SPLAT_F),ip=link(gl,INK_V,INK_F),copy=link(gl,INK_V,`#version 300 es
+precision highp float;uniform sampler2D tInk;uniform vec2 uSize;out vec4 o;void main(){o=texture(tInk,gl_FragCoord.xy/uSize);}`),vao=gl.createVertexArray(),buf=gl.createBuffer();
   gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,SIM.sPos.byteLength,gl.DYNAMIC_DRAW);
   for(const [name,size,off] of [['aPos',3,0],['aRad',1,12],['aW',1,16],['aPh',1,20],['aCoh',1,24]]){const loc=gl.getAttribLocation(sp,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
   const u=(p,n)=>gl.getUniformLocation(p,n);
-  LAYER={gl,sp,ip,vao,ivao:gl.createVertexArray(),buf,tex:null,fbo:null,fw:0,fh:0,maxPt:gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)[1]||256,
+  LAYER={gl,sp,ip,copy,copyTex:u(copy,'tInk'),copySize:u(copy,'uSize'),inkTex:null,inkFbo:null,vao,ivao:gl.createVertexArray(),buf,tex:null,fbo:null,fw:0,fh:0,maxPt:gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)[1]||256,
     SU:{proj:u(sp,'uProj'),view:u(sp,'uView'),model:u(sp,'uModel'),px:u(sp,'uPx'),maxPt:u(sp,'uMaxPt')},
     IU:{tex:u(ip,'tGoo'),res:u(ip,'uRes'),texel:u(ip,'uTexel'),cell:u(ip,'uCell'),ink:u(ip,'uInk'),bg:u(ip,'uBg'),kinds:u(ip,'uKinds[0]')},
     kinds:new Float32Array(['w','x','z','y'].flatMap(k=>hexRgb(KIND[k].ink)))};
@@ -337,12 +386,16 @@ function sizeTarget(Lr,w,h){
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
   Lr.fbo=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,Lr.fbo);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,Lr.tex,0);
+  if(Lr.inkTex)gl.deleteTexture(Lr.inkTex);if(Lr.inkFbo)gl.deleteFramebuffer(Lr.inkFbo);
+  Lr.inkTex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,Lr.inkTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,fw,fh,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+  for(const p of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,p,gl.LINEAR);
+  for(const p of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,p,gl.CLAMP_TO_EDGE);
+  Lr.inkFbo=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,Lr.inkFbo);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,Lr.inkTex,0);
   Lr.fw=fw;Lr.fh=fh;
 }
-function afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container}){
+function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container}){
   if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection);resetTo(0)}
-  if(!SIM.life||!gl)return;
-  const Lr=layerFor(gl);if(Lr.off){gl.canvas.dataset.gooLayer='off: '+Lr.off;return}
+  if(!SIM.life)return;
   const dt=SIM.lastMs?Math.min(.05,(ms-SIM.lastMs)/1000):0;SIM.lastMs=ms;
   // a body keeps its world size near the whole reef and shrinks gently as Descent zooms, so it never swallows a deep container
   SIM.sizeK=Math.pow(Math.max(1,frame?.scale||1),-.75);SIM.container=typeof container==='string'?container:'';
@@ -350,6 +403,11 @@ function afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container}){
   const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5],pxBase=ms3*f*height/2;
   const pxOf=(P,r)=>{const z=model[2]*P[0]+model[6]*P[1]+model[10]*P[2]+model[14];return r*pxBase/Math.max(.05,3.2-z)};
   const u0=performance.now();step(dt,ms,pxOf);SIM.perf.upd+=((performance.now()-u0)-SIM.perf.upd)*.05;SIM.perf.splats=SIM.ns;
+  const screen=screenFrame(proj,view,model,width/(dpr||1),height/(dpr||1));
+  updateInk(screen,ms,width,height,dpr||1,canvas);
+  if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
+  if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
+  const Lr=layerFor(gl);if(Lr.off){gl.canvas.dataset.gooLayer='off: '+Lr.off;camFollow(ms);tickHud();return}
   sizeTarget(Lr,width,height);
   // 1 · accumulate the complex field
   gl.bindFramebuffer(gl.FRAMEBUFFER,Lr.fbo);gl.viewport(0,0,Lr.fw,Lr.fh);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
@@ -359,12 +417,15 @@ function afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container}){
   gl.bindVertexArray(Lr.vao);gl.bindBuffer(gl.ARRAY_BUFFER,Lr.buf);gl.bufferSubData(gl.ARRAY_BUFFER,0,SIM.sPos,0,SIM.ns*7);
   if(SIM.ns)gl.drawArrays(gl.POINTS,0,SIM.ns);
   // 2 · print it as ink over the field
-  gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,width,height);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,Lr.inkFbo);gl.viewport(0,0,Lr.fw,Lr.fh);gl.disable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   gl.useProgram(Lr.ip);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,Lr.tex);gl.uniform1i(Lr.IU.tex,0);
-  gl.uniform2f(Lr.IU.res,width,height);gl.uniform2f(Lr.IU.texel,1/Lr.fw,1/Lr.fh);gl.uniform1f(Lr.IU.cell,3.4*(dpr||1));
+  gl.uniform2f(Lr.IU.res,Lr.fw,Lr.fh);gl.uniform2f(Lr.IU.texel,1/Lr.fw,1/Lr.fh);gl.uniform1f(Lr.IU.cell,3.4*(dpr||1)*Lr.fw/width);
   gl.uniform3f(Lr.IU.ink,.925,.898,.827);gl.uniform3fv(Lr.IU.bg,new Float32Array(shader.clear.slice(0,3)));gl.uniform3fv(Lr.IU.kinds,Lr.kinds);
   gl.bindVertexArray(Lr.ivao);gl.drawArrays(gl.TRIANGLES,0,3);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,width,height);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+  gl.useProgram(Lr.copy);gl.bindTexture(gl.TEXTURE_2D,Lr.inkTex);gl.uniform1i(Lr.copyTex,0);gl.uniform2f(Lr.copySize,width,height);gl.drawArrays(gl.TRIANGLES,0,3);
+  gl.canvas.dataset.inkPixels=String(Lr.fw*Lr.fh);
   gl.canvas.dataset.gooLayer=`${SIM.alive.size} alive · ${SIM.resolved} bodies · ${SIM.colonies} colonies · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;
   camFollow(ms);
   if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
@@ -373,8 +434,87 @@ function afterDraw({gl,proj,view,model,ms,width,height,dpr,frame,container}){
   tickHud();if(CAM.on&&performance.now()-(CAM.cardAt||0)>1000){CAM.cardAt=performance.now();camCard()}
 }
 shader.afterDraw=afterDraw;
+shader.snapshot=temporalField;
+shader.composite=()=>INK.canvas?[INK.canvas]:[];
 shader.focus=camFocus;
 Object.freeze(shader);
+
+/* Source-owned words and lens targets. Display supplies one camera and one glass;
+ * no private recognition material is consulted by this renderer. */
+const INK={canvas:null,pretext:null,dependency:null,ui:null,offers:new Map(),prepared:new Map(),epoch:0,ms:0,reserved:[],reservedAt:0,reader:null};
+const fold=s=>globalThis.SSSDisplayType?.fold?.(s)??s;
+const typePx=rank=>globalThis.SSSDisplayType?.rankPx?.(rank)??16*Math.pow(2,rank/2);
+const typeFont=rank=>`400 ${typePx(rank)}px "SpriteSheet Mono", monospace`;
+function lockedBeing(){const id=globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id||'';return id.startsWith('crawlerbait:being:')?id.slice(18):null}
+function mountInk(content,dependency,ui){
+  disposeInk();INK.dependency=dependency;INK.ui=ui;const epoch=INK.epoch;
+  const c=INK.retained||(INK.retained=el('canvas','crawlerbait-ink'));c.setAttribute('aria-hidden','true');content.append(c);INK.canvas=c;INK.reader=el('p','crawlerbait-reader');INK.reader.setAttribute('aria-live','polite');content.append(INK.reader);
+  if(typeof dependency==='function')import(dependency('@chenglou/pretext','layout.js')).then(m=>{if(epoch===INK.epoch){INK.pretext=m;c.dataset.pretext='ready';INK.prepared.clear()}}).catch(()=>{if(epoch===INK.epoch)c.dataset.pretext='unavailable'});
+  document.fonts?.load?.(typeFont(-1)).then(()=>{if(epoch===INK.epoch){INK.pretext?.clearCache?.();INK.prepared.clear()}}).catch(()=>{});
+}
+function disposeInk(){for(const id of INK.offers.keys())globalThis.SSSDisplayLens?.withdraw?.(id);INK.offers.clear();INK.prepared.clear();INK.canvas?.remove();INK.canvas=null;INK.reader?.remove();INK.reader=null;INK.reserved=[];INK.reservedAt=0;INK.epoch++}
+function screenFrame(proj,view,model,w,h){
+  const mul=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
+  return P=>{const q=mul(proj,mul(view,mul(model,[...P,1])));return {x:(q[0]/q[3]*.5+.5)*w,y:(.5-q[1]/q[3]*.5)*h,front:q[3]>0}};
+}
+function triangleRows(tri,lh,pad=5){
+  const rows=[],top=Math.min(...tri.map(p=>p.y)),bottom=Math.max(...tri.map(p=>p.y));
+  const span=y=>{const xs=[];for(let i=0;i<3;i++){const a=tri[i],b=tri[(i+1)%3];if(y>=Math.min(a.y,b.y)&&y<Math.max(a.y,b.y))xs.push(a.x+(b.x-a.x)*(y-a.y)/(b.y-a.y))}return xs.sort((a,b)=>a-b)};
+  for(let y=top+pad;y+lh<bottom-pad;y+=lh){const a=span(y),b=span(y+lh);if(a.length<2||b.length<2)continue;const x=Math.max(a[0],b[0])+pad,right=Math.min(a.at(-1),b.at(-1))-pad;if(right-x>Math.max(96,typePx(-1)*10))rows.push({x,y,w:right-x})}return rows;
+}
+function textPages(text,font,rows){
+  const P=INK.pretext;if(!P||!rows.length)return [];
+  const key=font+'\0'+text;let prepared=INK.prepared.get(key);if(!prepared){prepared=P.prepareWithSegments(fold(text),font);if(INK.prepared.size>200)INK.prepared.clear();INK.prepared.set(key,prepared)}
+  let cursor={segmentIndex:0,graphemeIndex:0},out=[],pages=[];
+  // Reflow all words through successive triangle pages. No line consumes a future word.
+  for(let n=0;n<10000;n++){const r=rows[out.length],range=P.layoutNextLineRange(prepared,cursor,r.w);if(!range){if(out.length)pages.push(out);break}
+    const line=P.materializeLineRange(prepared,range);out.push({...r,text:line.text});
+    if(range.end.segmentIndex===cursor.segmentIndex&&range.end.graphemeIndex===cursor.graphemeIndex)break;cursor=range.end;
+    if(out.length===rows.length){pages.push(out);out=[]}}
+  return pages;
+}
+function textLines(text,font,rows,page=0){const pages=textPages(text,font,rows);return pages.length?pages[page%pages.length]:[]}
+function freeRows(rows){return rows.flatMap(r=>{let spans=[[r.x,r.x+r.w]];for(const b of INK.reserved){if(r.y+typePx(-1)*1.4<=b.top||r.y>=b.bottom)continue;spans=spans.flatMap(([l,h])=>h<=b.left||l>=b.right?[[l,h]]:[[l,Math.min(h,b.left-6)],[Math.max(l,b.right+6),h]].filter(([a,z])=>z-a>=Math.max(96,typePx(-1)*10)))}spans.sort((a,b)=>(b[1]-b[0])-(a[1]-a[0]));return spans.length?[{...r,x:spans[0][0],w:spans[0][1]-spans[0][0]}]:[]})}
+function paintWords(ctx,text,rows,color,ms=INK.ms,world=true){if(world)rows=freeRows(rows);ctx.font=typeFont(-1);ctx.fillStyle=color;ctx.textBaseline='top';const lines=textLines(text,ctx.font,rows,Math.floor(ms/8000));for(const r of lines)ctx.fillText(r.text,r.x,r.y);return lines}
+function lensFrame(point){
+  const c=INK.canvas;if(!c)return null;const r=c.getBoundingClientRect(),pad=16,carrier=INK.ui?.carrier;
+  const leftMin=r.left+(carrier?.x||0)+pad,topMin=r.top+(carrier?.y||0)+pad;
+  const width=Math.min(320,(carrier?.w||r.width)-2*pad),height=Math.min(260,(carrier?.h||r.height)-2*pad-44);
+  if(width<96||height<96)return null;
+  return {left:Math.max(leftMin,Math.min(leftMin+(carrier?.w||r.width)-2*pad-width,r.left+point.x-width/2)),top:Math.max(topMin,Math.min(topMin+(carrier?.h||r.height)-2*pad-44-height,r.top+point.y-height/2)),width,height,r:12};
+}
+function beingText(o){const c=crawlerById.get(o.S.b.id)||{},f=o.facts;return `${KIND[f.k].name} · ${KIND[f.k].gene}. Being ${o.S.b.id}. Body genome ${c.genome||o.S.b.id}. ${f.events} encounters, ${f.baits} baits, ${f.days} days at this replay time.`}
+function updateInk(screen,ms,w,h,d,fieldCanvas){
+  const c=INK.canvas;if(!c)return;INK.ms=ms;if(c.width!==w||c.height!==h){c.width=w;c.height=h}
+  c.style.visibility=fieldCanvas?.dataset.composite==='1'?'hidden':'visible';
+  const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w/d,h/d);
+  const seen=new Set(),L=globalThis.SSSDisplayLens,rect=c.getBoundingClientRect();
+  if(ms-INK.reservedAt>120||!INK.reservedAt){INK.reservedAt=ms;INK.reserved=[...(c.parentNode?.querySelectorAll('.crawlerbait-hud-top,.crawlerbait-cam-bar,.crawlerbait-cam,.crawlerbait-inspector,.crawlerbait-transport')||[])].map(n=>n.getBoundingClientRect()).filter(r=>r.width>1&&r.height>1).map(r=>({left:r.left-rect.left,right:r.right-rect.left,top:r.top-rect.top,bottom:r.bottom-rect.top}))}
+  for(const o of SIM.alive){if(o.cell===null||o.fade<.15||o.fine<.2)continue;const point=screen(o.p);if(!point.front||point.x<0||point.y<0||point.x>rect.width||point.y>rect.height)continue;
+    const id='crawlerbait:being:'+o.S.b.id;seen.add(id);const old=INK.offers.get(id);if(old){Object.assign(old,{o,point});continue}
+    const target={o,point};INK.offers.set(id,target);L?.offer?.(id,{kind:'body',point:()=>{const p=INK.offers.get(id)?.point,r=c.getBoundingClientRect();return p?{x:r.left+p.x,y:r.top+p.y,r:Math.max(7,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext&&t?lensFrame(t.point):null}});
+  }
+  for(const id of INK.offers.keys())if(!seen.has(id)){L?.withdraw?.(id);INK.offers.delete(id)}
+  if(!INK.pretext)return;
+  const tet=cellIn(V0,SIM.container),faces=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]],holes=faces.map(f=>f.map((i,j)=>screen(mid(tet[i],tet[f[(j+1)%3]]))));
+  const safe=INK.ui?.carrier||{x:0,y:0,w:rect.width,h:rect.height};
+  const usable=holes.filter(tri=>tri.every(p=>p.front&&p.x>safe.x+10&&p.x<safe.x+safe.w-10&&p.y>safe.y+10&&p.y<safe.y+safe.h-54));
+  usable.sort((a,b)=>triangleRows(b,typePx(-1)*1.4).length-triangleRows(a,typePx(-1)*1.4).length);
+  if(usable[0])paintWords(ctx,STORY[Math.floor(ms/16000)%STORY.length],triangleRows(usable[0],typePx(-1)*1.4),'#ece5d3',ms);
+  // Kind counts grow on the four vertices instead of another panel surface.
+  for(let i=0;i<4;i++){const p=screen(tet[i]),k=GENES[i];if(p.front&&p.x>safe.x+8&&p.x<safe.x+safe.w-110&&p.y>safe.y+12&&p.y<safe.y+safe.h-70)paintWords(ctx,`${KIND[k].name} ${SIM.counts[k]||0}`, [{x:p.x+8,y:p.y,w:128}],KIND[k].ink,0)}
+  if(selectedAddress){const r=lastProjection.routes.find(r=>r.path===selectedAddress),a=growth?.address(selectedAddress,SIM.life.t0+SIM.simT*1000);if(r&&a){const t=cellIn(V0,a),tri=[0,1,2].map(i=>screen(t[i]));const ids=[...new Set([...SIM.alive].filter(o=>o.facts.events&&o.S.wps[o.reached].path===selectedAddress).map(o=>o.S.b.id))];paintWords(ctx,`${r.path}. ${ids.length?ids.join(' · '):'No being here at this replay time.'}`,triangleRows(tri,typePx(-1)*1.4),'#ece5d3')}}
+  const snap=L?.snapshot?.()?.lens,target=snap?.lock?INK.offers.get(snap.lock.id):null;
+  if(INK.reader){const text=target?beingText(target.o):'';if(INK.reader.textContent!==text)INK.reader.textContent=text}
+  if(target){const f=lensFrame(target.point);if(f&&snap.round===0&&Math.abs(snap.hx*2-f.width)<2&&Math.abs(snap.hy*2-f.height)<2){ctx.save();ctx.beginPath();ctx.roundRect(snap.x-snap.hx-rect.left,snap.y-snap.hy-rect.top,2*snap.hx,2*snap.hy,12);ctx.clip();const lh=typePx(-1)*1.4,rows=Array.from({length:Math.floor((f.height-24)/lh)},(_,i)=>({x:f.left-rect.left+12,y:f.top-rect.top+12+i*lh,w:f.width-24}));paintWords(ctx,beingText(target.o),rows,KIND[target.o.facts.k].ink,ms,false);ctx.restore();c.dataset.lensBeing=target.o.S.b.id}else delete c.dataset.lensBeing}
+  c.dataset.replayBaits=String(fieldCache?.points.length||0);
+}
+function drawFallback(ctx,screen){
+  if(!ctx)return;ctx.save();const colonies=new Map();
+  for(const o of SIM.alive){if(o.cell===null||o.fade<=0)continue;const p=screen(o.cell&&o.cp?o.cp:o.p);if(!p.front)continue;ctx.fillStyle=KIND[o.facts.k].ink;ctx.globalAlpha=o.fade*.7;
+    if(o.cell){if(colonies.has(o.cell))continue;colonies.set(o.cell,true);ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill()}else{const r=Math.max(2,Math.min(11,2+Math.log2(1+o.facts.events)));ctx.beginPath();for(let i=0;i<4;i++){const a=i*Math.PI/2+INK.ms*.0003;const x=p.x+Math.cos(a)*r,y=p.y+Math.sin(a)*r;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.fill()}}
+  ctx.restore();
+}
 
 /* ============ site-owned DOM: panel, legend, pace, clock, story ============ */
 function el(tag,cls,text){
@@ -424,13 +564,13 @@ function baitTree(routes){
   return branch('');
 }
 function fieldProjection(projection={}){
-  if(projection&&Array.isArray(projection.encounters))lastProjection=projection;
+  if(projection&&Array.isArray(projection.encounters)&&projection!==lastProjection){lastProjection=projection;SIM.life=null;fieldRevision=-1;}
   const routes=Array.isArray(projection.routes)?projection.routes:[];
   const root=freezeNode(baitTree(routes));
   const points=routes
     .filter(route=>route&&typeof route.address==='string'&&/^[wxzy]+$/.test(route.address))
     .map(route=>Object.freeze({
-      id:`bait:${route.address}`,
+      id:`bait:${route.path}`,
       gene:route.address[0],
       path:route.address,
       kind:'bait',
@@ -440,6 +580,13 @@ function fieldProjection(projection={}){
       route
     }));
   return Object.freeze({root,points});
+}
+function temporalField(){
+  if(!lastProjection)return null;
+  if(!SIM.life){SIM.life=buildLife(lastProjection);if(!SIM.life)return null;resetTo(0);growth=SIM.life.growth;fieldRevision=-1}
+  growth=SIM.life.growth;const t=SIM.life.t0+SIM.simT*1000,i=growth.index(t);
+  if(fieldRevision!==i){fieldRevision=i;fieldCache={...fieldProjection({...lastProjection,encounters:undefined,routes:growth.routesAt(t)}),revision:lastProjection.updated_at+':'+i};}
+  return fieldCache;
 }
 function metric(label,value){
   const n=el('span','crawlerbait-metric');
@@ -485,13 +632,13 @@ function camCard(){
   if(!HUD.cam)return;HUD.cam.replaceChildren();
   if(HUD.camBtn)HUD.camBtn.textContent=CAM.on?'stop following':'crawlercam';
   const o=CAM.o;if(!CAM.on||!o){HUD.cam.hidden=true;return}
-  HUD.cam.hidden=false;const K=KIND[o.S.b.k],c=crawlerById.get(o.S.b.id)||{},w=o.S.wps[Math.min(o.reached+1,o.S.wps.length-1)];
+  HUD.cam.hidden=false;const K=KIND[o.facts.k],c=crawlerById.get(o.S.b.id)||{},w=o.S.wps[Math.min(o.reached+1,o.S.wps.length-1)];
   const bait=(lastProjection?.routes||[]).find(r=>r.address===w.a);
   const h=el('b','crawlerbait-cam-kind',`${K.name} · ${K.gene}`);h.style.setProperty('--kind',K.ink);
   const nx=nextIn(o);
   HUD.cam.append(h,el('span','crawlerbait-cam-row',`heading for ${bait?.path||w.a}`),
     el('span','crawlerbait-cam-row crawlerbait-cam-next',nx===0?'walking now':nx===Infinity?'nothing left in its record':`next encounter in ${nx<90?Math.round(nx)+' s':Math.round(nx/60)+' min'} at this pace`),
-    el('span','crawlerbait-cam-row',`${o.S.b.events} encounters · ${o.S.b.baits} baits · ${o.S.b.days} day${o.S.b.days>1?'s':''}`),
+    el('span','crawlerbait-cam-row',`${o.facts.events} encounters · ${o.facts.baits} baits · ${o.facts.days} day${o.facts.days>1?'s':''}`),
     el('code','crawlerbait-cam-dna',`being ${o.S.b.id}`),
     el('code','crawlerbait-cam-dna',`body ${String(c.genome||o.S.b.id).slice(0,24)}…`));
 }
@@ -591,24 +738,18 @@ function renderInspector(route){
       row.append(el('span','',String(item.events||0)));
       list.append(row);
     }
-  }else{
-    for(const sig of route.signatures||[]){
-      const row=el('div','crawlerbait-signature');
-      row.append(el('code','',sig.claimed_user_agent||'∅'));
-      row.append(el('span','',String(sig.observed_404)));
-      list.append(row);
-    }
   }
-  if(!beings.length && !(route.signatures||[]).length)list.append(el('span','crawlerbait-none','no observed traffic being'));
+  if(!beings.length)list.append(el('span','crawlerbait-none','no observed traffic being'));
   signatures.append(list);
   inspectorHost.append(signatures);
 }
-function render({host,content,projection,ui=null}={}){
+function render({host,content,projection,ui=null,dependency=null}={}){
   if(!host||!content||!projection?.summary)return false;
   if(Array.isArray(projection.encounters)&&projection!==lastProjection){lastProjection=projection;if(SIM.life&&SIM.life.key!==(projection.updated_at||''))SIM.life=null}
   host.hidden=false;
   content.className='interlocutor-content crawlerbait-content';
   content.replaceChildren();
+  mountInk(content,dependency,ui);
 
   const routes=projection.routes||[];
   crawlerById=new Map((projection.crawlers||[]).map(c=>[c.id,c]));
@@ -637,30 +778,30 @@ function render({host,content,projection,ui=null}={}){
 
   content.append(rail,side);if(ui){ui.bind(rail,'rail');ui.bind(side,'side')}
   if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom);if(ui)ui.bind(bottom,'bottom')}
-  const selected=selectedAddress?routes.find(r=>r.address===selectedAddress):null;
+  const selected=selectedAddress?routes.find(r=>r.path===selectedAddress):null;
   renderInspector(selected||null);
   return true;
 }
 function activateFieldPoint({point}={}){
   const route=point?.route||null;
-  selectedAddress=route?.address||'';
+  selectedAddress=route?.path||'';
   renderInspector(route);
 }
 function unmount({host,content}={}){
   if(host)host.hidden=true;
   if(content)content.replaceChildren();
-  clearTimeout(HUD.storyTimer);CAM.on=false;CAM.o=null;
+  disposeInk();SIM.lastMs=0;clearTimeout(HUD.storyTimer);CAM.on=false;CAM.o=null;
   inspectorHost=null;crawlerById=new Map();
   for(const k of Object.keys(HUD))if(k!=='storyTimer')HUD[k]=null;
 }
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,
   // pure witnesses for tests: the walk law, the life built from a projection, and the frame cost of living it
-  _law:Object.freeze({pointOf,route,buildLife,KIND,
-    simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container=''}){
+  _law:Object.freeze({pointOf,route,buildLife,buildGrowth,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,KIND,
+    simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container='',changeAt=null,nextContainer=''}){
       SIM.life=buildLife(projection);resetTo(at*SIM.life.seconds);SIM.paceLog=SIM.paceCur=pace;SIM.playing=true;SIM.container=container;SIM.sizeK=Math.pow(1.02*Math.pow(2,container.length),-.75);
       const pxOf=(P,r)=>r*900;let worst=0,sum=0;
-      for(let i=0;i<frames;i++){const a=performance.now();step(dt,i*dt*1000,pxOf);const d=performance.now()-a;if(i>=frames/4){sum+=d;worst=Math.max(worst,d)}}
+      for(let i=0;i<frames;i++){if(i===changeAt)SIM.container=nextContainer;const a=performance.now();step(dt,i*dt*1000,pxOf);const d=performance.now()-a;if(i>=frames/4){sum+=d;worst=Math.max(worst,d)}}
       const cells=[...SIM.alive].map(o=>o.cell);
-      return {alive:SIM.alive.size,resolved:SIM.resolved,colonies:SIM.colonies,hidden:cells.filter(c=>c===null).length,cells,splats:SIM.ns,counts:{...SIM.counts},meanMs:sum/(frames-Math.floor(frames/4)),worstMs:worst};
+      return {alive:SIM.alive.size,resolved:SIM.resolved,colonies:SIM.colonies,hidden:cells.filter(c=>c===null).length,cells,fineShares:[...SIM.alive].map(o=>o.fine),splats:SIM.ns,counts:{...SIM.counts},meanMs:sum/(frames-Math.floor(frames/4)),worstMs:worst};
     }})}));
 })();

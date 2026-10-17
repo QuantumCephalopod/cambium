@@ -145,7 +145,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   if(typeof shader.preload==='function')shader.preload();
   /* optional identity-owned rest view: {rest:[w,x,y,z], projection:'orthographic'} */
   const VIEW=shader.view&&typeof shader.view==='object'?shader.view:null,ORTHO=VIEW?.projection==='orthographic';let restDone=false;
-  const structure=N.collectStructure(projection.root),colors=paletteSet(palette),pointRecords=fieldPointRecords(structure,projection),pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));
+  let structure=N.collectStructure(projection.root),pointRecords=fieldPointRecords(structure,projection),pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));
+  const colors=paletteSet(palette);let fieldRevision=null,shapeDirty=false;
+  function refreshProjection(ms){
+    if(typeof shader.snapshot!=='function')return;const next=shader.snapshot({ms,container:container()});
+    if(!next?.root||!Array.isArray(next.points)||next.revision===fieldRevision)return;
+    fieldRevision=next.revision;projection=next;structure=N.collectStructure(next.root);pointRecords=fieldPointRecords(structure,next);pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));shapeDirty=true;
+    if(selectedPointId&&!pointById.has(selectedPointId))selectedPointId='';if(hoverPointId&&!pointById.has(hoverPointId))setHover('');
+  }
   if(typeof shader.decorate==='function')shader.decorate({id,element,canvas,labelHost,projection,localScope});
   const gl=canvas.getContext('webgl2',{antialias:true,alpha:false,premultipliedAlpha:false});
   let GL=null,PG=null;
@@ -166,7 +173,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     const stride=7*4;
     for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(p,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride,off)}
     GL={p,vao,buf,count:0,U:{proj:gl.getUniformLocation(p,'uProj'),view:gl.getUniformLocation(p,'uView'),model:gl.getUniformLocation(p,'uModel'),time:gl.getUniformLocation(p,'uTime'),focus:gl.getUniformLocation(p,'uFocus'),resolution:gl.getUniformLocation(p,'uResolution')},pal:gl.getUniformLocation(p,'uPalette[0]')};
-    if(pointRecords.length){
+    if(pointRecords.length||typeof shader.snapshot==='function'){
       const pp=pointProgram(gl),pvao=gl.createVertexArray(),pbuf=gl.createBuffer();
       gl.bindVertexArray(pvao);gl.bindBuffer(gl.ARRAY_BUFFER,pbuf);
       const pstride=6*4;
@@ -257,9 +264,9 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   /* LOD + POOLS — cells and content are resolved only around the container.
    * Content deeper than the hint level coalesces into one pool at its hint cell. */
   function refreshVisible(){
-    const c=container();if(shownFor===c)return;shownFor=c;
+    const c=container(),moved=shownFor!==c;if(!moved&&!shapeDirty)return;shownFor=c;shapeDirty=false;
     cells=structure.leaves;
-    cam={from:currentFrame(),to:frameFor(c),start:performance.now()};
+    if(moved)cam={from:currentFrame(),to:frameFor(c),start:performance.now()};
     if(gl&&GL){const data=geometry(cells);gl.bindBuffer(gl.ARRAY_BUFFER,GL.buf);gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);GL.count=data.length/7}
     const hint=c.length+2,pools=new Map();visible=[];
     for(const rec of pointRecords){
@@ -289,7 +296,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   if(labelHost){labelHost.replaceChildren();for(const g of N.GENES){const n=document.createElement('div');n.className='field-label';n.setAttribute('aria-hidden','true');n.dataset.gene=g;const node=nodeAt(projection.root,g);n.innerHTML=`<span>${g}</span><b>${node?.en||node?.noun||g}</b>`;labelHost.append(n);geneLabels.push(n)}}
   let selectedPointId='',hoverPointId='',down=null,api=null;
   let tooltip=null;
-  if(pointRecords.length){
+  if(pointRecords.length||typeof shader.snapshot==='function'){
     tooltip=document.createElement('div');tooltip.className='field-point-tooltip';tooltip.hidden=true;tooltip.setAttribute('role','status');tooltip.setAttribute('aria-live','polite');
     const tid=document.createElement('span');tid.className='field-point-tooltip-id';
     const ttl=document.createElement('strong');ttl.className='field-point-tooltip-title';
@@ -658,7 +665,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   function draw(ms){
     if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
-    refreshVisible();followStep(ms);const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
+    refreshProjection(ms);refreshVisible();followStep(ms);const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
     const proj=ORTHO?orthographic(3.2*Math.tan(Math.PI/6.6),w/h,.1,20):perspective(Math.PI/3.3,w/h,.1,20),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
     updateLabels(r);
     const fb=floatingBodies();
@@ -721,11 +728,12 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle=`rgb(${clear.slice(0,3).map(v=>Math.round(clamp(v)*255)).join(',')})`;ctx.fillRect(0,0,r.width,r.height);
       for(const cell of cells){const pts=cell.tet.map(p=>project(p,r)),c=colors[geneIndex[cell.path[0]]??0];for(const f of faceIx){ctx.beginPath();ctx.moveTo(pts[f[0]].x,pts[f[0]].y);ctx.lineTo(pts[f[1]].x,pts[f[1]].y);ctx.lineTo(pts[f[2]].x,pts[f[2]].y);ctx.closePath();ctx.fillStyle=`rgba(${c.map(v=>Math.round(v*255)).join(',')},${alpha})`;ctx.fill();ctx.strokeStyle='rgba(241,239,233,.08)';ctx.stroke()}}
       drawBodies2D(fb,r);
+      if(typeof shader.afterDraw==='function'){try{shader.afterDraw({gl:null,context2D:ctx,canvas,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation})}catch(err){canvas.dataset.layerError=String(err?.message||err)}}
       drawPoints2D(r);
     }
     requestAnimationFrame(draw)
   }
-  const hasPoints=pointRecords.length>0;
+  const hasPoints=pointRecords.length>0||typeof shader.snapshot==='function';
   canvas.dataset.backgroundDrag=draggable?'true':'false';
   {
     canvas.style.pointerEvents='auto';
@@ -755,7 +763,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   }
   requestAnimationFrame(draw);
   api=Object.freeze({
-    id,shaderId:shader.id,element,canvas,projection,palette,inspectable,draggable,interactive:inspectable,localScope,
+    id,shaderId:shader.id,element,canvas,get projection(){return projection},palette,inspectable,draggable,interactive:inspectable,localScope,
     selectPoint,projectAddressCenter,projectBody,get container(){return container()},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
     get selectedPointId(){return selectedPointId},
