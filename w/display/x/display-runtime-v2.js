@@ -48,6 +48,8 @@ function makeSiteUI(id,host,raw){
     // Do not force grid-cell width/height or wipe identity-owned insets.
     // Stacking is deterministic within the site's isolated Display layer.
     const tie=Object.keys(state.fields).sort().indexOf(name);
+    el.style.setProperty?.('--ui-field-x',(c.x+b.x*c.w)+'px');
+    el.style.setProperty?.('--ui-field-y',(c.y+b.y*c.h)+'px');
     Object.assign(el.style,{
       position:'absolute',
       left:(c.x+b.x*c.w)+'px',
@@ -123,7 +125,7 @@ function floatingBodies(id){
   for(const other of specs.keys()){
     if(ROOT_IDS.includes(other))continue;const m=registry.getMount(other);if(!m||m.scope!==GLOBAL_SCOPE||!m.rawAddress)continue;
     const s2=surfaces.get(other),shader=s2?.module?.shader,root=s2?.previewFieldProjection?.root;
-    if((shader?.body?.fragment||shader?.fragment)&&root)out.push({id:other,path:m.rawAddress,shader,root,palette:specs.get(other)?.shader?.palette,title:siteTitle(other)});
+    if((shader?.body?.fragment||shader?.fragment)&&root)out.push({id:other,path:m.rawAddress,shader,root,projection:s2.previewFieldProjection,palette:specs.get(other)?.shader?.palette,title:siteTitle(other)});
   }
   return out;
 }

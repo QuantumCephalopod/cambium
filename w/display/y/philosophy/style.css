@@ -28,3 +28,6 @@
 .philosophy-global-site span{font:500 var(--type-rn2)/1 var(--mono);letter-spacing:.055em;white-space:nowrap}
 .philosophy-global-site:hover,.philosophy-global-site:focus-visible{outline:1px solid rgba(170,255,229,.42);background:rgba(9,18,22,.72);color:#fff}
 .philosophy-global-site[data-active="true"] span{color:rgba(202,255,237,.96)}
+
+.philosophy-project{font:inherit;color:#b4f5dc;background:rgba(5,14,16,.8);border:1px solid currentColor;padding:.6em;margin-top:.7em;cursor:pointer;max-width:100%;overflow-wrap:anywhere;text-align:left}
+.philosophy-project:focus-visible{outline:2px solid #fff;outline-offset:3px}
