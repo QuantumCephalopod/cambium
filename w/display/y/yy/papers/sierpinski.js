@@ -143,7 +143,7 @@ function ensureShadow(){
 }
 function relayoutWhenFaceReady(){
   if(state?.faceRelayout||!document.fonts?.load)return;state.faceRelayout=true;
-  document.fonts.load(typeFont(-1,500)).then(()=>{if(!state)return;try{pretextModule?.clearCache?.()}catch(_){}state.wisdomPrepared=new Map();state.namesFor=null;state.names=new Map()}).catch(()=>{});
+  document.fonts.load(typeFont(-1,500)).then(()=>{if(!state)return;try{pretextModule?.clearCache?.()}catch(_){}state.wisdomPrepared=new Map();state.lensReading=null;state.namesFor=null;state.names=new Map()}).catch(()=>{});
 }
 function ensurePretext(){
   relayoutWhenFaceReady();
@@ -863,7 +863,7 @@ function ensureBeing(entity,width){
     if(!text)text=g;
     const lines=beingLines(entity.id+'·v·'+g,text,BEING_FONT,Array.from({length:12},(_,j)=>({x:0,y:j*BEING_LH,w:240})));
     const bold=text.indexOf(' — ');
-    B.verts.push({i,gene:g,door,glyphs:beingGlyphs(ctx,lines,BEING_FONT,bold>0?bold:text.length),h:lines.length*BEING_LH,open:0});
+    B.verts.push({i,gene:g,door,text:text===g?'':text,glyphs:beingGlyphs(ctx,lines,BEING_FONT,bold>0?bold:text.length),h:lines.length*BEING_LH,open:0});
   });
   for(const e of (Array.isArray(body?.edges)?body.edges:[])){
     const idx=beingKeyIdx(e?.id);if(idx.length!==2||idx.some(x=>x<0))continue;
@@ -871,7 +871,7 @@ function ensureBeing(entity,width){
     const w=Math.min(520,width*.72),lines=beingLines(entity.id+'·e·'+e.id,text,BEING_FONT,Array.from({length:16},(_,j)=>({x:-w/2,y:j*BEING_LH,w})));
     const g=beingGlyphs(ctx,lines,BEING_FONT),n=g.length,h=lines.length*BEING_LH;
     g.forEach((q,j)=>{q.u0=n>1?j/(n-1)-.5:0;q.ty-=h/2;q.seed=random01(entity.id+e.id,j)*6.283;q.amp=.4+random01(entity.id+e.id,'a'+j)});
-    B.edges.push({key:e.id,a:idx[0],b:idx[1],glyphs:g,unravel:0,weave:0});
+    B.edges.push({key:e.id,text,a:idx[0],b:idx[1],glyphs:g,unravel:0,weave:0});
   }
   for(const f of (Array.isArray(body?.faces)?body.faces:[])){
     const idx=beingKeyIdx(f?.id);if(idx.length!==3||idx.some(x=>x<0))continue;
@@ -882,7 +882,7 @@ function ensureBeing(entity,width){
     const g=beingGlyphs(ctx,lines,FACE_FONT);
     g.forEach((q,j)=>{let a=random01(entity.id+f.id,'a'+j),b=random01(entity.id+f.id,'b'+j);if(a+b>1){a=1-a;b=1-b}
       const [c0,c1,c2]=BEING_CAN;q.rc=[c0[0]+a*(c1[0]-c0[0])+b*(c2[0]-c0[0]),c0[1]+a*(c1[1]-c0[1])+b*(c2[1]-c0[1])];q.x=q.rc[0]-BEING_CEN[0];q.y=q.rc[1]-BEING_CEN[1];q.seed=random01(entity.id+f.id,'s'+j)*6.283});
-    B.faces.push({key:f.id,idx,miss:[0,1,2,3].find(i=>!idx.includes(i)),glyphs:g,stir:0,weave:0});
+    B.faces.push({key:f.id,text,idx,miss:[0,1,2,3].find(i=>!idx.includes(i)),glyphs:g,stir:0,weave:0});
   }
   state.being=B;return B;
 }
@@ -922,6 +922,66 @@ function beingHit(x,y){
   let best=9,hit=null;for(const e of state.being?.edges||[]){const d=beingSegDist(m,G.P[e.a],G.P[e.b]);if(d<best){best=d;hit={kind:'edge',key:e.key}}}if(hit)return hit;
   let hz=-1e9;for(const f of state.being?.faces||[]){if(!G.front[f.key])continue;const [a,b,c]=f.idx.map(i=>G.P[i]);const z=a.vz+b.vz+c.vz;if(pointInTriangle(x,y,a,b,c)&&z>hz){hz=z;hit={kind:'face',key:f.key}}}
   return hit;
+}
+/* The body offers its present, authored parts; the shared drop owns the lock.
+ * Contact reads a finer resolution of that part without opening a door or
+ * changing the selected organism, its orientation, or its Descent stack. */
+const paperLensOffers=new Set();
+function paperLensParts(B,G){
+  const parts=new Map(),put=(kind,key,text,point)=>{if(!text?.trim()||!point)return;const target=id+'|'+encodeURIComponent(B.id)+'|'+kind+'|'+encodeURIComponent(key);parts.set(target,{id:target,kind,key,text,point})};
+  for(const v of B.verts)put('vert',v.i,v.text,G.P[v.i]);
+  for(const e of B.edges){const a=G.P[e.a],b=G.P[e.b];put('edge',e.key,e.text,{x:(a.x+b.x)/2,y:(a.y+b.y)/2})}
+  for(const f of B.faces)if(G.front[f.key]){const ps=f.idx.map(i=>G.P[i]);put('face',f.key,f.text,{x:ps.reduce((s,p)=>s+p.x,0)/3,y:ps.reduce((s,p)=>s+p.y,0)/3})}
+  for(const m of G.mets)put('met',m.id,metaboliteWisdomText(m.light.metabolite),m);
+  return parts;
+}
+function livePaperLensPart(target){return state?.mounted&&!state.host?.hidden&&state.current&&state.transition>=.82?state.lensParts?.get(target)||null:null}
+function withdrawPaperLens(){const L=globalThis.SSSDisplayLens;for(const target of paperLensOffers)L?.withdraw(target);paperLensOffers.clear();if(state){state.lensParts=null;state.lensReading=null;if(state.lensReader)state.lensReader.hidden=true}}
+function syncPaperLens(B,G){
+  const L=globalThis.SSSDisplayLens;if(!L?.offer)return;
+  state.lensParts=paperLensParts(B,G);
+  for(const target of paperLensOffers)if(!state.lensParts.has(target)){L.withdraw(target);paperLensOffers.delete(target)}
+  for(const target of state.lensParts.keys())if(!paperLensOffers.has(target)){
+    L.offer(target,{kind:'body',point:()=>{const p=livePaperLensPart(target);if(!p)return null;const r=state.textCanvas.getBoundingClientRect();return {x:r.left+p.point.x,y:r.top+p.point.y,r:9}},frame:()=>{const p=livePaperLensPart(target),r=p?paperLensReading(p):null;return r?.ready?r.frame:null}});paperLensOffers.add(target);
+  }
+}
+/* All line ranges are retained until Pretext reaches the end. The finite
+ * screen bounds one readable page, never the amount of admitted wording. */
+function paperLensLines(target,text,font,width){
+  const prepared=preparedWisdom(target,text,font);if(!prepared)return null;
+  const lines=[];let cursor={segmentIndex:0,graphemeIndex:0};
+  for(;;){const range=pretextModule.layoutNextLineRange(prepared,cursor,width);if(range===null)return lines;
+    if(range.end.segmentIndex===cursor.segmentIndex&&range.end.graphemeIndex===cursor.graphemeIndex)throw new Error('Papers lens layout made no progress');
+    lines.push(pretextModule.materializeLineRange(prepared,range));cursor=range.end;
+  }
+}
+function paperLensReading(part){
+  const rect=state.textCanvas.getBoundingClientRect(),hostRect=state.host?.getBoundingClientRect?.()||rect,local=state.ui?.carrier,carrier=local?{x:hostRect.left+local.x,y:hostRect.top+local.y,w:local.w,h:local.h}:{x:rect.left,y:rect.top,w:rect.width,h:rect.height},pad=typePx(0),lh=wisdomLineHeight(rect.width),font=wisdomFont(rect.width);
+  const availableW=Math.max(1,Math.min(rect.right??rect.left+rect.width,carrier.x+carrier.w)-Math.max(rect.left,carrier.x)-2*pad),availableH=Math.max(1,Math.min(rect.bottom??rect.top+rect.height,carrier.y+carrier.h)-Math.max(rect.top,carrier.y)-2*pad);
+  const ctx=state.textCanvas.getContext('2d');ctx.font=font;const folded=globalThis.SSSDisplayType?.fold?.(part.text)??part.text,advance=ctx.measureText(folded).width;
+  const width=Math.min(availableW,Math.max(Math.min(160,availableW),Math.sqrt(Math.max(1,advance)*lh*2)+2*pad)),innerW=Math.max(1,width-2*pad),rows=Math.floor((availableH-2*pad-lh)/lh);
+  const key=part.id+'\0'+part.text+'\0'+font+'\0'+innerW+'\0'+rows;
+  let reading=state.lensReading;
+  if(reading?.key!==key){const lines=rows>0&&innerW>=ctx.measureText('W').width?paperLensLines(part.id,part.text,font,innerW):null;reading=state.lensReading={key,id:part.id,page:0,lines:lines||[],ready:!!lines?.length,rows:Math.max(1,rows),font,lh,pad,width,height:Math.min(availableH,(Math.min(lines?.length||1,Math.max(1,rows))+1)*lh+2*pad),glyphPages:new Map()}}
+  reading.pages=Math.max(1,Math.ceil(reading.lines.length/reading.rows));reading.page=Math.min(reading.page,reading.pages-1);
+  const leftMin=Math.max(rect.left,carrier.x)+pad,topMin=Math.max(rect.top,carrier.y)+pad;
+  const left=Math.max(leftMin,Math.min(leftMin+availableW-reading.width,rect.left+part.point.x-reading.width/2)),top=Math.max(topMin,Math.min(topMin+availableH-reading.height,rect.top+part.point.y-reading.height/2));
+  reading.frame={left,top,width:reading.width,height:reading.height,r:Math.min(pad,reading.width/2,reading.height/2)};return reading;
+}
+function paperLensPage(delta){const r=state?.lensReading;if(!r?.ready)return false;const next=Math.max(0,Math.min(r.pages-1,r.page+delta));if(next===r.page)return false;r.page=next;return true}
+function paperLensReady(L,r){return r?.ready&&L?.round===0&&Math.abs(2*L.hx-r.width)<2&&Math.abs(2*L.hy-r.height)<2}
+function paperLensReader(part,r){const reader=state.lensReader;if(!reader)return;reader.hidden=false;if(reader.dataset.target!==part.id||reader.querySelector('p').textContent!==part.text){reader.dataset.target=part.id;reader.querySelector('p').textContent=part.text}reader.querySelector('small').textContent=(r.page+1)+' / '+r.pages}
+function paperLensClip(ctx,L,rect,outside=false){ctx.beginPath();if(outside)ctx.rect(0,0,rect.width,rect.height);if(L.round===0)ctx.roundRect(L.x-L.hx,L.y-L.hy,2*L.hx,2*L.hy,Math.min(L.corner||0,L.hx,L.hy));else ctx.arc(L.x,L.y,L.r,0,Math.PI*2);ctx.clip(outside?'evenodd':'nonzero')}
+function drawPaperLens(ctx,L,part,rect,d){
+  const r=paperLensReading(part);paperLensReader(part,r);
+  state.textCanvas.dataset.lensReading=part.id;state.textCanvas.dataset.lensReadingPage=(r.page+1)+'/'+r.pages;
+  if(!paperLensReady(L,r))return;
+  let glyphs=r.glyphPages.get(r.page);if(!glyphs){glyphs=beingGlyphs(ctx,r.lines.slice(r.page*r.rows,(r.page+1)*r.rows).map((line,i)=>({text:line.text,x:0,y:i*r.lh})),r.font);r.glyphPages.set(r.page,glyphs)}
+  const x=L.x-L.hx+r.pad,y=L.y-L.hy+r.pad;
+  ctx.save();ctx.setTransform(d,0,0,d,0,0);paperLensClip(ctx,L,rect);ctx.textBaseline='top';ctx.font=r.font;
+  if(state.tissueLetters)for(const g of glyphs){if(g.ch!==' ')state.tissueLetters.push({ch:g.ch,x:x+g.tx,y:y+g.ty,size:typePx(-1),fat:0,weight:1})}
+  else{ctx.fillStyle='rgb(223,243,234)';ctx.globalAlpha=1;for(const line of r.lines.slice(r.page*r.rows,(r.page+1)*r.rows).entries())ctx.fillText(line[1].text,x,y+line[0]*r.lh)}
+  if(r.pages>1){ctx.fillStyle='rgb(191,245,220)';ctx.globalAlpha=.8;ctx.font=typeFont(-2,400);ctx.fillText((r.page+1)+' / '+r.pages+' · SCROLL',x,L.y+L.hy-r.pad-r.lh)}ctx.restore();
 }
 /* ---------- ink membrane: an open sentence finds free space ----------
  * Open or folding sentences never overlap Papers/Display chrome or one another. Lights and vertices search a ring
@@ -1017,18 +1077,25 @@ function bindToDrop(Lz,ax,ay,b){const s=Lz.r*.72,w=b.x1-b.x0,h=b.y1-b.y0;
   return {ox:cx-ax-(b.x0+b.x1)/2,oy:cy-ay-(b.y0+b.y1)/2}}
 function drawWisdom(rect,cam,translate,metabolights,now){
   const LZ=lensLocal(state.textCanvas.getBoundingClientRect());state.tissueLens=LZ;
-  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect);state.inkScale=Math.max(1,Math.round(d*2)/2);state.tissueDpr=d;const earned=Boolean(state.current&&state.pretextStatus==='ready'&&smooth(clamp((state.transition-.50)/.32))>.01);state.tissueLetters=earned&&tissueOn()?[]:null;const TS=!!state.tissueLetters;const canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
+  const {ctx,d}=resizeWisdomCanvas(state.textCanvas,rect);state.inkScale=Math.max(1,Math.round(d*2)/2);state.tissueDpr=d;const earned=Boolean(state.current&&state.pretextStatus==='ready'&&smooth(clamp((state.transition-.50)/.32))>.01);state.tissueLetters=earned&&tissueOn()?[]:null;let TS=!!state.tissueLetters;const canvas=state.textCanvas,entity=state.current?state.identities.get(state.current.id):null,lights=Array.isArray(metabolights)?metabolights:[];
   canvas.dataset.pretextStatus=state.pretextStatus;canvas.dataset.wisdomLines='0';canvas.dataset.wisdomId=entity?.id||'';canvas.dataset.wisdomMetabolites=String(lights.length);canvas.dataset.wisdomSource='metabolites';canvas.dataset.wisdomState='hidden';delete canvas.dataset.wisdomComplete;
   const dt=Math.min(.05,Math.max(0,(now-(state.beingLast||now))/1000));state.beingLast=now;
-  if(!state.current||!entity){canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
-  if(state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.wisdomState=state.pretextStatus;return}
-  const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){canvas.dataset.wisdomState='lod-hidden';state.beingGeo=null;return}
+  delete canvas.dataset.lensReading;delete canvas.dataset.lensReadingPage;
+  if(!state.current||!entity){withdrawPaperLens();canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
+  if(state.pretextStatus!=='ready'||!pretextModule){withdrawPaperLens();canvas.dataset.wisdomState=state.pretextStatus;return}
+  const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){withdrawPaperLens();canvas.dataset.wisdomState='lod-hidden';state.beingGeo=null;return}
   const B=ensureBeing(entity,rect.width),V=state.renderer.V0,sc=state.current.scale;
   const proj=local=>{const r=qRot(state.localQ,local),p=projectWorldPoint(add(r,translate),cam,rect.width,rect.height);p.vz=r[2];return p};
   const P=V.map(v=>proj(mul(v,sc))),front={};for(const f of B.faces)front[f.key]=qRot(state.localQ,V[f.miss])[2]<0;
   const font=wisdomFont(rect.width),metGeo=[];
   for(const light of lights){const p=proj(light.center);metGeo.push({id:light.id,x:p.x,y:p.y,light})}
   state.beingGeo={P,front,mets:metGeo,doors:B.verts.map(v=>v.door)};
+  syncPaperLens(B,state.beingGeo);
+  const contact=LZ?.lock?.kind==='body'?livePaperLensPart(LZ.lock.id):null,layout=contact?paperLensReading(contact):null,reading=paperLensReady(LZ,layout)?contact:null;
+  if(contact)paperLensReader(contact,layout);else{state.lensReading=null;if(state.lensReader)state.lensReader.hidden=true}
+  /* The same canvas carries the finer ink inside the actual drop. Ordinary
+   * body ink remains outside; no detached panel or duplicate text is added. */
+  if(reading){TS=false;ctx.save();paperLensClip(ctx,LZ,rect,true)}
   const hov=state.hover,peek=state.pointer?.moved?null:(hov?beingHit(hov.x,hov.y):null);state.beingPeek=peek;
   const open=state.inner||peek,m=hov?[hov.x,hov.y]:[-1e4,-1e4];
   state.canvas.style.cursor=peek?'pointer':'';
@@ -1135,6 +1202,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   canvas.dataset.beingEdges=String(B.edges.length);canvas.dataset.beingFaces=String(B.faces.length);
   state.inkOverPanel=Boolean(state.inkPanel&&taken.some(b=>inkOverlap(b,[state.inkPanel])>1));
   canvas.dataset.inkOpen=String(taken.length);canvas.dataset.inkCollisions=String(taken.filter((b,i)=>inkOverlap(b,inkChrome(rect))>1||inkOverlap(b,taken.slice(i+1))>1).length);
+  if(reading){ctx.restore();drawPaperLens(ctx,LZ,reading,rect,d)}
 }
 /* Organism names: the metabolite physiology one rank up. Before any selection every organism's own
  * identity (`id · title`) rests as a cluster of its letters on its body, so an organism too small to
@@ -1350,8 +1418,8 @@ function draw(now){
 /* The lens is the instrument and the LOD: organisms' particle letters exist, and organisms can be peeked
  * or entered, only where Display's glass lens lies. Without a lens nothing is gated. */
 let lensAccess=null;
-function lensLocal(rect){const L=lensAccess?.();if(!L||!rect)return null;return {x:L.x-(rect.left||0),y:L.y-(rect.top||0),r:L.r}}
-function inLens(L,x,y,pad=0){return !L||Math.hypot(x-L.x,y-L.y)<=L.r+pad}
+function lensLocal(rect){const L=lensAccess?.();if(!L||!rect)return null;return {...L,x:L.x-(rect.left||0),y:L.y-(rect.top||0)}}
+function inLens(L,x,y,pad=0){if(!L)return true;if(L.round===0&&Number.isFinite(L.hx)&&Number.isFinite(L.hy)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+pad}return Math.hypot(x-L.x,y-L.y)<=L.r+pad}
 function hitGlobal(x,y,width,height,now=performance.now()){if(!inLens(lensLocal(state.canvas.getBoundingClientRect()),x,y))return '';let best=null;const q=overviewOrientation();for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width,now),q,FAR_Z,width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),FAR_Z,height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
 function hitChild(x,y,width,height){
   if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
@@ -1367,6 +1435,10 @@ function hitChild(x,y,width,height){
 
 function attachInput(){
   const canvas=state.canvas;
+  const reader=document.createElement('section');reader.className='papers-lens-reader';reader.setAttribute('aria-label','Papers lens reading');reader.hidden=true;
+  reader.append(document.createElement('p'),document.createElement('small'));state.host.append(reader);state.lensReader=reader;
+  canvas.addEventListener('wheel',e=>{const r=canvas.getBoundingClientRect(),L=lensLocal(r);if(!L?.lock||!livePaperLensPart(L.lock.id)||!inLens(L,e.clientX-r.left,e.clientY-r.top))return;if(e.deltaY){paperLensPage(e.deltaY>0?1:-1);e.preventDefault()}},{passive:false});
+  addEventListener('keydown',e=>{if(!state?.mounted||e.altKey||e.ctrlKey||e.metaKey||e.target?.closest?.('input,textarea,select,[contenteditable="true"]'))return;const L=lensLocal(state.canvas.getBoundingClientRect());if(!L?.lock||!livePaperLensPart(L.lock.id))return;const delta={PageDown:1,PageUp:-1,Home:-Infinity,End:Infinity}[e.key];if(delta!==undefined){paperLensPage(delta);e.preventDefault()}});
   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;state.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
   canvas.addEventListener('pointermove',e=>{{const r=canvas.getBoundingClientRect();state.hover={x:e.clientX-r.left,y:e.clientY-r.top}}const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){if(state.current){state.beingTargetQ=null;state.localQ=rotateQ(state.localQ,dx,dy)}else if(state.backgroundDrag)W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
   const end=e=>{
@@ -1402,10 +1474,10 @@ function render({host,content,projection,backgroundDrag=true,dependency=null,len
   const shared=host.querySelector('.interlocutor-background');if(shared)shared.style.pointerEvents='none';
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
   if(!state||state.host!==host){if(!initialize(host,projection,backgroundDrag,dependency)){host.hidden=true;return false}}else{state.dependency=dependency;if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.environmentCanvas.hidden=false;state.canvas.hidden=false;state.textCanvas.hidden=false;state.physiology.hidden=false;state.sourceInfo.hidden=false;state.chamberLabels.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
-  if(ui){ui.bind(state.hud,'hud');ui.bind(state.physiology,'physiology');ui.bind(state.label,'label');ui.bind(state.sourceInfo,'sourceInquiry')}
+  if(ui){state.ui=ui;ui.bind(state.hud,'hud');ui.bind(state.physiology,'physiology');ui.bind(state.label,'label');ui.bind(state.sourceInfo,'sourceInquiry')}
   return true;
 }
-function unmount({host,content}={}){if(state){state.mounted=false;state.environmentCanvas.hidden=true;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
+function unmount({host,content}={}){withdrawPaperLens();if(state){state.mounted=false;state.environmentCanvas.hidden=true;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
 function activateFieldPoint(){}
 
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));

@@ -1,6 +1,6 @@
 # NUTRIENT — representation readiness and recursive handoff — 2026-10-10
 
-status: NATIVE SOURCE/GL FIXTURE PASS · LIVE-BROWSER GPU WITNESS OPEN
+status: CANONICAL MECHANISMS + DEPLOYMENT WITNESSED · LIVE-BROWSER GPU / CANDIDATE ACCEPTANCE OPEN
 owner: Display Continuity; Schattenseiten and site-holon membranes supply substitution witnesses
 provenance: user request after confirming merged feed-preview stage; Schattenseiten 64→512 already a witnessed transition, while Display acquired detail with separate pending Map
 
@@ -42,3 +42,17 @@ A new generic regression reproduces Papers' refusal on the prior runtime. The st
 Native regression, shared acquisition utility, Schattenseiten GL fixture, address and full generated-artifact checks passed. A separate bounded Display HOME records this renderer repair only. The original recursive GPU/visual acceptance is still OPEN, and this nutrient is not retired. Candidate browser acceptance could not be obtained: the browser URL policy rejected the local file fixture; no alternate surface or workaround was used. Owner promotion to the public HTTPS deployment and a new actual browser/GPU witness remain necessary.
 
 Child-owned source-sample availability and the bounded Schattenseiten encounter are recorded in that child's new local HOME. Their unresolved live media acceptance remains in its own intake. Parent uptake is limited to the shared receiving-renderer counterexample; no shared root DNA change or further ancestor backpropagation was earned.
+
+## Canonical promotion and same-owner intake coalescence — 2026-10-17
+
+Canonical `42045c2bc62bc2903a22c63939ed1ffdc930629a` includes feed-preview/detailed-source handoff PR #177 (`9ab6d354c`), shared recursive readiness #178 (`ef1ad3086`) and receiving-renderer guard #184 (`b4b74dd02`). Current source and inherited local law carry these mechanisms. Pages run [39004025881](https://github.com/self-similar-systems/cambium/actions/runs/39004025881) successfully deployed that exact canonical head. Source promotion and provider deployment no longer await an owner action; the dated native/staging/browser records above retain their original scope.
+
+The earlier same-owner `NUTRIENT__feed-handoff-lod__20261010.md` is superseded by this more complete readiness question. Its exact carrier, including today's admitted reconciliation encounter, is retained at `../_waste/superseded-NUTRIENT__feed-handoff-lod__20261010-20261017.md`. Its remaining acceptance is preserved here: a public opted-in child's identity-preserving preview must remain usable while immutable detail acquires, detailed source must be consumed only on encounter, cache/retry/deep-link behavior must remain correct, and a refused detailed renderer must preserve the prior visible encounter, local container, truthful history and return stack. No private feed or eagerly acquired interior is authorized.
+
+The next witness is the deployed HTTPS candidate at those boundaries, then genuine media/GPU handoff, low-only optics, failure fallback, allocation/retirement and physical-device acceptance at the locally justified ranks. Oct14's 2D-fallback observations and native GL fixtures do not earn those exits. Schattenseiten's own continuity/media nutrient and HOME remain independently owned. No original GPU/visual nutrient is retired by source promotion alone.
+
+Intake correction: today's admitted reconciliation entry named custom-body/frame-return promotion as PR #167. Inspection of the exact merge diffs identifies PR #170 (`0a4020d3b`); #167 carried the earlier address/re-entry truth correction. This correction changes no existing HOME or frozen source encounter.
+
+## Bounded deployed receiving-renderer acceptance — 2026-10-17
+
+The current canonical source computes bundle `7dd7b3fa65d3a73e`, matching the actual delivered script references. A direct live Papers entry first acquired detail while Philosophy remained present; after Papers refused in this browser, the visible host stayed `organism:philosophy`, the address returned to `#main:overview`, and the status truthfully reported `ENCOUNTER UNAVAILABLE · RETRY THE ENCOUNTER`. This closes the earlier blank-body counterexample for this particular deployed refusal case. It does not establish rendering on usable WebGL hardware, success-path visual parity, network-fault behavior, real media/tier upgrade or GPU retirement. Exact bounded DOM evidence lives at `lens-papers-20261017/deployed-boundary-witness.json`; the new readable-lens candidate has separate native-only staging witnesses. The overall nutrient remains OPEN.

@@ -137,3 +137,24 @@ console.log('pass-through click / pull-to-take / ownership witness: PASS');
   assert.throws(()=>L.offer('x',{kind:'field'}));assert.throws(()=>L.offer('',{kind:'body',point:()=>null}));
   console.log('soft-lock field/body/vanish/follow/pull witness: PASS');
 }
+
+/* A contacted body can lend measured readable extent without changing its hit area. */
+{
+  let layoutCalls=0;const target='specimen:second|part',point={x:640,y:430,r:8};
+  L.offer(target,{kind:'body',point:()=>point,frame:()=>{layoutCalls++;return {left:500,top:300,width:280,height:180,r:16}}});
+  assert.equal(L.resolveTargets().find(t=>t.id===target).frame,undefined);
+  assert.equal(layoutCalls,0,'uncontacted bodies do no readable layout work');
+  const t=L.resolveTargets(target).find(t=>t.id===target);assert.equal(layoutCalls,1);
+  assert.equal(t.cx,point.x,'finer reading extent never replaces the actual contact point');
+  assert.equal(t.hx,8);
+  const view={w:800,h:600},s=L.create(null,view);s.x=640;s.y=430;L.lockTo(s,t);
+  for(let i=0;i<300;i++)L.step(s,[],1/120,view,null,t);
+  const g=L.geometry(s,null);assert.equal(g.round,0);assert.equal(g.lock.kind,'body');assert.equal(g.focus,0);
+  assert.ok(Math.abs(g.hx-140)<.1&&Math.abs(g.hy-90)<.1);
+  assert.ok(L.contains(s,s.x+120,s.y+60),'pass-through surface follows the actual readable body');
+  const far={...t,frame:{cx:-500,cy:2000,hx:1200,hy:900,r:16}};
+  for(let i=0;i<300;i++)L.step(s,[],1/120,view,null,far);
+  const bounded=L.geometry(s,null);assert.ok(bounded.x-bounded.hx>=0&&bounded.y-bounded.hy>=0&&bounded.x+bounded.hx<=800&&bounded.y+bounded.hy<=600);
+  L.withdraw(target);L.step(s,[],1/120,view,null,null);assert.equal(s.lock,null);assert.equal(L.geometry(s,null).round,1);
+  console.log('identity-owned readable extent, lazy acquisition, viewport and release witness: PASS');
+}

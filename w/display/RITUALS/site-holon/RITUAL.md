@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.9"
+version: "3.10"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -91,6 +91,8 @@ A site-holon may expose an optional bounded public `feed_preview` under its own 
 A site's existing `render` hook may refuse with `false`, throw, or leave its host hidden. Display's encounter handoff then retains the prior valid body under the organism receptor's acceptance law. A legacy hook returning no value remains accepted when its host is visible; no new rendering schema or shared hardware fallback is imposed.
 
 ## Global background-drag default
+
+A body lens offer may optionally lend `frame()` after contact under Display's organism-owned lens contract. Its site owns the actual authored representation and continuation; the receiving lens geometry includes the real shape and locked identity. No finer frame is required from legacy offers.
 
 Background tetrahedral orientation is a shared Display interaction, not a specimen-specific feature and not a consequence of local inspection capability.
 

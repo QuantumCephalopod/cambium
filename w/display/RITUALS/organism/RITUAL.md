@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.27"
+version: "3.28"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -96,6 +96,8 @@ This is an **assimilated conceptual/architectural boundary**, not a claim that s
 
 
 ### Mounted anatomy and frame work
+
+For an already-contacted body, the optional identity-owned lens offer `frame()` may lend a measured readable rectangle. Display acquires that extent only for the locked identity, springs the same drop into it and bounds it to the viewport; the ordinary contact point remains the hit target. Existing body offers keep their circle, and field offers keep their exact UI rectangle. The render-context lens preserves half extents, rounded geometry and lock identity as well as the legacy radius. A failed finer extent retains the ordinary body. Source wording, layout, continuation and readable preview remain site-owned; a lock alone does not earn Descent or source mutation. This is a bounded native staging witness with Papers as the second consumer; actual glass/readability/device acceptance remains open.
 
 An ordinary small site still resolves its source anatomy once at mounting. A site with child-owned `_feed/display-preview.json` can instead be represented by that bounded outer body in the parent while its detailed source stays outside the global HTML. Entering that site acquires its published immutable detailed projection, derives its full field once, and hands over under the existing membrane transition. The parent keeps the child's preview body for future visits. View, language and activity do not remint that source. A changed source revision requires truthful reentry, not an implicit overwrite of the existing organism. Dynamic appearance and movement remain in source-owned render/shader hooks.
 
