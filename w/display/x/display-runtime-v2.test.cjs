@@ -88,10 +88,10 @@ assert.strictEqual(f.collected[0],f.projected.get('organism:origin').root);
 assert.equal(runtime.navigateGlobal('wx'),true);
 for(let frame=0;frame<30;frame++){
   const environment=f.options.get('organism:nested').environment();
-  assert.equal(environment.hostId,'organism:branch');assert.equal(environment.path,'x');
-  assert.deepEqual(Array.from(environment.place.center),N.cellForPath('x').center);
+  assert.equal(environment.hostId,'organism:origin');assert.equal(environment.path,'wx');
+  assert.deepEqual(Array.from(environment.place.center),N.cellForPath('wx').center);
 }
-assert.strictEqual(f.collected[1],f.projected.get('organism:branch').root);
+assert.equal(f.collected.length,1,'mount prefixes do not create independently rooted host interiors');
 f.W.language='de';f.emit('sss:language');assert.equal(f.renders.at(-1).language,'de');
 assert.equal(f.W.targets.find(t=>t.path==='wx').titles['organism:nested'],'Deutsch organism:nested');
 runtime.receiveActivity({siteId:'organism:nested',kind:'fixture',projectionChanged:true});assert.equal(f.pulses.get('organism:nested'),1);assert.equal(f.renders.at(-1).activity.kind,'fixture');
@@ -142,6 +142,37 @@ for(const address of ['w','y']){
   cycle.runtime.navigateGlobal(address);cycle.emit('sss:membrane-ascend',{id:address==='w'?ids[1]:ids[3]});
   const explicit=rootArrivals().at(-1);assert(explicit.place?.k>0,'explicit membrane zoom-out lost its place');assert.equal(explicit.bodyId,address==='w'?ids[1]:ids[3]);
 }
+/* Global visits do not become walked parents. Actual body descent retains its
+ * own container, and the browser's history can independently restore a visit. */
+for(const first of ['w','wx','y'])for(const second of ['w','wx','y']){
+ const f=boot();f.runtime.navigateGlobal(first);f.runtime.navigateGlobal(second);
+ assert.equal(f.runtime.state.stack.length,1);
+ assert.equal(f.runtime.state.stack[0].activeAddress,'');
+ const visited=f.history.at(-1).state,expected=f.runtime.state.activeIds[0];
+ f.emit('sss:membrane-ascend',{id:expected});
+ assert.equal(f.runtime.state.activeAddress,'');assert.equal(f.runtime.state.stack.length,0);
+ const stable=[f.history.length,f.swaps.length];f.emit('sss:membrane-ascend',{id:ids[0]});
+ assert.deepEqual([f.history.length,f.swaps.length],stable,'outside at root is inert');
+ f.pop(visited,'#main:'+second);assert.equal(f.runtime.state.activeAddress,second,'browser history restores the visit');
+ f.emit('sss:membrane-ascend',{id:expected});assert.equal(f.runtime.state.activeAddress,'','history does not alter structural parent');
+}
+{
+ const f=boot();f.W.inspect('w');
+ f.emit('sss:enter-body',{from:ids[0],id:ids[2]});
+ assert.equal(f.runtime.state.activeAddress,'wx');assert.equal(f.runtime.state.stack[0].localView,'w');
+ f.emit('sss:membrane-ascend',{id:ids[2]});
+ assert.equal(f.runtime.state.activeAddress,'');assert.equal(f.W.view,'w','body ascent returns to the actual local container');
+ f.runtime.navigateGlobal('w');f.emit('sss:enter-body',{from:ids[1],id:ids[2]});
+ assert.equal(f.runtime.state.activeAddress,'w','a textual mount prefix alone does not offer a child body');
+}
+{
+ const f=boot();f.runtime.navigateGlobal('w');const obsolete=f.history.at(-1).state;
+ f.runtime.navigateGlobal('y');const visited=f.history.at(-1).state;
+ visited.stack.push({...obsolete,stack:undefined});
+ f.pop(visited,'#main:y');
+ assert.equal(f.runtime.state.stack.length,1,'old browser snapshots discard visit-derived parent links');
+ f.emit('sss:membrane-ascend',{id:ids[3]});assert.equal(f.runtime.state.activeAddress,'');
+}
 /* Real promise-based public feed boundary: same proxy identity; body materializes only after acquisition. */
 async function feedHandoffWitness(){
   const drain=async()=>{for(let i=0;i<24;i++)await Promise.resolve()};
@@ -161,6 +192,12 @@ async function feedHandoffWitness(){
   assert.strictEqual(f.options.get(ids[0]).bodies().find(b=>b.id===feedId).root,before,'host preview is stable across handoff');
   f.runtime.navigateGlobal('');f.runtime.navigateGlobal('w');
   assert.deepEqual(f.fetches,[feedId],'revisit reuses acquired immutable feed');
+
+  const sibling=boot(1,'',{}, {[feedId]:'hold'});
+  sibling.runtime.navigateGlobal('y');sibling.runtime.navigateGlobal('w');
+  sibling.held.shift()();await drain();
+  sibling.emit('sss:membrane-ascend',{id:feedId});
+  assert.equal(sibling.runtime.state.activeAddress,'','lazy acquisition never makes the prior sibling its parent');
 
   const race=boot(1,'',{}, {[feedId]:'hold'});
   race.runtime.navigateGlobal('w');race.home.click({preventDefault(){}});

@@ -1,85 +1,13 @@
-# NUTRIENT — outside click is structural rank ascent, never encounter-history return — 2026-10-03
+# Outside click — native structural correction earned; deployed acceptance open
 
-status: OPEN / ADMITTED
-source: Philipp, clarification chat 2026-10-03
-target: github.cambium → display → navigation
-related: `RITUALS/navigation/RITUAL.md`
+Original admitted requirements and continuation are source-exact in `_waste/catabolized-outside-click-native-20261017.md`. Source/native act is durable in `_root/display-ascent-legal-visitor-20261017T113513Z.json`.
 
-## encounter
+## Earned in staging
 
-The intended navigation invariant is simpler than browser/page history:
+Global minimap/hash jumps establish the destination's actual containing-body context. Actual body descent preserves the parent's local container; outside returns there and the next local outside gesture pops one rank. Previous visits and textual mount prefixes do not create organism ancestry. Root outside is inert. History restoration validates structural context against current body offers. Receiving-renderer refusal, pointer pass-through, identity, address and global orientation contracts remain.
 
-> click in → one structural descent
->
-> click out → one structural ascent
+Native regression: every pair of fixture global targets, deep direct/hash entry, real body entry from a local container, previous-format history, lazy detail, refusal and root no-op. Actual field pointer handlers exercise mouse and touch types through realized recursive containers; restored container is reconciled before the first ascent. Original runtime fails the strengthened parent regression; candidate passes. Full checker 234247; address 38; exact artifact 11249 files; bundle `56e5bb7caa57b40b`.
 
-This relation should repeat at every rank until the current root is reached.
+## Remaining exit
 
-At the root / top-level overview, an outside click is a no-op.
-
-## current wound
-
-A global-navigator jump can currently leave prior encounter history acting like ancestry.
-
-Observed example:
-
-1. witness is in Papers;
-2. global navigator jumps directly to Crawlerbait;
-3. outside click from Crawlerbait returns to Papers.
-
-That is the wrong topology. Papers is a previously visited sibling, not Crawlerbait's parent.
-
-## invariant
-
-Outside-click ascent is determined only by the **current structural containment path**.
-
-It must not be derived from:
-
-- previously visited site-holon;
-- browser history order;
-- last global-navigator destination;
-- a sibling encounter stack.
-
-A direct global jump to a site must establish that site's truthful structural path. Subsequent ascent pops exactly one rank of that path.
-
-Therefore, for the current top-level site population:
-
-`Papers → global jump → Crawlerbait → outside`
-
-must yield:
-
-`Philosophy / global root`
-
-not Papers.
-
-At the global root:
-
-`outside → no change`.
-
-## self-similar interaction grammar
-
-The visitor should learn one repeated relation rather than separate page-navigation rules:
-
-- select content/body → descend inward;
-- select outside current content → ascend outward;
-- repeat at every rank;
-- no hidden "back" semantic is attached to the gesture.
-
-Browser back/forward may remain browser history, but it must not define the meaning of spatial outside-click ascent.
-
-## acceptance
-
-1. outside click ascends exactly one structural rank;
-2. global sibling jumps do not become parent-child history;
-3. ascent after a global jump follows the destination's ancestry;
-4. root outside-click is a no-op;
-5. repeated descent/ascent is inverse and rank-local;
-6. site-holon identity and global orientation survive ascent;
-7. no special-case rule names Papers, Crawlerbait, Philosophy, Impressum, Datenschutz or Schattenseiten;
-8. desktop and touch witnesses exercise the same topology.
-
-This is a navigation-law correction, not a request for browser-history emulation.
-
-## Continuation admitted — 2026-10-17
-
-Philipp authorized the combined meal: live DE/EN visitor witness followed by structural outside-click correction, bundled on the writable fork. Re-enter current canonical `b5a5e30304f4d5e5e451bc02ee0c139116e0bdb4`. Keep the public current browser witness distinct from candidate navigation/native acceptance; preserve source wording, identity, orientation and browser back/forward. Every unearned exit stays explicit.
+After owner promotion, exercise the actual candidate browser UI: sibling global jump followed by outside, real body entry/return to local container, repeated local ranks, root no-op, back/forward and pointer/touch. Current local-file browser policy prevents candidate fixture loading; it is not bypassed with another serving surface. Native pointer/GL fixtures are not a deployed browser/device witness. Keep this residue until visitor witness and local HOME/feed return are durable.

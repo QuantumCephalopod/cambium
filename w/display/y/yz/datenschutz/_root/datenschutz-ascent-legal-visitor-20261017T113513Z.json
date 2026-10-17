@@ -1,0 +1,63 @@
+{
+  "kind": "HOME",
+  "event_id": "datenschutz-ascent-legal-visitor-20261017T113513Z",
+  "home_at_utc": "2026-10-17T11:35:13.273913Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "organism": "datenschutz",
+  "entrypoint": "datenschutz:ε",
+  "operation": "witness-legal-wide-delivery",
+  "outcome": "PASS/EARNED — broad-screen deployed localisation matches source; narrow-viewport acceptance remains OPEN.",
+  "changed_scope": [
+    "Owner-local public German/English visitor and exact source/link witness",
+    "Source-exact spent intake preimage retained; remaining visitor acceptance narrowed"
+  ],
+  "context": {
+    "source_snapshot": "b5a5e30304f4d5e5e451bc02ee0c139116e0bdb4",
+    "intake_commit": "91bfd364134252ec161e8c1995ccaccd628b28bf",
+    "public_pages": {
+      "run_id": 39027880726,
+      "head_sha": "b5a5e30304f4d5e5e451bc02ee0c139116e0bdb4",
+      "conclusion": "success"
+    },
+    "public_witnesses": [
+      {
+        "observed_at_utc": "2026-10-17T11:29:04.746Z",
+        "url": "https://sss.saarland/privacy/",
+        "language": "de",
+        "css_viewport_width": 1348,
+        "css_viewport_height": 936,
+        "normalized_text_sha256": "49f33d5397c188e8cb1681df07b4928d41428a3ed15e912349e49214f041d022",
+        "ordered_href_sha256": "8df95bd046d807d349478ea21c2b471372bb901ea1b4a5805e990572035724ad",
+        "source_aperture": "public/privacy/index.html",
+        "source_aperture_sha256": "23ce78d00f1e373376cec8320d3d1b28de5119a7e83e7f318a978f4658c2de7d",
+        "comparison": "PASS: complete DOM text after whitespace removal; exact ordered authored hrefs"
+      },
+      {
+        "observed_at_utc": "2026-10-17T11:29:05.236Z",
+        "url": "https://sss.saarland/privacy/en/",
+        "language": "en",
+        "css_viewport_width": 1348,
+        "css_viewport_height": 936,
+        "normalized_text_sha256": "4fde6843aea11221aca64cf6c6806f2709045baa767f7b77ba1b00f618e0fa7b",
+        "ordered_href_sha256": "c35caf0d1a05261e41ce0b0e18e16d20526127e3ea549f16850a746424b40cde",
+        "source_aperture": "public/privacy/en/index.html",
+        "source_aperture_sha256": "038ffaeb323a9290b0fe2af7bf963e26d814e941c11d9e5ce4cbfbe1f6b387c7",
+        "comparison": "PASS: complete DOM text after whitespace removal; exact ordered authored hrefs"
+      }
+    ],
+    "intake_catabolism": [
+      {
+        "source": "_stomach/NUTRIENT__legal-localisation__20261017.md",
+        "waste": "_waste/catabolized-legal-localisation-wide-20261017.md",
+        "preimage_sha256": "9f4112d3d5afeb4bb86fca48a6812bff2447e8c2928892c74f4e9cefbbf0d048",
+        "preimage_bytes": 1841,
+        "disposition": "coalesced to actual narrow-viewport acceptance"
+      }
+    ],
+    "continuation": "_stomach/NUTRIENT__legal-localisation__20261017.md",
+    "limits": [
+      "Broad-screen actual public witness only; no narrow viewport, phone/touch-device or complete GPU/body-label visual claim.",
+      "No legal wording, provider-cleanup state, mail configuration, contacts, INDEX or _cambium change."
+    ]
+  }
+}

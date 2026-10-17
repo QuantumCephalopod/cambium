@@ -157,6 +157,23 @@ function acquireTarget(ids){
 }
 let activeIds=[...ROOT_IDS],activeAddress='',stack=[],restoring=false;
 function sameIds(a,b){return a.length===b.length&&a.every((x,i)=>x===b[i])}
+/* A walked parent is a container that actually offers the child body. A mount's
+ * textual prefix and an earlier visit alone do not cross an organism membrane. */
+function structuralStack(ids,frames=[]){
+  if(sameIds(ids,ROOT_IDS))return [];
+  const result=[],seen=new Set(ids);let children=ids;
+  for(let i=frames.length-1;i>=0;i--){
+    const p=frames[i];if(!p||!Array.isArray(p.activeIds)||p.activeIds.some(id=>seen.has(id)))break;
+    const r=resolveGlobal(p.activeAddress||'');
+    if(!sameIds(r.interlocutors.map(x=>x.interlocutorId),p.activeIds))break;
+    const offered=new Set(p.activeIds.flatMap(id=>floatingBodies(id).map(b=>b.id)));
+    if(!children.every(id=>offered.has(id)))break;
+    result.unshift({activeIds:[...p.activeIds],activeAddress:p.activeAddress||'',localView:typeof p.localView==='string'?p.localView:''});
+    if(sameIds(p.activeIds,ROOT_IDS))return result;
+    p.activeIds.forEach(id=>seen.add(id));children=p.activeIds;
+  }
+  return [{activeIds:[...ROOT_IDS],activeAddress:'',localView:''}];
+}
 function resolveGlobal(path=''){return registry.resolve(GLOBAL_SCOPE,path,{width:innerWidth,height:innerHeight})}
 function snap(){return {globalScope:GLOBAL_SCOPE,activeIds:[...activeIds],activeAddress,stack:stack.map(x=>({...x,activeIds:[...x.activeIds]})),localView:W.view}}
 function composition(){const c=H.composeInterlocutors(activeIds.map(interlocutorId=>({interlocutorId})),{width:innerWidth,height:innerHeight});document.documentElement.dataset.composition=c.mode;document.documentElement.dataset.compositionAxis=c.axis||'';stage.dataset.composition=c.mode;stage.dataset.axis=c.axis||'';stage.style.setProperty('--interlocutor-columns',String(c.columns||1));return c}
@@ -213,7 +230,7 @@ function installEncounter(ids,address,nextStack,localView='',source='encounter-c
   installingEncounter=true;
   try{
     for(const id of ids)activateField(id);
-    activeIds=[...ids];activeAddress=address;stack=nextStack;syncGlobalNavigator();
+    activeIds=[...ids];activeAddress=address;stack=structuralStack(ids,nextStack);syncGlobalNavigator();
     if(inspectCapable(activeIds)&&localView)W.inspect(localView,source);else W.clearInspection(source);
     render(W.view,{retainPrior:true,requireReady:true});
   }catch(error){
@@ -227,11 +244,11 @@ function installEncounter(ids,address,nextStack,localView='',source='encounter-c
     throw error;
   }finally{installingEncounter=false}
 }
-function enter(r,path,push=true){
+function enter(r,path,push=true,parents=[]){
   if(!r.interlocutors.length)return false;
   // Expensive per-site geometry is installed only at the membrane crossing,
   // under the closing fold; the parent proxy has remained visible until now.
-  const nextStack=[...stack,{activeIds:[...activeIds],activeAddress,localView:W.view}];
+  const nextStack=structuralStack(r.interlocutors.map(x=>x.interlocutorId),parents);
   installEncounter(r.interlocutors.map(x=>x.interlocutorId),path,nextStack);
   writeHistory(push);
   return true;
@@ -243,7 +260,7 @@ function feedWound(error){
   stateEl.textContent=(error?.code==='RENDER_UNAVAILABLE'?'ENCOUNTER UNAVAILABLE':'FEED UNAVAILABLE')+' · RETRY THE ENCOUNTER';
   writeHistory('replace');
 }
-function navigateGlobal(path,push=true,origin=null){
+function navigateGlobal(path,push=true,origin=null,parents=[]){
   const r=resolveGlobal(path);if(!r.interlocutors.length)return false;
   const ids=r.interlocutors.map(x=>x.interlocutorId);
   if(fold.busy)return false;
@@ -251,7 +268,7 @@ function navigateGlobal(path,push=true,origin=null){
   if(path===activeAddress&&sameIds(ids,activeIds)){if(inspectCapable())setLocalView('','global-current');if(push==='replace')writeHistory('replace');return true}
   const context={origin,from:activeAddress,to:path};
   const acquired=acquireTarget(ids);
-  const swap=()=>fold.swap(()=>token===handoffIntent?enter(r,path,push):false,context);
+  const swap=()=>fold.swap(()=>token===handoffIntent?enter(r,path,push,parents):false,context);
   const launch=()=>{try{const result=swap();if(result&&typeof result.catch==='function')result.catch(error=>{if(token===handoffIntent)feedWound(error)})}catch(error){if(token===handoffIntent)feedWound(error)}};
   if(!acquired){launch();return true}
   // The parent keeps displaying the child-owned preview while detail arrives.
@@ -261,7 +278,7 @@ function navigateGlobal(path,push=true,origin=null){
   return true;
 }
 function leave(push=true){
-  if(!stack.length)return navigateGlobal('',push,{x:innerWidth/2,y:innerHeight/2});
+  if(!stack.length)return false;
   const prev=stack.at(-1);
   try{installEncounter(prev.activeIds,prev.activeAddress||'',stack.slice(0,-1),prev.localView,'return');writeHistory(push);return true}
   catch(error){feedWound(error);return false}
@@ -270,7 +287,7 @@ addEventListener('sss:view',e=>{if(installingEncounter||e.detail.scopeId!==GLOBA
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
 /* Ascent past a site's own root continues through the membrane: the same
  * gesture returns to the container the witness came through. */
-addEventListener('sss:enter-body',e=>{const d=e.detail||{};if(!d.id||!activeIds.includes(d.from))return;const m=registry.getMount(d.id);if(m&&m.scope===GLOBAL_SCOPE)navigateGlobal(m.rawAddress,true,d.origin||null)});
+addEventListener('sss:enter-body',e=>{const d=e.detail||{};if(!d.id||!activeIds.includes(d.from)||!floatingBodies(d.from).some(b=>b.id===d.id))return;const m=registry.getMount(d.id);if(m&&m.scope===GLOBAL_SCOPE)navigateGlobal(m.rawAddress,true,d.origin||null,[...stack,{activeIds:[...activeIds],activeAddress,localView:W.view}])});
 /* Leaving an organism is the same transition as arriving: the membrane closes,
  * the host returns, and the host camera zooms out from the body it left. */
 addEventListener('sss:membrane-ascend',e=>{

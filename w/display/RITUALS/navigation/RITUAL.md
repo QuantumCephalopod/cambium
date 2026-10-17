@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.7"
+version: "3.8"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -204,3 +204,11 @@ Version 3.4 canonical-address serialization correction (2026-10-04): raw/global 
 Version 3.5 situated droplette function (2026-10-12): inherit the organism-afforded purpose of one lens without hardcoding site modes, rewriting physical glass or pretending the pending soft-lock/shape-morph is already deployed.
 
 Version 3.6 soft-lock mechanics (2026-10-14, Philipp): the situated droplette gains its first executed relation. Sites offer identity-bound `field`/`body` targets; release over one locks; field locks share the exact grid rectangle (rounded), body locks keep the released circle and follow the body; a vanished target unlocks in place, a surviving one holds through Descent; locked glass does not magnify; a field lock mutes the field beneath the drop so its target reads (corrected the same day from an outside-muting first draft). Philosophy is the first consumer; the soft-lock nutrient stays open for a second consumer and real-device acceptance.
+
+## Structural ascent — staged 2026-10-17
+
+The walked path contains actual containing bodies and their local containers. Global navigator/hash jumps establish the destination's structural context from current body offers; they never append the previously visited sibling. A real body-entry gesture preserves the containing field's current local container, so leaving that membrane returns to that container and the next outside gesture ascends one local rank. The root outside gesture is inert.
+
+A raw Population address prefix is placement within a shared field; it does not by itself make one independently rooted site the interior parent of another. Current floating-body offers are owned by the overview host. Future hosting is admissible through the same actual containment relation, not a special-case identity rule. Browser back/forward independently restore visits, and older visit-derived stacks are normalized to current containing-body offers. Receiving-renderer refusal preserves the current body and its structural path.
+
+Native pointer/touch, restoration and sibling/direct-jump witnesses pass. Candidate deployed browser/device acceptance remains separately open.

@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.29"
+version: "3.30"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -336,3 +336,7 @@ Version 3.27 receiving-renderer acceptance correction (staged 2026-10-14): the l
 Global target and floating-body names use the current language label on the site's already-owned field root (`de` / `en`), with its manifest title and stable identity as fallbacks. Translated labels do not rename identities, mounts, addresses or anatomy, and a language-only update does not remint GPU bodies. Navigator targets carry the derived current titles to consumers.
 
 The chosen German/English expression travels in the ordinary `lang` URL query, including history restoration and return from standalone public apertures. No cookie or browser storage is introduced. An unsupported/missing language retains the existing English default.
+
+### Structural containment and visit continuity
+
+Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Native staging witnesses preserve identity, orientation, renderer refusal and root no-op; candidate browser/device acceptance remains open.
