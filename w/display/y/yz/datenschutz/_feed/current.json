@@ -25,15 +25,14 @@
   },
   "home": {
     "changed_scope": [
-      "German and English privacy notices now describe GitHub provider cleanup as closed rather than pending",
-      "Notice dates advanced to 17 October 2026",
-      "Provider-cleanup projection status corrected",
-      "Completed cleanup nutrient retired to owner-local _waste"
+      "render.test.cjs: completed provider cleanup agrees across projection and both public languages; paired notice dates agree with the German source",
+      "Existing 15-section structure, ordered references, contact, language and retention checks retained",
+      "Spent regression intake retired source-exact to _waste"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/EARNED — staging provider-cleanup status correction is metabolized; canonical merge/publication remains owner-controlled."
+    "outcome": "PASS/EARNED — current completed-cleanup publication passes native staging; owner merge and redeploy remain pending."
   },
-  "observed_at_utc": "2026-10-17T12:00:00Z",
+  "observed_at_utc": "2026-10-17T12:17:12.981719Z",
   "owner": "datenschutz",
   "phenotype": {
     "w": {
@@ -49,7 +48,7 @@
       "noun": "Rights"
     }
   },
-  "reflected_home_event": "datenschutz-github-provider-cleanup-closure-20261017T120000Z",
+  "reflected_home_event": "datenschutz-cleanup-test-regression-20261017T121612Z",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
@@ -62,10 +61,10 @@
     "stomach_direct": [
       "NUTRIENT__legal-localisation__20261017.md"
     ],
-    "waste_direct_count": 5
+    "waste_direct_count": 6
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "733299d36ba68d18dfec9ab4a13546dd3dc7c131"
+    "source_revision": "1bdc5a8da366970a29876fda0b96839349101447"
   }
 }
