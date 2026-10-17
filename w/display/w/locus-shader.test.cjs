@@ -10,9 +10,9 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false}={}){
+function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
-  const calls=[],frames=[],queue=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
+  const calls=[],frames=[],queue=[],timers=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
   constants.forEach((n,i)=>gl[n]=100+i);gl.COLOR_BUFFER_BIT=1;gl.DEPTH_BUFFER_BIT=2;
   for(const kind of ['Program','Shader','VertexArray','Buffer','Texture','Framebuffer','Renderbuffer']){
@@ -45,9 +45,12 @@ function fixture({width=1280,height=800,glass=true,host=false,points=false,compo
   gl.uniform4f=(loc,...value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniformMatrix4fv=(loc,_,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
   function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(){},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
-  const canvas=element();Object.assign(canvas,{width,height,getContext:()=>gl,getBoundingClientRect:()=>({left:0,top:0,width,height})});
+  let inkPath=[];
+  const ctx2d={beginPath(){inkPath=[]},moveTo(x,y){inkPath.push([x,y])},lineTo(x,y){inkPath.push([x,y])},fill(){calls.push({type:'fill2d',path:inkPath.map(p=>[...p]),style:this.fillStyle})}};
+  for(const name of ['setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};
+  const canvas=element();Object.assign(canvas,{width,height,getContext:type=>type==='2d'?ctx2d:webgl?gl:null,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
-  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(){},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
+  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
   if(glass)context.SSSDisplayGlass={enabled:()=>true,rects:()=>({count:1,scale:1,data:new Float32Array(64)}),PARAMS:{radius:1,bevel:1,bevelMax:1,refract:1,aberr:1,mag:1,spec:1,fres:1,shadow:1,shadowK:1,theta:1,tint:[0,0,0,0],dot:1,halftone:1}};
   if(preview||lens)context.SSSDisplayLens={snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:null})};
   context.SSSDisplayLabelInk={create:()=>({draw:()=>true,reset(){},dispose(){}})};
@@ -64,7 +67,7 @@ function fixture({width=1280,height=800,glass=true,host=false,points=false,compo
   const projection={root:tree,points:points?[{id:'point',gene:'w',kind:'source'}]:[]};
   const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,shader,inspectable,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
-  return {gl,canvas,api,world,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
+  return {gl,canvas,api,world,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
 }
 
 function assertClears(f){
@@ -128,6 +131,28 @@ for(const lock of [null,{kind:'body',id:'independent:body'},{kind:'field',id:'in
   assert(glass,'actual field runs the shared glass pass');assert.equal(glass.lensControl[1],lock?1:0,'body/field locks explicitly preserve zero magnification rather than falling back to general HUD magnification');
   assert.equal(glass.lensShape[0],15,'the body-owned rounded extent reaches the shared optical shader');
 }
+
+/* An unavailable optional GPU cannot remove the already-offered population from
+ * the existing 2D field. Exercise real mesh paint and both actual entry paths. */
+for(const [width,height] of [[1280,800],[390,844]]){
+  const f=fixture({width,height,webgl:false,glass:false});
+  f.bodies.c.root={noun:'deeper',children:{...root.children,w:root}};f.frame(0);
+  const labels=()=>f.labels.children.filter(n=>n.className==='field-label field-body-label');
+  assert.equal(labels().length,5,'Canvas2D lost the floating population and attached labels');
+  assert.equal(f.frames[0].filter(c=>c.type==='fill2d').length,16+4*16+28,'fallback must paint all realized body triangles, including finer children');
+  const first=f.api.projectBody('body:b');assert(first&&first.r>0,'fallback body has no geometric contact');
+  const identity=labels()[1];f.bodies.b.title='Datenschutz';f.order.reverse();f.frame(2000);
+  assert.equal(labels().find(n=>n.querySelector('b').textContent==='Datenschutz'),identity,'language/reorder remints label identity');
+  assert.notDeepEqual(f.api.projectBody('body:b'),first,'fallback projection does not follow body drift');
+  f.clickBody(1);f.flushTimers();assert.equal(f.events.at(-1).type,'sss:enter-body');assert.equal(f.events.at(-1).detail.id,'body:b');
+  f.api.arriveFrom(null);f.frame(2500);
+  const p=f.api.projectBody('body:c'),event={button:0,pointerId:1,clientX:p.x,clientY:p.y,preventDefault(){}};
+  f.canvas.pointerdown(event);f.canvas.pointerup(event);f.flushTimers();assert.equal(f.events.at(-1).detail.id,'body:c','fallback face entry loses identity');
+  f.order.splice(f.order.indexOf('b'),1);f.frame(3000);
+  assert.equal(f.api.projectBody('body:b'),null,'withdrawn body remains contactable');assert(identity.hidden,'withdrawn body label remains selectable');
+  const before=f.events.length;identity.click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});f.flushTimers();assert.equal(f.events.length,before,'withdrawn label can still enter a stale body');
+}
+console.log('PASS — Canvas2D retains full offered bodies, localized labels, drift, face/label entry and withdrawal at wide and portrait carriers');
 console.log('PASS — actual shared-glass lock/shape uniforms preserve contacted readable geometry');
 
 /* A language-only title change updates the existing label and keeps its GPU body. */

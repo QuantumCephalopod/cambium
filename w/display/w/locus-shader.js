@@ -175,6 +175,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }
   }
   const ctx=!gl?canvas.getContext('2d'):null;
+  canvas.dataset.fieldRenderer=gl?'webgl2':ctx?'canvas2d':'unavailable';
   /* HOST ENVIRONMENT AT THE LOCUS — inside a site the host's geometry is not seen.
    * The host's own shader, evaluated at the container the site occupies (its region,
    * its place and span in host space, the shared orientation), fills the entire space
@@ -200,21 +201,26 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
    * drawn with their own identity shader at full geometry, entered by selection. */
   const BODIES=new Map();
   function floatingBodies(){
-    if(!gl||typeof bodies!=='function')return [];
+    for(const B of BODIES.values())B.active=false;
+    if((!gl&&!ctx)||typeof bodies!=='function')return [];
     const list=bodies()||[],out=[];
     for(const b of list){
       if(!(b?.shader?.body?.fragment||b?.shader?.fragment)||!b.root)continue;
       let B=BODIES.get(b.id);
       if(!B||B.key!==b.shader.id+'|'+b.path){
         try{
-          const place=placement(structure,b.path),bp=program(gl,(b.shader.body||b.shader).fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer(),g=bodyGeometry(N.collectStructure(b.root),place);
-          gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g,gl.STATIC_DRAW);
-          for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(bp,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
-          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],p:bp,vao:bvao,count:g.length/7,preview:b.shader.preview,state:(b.shader.body||b.shader).state||{},colors:paletteSet(b.palette),U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}};
+          const place=placement(structure,b.path),g=bodyGeometry(N.collectStructure(b.root),place),material=b.shader.body||b.shader;
+          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],count:g.length/7,preview:b.shader.preview,state:material.state||{},colors:paletteSet(b.palette),mesh:gl?null:g,fallbackAlpha:Number(material.fallbackAlpha??.28),ready:true};
+          if(gl){
+            const bp=program(gl,material.fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer();
+            gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g,gl.STATIC_DRAW);
+            for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(bp,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
+            Object.assign(B,{p:bp,vao:bvao,U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}});
+          }
         }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
         BODIES.set(b.id,B);
       }
-      if(B.p){B.title=b.title||b.id;out.push(B)}
+      if(B.ready){B.active=true;B.title=b.title||b.id;out.push(B)}
     }
     return out;
   }
@@ -228,14 +234,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return n;
   }
   function enterBody(bodyId,origin){
-    const B=BODIES.get(bodyId);if(!B?.p)return;
+    const B=BODIES.get(bodyId);if(!B?.active)return;
     cam={from:currentFrame(),to:{center:[...B.pos],scale:1/B.place.k},start:performance.now()};
     setTimeout(()=>dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:bodyId,origin}})),CAMERA_MS);
   }
   function hitBody(x,y,rect){
     let best=null;
     for(const B of BODIES.values()){
-      if(!B.p)continue;const pts=N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),rect));
+      if(!B.active)continue;const pts=N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),rect));
       for(const f of faceIx){const tri=[pts[f[0]],pts[f[1]],pts[f[2]]];if(!pointInTriangle(x,y,...tri))continue;const z=(tri[0].z+tri[1].z+tri[2].z)/3;if(!best||z>best.z)best={id:B.id,z}}
     }
     return best?.id||'';
@@ -356,7 +362,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   /* neutral geometry: a mounted body's current projected centre and extent, or null when absent */
   function projectBody(bodyId){
-    const B=BODIES.get(bodyId);if(!B?.p)return null;
+    const B=BODIES.get(bodyId);if(!B?.active)return null;
     const r=canvas.getBoundingClientRect(),c=project(B.pos,r);let ext=0;
     for(const v of N.V0){const q=project(v.map((x,j)=>B.pos[j]+x*B.place.k),r);ext=Math.max(ext,Math.hypot(q.x-c.x,q.y-c.y))}
     return {id:bodyId,x:c.x,y:c.y,z:c.z,r:ext,width:r.width,height:r.height};
@@ -627,12 +633,31 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       ctx.restore();
     }
   }
+  /* Canvas2D carries the same realized body mesh and placement. Its palette paint
+   * is a reduced representation; it does not execute identity-owned GLSL/optics. */
+  function drawBodies2D(fb,r){
+    const faces=[];
+    for(const B of fb)for(let i=0;i<B.mesh.length;i+=21){
+      const pts=[0,7,14].map(k=>project([0,1,2].map(j=>B.pos[j]+B.mesh[i+k+j]),r));
+      faces.push({pts,z:pts.reduce((sum,p)=>sum+p.z,0)/3,color:B.colors[B.mesh[i+6]],alpha:B.fallbackAlpha});
+    }
+    faces.sort((a,b)=>a.z-b.z);
+    for(const {pts,color,alpha} of faces){
+      ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);ctx.lineTo(pts[1].x,pts[1].y);ctx.lineTo(pts[2].x,pts[2].y);ctx.closePath();
+      ctx.fillStyle=`rgba(${color.map(v=>Math.round(v*255)).join(',')},${alpha})`;ctx.fill();ctx.strokeStyle='rgba(241,239,233,.22)';ctx.stroke();
+    }
+  }
   function draw(ms){
     if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
     refreshVisible();followStep(ms);const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
     const proj=ORTHO?orthographic(3.2*Math.tan(Math.PI/6.6),w/h,.1,20):perspective(Math.PI/3.3,w/h,.1,20),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
     updateLabels(r);
+    const fb=floatingBodies();
+    for(const B of fb)B.pos=driftAt(B.drift,ms);
+    canvas.dataset.container=cur||'ε';canvas.dataset.visibleCells=String(cells.length);canvas.dataset.visibleContent=String(visible.length);canvas.dataset.floatingBodies=fb.map(B=>B.id).join(' ');
+    for(const [bodyId,n] of bodyLabels)if(!BODIES.get(bodyId)?.active)n.hidden=true;
+    for(const B of fb){const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r);n.hidden=false;n.style.left=lp.x+'px';n.style.top=lp.y+'px'}
     if(gl&&GL){
       const hv=hostView(),hostClear=hv?.e.shader.clear;
       const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);
@@ -645,23 +670,19 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         gl.drawArrays(gl.TRIANGLES,0,3);prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);
         canvas.dataset.hostView=hv.e.hostId;canvas.dataset.hostPath=hv.e.path;
       }else{delete canvas.dataset.hostView;delete canvas.dataset.hostPath}
-      canvas.dataset.container=cur||'ε';canvas.dataset.visibleCells=String(cells.length);canvas.dataset.visibleContent=String(visible.length);
       applyState();gl.useProgram(GL.p);
       gl.uniformMatrix4fv(GL.U.proj,false,proj);gl.uniformMatrix4fv(GL.U.view,false,view);gl.uniformMatrix4fv(GL.U.model,false,mdl);
       gl.uniform1f(GL.U.time,ms*.001);gl.uniform1f(GL.U.focus,focus);if(GL.U.resolution)gl.uniform2f(GL.U.resolution,w,h);gl.uniform3fv(GL.pal,new Float32Array(colors.flat()));
       if(typeof shader.beforeDraw==='function')shader.beforeDraw({gl,program:GL.p,ms,focus,width:w,height:h,orientation:W.orientation});
       gl.bindVertexArray(GL.vao);gl.drawArrays(gl.TRIANGLES,0,GL.count);
-      const fb=floatingBodies();
       for(const B of fb){
         const bs=B.state;if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
         if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
-        B.pos=driftAt(B.drift,ms);const bm=model(W.orientation,base*t.scale,t.center.map((v,j)=>v-B.pos[j]));
+        const bm=model(W.orientation,base*t.scale,t.center.map((v,j)=>v-B.pos[j]));
         gl.useProgram(B.p);gl.uniformMatrix4fv(B.U.proj,false,proj);gl.uniformMatrix4fv(B.U.view,false,view);gl.uniformMatrix4fv(B.U.model,false,bm);
         if(B.U.time)gl.uniform1f(B.U.time,ms*.001);if(B.U.focus)gl.uniform1f(B.U.focus,-1);if(B.U.resolution)gl.uniform2f(B.U.resolution,w,h);if(B.U.pal)gl.uniform3fv(B.U.pal,new Float32Array(B.colors.flat()));
         gl.bindVertexArray(B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
       }
-      canvas.dataset.floatingBodies=fb.map(B=>B.id).join(' ');
-      for(const B of fb){const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r);n.hidden=element.hidden;n.style.left=lp.x+'px';n.style.top=lp.y+'px'}
       /* SITE LAYER — an identity-owned shader may draw its own layer inside this
        * field's Descent frame (same camera, orientation and container), beneath the
        * point layer. Meaning stays in the site; Display only lends the frame. */
@@ -678,6 +699,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);
       ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle=`rgb(${clear.slice(0,3).map(v=>Math.round(clamp(v)*255)).join(',')})`;ctx.fillRect(0,0,r.width,r.height);
       for(const cell of cells){const pts=cell.tet.map(p=>project(p,r)),c=colors[geneIndex[cell.path[0]]??0];for(const f of faceIx){ctx.beginPath();ctx.moveTo(pts[f[0]].x,pts[f[0]].y);ctx.lineTo(pts[f[1]].x,pts[f[1]].y);ctx.lineTo(pts[f[2]].x,pts[f[2]].y);ctx.closePath();ctx.fillStyle=`rgba(${c.map(v=>Math.round(v*255)).join(',')},${alpha})`;ctx.fill();ctx.strokeStyle='rgba(241,239,233,.08)';ctx.stroke()}}
+      drawBodies2D(fb,r);
       drawPoints2D(r);
     }
     requestAnimationFrame(draw)
