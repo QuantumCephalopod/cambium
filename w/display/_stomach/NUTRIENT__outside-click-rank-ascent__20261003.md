@@ -1,4 +1,4 @@
-# Outside click — native structural correction earned; deployed acceptance open
+# Outside click — native correction and visitor acceptance earned; detailed cases remain
 
 Original admitted requirements and continuation are source-exact in `_waste/catabolized-outside-click-native-20261017.md`. Source/native act is durable in `_root/display-ascent-legal-visitor-20261017T113513Z.json`.
 
@@ -8,6 +8,10 @@ Global minimap/hash jumps establish the destination's actual containing-body con
 
 Native regression: every pair of fixture global targets, deep direct/hash entry, real body entry from a local container, previous-format history, lazy detail, refusal and root no-op. Actual field pointer handlers exercise mouse and touch types through realized recursive containers; restored container is reconciled before the first ascent. Original runtime fails the strengthened parent regression; candidate passes. Full checker 234247; address 38; exact artifact 11249 files; bundle `56e5bb7caa57b40b`.
 
+## Deployed visitor return — 2026-10-17
+
+Philipp reports in the current work chat: "hab geprüft, außencklick läfut wie er soll! :))". This earns his successful outside-click visitor acceptance after owner promotion. The canonical Display run 39029772827 succeeded at f9a9f406ecbe72ede45abd5b259f0024644fcb6d. The report does not name a device, viewport, precise sequence or complete test matrix.
+
 ## Remaining exit
 
-After owner promotion, exercise the actual candidate browser UI: sibling global jump followed by outside, real body entry/return to local container, repeated local ranks, root no-op, back/forward and pointer/touch. Current local-file browser policy prevents candidate fixture loading; it is not bypassed with another serving surface. Native pointer/GL fixtures are not a deployed browser/device witness. Keep this residue until visitor witness and local HOME/feed return are durable.
+Only the detailed cases not specified by that report remain unearned as deployed witnesses: sibling global jump then outside, actual body entry/return to a local container, repeated local ranks, root no-op, back/forward and separate pointer/touch-device coverage. Do not expand a successful general report into claims that each case was individually exercised. Native regression witnesses remain available above; no new runtime implementation is implied.
