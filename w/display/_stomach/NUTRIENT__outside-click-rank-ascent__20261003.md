@@ -79,3 +79,7 @@ Browser back/forward may remain browser history, but it must not define the mean
 8. desktop and touch witnesses exercise the same topology.
 
 This is a navigation-law correction, not a request for browser-history emulation.
+
+## Continuation admitted — 2026-10-17
+
+Philipp authorized the combined meal: live DE/EN visitor witness followed by structural outside-click correction, bundled on the writable fork. Re-enter current canonical `b5a5e30304f4d5e5e451bc02ee0c139116e0bdb4`. Keep the public current browser witness distinct from candidate navigation/native acceptance; preserve source wording, identity, orientation and browser back/forward. Every unearned exit stays explicit.

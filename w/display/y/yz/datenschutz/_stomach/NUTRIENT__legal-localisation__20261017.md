@@ -11,3 +11,7 @@ Local source/native implementation is recorded by `_root/datenschutz-english-loc
 After owner promotion and successful canonical Pages publication, exercise the actual HTTPS visitor surface in both languages: mounted title and outgoing link, complete static notice, language switch and same-language cross-links/home return. Include a narrow viewport. Compare delivered notice and contact/reference links with the owned source. Candidate browser/layout acceptance has not been earned by native tests.
 
 Keep this bounded residue until the visitor witness and local HOME/feed return are durable. Existing delivery/contact and provider-remediation histories remain distinct.
+
+## Continuation admitted — 2026-10-17
+
+Philipp authorized the combined meal: live DE/EN visitor witness followed by structural outside-click correction, bundled on the writable fork. Re-enter current canonical `b5a5e30304f4d5e5e451bc02ee0c139116e0bdb4`. Keep the public current browser witness distinct from candidate navigation/native acceptance; preserve source wording, identity, orientation and browser back/forward. Every unearned exit stays explicit.
