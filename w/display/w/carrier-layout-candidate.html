@@ -1,4 +1,4 @@
-<!-- membrane bundle e860bee35c78edab; tree-addressed Display generation; physical Population anatomy is the mount truth. -->
+<!-- membrane bundle a5a13e8b978ccdc7; tree-addressed Display generation; physical Population anatomy is the mount truth. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -565,6 +565,9 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
 [data-interlocutor="organism:crawlerbait"] .field-point-tooltip-meta{color:#8a867b;font-size:var(--type-rn2)}
 [data-interlocutor="organism:crawlerbait"] .field-label b{display:none}
 [data-interlocutor="organism:crawlerbait"] .field-label span{opacity:.6;color:#8a867b;font-size:var(--type-rn2)}
+
+/* The site bounds its own sidebar from the actual orientation anchor. */
+.crawlerbait-hud-side{max-inline-size:calc(100% - var(--ui-field-x,0px) - .75rem);max-block-size:calc(100dvh - var(--ui-field-y,0px) - .75rem);min-inline-size:0;overflow-wrap:anywhere}
 </style>
 <style>/* Schattenseiten HUD: pale ink over the host's dark field. Every kind of information has a fixed place at the
    edges; nothing floats over the field in a box, so the flat picture in the centre stays free. Same grammar as the
@@ -615,6 +618,9 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
 @media (max-width:560px){
   .ss-op,.ss-rank{display:none}
 }
+
+/* The site bounds its own sidebar from the actual orientation anchor. */
+.ss-hud-side{max-inline-size:calc(100% - var(--ui-field-x,0px) - .75rem);max-block-size:calc(100dvh - var(--ui-field-y,0px) - .75rem);min-inline-size:0;overflow-wrap:anywhere}
 </style>
 <style>[data-interlocutor="organism:papers"]{pointer-events:none;background:#020605}
 [data-interlocutor="organism:papers"] .interlocutor-background:not([data-composite="1"]),[data-interlocutor="organism:papers"] .interlocutor-field-labels{opacity:0!important;pointer-events:none!important}
@@ -6312,6 +6318,8 @@ function makeSiteUI(id,host,raw){
     // Do not force grid-cell width/height or wipe identity-owned insets.
     // Stacking is deterministic within the site's isolated Display layer.
     const tie=Object.keys(state.fields).sort().indexOf(name);
+    el.style.setProperty?.('--ui-field-x',(c.x+b.x*c.w)+'px');
+    el.style.setProperty?.('--ui-field-y',(c.y+b.y*c.h)+'px');
     Object.assign(el.style,{
       position:'absolute',
       left:(c.x+b.x*c.w)+'px',
