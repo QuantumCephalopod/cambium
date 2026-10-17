@@ -124,3 +124,6 @@
 [data-interlocutor="organism:crawlerbait"] .field-point-tooltip-meta{color:#8a867b;font-size:var(--type-rn2)}
 [data-interlocutor="organism:crawlerbait"] .field-label b{display:none}
 [data-interlocutor="organism:crawlerbait"] .field-label span{opacity:.6;color:#8a867b;font-size:var(--type-rn2)}
+
+/* The site bounds its own sidebar from the actual orientation anchor. */
+.crawlerbait-hud-side{max-inline-size:calc(100% - var(--ui-field-x,0px) - .75rem);max-block-size:calc(100dvh - var(--ui-field-y,0px) - .75rem);min-inline-size:0;overflow-wrap:anywhere}

@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.2"
+version: "5.3"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -236,3 +236,5 @@ Version 5.1 exact-offer correction (2026-10-02): a privacy audit before Git-hist
 
 
 Version 5.2 organism-boundary correction (2026-10-02): adding unrelated legal site-holons exposed that Crawlerbait's path membrane was importing the repository-root generated Display artifact. That made sibling publication anatomy an implicit Crawlerbait dependency and let unrelated asset-bundle changes retroactively alter its path witness. The membrane is now organism-local: Crawlerbait may observe host-wide encounters through Cloudflare, but only its own public apertures may remain literal; foreign host paths become opaque Baits. Being-kind classification uses encounter method/status/time rather than foreign file traversal, and already-opaque Baits preserve identity across the migration.
+
+Version5.3 local sidebar-extent correction (2026-10-17): a browser witness found the wide sidebar64px beyond its viewport. The site now uses Display's derived field-anchor CSS coordinates to bound only its own sidebar width/scroll height. Intrinsic HUD bodies remain site-owned; no grid-cell capacity, world-body movement, traffic/source/privacy mutation or capture/Tide actuation change is earned.

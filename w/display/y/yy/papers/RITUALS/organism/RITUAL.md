@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.2"
+version: "3.3"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -185,7 +185,7 @@ Papers offers only present authored vertices, edges, front-facing faces and admi
 
 For a locked part, Papers measures its full source-owned wording through the existing Pretext carrier and lends a readable extent inside its current UI carrier. The same drop grows into that extent. Its ordinary representation remains until the extent is ready; readable letters then inhabit the existing Papers ink/tissue plane inside the actual rounded aperture. Work is limited to the contacted part and visible page. Source text is never silently cut to a fixed number of rows: longer passages continue by wheel or PageUp/PageDown, with Home/End for the first/last page; the complete original is also exposed as assistive reading tissue. Pull, disappearance or unmount releases the relation. A viewport too small for readable text declines the finer frame rather than inventing a compressed substitute.
 
-This second-consumer implementation is native-witnessed in staging. Real GPU/glass, visual parity, comfortable reading and physical-device performance remain acceptance wounds in the existing lens/tissue nutrients.
+This second-consumer contract is witnessed with all85 parts of the five actually admitted inquiry bodies, their complete12926-character wording, real SpriteSheet/Skia measurements, pinned Pretext and actual production tissue GLSL at390×844 and1280×800. Actual glyph pixels also pass through the shared field/glass composite. Synthetic long-text tests separately witness continuation. These bounded software witnesses do not certify browser rasterization or hardware-specific frame times, and no personal/physical-device sign-off is required.
 
 A selected Source may additionally invert Papers genealogy and illuminate public Holon descendants that grew from it: `Source → descendants`. This is the same cross-organism lineage read in the opposite direction, not a replacement for the Source's own internal tetrahedral inquiry and not a new relation.
 
@@ -528,3 +528,5 @@ Version 2.8 lens-instrument correction (2026-10-01, Philipp: "die linse wird als
 Version 2.9 text-as-tissue correction (2026-10-01, Philipp: "gooey-particle->gooey-tissue->LENS displaced das mans lesen kann … für die fläche tatsächlich ne fläche … ein web das gooey über die fläche gespannt ist"): open-organism letters became tissue through Display's engine; faces became webs; the drop reads them.
 
 Version 3.1 bounded Papers perceptual-work repair (staged 2026-10-10): opened inquiry earns its text-tissue GPU work, the shared glass receives only present tissue, and whole background organisms/recursive geometry are omitted only when conservatively outside the actual camera field. Earned genealogy depth and pixel threshold replace fixed MAX_DEPTH=8. Source, flow equations, visual materials, relative placement and visit semantics remain unchanged. Source, native physics/reference, rank-10/lens/culling unit, full checker and publication-build witnesses passed on QuantumCephalopod (run 38053418521). Browser/WebGL and user-perceived FPS/readability acceptance remain OPEN; do not claim full live-visual closure or retire the residual nutrient from that CI alone.
+
+Version3.3 truthful host body and readable contact completion (2026-10-17): the parent receives this site's existing chamber/instance species through Display's neutral body frame and bounded public sample. Source records are resolved once per preview; programs/buffers are reused and retired per context. Full admitted text, measured local readable frames and actual font/tissue/glass now have bounded software-GLES witnesses. The original source boundary, genealogy, entered scale/flow and static public-shadow authority remain unchanged.

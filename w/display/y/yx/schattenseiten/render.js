@@ -72,6 +72,9 @@ const shader={
   /* the body seen from a host: shadow ink — a face turned toward the light is paper, a face turned away is black, so turning it
    * cuts the body into shadows and light without any grey between */
   body:Object.freeze({
+    cells:()=>BODY.list.map(b=>({path:'x',tet:V0.map(v=>v.map((x,j)=>b.world[j]+x*Math.sqrt(3)*b.size))})),
+    draw:args=>{ensureTier(64);drawSheet({...args,clearDepth:false},false)},
+    release:({gl})=>{const record=GPU.get(gl);if(record)disposeGPU(gl,record)},
     state:Object.freeze({blend:true,depthTest:true,depthWrite:true}),
     fragment:`#version 300 es
 precision highp float;
@@ -167,7 +170,7 @@ function tier(gl,size){
   if(changed&&size===512){gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.generateMipmap(gl.TEXTURE_2D_ARRAY)}
   return {record,L};
 }
-function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1},high=false){
+function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=true},high=false){
   if(!gl||!BODY.list.length)return;
   const active=gl.getParameter(gl.ACTIVE_TEXTURE),program=gl.getParameter(gl.CURRENT_PROGRAM),vao=gl.getParameter(gl.VERTEX_ARRAY_BINDING),depth=gl.getParameter(gl.DEPTH_WRITEMASK),color=gl.getParameter(gl.COLOR_WRITEMASK),func=gl.getParameter(gl.DEPTH_FUNC),clear=gl.getParameter(gl.DEPTH_CLEAR_VALUE);
   const flags=[gl.DEPTH_TEST,gl.BLEND,gl.SCISSOR_TEST].map(k=>[k,gl.isEnabled(k)]),blend=[gl.BLEND_SRC_RGB,gl.BLEND_DST_RGB,gl.BLEND_SRC_ALPHA,gl.BLEND_DST_ALPHA].map(k=>gl.getParameter(k));
@@ -175,7 +178,7 @@ function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1},high=false)
   try{
     const B=new Float32Array(64*4);BODY.list.forEach((b,i)=>B.set([...b.world,b.size],i*4));
     const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));if(high){BODY.last=ms;BODY.dim+=((selected?1:0)-BODY.dim)*(1-Math.exp(-dt*4))}
-    gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);if(clearDepth){gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT)}gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
     for(const size of (high?[64,512]:[64])){
       const {record,L}=tier(gl,size);gl.useProgram(record.p);gl.bindVertexArray(record.vao);
       gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uProj'),false,proj);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uView'),false,view);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uModel'),false,model);

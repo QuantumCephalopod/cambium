@@ -2,7 +2,7 @@
 .interlocutor{position:relative;min-width:0;min-height:0;overflow:hidden;isolation:isolate;background:#05070a;pointer-events:none}
 .interlocutor[hidden]{display:none!important}
 .interlocutor-background{position:absolute;inset:0;width:100%;height:100%;display:block;background:#05070a;touch-action:none}
-.interlocutor-field-labels{position:absolute;inset:0;z-index:2;pointer-events:none}
+.interlocutor-field-labels{position:absolute;inset:0;z-index:auto;pointer-events:none}
 .field-label{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:baseline;gap:8px;color:rgba(241,239,233,.84);text-shadow:0 1px 14px #000;white-space:nowrap}
 .field-label[hidden]{display:none}
 .field-label span{font:var(--type-rn2)/1 var(--mono);letter-spacing:.12em;opacity:.48}
@@ -23,3 +23,8 @@ html[data-composition="split"] header{z-index:32}
 @media(max-width:520px){.field-label b{font-size:var(--type-rn1)}html[data-composition="split"] #mini{transform:translateX(-50%) scale(.86);transform-origin:50% 100%}}
 .field-body-label{pointer-events:auto;cursor:pointer;background:none;border:0;padding:4px 6px;font:inherit;color:rgba(241,239,233,.9)}
 .field-body-label:hover b,.field-body-label:focus-visible b{color:#fff;text-decoration:underline;text-underline-offset:3px}
+
+/* Body labels keep their anchors; long names wrap and focus owns legible ink.
+   No packing/reflow of bodies or semantic coordinates is introduced. */
+.field-body-label{box-sizing:border-box;width:max-content;white-space:normal;overflow-wrap:anywhere;text-align:center;line-height:1.2;background:rgba(4,8,12,.36);border-radius:3px}
+.field-body-label:hover,.field-body-label:focus-visible{z-index:100!important;background:rgba(4,8,12,.94);outline:1px solid rgba(238,248,241,.72)}

@@ -193,10 +193,18 @@ def derive_root_projection(site_dir):
     expression = {'': {l: {k: encounter['expressions'][l][k] for k in ('title', 'mission', 'position')} for l in languages}}
     for gene in GENES:
         content = json.loads((site_dir/gene/'content.json').read_text(encoding='utf-8'))
-        expression[gene] = {l: {'body': content['expressions'][l]['body']} for l in languages}
+        expression[gene] = {l: {'body': content['expressions'][l]['body'], **({'encounters': content['expressions'][l]['encounters']} if content['expressions'][l].get('encounters') else {})} for l in languages}
     for address, langs in expression.items():
         for l, fields in langs.items():
             for k, v in fields.items():
+                if k == 'encounters':
+                    if (not isinstance(v, list) or not v
+                            or any(not isinstance(e, dict) or set(e) != {'interlocutor', 'label'}
+                                   or not isinstance(e['interlocutor'], str)
+                                   or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9:._-]{0,200}', e['interlocutor'])
+                                   or not isinstance(e['label'], str) or not e['label'].strip() for e in v)):
+                        raise ValueError(f'{site_dir.name} expression {address}/{l} has invalid encounter')
+                    continue
                 texts = v if isinstance(v, list) else [v]
                 if not texts or any(not isinstance(t, str) or not t.strip() for t in texts):
                     raise ValueError(f'{site_dir.name} expression {address or "ε"}/{l}/{k} is empty')

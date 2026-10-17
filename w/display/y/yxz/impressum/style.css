@@ -20,3 +20,8 @@
 #legal-links a:hover,#legal-links a:focus-visible{color:rgba(238,242,237,.92);outline:none;text-decoration:underline;text-underline-offset:.28em}
 
 @media(max-width:760px){.impressum-content h1{font-size:var(--type-rp2)}}
+
+/* Intrinsic article width remains local; long identities/links may wrap. */
+.impressum-content article{grid-template-columns:minmax(0,1fr);overflow-wrap:anywhere}
+.impressum-content article>*{min-inline-size:0;max-inline-size:100%}
+.impressum-content a{inline-size:fit-content;max-inline-size:100%;overflow-wrap:anywhere}

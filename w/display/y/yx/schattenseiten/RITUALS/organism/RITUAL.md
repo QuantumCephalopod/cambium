@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.6"
+version: "1.7"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -26,7 +26,7 @@ Earlier local continuity lacks a recovered local HOME ledger. Existing Display-o
 
 The work is titled **gefallen, gefunden** (the organ's folder is Schattenseiten). The body is an 8×8 sheet: depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid. Row 1 (the forest, the seven that started everything) is on top, then the rows in order; each row is one line of eight slots: seven shadows and, in the eighth, the cluster the row was cut from (free in row 1). All slots are the same size. Nothing floats: each shadow rests in its leaf. The site declares a rest view (`shader.view`): along the shadow axis, in parallel projection, the whole is one flat picture, and turning it shows the tetrahedra. An `orthogonal` control returns to it. Selecting a shadow is Descent into it (`focus()`); the others recede. The side panel shows the cluster (positive and negative) it was cut from, and its animation.
 
-Seen from the overview, the body is drawn in shadow ink (`shader.body`): a face turned toward the light is paper, a face turned away is black.
+Seen from the overview, the body uses the same occupied-slot sheet and declared64 draw as its preview/entered low representation through Display's neutral body frame. Its own cells preserve the actual source slot geometry in Canvas2D. The host draw does not clear the host's depth; remount retires only its context resources, and entry alone earns512.
 
 ## Words
 
@@ -51,3 +51,7 @@ Version1.3 shared optical-input correction (2026-10-04): the same low-only inter
 Version 1.4 source-owned media through shared rank-relative handoff (staged 2026-10-10): the existing 55-slot genuine64 preview and entered512 queue now use Display Continuity's neutral acquisition/readiness/retirement physiology. The current media URLs, owner-owned bitmap decoder, context-local textures, per-slot fallback and local entry/res-up law remain Schattenseiten's. Failed high images remain failed until their source revision changes, avoiding repeated per-frame fetches. Native GPU-fixture checks passed; live browser visuals remain to witness.
 
 Version1.6 contract-acceptance inheritance (2026-10-17): Display3.33 supplies the bounded shared optics/readiness contract and removes default physical-phone/personal-approval gates. Actual local admitted-media, tier handoff and resource behavior remain this body’s technical responsibility. Shared procedural-input GLES execution is not local media acceptance. Earlier missing local HOME is a provenance limit, not an obligation to manufacture or endlessly recover history. Source works, projection, tier policy and renderer are unchanged.
+
+Version1.7 admitted-media/body completion (2026-10-17): all110 declared occupied-slot64/512 files were actually acquired with successful public CORS and decoded. Real source pixel uploads, the actual consumer shaders, per-slot failed-high fallback and narrow/wide sheet rendering have software-GLES witnesses; native tests separately preserve shared cache, four-way admission, context ownership, pause/revisit and retirement. Producer files bound the longest edge and the existing consumer normalizes each tile to its square GPU layer; no original or undeclared resolution was acquired. Pillow decode transport is distinct from a browser decoder and physical GPU timing. Missing historical local HOME remains a provenance limit.
+
+The selected-work sidebar also bounds its own inline/scroll extent from Display's derived UI anchor. This keeps admitted cluster/animation content reachable inside the viewport without imposing the grid cell's dimensions or changing the sheet.

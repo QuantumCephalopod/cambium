@@ -47,3 +47,6 @@
 @media (max-width:560px){
   .ss-op,.ss-rank{display:none}
 }
+
+/* The site bounds its own sidebar from the actual orientation anchor. */
+.ss-hud-side{max-inline-size:calc(100% - var(--ui-field-x,0px) - .75rem);max-block-size:calc(100dvh - var(--ui-field-y,0px) - .75rem);min-inline-size:0;overflow-wrap:anywhere}

@@ -74,6 +74,9 @@ const shader=Object.freeze({
   state:Object.freeze({blend:true,depthTest:false,depthWrite:false}),
   /* the body seen from a host: ruled paper in Papers' green — its field draws nothing because its own environment does the work */
   body:Object.freeze({
+    cells:({projection})=>hostCells(projection).map(c=>({path:c.gene,tet:N.V0.map(v=>v.map((x,j)=>c.center[j]+x*c.scale))})),
+    draw:drawHostBody,
+    release:({gl})=>{hostRenderers.get(gl)?.dispose();hostRenderers.delete(gl)},
     state:Object.freeze({blend:true,depthTest:true,depthWrite:true}),
     fragment:`#version 300 es
 precision highp float;
@@ -97,6 +100,30 @@ let pretextModule=null;
 let pretextPromise=null;
 let shadowPromise=null;
 let genealogyRepairPromise=null;
+
+/* The parent sees the same chamber/organism grammar at a coarser resolution.
+ * Only the site's admitted bounded outer sample is used; entering acquires detail.
+ * This renderer has no selected-organism state and never loads the detailed feed. */
+const hostRenderers=new Map(),hostRecordCache=new WeakMap();
+function hostCells(preview,ms=0){
+  let records=preview&&hostRecordCache.get(preview);
+  if(!records){
+    const roots=N.collectStructure(preview?.root||fieldProjection({}).root).leaves;records=[];
+    for(const p of preview?.population||[]){
+      if(!GENES.includes(p.gene)||typeof p.id!=='string')continue;
+      const cell=roots.find(c=>c.path===p.gene);if(!cell)continue;
+      records.push({id:p.id,gene:p.gene,world:pointInTet(cell.tet,p),motionA:pointInTet(cell.tet,{id:p.id+'·flow-a'},.20),motionB:pointInTet(cell.tet,{id:p.id+'·flow-b'},.20),motionC:pointInTet(cell.tet,{id:p.id+'·flow-c'},.20),motionD:pointInTet(cell.tet,{id:p.id+'·flow-d'},.20),rank:Number(p.id.match(/^(\d+)H\./)?.[1]||0)});
+    }
+    if(preview)hostRecordCache.set(preview,records);
+  }
+  return [...GENES.map((g,i)=>({gene:g,center:N.V0[i].map(v=>v*.5),scale:.5,color:[...PALETTE[g],CHAMBER_FACE_ALPHA],chamber:true})),...records.map(p=>({id:p.id,gene:p.gene,center:flowPoint(p,ms),scale:S_QUANTUM_SCALE*2**p.rank,color:[...PALETTE[p.gene],.65]}))];
+}
+function matrixProduct(a,b){const out=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)out[c*4+r]+=a[k*4+r]*b[c*4+k];return out}
+function drawHostBody({gl,proj,view,model,projection,ms}){
+  let renderer=hostRenderers.get(gl);if(!renderer){renderer=createRenderer({getContext:()=>gl});hostRenderers.set(gl,renderer)}
+  const clip=matrixProduct(proj,matrixProduct(view,model)),identity=new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]),cells=hostCells(projection,ms);
+  renderer.draw(cells,[1,0,0,0],[0,0,0],clip,identity);
+}
 
 function pretextURL(){if(typeof state?.dependency!=='function')throw new Error('Display dependency resolver missing');return state.dependency(PRETEXT_ID,'layout.js')}
 function shadowURL(){return new URL(SHADOW_PATH,document.baseURI).href}
@@ -380,6 +407,8 @@ function program(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(
 function createRenderer(canvas){
   const gl=canvas.getContext('webgl2',{alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:true});
   if(!gl)return null;
+  const resources=[];
+  const own=(kind,object)=>{resources.push([kind,object]);return object};
   const V0=N.V0.map(v=>[...v]);
   const VS=`#version 300 es
 precision highp float;
@@ -432,15 +461,15 @@ void main(){
   float a=vColor.a*(.18*halo+.78*core+.20*body);
   outColor=vec4(c,a);
 }`;
-  const p=program(gl,VS,FS);
+  const p=own('Program',program(gl,VS,FS));
   const loc={
     pos:gl.getAttribLocation(p,'aPos'),center:gl.getAttribLocation(p,'iCenter'),scale:gl.getAttribLocation(p,'iScale'),color:gl.getAttribLocation(p,'iColor'),
     proj:gl.getUniformLocation(p,'uProj'),view:gl.getUniformLocation(p,'uView'),quat:gl.getUniformLocation(p,'uQuat'),translate:gl.getUniformLocation(p,'uTranslate')
   };
   const triangles=[];for(const f of FACE)for(const i of f)triangles.push(...V0[i]);
   const lines=[];for(const e of EDGE)lines.push(...V0[e[0]],...V0[e[1]]);
-  const instanceBuffer=gl.createBuffer();
-  const lightProgram=program(gl,LIGHT_VS,LIGHT_FS),lightVao=gl.createVertexArray(),lightBuffer=gl.createBuffer();
+  const instanceBuffer=own('Buffer',gl.createBuffer());
+  const lightProgram=own('Program',program(gl,LIGHT_VS,LIGHT_FS)),lightVao=own('VertexArray',gl.createVertexArray()),lightBuffer=own('Buffer',gl.createBuffer());
   const lightLoc={
     center:gl.getAttribLocation(lightProgram,'iCenter'),size:gl.getAttribLocation(lightProgram,'iSize'),
     color:gl.getAttribLocation(lightProgram,'iColor'),phase:gl.getAttribLocation(lightProgram,'iPhase'),
@@ -448,7 +477,7 @@ void main(){
     quat:gl.getUniformLocation(lightProgram,'uQuat'),translate:gl.getUniformLocation(lightProgram,'uTranslate'),
     time:gl.getUniformLocation(lightProgram,'uTime')
   };
-  function geom(data){const vao=gl.createVertexArray();gl.bindVertexArray(vao);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);gl.enableVertexAttribArray(loc.pos);gl.vertexAttribPointer(loc.pos,3,gl.FLOAT,false,12,0);return {vao,count:data.length/3}}
+  function geom(data){const vao=own('VertexArray',gl.createVertexArray());gl.bindVertexArray(vao);const b=own('Buffer',gl.createBuffer());gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);gl.enableVertexAttribArray(loc.pos);gl.vertexAttribPointer(loc.pos,3,gl.FLOAT,false,12,0);return {vao,count:data.length/3}}
   const tri=geom(triangles),line=geom(lines);
   let instanceData=new Float32Array(0),lightData=new Float32Array(0);
   function uploadInstances(instances){
@@ -482,7 +511,7 @@ void main(){
     gl.useProgram(lightProgram);gl.uniformMatrix4fv(lightLoc.proj,false,proj);gl.uniformMatrix4fv(lightLoc.view,false,view);gl.uniform4fv(lightLoc.quat,new Float32Array(q));gl.uniform3fv(lightLoc.translate,new Float32Array(translate));gl.uniform1f(lightLoc.time,time);
     gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.drawArrays(gl.POINTS,0,lights.length);gl.depthMask(true);
   }
-  return {gl,V0,draw,drawLights};
+  return {gl,V0,draw,drawLights,dispose(){for(const [kind,object] of resources)gl['delete'+kind](object);resources.length=0}};
 }
 
 function sitePalette(siteId){

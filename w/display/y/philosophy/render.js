@@ -104,6 +104,12 @@ function render({host,content,projection,path='',language='en',ui=null}={}){
   if(path){
     copy.append(el('div','kicker','philosophy · '+path),el('h1',null,node?.[language]||node?.noun||path),el('p','question',node?.one?.[language]||''));
     for(const para of said.body||[])copy.append(el('p',null,para));
+    for(const encounter of said.encounters||[]){
+      const available=W?.globalTargets?.some(t=>(t.interlocutorIds||[]).includes(encounter.interlocutor));
+      if(!available||!encounter.label)continue;
+      const button=el('button','philosophy-project',encounter.label);button.type='button';
+      button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:encounter.interlocutor,origin:{x:e.clientX,y:e.clientY}}}))});copy.append(button);
+    }
   }else{
     copy.append(el('div','kicker','organism:philosophy'),el('h1',null,['w','x','z','y'].map(g=>projection.root.children?.[g]?.[language]||projection.root.children?.[g]?.noun||g).join(' · ')));
     if(said.mission)copy.append(el('p','mission',said.mission));

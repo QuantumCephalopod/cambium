@@ -200,6 +200,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   /* FLOATING BODIES — organisms whose host is this field float in their mount cell,
    * drawn with their own identity shader at full geometry, entered by selection. */
   const BODIES=new Map();
+  function releaseBody(B){if(gl){B.release?.({gl});if(B.p)gl.deleteProgram(B.p);if(B.vao)gl.deleteVertexArray(B.vao);if(B.buf)gl.deleteBuffer(B.buf)}}
   function floatingBodies(){
     for(const B of BODIES.values())B.active=false;
     if((!gl&&!ctx)||typeof bodies!=='function')return [];
@@ -208,14 +209,18 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(!(b?.shader?.body?.fragment||b?.shader?.fragment)||!b.root)continue;
       let B=BODIES.get(b.id);
       if(!B||B.key!==b.shader.id+'|'+b.path){
+        if(B)releaseBody(B);
         try{
-          const place=placement(structure,b.path),g=bodyGeometry(N.collectStructure(b.root),place),material=b.shader.body||b.shader;
-          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],count:g.length/7,preview:b.shader.preview,state:material.state||{},colors:paletteSet(b.palette),mesh:gl?null:g,fallbackAlpha:Number(material.fallbackAlpha??.28),ready:true};
+          const place=placement(structure,b.path),material=b.shader.body||b.shader;
+          const ownCells=typeof material.cells==='function'?material.cells({projection:b.projection,root:b.root}):null;
+          if(ownCells&&(!Array.isArray(ownCells)||ownCells.some(c=>!Array.isArray(c.tet)||c.tet.length!==4||c.tet.some(v=>!Array.isArray(v)||v.length!==3||v.some(x=>!Number.isFinite(x)||Math.abs(x)>2)))))throw new Error('invalid site-owned coarse cells');
+          const g=bodyGeometry(ownCells?{leaves:ownCells}:N.collectStructure(b.root),place);
+          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],count:g.length/7,preview:b.shader.preview,draw:material.draw,release:material.release,projection:b.projection,state:material.state||{},colors:paletteSet(b.palette),mesh:gl?null:g,fallbackAlpha:Number(material.fallbackAlpha??.28),ready:true};
           if(gl){
             const bp=program(gl,material.fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer();
             gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g,gl.STATIC_DRAW);
             for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(bp,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
-            Object.assign(B,{p:bp,vao:bvao,U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}});
+            Object.assign(B,{p:bp,vao:bvao,buf:bbuf,U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}});
           }
         }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
         BODIES.set(b.id,B);
@@ -224,12 +229,15 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }
     return out;
   }
-  const bodyLabels=new Map();
+  addEventListener('pagehide',()=>{for(const B of BODIES.values())releaseBody(B)});
+  const bodyLabels=new Map(),labelSizes=new WeakMap();
+  const labelObserver=typeof ResizeObserver==='function'?new ResizeObserver(entries=>{for(const e of entries){const b=e.borderBoxSize?.[0];labelSizes.set(e.target,{w:b?.inlineSize??e.contentRect.width,h:b?.blockSize??e.contentRect.height})}}):null;
+  addEventListener('pagehide',()=>labelObserver?.disconnect());
   function bodyLabel(B){
     let n=bodyLabels.get(B.id);
     if(!n){n=document.createElement('button');n.type='button';n.className='field-label field-body-label';n.innerHTML='<b></b>';n.querySelector('b').textContent=B.title;
       n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();enterBody(B.id,{x:e.clientX,y:e.clientY})});
-      (labelHost||element).append(n);bodyLabels.set(B.id,n)}
+      (labelHost||element).append(n);bodyLabels.set(B.id,n);labelObserver?.observe(n)}
     const ink=n.querySelector('b');if(ink.textContent!==B.title)ink.textContent=B.title;
     return n;
   }
@@ -657,7 +665,11 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     for(const B of fb)B.pos=driftAt(B.drift,ms);
     canvas.dataset.container=cur||'ε';canvas.dataset.visibleCells=String(cells.length);canvas.dataset.visibleContent=String(visible.length);canvas.dataset.floatingBodies=fb.map(B=>B.id).join(' ');
     for(const [bodyId,n] of bodyLabels)if(!BODIES.get(bodyId)?.active)n.hidden=true;
-    for(const B of fb){const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r);n.hidden=false;n.style.left=lp.x+'px';n.style.top=lp.y+'px'}
+    for(const B of fb){
+      const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r),size=labelSizes.get(n)||{w:0,h:0};
+      const halfW=Math.min(size.w/2+8,r.width/2),halfH=Math.min(size.h/2+8,r.height/2);
+      n.hidden=false;n.style.maxWidth=Math.max(1,r.width-16)+'px';n.style.left=Math.max(halfW,Math.min(r.width-halfW,lp.x))+'px';n.style.top=Math.max(halfH,Math.min(r.height-halfH,lp.y))+'px';n.style.zIndex=String(10+Math.round((lp.z+2)*10));
+    }
     if(gl&&GL){
       const hv=hostView(),hostClear=hv?.e.shader.clear;
       const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);
@@ -679,6 +691,15 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         const bs=B.state;if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
         if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
         const bm=model(W.orientation,base*t.scale,t.center.map((v,j)=>v-B.pos[j]));
+        if(typeof B.draw==='function'){
+          const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);let drawn=false;
+          try{B.draw({gl,proj,view,model:model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k)),projection:B.projection,ms,rect:r,dpr:d,orientation:W.orientation});drawn=true}
+          catch(err){canvas.dataset.bodyError=String(err?.message||err)}
+          finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.disable(gl.SCISSOR_TEST)}
+          if(drawn)continue;
+          if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
+          if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
+        }
         gl.useProgram(B.p);gl.uniformMatrix4fv(B.U.proj,false,proj);gl.uniformMatrix4fv(B.U.view,false,view);gl.uniformMatrix4fv(B.U.model,false,bm);
         if(B.U.time)gl.uniform1f(B.U.time,ms*.001);if(B.U.focus)gl.uniform1f(B.U.focus,-1);if(B.U.resolution)gl.uniform2f(B.U.resolution,w,h);if(B.U.pal)gl.uniform3fv(B.U.pal,new Float32Array(B.colors.flat()));
         gl.bindVertexArray(B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);

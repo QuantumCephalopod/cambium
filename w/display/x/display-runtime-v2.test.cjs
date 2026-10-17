@@ -63,18 +63,18 @@ assert.equal(runtime.ui.get(ids[0]).field('slot').z,2);
 const orient=boot(1,'',{top:170,right:310,bottom:320,left:90});
 const ui=orient.runtime.ui.get(ids[0]);
 assert.deepEqual({...ui.carrier},{x:0,y:170,w:1000,h:630});
-const node={style:{width:'36rem',height:'max-content',right:'12px'},dataset:{},isConnected:true};
+const node={style:{width:'36rem',height:'max-content',right:'12px',setProperty(k,v){this[k]=v}},dataset:{},isConnected:true};
 ui.bind(node,'slot');
 assert.equal(node.style.left,'0px');assert.equal(node.style.top,'170px');
 assert.equal(node.style.width,'36rem');assert.equal(node.style.height,'max-content');
-assert.equal(node.style.right,'12px');assert.equal(node.style.zIndex,'132');
+assert.equal(node.style.right,'12px');assert.equal(node.style.zIndex,'132');assert.equal(node.style['--ui-field-x'],node.style.left);assert.equal(node.style['--ui-field-y'],node.style.top);
 orient.emit('sss:safe-area');
 assert.equal(node.style.width,'36rem');assert.equal(node.style.height,'max-content');
 const plain=f.options.get('organism:plain').projection;assert.equal(plain.sourceMarker,'organism:plain');
 for(let frame=0;frame<30;frame++){
   const bodies=f.options.get('organism:origin').bodies();
   assert.equal(bodies.length,3);
-  for(const body of bodies)assert.strictEqual(body.root,f.options.get(body.id).projection.root,'floating body uses its field anatomy');
+  for(const body of bodies){assert.strictEqual(body.root,f.options.get(body.id).projection.root,'floating body uses its field anatomy');assert.strictEqual(body.projection,f.options.get(body.id).projection,'own host draw receives the bounded source preview rather than a central specimen reconstruction')}
   assert.equal(f.options.get('organism:branch').environment(),null,'inactive site has no host environment');
 }
 once();
@@ -278,3 +278,10 @@ async function feedHandoffWitness(){
 }
 feedHandoffWitness().then(()=>console.log('display runtime: orientation-only carrier + lazy feed identity handoff/navigation PASS'))
   .catch(error=>{console.error(error);process.exitCode=1});
+/* A source-owned Inquiry encounter uses the actual offered body membrane.
+ * The containing Philosophy view survives while the project restarts locally. */
+{
+ const inquiry=boot();inquiry.W.inspect('w');inquiry.emit('sss:enter-body',{from:ids[0],id:ids[1],origin:{x:30,y:40}});
+ assert.equal(inquiry.runtime.state.activeIds[0],ids[1]);assert.equal(inquiry.runtime.state.localView,'');assert.equal(inquiry.runtime.state.stack[0].localView,'w');
+ inquiry.key({key:'Escape',preventDefault(){}});assert.equal(inquiry.runtime.state.activeIds[0],ids[0]);assert.equal(inquiry.runtime.state.localView,'w');
+}

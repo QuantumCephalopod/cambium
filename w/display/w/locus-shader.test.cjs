@@ -192,3 +192,17 @@ for(const pointerType of ['mouse','touch']){
  f.canvas.pointerdown(event);f.canvas.pointerup(event);
  assert.equal(f.world.view,'');assert.equal(f.events.at(-1).type,'sss:membrane-ascend');
 }
+
+/* Site-owned coarse cells/draw stay inside the shared placement/identity frame.
+ * A failed own draw retains the truthful coarse-cell fallback. */
+for(const webgl of [true,false]){
+ const f=fixture({webgl}),material=f.bodies.b.shader.body;
+ material.cells=()=>[{path:'w',tet:N.V0.map(v=>[...v])}];let draws=0,released=0;
+ material.release=()=>released++;
+ if(webgl)material.draw=args=>{draws++;assert.equal(args.gl,f.gl);assert(Math.abs(args.model[0]-1.75*.125)<1e-6);throw Error('declared own-draw refusal')};
+ f.frame(0);
+ if(webgl){assert.equal(draws,1);assert.match(f.canvas.dataset.bodyError,/own-draw refusal/);assert.equal(f.frames[0].find(c=>c.type==='draw'&&c.name.includes('// custom-b')).count,12)}
+ else assert.equal(f.frames[0].filter(c=>c.type==='fill2d').length,4*4+4*4*4+4,'one own tetra replaces the old four-tetra body while other populations stay whole');
+ f.bodies.b.path='y';f.frame(50);if(webgl)assert.equal(released,1,'remount retires context-local own resources before rebuilding');
+}
+console.log('PASS — site-owned coarse geometry, shared body frame, failed-draw fallback and remount retirement');

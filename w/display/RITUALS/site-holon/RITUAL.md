@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.10"
+version: "3.11"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -230,3 +230,5 @@ Version 3.5 orientation/extent/z distinction (staged 2026-10-09; browser witness
 Version 3.6 recursive representation handoff (staged 2026-10-10): site-owned preview and local media tiers now share the same generic readiness/retirement law through Display Continuity. This is not a new site identity or public disclosure scope; GPU/browser performance acceptance remains open.
 
 Version 3.7 situated-instrument sovereignty (2026-10-12): a body may lend its own function/contact/readability constraints to the globally invariant droplette. Four currently named site-space functions do not form a universal site `mode` enum or overwrite local recursion.
+
+Version3.11 truthful coarse-body coupling (2026-10-17): the optional body cells/draw/release contract lends the site's actual coarse representation into Display's normalized host frame. Bounded public preview input remains source-owned, and actual source geometry survives Canvas2D fallback. Display retains host placement/selection/Descent/orientation and retires context resources on remount; no detailed-feed acquisition, specimen branch or duplicate ontology is earned by an own draw.
