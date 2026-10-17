@@ -654,6 +654,7 @@ function tickHud(){
   if(HUD.paceLabel)HUD.paceLabel.textContent=paceText(SIM.paceCur);
   if(HUD.alive)HUD.alive.textContent=`${SIM.alive.size} alive`;
   if(HUD.scrub&&document.activeElement!==HUD.scrub)HUD.scrub.value=String(Math.round(SIM.simT/L.seconds*1000));
+  if(CAM.on&&now-(CAM.cardAt||0)>1000){CAM.cardAt=now;camCard()}
 }
 /* the HUD gives each kind of information its own fixed place at the edges of the reef — no floating boxes */
 function lifeParts(projection){
