@@ -1,0 +1,45 @@
+{
+  "kind": "HOME",
+  "event_id": "display-outside-click-user-witness-20261017T121612Z",
+  "home_at_utc": "2026-10-17T12:16:12.832601Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "organism": "display",
+  "entrypoint": "display:ε",
+  "operation": "record-deployed-visitor-return",
+  "outcome": "PASS/EARNED — Philipp confirms outside-click works as intended after owner promotion; unspecified detailed device/history cases remain OPEN.",
+  "changed_scope": [
+    "Bounded successful visitor report retained locally",
+    "Existing outside-click residue narrowed; exact previous residue retained in _waste",
+    "Spent visitor intake retired source-exact to _waste"
+  ],
+  "context": {
+    "source_snapshot": "a5626a8400e299d0225436441746693804c50e9c",
+    "intake_commit": "4d2c60e3159b717ee61f480657396d1964202569",
+    "visitor_report": {
+      "source": "Philipp, current work chat, 17 October 2026",
+      "quote": "hab geprüft, außencklick läfut wie er soll! :))",
+      "scope": "General successful deployed outside-click report; device, viewport and individual scenarios unspecified"
+    },
+    "publication_witness": {
+      "run_id": 39029772827,
+      "head_sha": "f9a9f406ecbe72ede45abd5b259f0024644fcb6d",
+      "conclusion": "success"
+    },
+    "intake_retirement": {
+      "source": "_stomach/NUTRIENT__outside-click-user-witness__20261017.md",
+      "waste": "_waste/metabolized-NUTRIENT__outside-click-user-witness__20261017.md",
+      "preimage_sha256": "55ed29179fb6e6a2dad3810788a04e9ac6a5205e5a260bd7c73217b2e314919c",
+      "preimage_bytes": 776
+    },
+    "previous_residue": {
+      "waste": "_waste/catabolized-outside-click-before-user-witness-20261017.md",
+      "preimage_sha256": "adca8675027a5f4c2a60a92b85bdab8110ddf7d5f21133796b85d1a8b0ae1292",
+      "preimage_bytes": 1836
+    },
+    "continuation": "_stomach/NUTRIENT__outside-click-rank-ascent__20261003.md",
+    "limits": [
+      "No new runtime change",
+      "No claim of individually tested touch, browser history or complete structural scenario matrix"
+    ]
+  }
+}

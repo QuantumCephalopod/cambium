@@ -1,0 +1,44 @@
+{
+  "kind": "HOME",
+  "event_id": "datenschutz-cleanup-test-regression-20261017T121612Z",
+  "home_at_utc": "2026-10-17T12:16:12.832601Z",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "organism": "datenschutz",
+  "entrypoint": "datenschutz:ε",
+  "operation": "repair-stale-publication-test",
+  "outcome": "PASS/EARNED — current completed-cleanup publication passes native staging; owner merge and redeploy remain pending.",
+  "changed_scope": [
+    "render.test.cjs: completed provider cleanup agrees across projection and both public languages; paired notice dates agree with the German source",
+    "Existing 15-section structure, ordered references, contact, language and retention checks retained",
+    "Spent regression intake retired source-exact to _waste"
+  ],
+  "context": {
+    "source_snapshot": "a5626a8400e299d0225436441746693804c50e9c",
+    "intake_commit": "4d2c60e3159b717ee61f480657396d1964202569",
+    "validation": {
+      "original_test": "FAIL reproduced at pending-cleanup assertion on canonical source",
+      "privacy_renderer": "PASS",
+      "impressum_renderer": "PASS",
+      "negative_probes": [
+        "PASS: rejects English cleanup rollback",
+        "PASS: rejects German cleanup rollback",
+        "PASS: rejects stale English notice dates"
+      ],
+      "native_checker": "PASS: 234247 checks",
+      "address": "PASS: 38 assertions",
+      "exact_artifact": "PASS: 11249 files",
+      "bundle": "56e5bb7caa57b40b"
+    },
+    "intake_retirement": {
+      "source": "_stomach/NUTRIENT__privacy-cleanup-test-regression__20261017.md",
+      "waste": "_waste/metabolized-NUTRIENT__privacy-cleanup-test-regression__20261017.md",
+      "preimage_sha256": "93a2e8f8ac36f46d0a058785c802e8fd490fac8e9adeec94df51200169b26233",
+      "preimage_bytes": 1117
+    },
+    "preserved_boundary": [
+      "Merged public notice and projection bytes unchanged",
+      "No new legal assessment, provider cleanup operation or Drive source mutation",
+      "No browser/deployment success claim for this candidate"
+    ]
+  }
+}

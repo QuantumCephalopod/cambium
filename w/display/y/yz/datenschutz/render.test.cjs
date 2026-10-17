@@ -37,5 +37,22 @@ const structure=s=>Array.from(s.matchAll(/<(h1|h2|h3|p|ul|li|address)(?:\s[^>]*)
 assert.deepEqual(structure(en),structure(de),'translation retains every heading, paragraph and list item in source order');
 const refs=s=>Array.from(s.matchAll(/href="((?:https:|mailto:)[^"]+)"/g),m=>m[1]);
 assert.deepEqual(refs(en),refs(de),'translation retains ordered external references and contacts');
-if(privacy){assert.equal((en.match(/<h2>/g)||[]).length,15);assert(en.includes('2 October 2026'));assert(en.includes('Until GitHub confirms this cleanup'));assert(en.includes('no fixed calendar-based deletion period'));}
+if(privacy){
+ assert.equal((en.match(/<h2>/g)||[]).length,15);
+ // Check the notice dates, not the older event dates in its historical section.
+ const deDates=Array.from(de.matchAll(/<p class="meta">Stand: (\d{2})\.(\d{2})\.(\d{4})<\/p>/g),m=>m.slice(1));
+ const enDates=Array.from(en.matchAll(/<p class="meta">As of: ([^<]+)<\/p>/g),m=>m[1]);
+ assert.equal(deDates.length,2);assert.deepEqual(deDates[0],deDates[1]);
+ const [day,month,year]=deDates[0],months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+ const translatedDate=Number(day)+' '+months[Number(month)-1]+' '+year;
+ assert.deepEqual(enDates,[translatedDate,translatedDate],'both English notice dates follow the German source');
+ // The merged publication source and projection now record completed provider cleanup.
+ assert(projection.draft.status.includes('provider-gc-closed-described'));
+ assert(de.includes('GitHub Support hat das zugehörige Ticket geschlossen.'));
+ assert(en.includes('GitHub Support has closed the corresponding ticket.'));
+ assert(!de.includes('Bis GitHub diese Bereinigung bestätigt'));
+ assert(!en.includes('Until GitHub confirms this cleanup'));
+ assert(en.includes('Independent copies or clones made by third parties'));
+ assert(en.includes('no fixed calendar-based deletion period'));
+}
 console.log('PASS — '+id+' mounted/footer switching, complete static languages and contact/reference continuity');
