@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.3"
+version: "3.4"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -142,17 +142,17 @@ Every simplex of a Papers organism is made of its own source-owned words. Text i
 - **edge (6E)** — the edge is a thread of its relation's letters, tapered toward the vertices; peeking loosens the fibres where the pointer touches; opening turns the body so the edge lies level in front and the fibres re-weave into the sentence;
 - **face (4F)** — the face is a surface of its relation's letters; peeking stirs them around the pointer; opening turns the face frontal and the letters weave into one disk of text at its incenter, levelled on screen;
 - **vertex (4V)** — the vertex is drawn as the letter it is (`w x z y`); its sentence unfolds out of that letter, centered beneath it;
-- **volume (1T)** — remains discoverable earning structure; its place in this grammar is still open.
+- **volume (1T)** — the enclosing whole has one geometry-derived `1T` contact at its visible outer boundary. The same drop reads its exact admitted title/body; the central void remains the place of metabolites. No volume is invented when the projection lacks one.
 
-At rest nothing is written out: lines, faint dust, sleeping lights, four letters. Everything is present, folded, ready to be observed. **One piece is open at a time:** the locked piece, else the peeked one; everything else steps back.
+At rest nothing is written out: tapered threads of the authored edge letters, faint face dust, sleeping lights, four letters. Everything is present, folded, ready to be observed. **One piece is open at a time:** the locked piece, else the peeked one; everything else steps back.
 
 **Open text never collides.** An open or still-folding sentence takes free space around its own anchor — never over visible chrome, never over another open sentence. Receded chrome yields rather than repels, woven edges and faces stay on their own body wherever the screen allows, and chrome that open text must cover fades out rather than showing through. Placement is perception only; it never reorders or rewords the text.
 
-Vertices are doors. For `S.*` a vertex carries its source-body span and invariant — outward, toward the original work (the provenance handoff). For `nH` the four vertices *are* the four parent organisms — opening a vertex walks into the ancestor, recursively to Source ground.
+Vertices are doors. For `S.*` a vertex carries its admitted internal source-body span and invariant. A separate small `ORIGIN` door on its visible body boundary opens truthful external attribution and original-work links only on request; that outward handoff is not a persistent metadata list over the tetrahedron. For `nH` the four vertices *are* the four parent organisms — opening a vertex walks into the ancestor, recursively to Source ground.
 
 A woven face opens at one readable size at every rank: where framing leaves a small body (S ground) below full fill, the weave grows its text plane to the size a fully framed body gives.
 
-Word order and wording stay exact; motion settles before reading — a locked edge or face weaves only once the body has finished turning it level; missing words remain projection absence, never replacement text. Letters-as-particles and Pretext are the current carriers, not ontology.
+An edge’s full woven material fits its current projected endpoint span, including glyph reach; foreshortening cannot stretch it across the screen. Folded resting threads coalesce subpixel glyphs against their live physical-pixel span; opening restores every glyph, and full wording remains available through the drop even when the folded material is too small to read. Faces remain letter dust until facing and projected altitude earn readable weave. Word order and wording stay exact; motion settles before reading — a locked edge or face weaves only once the body has finished turning it level; missing words remain projection absence, never replacement text. Letters-as-particles and Pretext are the current carriers, not ontology.
 
 Compression:
 
@@ -162,7 +162,7 @@ Compression:
 
 Papers inhabits Display's shared Descent (navigation `Descent`) at every rank, including inside one organism:
 
-`papers → chamber / subtet → organism → vertex | edge | face | metabolite`
+`papers → chamber / subtet → organism → vertex | edge | face | whole | metabolite`
 
 - nothing is selectable from the Papers overview; the witness first descends into a realized chamber and selects among the organisms it contains;
 - inside a selected organism, its own simplices and metabolites are the next children;
@@ -296,24 +296,16 @@ The visual scale law is deterministic:
 
 ### Metabolight
 
-A Holon's permanent recursive center void is the lawful perceptual site for **metabolight**: luminous condensation of the wisdom/metabolic yield carried by that recursive closure.
+The recursive center is the place of source-owned surviving metabolic yield, for `S.*` and `nH` alike. Each actually admitted metabolite has its own light inside the selected organism; the source owns cardinality, wording and earning-body membership. A truthful zero stays zero, while missing projection remains absence and must not imply that the organism earned nothing.
 
-- every visible Holon rank may carry one central metabolight at its own recursive center;
-- nested lower-rank Holons retain their own smaller metabolights when LOD reveals them;
-- visible `S.*` ground carries only a faint quantum ember, distinguishing minimum Papers-organism presence from Holon condensation;
-- baseline V1 metabolight size/intensity may be rank-driven so scale is perceptible before the public projection exposes complete metabolite tissue;
-- an actually admitted public wisdom/metabolite payload may truthfully boost the light;
-- missing public wisdom tissue means **projection absence only** and must never be rendered/interpreted as proof of zero metabolic yield;
-- selection may strengthen the current body's light without changing its identity, rank, parentage or semantic content.
-
-The light is therefore not decorative bloom and not a second ontology. It is Papers-local phenomenology attached to the same recursive organism body already earned by genealogy.
+A distant or recursively unresolved organism may carry a rank-scaled navigation **ember**. That ember makes the same tetrahedral body perceptible; it is not a metabolite and does not invent or replace metabolic yield. Inactive/nested bodies keep those embers until their own actual inquiry earns finer contact. Selection changes perception, never identity, parentage or source content.
 
 ### Metabolight text
 
-When the public projection actually carries a Holon's crystallized wisdom/metabolite text, the active Holon may make that same admitted text readable **at its own central metabolight**.
+When the public projection actually carries an organism's crystallized wisdom/metabolite text, the active Source or Holon may make that same admitted text readable **at its own central metabolight**.
 
 - Papers truth determines what is said; presentation never synthesizes replacement wisdom.
-- the current Holon's projected metabolight center determines where readable text belongs;
+- the current organism's projected metabolight center determines where readable text belongs;
 - selection and scale reveal admitted text; they do not create new semantic content;
 - missing public wisdom remains projection absence and produces no fabricated sentence;
 - inactive/nested metabolights remain light-only unless a later earned inquiry law says otherwise;
@@ -341,7 +333,7 @@ Physics keeps every organism and simulation tick, the same spring/drag/reach/tim
 
 Background and selected inquiry bodies may reuse immutable ancestry/relative geometry and ember metadata in the finite existing LOD classes. Source/projection/inquiry replacement invalidates that support; a bounded LRU evicts cached support without capping organisms or recursion. Current position, scale, pixels, color/opacity, selection and fades still apply each draw. Instance and light buffers may retain allocations and upload the same admitted values once per draw; face and edge draws share their input.
 
-Viewport/lens admission precedes cold name-glyph layout. Cached off-lens names close without preparing or moving invisible letters, and re-entry prepares the same exact source text. No text-tissue/edge law, geometry, navigation, optics or source projection is redesigned here. CPU stage comparisons and reference checks earn local execution evidence; GPU time, universal frame rate, physical-device smoothness and deployed acceptance require their own contact.
+Viewport/lens admission precedes cold name-glyph layout. Cached off-lens names close without preparing or moving invisible letters, and re-entry prepares the same exact source text. The shared field owns the camera, walked chamber path, host environment, adaptive resolution, glass and animation clock. Papers draws its actual bodies through the existing frame hook and supplies only source-owned text/tissue composites. Background genealogy resolves against actual projected scale and the same near/far/frustum, without capping population, freezing motion or changing source equations. Canvas2D may project the same admitted tetrahedra/lights where WebGL2 is absent; it does not execute GLSL or glass. Native software graphics and real browser dimensions earn their stated scopes; neither is a claim of universal physical-device FPS.
 
 ## Living overview physiology
 
@@ -383,7 +375,7 @@ When Papers is encountered through `site-space:y ⟦ papers:ε ⟧`, the surroun
 
 The relation is environmental, not constitutive:
 - Philosophy's global `y / Inquiry` region supplies the surrounding material/shader condition;
-- Papers keeps its own local root, chambers, camera passage, motion and inquiry geometry;
+- Papers keeps its own local root, chambers, motion and inquiry geometry; Display lends the shared camera passage;
 - do not render Philosophy's complete four-region tetrahedral body as a second structural container inside the Papers encounter;
 - do not scale or tile Papers as though its local root were identical to the Inquiry tetrahedron;
 - local Papers `w/x/z/y` must never be reinterpreted as concatenated Philosophy descendants;
@@ -392,7 +384,7 @@ The relation is environmental, not constitutive:
 
 Compression: **Papers floats inside Inquiry-space; Inquiry colors the surrounding world, it does not become Papers' body.**
 
-Display now carries this relation generically (site-holon: the host's shader evaluated at the container the site occupies). On migration onto shared Descent, Papers' own inquiry-environment carrier retires in favour of that host environment; the relation above is unchanged.
+Display carries this relation generically (site-holon: the host's shader evaluated at the container the site occupies). Papers uses that host environment directly; its private inquiry-environment canvas/program and animation clock are retired. Chamber entry/ascent uses the actual shared walked path; source-owned organism ancestry and `2^rank` composition remain within Papers. IDs and perceptual packing are not reminted as semantic addresses to force a generic point pool.
 
 The selected organism moves toward the perceptual center and inquiry zooms into its scale, but the previous-scale Papers body should remain perceptibly present as distant/background matter whenever projection permits.
 
@@ -438,34 +430,17 @@ This is a membrane relation, not interior identity:
 - Papers organisms, chamber passage, metabolights and inquiry remain foreground-owned by Papers;
 - the parent field must not overwrite Papers' material language or semantics.
 
-### Overview physiology — four living phases
+### Specimen-bound explanation
 
-When no organism is selected, **the center remains empty field-space**. HOW PAPERS LIVES may appear only as one coherent peripheral unit whose animation, phase labels and active explanation stay visually together.
+The overview center remains living field-space. A small peripheral HOW PAPERS LIVES control starts a visitor-like traversal of one dynamically selected actual current rank-4 Holon. Eligibility requires admitted complete rank-4 tissue, four real parents at every visited level and a resolvable path to an actual Source. Absence disables the encounter with an explicit explanation; no dummy body is fabricated. Repetition may choose another eligible identity, and the same procedure must work across them.
 
-**It explains what Papers is, told from Papers' own receptors, and its heart is anabolism.** The body is a population of living organisms of every rank; it reaches out; one real outside work arrives while its authors stay outside on a provenance thread; the work's *own* four parts earn 6 relations, 4 faces and 1 whole, collapse to what survives, and live on as one Source. Then the why: a random eligible rank is drawn — too few alive there, draw again; four distinct living organisms of it are drawn at random; they become one next-rank Holon only if every relation genuinely needs all four, otherwise no birth and the draw begins again. Parents are never consumed; repeat meetings stay allowed. Nothing is filed: every whole is something only four chance-met organisms could earn together. The story must never suggest a structure waiting for a missing piece — no such waiting exists.
+The explanation uses the same chamber entry, organism selection, edge/face/whole/metabolite contact and parent descent as manual inquiry. Timed pinned-Pretext commentary describes the current body only after passage/orientation settles. It distinguishes the composition outward (`2^rank`) from refinement inward, the six pairwise relations, four three-parent faces and irreducible whole, surviving metabolites, and Source partitions versus actual Holon parents. Anabolism draws a rank and four same-rank peers; closure alone permits birth and parents remain living. Missing Source tissue stays explicitly PARTIAL.
 
-The explanation is grounded in the four current Papers pumps:
+Completion or interruption restores the visitor’s previous chamber/view without changing population, genealogy, source words, physics or global orientation. The old separate four-phase canvas, dummy population and story renderer are retired; the current explanation has no second body or simulation.
 
-1. **QUESTION** — accumulation: the living body notices what it cannot yet answer and develops one bounded appetite for an external encounter that could change it.
-2. **PREPARE** — chaperone: arrived matter is recognized, checked, bound/folded and routed into a form an existing downstream enzyme can truthfully accept.
-3. **METABOLIZE** — digestion: one complete external work is saturated, tetrahedralized as 4V/6E/4F/1T, collapsed to surviving metabolites and — only after closure — embodied as one minimum `S.*` Source organism.
-4. **GROW** — anabolism: four distinct ACTIVE same-rank organisms may, only through complete relational closure, birth one next-rank Holon while the four parents remain living and reusable.
+The underlying QUESTION / PREPARE / METABOLIZE / GROW pump law remains Papers-owned source physiology. These temporal phases must not be mapped onto Genesis / Continuity / Governance / Evolution merely because both have cardinality four. A visible specimen can explain admitted formation law; it cannot pretend that an intake or new birth is happening now.
 
-Procurement is a real intake membrane between QUESTION and PREPARE, but it is not currently a fifth Papers pump. The overview may depict that crossing without promoting it into a fifth phase.
-
-The cycle is recursive and living rather than a one-way production line:
-
-`QUESTION → PREPARE → METABOLIZE → GROW → QUESTION`
-
-Anabolic growth changes the current Papers body; the next QUESTION phase reacquires that changed body and therefore may become curious about something different.
-
-Do **not** map these four temporal phases onto the four spatial root loci merely because both have cardinality four. Genesis / Continuity / Governance / Evolution are semantic anatomy; QUESTION / PREPARE / METABOLIZE / GROW are temporal physiology.
-
-### Explanatory text boundary
-
-Overview explanation is intentionally concise, peripheral and secondary to the living field. Animation + phase labels + active explanation remain one local unit; none of them may occupy the central void. It may use ordinary DOM/canvas text because these four pump labels/copies are stable explanatory tissue, not Holon wisdom.
-
-Pinned Pretext remains the current layout carrier for selected, source-owned metabolight wisdom. Papers resolves it by stable identity `@chenglou/pretext` through the Display dependency membrane rather than owning or hard-coding its carrier path. Pretext is not the overview motion engine and need not carry the physics of the living demonstration.
+Pinned Pretext remains neutral layout/ink requested by stable identity `@chenglou/pretext` through Display. Papers owns the meaning, timing and actual encounter; no reusable dependency learns Papers semantics.
 
 ## Closure / acceptance
 
@@ -530,3 +505,5 @@ Version 2.9 text-as-tissue correction (2026-10-01, Philipp: "gooey-particle->goo
 Version 3.1 bounded Papers perceptual-work repair (staged 2026-10-10): opened inquiry earns its text-tissue GPU work, the shared glass receives only present tissue, and whole background organisms/recursive geometry are omitted only when conservatively outside the actual camera field. Earned genealogy depth and pixel threshold replace fixed MAX_DEPTH=8. Source, flow equations, visual materials, relative placement and visit semantics remain unchanged. Source, native physics/reference, rank-10/lens/culling unit, full checker and publication-build witnesses passed on QuantumCephalopod (run 38053418521). Browser/WebGL and user-perceived FPS/readability acceptance remain OPEN; do not claim full live-visual closure or retire the residual nutrient from that CI alone.
 
 Version3.3 truthful host body and readable contact completion (2026-10-17): the parent receives this site's existing chamber/instance species through Display's neutral body frame and bounded public sample. Source records are resolved once per preview; programs/buffers are reused and retired per context. Full admitted text, measured local readable frames and actual font/tissue/glass now have bounded software-GLES witnesses. The original source boundary, genealogy, entered scale/flow and static public-shadow authority remain unchanged.
+
+Version 3.4 shared-field/specimen return (2026-10-18): actual detailed bodies use Display’s existing frame, focus, chamber walk, host environment and clock; private environment/specimen canvases and dummy explanation retire. Resting authored edge material obeys live endpoints, faces earn reading through facing/size, the whole has its own outer-boundary contact and Source provenance is an explicit outward door. A dynamic real rank-4 explanation uses the manual actions and restores the previous view. Public source freshness remains separately owned by the still-open Drive projection nutrient.

@@ -71,3 +71,14 @@ no longer admits parent-cited `INV-` keys as an organism's own (4H.YEyI rendered
 bound-project deployment + YEyI re-projection still owner-side.
 
 The extracted preimage is at `../_waste/catabolized-NUTRIENT__source-inquiry-metabolite-projection__20260926-20261004.md`. Reopen only if its cited owner changes, a retained question requires an extracted distinction, or a countercase defeats the witness.
+
+
+## Re-entry — 2026-10-18: concrete remaining source-owned exit
+
+The public renderer now consumes actual Source/Holon tissue, exposes authored whole text at its own body boundary and keeps Source attribution behind an explicit outward door. The existing public shadow remains the admitted 121-Source/88-Holon generation `papers-selfsim-lock-separation-source-20261002`; it is not refreshed by this Display mutation.
+
+Current source Sheet Pulse/Body contact reports HOME `papers-chaperone-20261014T220609Z-authorship-uIc5`, 102 Sources/65 Holons in Body, 65 Holons in Inquiry (51 COMPLETE/14 PARTIAL), and explicitly `BOUND_RUNTIME_DEPLOYMENT_OPEN`. These are current read witnesses, not a claim that the source population or public ledger has already converged. The source-owned raw `_feed.gs` already supports Source and Holon projection and excludes cited parent INV keys from an organism’s own metabolite set; the bound runtime still has the older nH-only diagnostic contract. Editing the raw file alone does not update that executable.
+
+The concrete remaining operation is to save that current source-owned mirror into its existing bound Apps Script project, then run bounded `backfillInquiryProjection()` (which first refreshes Body under the same HOME and acknowledges each bounded delta) until current source coverage is exhausted, followed by `syncLiveNerve()` where necessary. Witness current HOME, source candidates and canonical artifact dialects, the acknowledged Worker/R2 revision, materializer output, static artifact/Pages publication, and actual Source metabolights before closure. `reprojectInquiry()` is an explicit recovery action, not the default refresh. Never publish private Drive IDs, raw acquisitions, credentials or script properties.
+
+The connected Drive/Sheets tools can read the source mirror and Sheet but cannot save or execute the bound Apps Script project. The independently required editor contact reached Google’s ordinary sign-in form in this browser. That authenticated runtime access is the remaining blocker; no physical-phone or personal visual-signoff obligation is introduced. This nutrient stays OPEN.
