@@ -127,3 +127,12 @@
 
 /* The site bounds its own sidebar from the actual orientation anchor. */
 .crawlerbait-hud-side{max-inline-size:calc(100% - var(--ui-field-x,0px) - .75rem);max-block-size:calc(100dvh - var(--ui-field-y,0px) - .75rem);min-inline-size:0;overflow-wrap:anywhere}
+
+/* Words share the field camera and enter Display's glass through the same source canvas. */
+.crawlerbait-ink{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.crawlerbait-hud-rail,.crawlerbait-hud-side,.crawlerbait-hud-bottom{z-index:2}
+.crawlerbait-story,.crawlerbait-legend,.crawlerbait-inspector-empty,.crawlerbait-reader{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}
+
+.crawlerbait-story{display:block!important}
+
+@media(max-width:720px){.crawlerbait-pace{display:block;flex:0 1 3rem}.crawlerbait-transport{gap:.45rem}.crawlerbait-clock{white-space:nowrap}}

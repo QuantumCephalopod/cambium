@@ -52,7 +52,7 @@ simple={
  'AttachShader':[U,U],'CompileShader':[U],'LinkProgram':[U],'UseProgram':[U],
  'BindVertexArray':[U],'BindBuffer':[U,U],'EnableVertexAttribArray':[U],'VertexAttribDivisor':[U,U],
  'BindTexture':[U,U],'BindRenderbuffer':[U,U],
- 'ActiveTexture':[U],'Enable':[U],'Disable':[U],'BlendFunc':[U,U],
+ 'BlendEquation':[U],'ActiveTexture':[U],'Enable':[U],'Disable':[U],'BlendFunc':[U,U],
  'DepthMask':[C.c_ubyte],'ColorMask':[C.c_ubyte]*4,'ClearDepthf':[F],
  'ClearColor':[F]*4,'Clear':[U],'Viewport':[I]*4,'DrawArrays':[U,I,I],
  'TexParameteri':[U,U,I],'TexStorage2D':[U,I,U,I,I],
@@ -112,7 +112,8 @@ def replay(commands,width,height,min_depth_clears=3):
             data=None if isinstance(a[1],int) else (F*len(a[1]['array']))(*a[1]['array'])
             gl('BufferData',None,[U,C.c_ssize_t,P,U],a[0],a[1] if data is None else C.sizeof(data),data,a[2])
         elif name=='bufferSubData':
-            data=(F*len(a[2]['array']))(*a[2]['array']);gl('BufferSubData',None,[U,C.c_ssize_t,C.c_ssize_t,P],a[0],a[1],C.sizeof(data),data)
+            values=a[2]['array'];values=values[a[3]:a[3]+a[4]] if len(a)>4 else values
+            data=(F*len(values))(*values);gl('BufferSubData',None,[U,C.c_ssize_t,C.c_ssize_t,P],a[0],a[1],C.sizeof(data),data)
         elif name=='vertexAttribPointer':gl('VertexAttribPointer',None,[U,I,U,C.c_ubyte,I,P],*a[:5],P(a[5]))
         elif name.startswith('uniform'):
             loc=a[0];location=gl('GetUniformLocation',I,[U,C.c_char_p],objects[loc['program']],loc['uniform'].encode())

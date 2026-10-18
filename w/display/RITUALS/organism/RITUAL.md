@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.34"
+version: "3.35"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -378,3 +378,6 @@ Version 3.32 stomach-completion decisions (2026-10-17): current source and bound
 Version3.33 contract-acceptance correction (2026-10-17): Philipp removes default physical-phone/personal-approval gates. Exact native narrow/wide input and real software-GLES rendering witnesses close their bounded contracts; concrete CSS/readability/media/performance/geometry work remains agent-owned. The existing inverse control is connected. Earlier HOME evidence scopes remain immutable; unavailable platforms are limits rather than permanent duplicate nutrients. No anatomy or source-content changes are earned.
 
 Version3.34 concrete completion (2026-10-17): identity-owned coarse cell/draw/retirement offers embody Papers and Schattenseiten through the shared host frame. Actual published media and real font/layout/tissue software-GLES witnesses replace generic acceptance waiting. Narrow legal overflow and off-field body titles receive concrete layout repairs. Philosophy owns its Inquiry/Papers encounter and Care wording; no semantic root/CCCC change or ancestor backpropagation is earned. Changed-shadow automatic publication retains its separate causal witness requirement.
+
+
+Version 3.35 time-varying local fields (2026-10-17): a site may offer `shader.snapshot({ms,container})` returning its current `{root,points,revision}`. Display rebuilds addressed geometry/content only when that revision changes and retains selected point identity while its address changes; withdrawn identities cease selection. This is a neutral source-owned geometry hook, not a shared historical clock or content schema. The same optional `afterDraw` frame is lent to Canvas2D with `gl:null`, `context2D` and `canvas`, so sites can retain their own timing/contact/text behavior without pretending that the fallback executes GL. Crawlerbait's recorded births first earn the live projection and its fallback life first earns the backend-complete frame. Existing sites without either hook retain their prior projection.

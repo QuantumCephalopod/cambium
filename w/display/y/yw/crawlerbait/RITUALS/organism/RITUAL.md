@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.3"
+version: "5.4"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -238,3 +238,14 @@ Version 5.1 exact-offer correction (2026-10-02): a privacy audit before Git-hist
 Version 5.2 organism-boundary correction (2026-10-02): adding unrelated legal site-holons exposed that Crawlerbait's path membrane was importing the repository-root generated Display artifact. That made sibling publication anatomy an implicit Crawlerbait dependency and let unrelated asset-bundle changes retroactively alter its path witness. The membrane is now organism-local: Crawlerbait may observe host-wide encounters through Cloudflare, but only its own public apertures may remain literal; foreign host paths become opaque Baits. Being-kind classification uses encounter method/status/time rather than foreign file traversal, and already-opaque Baits preserve identity across the migration.
 
 Version5.3 local sidebar-extent correction (2026-10-17): a browser witness found the wide sidebar64px beyond its viewport. The site now uses Display's derived field-anchor CSS coordinates to bound only its own sidebar width/scroll height. Intrinsic HUD bodies remain site-owned; no grid-cell capacity, world-body movement, traffic/source/privacy mutation or capture/Tide actuation change is earned.
+
+
+Version 5.4 temporal embodiment and residual reconciliation (2026-10-17): Bait display identity is its existing public path, independent of its shortest unique address. Replay reconstructs births and collision redistribution from admitted final prefix digits and first sightings; legacy-only sightings are a prehistory baseline, without invented exact birth times. A collision redistributes to derived children, including the ordinary living self-child: it does not make the former address a router-only organ or require every occupant to stay at the same point. At the replay end every address equals the canonical Tide projection; no address/state migration is earned.
+
+Being morphology and kind use only the encounter prefix at the replay clock. The immutable opaque genome provides variation; earned encounters, distinct Baits and days supply growth. Historical time never grants future body parts. Camera follow remains the existing continuous focus; a new shoulder/rotation camera is declined without a new witnessed interaction requirement. Resolution changes blend body and colony shares, and the heavy ink shader runs at the goo field's resolution before simple upscale. The Canvas2D field also advances the same simulation, with an explicitly simpler ink body.
+
+Story words flow with the identity-resolved pinned Pretext into projected empty triangles, kind counts inhabit world vertices, and the selected Bait's current inhabitants flow in its own projected cell. Complete wording remains accessible in the DOM; transport and pace stay native controls. Present individual Beings offer stable public artwork identity to Display's existing drop. Contact exposes only public ID, opaque genome, prefix kind and earned encounter counts; it does not read recognition substrate. Offers withdraw on disappearance or unmount. Display owns drop physics/optics and the common camera; Crawlerbait owns its text, bodies and meaning.
+
+The two September publication-membrane proposals are superseded by the subsequently earned 4.8–5.2 capture/publication law. The smallest actual membrane transforms recognition, phenotype and foreign paths before public persistence and excludes query entirely. No observed undecided hold/release case remains in owned public Traces. This closure neither creates a literal quarantine store nor promises retention of excluded raw substrate, a future release log, an immune taxonomy or another organ. A future concrete case must be admitted on its own evidence. Source-exact proposals remain historical waste rather than executable policy.
+
+The October history-remediation residual follows the Datenschutz-owned GitHub provider-cleanup closure, without probing retired objects or rewriting history again. Independent copies and the unavailable earlier exact audit/HOME remain provenance limits. The separate visitor-generation residual closes on the observed deployed generation and its visible counts matching the current canonical public projection; subsequent presentation work is verified as a build candidate before owner merge and normal Display publication.
