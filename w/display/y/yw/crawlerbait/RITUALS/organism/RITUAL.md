@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.4"
+version: "5.5"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -246,6 +246,10 @@ Being morphology and kind use only the encounter prefix at the replay clock. The
 
 Story words flow with the identity-resolved pinned Pretext into projected empty triangles, kind counts inhabit world vertices, and the selected Bait's current inhabitants flow in its own projected cell. Complete wording remains accessible in the DOM; transport and pace stay native controls. Present individual Beings offer stable public artwork identity to Display's existing drop. Contact exposes only public ID, opaque genome, prefix kind and earned encounter counts; it does not read recognition substrate. Offers withdraw on disappearance or unmount. Display owns drop physics/optics and the common camera; Crawlerbait owns its text, bodies and meaning.
 
+Those are current carrier choices, not a claim that a Being kind occupies a reef corner. Kind is derived behavior; Bait genealogy and actual Being encounters/motion retain their own spatial truth. The accepted 2026-10-19 Reef/Beings separation is OPEN in `_stomach/NUTRIENT__reef-and-being-types__20261019.md`, with one shared replay time. Address/body LOD, readable narrative, crawlercam continuity, fractal layout/name policy and initial acquisition each have their own local intake. Procedural place growth is separately OPEN in `_stomach/NUTRIENT__visit-coalescent-place-growth__20261019.md`; the present renderer does not yet claim visit-coalescent buildings. None of these presentation targets remaps kinds into root anatomy, changes canonical Bait identity, or grants historical time future encounters.
+
 The two September publication-membrane proposals are superseded by the subsequently earned 4.8–5.2 capture/publication law. The smallest actual membrane transforms recognition, phenotype and foreign paths before public persistence and excludes query entirely. No observed undecided hold/release case remains in owned public Traces. This closure neither creates a literal quarantine store nor promises retention of excluded raw substrate, a future release log, an immune taxonomy or another organ. A future concrete case must be admitted on its own evidence. Source-exact proposals remain historical waste rather than executable policy.
 
 The October history-remediation residual follows the Datenschutz-owned GitHub provider-cleanup closure, without probing retired objects or rewriting history again. Independent copies and the unavailable earlier exact audit/HOME remain provenance limits. The separate visitor-generation residual closes on the observed deployed generation and its visible counts matching the current canonical public projection; subsequent presentation work is verified as a build candidate before owner merge and normal Display publication.
+
+Version5.5 presentation-contract reconciliation (2026-10-19): current kind-corner labels are distinguished from actual reef occupancy. The accepted separate type view, shared time and visit-coalescent place growth remain unresolved local intake. Existing traffic, capture, replay, privacy and publication law are unchanged.

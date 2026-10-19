@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.11"
+version: "3.12"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -73,7 +73,7 @@ Default locality rule:
 
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
 
-A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens; the unresolved soft-lock and shape-fit mechanics remain Display-owned boundary pressure, not implemented promises.
+A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens. Identity-bound soft-lock and optional measured readable frames are realized under the organism/navigation receptors; further approach, transport and topology accommodation remain current intake rather than an implemented promise.
 
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
@@ -168,7 +168,7 @@ Shader/background/manifestation belong to stable interlocutor identity, not glob
 
 A site-holon floats as content inside its host's cell. Its field therefore stands in the host's environment at the locus: the host's geometry is not seen; the host's own shader, evaluated at the container the site occupies (region, place and span in host space, shared orientation), fills the entire space in which the site is witnessed, beneath the site's own body. Host = the container the witness came through, else the overview interlocutor. A site whose own renderer already embodies its host may refuse with shader `environment: false`.
 
-Seen from its host, a site-holon is a floating body: its own realized geometry at full resolution, drawn with its own identity shader, two ranks smaller than the realized container carrying it, whatever its internal depth, drifting within that container and carrying its title as an attached, selectable label (navigation `Descent`, bodies). Entering the body is Descent across the membrane; inside, the host is present only as that environment. A site whose generic identity shader draws nothing (its body lives in a custom renderer) is not yet visible as a floating body.
+Seen from its host, a site-holon is a floating body: its own realized geometry at full resolution, drawn with its own identity shader, two ranks smaller than the realized container carrying it, whatever its internal depth, drifting within that container and carrying its title as an attached, selectable label (navigation `Descent`, bodies). Entering the body is Descent across the membrane; inside, the host is present only as that environment. A site whose generic field shader draws nothing may supply its actual coarse cells/draw through the neutral body coupling. A custom entered renderer alone does not supply that outer representation.
 
 A site-local shader may change color, transparency, grain, blur, density or other material qualities without changing the shared tetrahedral topology. Local interaction may manipulate or populate that same body without replacing global orientation or global site navigation.
 
@@ -198,6 +198,8 @@ A site-holon change is accepted when:
 
 
 ## Living provenance
+
+Versioned pending flags below describe their original witness boundary. Later completion and Display's current bounded acceptance law supersede them; they do not create a second live nutrient or a physical-device approval requirement.
 
 Version 2.3 global occupied-region correction (2026-09-18): a cooked cross-site collision pressure earned one specimen-agnostic Display safe-area contract. Global membrane surfaces expose their actual occupied rectangles plus derived conservative insets to every site render and as CSS variables; site-local presentation remains identity-owned, central Display does not branch on specimen identity, and concrete pixels remain implementation rather than ontology.
 
@@ -232,3 +234,5 @@ Version 3.6 recursive representation handoff (staged 2026-10-10): site-owned pre
 Version 3.7 situated-instrument sovereignty (2026-10-12): a body may lend its own function/contact/readability constraints to the globally invariant droplette. Four currently named site-space functions do not form a universal site `mode` enum or overwrite local recursion.
 
 Version3.11 truthful coarse-body coupling (2026-10-17): the optional body cells/draw/release contract lends the site's actual coarse representation into Display's normalized host frame. Bounded public preview input remains source-owned, and actual source geometry survives Canvas2D fallback. Display retains host placement/selection/Descent/orientation and retires context resources on remount; no detailed-feed acquisition, specimen branch or duplicate ontology is earned by an own draw.
+
+Version3.12 current-law reconciliation (2026-10-19): soft-lock/readable frames and actual custom coarse bodies replace obsolete unimplemented wording. New UX targets remain in owner-local intake; no new renderer, gesture or semantic anatomy is claimed here.

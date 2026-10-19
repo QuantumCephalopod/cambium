@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.8"
+version: "3.9"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -15,6 +15,8 @@ Canonical identity/locus/body law is carried by `../site-holon/RITUAL.md`.
 ## Global field
 
 The canonical serialized address alphabet/order is `{w,x,y,z}` recursively without fixed depth. Semantic place is the exact quotient vertex/locus. Potential recursion is not fabricated anatomy. This serialization order is not the fixed CCCC semantic phase order and does not require tetrahedral render code to reorder its internal vertex arrays.
+
+A quotient locus identifies an address relation; it does not reduce a hosted body's occupied volume or drift to a zero-dimensional point. The current compass still uses address points. Its accepted replacement must reflect the actual containing cells and body geometry supplied by the parent field, as recorded in Display `_stomach/NUTRIENT__compass-spatial-containment__20261019.md`. That presentation target does not change router equivalence, stable identities or semantic mounts.
 
 Camera focus is perceptual and distinct:
 
@@ -33,10 +35,10 @@ The global minimap target set is derived from physical site-holon bodies discove
 Current physical/semantic relation:
 
 - `w/display/y/philosophy/` -> site-space `ε` -> **PHILOSOPHY**;
-- `w/display/y/yw/crawlerbait/` -> site-space `w / Form` -> **CRAWLERBAIT**;
-- `w/display/y/yx/schattenseiten/` -> site-space `x / Continuity` -> **SCHATTENSEITEN**;
-- `w/display/y/yy/papers/` -> site-space `y / Inquiry` -> **PAPERS**;
-- `w/display/y/yz/datenschutz/` -> site-space `z / Care` -> **DATENSCHUTZ**;
+- `w/display/y/yw/crawlerbait/` -> site-space `w` -> **CRAWLERBAIT**;
+- `w/display/y/yx/schattenseiten/` -> site-space `x` -> **SCHATTENSEITEN**;
+- `w/display/y/yy/papers/` -> site-space `y` -> **PAPERS**;
+- `w/display/y/yz/datenschutz/` -> site-space `z` -> **DATENSCHUTZ**;
 - `w/display/y/yxz/impressum/` -> site-space `xz` (quotient midpoint, no noun) -> **IMPRESSUM**.
 
 The navigator labels targets by stable site identity/title, not by generic Philosophy vertex names.
@@ -146,11 +148,11 @@ In a single encounter the global navigator is a HUD, not a plate:
 
 ### Situated-function boundary — not a second gesture or a mode dial
 
-The same physical droplette is an **instrument of encounter**. Display owns the common upper liquid body, movement, reservoir coupling, glass optics, continuity and neutral contact aperture. The currently contacted organism owns the locally afforded function and truthful source presentation. It may operate as an instrument of **Form, Continuity, Care or Inquiry** at the current named site-space encounters, but none of those names is a hardwired address-to-function dispatch rule. The located body/relationship, not the mere raw address, earns the response; a site may refuse it. One instrument retains identity through all such encounters.
+The same physical droplette is an **instrument of encounter**. Display owns the common upper liquid body, movement, reservoir coupling, glass optics, continuity and neutral contact aperture. The currently contacted organism owns the locally afforded function and truthful source presentation. It may operate as an instrument of **Form, Continuity, Care or Inquiry** through the actual encountered relation. Those purpose words are neither host-field cell names nor a hardwired address-to-function dispatch rule. The located body/relationship, not the mere raw address, earns the response; a site may refuse it. One instrument retains identity through all such encounters.
 
-For an eligible local object, the intended interaction is free glass → site-offered candidate → optional soft-lock to **body identity**, not stale screen pixels → body-shape accommodation for that owner's specific geometry and readable tissue → release to free glass. In Papers the relevant local topology includes the actual vertex, edge and face; opening/reading should follow the lens relation rather than requiring an unrelated click-explosion and a second lens-drag. The droplette changes its own liquid boundary, not a floating panel, rigid template or universally prescribed simplex-shaped container. This is a **design constraint for future execution**; no exact threshold, path, shape tessellation, text-fit policy or pointer-event mutation is claimed by the 2026-10-12 law assimilation.
+For an eligible local object, the relation is free glass → site-offered candidate → optional soft-lock to **body identity**, not stale screen pixels → owner-offered readable accommodation → release to free glass. The identity offer and measured readable-frame path are already realized below and in the organism receptor. In Papers the relevant local topology includes actual vertices, edges, faces and authored whole/metabolite tissue. Richer body approach, persistent transport and topology-shaped reading remain separately admitted targets, not claims that the current contact frame already performs them. The droplette changes its own liquid boundary, not a floating panel or universally prescribed simplex-shaped container.
 
-No target means current free-lens behavior remains. Locking is neither global navigation nor a second Descent. Existing pointer pass-through/hold ownership, reduced-transparency fallback, reservoir kind/layer, compositing and per-site authority are unchanged until a separately witnessed implementation passes native/visual tests. The still-open 2026-10-03 soft-lock/preview nutrient owns that implementation pressure.
+No target means current free-lens behavior remains. Locking alone is neither global navigation nor a second Descent. Existing pointer pass-through/hold ownership, reduced-transparency fallback, reservoir kind/layer, compositing and per-site authority remain constraints. The old soft-lock/preview carrier is completed; current liquid transition pressure is in Display `_stomach/NUTRIENT__liquid-navigation-continuity__20261019.md`, while organism-specific approach/reading stays in the contacted site's own intake.
 
 ### Soft-lock — earned mechanics (2026-10-14)
 
@@ -203,7 +205,7 @@ Version 3.4 canonical-address serialization correction (2026-10-04): raw/global 
 
 Version 3.5 situated droplette function (2026-10-12): inherit the organism-afforded purpose of one lens without hardcoding site modes, rewriting physical glass or pretending the pending soft-lock/shape-morph is already deployed.
 
-Version 3.6 soft-lock mechanics (2026-10-14, Philipp): the situated droplette gains its first executed relation. Sites offer identity-bound `field`/`body` targets; release over one locks; field locks share the exact grid rectangle (rounded), body locks keep the released circle and follow the body; a vanished target unlocks in place, a surviving one holds through Descent; locked glass does not magnify; a field lock mutes the field beneath the drop so its target reads (corrected the same day from an outside-muting first draft). Philosophy is the first consumer; the soft-lock nutrient stays open for a second consumer and real-device acceptance.
+Version 3.6 soft-lock mechanics (2026-10-14, Philipp): the situated droplette gains its first executed relation. Sites offer identity-bound `field`/`body` targets; release over one locks; field locks share the exact grid rectangle (rounded), body locks keep the released circle and follow the body; a vanished target unlocks in place, a surviving one holds through Descent; locked glass does not magnify; a field lock mutes the field beneath the drop so its target reads (corrected the same day from an outside-muting first draft). Philosophy was the first consumer. The then-open second-consumer condition is subsequently witnessed by Papers; Display3.33 removes the former default real-device/personal-approval gate.
 
 ## Structural ascent — staged 2026-10-17
 
@@ -211,4 +213,6 @@ The walked path contains actual containing bodies and their local containers. Gl
 
 A raw Population address prefix is placement within a shared field; it does not by itself make one independently rooted site the interior parent of another. Current floating-body offers are owned by the overview host. Future hosting is admissible through the same actual containment relation, not a special-case identity rule. Browser back/forward independently restore visits, and older visit-derived stacks are normalized to current containing-body offers. Receiving-renderer refusal preserves the current body and its structural path.
 
-Native pointer/touch, restoration and sibling/direct-jump witnesses pass. Candidate deployed browser/device acceptance remains separately open.
+Native pointer/touch, restoration and sibling/direct-jump witnesses pass within their stated scope. Acceptance follows Display's current bounded contract law; a new concrete counterexample is admitted separately without inventing a mandatory device sign-off.
+
+Version 3.9 current-law reconciliation (2026-10-19): completed soft-lock/readable-frame mechanics and bounded acceptance supersede old pending flags. Global mount addresses no longer inherit obsolete host-field nouns; situated purpose remains encounter-owned. The accepted spatial compass and liquid passage targets remain explicitly OPEN in their owning intakes; no geometry, gesture or source mutation is claimed by this receptor correction.
