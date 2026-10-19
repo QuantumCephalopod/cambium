@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.13"
+version: "3.14"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -73,7 +73,7 @@ Default locality rule:
 
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
 
-A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens. Identity-bound soft-lock and optional measured readable frames are realized under the organism/navigation receptors; further approach, transport and topology accommodation remain current intake rather than an implemented promise.
+A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens. Identity-bound soft-lock and optional measured readable frames are realized under the organism/navigation receptors; shared navigation continuity is earned below, while site-owned approach, transport and topology accommodation remain current intake rather than an implemented promise.
 
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
@@ -238,3 +238,5 @@ Version3.11 truthful coarse-body coupling (2026-10-17): the optional body cells/
 Version3.12 current-law reconciliation (2026-10-19): soft-lock/readable frames and actual custom coarse bodies replace obsolete unimplemented wording. New UX targets remain in owner-local intake; no new renderer, gesture or semantic anatomy is claimed here.
 
 Version3.13 readable-frame ownership (2026-10-19): site-offered field/body rectangles retain their exact reading geometry. Display adds its common optical perimeter outside that geometry and preserves the source pixels within it, including overlap. Owners keep actual wording, font/layout, clipping shape and complete continuation; no new site mode or duplicated text layer is introduced. The common implementation and bounded evidence are owned by Display's organism receptor.
+
+Version3.14 offer lifetime (2026-10-19): `offer` retains a stable contact identity through temporary missing projection and same-frame renderer renewal; `withdraw` on actual departure/unmount ends it. Owners keep target meaning and must withdraw genuinely ended relations. Display dampens pending motion and resumes from current measured geometry without a timeout, then carries true release continuously into eligible liquid or free glass. This common capability does not implement a child's body approach, genealogy or Being handover.

@@ -2,7 +2,8 @@
  * derived geometry are separate from the UI's own controls and field topology.
  * Soft-lock: a site may offer lock targets by identity (offer/withdraw). Released over one, the drop
  * locks: a `field` target lends its exact rectangle (rounded), a `body` target keeps the released
- * circle and is followed. A vanished target unlocks the drop where it is; pulling it unlocks it. */
+ * circle and is followed. Offers own lifetime; getters lend current geometry. Withdrawal and
+ * pulling release the same moving flesh into nearby compatible liquid or free glass. */
 (function(root,factory){
   'use strict';const api=factory(root);
   if(typeof module==='object'&&module.exports)module.exports=api;
@@ -36,10 +37,10 @@
   function dockPoint(h,U=1,edge=h?.edge||'left',u=.5,radius=60*U){const a=anchor(h,edge,u);return {x:a.x+a.nx*radius*.12,y:a.y+a.ny*radius*.12}}
   function create(home,view){
     const h=homesOf(home)[0]||null,base=radiusOf(h,view),d=h?dockPoint(h,base/60,h.edge||'left',.5,base):{x:(view?.w||600)/2,y:(view?.h||400)/2};
-    return {x:d.x,y:d.y,vx:0,vy:0,baseR:base,radius:base*K.docked,radiusV:0,hx:base*K.docked,hy:base*K.docked,U:base/60,
+    return {x:d.x,y:d.y,vx:0,vy:0,baseR:base,radius:base*K.docked,hx:base*K.docked,hy:base*K.docked,U:base/60,
       held:false,pid:null,px:d.x,py:d.y,docked:!!h,attached:!!h,homeId:h?idOf(h):null,edge:h?.edge||'left',u:.5,
       kind:h?.kind||'hud',layer:h?.layer||'hud',ax:d.x,ay:d.y,round:1,stretch:0,fx:0,fy:0,fvx:0,fvy:0,
-      lock:null,hxV:0,hyV:0,corner:0};
+      lock:null,hxV:0,hyV:0,corner:base*K.docked,cornerV:0,protect:0,focus:0,join:h?1:0};
   }
   /* resolved targets: {id,kind:'field'|'body',cx,cy,hx,hy,r?} in viewport pixels */
   function candidateAt(L,targets){
@@ -52,27 +53,46 @@
     }return best?best.t:null;
   }
   function lockTo(L,t){if(!t)return L;L.lock={id:t.id,kind:t.kind};L.attached=false;L.docked=false;L.homeId=null;L.fx=L.fy=L.fvx=L.fvy=0;return L}
-  function unlock(L){if(!L.lock)return L;L.lock=null;L.aperture=false;L.radius=clamp(Math.min(L.hx,L.hy),8,120);L.radiusV=0;L.hxV=L.hyV=0;L.corner=0;L.hx=L.hy=L.radius;return L}
+  function unlock(L){L.lock=null;return L}
+  function ease(value,target,d){const next=target+(value-target)*Math.exp(-12*d);return Math.abs(next-target)<1e-5?target:next}
+  function spring(L,key,want,d){
+    const v=key+'V';L[v]+=(K.stiff*(want-L[key])-K.damp*L[v])*d;L[key]+=L[v]*d;
+    if(Math.abs(L[key]-want)<1e-5&&Math.abs(L[v])<1e-4){L[key]=want;L[v]=0}
+  }
+  function shapeStep(L,hx,hy,corner,d){
+    spring(L,'hx',hx,d);spring(L,'hy',hy,d);spring(L,'corner',corner,d);
+    L.hx=Math.max(1,L.hx);L.hy=Math.max(1,L.hy);L.corner=clamp(L.corner,0,Math.min(L.hx,L.hy));L.radius=Math.min(L.hx,L.hy);
+  }
+  function opticsStep(L,d){L.protect=ease(L.protect,L.lock?1:0,d);L.focus=ease(L.focus,L.lock?.kind==='field'?1:0,d);L.join=ease(L.join,L.attached?1:0,d)}
+  function boundBody(L,view){
+    if(!view)return;L.hx=Math.min(L.hx,Math.max(1,view.w/2));L.hy=Math.min(L.hy,Math.max(1,view.h/2));
+    const x=clamp(L.x,L.hx,Math.max(L.hx,view.w-L.hx)),y=clamp(L.y,L.hy,Math.max(L.hy,view.h-L.hy));
+    if(x!==L.x)L.vx=0;if(y!==L.y)L.vy=0;L.x=x;L.y=y;L.radius=Math.min(L.hx,L.hy);L.corner=Math.min(L.corner,L.radius);
+  }
   function stepLocked(L,t,d,view){
-    const f=t.kind==='body'&&t.frame,shape=f||t;L.aperture=!!f;
+    if(t.pending){
+      /* No invented camera frame: damp the last actual motion until this
+       * still-offered identity has a projection again. */
+      const decay=Math.exp(-K.damp*d);L.vx*=decay;L.vy*=decay;L.x+=L.vx*d;L.y+=L.vy*d;
+      L.hxV*=decay;L.hyV*=decay;L.cornerV*=decay;if(t.kind==='body')boundBody(L,view);return;
+    }
+    const f=t.kind==='body'&&t.frame,shape=f||t;
     L.vx+=(K.stiff*(shape.cx-L.x)-K.damp*L.vx)*d;L.vy+=(K.stiff*(shape.cy-L.y)-K.damp*L.vy)*d;L.x+=L.vx*d;L.y+=L.vy*d;
     L.fvx=L.fvy=0;L.fx+=(0-L.fx)*Math.min(1,d*12);L.fy+=(0-L.fy)*Math.min(1,d*12);
     if(t.kind==='field'||f){
-      L.hxV+=(K.stiff*(shape.hx-L.hx)-K.damp*L.hxV)*d;L.hyV+=(K.stiff*(shape.hy-L.hy)-K.damp*L.hyV)*d;
-      L.hx=Math.max(8,L.hx+L.hxV*d);L.hy=Math.max(8,L.hy+L.hyV*d);
-      L.corner=Math.min(Number.isFinite(shape.r)?Math.max(0,shape.r):14*L.U,L.hx,L.hy);L.radius=Math.min(L.hx,L.hy);
-      if(f&&view){L.hx=Math.min(L.hx,Math.max(1,view.w/2));L.hy=Math.min(L.hy,Math.max(1,view.h/2));L.x=clamp(L.x,L.hx,Math.max(L.hx,view.w-L.hx));L.y=clamp(L.y,L.hy,Math.max(L.hy,view.h-L.hy));L.corner=Math.min(L.corner,L.hx,L.hy)}
+      shapeStep(L,shape.hx,shape.hy,Math.min(Number.isFinite(shape.r)?Math.max(0,shape.r):14*L.U,shape.hx,shape.hy),d);
     }else{
-      const target=L.baseR*K.released;L.radiusV+=(180*(target-L.radius)-24*L.radiusV)*d;L.radius=clamp(L.radius+L.radiusV*d,8,120);L.hx=L.hy=L.radius;L.corner=0;
+      const target=L.baseR*K.released;shapeStep(L,target,target,target,d);
     }
+    if(t.kind==='body')boundBody(L,view);
   }
   function nearest(L,hs){let best=null;for(const h of hs){if(!compatible(L,h))continue;const p=edgePoint(h,L.x,L.y);if(!best||p.distance<best.p.distance)best={h,p}}return best}
-  function step(L,home,dt,view,cursor,target){
+  function step(L,home,dt,view,cursor,target,reduced=false){
     const hs=homesOf(home);dt=clamp(n(dt),0,.06);if(!dt)return L;
     if(view)L.baseR=radiusOf(null,view);L.U=L.baseR/60;
-    if(L.lock&&!L.held&&!(target&&target.id===L.lock.id))unlock(L);
+    if(L.lock&&!L.held&&!(target&&target.id===L.lock.id&&target.kind===L.lock.kind))unlock(L);
     const parts=Math.max(1,Math.ceil(dt/(1/120))),d=dt/parts;
-    if(L.lock&&!L.held){for(let i=0;i<parts;i++)stepLocked(L,target,d,view);return L}
+    if(L.lock&&!L.held){for(let i=0;i<parts;i++){stepLocked(L,target,d,view);opticsStep(L,d)}if(reduced)settle(L,hs,view,target);return L}
     for(let i=0;i<parts;i++){
       let h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q))||null;
       if(!h){L.attached=false;L.docked=false}
@@ -100,24 +120,34 @@
       const target=L.baseR*(L.held?1:L.docked?K.docked:K.released);
       {let tx=0,ty=0;if(hover){const vx=cursor.x-L.x,vy=cursor.y-L.y,len=Math.hypot(vx,vy)||1,f=1-cd/(K.cursorReach*L.U),w=f*f*(3-2*f),m=Math.min(len,K.reach*L.radius)*w;tx=vx/len*m;ty=vy/len*m}
         L.fvx+=(K.reachStiff*(tx-L.fx)-K.reachDamp*L.fvx)*d;L.fvy+=(K.reachStiff*(ty-L.fy)-K.reachDamp*L.fvy)*d;L.fx+=L.fvx*d;L.fy+=L.fvy*d}
-      L.radiusV+=(180*(target-L.radius)-24*L.radiusV)*d;L.radius=clamp(L.radius+L.radiusV*d,8,120);L.hx=L.hy=L.radius;
+      shapeStep(L,target,target,target,d);opticsStep(L,d);
       if(view&&view.w>0&&view.h>0){
-        const rx=Math.min(L.radius,view.w/2),ry=Math.min(L.radius,view.h/2),x=clamp(L.x,rx,view.w-rx),y=clamp(L.y,ry,view.h-ry);
+        const rx=Math.min(L.hx,view.w/2),ry=Math.min(L.hy,view.h/2),x=clamp(L.x,rx,view.w-rx),y=clamp(L.y,ry,view.h-ry);
         if(x!==L.x)L.vx=0;if(y!==L.y)L.vy=0;L.x=x;L.y=y;
       }
-    }return L;
+    }if(reduced)settle(L,hs,view,target);return L;
+  }
+  function settle(L,hs,view,t){
+    if(L.lock&&t.pending){L.vx=L.vy=L.hxV=L.hyV=L.cornerV=0;L.protect=1;L.focus=L.lock.kind==='field'?1:0;L.join=0;return}
+    const f=L.lock&&(t.frame||t),framed=f&&(t.kind==='field'||t.frame),h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q));
+    const p=f?{x:f.cx,y:f.cy}:L.held?{x:L.px,y:L.py}:L.attached&&h?dockPoint(h,L.U,L.edge,L.u,L.baseR):L;
+    const radius=L.baseR*(L.held?1:L.attached?K.docked:K.released);
+    L.hx=framed?f.hx:radius;L.hy=framed?f.hy:radius;L.corner=framed?Math.min(Number.isFinite(f.r)?Math.max(0,f.r):14*L.U,L.hx,L.hy):radius;
+    L.x=p.x;L.y=p.y;if(view){L.hx=Math.min(L.hx,view.w/2);L.hy=Math.min(L.hy,view.h/2);L.x=clamp(L.x,L.hx,view.w-L.hx);L.y=clamp(L.y,L.hy,view.h-L.hy)}
+    L.radius=Math.min(L.hx,L.hy);L.corner=Math.min(L.corner,L.radius);L.docked=!L.held&&!L.lock&&L.attached;
+    L.vx=L.vy=L.hxV=L.hyV=L.cornerV=L.fx=L.fy=L.fvx=L.fvy=0;L.protect=L.lock?1:0;L.focus=L.lock?.kind==='field'?1:0;L.join=L.attached?1:0;
   }
   function geometry(L,home){
     const h=homesOf(home).find(q=>idOf(q)===L.homeId&&compatible(L,q)),a=h&&L.attached?anchor(h,L.edge,L.u):null;
     const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
-    const locked=L.lock?.kind||null,field=locked==='field',shaped=field||!!(locked&&L.aperture);
-    return {x:L.x,y:L.y,hx:shaped?L.hx:L.radius,hy:shaped?L.hy:L.radius,round:shaped?0:1,corner:shaped?L.corner:0,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
-      neck:K.neck*L.U*Math.pow(thin,1.6),smooth:18*L.U,rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:locked?0:L.radius*K.lobe,mag:locked?0:1-1/K.magnify,focus:field?1:0,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
+    const locked=L.lock?.kind||null,shaped=Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4;
+    return {x:L.x,y:L.y,hx:L.hx,hy:L.hy,round:shaped?0:1,corner:L.corner,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
+      neck:K.neck*L.U*Math.pow(thin,1.6)*L.join,smooth:18*L.U*L.join,rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:locked?0:L.radius*K.lobe*(1-L.protect),mag:(1-L.protect)*(1-1/K.magnify),protect:L.protect,focus:L.focus,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
   function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;unlock(L);L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
   function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null;L.docked=false}return L}
-  function contains(L,x,y){const edge=L.lock?(root.SSSDisplayGlass?.readInset?.()??8):6;if(L.lock&&(L.lock.kind==='field'||L.aperture)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+edge}return Math.hypot(x-L.x,y-L.y)<=L.radius+edge}
+  function contains(L,x,y){const edge=Math.max(6,(root.SSSDisplayGlass?.readInset?.()??8)*(L.lock?1:L.protect)),r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+edge}
   function pullFrom(L,h,x,y,pid){
     if(!compatible(L,h))return false;
     const p=edgePoint(h,x,y);L.homeId=idOf(h);L.edge=p.edge;L.u=along(h,p);L.attached=true;L.docked=true;
@@ -127,7 +157,8 @@
   let state=null,el=null,started=false,last=0,homeNow=null,visible=false,cursor={active:false,x:0,y:0},pores=[];
   const offers=new Map();
   /* A site lends identity-bound targets; Display never learns what they mean. spec.kind 'field' gives rect(),
-   * 'body' gives point() (+ optional r); a getter returning null means the target is not present now. */
+   * 'body' gives point() (+ optional r). A missing projection cannot acquire a new lock;
+   * a contacted offer retains its identity until withdraw(), including across same-frame renewal. */
   function offer(id,spec){
     if(typeof id!=='string'||!id)throw new TypeError('lock target id required');
     if(!spec||(spec.kind==='field'?typeof spec.rect!=='function':spec.kind==='body'?typeof spec.point!=='function':true))throw new TypeError('lock target '+id+' needs kind field+rect() or body+point()');
@@ -137,8 +168,9 @@
   function resolveTargets(lockedId=state?.lock?.id){
     const out=[];
     for(const [id,spec] of offers){
+      const before=out.length;
       try{
-        if(spec.kind==='field'){const r=spec.rect();if(r&&r.width>0&&r.height>0)out.push({id,kind:'field',cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:spec.r})}
+        if(spec.kind==='field'){const r=spec.rect();if(r&&Number.isFinite(r.left)&&Number.isFinite(r.top)&&Number.isFinite(r.width)&&Number.isFinite(r.height)&&r.width>0&&r.height>0)out.push({id,kind:'field',cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:spec.r})}
         else{const p=spec.point();if(p&&Number.isFinite(p.x)&&Number.isFinite(p.y)){
           const t={id,kind:'body',cx:p.x,cy:p.y,hx:Number.isFinite(p.r)?p.r:24};
           /* Readable extent is lent only by the contacted body. It is never a
@@ -146,7 +178,8 @@
           if(id===lockedId&&typeof spec.frame==='function'){try{const r=spec.frame();if(r&&Number.isFinite(r.left)&&Number.isFinite(r.top)&&Number.isFinite(r.width)&&Number.isFinite(r.height)&&r.width>0&&r.height>0)t.frame={cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:r.r}}catch(_){/* retain the valid ordinary body if its finer extent is unavailable */}}
           out.push(t);
         }}
-      }catch(_){/* a failing getter means absent */}
+      }catch(_){/* geometry unavailable; the owner still controls lifetime */}
+      if(id===lockedId&&out.length===before)out.push({id,kind:spec.kind,pending:true});
     }return out;
   }
   function surfaces(){
@@ -200,11 +233,12 @@
     endPointer(e);
   }
   function paintPhase(){if(el&&state){el.dataset.phase=state.held?'held':state.lock?'locked':state.docked?'stored':state.attached?'joining':'free';el.dataset.lock=state.lock?.kind||'';
+    el.setAttribute('aria-pressed',String(state.held));
     const de=root.document?.documentElement;if(de){if(state.lock){de.dataset.displayLensLock=state.lock.kind;de.dataset.displayLensTarget=state.lock.id}else{delete de.dataset.displayLensLock;delete de.dataset.displayLensTarget}}}}
   function endPointer(e){
     if(!state?.held||state.pid!==e.pointerId)return;
     release(state,e.pointerId);cursor.active=false;
-    const t=candidateAt(state,resolveTargets());if(t)lockTo(state,t);
+    if(e.type==='pointerup'){const t=candidateAt(state,resolveTargets());if(t)lockTo(state,t)}
     paintPhase();
   }
   function updatePores(hs){
@@ -228,7 +262,7 @@
     if(!state&&hs.length)state=create(hs.find(h=>h.id==='mini-pocket')||hs[0],{w:root.innerWidth,h:root.innerHeight});
     if(state){
       const target=state.lock?resolveTargets().find(t=>t.id===state.lock.id)||null:null;
-      if(off){pending=null;release(state,state.pid);unlock(state);cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor,target);
+      if(off){pending=null;release(state,state.pid);unlock(state);cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor,target,!!root.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
       homeNow=state.attached?hs.find(h=>h.id===state.homeId&&compatible(state,h))||null:null;visible=!off;
       if(el){const g=geometry(state,hs);el.style.display=visible?'block':'none';
         el.style.left=(state.x-g.hx)+'px';el.style.top=(state.y-g.hy)+'px';el.style.width=(g.hx*2)+'px';el.style.height=(g.hy*2)+'px';el.style.borderRadius=g.round?'50%':g.corner+'px';
@@ -239,14 +273,26 @@
   function start(){
     if(started||typeof document!=='object')return;started=true;
     el=document.createElement('div');el.id='display-lens';el.setAttribute('aria-label','Glass drop');el.setAttribute('role','button');el.tabIndex=0;
+    el.setAttribute('aria-description','Enter or Space to take or release; arrow keys to pull while held; Escape to let go. Pointer: press and pull to take; a plain click passes through.');
     el.style.cssText='position:fixed;z-index:39;display:none;touch-action:none;background:transparent;pointer-events:none;border-radius:50%';
     document.body.append(el);
     root.addEventListener('pointerdown',onDown,{capture:true});
     root.addEventListener('pointermove',onMove,{capture:true,passive:true});
     for(const type of ['pointerup','pointercancel','lostpointercapture'])root.addEventListener(type,onUp,{capture:true});
     root.addEventListener('blur',()=>{pending=null;cursor.active=false;if(state){release(state,state.pid);paintPhase()}});
-    el.addEventListener('keydown',e=>{if(!state)return;const a={ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-12],ArrowDown:[0,12]}[e.key];
-      if(a){state.docked=false;state.attached=false;state.x+=a[0];state.y+=a[1];e.preventDefault()}});
+    el.addEventListener('blur',()=>{if(state?.pid==='keyboard'){release(state,'keyboard');paintPhase()}});
+    el.addEventListener('keydown',e=>{
+      if(!state||!visible||e.altKey||e.ctrlKey||e.metaKey)return;
+      if(e.repeat&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopPropagation();return}
+      const a={ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-12],ArrowDown:[0,12]}[e.key];
+      if(e.key==='Enter'||e.key===' '){
+        if(!state.held){pending=null;cursor.active=false;grab(state,state.x,state.y,'keyboard')}
+        else if(state.pid==='keyboard'){release(state,'keyboard');const t=candidateAt(state,resolveTargets());if(t)lockTo(state,t)}
+        else return;
+      }else if(e.key==='Escape'&&state.pid==='keyboard')release(state,'keyboard');
+      else if(a&&state.pid==='keyboard')move(state,state.px+a[0],state.py+a[1],'keyboard');else return;
+      e.preventDefault();e.stopPropagation();paintPhase();
+    });
     root.requestAnimationFrame(loop);
   }
   return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,offer,withdraw,resolveTargets});

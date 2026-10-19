@@ -223,3 +223,25 @@ console.log('PASS — live source birth/split/withdrawal preserves identity and 
 for(const alpha of [0,.12]){let layers=0;const f=fixture({webgl:false,glass:false,order:[],fallbackAlpha:alpha,afterDraw:()=>layers++});f.frame(0);
 assert.equal(f.frames[0].filter(c=>c.type==='fill2d').length,alpha?16:0);assert.equal(layers,1);}
 console.log('Transparent fallback suppresses duplicate base geometry while preserving the borrowed source layer PASS');
+
+/* Sample the production camera and drifting body, not a prerecorded trajectory.
+ * The same offered identity follows descent, ascent, membrane approach and
+ * restoration on WebGL and Canvas2D, at both actual carrier sizes. */
+for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [true,false]){
+ const L=require('../z/display-lens.js'),v={w:width,h:height},f=fixture({width,height,webgl,inspectable:true}),id='neutral:camera-body',s=L.create(null,v);
+ L.offer(id,{kind:'body',point:()=>f.api.projectBody('body:b')});f.frame(0);L.lockTo(s,L.resolveTargets(id).find(t=>t.id===id));
+ let ms=0,travel=0,last=null;
+ function frames(count){for(let i=0;i<count;i++){
+   ms+=1000/120;f.frame(ms);const target=L.resolveTargets(id).find(t=>t.id===id),p=f.api.projectBody('body:b');
+   assert.equal(target.cx,p.x);assert.equal(target.cy,p.y,'offer uses this frame’s actual camera/drift projection');
+   L.step(s,[],1/120,v,null,target);assert.equal(s.lock.id,id);assert(Number.isFinite(s.x)&&Number.isFinite(s.y));
+   if(last)travel+=Math.hypot(p.x-last.x,p.y-last.y);last=p;
+ }}
+ frames(180);assert(f.api.descendTo('w'));frames(180);assert(f.api.ascend('continuity'));frames(180);
+ f.clickBody(1);frames(45);f.api.arriveFrom(null);frames(180);
+ f.world.inspect('x');frames(180);f.api.arriveFrom(null);frames(180);
+ assert(travel>100,'actual camera journey did not move the offered target');assert(Math.hypot(s.x-last.x,s.y-last.y)<10,'lens settles to current geometry rather than the old camera frame');
+ L.withdraw(id);L.step(s,[],1/120,v,null,L.resolveTargets(id).find(t=>t.id===id));assert.equal(s.lock,null);
+ console.log(JSON.stringify({carrier:[width,height],backend:webgl?'WebGL':'Canvas2D',camera_target_travel:travel,stable_identity:true}));
+}
+console.log('PASS — actual camera/body projection carries one lock through descent/ascent/approach/restoration');
