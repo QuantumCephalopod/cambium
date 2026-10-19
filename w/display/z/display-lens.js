@@ -3,7 +3,7 @@
  * Soft-lock: a site may offer lock targets by identity (offer/withdraw). Released over one, the drop
  * locks: a `field` target lends its exact rectangle (rounded), a `body` target keeps the released
  * circle and is followed. Offers own lifetime; getters lend current geometry. Withdrawal and
- * pulling release the same moving flesh into nearby compatible liquid or free glass. */
+ * pulling release the same moving flesh toward the nearest compatible reservoir. */
 (function(root,factory){
   'use strict';const api=factory(root);
   if(typeof module==='object'&&module.exports)module.exports=api;
@@ -11,8 +11,8 @@
 })(typeof globalThis==='object'?globalThis:this,function(root){
   'use strict';
   /* The centre never follows the cursor: a nearby cursor strains the flesh without adding a second lobe;
-   * connected tissue draws a free drop home slowly. */
-  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,reachStiff:140,reachDamp:17,homePull:.07,holdSlop:5,magnify:1.13,magnet:80,breakAt:185,capture:38,released:1.32,docked:.86,capillary:110,viscosity:18,maxStrain:Math.log(1.28)});
+   * released, unlocked flesh returns home without a distant capillary bridge. */
+  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,reachStiff:140,reachDamp:17,homePull:.07,returnPull:.18,holdSlop:5,magnify:1.13,magnet:80,breakAt:185,capture:38,released:1.32,docked:.86,capillary:110,viscosity:18,maxStrain:Math.log(1.28)});
   const n=v=>Number.isFinite(+v)?+v:0,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function scaleOf(h){return h?clamp(Math.min(n(h.hx),n(h.hy))/100,.6,1.2):1}
   function radiusOf(h,v){return v?clamp(Math.min(v.w,v.h)*.15,36,72):clamp(Math.min(h?.hx||100,h?.hy||100)*.62,36,72)}
@@ -35,6 +35,11 @@
   }
   function along(h,p){return p.edge==='left'||p.edge==='right'?clamp((p.y-h.cy+h.hy)/(2*h.hy),0,1):clamp((p.x-h.cx+h.hx)/(2*h.hx),0,1)}
   function dockPoint(h,U=1,edge=h?.edge||'left',u=.5,radius=60*U){const a=anchor(h,edge,u);return {x:a.x+a.nx*radius*.12,y:a.y+a.ny*radius*.12}}
+  function boundedDock(L,h,edge,u,view){
+    const p=dockPoint(h,L.U,edge,u,L.baseR);
+    if(view){const e=extent(L);p.x=clamp(p.x,e.x,Math.max(e.x,view.w-e.x));p.y=clamp(p.y,e.y,Math.max(e.y,view.h-e.y))}
+    return p;
+  }
   function create(home,view){
     const h=homesOf(home)[0]||null,base=radiusOf(h,view),d=h?dockPoint(h,base/60,h.edge||'left',.5,base):{x:(view?.w||600)/2,y:(view?.h||400)/2};
     return {x:d.x,y:d.y,vx:0,vy:0,baseR:base,radius:base*K.docked,hx:base*K.docked,hy:base*K.docked,U:base/60,
@@ -127,10 +132,15 @@
       if(L.held){ax+=K.stiff*(L.px-L.x);ay+=K.stiff*(L.py-L.y)}
       let dock=null;
       if(h&&L.attached){
-        dock=dockPoint(h,L.U,L.edge,L.u,L.baseR);
-        if(view){dock.x=clamp(dock.x,L.radius,Math.max(L.radius,view.w-L.radius));dock.y=clamp(dock.y,L.radius,Math.max(L.radius,view.h-L.radius))}
+        dock=boundedDock(L,h,L.edge,L.u,view);
         const f=clamp(1-Math.hypot(dock.x-L.x,dock.y-L.y)/(K.breakAt*L.U),.1,1),k=L.held?K.stiff*.12:L.docked?K.stiff*.85:K.stiff*K.homePull*f;
         ax+=k*(dock.x-L.x);ay+=k*(dock.y-L.y);
+      }
+      /* Free-space return is attraction, not contact. Only nearby physical
+       * surfaces may set attached/join; held and locked relations take priority. */
+      if(!L.held&&!L.attached&&near){
+        const p=boundedDock(L,near.h,near.p.edge,along(near.h,near.p),view),k=K.stiff*K.returnPull;
+        ax+=k*(p.x-L.x);ay+=k*(p.y-L.y);
       }
       L.vx+=ax*d;L.vy+=ay*d;L.x+=L.vx*d;L.y+=L.vy*d;
       if(dock&&!L.held&&Math.hypot(L.x-dock.x,L.y-dock.y)<2*L.U&&Math.hypot(L.vx,L.vy)<22*L.U){
@@ -148,6 +158,7 @@
   function settle(L,hs,view,t){
     L.strain=L.strainV=L.angle=L.angleV=0;
     if(L.lock&&t.pending){L.vx=L.vy=L.hxV=L.hyV=L.cornerV=0;L.protect=1;L.focus=L.lock.kind==='field'?1:0;L.join=0;return}
+    if(!L.lock&&!L.held&&!L.attached){const near=nearest(L,hs);if(near){L.homeId=idOf(near.h);L.edge=near.p.edge;L.u=along(near.h,near.p);L.attached=true}}
     const f=L.lock&&(t.frame||t),framed=f&&(t.kind==='field'||t.frame),h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q));
     const p=f?{x:f.cx,y:f.cy}:L.held?{x:L.px,y:L.py}:L.attached&&h?dockPoint(h,L.U,L.edge,L.u,L.baseR):L;
     const radius=L.baseR*(L.held?1:L.attached?K.docked:K.released);
