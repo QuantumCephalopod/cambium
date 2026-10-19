@@ -113,3 +113,18 @@ console.log('nested reading tissue survives one-slab coalescence: PASS');
 const oldMedia=globalThis.matchMedia;
 try{globalThis.matchMedia=()=>({matches:true});assert.equal(G.enabled(),false);globalThis.matchMedia=()=>({matches:false});assert.equal(G.enabled(),true)}finally{if(oldMedia===undefined)delete globalThis.matchMedia;else globalThis.matchMedia=oldMedia}
 console.log('reduced-transparency keeps the ordinary source path: PASS');
+
+/* Coalescence follows ownership, including nested foreign liquid. No name or
+ * particular reservoir is embedded in the carrier or optical membership. */
+{
+ const entries=[
+  {rect:{left:10,top:10,width:240,height:220},kind:'a',layer:'one'},
+  {rect:{left:150,top:140,width:180,height:180},kind:'a',layer:'one'},
+  {rect:{left:30,top:30,width:60,height:60},kind:'a',layer:'two'},
+  {rect:{left:110,top:30,width:60,height:60},kind:'b',layer:'one'}];
+ const pack=G.derive(entries,{left:0,top:0,width:390,height:844},{width:780,height:1688},{kind:'a',layer:'one'});
+ assert.equal(pack.count,4,'foreign nested surfaces keep their own boundary');assert.deepEqual([...pack.mergeData],[1,1,0,0,0,0,0,0]);
+ const other=G.derive(entries,{left:0,top:0,width:390,height:844},{width:390,height:844},{kind:'b',layer:'one'});
+ assert.deepEqual([...other.mergeData],[0,0,0,1,0,0,0,0]);
+}
+console.log('compatible phase membership and foreign-layer nesting witness: PASS');

@@ -420,7 +420,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
 void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);}`;
   const GLASS_FRAGMENT=`#version 300 es
 precision highp float;
-uniform sampler2D uScene;uniform sampler2D uPreview;uniform int uPreviewReady;uniform vec2 uRes;uniform vec4 uRect[8];uniform vec4 uReadRect[8];uniform int uCount;
+uniform sampler2D uScene;uniform sampler2D uPreview;uniform int uPreviewReady;uniform vec2 uRes;uniform vec4 uRect[8];uniform vec4 uReadRect[8];uniform float uMerge[8];uniform int uCount;
 uniform vec4 uA;uniform vec4 uB;uniform vec4 uC;uniform vec4 uT;uniform vec4 uH;
 uniform vec4 uHome;uniform vec4 uHomeRead;uniform vec4 uL0;uniform vec4 uL1;uniform vec4 uL2;uniform vec4 uN;
 out vec4 outColor;
@@ -428,25 +428,24 @@ vec2 gShift=vec2(0.);float gInside=0.,gLit=0.,gShade=0.,gRim=0.;
 vec2 cmul(vec2 a,vec2 b){return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x);}
 float sdBox(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+min(max(q.x,q.y),0.)-r;}
 float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);return min(a,b)-h*h*k*.25;}
-float sdSeg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/max(dot(ba,ba),1e-4),0.,1.);return length(pa-ba*h);}
 mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
-/* uN: x lens+home on, y reading protection (0..1), z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.x framed corner+1 (0 = round drop), uL2.yz home anchor, uL2.w field-lock focus (mutes the field beneath the drop so the target it frames reads) */
-float sdReadingLens(vec2 p){return uL2.x>.5?sdBox(p-uL0.xy,uL0.zw,uL2.x-1.):length(p-uL0.xy)-uL0.z;}
-float sdLens(vec2 p){float d=sdReadingLens(p)-uH.w*uN.y;if(uL1.z>.5)d=smin(d,sdSeg(p,uL0.xy,uL0.xy+uL1.xy)-uL1.z,max(uN.w,uL1.z));return d;}
+/* uN: x lens+home on, y reading protection, w capillary blend width.
+ * uL0 centre/half axes; uL1.w magnification; uL2.x corner+1 (0 ellipse),
+ * uL2.y orientation in buffer coordinates, uL2.w field focus. */
+float sdReadingLens(vec2 p){vec2 q=rot(uL2.y)*(p-uL0.xy);if(uL2.x>.5)return sdBox(q,uL0.zw,uL2.x-1.);vec2 b=max(uL0.zw,vec2(1.));float k0=length(q/b),k1=length(q/(b*b));return k0<1e-5?-min(b.x,b.y):k0*(k0-1.)/max(k1,1e-12);}
+float sdLens(vec2 p){return sdReadingLens(p)-uH.w*uN.y;}
 float sdPanel(vec2 p,vec4 R){
   vec2 q=p-R.xy;
   if(R.y+R.w>uRes.y&&R.z*2.>uRes.x*.75)q.y+=sin(clamp(p.x/uRes.x,0.,1.)*3.14159)*uH.z;
   return sdBox(q,R.zw,min(uA.x,min(R.z,R.w)));
 }
-float gooD(vec2 p){
-  float d=sdLens(p);
-  if(uN.x>.5){
-    float dA=sdPanel(p,uHome);
-    d=smin(dA,d,uN.w);
-    if(uN.z>.5)d=smin(d,sdSeg(p,uL2.yz,uL0.xy)-uN.z,uN.w);
-  }
-  return d;
+vec3 panelSample(vec2 p){
+  float d=uN.x>.5?sdPanel(p,uHome):1e9;vec2 centre=uN.x>.5?uHome.xy:uL0.xy;
+  for(int i=0;i<8;i++){if(i>=uCount)break;if(uMerge[i]>.5){float q=sdPanel(p,uRect[i]),h=clamp(.5+.5*(q-d)/max(uN.w,1e-3),0.,1.);centre=mix(uRect[i].xy,centre,h);d=smin(d,q,uN.w);}}return vec3(d,centre);
 }
+/* One phase, one exterior. No capsule creates a long parallel-sided tether,
+ * and no other compatible reservoir is painted through the drop's interior. */
+float gooD(vec2 p){return smin(sdLens(p),panelSample(p).x,uN.w);}
 /* halftone: a 45 degree dot screen; the dot grows with the ink it has to print, and is antialiased by its own derivative */
 float dots(vec2 fc,float ink){
   vec2 f=fract(rot(.7854)*fc/uH.x)-.5;float aa=fwidth(length(f))+1e-3;
@@ -471,6 +470,7 @@ void main(){
     if(i>=uCount)break;
     vec4 R=uRect[i];float d=sdPanel(frag,R);
     vec4 A=uReadRect[i];if(min(A.z,A.w)>0.)readD=min(readD,sdBox(frag-A.xy,A.zw,0.));
+    if(uN.x>-.5&&uMerge[i]>.5)continue;
     vec2 n=vec2(sdPanel(frag+h.xy,R)-sdPanel(frag-h.xy,R),sdPanel(frag+h.yx,R)-sdPanel(frag-h.yx,R));n/=max(length(n),1e-4);
     surface(d,n,min(R.z,R.w),R.xy,frag,uB.y);
   }
@@ -478,7 +478,11 @@ void main(){
     if(uN.x>.5&&min(uHomeRead.z,uHomeRead.w)>0.)readD=min(readD,sdBox(frag-uHomeRead.xy,uHomeRead.zw,0.));
     float d=gooD(frag);
     vec2 n=vec2(gooD(frag+h.xy)-gooD(frag-h.xy),gooD(frag+h.yx)-gooD(frag-h.yx));n/=max(length(n),1e-4);
-    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag,uL1.w);
+    surface(d,n,min(uL0.z,uL0.w),uL0.xy,frag,0.);
+    if(d<0.){
+      vec3 panel=panelSample(frag);float blend=clamp(.5+.5*(panel.x-sdLens(frag))/max(uN.w,1e-3),0.,1.);
+      gShift-=mix((frag-panel.yz)*uB.y,(frag-uL0.xy)*uL1.w,blend);
+    }
   }
   /* One measured reading aperture wins over every overlapping optical surface.
    * The glyphs stay in the original scene/composite; only the sampling map and
@@ -502,7 +506,7 @@ void main(){
   c=mix(c,uT.rgb,uT.a*gInside*optical);
   /* a field-locked drop frames its target: the field beneath the drop is blurred and dimmed so the target reads */
   if(uL2.w>0.&&uN.x>-.5){
-    float o=(1.-smoothstep(-8.,0.,gooD(frag)))*uL2.w;
+    float o=(1.-smoothstep(-8.,0.,sdLens(frag)))*uL2.w;
     if(o>0.){vec3 b=vec3(0.);for(int i=0;i<8;i++){float a=float(i)*.7854;b+=texture(uScene,(frag+gShift+vec2(cos(a),sin(a))*6.)/uRes).rgb;}
       c=mix(c,b*(1./8.)*.28,o*.82);}
   }
@@ -515,7 +519,7 @@ void main(){
   c=mix(c,paper,dots(frag+vec2(1.7,.9),rimInk)*k*.5);
   outColor=vec4(c+gLit,1.);
 }`;
-  const EMPTY_READ_RECTS=new Float32Array(32);
+  const EMPTY_READ_RECTS=new Float32Array(32),EMPTY_MERGE=new Float32Array(8);
   let SCENE=null,GLASS_PG=null,GLASS_OFF=false,labelInk=null,PREVIEW=null;
   /* SITE COMPOSITE — a site whose body lives in its own canvases may offer shader.composite()
    * returning them in paint order. While glass is active the field draws them into its scene, so the
@@ -592,7 +596,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     if(a!==gl.FRAMEBUFFER_COMPLETE||b!==gl.FRAMEBUFFER_COMPLETE)throw new Error('glass scene target incomplete');
     if(!GLASS_PG){
       const p=program(gl,GLASS_FRAGMENT,GLASS_VERTEX);
-      GLASS_PG={p,vao:gl.createVertexArray(),U:{scene:gl.getUniformLocation(p,'uScene'),preview:gl.getUniformLocation(p,'uPreview'),previewReady:gl.getUniformLocation(p,'uPreviewReady'),res:gl.getUniformLocation(p,'uRes'),rect:gl.getUniformLocation(p,'uRect[0]'),readRect:gl.getUniformLocation(p,'uReadRect[0]'),count:gl.getUniformLocation(p,'uCount'),a:gl.getUniformLocation(p,'uA'),b:gl.getUniformLocation(p,'uB'),c:gl.getUniformLocation(p,'uC'),t:gl.getUniformLocation(p,'uT'),h:gl.getUniformLocation(p,'uH'),home:gl.getUniformLocation(p,'uHome'),homeRead:gl.getUniformLocation(p,'uHomeRead'),l0:gl.getUniformLocation(p,'uL0'),l1:gl.getUniformLocation(p,'uL1'),l2:gl.getUniformLocation(p,'uL2'),n:gl.getUniformLocation(p,'uN')}};
+      GLASS_PG={p,vao:gl.createVertexArray(),U:{scene:gl.getUniformLocation(p,'uScene'),preview:gl.getUniformLocation(p,'uPreview'),previewReady:gl.getUniformLocation(p,'uPreviewReady'),res:gl.getUniformLocation(p,'uRes'),rect:gl.getUniformLocation(p,'uRect[0]'),readRect:gl.getUniformLocation(p,'uReadRect[0]'),merge:gl.getUniformLocation(p,'uMerge[0]'),count:gl.getUniformLocation(p,'uCount'),a:gl.getUniformLocation(p,'uA'),b:gl.getUniformLocation(p,'uB'),c:gl.getUniformLocation(p,'uC'),t:gl.getUniformLocation(p,'uT'),h:gl.getUniformLocation(p,'uH'),home:gl.getUniformLocation(p,'uHome'),homeRead:gl.getUniformLocation(p,'uHomeRead'),l0:gl.getUniformLocation(p,'uL0'),l1:gl.getUniformLocation(p,'uL1'),l2:gl.getUniformLocation(p,'uL2'),n:gl.getUniformLocation(p,'uN')}};
     }
     return S;
   }
@@ -601,7 +605,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     const Gm=globalThis.SSSDisplayGlass;
     if(GLASS_OFF||!Gm||!Gm.enabled())return null;
     const Ln=globalThis.SSSDisplayLens,snap=Ln?Ln.snapshot():null;
-    const pack=Gm.rects(r,{width:w,height:h},undefined,snap?.home?.ids||null);
+    const pack=Gm.rects(r,{width:w,height:h},undefined,snap?.home?.ids||null,snap?.lens);
     if(!pack.count&&!snap)return null;
     try{if(!SCENE||SCENE.w!==w||SCENE.h!==h)buildScene(w,h)}
     catch(err){console.warn('display glass unavailable for '+id,err);GLASS_OFF=true;disposeScene();gl.bindFramebuffer(gl.FRAMEBUFFER,null);return null}
@@ -619,12 +623,12 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
     gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);
     gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,S.tex);
-    gl.useProgram(P.p);gl.uniform1i(P.U.scene,0);gl.uniform2f(P.U.res,w,h);gl.uniform4fv(P.U.rect,g.pack.data);gl.uniform4fv(P.U.readRect,g.pack.readData||EMPTY_READ_RECTS);gl.uniform1i(P.U.count,g.pack.count);
+    gl.useProgram(P.p);gl.uniform1i(P.U.scene,0);gl.uniform2f(P.U.res,w,h);gl.uniform4fv(P.U.rect,g.pack.data);gl.uniform4fv(P.U.readRect,g.pack.readData||EMPTY_READ_RECTS);gl.uniform1fv(P.U.merge,g.pack.mergeData||EMPTY_MERGE);gl.uniform1i(P.U.count,g.pack.count);
     gl.activeTexture(gl.TEXTURE1);const tex1=gl.getParameter(gl.TEXTURE_BINDING_2D);gl.bindTexture(gl.TEXTURE_2D,previewReady?PREVIEW.tex:S.tex);gl.uniform1i(P.U.preview,1);gl.uniform1i(P.U.previewReady,previewReady?1:0);gl.activeTexture(gl.TEXTURE0);
     const rim=g.pack.inset??q.bevelMax;gl.uniform4f(P.U.a,q.radius*(rim/8)*k,q.bevel,rim*k,q.refract*k);gl.uniform4f(P.U.b,q.aberr,q.mag,q.spec,q.fres);gl.uniform4f(P.U.c,q.shadow*k,q.shadowK,q.theta,0);gl.uniform4f(P.U.t,...q.tint);gl.uniform4f(P.U.h,q.dot*k,q.halftone,(q.overfillWave||0)*k,rim*k);
     {const sn=g.snap,R=g.r;
       if(sn){const Ls=sn.lens,Hm=sn.home,X=x=>(x-R.left)*k,Y=y=>h-(y-R.top)*k;
-        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,(Ls.rx||0)*k,-(Ls.ry||0)*k,(Ls.reachR||0)*k,Ls.mag||0);gl.uniform4f(P.U.l2,Ls.round===0?(Ls.corner||0)*k+1:0,X(Ls.ax),Y(Ls.ay),Ls.focus||0);
+        gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,(Ls.rx||0)*k,-(Ls.ry||0)*k,(Ls.reachR||0)*k,Ls.mag||0);gl.uniform4f(P.U.l2,Ls.round===0?(Ls.corner||0)*k+1:0,-(Ls.angle||0),0,Ls.focus||0);
         if(Hm){const hp=g.Gm.derive([{rect:Hm.rect,readRect:Hm.readRect,inset:Hm.inset}],R,{width:w,height:h});gl.uniform4fv(P.U.home,hp.data.subarray(0,4));gl.uniform4fv(P.U.homeRead,hp.readData.subarray(0,4));gl.uniform4f(P.U.n,hp.count?1:0,Ls.protect??(Ls.lock?1:0),Ls.neck*k,Ls.smooth*k)}
         else{gl.uniform4f(P.U.homeRead,0,0,0,0);gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,Ls.protect??(Ls.lock?1:0),0,Ls.smooth*k)}}
       else gl.uniform4f(P.U.n,-1,0,0,0);}

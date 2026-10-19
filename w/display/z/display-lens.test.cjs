@@ -198,7 +198,7 @@ for(const [w,h] of [[390,844],[1280,800]])for(const destination of ['top','compa
   for(let i=0;i<1800;i++){
     L.step(s,[...hs,{...hs[0],id:'foreign',layer:'elsewhere',cy:pos.y}],1/120,v);
     const g=L.geometry(s,hs);for(const k of ['x','y','hx','hy','corner']){assert(Number.isFinite(g[k]));maxDelta=Math.max(maxDelta,Math.abs(g[k]-prior[k]))}
-    assert(g.x-g.hx>=-.001&&g.y-g.hy>=-.001&&g.x+g.hx<=w+.001&&g.y+g.hy<=h+.001,'moving shape stays within the carrier');prior=g;
+    assert(g.x-g.boundX>=-.001&&g.y-g.boundY>=-.001&&g.x+g.boundX<=w+.001&&g.y+g.boundY<=h+.001,'moving shape stays within the carrier');prior=g;
   }
   assert(maxDelta<8,'bounded substep motion, including circle and neck transition');
   assert.equal(s.attached,destination!=='free');assert.equal(s.docked,destination!=='free');
@@ -228,3 +228,25 @@ for(const [w,h] of [[390,844],[1280,800]])for(const destination of ['top','compa
   assert.equal(drop.attributes['aria-pressed'],'false');assert.match(drop.attributes['aria-description'],/plain click passes through/);
 }
 console.log('identity/projection, bounded continuous return, reduced motion and keyboard/cancel witness: PASS');
+
+/* Capillary strain is a viscous shape degree of freedom. Stretch redistributes
+ * area instead of adding a capsule/lobe; pressure and pointer use the same axes. */
+for(const v of [{w:390,h:844},{w:1280,h:800}]){
+ const s=L.create(null,v);s.x=v.w/2;s.y=v.h/2;
+ for(let i=0;i<300;i++)L.step(s,[],1/120,v);
+ const centre={x:s.x,y:s.y},r=s.radius;
+ for(let i=0;i<120;i++)L.step(s,[],1/120,v,{active:true,x:centre.x+60,y:centre.y+50});
+ let g=L.geometry(s,null);assert(g.stretch>1.02&&g.stretch<=1.28,'cursor load deforms the flesh');assert(Math.hypot(s.x-centre.x,s.y-centre.y)<1e-8,'cursor does not tow its centre');
+ assert(Math.abs(g.hx*g.hy-r*r)<1e-7,'reciprocal axes conserve free-drop area');assert(g.angle>.1,'shape follows the load direction');assert.equal(g.neck,0);assert.equal(g.reachR,0,'no extra mass is painted as a lobe');
+ const c=Math.cos(g.angle),sn=Math.sin(g.angle);
+ assert(L.contains(s,g.x+c*g.hx*.97,g.y+sn*g.hx*.97));assert(!L.contains(s,g.x-sn*(g.hy+20),g.y+c*(g.hy+20)));
+ const strain=s.strain;L.step(s,[],1/120,v);assert(s.strain>0&&Math.abs(s.strain-strain)<.02,'removing the load preserves viscous continuity');
+ for(let i=0;i<600;i++){L.step(s,[],1/120,v);g=L.geometry(s,null);assert(Math.abs(g.hx*g.hy-s.radius*s.radius)<1e-7);assert(g.stretch>=1&&g.stretch<=1.28)}
+ assert.equal(g.stretch,1,'surface tension restores the circle');
+ const h={id:'ordinary',kind:'hud',layer:'hud',cx:v.w/2,cy:32,hx:v.w/2,hy:32,edge:'bottom'},t=L.create(h,v);
+ L.grab(t,t.x,t.y,1);
+ for(let i=0;i<300;i++){L.move(t,v.w/2,64+t.baseR*1.8,1);L.step(t,h,1/120,v)}
+ assert(!t.attached,'a long empty gap cannot keep a ghost spring connection');
+ L.step(t,h,1/120,v,null,null,true);assert.equal(L.geometry(t,h).stretch,1,'reduced motion settles deformation too');
+}
+console.log('area-preserving viscous capillary mode, rotated contact, relaxation and physical separation PASS');
