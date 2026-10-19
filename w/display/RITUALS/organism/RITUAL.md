@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.37"
+version: "3.38"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -94,6 +94,14 @@ A contact may require more than optical enlargement. In Papers, the source-press
 
 The situated-function relation is assimilated. The generic offer channel and Philosophy/Papers consumers now have native witnesses for identity-following contact, measured readable frames and source-owned wording/continuation. The completed source-owned lens contract is witnessed with actual admitted wording, the real SpriteSheet face, pinned Pretext, production tissue shaders and actual glyph input through the shared glass on software GLES at narrow/wide carriers. Browser rasterization and hardware-specific timing retain their actual limits; no default personal/device approval remains. A new CCCC split, different source authority, extra overlay, per-site duplicate droplette or menu of Form/Continuity/Care/Inquiry modes is not earned by these encounters.
 
+
+### Continuous liquid contact
+
+An offered identity has a lifetime distinct from its current projection. `offer(id, spec)` keeps that relation available until `withdraw(id)`; same-frame renderer renewal of the same identity/kind preserves it. A null, invalid or failing geometry getter cannot acquire contact. For an already locked identity it means projection pending: retain identity and the last real shape, damp the last motion, and resume from freshly measured geometry when available. No timeout manufactures disappearance or a new camera frame. Owners must withdraw on actual semantic departure/unmount; changing kind ends the old relation. Display does not carry a departed owner across another encounter merely because a later visit can offer the same id.
+
+Pulling or actual withdrawal preserves position, velocity, half extents, corner and optical state. The same flesh springs to free glass; reading protection, focus, magnification and reservoir neck yield continuously. A nearby compatible kind/layer reservoir reconnects by the existing nearest-edge reach (80 scaled pixels); outside that reach the drop remains free. Top and compass are ordinary eligible surfaces, not hardcoded identities. Actual camera/body projections and renderer acceptance govern continuity; no visit-stack or navigation meaning is inferred by the lens. The contacted body stays within the viewport.
+
+A plain pointer click still passes through. Only deliberate owning-pointer release may acquire a target; cancellation/capture loss/blur release without acquiring. The focusable glass button describes the actual take/pull/release interaction: Enter/Space toggles keyboard hold, arrows pull that held drop, Escape lets go. Keyboard and pointer ownership are exclusive. Reduced motion settles each current relation directly without secondary spring travel. Reduced transparency still removes glass. Narrow/wide native runtime/camera/input trajectories and real software-GLES optical states bound the witness; browser rasterization and device timing remain unclaimed. Papers' actual-body approach/transport and Crawlerbait's Being availability/camera meaning remain local work.
 
 ### Mounted anatomy and frame work
 
@@ -375,7 +383,7 @@ The chosen German/English expression travels in the ordinary `lang` URL query, i
 
 ### Structural containment and visit continuity
 
-Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The new liquid/lock transition counterexamples belong to `_stomach/NUTRIENT__liquid-navigation-continuity__20261019.md`; they do not reopen a generic personal-device gate.
+Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The shared liquid/lock continuity is now earned below; site-owned body approach and crawlercam availability remain in their own intake.
 
 Version 3.32 stomach-completion decisions (2026-10-17): current source and bounded proposals are reconciled; the overview does not mount itself, speculative focus/layer/rest extensions are declined without a consumer, and Papers’ specific V/E/F/T text grammar is not promoted to universal law. Native body buttons no longer inherit a permanent ARIA barrier; refused acquisition/rendering also restores the approached field camera. Browser/device acceptance stays in the live source-owned residues. Philosophy’s bilingual becoming example remains that site’s own leaf tissue. No new anatomy or ancestor backpropagation is earned.
 
@@ -397,3 +405,5 @@ The production glass pass preserves source sampling, color and glyph pixels insi
 No extra text layer, text scan, texture or render pass is introduced. Owners keep their current font/layout/pagination; Display carries fixed-budget reading rectangles beside the existing optical rectangles (at most eight HUD surfaces plus the one lens/home). Moving geometry still updates; text-length-dependent work is not added to the animation loop. Required reading tissue survives one-slab coalescence.
 
 Version3.37 readable-liquid interior (2026-10-19): common reading/hull separation, root-relative bounded rim, exact protected source pixels and zero-ink halftone repair. Native narrow/wide geometry/input, real-font complete-pagination and software-GLES pixel witnesses define the earned scope; the cloud browser's local-URL/file-policy limitation is retained in HOME, with no browser rasterization or physical-device timing claim. No INDEX, _cambium, mount or source-content change is earned.
+
+Version3.38 liquid navigation continuity (2026-10-19): owner-held offer lifetime is distinct from transient projection readiness. Position, momentum, shape, optical protection and reservoir joining now share continuous release, with explicit withdrawal and bounded compatible return. Actual runtime/camera trajectories, keyboard/pointer cancellation, reduced motion and software-GLES optical interpolation provide bounded narrow/wide evidence. No ancestor anatomy or site-local target meaning is changed.

@@ -219,7 +219,21 @@ def main():
             assert core>100,'opaque preview interior bypassed the active shared optical mapping'
             optics_pixels.append(core)
         assert any(runs[0][-1][0]),'field did not paint'
-        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height)})
+        release=[]
+        # The released reading frame still carries its fading protection. Each
+        # interior state must really execute, including both sides of 0.5.
+        frame={'left':24,'top':height//3,'width':min(300,width-48),'height':110,'r':14}
+        with tempfile.TemporaryDirectory() as tmp:
+            image=Path(tmp)/'release.rgba';image.write_bytes(bytes(v for y in range(height) for x in range(width) for v in ((225,235,218,255) if (x//3+y//5)%2 else (30,85,70,255))))
+            for protection in [1,.75,.5,.25,0]:
+                env={**os.environ,'GLYPH_IMAGE':str(image),'GLYPH_FRAME':json.dumps(frame),'RETURN_PROTECTION':str(protection)}
+                capture=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env=env,text=True))
+                assert any(c['name']=='uniform4f' and isinstance(c['args'][0],dict) and c['args'][0].get('uniform')=='uN' and c['args'][2]==protection for c in capture),'release protection was replaced by a boolean'
+                images,_=replay(capture,width,height)
+                interior=b''.join(images[-1][0][((height-1-y)*width+x)*4:((height-1-y)*width+x)*4+4] for y in range(frame['top']+20,frame['top']+frame['height']-20) for x in range(frame['left']+20,frame['left']+frame['width']-20))
+                release.append(interior)
+        assert len(set(release))==5,'intermediate optical states snapped to an endpoint'
+        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release))})
     print(json.dumps({'status':'PASS','backend':gl('GetString',C.c_char_p,[U],7937).decode(),'gles':gl('GetString',C.c_char_p,[U],7938).decode(),'actual_source':'locus-shader.js','cases':results,'scope':'Actual shaders/mesh/passes on software GLES with declared fixture state and procedural preview input; not browser layout, physical GPU or device FPS.'}))
 
 if __name__=='__main__':main()

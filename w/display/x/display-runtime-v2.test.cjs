@@ -6,7 +6,7 @@ const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'u
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
-function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false){
+function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
   const heldFolds=[];let foldBusy=false;
@@ -47,6 +47,11 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
   context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
+  if(lens)for(const [id,owner] of Modules){
+    const render=owner.render,unmount=owner.unmount;
+    owner.render=function(payload){const accepted=render.call(this,payload);if(accepted!==false&&!payload.host.hidden)lens.offer(id+'|tissue',{kind:'field',rect:()=>payload.host.hidden?null:{left:90+payload.path.length*40,top:210,width:260,height:100}});return accepted};
+    owner.unmount=function(payload){lens.withdraw(id+'|tissue');return unmount.call(this,payload)};
+  }
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
   return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
@@ -285,3 +290,21 @@ feedHandoffWitness().then(()=>console.log('display runtime: orientation-only car
  assert.equal(inquiry.runtime.state.activeIds[0],ids[1]);assert.equal(inquiry.runtime.state.localView,'');assert.equal(inquiry.runtime.state.stack[0].localView,'w');
  inquiry.key({key:'Escape',preventDefault(){}});assert.equal(inquiry.runtime.state.activeIds[0],ids[0]);assert.equal(inquiry.runtime.state.localView,'w');
 }
+
+/* The real runtime withdraws/reoffers a continuing owner during local repaint.
+ * The lens samples that accepted identity, while a genuine visit change ends it. */
+{
+ const lens=require('../z/display-lens.js'),v={w:1000,h:800},f=boot(1,'',{}, {},{},false,lens),s=lens.create(null,v),id=ids[0]+'|tissue';
+ const sample=()=>lens.resolveTargets(s.lock?.id).find(t=>t.id===id),advance=()=>{for(let i=0;i<240;i++)lens.step(s,[],1/120,v,null,sample())};
+ lens.lockTo(s,sample());advance();
+ f.W.inspect('w');advance();assert.equal(s.lock.id,id);assert(Math.abs(s.x-260)<.01,'descent uses the accepted renderer geometry');
+ f.W.inspect('');advance();assert.equal(s.lock.id,id);assert(Math.abs(s.x-220)<.01,'ascent follows the continuing target');
+ f.emit('sss:language');advance();assert.equal(s.lock.id,id,'language repaint is not target withdrawal');
+ const visit=f.history.at(-1).state;
+ f.renderKinds[ids[1]]='decline';f.runtime.navigateGlobal('w');advance();assert.equal(s.lock.id,id,'a refused encounter retains the prior accepted contact');
+ delete f.renderKinds[ids[1]];f.runtime.navigateGlobal('w');advance();assert.equal(s.lock,null,'accepted foreign encounter withdraws the prior relation');
+ f.pop(visit,'#main:overview');advance();assert.equal(s.lock,null,'restoration offers contact without inventing a new grab');
+ lens.lockTo(s,sample());advance();assert.equal(s.lock.id,id,'the restored owner can lend the same stable identity again');
+ for(const owner of ids)lens.withdraw(owner+'|tissue');
+}
+console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserve or end the actual offered relation');

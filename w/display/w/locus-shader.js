@@ -430,9 +430,9 @@ float sdBox(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+mi
 float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);return min(a,b)-h*h*k*.25;}
 float sdSeg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/max(dot(ba,ba),1e-4),0.,1.);return length(pa-ba*h);}
 mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
-/* uN: x lens+home on, y locked (no magnification), z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.x framed corner+1 (0 = round drop), uL2.yz home anchor, uL2.w field-lock focus (mutes the field beneath the drop so the target it frames reads) */
+/* uN: x lens+home on, y reading protection (0..1), z neck radius, w neck smoothing.  uL0 lens centre+half size, uL1 reach offset xy + reach lobe radius z + drop magnification w (flesh leaning toward the cursor), uL2.x framed corner+1 (0 = round drop), uL2.yz home anchor, uL2.w field-lock focus (mutes the field beneath the drop so the target it frames reads) */
 float sdReadingLens(vec2 p){return uL2.x>.5?sdBox(p-uL0.xy,uL0.zw,uL2.x-1.):length(p-uL0.xy)-uL0.z;}
-float sdLens(vec2 p){float pad=uN.y>.5?uH.w:0.;float d=sdReadingLens(p)-pad;if(uL1.z>.5)d=smin(d,sdSeg(p,uL0.xy,uL0.xy+uL1.xy)-uL1.z,max(uN.w,uL1.z));return d;}
+float sdLens(vec2 p){float d=sdReadingLens(p)-uH.w*uN.y;if(uL1.z>.5)d=smin(d,sdSeg(p,uL0.xy,uL0.xy+uL1.xy)-uL1.z,max(uN.w,uL1.z));return d;}
 float sdPanel(vec2 p,vec4 R){
   vec2 q=p-R.xy;
   if(R.y+R.w>uRes.y&&R.z*2.>uRes.x*.75)q.y+=sin(clamp(p.x/uRes.x,0.,1.)*3.14159)*uH.z;
@@ -475,16 +475,16 @@ void main(){
     surface(d,n,min(R.z,R.w),R.xy,frag,uB.y);
   }
   if(uN.x>-.5){
-    if(uN.y>.5)readD=min(readD,sdReadingLens(frag));
     if(uN.x>.5&&min(uHomeRead.z,uHomeRead.w)>0.)readD=min(readD,sdBox(frag-uHomeRead.xy,uHomeRead.zw,0.));
     float d=gooD(frag);
     vec2 n=vec2(gooD(frag+h.xy)-gooD(frag-h.xy),gooD(frag+h.yx)-gooD(frag-h.yx));n/=max(length(n),1e-4);
-    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag,uN.y>.5?0.:(uL1.w>0.?uL1.w:(uL2.w>0.?0.:uB.y)));
+    surface(d,n,min(uL0.z,min(uL0.w,uN.x>.5?uHome.z:uL0.z)),uL0.xy,frag,uL1.w);
   }
   /* One measured reading aperture wins over every overlapping optical surface.
    * The glyphs stay in the original scene/composite; only the sampling map and
    * decorative rim yield. No duplicate sharp-text pass or text-length work. */
   float optical=smoothstep(0.,max(fwidth(readD),1.),readD);
+  if(uN.x>-.5){float lensD=sdReadingLens(frag);optical*=mix(1.,smoothstep(0.,max(fwidth(lensD),1.),lensD),uN.y);}
   gShift*=optical;gRim*=optical;gLit*=optical;
   vec3 c;
   c.r=texture(uScene,(frag+gShift*(1.-uB.x))/uRes).r;
@@ -625,8 +625,8 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     {const sn=g.snap,R=g.r;
       if(sn){const Ls=sn.lens,Hm=sn.home,X=x=>(x-R.left)*k,Y=y=>h-(y-R.top)*k;
         gl.uniform4f(P.U.l0,X(Ls.x),Y(Ls.y),Ls.hx*k,Ls.hy*k);gl.uniform4f(P.U.l1,(Ls.rx||0)*k,-(Ls.ry||0)*k,(Ls.reachR||0)*k,Ls.mag||0);gl.uniform4f(P.U.l2,Ls.round===0?(Ls.corner||0)*k+1:0,X(Ls.ax),Y(Ls.ay),Ls.focus||0);
-        if(Hm){const hp=g.Gm.derive([{rect:Hm.rect,readRect:Hm.readRect,inset:Hm.inset}],R,{width:w,height:h});gl.uniform4fv(P.U.home,hp.data.subarray(0,4));gl.uniform4fv(P.U.homeRead,hp.readData.subarray(0,4));gl.uniform4f(P.U.n,hp.count?1:0,Ls.lock?1:0,Ls.neck*k,Ls.smooth*k)}
-        else{gl.uniform4f(P.U.homeRead,0,0,0,0);gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,Ls.lock?1:0,0,Ls.smooth*k)}}
+        if(Hm){const hp=g.Gm.derive([{rect:Hm.rect,readRect:Hm.readRect,inset:Hm.inset}],R,{width:w,height:h});gl.uniform4fv(P.U.home,hp.data.subarray(0,4));gl.uniform4fv(P.U.homeRead,hp.readData.subarray(0,4));gl.uniform4f(P.U.n,hp.count?1:0,Ls.protect??(Ls.lock?1:0),Ls.neck*k,Ls.smooth*k)}
+        else{gl.uniform4f(P.U.homeRead,0,0,0,0);gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,Ls.protect??(Ls.lock?1:0),0,Ls.smooth*k)}}
       else gl.uniform4f(P.U.n,-1,0,0,0);}
     gl.bindVertexArray(P.vao);gl.drawArrays(gl.TRIANGLES,0,3);
     gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,tex1);gl.activeTexture(unit0);

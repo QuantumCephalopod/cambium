@@ -67,13 +67,13 @@ console.log('narrow-pane free-drop witness: PASS');
 /* The drop lets the world through: a click under it is replayed to what lies beneath; pressing on
  * the drop and pulling takes it at once. Ownership and cancellation still hold. */
 const vm=require('vm'),fs=require('fs');
-function target(){return {style:{},dataset:{},events:{},classList:{contains:()=>false},setAttribute(){},
+function target(){return {style:{},dataset:{},events:{},attributes:{},classList:{contains:()=>false},setAttribute(k,v){this.attributes[k]=v},
   addEventListener(type,fn){(this.events[type]??=[]).push(fn)},setPointerCapture(){throw Error('capture unavailable')},
   dispatchEvent(ev){for(const f of this.events[ev.type]||[])f(ev);return true},
   fire(type,extra={}){const e={type,button:0,pointerId:1,pointerType:'mouse',clientX:400,clientY:300,currentTarget:this,target:this,preventDefault(){},stopPropagation(){},...extra};for(const f of this.events[type]||[])f(e)}}}
-const win=target(),nodes=[],frames=[];let glassOn=true,clock=100;
+const win=target(),nodes=[],frames=[];let glassOn=true,clock=100,reduced=false;
 class PE{constructor(type,init){Object.assign(this,init);this.type=type}}
-Object.assign(win,{innerWidth:1100,innerHeight:700,PointerEvent:PE,getComputedStyle:()=>({}),requestAnimationFrame:f=>frames.push(f),
+Object.assign(win,{innerWidth:1100,innerHeight:700,PointerEvent:PE,matchMedia:()=>({matches:reduced}),getComputedStyle:()=>({}),requestAnimationFrame:f=>frames.push(f),
   document:{documentElement:{dataset:{}},body:{append:n=>nodes.push(n)},createElement:target},
   SSSDisplayGlass:{enabled:()=>glassOn,collect:()=>[{id:'top',kind:'hud',layer:'hud',role:'top',rect:{left:0,top:0,right:1100,bottom:120,width:1100,height:120}}]},module:{exports:{}}});
 win.globalThis=win;vm.runInNewContext(fs.readFileSync(require.resolve('./display-lens.js'),'utf8'),win);
@@ -103,7 +103,7 @@ assert.ok(controller.snapshot().lens.mag>.11&&controller.snapshot().lens.mag<.12
 console.log('pass-through click / pull-to-take / ownership witness: PASS');
 
 /* Soft-lock witnesses: field = exact rounded rectangle, body = released circle that follows,
- * vanished target unlocks in place, pulling unlocks, locked glass does not magnify. */
+ * withdrawn target releases continuously, pulling unlocks, locked glass does not magnify. */
 {
   const runT=(s,sec,t)=>{for(let i=0;i<sec*120;i++)L.step(s,[],1/120,view,null,typeof t==='function'?t():t);return s};
   const field={id:'site:Description',kind:'field',cx:300,cy:500,hx:180,hy:110,r:10};
@@ -121,8 +121,9 @@ console.log('pass-through click / pull-to-take / ownership witness: PASS');
   const at={x:s.x,y:s.y};L.step(s,[],1/60,view,null,null);
   assert.strictEqual(s.lock,null,'a vanished target unlocks');
   assert.ok(Math.hypot(s.x-at.x,s.y-at.y)<2,'it unlocks where it is');
-  g=L.geometry(s,null);assert.strictEqual(g.round,1);assert.strictEqual(g.hx,g.hy,'and becomes a circle again');
+  g=L.geometry(s,null);assert.strictEqual(g.round,0);assert.ok(g.hx>g.hy,'release preserves the moving reading shape');
   assert.ok(g.mag>0,'free glass magnifies again');
+  runT(s,2,null);g=L.geometry(s,null);assert.strictEqual(g.round,1);assert.ok(Math.abs(g.hx-g.hy)<1e-4,'the same flesh settles into a circle');
 
   const body={id:'site:papers',kind:'body',cx:600,cy:300,hx:24};
   s=L.create(null,view);s.x=590;s.y=310;s.vx=s.vy=0;
@@ -155,12 +156,75 @@ console.log('pass-through click / pull-to-take / ownership witness: PASS');
   const far={...t,frame:{cx:-500,cy:2000,hx:1200,hy:900,r:16}};
   for(let i=0;i<300;i++)L.step(s,[],1/120,view,null,far);
   const bounded=L.geometry(s,null);assert.ok(bounded.x-bounded.hx>=0&&bounded.y-bounded.hy>=0&&bounded.x+bounded.hx<=800&&bounded.y+bounded.hy<=600);
-  L.withdraw(target);L.step(s,[],1/120,view,null,null);assert.equal(s.lock,null);assert.equal(L.geometry(s,null).round,1);
+  L.withdraw(target);L.step(s,[],1/120,view,null,null);assert.equal(s.lock,null);assert.equal(L.geometry(s,null).round,0);
   console.log('identity-owned readable extent, lazy acquisition, viewport and release witness: PASS');
 }
 
 /* The outer optical rim remains part of the same take/pull body. */
 {
- const l=L.create(null,{w:390,h:844});l.x=160;l.y=200;l.radius=60;l.hx=90;l.hy=50;l.corner=14;l.aperture=true;l.lock={kind:'body',id:'reading'};
+ const l=L.create(null,{w:390,h:844});l.x=160;l.y=200;l.radius=60;l.hx=90;l.hy=50;l.corner=14;l.lock={kind:'body',id:'reading'};
  assert(L.contains(l,l.x+l.hx+7,l.y));assert(!L.contains(l,l.x+l.hx+10,l.y));
 }
+
+/* Offered identity outlives a missing projection; withdrawal, not a timer or
+ * invented stale hit area, ends contact. All getters still measure live geometry. */
+{
+  const id='arbitrary:identity',spec={kind:'field',rect:()=>rect};let rect={left:100,top:180,width:250,height:96};
+  L.offer(id,spec);const s=L.create(null,view),sample=()=>L.resolveTargets(s.lock?.id).find(t=>t.id===id);
+  L.lockTo(s,sample());for(let i=0;i<240;i++)L.step(s,[],1/120,view,null,sample());
+  rect=null;assert(!L.resolveTargets().some(t=>t.id===id),'unprojected offers cannot acquire contact');
+  for(let i=0;i<600;i++)L.step(s,[],1/120,view,null,sample());
+  assert.equal(s.lock.id,id,'no arbitrary timeout releases an owner-held identity');
+  rect={left:420,top:210,width:180,height:140};
+  for(let i=0;i<240;i++)L.step(s,[],1/120,view,null,sample());
+  assert(Math.abs(s.x-510)<.01&&Math.abs(s.hy-70)<.01,'restoration follows the new geometry');
+  L.withdraw(id);L.offer(id,spec);L.step(s,[],1/120,view,null,sample());assert.equal(s.lock.id,id,'synchronous renderer renewal preserves identity');
+  L.withdraw(id);L.step(s,[],1/120,view,null,sample());assert.equal(s.lock,null,'owner withdrawal ends contact');
+}
+
+/* Withdrawal carries existing motion and all shape/optical coordinates into
+ * both eligible reservoirs; no distant or foreign reservoir swallows free glass. */
+for(const [w,h] of [[390,844],[1280,800]])for(const destination of ['top','compass','free']){
+  const v={w,h},hs=[{id:'top',kind:'hud',layer:'hud',cx:w/2,cy:32,hx:w/2,hy:32,edge:'bottom'},
+    {id:'compass',kind:'hud',layer:'hud',cx:w-65,cy:h-85,hx:55,hy:75}];
+  const pos=destination==='top'?{x:w/2,y:100}:destination==='compass'?{x:w-150,y:h-85}:{x:90,y:h/2};
+  const s=L.create(null,v),t={id:'arbitrary:field',kind:'field',cx:pos.x,cy:pos.y,hx:72,hy:32,r:9};
+  L.lockTo(s,t);for(let i=0;i<240;i++)L.step(s,hs,1/120,v,null,t);
+  s.vx=14;s.vy=-7;s.hxV=3;s.hyV=-2;
+  const before=L.geometry(s,hs),velocity=[s.vx,s.vy,s.hxV,s.hyV];L.unlock(s);
+  assert.deepEqual([s.vx,s.vy,s.hxV,s.hyV],velocity,'withdrawal preserves momentum');
+  const just=L.geometry(s,hs);for(const k of ['x','y','hx','hy','corner','protect','focus','mag'])assert.equal(just[k],before[k],'no release jump in '+k);
+  let maxDelta=0,prior=just;
+  for(let i=0;i<1800;i++){
+    L.step(s,[...hs,{...hs[0],id:'foreign',layer:'elsewhere',cy:pos.y}],1/120,v);
+    const g=L.geometry(s,hs);for(const k of ['x','y','hx','hy','corner']){assert(Number.isFinite(g[k]));maxDelta=Math.max(maxDelta,Math.abs(g[k]-prior[k]))}
+    assert(g.x-g.hx>=-.001&&g.y-g.hy>=-.001&&g.x+g.hx<=w+.001&&g.y+g.hy<=h+.001,'moving shape stays within the carrier');prior=g;
+  }
+  assert(maxDelta<8,'bounded substep motion, including circle and neck transition');
+  assert.equal(s.attached,destination!=='free');assert.equal(s.docked,destination!=='free');
+  if(destination!=='free')assert.equal(s.homeId,destination,'nearest eligible reservoir receives the same drop');
+  assert.equal(L.geometry(s,hs).round,1);assert.equal(L.geometry(s,hs).protect,0);
+  console.log(JSON.stringify({carrier:[w,h],withdrawal:destination,max_substep_delta:maxDelta,settled:true}));
+  const reduced=L.create(null,v);L.lockTo(reduced,t);L.step(reduced,hs,1/60,v,null,t,true);
+  assert.equal(reduced.x,t.cx);assert.equal(reduced.hx,t.hx);
+  L.step(reduced,hs,1/60,v,null,null,true);
+  assert.equal(reduced.lock,null);assert.equal(reduced.hx,reduced.hy);assert.equal(reduced.vx,0);assert.equal(reduced.protect,0);
+}
+
+/* Real controller: cancellation cannot acquire; keyboard is a take/pull/release
+ * interaction, and owns its hold independently of pointer input. */
+{
+  const at=()=>{const g=controller.snapshot().lens;return {clientX:g.x,clientY:g.y,target:under}};
+  controller.offer('under:drop',{kind:'field',rect:()=>({left:0,top:0,width:1100,height:700})});
+  hold();win.fire('pointercancel',at());assert.equal(controller.snapshot().lens.lock,null,'cancel never acquires the offered target');
+  drop.fire('keydown',{key:'Enter'});assert.equal(controller.snapshot().lens.held,true);assert.equal(drop.attributes['aria-pressed'],'true');
+  let repeatPrevented=false;drop.fire('keydown',{key:' ',repeat:true,preventDefault(){repeatPrevented=true}});assert(repeatPrevented&&controller.snapshot().lens.held,'held key repeat neither scrolls nor toggles ownership');
+  win.fire('pointerup',at());assert.equal(controller.snapshot().lens.held,true,'pointer cannot release keyboard ownership');
+  const x=controller.snapshot().lens.x;drop.fire('keydown',{key:'ArrowRight'});for(let i=0;i<90;i++)tick();assert(controller.snapshot().lens.x>x+5);
+  drop.fire('keydown',{key:'Escape'});assert.equal(controller.snapshot().lens.held,false);assert.equal(controller.snapshot().lens.lock,null);
+  drop.fire('keydown',{key:'Enter'});drop.fire('blur');assert.equal(controller.snapshot().lens.held,false,'moving focus away cannot strand keyboard ownership');assert.equal(controller.snapshot().lens.lock,null);
+  drop.fire('keydown',{key:' '});drop.fire('keydown',{key:' '});assert.equal(controller.snapshot().lens.lock.id,'under:drop','deliberate keyboard release shares target acquisition');
+  for(let i=0;i<90;i++)tick();controller.withdraw('under:drop');reduced=true;tick();assert.equal(controller.snapshot().lens.round,1);assert.equal(controller.snapshot().lens.protect,0);reduced=false;
+  assert.equal(drop.attributes['aria-pressed'],'false');assert.match(drop.attributes['aria-description'],/plain click passes through/);
+}
+console.log('identity/projection, bounded continuous return, reduced motion and keyboard/cancel witness: PASS');

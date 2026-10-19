@@ -23,7 +23,7 @@ const inject=`
 `;
 const source=transport.replace('  const canvas=element();',inject+'\n  const canvas=element();').replace('if(composite)shader.composite=()=>[{width:16,height:16}];','if(composite)shader.composite=()=>[{width:WIDTH,height:HEIGHT,dataFile:GLYPH_IMAGE}];');
 const [width,height,preview,magnification=.12]=process.argv.slice(2).map(Number),commands=[];
-const context={require,__dirname,process:{env:{LOCUS_SOURCE:process.env.LOCUS_SOURCE}},console:{log(){},warn(){}},ENUMS:enums,COMMANDS:commands,WIDTH:width,HEIGHT:height,PREVIEW:preview,MAGNIFICATION:magnification,GLYPH_IMAGE:process.env.GLYPH_IMAGE,GLYPH_FRAME:process.env.GLYPH_FRAME?JSON.parse(process.env.GLYPH_FRAME):null,READ_SURFACE:process.env.READ_SURFACE?JSON.parse(process.env.READ_SURFACE):null,READ_LOCK:process.env.READ_LOCK||'',READ_REFERENCE:process.env.READ_REFERENCE==='1'};
+const context={require,__dirname,process:{env:{LOCUS_SOURCE:process.env.LOCUS_SOURCE}},console:{log(){},warn(){}},ENUMS:enums,COMMANDS:commands,WIDTH:width,HEIGHT:height,PREVIEW:preview,MAGNIFICATION:magnification,GLYPH_IMAGE:process.env.GLYPH_IMAGE,GLYPH_FRAME:process.env.GLYPH_FRAME?JSON.parse(process.env.GLYPH_FRAME):null,READ_SURFACE:process.env.READ_SURFACE?JSON.parse(process.env.READ_SURFACE):null,READ_LOCK:process.env.READ_LOCK||'',READ_REFERENCE:process.env.READ_REFERENCE==='1',RETURN_PROTECTION:process.env.RETURN_PROTECTION===undefined?null:Number(process.env.RETURN_PROTECTION)};
 vm.runInNewContext(source+`
 const sample=(name)=>\`#version 300 es
 precision highp float;out vec4 outColor;
@@ -31,6 +31,7 @@ void main(){vec2 p=floor(gl_FragCoord.xy/12.);float v=mod(p.x+p.y,2.);outColor=v
 const lens={x:WIDTH/2,y:HEIGHT/2,r:80,hx:80,hy:80,ax:0,ay:0,smooth:16,round:1,mag:MAGNIFICATION,held:false,docked:false};
 if(GLYPH_FRAME){const r=GLYPH_FRAME;Object.assign(lens,{x:r.left+r.width/2,y:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:Math.min(r.width,r.height)/2,round:0,corner:r.r||0})}
 if(READ_LOCK){lens.lock={kind:READ_LOCK,id:'measured:reading'};lens.focus=READ_LOCK==='field'?1:0;}
+if(RETURN_PROTECTION!==null){lens.lock=null;lens.protect=RETURN_PROTECTION;lens.mag=(1-RETURN_PROTECTION)*(1-1/1.13);}
 const entries=READ_SURFACE?[require('../z/display-glass.js').readingFrame(READ_SURFACE)]:null;
 const f=fixture({width:WIDTH,height:HEIGHT,webgl:true,glass:true,preview:!!PREVIEW,composite:!!GLYPH_IMAGE,lens:READ_SURFACE&&!READ_LOCK?null:lens,glassEntries:entries,glassReference:READ_REFERENCE});
 if(PREVIEW)f.bodies.b.shader.preview=()=>{
