@@ -24,7 +24,7 @@ The identity-continuity interpretation is Mnemos implementation synthesis, not a
 ## Ownership and dependencies
 
 - Enter shared-root field, repository and Display receptors, then `w/display/RITUALS/organism/RITUAL.md`.
-- Depends on `w/display/_stomach/NUTRIENT__liquid-readable-interior__20261019.md`.
+- Depends on `w/display/_waste/NUTRIENT__liquid-readable-interior__20261019.md`.
 - Inherit current source/privacy boundaries, stable identities and recursive formatting. New UI does not close unrelated source-projection work.
 
 ## Closure witness

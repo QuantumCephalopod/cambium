@@ -23,14 +23,16 @@ const inject=`
 `;
 const source=transport.replace('  const canvas=element();',inject+'\n  const canvas=element();').replace('if(composite)shader.composite=()=>[{width:16,height:16}];','if(composite)shader.composite=()=>[{width:WIDTH,height:HEIGHT,dataFile:GLYPH_IMAGE}];');
 const [width,height,preview,magnification=.12]=process.argv.slice(2).map(Number),commands=[];
-const context={require,__dirname,process:{env:{LOCUS_SOURCE:process.env.LOCUS_SOURCE}},console:{log(){},warn(){}},ENUMS:enums,COMMANDS:commands,WIDTH:width,HEIGHT:height,PREVIEW:preview,MAGNIFICATION:magnification,GLYPH_IMAGE:process.env.GLYPH_IMAGE,GLYPH_FRAME:process.env.GLYPH_FRAME?JSON.parse(process.env.GLYPH_FRAME):null};
+const context={require,__dirname,process:{env:{LOCUS_SOURCE:process.env.LOCUS_SOURCE}},console:{log(){},warn(){}},ENUMS:enums,COMMANDS:commands,WIDTH:width,HEIGHT:height,PREVIEW:preview,MAGNIFICATION:magnification,GLYPH_IMAGE:process.env.GLYPH_IMAGE,GLYPH_FRAME:process.env.GLYPH_FRAME?JSON.parse(process.env.GLYPH_FRAME):null,READ_SURFACE:process.env.READ_SURFACE?JSON.parse(process.env.READ_SURFACE):null,READ_LOCK:process.env.READ_LOCK||'',READ_REFERENCE:process.env.READ_REFERENCE==='1'};
 vm.runInNewContext(source+`
 const sample=(name)=>\`#version 300 es
 precision highp float;out vec4 outColor;
 void main(){vec2 p=floor(gl_FragCoord.xy/12.);float v=mod(p.x+p.y,2.);outColor=vec4(v,.15,.8-v*.5,1.);}\`;
 const lens={x:WIDTH/2,y:HEIGHT/2,r:80,hx:80,hy:80,ax:0,ay:0,smooth:16,round:1,mag:MAGNIFICATION,held:false,docked:false};
-if(GLYPH_FRAME){const r=GLYPH_FRAME;Object.assign(lens,{x:r.left+r.width/2,y:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:Math.min(r.width,r.height)/2,round:0})}
-const f=fixture({width:WIDTH,height:HEIGHT,webgl:true,glass:true,preview:!!PREVIEW,composite:!!GLYPH_IMAGE,lens});
+if(GLYPH_FRAME){const r=GLYPH_FRAME;Object.assign(lens,{x:r.left+r.width/2,y:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:Math.min(r.width,r.height)/2,round:0,corner:r.r||0})}
+if(READ_LOCK){lens.lock={kind:READ_LOCK,id:'measured:reading'};lens.focus=READ_LOCK==='field'?1:0;}
+const entries=READ_SURFACE?[require('../z/display-glass.js').readingFrame(READ_SURFACE)]:null;
+const f=fixture({width:WIDTH,height:HEIGHT,webgl:true,glass:true,preview:!!PREVIEW,composite:!!GLYPH_IMAGE,lens:READ_SURFACE&&!READ_LOCK?null:lens,glassEntries:entries,glassReference:READ_REFERENCE});
 if(PREVIEW)f.bodies.b.shader.preview=()=>{
   const gl=f.gl,p=gl.createProgram();
   for(const [type,body] of [[gl.VERTEX_SHADER,\`#version 300 es
@@ -40,7 +42,7 @@ if(PREVIEW)f.bodies.b.shader.preview=()=>{
   gl.linkProgram(p);gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.useProgram(p);gl.drawArrays(gl.TRIANGLES,0,3);
   gl.deleteProgram(p);
 };
-f.frame(0);if(!GLYPH_FRAME){const contacted=f.api.projectBody('body:b');lens.x=contacted.x;lens.y=contacted.y;}
+f.frame(0);if(!GLYPH_FRAME&&!READ_SURFACE){const contacted=f.api.projectBody('body:b');lens.x=contacted.x;lens.y=contacted.y;}
 f.frame(50);COMMANDS.push({name:'readback',width:WIDTH,height:HEIGHT,lens:{x:lens.x,y:lens.y,r:lens.r}});
 f.frame(100);COMMANDS.push({name:'readback',width:WIDTH,height:HEIGHT,lens:{x:lens.x,y:lens.y,r:lens.r}});
 `,context,{filename:'actual-field-gles-capture'});

@@ -158,3 +158,9 @@ console.log('pass-through click / pull-to-take / ownership witness: PASS');
   L.withdraw(target);L.step(s,[],1/120,view,null,null);assert.equal(s.lock,null);assert.equal(L.geometry(s,null).round,1);
   console.log('identity-owned readable extent, lazy acquisition, viewport and release witness: PASS');
 }
+
+/* The outer optical rim remains part of the same take/pull body. */
+{
+ const l=L.create(null,{w:390,h:844});l.x=160;l.y=200;l.radius=60;l.hx=90;l.hy=50;l.corner=14;l.aperture=true;l.lock={kind:'body',id:'reading'};
+ assert(L.contains(l,l.x+l.hx+7,l.y));assert(!L.contains(l,l.x+l.hx+10,l.y));
+}

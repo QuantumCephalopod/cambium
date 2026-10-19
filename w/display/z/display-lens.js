@@ -117,7 +117,7 @@
   function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;unlock(L);L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
   function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null;L.docked=false}return L}
-  function contains(L,x,y){if(L.lock&&(L.lock.kind==='field'||L.aperture)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+6}return Math.hypot(x-L.x,y-L.y)<=L.radius+6}
+  function contains(L,x,y){const edge=L.lock?(root.SSSDisplayGlass?.readInset?.()??8):6;if(L.lock&&(L.lock.kind==='field'||L.aperture)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+edge}return Math.hypot(x-L.x,y-L.y)<=L.radius+edge}
   function pullFrom(L,h,x,y,pid){
     if(!compatible(L,h))return false;
     const p=edgePoint(h,x,y);L.homeId=idOf(h);L.edge=p.edge;L.u=along(h,p);L.attached=true;L.docked=true;
@@ -156,7 +156,7 @@
     const outer=entries.filter((e,i)=>!entries.some((p,j)=>j!==i&&p.kind===e.kind&&p.layer===e.layer&&
       p.rect.left<=e.rect.left&&p.rect.top<=e.rect.top&&p.rect.right>=e.rect.right&&p.rect.bottom>=e.rect.bottom&&
       (p.rect.width>e.rect.width||p.rect.height>e.rect.height||j<i)));
-    return outer.map(e=>({id:e.id,ids:e.ids||[e.id],rect:e.rect,cx:e.rect.left+e.rect.width/2,
+    return outer.map(e=>({id:e.id,ids:e.ids||[e.id],rect:e.rect,readRect:e.readRect,inset:e.inset,cx:e.rect.left+e.rect.width/2,
       cy:e.rect.top+e.rect.height/2,hx:e.rect.width/2,hy:e.rect.height/2,kind:e.kind||'hud',layer:e.layer||'hud',
       edge:e.role?.split(/\s+/).includes('top')?'bottom':'left'}));
   }
