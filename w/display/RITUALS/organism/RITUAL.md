@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.35"
+version: "3.36"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -55,10 +55,10 @@ Address is environment, not identity. Moving the whole body to another lawful Po
 Current bodies (the tree is the authority; this list only orients re-entry):
 
 - `w/display/y/philosophy/` -> global `ε / overview` -> `organism:philosophy`;
-- `w/display/y/yw/crawlerbait/` -> global `w / Form` -> `organism:crawlerbait`;
-- `w/display/y/yx/schattenseiten/` -> global `x / Continuity` -> `organism:schattenseiten`;
-- `w/display/y/yy/papers/` -> global `y / Inquiry` -> `organism:papers`;
-- `w/display/y/yz/datenschutz/` -> global `z / Care` -> `organism:datenschutz`;
+- `w/display/y/yw/crawlerbait/` -> global `w` -> `organism:crawlerbait`;
+- `w/display/y/yx/schattenseiten/` -> global `x` -> `organism:schattenseiten`;
+- `w/display/y/yy/papers/` -> global `y` -> `organism:papers`;
+- `w/display/y/yz/datenschutz/` -> global `z` -> `organism:datenschutz`;
 - `w/display/y/yxz/impressum/` -> global `xz` -> `organism:impressum`. `xz` is a quotient midpoint with no semantic noun of its own; the address is given bare rather than inventing one.
 
 Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `y`. Crawlerbait remains locally rooted at `crawlerbait:ε`; its machine-facing HTTP bait routes are local public apertures, not additional global site-space addresses.
@@ -88,7 +88,7 @@ Default mutation law: if pressure originates in one site-holon, keep the change 
 
 The existing shared glass droplette is **one Display-owned instrument**, not just a magnifier, a menu of tools, or four separately instantiated lenses. Its stable physical/interaction identity stays Display-owned across site-space, recursive descent, locally earned deformation and return to free glass. **Its operative function is afforded by the actually encountered, independently rooted organism and the local body/relationship it presents.** Display lends physics, spatial contact/anchoring, glass composition and continuity; the contacted site owns *what the encounter means*, what structural affordance it can truthfully offer, and what portion of its source-owned representation is fit to show. A site may decline any richer function. This is a relation, not a new generic renderer, schema, substrate or semantic vertex.
 
-Current witnesses make the four situated possibilities intelligible: site-space `w / Form`, `x / Continuity`, `z / Care`, `y / Inquiry`. **These are present mounted site-space descriptions, not four hardcoded lens modes, an exhaustive tool taxonomy, or a remapping of Display's own w Embodiment / x Continuity / z Orientation / y Population CCCC DNA.** A site moved to another raw address keeps its intrinsic interpretation. At any recursive depth, the instrument may learn a different local function from a different genuine encounter without becoming another instrument.
+Current encounters make **Form, Continuity, Care and Inquiry** intelligible as situated purposes of the instrument. **These name organism-afforded relations, not global address names, the overview's semantic cell nouns, four hardcoded lens modes, an exhaustive tool taxonomy, or a remapping of Display's own w Embodiment / x Continuity / z Orientation / y Population CCCC DNA.** Current host-field expression derives from Philosophy's own phenotype; it must not be reconstructed from these purpose words. A site moved to another raw address keeps its intrinsic interpretation. At any recursive depth, the instrument may learn a different local function from a different genuine encounter without becoming another instrument.
 
 A contact may require more than optical enlargement. In Papers, the source-pressure example is: the same droplette approaches an actual vertex, edge or face; an identity-bound *soft-lock* may settle first, and **the droplette's own body**, not an independently exploded text element or screen overlay, may accommodate that topology and the site's authored readable tissue. A relation-driven deformation is distinct from a globally prescribed circle/capsule/triangle template. Readability must preserve full source wording; finite viewport limits and overflow/continuation require their own truthful implementation witness. The established pass-through click, hold-to-take, continuous focus, Descent/ascent, site-owned `_feed` availability/fallback, reduced-transparency and release laws remain constraints.
 
@@ -119,7 +119,7 @@ Public `_feed` advertises truthful available representations; loading and networ
 
 At a mounted encounter handoff, acquired detail is only data readiness. The receiving site's renderer must also accept and leave its body visible before Display retires the prior encounter or commits its visit. A declined, throwing or still-hidden candidate preserves the prior body, local container, stack and truthful history; it reports unavailability and may retry using the already-acquired immutable source. The same acceptance boundary governs direct entry, history restoration and ascent. Display checks acceptance; the site owns rendering and any hardware-specific fallback.
 
-The existing Canvas2D field fallback retains the offered floating population at the same realized geometry, placement and drift, with the same localized identity labels, geometric contact and entry relation. It may reduce GLSL phenomenology to palette paint; it must not discard the offered bodies because their optional field GPU representation is unavailable. Withdrawn offers cease to be contactable and their labels are hidden. This does not supply a fallback for a site's independently owned renderer or certify shader/glass parity. The 2026-10-17 candidate has native wide/portrait and full-mesh witnesses; candidate visitor/device appearance remains open in its own intake.
+The existing Canvas2D field fallback retains the offered floating population at the same realized geometry, placement and drift, with identity labels, geometric contact and entry relation preserved. It may reduce GLSL phenomenology to palette paint; it must not discard the offered bodies because their optional field GPU representation is unavailable. Withdrawn offers cease to be contactable and their labels are hidden. This does not supply a fallback for a site's independently owned renderer or certify shader/glass parity. The 2026-10-17 wide/portrait and full-mesh witnesses close that bounded contract under the acceptance law below. Browser rasterization and physical-driver performance retain their actual evidence limits; a concrete new defect enters its owner's intake rather than reviving a default device-approval gate.
 
 ### Identity-resolved foreign embodiment
 
@@ -296,6 +296,8 @@ CI success alone is not browser closure.
 
 ## Compression
 
+Versioned notes below preserve the scope of their original witnesses. Later contract decisions and completion witnesses supersede earlier pending flags; those historical flags are not current intake or an independent acceptance gate.
+
 ### Bounded implementation decisions
 
 The current overview is Philosophy's own encounter, not an extra occupant inside itself. It hosts the other mounted site bodies; an additional floating Philosophy body requires an actual containing encounter. This settles the old self-body proposal without deciding how Philosophy would appear in a future parent. Papers/Schattenseiten now offer their actual coarse chamber/sheet bodies through the neutral body coupling below; a material hook alone remains insufficient.
@@ -365,13 +367,15 @@ Version 3.27 receiving-renderer acceptance correction (staged 2026-10-14): the l
 
 ### Language belongs to expression
 
-Global target and floating-body names use the current language label on the site's already-owned field root (`de` / `en`), with its manifest title and stable identity as fallbacks. Translated labels do not rename identities, mounts, addresses or anatomy, and a language-only update does not remint GPU bodies. Navigator targets carry the derived current titles to consumers.
+Site proper names are language-invariant: **Philosophy, Crawlerbait, Schattenseiten and Papers** remain the same names in DE and EN. Among the current site-holons, only the legal titles are localized. Other authored concepts, questions, prose and interface wording may be translated without renaming organism identities, mounts, addresses or anatomy. German Display expression must use `ae / oe / ue` (and case-preserving capitals) until the face actually supports umlauts; the existing spelling fold is a presentation transduction, not permission to rewrite source-owned wording or identifiers.
+
+The current target/floating-body title path still derives the site's field-root `de` / `en` label, with its manifest title and stable identity as fallbacks. The accepted proper-name policy and complete glyph-path coverage remain OPEN execution in `_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md`; recording that policy does not claim those runtime paths are repaired. A language-only update must not remint GPU bodies. Navigator targets carry the derived titles to consumers.
 
 The chosen German/English expression travels in the ordinary `lang` URL query, including history restoration and return from standalone public apertures. No cookie or browser storage is introduced. An unsupported/missing language retains the existing English default.
 
 ### Structural containment and visit continuity
 
-Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Native staging witnesses preserve identity, orientation, renderer refusal and root no-op; candidate browser/device acceptance remains open.
+Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The new liquid/lock transition counterexamples belong to `_stomach/NUTRIENT__liquid-navigation-continuity__20261019.md`; they do not reopen a generic personal-device gate.
 
 Version 3.32 stomach-completion decisions (2026-10-17): current source and bounded proposals are reconciled; the overview does not mount itself, speculative focus/layer/rest extensions are declined without a consumer, and Papers’ specific V/E/F/T text grammar is not promoted to universal law. Native body buttons no longer inherit a permanent ARIA barrier; refused acquisition/rendering also restores the approached field camera. Browser/device acceptance stays in the live source-owned residues. Philosophy’s bilingual becoming example remains that site’s own leaf tissue. No new anatomy or ancestor backpropagation is earned.
 
@@ -381,3 +385,5 @@ Version3.34 concrete completion (2026-10-17): identity-owned coarse cell/draw/re
 
 
 Version 3.35 time-varying local fields (2026-10-17): a site may offer `shader.snapshot({ms,container})` returning its current `{root,points,revision}`. Display rebuilds addressed geometry/content only when that revision changes and retains selected point identity while its address changes; withdrawn identities cease selection. This is a neutral source-owned geometry hook, not a shared historical clock or content schema. The same optional `afterDraw` frame is lent to Canvas2D with `gl:null`, `context2D` and `canvas`, so sites can retain their own timing/contact/text behavior without pretending that the fallback executes GL. Crawlerbait's recorded births first earn the live projection and its fallback life first earns the backend-complete frame. Existing sites without either hook retain their prior projection.
+
+Version 3.36 current-law reconciliation (2026-10-19): obsolete pending/device gates yield to the already-earned bounded acceptance contract. Proper site names and German glyph spelling receive their accepted expression policy, with remaining runtime work explicitly owned by current intake. Mount lists no longer import obsolete host-field nouns, and situated instrument purposes remain separate from that field. New UX targets are unresolved nutrients, not deployed behavior. No semantic anatomy or repository-root constitution changes.

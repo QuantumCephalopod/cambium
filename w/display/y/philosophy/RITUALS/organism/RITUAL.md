@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.3"
+version: "1.4"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -61,27 +61,31 @@ Root-level expression configuration lives in `encounter.json`; leaf expression t
 
 Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Regenerate with `python3 y/build.py --derive-root-projection`; the build refuses any drift from that derivation.
 
-Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's self-relative recursive UI grid: Philosophy's grid follows the shared site-holon layout (`header` top band, `viewfocus` centre, `compass` = `zz`, `Description` = first-split `y`), and all prose — root mission/position or an inspected locus body — lives in `Description`, sized by that field's own bounds and scrolling within it. Because the grid is relative to its carrier, the same cells hold on every resolution; no device variants are needed.
+Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's self-relative recursive UI grid. Its current fields are `header` at the top, `viewfocus` at the centre, `compass` at `zz`, and `Description` at first-split `y`. All prose — root mission/position or an inspected locus body — currently lives in `Description`, whose local renderer sizes and scrolls it from that field's bounds. That is the present carrier choice, not a shared grid-capacity law: Display owns address-derived orientation, Philosophy owns functional extent and internal flow, and carrier variants are admissible when concrete pressure earns them.
 
-Philosophy lends the shared droplette its lockable tissue and nothing more: the `Description` field (a `field` target — the drop takes its exact rounded rectangle) and each mounted site-holon body in its field (a `body` target). Offers are renewed on every render and withdrawn on unmount, so leaving Philosophy releases a lock while a descent inside Philosophy keeps a lock on a body that is still present.
+Philosophy lends the shared droplette its lockable tissue and nothing more: the `Description` field (a `field` target — the drop takes its exact rounded rectangle) and each mounted site-holon body in its field (a `body` target). Offers are renewed on every render and withdrawn on unmount; in the current implementation leaving Philosophy releases that owner's offer, while descent inside Philosophy keeps a lock on a body that is still present. Smooth liquid continuity across navigation remains OPEN in Display's `NUTRIENT__liquid-navigation-continuity__20261019.md`, rather than being claimed by this present offer lifecycle.
 
 ## global address encounter
 
 Philosophy's background is a **read-only perceptual witness of Display's current global address-space**, not a second authority for global placement.
 
 - Display Population/tree-derived mount state is the only authority for which global site-holons exist and where they are mounted.
-- Philosophy derives mounted-site markers from that current global target field and places them at the perceptual centroid of their actual recursive address cells.
-- Marker text may expose the raw address plus site identity, but it does not become Philosophy semantic anatomy or duplicate a mount registry.
-- Clicking a mounted-site marker delegates immediately to Display's existing global-navigation membrane; Philosophy never performs document redirects or owns the encounter swap.
+- Display derives floating mounted-site bodies from current Population targets and places each inside its actual recursive host cell. The body may drift within that cell; its selectable title follows its projected geometry. Philosophy's former separate centroid-marker layer is retired.
+- A body's title/address expression does not become Philosophy semantic anatomy or duplicate a mount registry.
+- Selecting the mounted body or its title enters through Display's existing body/Descent membrane; Philosophy never performs document redirects or owns the encounter swap. The global compass separately retains direct target navigation.
 - Local address inspection remains distinct from global encounter movement.
 
-Pointer navigation is **face-oriented**: the witness selects a recursive address by clicking one of the projected triangular faces of that address cell. The semantic address remains its exact vertex/locus; only the human hit-surface is the visible face. Camera focus remains the already-earned recursive cell centroid.
+Pointer inspection is **face-oriented**: the witness selects a recursive address cell by clicking one of its projected triangular faces. Router quotient identity remains distinct from the cell's volume and any body contained within it. Camera focus remains the already-earned recursive cell centroid.
 
 `face click → local address focus / centroid`
 
-`mounted marker click → Display global target-origin navigation`
+`mounted body / title selection → Display body entry and target-origin membrane`
 
-No second inspect→commit step belongs to Philosophy once the mounted marker itself is the explicit encounter choice.
+No second inspect→commit step belongs to Philosophy once the mounted body itself is the explicit encounter choice.
+
+### Accepted presentation targets — current intake
+
+The 2026-10-19 observation admits liquid-only revelation of site-owned pre-rendered interiors in `_stomach/NUTRIENT__liquid-gated-site-previews__20261019.md`, including eligible compass/top-border liquid. The current own-body coarse draw can expose those interiors outside the droplette; it is not yet the accepted target. Stronger title visibility on hover is separately owned by `_stomach/NUTRIENT__site-name-hover-contrast__20261019.md`. Footer placement and compass spatial containment remain Display-owned. These targets preserve actual body geometry and source/media ownership.
 
 ## lifecycle shell
 
@@ -116,3 +120,5 @@ The six residual first-contact questions are resolved at this public membrane:
 6. Papers is the already-real Inquiry specimen. The owned leaf offers entry only while the actual global target identity is present. The existing body membrane preserves local-root restart, refusal, relocation and return. No new Philosophy split or copied project is needed for this bounded nested encounter; an additional physical semantic mount solely to stage a proof is declined.
 
 These are Philosophy-local consequences of inherited membrane law, not a new ancestor ontology. The original six questions remain preserved in retired intake and the decision HOME.
+
+Version1.4 current-law reconciliation (2026-10-19): documentation follows actual floating body/title entry instead of retired centroid markers, distinguishes quotient identity from occupied space, and inherits the current grid orientation/extent distinction. The accepted liquid-preview and hover targets stay unresolved intake; no new visible behavior or ancestor anatomy is claimed.

@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.6"
+version: "1.7"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -86,7 +86,7 @@ Display `y / Population` is itself a membrane into global page-organism site-spa
 
 `display:y ⟦ site-space:ε ⟧`
 
-Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current population: Philosophy at site-space overview, Crawlerbait at `w / Form`, Schattenseiten at `x / Continuity`, Papers at `y / Inquiry`, Datenschutz at `z / Care`, and Impressum at the unnamed quotient midpoint `xz`. The Population tree remains the authority; this list only orients re-entry.
+Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current population: Philosophy at site-space overview, Crawlerbait at `w`, Schattenseiten at `x`, Papers at `y`, Datenschutz at `z`, and Impressum at the quotient midpoint `xz`. The Population tree remains the authority; this list only orients re-entry. A mounted site's identity or situated purpose does not name its host's semantic cell. Current host-field expression is derived from the overview organism's own phenotype; do not preserve obsolete field nouns as global mount truth.
 
 Host continuity/orientation/renewal remain host interfaces across the Display boundary; they do not become Display child vertices merely because similar functional relations recur locally.
 
@@ -128,3 +128,5 @@ A cambium mutation closes only when:
 8. build/address/browser witnesses pass when the public membrane is affected.
 
 Compression: **same organism dance, whole-body recursive differentiation, structural membrane restart, identity-owned site secretion through generic transport, substrate mechanics beneath semantic law.**
+
+Version1.7 global-orientation repair (2026-10-19): current Population mounts are stated by their actual raw addresses, without stale `w/Form` and `y/Inquiry` host-field glosses. The overview's build-derived Philosophy phenotype already carries `w/Inquiry` and `y/Becoming`; situated site purpose and host-field meaning remain separate. This repairs repository-root re-entry wording only; mounts, source bodies, INDEX and closed constitutions are unchanged.

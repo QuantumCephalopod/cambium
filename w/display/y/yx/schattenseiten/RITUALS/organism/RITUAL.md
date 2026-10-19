@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.7"
+version: "1.8"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -20,17 +20,19 @@ All four lifecycle roles belong to this root: `_stomach/` holds unresolved local
 
 A local act must return to this organism's own HOME. Source updates, Display HOME, Git events, native tests and publication events retain their actual owners and witness limits; they cannot stand in for local HOME. Shared geometry/optics/readiness law remains Display-owned, and only an affected dependency crosses back through an explicit host intake.
 
-Earlier local continuity lacks a recovered local HOME ledger. Existing Display-owned witnesses remain reachable through the bounded continuity nutrient in `_stomach`; their ownership and original limitations are preserved. The membrane repair closes today's repair only. Previously open producer, deployed/browser and device acceptance remains unresolved until actually witnessed.
+Earlier local continuity lacks a recovered local HOME ledger; this remains a provenance limit. The continuity nutrient retired source-exact after the current actual-media/body contract closed in local HOME `schattenseiten-real-media-body-20261017T174758Z`. Its original owner and evidence limits remain preserved in that retired carrier. Current closure does not manufacture missing history or certify a browser decoder/physical-device FPS; neither limit creates a default personal acceptance gate.
 
 ## Body
 
-The work is titled **gefallen, gefunden** (the organ's folder is Schattenseiten). The body is an 8×8 sheet: depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid. Row 1 (the forest, the seven that started everything) is on top, then the rows in order; each row is one line of eight slots: seven shadows and, in the eighth, the cluster the row was cut from (free in row 1). All slots are the same size. Nothing floats: each shadow rests in its leaf. The site declares a rest view (`shader.view`): along the shadow axis, in parallel projection, the whole is one flat picture, and turning it shows the tetrahedra. An `orthogonal` control returns to it. Selecting a shadow is Descent into it (`focus()`); the others recede. The side panel shows the cluster (positive and negative) it was cut from, and its animation.
+The work is titled **gefallen, gefunden** (the organ's folder is Schattenseiten). The current body is an 8×8 sheet: depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid. The current carrier places source row 1 (the forest, the seven that started everything) at the top, followed by source rows in order, and leaves the eighth display row empty. Each source row is one line of eight slots: seven shadows and, in the eighth, the cluster the row was cut from (free in source row 1). All slots are the same size. Nothing floats: each shadow rests in its leaf. The site declares a rest view (`shader.view`): along the shadow axis, in parallel projection, the whole is one flat picture, and turning it shows the tetrahedra. An `orthogonal` control returns to it. Selecting a shadow is Descent into it (`focus()`); the others recede. The side panel shows the cluster (positive and negative) it was cut from, and its animation.
+
+That current placement is superseded as a target by `_stomach/NUTRIENT__first-row-headroom__20261019.md`: the first display row is to remain empty while source order and identities are preserved. The implementation is still OPEN; no source genealogy is rewritten by that presentation decision. Work-led navigation and fuller documentation are separately admitted in `_stomach/NUTRIENT__work-led-navigation-and-documentation__20261019.md` and must be earned from the actual work rather than treating the current Sierpinski traversal as its explanation.
 
 Seen from the overview, the body uses the same occupied-slot sheet and declared64 draw as its preview/entered low representation through Display's neutral body frame. Its own cells preserve the actual source slot geometry in Canvas2D. The host draw does not clear the host's depth; remount retires only its context resources, and entry alone earns512.
 
 ## Words
 
-The two German sentences stay German in every language. The work's remaining text is Philipp's, written by hand; until then a marked placeholder stands. Descriptions and interface follow the witness's language (organ sentences arrive as `{de,en}` where they are descriptions).
+The two source-authored German sentences stay German in every language; their source wording remains Philipp's. Current visitor copy still contains marked placeholder tissue. `_stomach/NUTRIENT__work-description__20261019.md` admits a source-grounded curatorial description that makes the work intelligible to a new visitor; it does not invent artist statements or require Philipp to handwrite interface prose before agent-owned work can proceed. Descriptions and interface follow the witness's language (organ sentences arrive as `{de,en}` where they are descriptions), with Display's spelling transduction applied to rendered text.
 
 ## Boundaries
 
@@ -40,7 +42,9 @@ Philosophy preloads only the55 static occupied-slot interiors (49 works plus six
 
 Entering first displays completed64 data immediately, then alone permits a four-way progressive queue for declared512 images. A high image replaces only its corresponding low slot; high errors retain low. Leaving pauses queued high work and disposes the entered high GPU tier; revisit resumes unfinished permitted work and reuses completed decoded images. Host preview always stays64 even after a visit. Selected-work animation remains demand-driven in the entered site.
 
-Missing/invalid declarations fail closed for both tiers and the image panel: no legacy original or512 fallback may broaden a preview request. This explicitly replaces version1.1's legacy original-path fallback. Variants remain Fat-owned derivatives; Display never invents paths, edits works or changes genealogy/pose/selection for resolution. Fat's actual64 producer merge/release must precede canonical consumer acceptance; staged local dependency proof is not production availability.
+Missing/invalid declarations fail closed for both tiers and the image panel: no legacy original or512 fallback may broaden a preview request. This explicitly replaces version1.1's legacy original-path fallback. Variants remain Fat-owned derivatives; Display never invents paths, edits works or changes genealogy/pose/selection for resolution. Actual producer availability is required for consumer acceptance, and version1.7 witnesses the admitted public files; an earlier staged dependency proof alone did not establish production availability.
+
+The versioned notes below retain their original evidence scopes; later completion supersedes earlier pending flags.
 
 Version 1.1 sized-media binding (2026-10-03): the public Fat variant declaration selects the actual 512-pixel file before fetching/decoding; sheet geometry, words, source identity, selection and animation meaning remain intact.
 
@@ -55,3 +59,5 @@ Version1.6 contract-acceptance inheritance (2026-10-17): Display3.33 supplies th
 Version1.7 admitted-media/body completion (2026-10-17): all110 declared occupied-slot64/512 files were actually acquired with successful public CORS and decoded. Real source pixel uploads, the actual consumer shaders, per-slot failed-high fallback and narrow/wide sheet rendering have software-GLES witnesses; native tests separately preserve shared cache, four-way admission, context ownership, pause/revisit and retirement. Producer files bound the longest edge and the existing consumer normalizes each tile to its square GPU layer; no original or undeclared resolution was acquired. Pillow decode transport is distinct from a browser decoder and physical GPU timing. Missing historical local HOME remains a provenance limit.
 
 The selected-work sidebar also bounds its own inline/scroll extent from Display's derived UI anchor. This keeps admitted cluster/animation content reachable inside the viewport without imposing the grid cell's dimensions or changing the sheet.
+
+Version1.8 current-law reconciliation (2026-10-19): retired continuity and earned media acceptance replace stale open-carrier/gate wording. Current sheet behavior is distinguished from the accepted first-row, description and work-led presentation targets in local intake. Original work words, media, source genealogy and runtime remain unchanged by this receptor correction.

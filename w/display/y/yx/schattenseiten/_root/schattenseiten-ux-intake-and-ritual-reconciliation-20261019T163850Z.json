@@ -1,0 +1,55 @@
+{
+  "event_id": "schattenseiten-ux-intake-and-ritual-reconciliation-20261019T163850Z",
+  "home_at_utc": "2026-10-19T16:38:50.620415Z",
+  "organism": "organism:schattenseiten",
+  "entrypoint": "w/display/y/yx/schattenseiten",
+  "outcome": "PASS/INTAKE_DURABLE — 3 new nutrients OPEN; current-law reconciliation recorded; UX implementation pending.",
+  "changed_scope": [
+    "Admit 3 source-faithful owner observations as independently digestible OPEN nutrients with dependencies and closure witnesses.",
+    "Separate current implementation, accepted presentation targets and historical witness limits; intake capture does not implement or close the new UX.",
+    "Reconcile stale current-law claims, completed-carrier references and superseded acceptance gates in the local receptor(s)."
+  ],
+  "context": {
+    "source_revision_before_act": "65f4ac9493e15d879e47cd87a7b6665b3935d9a3",
+    "source_observation": {
+      "author": "Philipp",
+      "observed_at": "2026-10-19T18:23:11+02:00",
+      "admission_requested_at": "2026-10-19T18:28:17+02:00"
+    },
+    "new_nutrients": [
+      {
+        "path": "_stomach/NUTRIENT__first-row-headroom__20261019.md",
+        "source_points": [
+          "S01"
+        ],
+        "priority": "normal",
+        "sha256": "6b1bef98d432b9a6d0fe603c3377bf311bc5aad4d138cd0bccb8c0f94221057a"
+      },
+      {
+        "path": "_stomach/NUTRIENT__work-description__20261019.md",
+        "source_points": [
+          "S02"
+        ],
+        "priority": "normal",
+        "sha256": "3eeb52b84bc3619d4176e43775200898a311f7f3d6a59036b5bd943292ddc7fd"
+      },
+      {
+        "path": "_stomach/NUTRIENT__work-led-navigation-and-documentation__20261019.md",
+        "source_points": [
+          "S03"
+        ],
+        "priority": "normal",
+        "sha256": "67929fca43256d181c21b98b326f3760d42e18a0812c999e8e387eb2c30659ac"
+      }
+    ],
+    "direct_stomach_after": 3,
+    "ritual_paths_changed": [
+      "w/display/y/yx/schattenseiten/RITUALS/organism/RITUAL.md"
+    ],
+    "parent_uplink_required": false,
+    "validation_scope": "Documentation/intake only. Existing public code, assets, source projections and traffic unchanged. Source-faithful coverage, references, HOME/feed schema and repository checks witnessed separately.",
+    "promotion": "Fork candidate only; Philipp owns canonical merge and ordinary Display publication."
+  },
+  "kind": "HOME",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}

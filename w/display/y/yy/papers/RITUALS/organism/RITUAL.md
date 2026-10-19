@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.4"
+version: "3.5"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -22,7 +22,7 @@ Each layer contributes a different constraint. Do not copy parent law into this 
 
 ## Boundary and identity
 
-Papers is globally mounted at site-space `y / Inquiry` while remaining locally rooted at:
+Papers is globally mounted at site-space `y` while remaining locally rooted at:
 
 `site-space:y ⟦ papers:ε ⟧`
 
@@ -181,7 +181,7 @@ The drop also bounds computation: letters outside it are neither laid out nor mo
 
 ### Contacted inquiry through the shared drop
 
-Papers offers only present authored vertices, edges, front-facing faces and admitted metabolites of its currently selected organism to Display's shared lock channel. Stable identity follows the current projected part; a missing authored body is not filled with invented words. Contact never rotates the organism, opens a parent/provenance door, or changes selected inquiry/Descent.
+Papers offers only present authored vertices, edges, front-facing faces, whole and admitted metabolites of its currently selected organism to Display's shared lock channel. Stable identity follows the current projected part; a missing authored body is not filled with invented words. In the current implementation contact alone never rotates the organism, opens a parent/provenance door, or changes selected inquiry/Descent.
 
 For a locked part, Papers measures its full source-owned wording through the existing Pretext carrier and lends a readable extent inside its current UI carrier. The same drop grows into that extent. Its ordinary representation remains until the extent is ready; readable letters then inhabit the existing Papers ink/tissue plane inside the actual rounded aperture. Work is limited to the contacted part and visible page. Source text is never silently cut to a fixed number of rows: longer passages continue by wheel or PageUp/PageDown, with Home/End for the first/last page; the complete original is also exposed as assistive reading tissue. Pull, disappearance or unmount releases the relation. A viewport too small for readable text declines the finer frame rather than inventing a compressed substitute.
 
@@ -369,20 +369,21 @@ A future split may change where matter is permitted to move because the living a
 
 Selection is a **change of scale inside one continuing world**.
 
-#### Inquiry-environment continuity
+#### Host-environment continuity
 
-When Papers is encountered through `site-space:y ⟦ papers:ε ⟧`, the surrounding world may inherit Philosophy's **Inquiry** environmental material while Papers remains an independently rooted organism floating inside that volume.
+When Papers is encountered through `site-space:y ⟦ papers:ε ⟧`, the surrounding world inherits the actual host's material at the container carrying Papers, while Papers remains an independently rooted organism floating inside that volume.
 
 The relation is environmental, not constitutive:
-- Philosophy's global `y / Inquiry` region supplies the surrounding material/shader condition;
+- the generic host relation supplies the surrounding material/shader at the actual mounted container; current Philosophy names its own `w` Inquiry and `y` Becoming, so Papers' global mount `y` must not be called Philosophy's Inquiry locus;
+- Philosophy's authored Inquiry encounter at its local `w` is a situated entry offer, independent of Papers' global Population mount and not permission to remap either body's anatomy;
 - Papers keeps its own local root, chambers, motion and inquiry geometry; Display lends the shared camera passage;
 - do not render Philosophy's complete four-region tetrahedral body as a second structural container inside the Papers encounter;
-- do not scale or tile Papers as though its local root were identical to the Inquiry tetrahedron;
+- do not scale or tile Papers as though its local root were identical to the host container;
 - local Papers `w/x/z/y` must never be reinterpreted as concatenated Philosophy descendants;
 - global Display navigation/orientation remains global and is not mutated by Papers-local chamber traversal;
-- reuse the Philosophy-owned shader/material decision for Inquiry rather than copying or re-authoring its fragment into Papers.
+- reuse the actual host-owned shader/material rather than copying or re-authoring its fragment into Papers.
 
-Compression: **Papers floats inside Inquiry-space; Inquiry colors the surrounding world, it does not become Papers' body.**
+Compression: **The actual host colors the surrounding world; it does not become Papers' body.**
 
 Display carries this relation generically (site-holon: the host's shader evaluated at the container the site occupies). Papers uses that host environment directly; its private inquiry-environment canvas/program and animation clock are retired. Chamber entry/ascent uses the actual shared walked path; source-owned organism ancestry and `2^rank` composition remain within Papers. IDs and perceptual packing are not reminted as semantic addresses to force a generic point pool.
 
@@ -419,9 +420,9 @@ Uneven organism counts may make one chamber perceptually sparse, but sparse occu
 
 **Container first, and out through the membrane.** A gesture that enters nothing at Papers' own root ascends across the membrane into the container the witness came through, exactly as everywhere else. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
 
-### Parent inquiry off-field
+### Parent off-field
 
-Papers is globally encountered inside the site's Inquiry direction. Its deep off-field may therefore inherit the live Philosophy field/shader as a **parent inquiry substrate**.
+Papers is globally encountered at its current Population mount. Its deep off-field may inherit the live host field/shader as a **parent environmental substrate**, without equating that mount with a Philosophy semantic name.
 
 This is a membrane relation, not interior identity:
 - Philosophy remains source owner of its shader physiology and global projection;
@@ -441,6 +442,10 @@ Completion or interruption restores the visitor’s previous chamber/view withou
 The underlying QUESTION / PREPARE / METABOLIZE / GROW pump law remains Papers-owned source physiology. These temporal phases must not be mapped onto Genesis / Continuity / Governance / Evolution merely because both have cardinality four. A visible specimen can explain admitted formation law; it cannot pretend that an intake or new birth is happening now.
 
 Pinned Pretext remains neutral layout/ink requested by stable identity `@chenglou/pretext` through Display. Papers owns the meaning, timing and actual encounter; no reusable dependency learns Papers semantics.
+
+### Accepted liquid encounter targets — current intake
+
+The 2026-10-19 targets extend this existing body rather than replacing its source contract: `_stomach/NUTRIENT__body-approach-and-locked-descent__20261019.md` owns specimen approach and joint locked passage; `_stomach/NUTRIENT__locked-topology-reading__20261019.md` owns stable investigation with part-dependent liquid accommodation; `_stomach/NUTRIENT__guided-droplette-and-entry-affordance__20261019.md` owns use of that same instrument during the actual-specimen explanation and its visible entry affordance. These are accepted OPEN targets. The present selected-part offers, click-based explanation and offer withdrawal do not yet implement them. Shared neutral mechanics remain Display-owned; source facts, body geometry and inquiry meaning remain Papers-owned.
 
 ## Closure / acceptance
 
@@ -470,6 +475,8 @@ A public Papers mutation closes when:
 ## Compression
 
 **Papers is a tetrahedral public inquiry field. Every living `S.*` and `nH` is the same canonical tetrahedral geometric species; rank changes genealogy, not morphology, and point packing is only encounter/LOD. Selection materializes already-earned source-owned structure in-place: `S.*` opens its internal source-body `4V / 6E / 4F / 1T` and metabolites when admitted, while `nH` opens its four-parent relational body and recursive ancestry. Provenance exits outward from the Source organism without replacing it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis and local phenomenology. Transport may evolve without turning the viewer into the actuator or the projection into authority.**
+
+Versioned notes below preserve their original witness scopes. The later3.3/3.4 bounded completion and current Display acceptance law supersede earlier open implementation/device flags; those notes are not additional current nutrients. Source-runtime freshness remains the separately admitted source-owned dependency.
 
 Version 1.3 luminous recursive-scale correction (2026-09-19): Papers now anchors local visual scale to `S.*` as the minimum Papers-organism quantum. Rank `nH` is rendered at `2^n` linear S-scale so complete ancestry contains `4^n` S quanta without rescaling S itself. Holon center voids carry recursive metabolight; nested Holons retain smaller lights and visible Sources carry faint quantum embers. V1 baseline luminosity is rank-driven, while already-admitted public wisdom may boost it; missing wisdom tissue remains projection absence rather than evidence of no metabolites.
 
@@ -507,3 +514,5 @@ Version 3.1 bounded Papers perceptual-work repair (staged 2026-10-10): opened in
 Version3.3 truthful host body and readable contact completion (2026-10-17): the parent receives this site's existing chamber/instance species through Display's neutral body frame and bounded public sample. Source records are resolved once per preview; programs/buffers are reused and retired per context. Full admitted text, measured local readable frames and actual font/tissue/glass now have bounded software-GLES witnesses. The original source boundary, genealogy, entered scale/flow and static public-shadow authority remain unchanged.
 
 Version 3.4 shared-field/specimen return (2026-10-18): actual detailed bodies use Display’s existing frame, focus, chamber walk, host environment and clock; private environment/specimen canvases and dummy explanation retire. Resting authored edge material obeys live endpoints, faces earn reading through facing/size, the whole has its own outer-boundary contact and Source provenance is an explicit outward door. A dynamic real rank-4 explanation uses the manual actions and restores the previous view. Public source freshness remains separately owned by the still-open Drive projection nutrient.
+
+Version3.5 current-law reconciliation (2026-10-19): current authored-whole contact and actual host-environment ownership replace stale omissions and the old Philosophy `y/Inquiry` assumption. New liquid passage/reading/explanation targets remain OPEN intake. Existing source-runtime projection pressure, private source boundary and actual renderer behavior are unchanged.
