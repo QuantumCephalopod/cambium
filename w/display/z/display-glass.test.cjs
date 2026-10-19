@@ -78,7 +78,7 @@ const topEntries=[
 ];
 const topGlass=G.collect({querySelectorAll:()=>topEntries},style);
 assert.strictEqual(topGlass.length,1);
-assert.strictEqual(topGlass[0].rect.bottom,122);
+assert.strictEqual(topGlass[0].rect.bottom,130);
 assert.deepStrictEqual(topGlass[0].ids,['top-a','top-b']);
 const otherLayer=el({id:'other-layer','data-display-occupancy':'top','data-display-glass-overfill':'42','data-display-glass-layer':'other'},{width:500,height:20});
 assert.strictEqual(G.collect({querySelectorAll:()=>[...topEntries,otherLayer]},style).length,2);
@@ -87,3 +87,29 @@ const first=G.collect({querySelectorAll:()=>anonymous},style).map(e=>e.id);
 assert.notStrictEqual(first[0],first[1]);
 assert.deepStrictEqual(G.collect({querySelectorAll:()=>anonymous},style).map(e=>e.id),first);
 console.log('glass top overfill and stable UI/layer identity witness: PASS');
+
+/* Full measured content stays inside its optical hull at root-relative scales.
+ * Protected rectangles keep original geometry, including merged top content. */
+for(const rem of [12,16,24,32]){
+ const inset=G.readInset({documentElement:{}},()=>({fontSize:rem+'px'}));
+ const content={left:0,top:0,width:390,height:60};
+ const a=G.readingFrame(content,inset);
+ assert.equal(inset,rem/2);
+ assert.equal(a.rect.left,-inset);assert.equal(a.rect.right,390+inset);
+ const p=G.derive([a],{left:0,top:0,width:390,height:844},{width:780,height:1688});
+ assert.deepEqual([...p.readData.slice(0,4)],[390,1628,390,60]);
+ assert.equal(p.inset,inset);assert.equal(p.scale,2);
+}
+assert.deepEqual(topGlass[0].readRect,{left:0,top:0,width:500,height:80,right:500,bottom:80});
+console.log('root-relative optical hull and unchanged reading rectangle witness: PASS');
+
+const nested=G.derive([
+ {rect:{left:0,top:0,width:200,height:200},readRect:{left:10,top:10,width:180,height:180}},
+ {rect:{left:180,top:100,width:20,height:40},readRect:{left:185,top:105,width:14,height:30}}
+],{left:0,top:0,width:300,height:300},{width:300,height:300});
+assert.equal(nested.count,1);assert.equal(nested.readData[0]+nested.readData[2],199);
+console.log('nested reading tissue survives one-slab coalescence: PASS');
+
+const oldMedia=globalThis.matchMedia;
+try{globalThis.matchMedia=()=>({matches:true});assert.equal(G.enabled(),false);globalThis.matchMedia=()=>({matches:false});assert.equal(G.enabled(),true)}finally{if(oldMedia===undefined)delete globalThis.matchMedia;else globalThis.matchMedia=oldMedia}
+console.log('reduced-transparency keeps the ordinary source path: PASS');

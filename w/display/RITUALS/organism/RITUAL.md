@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.36"
+version: "3.37"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -97,7 +97,7 @@ The situated-function relation is assimilated. The generic offer channel and Phi
 
 ### Mounted anatomy and frame work
 
-For an already-contacted body, the optional identity-owned lens offer `frame()` may lend a measured readable rectangle. Display acquires that extent only for the locked identity, springs the same drop into it and bounds it to the viewport; the ordinary contact point remains the hit target. Existing body offers keep their circle, and field offers keep their exact UI rectangle. The render-context lens preserves half extents, rounded geometry and lock identity as well as the legacy radius. A failed finer extent retains the ordinary body. Source wording, layout, continuation and readable preview remain site-owned; a lock alone does not earn Descent or source mutation. Papers is the second consumer; the complete source wording and measured font layout now have bounded native/software-GLES witnesses. A finite viewport bounds a readable page, not admitted text length.
+For an already-contacted body, the optional identity-owned lens offer `frame()` may lend a measured readable rectangle. Display acquires that extent only for the locked identity, springs the same drop into it and bounds it to the viewport; the ordinary contact point remains the hit target. Existing body offers keep their circle, and field offers keep their exact readable UI rectangle. The optical edge surrounds that rectangle without changing its content/hit geometry. The render-context lens preserves half extents, rounded geometry and lock identity as well as the legacy radius. A failed finer extent retains the ordinary body. Source wording, layout, continuation and readable preview remain site-owned; a lock alone does not earn Descent or source mutation. Papers is the second consumer; the complete source wording and measured font layout now have bounded native/software-GLES witnesses. A finite viewport bounds a readable page, not admitted text length.
 
 An ordinary small site still resolves its source anatomy once at mounting. A site with child-owned `_feed/display-preview.json` can instead be represented by that bounded outer body in the parent while its detailed source stays outside the global HTML. Entering that site acquires its published immutable detailed projection, derives its full field once, and hands over under the existing membrane transition. The parent keeps the child's preview body for future visits. View, language and activity do not remint that source. A changed source revision requires truthful reentry, not an implicit overwrite of the existing organism. Dynamic appearance and movement remain in source-owned render/shader hooks.
 
@@ -387,3 +387,13 @@ Version3.34 concrete completion (2026-10-17): identity-owned coarse cell/draw/re
 Version 3.35 time-varying local fields (2026-10-17): a site may offer `shader.snapshot({ms,container})` returning its current `{root,points,revision}`. Display rebuilds addressed geometry/content only when that revision changes and retains selected point identity while its address changes; withdrawn identities cease selection. This is a neutral source-owned geometry hook, not a shared historical clock or content schema. The same optional `afterDraw` frame is lent to Canvas2D with `gl:null`, `context2D` and `canvas`, so sites can retain their own timing/contact/text behavior without pretending that the fallback executes GL. Crawlerbait's recorded births first earn the live projection and its fallback life first earns the backend-complete frame. Existing sites without either hook retain their prior projection.
 
 Version 3.36 current-law reconciliation (2026-10-19): obsolete pending/device gates yield to the already-earned bounded acceptance contract. Proper site names and German glyph spelling receive their accepted expression policy, with remaining runtime work explicitly owned by current intake. Mount lists no longer import obsolete host-field nouns, and situated instrument purposes remain separate from that field. New UX targets are unresolved nutrients, not deployed behavior. No semantic anatomy or repository-root constitution changes.
+
+### Readable liquid interior — earned shared geometry
+
+A HUD surface's measured DOM rectangle and a locked lens's offered frame are reading geometry. The shared optical hull carries a half-root-rem perimeter outside that geometry; safe-area and reservoir acquisition use the actual expanded HUD hull. Existing top overfill remains part of the hull. The same rule applies to arbitrary HUDs and field/body locks without site-name branches.
+
+The production glass pass preserves source sampling, color and glyph pixels inside the declared reading aperture, including overlapping optical surfaces and merged/nested HUDs. Refraction, dispersion, tint and rim ink yield there and remain outside it. Zero halftone ink emits zero dots. The existing field-lock backdrop dimming remains its own focus relation; foreground DOM content stays source-owned. Free glass keeps its 13-percent magnification and bounded optical edge.
+
+No extra text layer, text scan, texture or render pass is introduced. Owners keep their current font/layout/pagination; Display carries fixed-budget reading rectangles beside the existing optical rectangles (at most eight HUD surfaces plus the one lens/home). Moving geometry still updates; text-length-dependent work is not added to the animation loop. Required reading tissue survives one-slab coalescence.
+
+Version3.37 readable-liquid interior (2026-10-19): common reading/hull separation, root-relative bounded rim, exact protected source pixels and zero-ink halftone repair. Native narrow/wide geometry/input, real-font complete-pagination and software-GLES pixel witnesses define the earned scope; the cloud browser's local-URL/file-policy limitation is retained in HOME, with no browser rasterization or physical-device timing claim. No INDEX, _cambium, mount or source-content change is earned.

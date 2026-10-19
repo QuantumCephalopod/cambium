@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.9"
+version: "3.10"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -157,7 +157,7 @@ No target means current free-lens behavior remains. Locking alone is neither glo
 ### Soft-lock — earned mechanics (2026-10-14)
 
 - **Offer channel.** A site lends lock targets by identity through `SSSDisplayLens.offer(id,{kind,…})` / `withdraw(id)`; a getter returning nothing means the target is absent now. Display never learns what a target means.
-- **Two target kinds.** A `field` target is screen-space UI tissue placed by the recursive UI grid: the locked drop shares its exact rectangle with rounded corners. A `body` target is world/organism tissue: the drop keeps its released circle size and follows the body's projected centre (`field.projectBody(id)` is the neutral geometry hook).
+- **Two target kinds.** A `field` target is screen-space UI tissue placed by the recursive UI grid: the locked drop shares its exact reading rectangle with rounded corners; the shared optical rim surrounds it. A `body` target is world/organism tissue: the drop keeps its released circle size and follows the body's projected centre (`field.projectBody(id)` is the neutral geometry hook).
 - **Lock** happens when a held drop is released over a target. **Unlock** happens when the drop is pulled again, or when its target is no longer present — then it unlocks exactly where it is and returns to a circle. A target that survives navigation or Descent keeps the lock.
 - An optional body-owned readable extent follows the organism receptor's contact law; it changes the same drop's bodily framing, not the visit stack or a provenance/lineage door. Keyboard and wheel continuation inside Papers' reading belong to that site's authored text, not global navigation.
 - **Optics.** A locked drop frames rather than enlarges (no magnification). For a `field` lock the field *beneath the drop* is blurred and dimmed so the framed target reads; the world outside the drop is untouched. A `body` lock mutes nothing — the body is what it highlights. `data-display-lens-lock` (kind) and `data-display-lens-target` (offered id) on the document root let the owning site highlight its own target tissue.
@@ -216,3 +216,5 @@ A raw Population address prefix is placement within a shared field; it does not 
 Native pointer/touch, restoration and sibling/direct-jump witnesses pass within their stated scope. Acceptance follows Display's current bounded contract law; a new concrete counterexample is admitted separately without inventing a mandatory device sign-off.
 
 Version 3.9 current-law reconciliation (2026-10-19): completed soft-lock/readable-frame mechanics and bounded acceptance supersede old pending flags. Global mount addresses no longer inherit obsolete host-field nouns; situated purpose remains encounter-owned. The accepted spatial compass and liquid passage targets remain explicitly OPEN in their owning intakes; no geometry, gesture or source mutation is claimed by this receptor correction.
+
+Version3.10 readable-liquid geometry (2026-10-19): offered rectangles remain the reading/contact geometry; the common bounded rim lives outside them. HUD safe-area, reservoir edges and reading apertures derive from the same measured surfaces. A surviving lock, pass-through, take/pull, withdrawal, free magnification and source-owned continuation retain their existing mechanics. Navigation-transport pressure remains in its separate OPEN nutrient.

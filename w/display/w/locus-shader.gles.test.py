@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import tempfile
 
 I,U,F,P=C.c_int,C.c_uint,C.c_float,C.c_void_p
 os.environ['LIBGL_ALWAYS_SOFTWARE']='1'
@@ -155,6 +156,41 @@ def replay(commands,width,height,min_depth_clears=3):
     assert depth_clears>=min_depth_clears,'repeated source frames did not exercise actual depth clearance'
     return images,programs
 
+def readable_contract(width,height):
+    """Source pixels survive to every reading edge; optics remain outside it."""
+    frame={'left':24,'top':height//3,'width':min(300,width-48),'height':110,'r':14}
+    cases=[('body',frame),('field',frame),('overlap',frame),('top',{'left':0,'top':0,'width':width,'height':62}),('compass',{'left':width-190,'top':height-220,'width':174,'height':204})]
+    source=bytes(v for y in range(height) for x in range(width) for v in ((225,235,218,255) if (x//3+y//5)%2 else (30,85,70,255)))
+    results=[]
+    with tempfile.TemporaryDirectory() as tmp:
+        image=Path(tmp)/'reading.rgba';image.write_bytes(source)
+        for kind,r in cases:
+            env={**os.environ,'GLYPH_IMAGE':str(image)}
+            if kind in {'body','field','overlap'}:
+                env.update(GLYPH_FRAME=json.dumps(r),READ_LOCK='body' if kind=='overlap' else kind)
+                if kind=='overlap':env.update(READ_SURFACE=json.dumps({'left':r['left']-12,'top':r['top']+16,'width':80,'height':90}))
+            else:env.update(READ_SURFACE=json.dumps(r))
+            runs=[]
+            for reference in ['1','0']:
+                capture=subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env={**env,'READ_REFERENCE':reference},text=True)
+                images,_=replay(json.loads(capture),width,height);runs.append(images[-1][0])
+            examined=changed=0
+            for y in range(height):
+                for x in range(width):
+                    i=((height-1-y)*width+x)*4
+                    corner=r.get('r',0)
+                    dx=max(0,abs(x+.5-r['left']-r['width']/2)-r['width']/2+corner)
+                    dy=max(0,abs(y+.5-r['top']-r['height']/2)-r['height']/2+corner)
+                    inside=r['left']<=x+.5<=r['left']+r['width'] and r['top']<=y+.5<=r['top']+r['height'] and (not corner or dx*dx+dy*dy<=corner*corner)
+                    if inside:
+
+                        assert runs[0][i:i+4]==runs[1][i:i+4],f'{kind}: reading pixel altered at {x},{y}'
+                        examined+=1
+                    elif runs[0][i:i+4]!=runs[1][i:i+4]:changed+=1
+            assert examined>1000 and changed>50,(kind,examined,changed)
+            results.append({'kind':kind,'unchanged_reading_pixels':examined,'optical_pixels_outside':changed})
+    return results
+
 def main():
     results=[]
     for width,height in [(1280,800),(390,844)]:
@@ -183,7 +219,7 @@ def main():
             assert core>100,'opaque preview interior bypassed the active shared optical mapping'
             optics_pixels.append(core)
         assert any(runs[0][-1][0]),'field did not paint'
-        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True})
+        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height)})
     print(json.dumps({'status':'PASS','backend':gl('GetString',C.c_char_p,[U],7937).decode(),'gles':gl('GetString',C.c_char_p,[U],7938).decode(),'actual_source':'locus-shader.js','cases':results,'scope':'Actual shaders/mesh/passes on software GLES with declared fixture state and procedural preview input; not browser layout, physical GPU or device FPS.'}))
 
 if __name__=='__main__':main()

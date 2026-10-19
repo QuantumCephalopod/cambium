@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.12"
+version: "3.13"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -236,3 +236,5 @@ Version 3.7 situated-instrument sovereignty (2026-10-12): a body may lend its ow
 Version3.11 truthful coarse-body coupling (2026-10-17): the optional body cells/draw/release contract lends the site's actual coarse representation into Display's normalized host frame. Bounded public preview input remains source-owned, and actual source geometry survives Canvas2D fallback. Display retains host placement/selection/Descent/orientation and retires context resources on remount; no detailed-feed acquisition, specimen branch or duplicate ontology is earned by an own draw.
 
 Version3.12 current-law reconciliation (2026-10-19): soft-lock/readable frames and actual custom coarse bodies replace obsolete unimplemented wording. New UX targets remain in owner-local intake; no new renderer, gesture or semantic anatomy is claimed here.
+
+Version3.13 readable-frame ownership (2026-10-19): site-offered field/body rectangles retain their exact reading geometry. Display adds its common optical perimeter outside that geometry and preserves the source pixels within it, including overlap. Owners keep actual wording, font/layout, clipping shape and complete continuation; no new site mode or duplicated text layer is introduced. The common implementation and bounded evidence are owned by Display's organism receptor.

@@ -21,7 +21,7 @@ baseline: canonical main 65f4ac9493e15d879e47cd87a7b6665b3935d9a3
 ## Ownership and dependencies
 
 - Enter shared-root field, repository and Display receptors, then `w/display/y/yw/crawlerbait/RITUALS/organism/RITUAL.md`.
-- Depends on `w/display/_stomach/NUTRIENT__liquid-readable-interior__20261019.md`.
+- Depends on `w/display/_waste/NUTRIENT__liquid-readable-interior__20261019.md`.
 - Depends on `w/display/y/yw/crawlerbait/_stomach/NUTRIENT__fractal-layout-and-stable-name__20261019.md`.
 - Inherit current source/privacy boundaries, stable identities and recursive formatting. New UI does not close unrelated source-projection work.
 

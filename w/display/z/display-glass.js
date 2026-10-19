@@ -28,7 +28,7 @@
    *  shadow   reach of the soft shadow around a surface, and shadowK its depth
    *  dot      halftone cell size in CSS px; halftone how much of the shadow and the rim is printed as dots (0 = smooth)
    *  tint     a faint dye, rgb + strength */
-  const PARAMS=Object.freeze({radius:22,bevel:.18,bevelMax:56,refract:34,theta:.25,aberr:.3,mag:.06,spec:0,fres:0,shadow:26,shadowK:.38,dot:4.5,halftone:.85,overfillWave:7,tint:Object.freeze([.62,.66,.72,.05])});
+  const PARAMS=Object.freeze({radius:22,bevel:.18,bevelMax:8,refract:34,theta:.25,aberr:.3,mag:.06,spec:0,fres:0,shadow:26,shadowK:.38,dot:4.5,halftone:.85,overfillWave:7,tint:Object.freeze([.62,.66,.72,.05])});
 
   function number(v){v=Number(v);return Number.isFinite(v)?v:0}
   function box(r={}){
@@ -36,6 +36,17 @@
     return {left,top,width,height,right:left+width,bottom:top+height};
   }
   function contains(a,b,slack=1){return b.left>=a.left-slack&&b.right<=a.right+slack&&b.top>=a.top-slack&&b.bottom<=a.bottom+slack}
+  /* A measured reading rectangle is content, not optical bevel. The same
+   * half-rem edge surrounds HUDs and a contacted lens; no glyph scan is needed.
+   * Font/layout owners retain measurement and continuation. */
+  function readInset(doc=globalThis.document,getStyle=globalThis.getComputedStyle){
+    const rem=doc?.documentElement&&getStyle?parseFloat(getStyle(doc.documentElement).fontSize):16;
+    return (Number.isFinite(rem)&&rem>0?rem:16)/2;
+  }
+  function readingFrame(value,inset=PARAMS.bevelMax){
+    const readRect=box(value),p=Math.max(0,number(inset));
+    return {readRect,rect:box({left:readRect.left-p,top:readRect.top-p,width:readRect.width+2*p,height:readRect.height+2*p}),inset:p};
+  }
   /* A surface that touches the edge of the canvas has no bevel on that side: its edge is pushed
    * out past the screen, so the rim and the rounded corner fall off-canvas and only the free
    * sides show glass. */
@@ -52,43 +63,53 @@
    * one lens. */
   function derive(entries,canvasRect,buffer){
     const c=box(canvasRect),bw=Math.max(0,number(buffer?.width)),bh=Math.max(0,number(buffer?.height));
-    const data=new Float32Array(MAX*4);
-    if(c.width<1||c.height<1||bw<1||bh<1)return Object.freeze({count:0,data,scale:1});
+    const data=new Float32Array(MAX*4),readData=new Float32Array(MAX*4);
+    if(c.width<1||c.height<1||bw<1||bh<1)return Object.freeze({count:0,data,readData,scale:1,inset:PARAMS.bevelMax});
     const sx=bw/c.width,sy=bh/c.height,kept=[];
     for(const e of entries||[]){
       if(!e)continue;const r=box(e.rect||e);
       if(r.width<2||r.height<2)continue;
       if(r.right<=c.left||r.left>=c.right||r.bottom<=c.top||r.top>=c.bottom)continue;
-      kept.push(r);
+      kept.push({rect:r,readRect:e.readRect?box(e.readRect):null,inset:e.inset});
     }
     const out=[];
     for(let i=0;i<kept.length;i++){
       let inside=false;
-      for(let j=0;j<kept.length;j++){if(i!==j&&contains(kept[j],kept[i])&&!(contains(kept[i],kept[j])&&j>i)){inside=true;break}}
+      for(let j=0;j<kept.length;j++){if(i!==j&&contains(kept[j].rect,kept[i].rect)&&!(contains(kept[i].rect,kept[j].rect)&&j>i)){inside=true;break}}
       if(!inside)out.push(kept[i]);
     }
     let n=0;
-    for(const raw of out){
+    for(const entry of out){
       if(n>=MAX)break;
-      const r=flush(raw,c);
+      const r=flush(entry.rect,c);
+      // A nested surface may lend additional reading tissue inside this slab.
+      let read=entry.readRect;
+      for(const nested of kept)if(nested.readRect&&contains(entry.rect,nested.rect)){
+        const a=read,b=nested.readRect;
+        read=a?box({left:Math.min(a.left,b.left),top:Math.min(a.top,b.top),right:Math.max(a.right,b.right),bottom:Math.max(a.bottom,b.bottom)}):b;
+      }
       data[n*4]=((r.left+r.width/2)-c.left)*sx;
       data[n*4+1]=bh-((r.top+r.height/2)-c.top)*sy;
       data[n*4+2]=r.width/2*sx;
       data[n*4+3]=r.height/2*sy;
+      const a=read;
+      if(a){readData[n*4]=(a.left+a.width/2-c.left)*sx;readData[n*4+1]=bh-(a.top+a.height/2-c.top)*sy;readData[n*4+2]=a.width/2*sx;readData[n*4+3]=a.height/2*sy;}
       n++;
     }
-    return Object.freeze({count:n,data,scale:sx});
+    return Object.freeze({count:n,data,readData,scale:sx,inset:out[0]?.inset??PARAMS.bevelMax});
   }
 
-  function surfaceRect(el,value){
+  function surfaceRect(el,value,inset=readInset()){
     const r=box(value),overfill=Math.max(0,Math.min(96,number(el.getAttribute('data-display-glass-overfill'))));
-    return overfill?box({left:r.left,top:r.top,width:r.width,height:r.height+overfill}):r;
+    const filled=overfill?box({left:r.left,top:r.top,width:r.width,height:r.height+overfill}):r;
+    return el.getAttribute('data-display-glass')==='off'?filled:readingFrame(filled,inset).rect;
   }
-  function visible(el,getStyle){
+  function visible(el,getStyle,inset){
     const cs=getStyle?getStyle(el):null;
     if(cs&&(cs.display==='none'||cs.visibility==='hidden'||number(cs.opacity)<=.02))return null;
-    const r=surfaceRect(el,el.getBoundingClientRect());
-    return r.width<2||r.height<2?null:{id:surfaceId(el),ids:[surfaceId(el)],rect:r,role:el.getAttribute('data-display-occupancy')||'',
+    const raw=box(el.getBoundingClientRect());if(raw.width<2||raw.height<2)return null;
+    const r=surfaceRect(el,raw,inset);
+    return {id:surfaceId(el),ids:[surfaceId(el)],rect:r,readRect:raw,inset,role:el.getAttribute('data-display-occupancy')||'',
       kind:el.getAttribute('data-display-glass-kind')||'hud',layer:el.getAttribute('data-display-glass-layer')||'hud',
       overfill:number(el.getAttribute('data-display-glass-overfill'))};
   }
@@ -97,10 +118,10 @@
     doc=doc||(typeof document==='object'?document:null);
     getStyle=getStyle||(typeof getComputedStyle==='function'?getComputedStyle:null);
     if(!doc)return [];
-    const out=[];
+    const out=[],inset=readInset(doc,getStyle);
     for(const el of doc.querySelectorAll('[data-display-occupancy],[data-display-glass="on"]')){
       if(el.getAttribute('data-display-glass')==='off')continue;
-      const v=visible(el,getStyle);if(v)out.push(v);
+      const v=visible(el,getStyle,inset);if(v)out.push(v);
     }
     const merged=[];
     for(const e of out){
@@ -109,6 +130,8 @@
       if(!sibling){merged.push(e);continue}
       const a=sibling.rect,b=e.rect,left=Math.min(a.left,b.left),topY=Math.min(a.top,b.top),right=Math.max(a.right,b.right),bottom=Math.max(a.bottom,b.bottom);
       sibling.rect=box({left,top:topY,width:right-left,height:bottom-topY});sibling.ids.push(...e.ids);
+      const ar=sibling.readRect,br=e.readRect,rl=Math.min(ar.left,br.left),rt=Math.min(ar.top,br.top);
+      sibling.readRect=box({left:rl,top:rt,width:Math.max(ar.right,br.right)-rl,height:Math.max(ar.bottom,br.bottom)-rt});
     }
     return merged;
   }
@@ -120,7 +143,8 @@
   function rects(canvasRect,buffer,now,skip){
     const t=typeof now==='number'?now:(typeof performance==='object'?performance.now():0);
     if(!cache||t-cacheAt>6){cache=collect();cacheAt=t}
-    return derive(skip&&skip.length?cache.filter(e=>!e.ids.some(id=>skip.includes(id))):cache,canvasRect,buffer);
+    const pack=derive(skip&&skip.length?cache.filter(e=>!e.ids.some(id=>skip.includes(id))):cache,canvasRect,buffer);
+    return {...pack,inset:cache[0]?.inset??PARAMS.bevelMax};
   }
-  return Object.freeze({MAX,PARAMS,derive,collect,rects,enabled,surfaceRect});
+  return Object.freeze({MAX,PARAMS,derive,collect,rects,enabled,surfaceRect,readInset,readingFrame});
 });
