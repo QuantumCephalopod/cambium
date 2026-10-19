@@ -53,16 +53,17 @@ s=L.create(map,view);s.vx=1e4;L.step(s,map,5,view);
 assert.ok(Number.isFinite(s.x)&&Number.isFinite(s.radius));
 console.log('round glass drop / cursor / UI edge absorption witness: PASS');
 
-/* A narrow pane still has room for a released drop between the reservoirs. */
+/* Release in a narrow pane now returns across free space to the closest edge. */
 const smallView={w:360,h:480},smallMap={...map,cx:255,cy:365,hx:90,hy:110},smallTop={...top,cx:180,cy:54,hx:180,hy:54};
 s=L.create(smallTop,smallView);L.grab(s,s.x,s.y,1);
 for(let i=0;i<120;i++){L.move(s,75,300,1);L.step(s,[smallTop,smallMap],1/60,smallView)}
 assert.strictEqual(s.attached,false);
 L.release(s,1);
-for(let i=0;i<180;i++)L.step(s,[smallTop,smallMap],1/60,smallView);
-assert.strictEqual(s.attached,false,'nearby UI does not swallow every released drop');
-assert.ok(s.radius>65&&s.hx===s.hy);
-console.log('narrow-pane free-drop witness: PASS');
+for(let i=0;i<1200;i++)L.step(s,[smallTop,smallMap],1/60,smallView);
+assert.ok(s.attached&&s.docked,'unlocked release returns even beyond capture reach');
+assert.equal(s.homeId,'map','the closest reservoir receives the drop');
+assert.ok(s.hx===s.hy);
+console.log('narrow-pane nearest-reservoir return witness: PASS');
 
 /* The drop lets the world through: a click under it is replayed to what lies beneath; pressing on
  * the drop and pulling takes it at once. Ownership and cancellation still hold. */
@@ -183,7 +184,7 @@ console.log('pass-through click / pull-to-take / ownership witness: PASS');
 }
 
 /* Withdrawal carries existing motion and all shape/optical coordinates into
- * both eligible reservoirs; no distant or foreign reservoir swallows free glass. */
+ * the nearest eligible reservoir, including remote free-space release. */
 for(const [w,h] of [[390,844],[1280,800]])for(const destination of ['top','compass','free']){
   const v={w,h},hs=[{id:'top',kind:'hud',layer:'hud',cx:w/2,cy:32,hx:w/2,hy:32,edge:'bottom'},
     {id:'compass',kind:'hud',layer:'hud',cx:w-65,cy:h-85,hx:55,hy:75}];
@@ -192,6 +193,8 @@ for(const [w,h] of [[390,844],[1280,800]])for(const destination of ['top','compa
   L.lockTo(s,t);for(let i=0;i<240;i++)L.step(s,hs,1/120,v,null,t);
   s.vx=14;s.vy=-7;s.hxV=3;s.hyV=-2;
   const before=L.geometry(s,hs),velocity=[s.vx,s.vy,s.hxV,s.hyV];L.unlock(s);
+  const distance=h=>Math.hypot(Math.max(0,Math.abs(before.x-h.cx)-h.hx),Math.max(0,Math.abs(before.y-h.cy)-h.hy));
+  const expected=hs.reduce((a,b)=>distance(a)<=distance(b)?a:b).id;
   assert.deepEqual([s.vx,s.vy,s.hxV,s.hyV],velocity,'withdrawal preserves momentum');
   const just=L.geometry(s,hs);for(const k of ['x','y','hx','hy','corner','protect','focus','mag'])assert.equal(just[k],before[k],'no release jump in '+k);
   let maxDelta=0,prior=just;
@@ -201,8 +204,7 @@ for(const [w,h] of [[390,844],[1280,800]])for(const destination of ['top','compa
     assert(g.x-g.boundX>=-.001&&g.y-g.boundY>=-.001&&g.x+g.boundX<=w+.001&&g.y+g.boundY<=h+.001,'moving shape stays within the carrier');prior=g;
   }
   assert(maxDelta<8,'bounded substep motion, including circle and neck transition');
-  assert.equal(s.attached,destination!=='free');assert.equal(s.docked,destination!=='free');
-  if(destination!=='free')assert.equal(s.homeId,destination,'nearest eligible reservoir receives the same drop');
+  assert.ok(s.attached&&s.docked);assert.equal(s.homeId,expected,'nearest eligible reservoir receives the same drop');
   assert.equal(L.geometry(s,hs).round,1);assert.equal(L.geometry(s,hs).protect,0);
   console.log(JSON.stringify({carrier:[w,h],withdrawal:destination,max_substep_delta:maxDelta,settled:true}));
   const reduced=L.create(null,v);L.lockTo(reduced,t);L.step(reduced,hs,1/60,v,null,t,true);
@@ -228,6 +230,60 @@ for(const [w,h] of [[390,844],[1280,800]])for(const destination of ['top','compa
   assert.equal(drop.attributes['aria-pressed'],'false');assert.match(drop.attributes['aria-description'],/plain click passes through/);
 }
 console.log('identity/projection, bounded continuous return, reduced motion and keyboard/cancel witness: PASS');
+
+/* The production controller carries actual pointer endings into return. */
+for(const ending of ['pointerup','pointercancel']){
+ hold();win.fire('pointermove',{clientX:400,clientY:450,target:under});for(let i=0;i<150;i++)tick();
+ assert(controller.snapshot().lens.held&&!controller.snapshot().lens.attached);
+ win.fire(ending,{clientX:400,clientY:450,target:under});
+ assert(!controller.snapshot().lens.held&&!controller.snapshot().lens.lock);
+ const released=controller.snapshot().lens;tick();const returning=controller.snapshot().lens;
+ assert(returning.y<released.y&&!returning.attached,'release starts return across free space without a bridge');
+ for(let i=0;i<900;i++)tick();
+ assert(controller.snapshot().lens.docked&&controller.snapshot().home.id==='top',ending+' returns to storage');
+}
+
+/* Return is a force on unheld, unlocked glass, separate from short physical
+ * contact. Selection uses boundary distance and stays live as reservoirs change. */
+for(const v of [{w:390,h:844},{w:1280,h:800}]){
+ const hs=[{id:'upper',kind:'hud',layer:'hud',cx:v.w/2,cy:20,hx:v.w/2,hy:20,edge:'bottom'},
+   {id:'lower',kind:'hud',layer:'hud',cx:v.w-45,cy:v.h-80,hx:35,hy:60}];
+ const fresh=()=>{const q=L.create(null,v);q.x=v.w*.35;q.y=v.h*.45;return q};
+ const s=fresh(),from={x:s.x,y:s.y};
+ const dist=h=>Math.hypot(Math.max(0,Math.abs(s.x-h.cx)-h.hx),Math.max(0,Math.abs(s.y-h.cy)-h.hy));
+ const expected=hs.reduce((a,b)=>dist(a)<=dist(b)?a:b);
+ assert(dist(expected)>L.K.magnet*s.U,'start beyond former capture reach');
+ L.step(s,hs,1/120,v);let g=L.geometry(s,hs);
+ assert(!s.attached&&!s.docked&&g.neck===0&&s.join===0,'remote attraction never invents a fluid connection');
+ assert(Math.hypot(s.x-from.x,s.y-from.y)>0,'return starts on the first unlocked step');
+ for(let i=0;i<2400;i++)L.step(s,[...hs].reverse(),1/120,v);
+ assert(s.docked&&s.homeId===expected.id,'actual nearest boundary wins regardless of surface order');
+ const held=fresh();L.grab(held,held.x,held.y,9);for(let i=0;i<240;i++)L.step(held,hs,1/120,v);
+ assert(Math.hypot(held.x-from.x,held.y-from.y)<1e-8,'holding excludes reservoir attraction');
+ const locked=fresh(),t={id:'owner',kind:'body',cx:locked.x,cy:locked.y,hx:8};L.lockTo(locked,t);
+ for(let i=0;i<240;i++)L.step(locked,hs,1/120,v,null,t);
+ assert(locked.lock&&Math.hypot(locked.x-t.cx,locked.y-t.cy)<1e-8,'soft-lock beats every reservoir');
+ for(let i=0;i<240;i++)L.step(locked,hs,1/120,v,null,{id:t.id,kind:t.kind,pending:true});
+ assert(locked.lock&&!locked.attached,'missing projection retains the lock instead of returning');
+ const absent=fresh();for(let i=0;i<600;i++)L.step(absent,hs.map(h=>({...h,layer:'foreign'})),1/120,v);
+ assert(Math.hypot(absent.x-from.x,absent.y-from.y)<1e-8&&!absent.attached,'foreign liquid cannot pull free glass');
+ const rerouted=fresh();for(let i=0;i<30;i++)L.step(rerouted,hs,1/120,v);
+ const remaining=hs.filter(h=>h.id!==expected.id);for(let i=0;i<2400;i++)L.step(rerouted,remaining,1/120,v);
+ assert(rerouted.docked&&rerouted.homeId===remaining[0].id,'withdrawn reservoir is replaced by the remaining live one');
+ const moving=fresh(),relocated={...expected,cy:v.h-20};L.step(moving,[relocated],1/120,v);
+ assert(moving.vy>0,'return uses the reservoir current measured geometry');
+ for(let i=0;i<2400;i++)L.step(moving,[relocated],1/120,v);
+ assert(moving.docked&&moving.homeId===relocated.id&&moving.y>v.h/2,'the same moved reservoir receives the drop');
+ const quiet=fresh();L.step(quiet,hs,1/60,v,null,null,true);
+ assert(quiet.docked&&quiet.homeId===expected.id&&quiet.vx===0&&quiet.vy===0,'reduced motion settles directly at the nearest reservoir');
+ console.log(JSON.stringify({carrier:[v.w,v.h],nearest_return:expected.id,held_lock_priority:true,physical_contact_only:true}));
+}
+{
+ const v={w:1280,h:800},q=L.create(null,v);q.x=100;q.y=260;
+ const wide={id:'wide',kind:'hud',layer:'hud',cx:640,cy:20,hx:640,hy:20},small={id:'small',kind:'hud',layer:'hud',cx:400,cy:260,hx:40,hy:40};
+ assert(Math.hypot(q.x-small.cx,q.y-small.cy)<Math.hypot(q.x-wide.cx,q.y-wide.cy));
+ L.step(q,[small,wide],1/60,v,null,null,true);assert.equal(q.homeId,'wide','closest boundary wins over closest centre');
+}
 
 /* Capillary strain is a viscous shape degree of freedom. Stretch redistributes
  * area instead of adding a capsule/lobe; pressure and pointer use the same axes. */
