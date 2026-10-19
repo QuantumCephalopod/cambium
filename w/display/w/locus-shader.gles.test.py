@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+import math
 
 I,U,F,P=C.c_int,C.c_uint,C.c_float,C.c_void_p
 os.environ['LIBGL_ALWAYS_SOFTWARE']='1'
@@ -191,6 +192,38 @@ def readable_contract(width,height):
             results.append({'kind':kind,'unchanged_reading_pixels':examined,'optical_pixels_outside':changed})
     return results
 
+def coalescence_contract(width,height):
+    flat=bytes([80,130,160,255])*(width*height);results={}
+    with tempfile.TemporaryDirectory() as tmp:
+        image=Path(tmp)/'flat.rgba';image.write_bytes(flat)
+        for mode in ['same','layer','kind','separated','ellipse']:
+            env={**os.environ,'GLYPH_IMAGE':str(image),'COALESCENCE':mode}
+            capture=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env=env,text=True))
+            images,_=replay(capture,width,height);paint=images[-1][0]
+            def changed(x,y):
+                i=((height-1-y)*width+x)*4
+                return paint[i:i+4]!=flat[i:i+4]
+            if mode in ['same','layer','kind']:
+                band=sum(changed(x,y) for x in range(int(width*.55)-5,int(width*.55)+6) for y in range(220,241))
+                assert band==0 if mode=='same' else band>20,(mode,band)
+                results[mode+'_interior_rim_pixels']=band
+            elif mode=='separated':
+                band=sum(changed(x,y) for x in range(int(width*.55)-4,int(width*.55)+5) for y in range(84,95))
+                assert band==0,('artificial long bridge',band)
+                results['long_bridge_pixels']=band
+            else:
+                area=bad_core=bad_outside=0;c,s=math.cos(.6),math.sin(.6)
+                for y in range(height):
+                    for x in range(width):
+                        dx=x+.5-width/2;dy=y+.5-height/2;q=math.hypot((c*dx+s*dy)/100,(-s*dx+c*dy)/64)
+                        wet=changed(x,y);area+=wet
+                        if q<.85 and not wet:bad_core+=1
+                        if q>1.15 and wet:bad_outside+=1
+                assert bad_core==bad_outside==0,(bad_core,bad_outside)
+                assert abs(area-math.pi*100*64)<128,(area,math.pi*100*64)
+                results.update(ellipse_painted_area=area,ellipse_analytic_area=math.pi*100*64,ellipse_bad_core=bad_core,ellipse_bad_outside=bad_outside)
+    return results
+
 def main():
     results=[]
     for width,height in [(1280,800),(390,844)]:
@@ -233,7 +266,7 @@ def main():
                 interior=b''.join(images[-1][0][((height-1-y)*width+x)*4:((height-1-y)*width+x)*4+4] for y in range(frame['top']+20,frame['top']+frame['height']-20) for x in range(frame['left']+20,frame['left']+frame['width']-20))
                 release.append(interior)
         assert len(set(release))==5,'intermediate optical states snapped to an endpoint'
-        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release))})
+        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release)),'coalescence':coalescence_contract(width,height)})
     print(json.dumps({'status':'PASS','backend':gl('GetString',C.c_char_p,[U],7937).decode(),'gles':gl('GetString',C.c_char_p,[U],7938).decode(),'actual_source':'locus-shader.js','cases':results,'scope':'Actual shaders/mesh/passes on software GLES with declared fixture state and procedural preview input; not browser layout, physical GPU or device FPS.'}))
 
 if __name__=='__main__':main()

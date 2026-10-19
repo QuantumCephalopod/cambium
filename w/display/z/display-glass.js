@@ -61,21 +61,21 @@
    * canvas as centre + half-size in buffer pixels (origin bottom-left, as gl_FragCoord),
    * at most MAX. A surface wholly inside a larger one is not glass of its own: one slab,
    * one lens. */
-  function derive(entries,canvasRect,buffer){
+  function derive(entries,canvasRect,buffer,liquid=null){
     const c=box(canvasRect),bw=Math.max(0,number(buffer?.width)),bh=Math.max(0,number(buffer?.height));
-    const data=new Float32Array(MAX*4),readData=new Float32Array(MAX*4);
-    if(c.width<1||c.height<1||bw<1||bh<1)return Object.freeze({count:0,data,readData,scale:1,inset:PARAMS.bevelMax});
+    const data=new Float32Array(MAX*4),readData=new Float32Array(MAX*4),mergeData=new Float32Array(MAX);
+    if(c.width<1||c.height<1||bw<1||bh<1)return Object.freeze({count:0,data,readData,mergeData,scale:1,inset:PARAMS.bevelMax});
     const sx=bw/c.width,sy=bh/c.height,kept=[];
     for(const e of entries||[]){
       if(!e)continue;const r=box(e.rect||e);
       if(r.width<2||r.height<2)continue;
       if(r.right<=c.left||r.left>=c.right||r.bottom<=c.top||r.top>=c.bottom)continue;
-      kept.push({rect:r,readRect:e.readRect?box(e.readRect):null,inset:e.inset});
+      kept.push({rect:r,readRect:e.readRect?box(e.readRect):null,inset:e.inset,kind:e.kind||'hud',layer:e.layer||'hud'});
     }
     const out=[];
     for(let i=0;i<kept.length;i++){
       let inside=false;
-      for(let j=0;j<kept.length;j++){if(i!==j&&contains(kept[j].rect,kept[i].rect)&&!(contains(kept[i].rect,kept[j].rect)&&j>i)){inside=true;break}}
+      for(let j=0;j<kept.length;j++){if(i!==j&&kept[j].kind===kept[i].kind&&kept[j].layer===kept[i].layer&&contains(kept[j].rect,kept[i].rect)&&!(contains(kept[i].rect,kept[j].rect)&&j>i)){inside=true;break}}
       if(!inside)out.push(kept[i]);
     }
     let n=0;
@@ -84,7 +84,7 @@
       const r=flush(entry.rect,c);
       // A nested surface may lend additional reading tissue inside this slab.
       let read=entry.readRect;
-      for(const nested of kept)if(nested.readRect&&contains(entry.rect,nested.rect)){
+      for(const nested of kept)if(nested.kind===entry.kind&&nested.layer===entry.layer&&nested.readRect&&contains(entry.rect,nested.rect)){
         const a=read,b=nested.readRect;
         read=a?box({left:Math.min(a.left,b.left),top:Math.min(a.top,b.top),right:Math.max(a.right,b.right),bottom:Math.max(a.bottom,b.bottom)}):b;
       }
@@ -94,9 +94,10 @@
       data[n*4+3]=r.height/2*sy;
       const a=read;
       if(a){readData[n*4]=(a.left+a.width/2-c.left)*sx;readData[n*4+1]=bh-(a.top+a.height/2-c.top)*sy;readData[n*4+2]=a.width/2*sx;readData[n*4+3]=a.height/2*sy;}
+      mergeData[n]=liquid&&entry.kind===(liquid.kind||'hud')&&entry.layer===(liquid.layer||'hud')?1:0;
       n++;
     }
-    return Object.freeze({count:n,data,readData,scale:sx,inset:out[0]?.inset??PARAMS.bevelMax});
+    return Object.freeze({count:n,data,readData,mergeData,scale:sx,inset:out[0]?.inset??PARAMS.bevelMax});
   }
 
   function surfaceRect(el,value,inset=readInset()){
@@ -140,10 +141,10 @@
   }
   /* One DOM read per animation frame, shared by every field that asks. */
   let cache=null,cacheAt=-1e9;
-  function rects(canvasRect,buffer,now,skip){
+  function rects(canvasRect,buffer,now,skip,liquid){
     const t=typeof now==='number'?now:(typeof performance==='object'?performance.now():0);
     if(!cache||t-cacheAt>6){cache=collect();cacheAt=t}
-    const pack=derive(skip&&skip.length?cache.filter(e=>!e.ids.some(id=>skip.includes(id))):cache,canvasRect,buffer);
+    const pack=derive(skip&&skip.length?cache.filter(e=>!e.ids.some(id=>skip.includes(id))):cache,canvasRect,buffer,liquid);
     return {...pack,inset:cache[0]?.inset??PARAMS.bevelMax};
   }
   return Object.freeze({MAX,PARAMS,derive,collect,rects,enabled,surfaceRect,readInset,readingFrame});

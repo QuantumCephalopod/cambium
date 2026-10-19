@@ -47,6 +47,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
   context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
+  if(lens)context.SSSDisplayLens=lens;
   if(lens)for(const [id,owner] of Modules){
     const render=owner.render,unmount=owner.unmount;
     owner.render=function(payload){const accepted=render.call(this,payload);if(accepted!==false&&!payload.host.hidden)lens.offer(id+'|tissue',{kind:'field',rect:()=>payload.host.hidden?null:{left:90+payload.path.length*40,top:210,width:260,height:100}});return accepted};
@@ -308,3 +309,12 @@ feedHandoffWitness().then(()=>console.log('display runtime: orientation-only car
  for(const owner of ids)lens.withdraw(owner+'|tissue');
 }
 console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserve or end the actual offered relation');
+
+/* The receiving owner sees the actual capillary axes and orientation, while
+ * the legacy radius remains a conservative inscribed contact. */
+{
+ const L=require('../z/display-lens.js'),s=L.create(null,{w:1000,h:800});s.strain=.2;s.angle=.6;
+ const g=L.geometry(s,null),f=boot(1,'',{}, {},{},false,{...L,snapshot:()=>({lens:g})}),got=f.renders.at(-1).lens();
+ assert.equal(got.angle,g.angle);assert.equal(got.hx,g.hx);assert.equal(got.hy,g.hy);assert.equal(got.r,Math.min(g.hx,g.hy));
+ for(const owner of ids)L.withdraw(owner+'|tissue');
+}

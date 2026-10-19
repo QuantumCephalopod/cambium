@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.14"
+version: "3.15"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -240,3 +240,5 @@ Version3.12 current-law reconciliation (2026-10-19): soft-lock/readable frames a
 Version3.13 readable-frame ownership (2026-10-19): site-offered field/body rectangles retain their exact reading geometry. Display adds its common optical perimeter outside that geometry and preserves the source pixels within it, including overlap. Owners keep actual wording, font/layout, clipping shape and complete continuation; no new site mode or duplicated text layer is introduced. The common implementation and bounded evidence are owned by Display's organism receptor.
 
 Version3.14 offer lifetime (2026-10-19): `offer` retains a stable contact identity through temporary missing projection and same-frame renderer renewal; `withdraw` on actual departure/unmount ends it. Owners keep target meaning and must withdraw genuinely ended relations. Display dampens pending motion and resumes from current measured geometry without a timeout, then carries true release continuously into eligible liquid or free glass. This common capability does not implement a child's body approach, genealogy or Being handover.
+
+Version3.15 capillary geometry (2026-10-20): Display lends the same drop's orientation and principal half axes alongside the legacy inscribed radius. Free glass can deform with conserved projected area under strain; settled locked frames retain their owner-offered reading geometry. Compatible reservoirs coalesce through one common exterior. Source-owned presentation/meaning remains local, and no richer body approach, camera semantics or new site mode is earned here.

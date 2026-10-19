@@ -1,4 +1,4 @@
-/* A round glass drop belongs to one UI kind/layer. Its pointer surface and
+/* A capillary glass drop belongs to one UI kind/layer. Its pointer surface and
  * derived geometry are separate from the UI's own controls and field topology.
  * Soft-lock: a site may offer lock targets by identity (offer/withdraw). Released over one, the drop
  * locks: a `field` target lends its exact rectangle (rounded), a `body` target keeps the released
@@ -10,9 +10,9 @@
   else{root.SSSDisplayLens=api;if(typeof document==='object')api.start()}
 })(typeof globalThis==='object'?globalThis:this,function(root){
   'use strict';
-  /* The centre never follows the cursor: a nearby cursor only makes the flesh reach (a lobe from the anchored centre);
+  /* The centre never follows the cursor: a nearby cursor strains the flesh without adding a second lobe;
    * connected tissue draws a free drop home slowly. */
-  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,lobe:.42,reachStiff:140,reachDamp:17,homePull:.07,holdSlop:5,magnify:1.13,magnet:80,breakAt:185,neck:28,capture:38,released:1.32,docked:.86});
+  const K=Object.freeze({stiff:180,damp:24,cursorReach:155,reach:.95,reachStiff:140,reachDamp:17,homePull:.07,holdSlop:5,magnify:1.13,magnet:80,breakAt:185,capture:38,released:1.32,docked:.86,capillary:110,viscosity:18,maxStrain:Math.log(1.28)});
   const n=v=>Number.isFinite(+v)?+v:0,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function scaleOf(h){return h?clamp(Math.min(n(h.hx),n(h.hy))/100,.6,1.2):1}
   function radiusOf(h,v){return v?clamp(Math.min(v.w,v.h)*.15,36,72):clamp(Math.min(h?.hx||100,h?.hy||100)*.62,36,72)}
@@ -40,15 +40,16 @@
     return {x:d.x,y:d.y,vx:0,vy:0,baseR:base,radius:base*K.docked,hx:base*K.docked,hy:base*K.docked,U:base/60,
       held:false,pid:null,px:d.x,py:d.y,docked:!!h,attached:!!h,homeId:h?idOf(h):null,edge:h?.edge||'left',u:.5,
       kind:h?.kind||'hud',layer:h?.layer||'hud',ax:d.x,ay:d.y,round:1,stretch:0,fx:0,fy:0,fvx:0,fvy:0,
-      lock:null,hxV:0,hyV:0,corner:base*K.docked,cornerV:0,protect:0,focus:0,join:h?1:0};
+      lock:null,hxV:0,hyV:0,corner:base*K.docked,cornerV:0,protect:0,focus:0,join:h?1:0,strain:0,strainV:0,angle:0,angleV:0};
   }
   /* resolved targets: {id,kind:'field'|'body',cx,cy,hx,hy,r?} in viewport pixels */
   function candidateAt(L,targets){
-    let best=null;
+    let best=null;const g=geometry(L,null),c=Math.cos(g.angle),s=Math.sin(g.angle);
     for(const t of targets||[]){
       if(!t||!Number.isFinite(t.cx)||!Number.isFinite(t.cy))continue;
       const d=Math.hypot(L.x-t.cx,L.y-t.cy);
-      const hit=t.kind==='field'?Math.abs(L.x-t.cx)<=t.hx&&Math.abs(L.y-t.cy)<=t.hy:d<=L.radius+(t.hx||0);
+      const dx=t.cx-L.x,dy=t.cy-L.y,r=t.hx||0;
+      const hit=t.kind==='field'?Math.abs(dx)<=t.hx&&Math.abs(dy)<=t.hy:Math.hypot((c*dx+s*dy)/(g.hx+r),(-s*dx+c*dy)/(g.hy+r))<=1;
       if(hit&&(!best||d<best.d))best={t,d};
     }return best?best.t:null;
   }
@@ -64,9 +65,27 @@
     L.hx=Math.max(1,L.hx);L.hy=Math.max(1,L.hy);L.corner=clamp(L.corner,0,Math.min(L.hx,L.hy));L.radius=Math.min(L.hx,L.hy);
   }
   function opticsStep(L,d){L.protect=ease(L.protect,L.lock?1:0,d);L.focus=ease(L.focus,L.lock?.kind==='field'?1:0,d);L.join=ease(L.join,L.attached?1:0,d)}
+  /* A bounded second shape mode: surface tension restores the circle; viscosity
+   * damps strain and orientation. Reciprocal axes conserve area under stretch.
+   * Position/reading accommodation remain their existing, separate constraints. */
+  function capillaryStep(L,a,d){
+    const speed=Math.hypot(L.vx,L.vy),pull=a?Math.hypot(L.x-a.x,L.y-a.y):0;
+    let x=L.vx,y=L.vy,want=.1*speed/Math.max(1,L.baseR*3);
+    if(a&&pull>L.radius*.4){x=L.x-a.x;y=L.y-a.y;want=Math.max(want,.2*clamp(pull/L.radius-.4,0,1))}
+    if(Math.hypot(L.fx,L.fy)>1&&speed<L.baseR){x=L.fx;y=L.fy;want=Math.max(want,.13*Math.hypot(x,y)/L.radius)}
+    if(L.lock){want=0;x=1;y=0}
+    want=clamp(want,0,K.maxStrain);
+    L.strainV+=(K.capillary*(want-L.strain)-K.viscosity*L.strainV)*d;L.strain=clamp(L.strain+L.strainV*d,0,K.maxStrain);
+    if(Math.abs(L.strain-want)<1e-6&&Math.abs(L.strainV)<1e-5){L.strain=want;L.strainV=0}
+    const aim=Math.hypot(x,y)>1e-4?Math.atan2(y,x):L.angle;
+    const delta=.5*Math.atan2(Math.sin(2*(aim-L.angle)),Math.cos(2*(aim-L.angle)));
+    L.angleV+=(60*delta-16*L.angleV)*d;L.angle+=L.angleV*d;
+  }
+  function extent(L){const stretch=Math.exp(L.strain),hx=L.hx*stretch,hy=L.hy/stretch,c=Math.abs(Math.cos(L.angle)),s=Math.abs(Math.sin(L.angle)),shaped=Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4,r=Math.min(L.corner,hx,hy);return {hx,hy,x:shaped?(hx-r)*c+(hy-r)*s+r:Math.hypot(hx*c,hy*s),y:shaped?(hx-r)*s+(hy-r)*c+r:Math.hypot(hx*s,hy*c)}}
   function boundBody(L,view){
-    if(!view)return;L.hx=Math.min(L.hx,Math.max(1,view.w/2));L.hy=Math.min(L.hy,Math.max(1,view.h/2));
-    const x=clamp(L.x,L.hx,Math.max(L.hx,view.w-L.hx)),y=clamp(L.y,L.hy,Math.max(L.hy,view.h-L.hy));
+    if(!view)return;let e=extent(L);const fit=Math.min(1,view.w/(2*e.x),view.h/(2*e.y));
+    if(fit<1){L.hx*=fit;L.hy*=fit;e=extent(L)}
+    const x=clamp(L.x,e.x,Math.max(e.x,view.w-e.x)),y=clamp(L.y,e.y,Math.max(e.y,view.h-e.y));
     if(x!==L.x)L.vx=0;if(y!==L.y)L.vy=0;L.x=x;L.y=y;L.radius=Math.min(L.hx,L.hy);L.corner=Math.min(L.corner,L.radius);
   }
   function stepLocked(L,t,d,view){
@@ -92,7 +111,7 @@
     if(view)L.baseR=radiusOf(null,view);L.U=L.baseR/60;
     if(L.lock&&!L.held&&!(target&&target.id===L.lock.id&&target.kind===L.lock.kind))unlock(L);
     const parts=Math.max(1,Math.ceil(dt/(1/120))),d=dt/parts;
-    if(L.lock&&!L.held){for(let i=0;i<parts;i++){stepLocked(L,target,d,view);opticsStep(L,d)}if(reduced)settle(L,hs,view,target);return L}
+    if(L.lock&&!L.held){for(let i=0;i<parts;i++){stepLocked(L,target,d,view);capillaryStep(L,null,d);if(target.kind==='body')boundBody(L,view);opticsStep(L,d)}if(reduced)settle(L,hs,view,target);return L}
     for(let i=0;i<parts;i++){
       let h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q))||null;
       if(!h){L.attached=false;L.docked=false}
@@ -103,7 +122,7 @@
       const cd=cursor?.active?Math.hypot(cursor.x-L.x,cursor.y-L.y):Infinity,hover=!L.held&&cd<K.cursorReach*L.U;
       if(h&&L.attached&&L.held){const p=edgePoint(h,L.px,L.py);L.edge=p.edge;L.u=along(h,p)}
       const a=h&&L.attached?anchor(h,L.edge,L.u):null;
-      if(a){L.ax=a.x;L.ay=a.y;if(Math.hypot(L.x-a.x,L.y-a.y)>K.breakAt*L.U){L.attached=false;L.docked=false}}
+      if(a){L.ax=a.x;L.ay=a.y;const e=extent(L),dx=L.x-a.x,dy=L.y-a.y,len=Math.hypot(dx,dy)||1,c=Math.cos(L.angle),s=Math.sin(L.angle),support=Math.hypot(e.hx*(c*dx+s*dy)/len,e.hy*(-s*dx+c*dy)/len);if(len>support+Math.min(L.radius*.25,24*L.U)){L.attached=false;L.docked=false}}
       let ax=-K.damp*L.vx,ay=-K.damp*L.vy;
       if(L.held){ax+=K.stiff*(L.px-L.x);ay+=K.stiff*(L.py-L.y)}
       let dock=null;
@@ -120,14 +139,14 @@
       const target=L.baseR*(L.held?1:L.docked?K.docked:K.released);
       {let tx=0,ty=0;if(hover){const vx=cursor.x-L.x,vy=cursor.y-L.y,len=Math.hypot(vx,vy)||1,f=1-cd/(K.cursorReach*L.U),w=f*f*(3-2*f),m=Math.min(len,K.reach*L.radius)*w;tx=vx/len*m;ty=vy/len*m}
         L.fvx+=(K.reachStiff*(tx-L.fx)-K.reachDamp*L.fvx)*d;L.fvy+=(K.reachStiff*(ty-L.fy)-K.reachDamp*L.fvy)*d;L.fx+=L.fvx*d;L.fy+=L.fvy*d}
-      shapeStep(L,target,target,target,d);opticsStep(L,d);
+      shapeStep(L,target,target,target,d);capillaryStep(L,L.attached?a:null,d);opticsStep(L,d);
       if(view&&view.w>0&&view.h>0){
-        const rx=Math.min(L.hx,view.w/2),ry=Math.min(L.hy,view.h/2),x=clamp(L.x,rx,view.w-rx),y=clamp(L.y,ry,view.h-ry);
-        if(x!==L.x)L.vx=0;if(y!==L.y)L.vy=0;L.x=x;L.y=y;
+        boundBody(L,view);
       }
     }if(reduced)settle(L,hs,view,target);return L;
   }
   function settle(L,hs,view,t){
+    L.strain=L.strainV=L.angle=L.angleV=0;
     if(L.lock&&t.pending){L.vx=L.vy=L.hxV=L.hyV=L.cornerV=0;L.protect=1;L.focus=L.lock.kind==='field'?1:0;L.join=0;return}
     const f=L.lock&&(t.frame||t),framed=f&&(t.kind==='field'||t.frame),h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q));
     const p=f?{x:f.cx,y:f.cy}:L.held?{x:L.px,y:L.py}:L.attached&&h?dockPoint(h,L.U,L.edge,L.u,L.baseR):L;
@@ -140,14 +159,14 @@
   function geometry(L,home){
     const h=homesOf(home).find(q=>idOf(q)===L.homeId&&compatible(L,q)),a=h&&L.attached?anchor(h,L.edge,L.u):null;
     const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
-    const locked=L.lock?.kind||null,shaped=Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4;
-    return {x:L.x,y:L.y,hx:L.hx,hy:L.hy,round:shaped?0:1,corner:L.corner,angle:0,wobble:0,phase:0,stretch:0,ax:a?.x??L.x,ay:a?.y??L.y,
-      neck:K.neck*L.U*Math.pow(thin,1.6)*L.join,smooth:18*L.U*L.join,rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:locked?0:L.radius*K.lobe*(1-L.protect),mag:(1-L.protect)*(1-1/K.magnify),protect:L.protect,focus:L.focus,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
+    const locked=L.lock?.kind||null,shaped=Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4,e=extent(L);
+    return {x:L.x,y:L.y,hx:e.hx,hy:e.hy,boundX:e.x,boundY:e.y,round:shaped?0:1,corner:Math.min(L.corner,e.hx,e.hy),angle:L.angle,wobble:0,phase:0,stretch:Math.exp(L.strain),ax:a?.x??L.x,ay:a?.y??L.y,
+      neck:0,smooth:Math.min(L.radius*.5,48*L.U),rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:0,mag:(1-L.protect)*(1-1/K.magnify),protect:L.protect,focus:L.focus,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
   function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;unlock(L);L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
   function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null;L.docked=false}return L}
-  function contains(L,x,y){const edge=Math.max(6,(root.SSSDisplayGlass?.readInset?.()??8)*(L.lock?1:L.protect)),r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+edge}
+  function contains(L,x,y){const g=geometry(L,null),edge=Math.max(6,(root.SSSDisplayGlass?.readInset?.()??8)*(L.lock?1:L.protect)),c=Math.cos(g.angle),s=Math.sin(g.angle),vx=x-g.x,vy=y-g.y,qx=c*vx+s*vy,qy=-s*vx+c*vy;if(g.round)return Math.hypot(qx/(g.hx+edge),qy/(g.hy+edge))<=1;const r=g.corner,dx=Math.max(0,Math.abs(qx)-g.hx+r),dy=Math.max(0,Math.abs(qy)-g.hy+r);return Math.hypot(dx,dy)<=r+edge}
   function pullFrom(L,h,x,y,pid){
     if(!compatible(L,h))return false;
     const p=edgePoint(h,x,y);L.homeId=idOf(h);L.edge=p.edge;L.u=along(h,p);L.attached=true;L.docked=true;
@@ -266,6 +285,7 @@
       homeNow=state.attached?hs.find(h=>h.id===state.homeId&&compatible(state,h))||null:null;visible=!off;
       if(el){const g=geometry(state,hs);el.style.display=visible?'block':'none';
         el.style.left=(state.x-g.hx)+'px';el.style.top=(state.y-g.hy)+'px';el.style.width=(g.hx*2)+'px';el.style.height=(g.hy*2)+'px';el.style.borderRadius=g.round?'50%':g.corner+'px';
+        el.style.transform='rotate('+g.angle+'rad)';
         paintPhase();el.dataset.layer=state.layer}
     }updatePores(hs);root.requestAnimationFrame(loop);
   }
