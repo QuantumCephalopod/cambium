@@ -1,9 +1,9 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
-function load(text=source){
-  const context={console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require('../../../z/navigation-physiology.js'),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+function load(text=source,field=null){
+  const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require('../../../z/navigation-physiology.js'),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -118,13 +118,13 @@ ink.tissueGlyphs(glyphs,()=>true,place,5,1,()=>1);
 assert.equal(tissueState.tissueLetters.length,2,'without lens the same letters remain admissible');
 tissueState.tissueLetters=[];ink.flushTissue({width:800,height:600});
 assert.equal(calls.length,0,'idle overview avoids full-screen tissue pass');
-assert.equal(ink.shader.composite().length,3,'unused tissue canvas is not uploaded to glass');
+assert.equal(ink.shader.composite().length,1,'unused tissue canvas is not uploaded to glass');
 tissueState.tissueLetters=[{ch:'A'}];ink.flushTissue({width:800,height:600});
-assert.equal(ink.shader.composite().length,4,'active tissue remains in the shared glass');
+assert.equal(ink.shader.composite().length,2,'active tissue remains in the shared glass');
 tissueState.tissueLetters=[];ink.flushTissue({width:800,height:600});
 ink.flushTissue({width:800,height:600});
 assert.deepEqual(calls,[1,0],'on exit the previous text clears exactly once');
-assert.equal(ink.shader.composite().length,3,'the spent tissue texture is no longer composited');
+assert.equal(ink.shader.composite().length,1,'the spent tissue texture is no longer composited');
 console.log('Papers camera-relative LOD, rank-10 descent and bounded text-tissue compositing PASS');
 
 module.exports={load,referenceDrift,referenceFlow,referenceCollect,near};
@@ -172,3 +172,34 @@ module.exports={load,referenceDrift,referenceFlow,referenceCollect,near};
   state.current={id:'S.authored'};state.ui.carrier.h=8;assert.equal(reading.paperLensReading(target).ready,false,'no unreadable tiny-screen substitute is fabricated');
   console.log('Papers authored lens offers, full-text continuation, relocation, geometry and semantic non-mutation PASS');
 }
+/* A foreshortened edge never becomes a viewport-sized sentence. The full
+ * authored text remains separate from this geometric material budget. */
+for(const length of [.001,.1,2,30,300,1200])for(const width of [1,30,600,12000]){
+ const edge={glyphs:[],bounds:{x0:-width/2,x1:width/2,y0:-10,y1:40}},m=api.edgeMaterial(edge,length);
+ assert(m.scale>0&&m.scale<=1);assert((width+12)*m.scale<=length*.92+1e-8);assert.equal(m.half,length*.46);
+}
+assert(api.faceReading([{x:0,y:0},{x:300,y:0},{x:150,y:250}]));
+assert(!api.faceReading([{x:0,y:0},{x:300,y:0},{x:150,y:2}]));
+assert(!api.faceReading([{x:0,y:0},{x:30,y:0},{x:15,y:25}]));
+{
+const shadow=JSON.parse(fs.readFileSync(path.join(__dirname,'public/papers-shadow/current.json'))).snapshot,projection=shadow.projection;
+const field={path:'x',get container(){return this.path},descendTo(path){if(!path.startsWith(this.path))return false;this.path=path;return true},ascend(){this.path=this.path.slice(0,-1);return true}};
+const tour=load(source,field),built=tour.buildRecords(projection,tour.fieldProjection(projection).root),identities=tour.identityIndex(projection),parents=tour.parentIndex(projection),before=JSON.stringify(shadow);
+const label={textContent:'',classList:{add(){},remove(){}}},canvas={dataset:{},getBoundingClientRect:()=>({width:390,height:844})};
+const ts={structure:built.structure,records:built.records,recordById:new Map(built.records.map(r=>[r.id,r])),identities,parents,inquiryBodies:shadow.inquiry.bodies,projection,shadowApplied:true,canvas,label,renderer:{V0},chamberPath:'x',chamberFocus:{center:[0,0,0],scale:1},tutorialButton:{},textCanvas:{getContext:()=>({measureText:()=>({width:6})})},wisdomPrepared:new Map(),current:null,stack:[],transition:0};tour.setState(ts);
+const eligible=tour.tutorialCandidates();assert(eligible.length>=2,'current public population must supply multiple actual rank-4 witnesses');
+const visited=[];
+for(let repeat=0;repeat<2;repeat++){
+ assert(tour.startTutorial(0));visited.push(ts.tutorial.specimen);assert.equal(field.container,ts.recordById.get(ts.tutorial.specimen).locus);
+ for(let time=5600;time<=72800&&ts.tutorial;time+=5600){tour.tutorialStep(time);if(ts.current){tour.ensureBeing(identities.get(ts.current.id),390);ts.transition=1;}}
+ assert.equal(ts.tutorial,null);assert.equal(ts.current,null);assert.equal(ts.chamberPath,'x');assert.equal(field.container,'x');
+}
+assert.notEqual(...visited);assert.equal(JSON.stringify(shadow),before,'teaching must not mutate source-owned semantic truth');
+const saved=ts.records;ts.records=[];assert.deepEqual(clone(tour.tutorialCandidates()),[]);assert.equal(tour.startTutorial(),false);ts.records=saved;
+console.log('Papers live endpoint material, facing/size gates and two actual rank-4 recursive tutorial/return witnesses PASS',JSON.stringify({eligible:eligible.length,visited}));
+
+}
+
+{const glyphs=Array.from({length:4000},(_,i)=>({ch:String(i)})),edge={glyphs,unravel:0,weave:0};
+assert(api.foldedEdgeGlyphs(edge,80,1).length<=80);assert.equal(edge.glyphs.length,4000);
+edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening restores every authored glyph; the source words never change');}

@@ -10,7 +10,7 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false,snapshot=null,afterDraw=null}={}){
+function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
   const calls=[],frames=[],queue=[],timers=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
@@ -62,6 +62,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
     e:{id:'body:e',path:'xz',root,shader:{id:'shader:e',fragment:fragment('ordinary-e'),state:{blend:true,depthTest:true,depthWrite:false}}}};
   if(preview)bodies.b.shader.preview=args=>calls.push({type:'preview',target:drawTarget,lens:args.lens});
   const shader={id:'fixture:field',fragment:fragment('field'),state:{blend:true,depthTest:true,depthWrite:false}};
+  if(fallbackAlpha!==undefined)shader.fallbackAlpha=fallbackAlpha;
   if(snapshot)shader.snapshot=snapshot;if(afterDraw)shader.afterDraw=afterDraw;
   if(composite)shader.composite=()=>[{width:16,height:16}];
   if(layer)shader.afterDraw=()=>{gl.depthMask(false);gl.colorMask(false,false,false,false);gl.enable(gl.SCISSOR_TEST);gl.clearDepth(0)};
@@ -216,3 +217,9 @@ for(const webgl of [true,false]){let revision=0,points=[],frames=0,backend=null;
  points=[];revision++;f.frame(48);assert.equal(f.api.selectedPointId,'');assert.equal(frames,4);assert.equal(backend,webgl);
 }
 console.log('PASS — live source birth/split/withdrawal preserves identity and lends the same frame on both backends');
+
+/* An explicitly transparent fallback contributes neither fill nor wire under a
+ * source-owned layer; the layer and shared frame must continue to execute. */
+for(const alpha of [0,.12]){let layers=0;const f=fixture({webgl:false,glass:false,order:[],fallbackAlpha:alpha,afterDraw:()=>layers++});f.frame(0);
+assert.equal(f.frames[0].filter(c=>c.type==='fill2d').length,alpha?16:0);assert.equal(layers,1);}
+console.log('Transparent fallback suppresses duplicate base geometry while preserving the borrowed source layer PASS');
