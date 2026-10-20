@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.8"
+version: "1.9"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -15,6 +15,7 @@ version: "1.8"
 - For work inside a public site-holon, re-entry descends without skipping or duplicating scope: `Drive /RITUALS → repo /RITUALS/organism → w/display/RITUALS → target site-holon /RITUALS/organism`. Each layer contributes only the law of its own membrane; lower layers inherit parent constraints instead of restating them.
 - `QuantumCephalopod/cambium` is the writable staging carrier. `self-similar-systems/cambium` becomes organization truth only by deliberate owner promotion/merge and provider witness.
 - Git history, Actions, Pages, commits and workflow logs are substrate witnesses/mechanics, not semantic body, `_root`, `_feed`, or ritual authority.
+- Catabolism demand-loads `RITUALS/catabolism/RITUAL.md` as this target's repository-local differential after the resident HOME at Drive `/regeneration/catabolism`. The local receptor does not duplicate HOME or add a shared-root field member.
 
 ## current host phenotype
 
@@ -134,3 +135,5 @@ Compression: **same organism dance, whole-body recursive differentiation, struct
 Version1.7 global-orientation repair (2026-10-19): current Population mounts are stated by their actual raw addresses, without stale `w/Form` and `y/Inquiry` host-field glosses. The overview's build-derived Philosophy phenotype already carries `w/Inquiry` and `y/Becoming`; situated site purpose and host-field meaning remain separate. This repairs repository-root re-entry wording only; mounts, source bodies, INDEX and closed constitutions are unchanged.
 
 Version1.8 Population discovery boundary (2026-10-20): living mount positions delimit discovery before manifest validation. Archived and locally nested manifests stay behind their owner's membrane; generic long-address relocation and collision/refusal witnesses preserve the existing carrier contract.
+
+Version1.9 Catabolism receptor (2026-10-20): repeated owner-local source returns and the witnessed README invocation quotient earn a repository-local Catabolism differential. Invocation state and Git-carried return addresses remain local application of resident HOME; semantic constitution and child ownership are unchanged.
