@@ -104,7 +104,7 @@ function hitTarget(x,y){
   for(const b of bodies)for(const [i,j] of edgeIx){const a=b.corners[i],p=b.corners[j],dx=p.x-a.x,dy=p.y-a.y,t=Math.max(0,Math.min(1,((x-a.x)*dx+(y-a.y)*dy)/(dx*dx+dy*dy||1))),d=Math.hypot(x-a.x-t*dx,y-a.y-t*dy);if(d<=reach&&(!best||d<best.d))best={d,target:b.target}}
   return best?.target||targetInk.find(b=>b.root&&inside(b.corners))?.target||null;
 }
-function emitView(source){if(!nav)return;route.textContent='GLOBAL '+scopeId+':'+(activeGlobalAddress||'overview')+' · LOCAL VIEW '+(nav.view||'overview');miniState.textContent='global '+(activeGlobalAddress||'overview')+' · '+GLOBAL_TARGETS.length+' sites';dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
+function emitView(source){if(!nav)return;route.textContent='GLOBAL '+scopeId+':'+(activeGlobalAddress||'overview')+' · LOCAL VIEW '+(nav.view||'overview');miniState.textContent=(activeGlobalAddress||'overview')+' · '+GLOBAL_TARGETS.length+' sites';miniState.title=miniState.textContent;dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
 function emitOrientation(source='global'){dispatchEvent(new CustomEvent('sss:orientation',{detail:{orientation:[...orient],source}}))}
 function inspect(path,source='philosophy-background'){if(!nav||!nav.inspect(path))return false;emitView(source);drawTwin();return true}
 function clearInspection(source='clear'){if(!nav)return;nav.clearInspection();emitView(source);drawTwin()}
