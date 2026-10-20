@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.7"
+version: "1.8"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -107,6 +107,8 @@ python3 y/site-public.py --artifact _site --check
 
 `.github/workflows/pages.yml` is substrate circulation only. The build derives the public Display registry from living Population anatomy and any optional site-owned static apertures from their local bodies. Only the canonical organization repository may deploy Pages.
 
+Population discovery reads only admitted mount positions: direct overview bodies and direct bodies inside absolute address folders. Address words may have arbitrary realized recursive length; this carrier's folder depth is not a semantic rank limit. Recognition stops at each site's `site.json` membrane. Its local descendants and lifecycle archives cannot become enclosing Population mounts. The four lifecycle roles are not mount positions, including when present at a Population container; other malformed mount directories, empty address slots and exact raw pile-up remain refused. The enclosing build validates the admitted site's public contract, without searching its owned interior for more global sites.
+
 ## current living pressure
 
 - First public launch is closed; its spent intake record lives in `_waste/metabolized-first-public-launch-20260927.md`.
@@ -130,3 +132,5 @@ A cambium mutation closes only when:
 Compression: **same organism dance, whole-body recursive differentiation, structural membrane restart, identity-owned site secretion through generic transport, substrate mechanics beneath semantic law.**
 
 Version1.7 global-orientation repair (2026-10-19): current Population mounts are stated by their actual raw addresses, without stale `w/Form` and `y/Inquiry` host-field glosses. The overview's build-derived Philosophy phenotype already carries `w/Inquiry` and `y/Becoming`; situated site purpose and host-field meaning remain separate. This repairs repository-root re-entry wording only; mounts, source bodies, INDEX and closed constitutions are unchanged.
+
+Version1.8 Population discovery boundary (2026-10-20): living mount positions delimit discovery before manifest validation. Archived and locally nested manifests stay behind their owner's membrane; generic long-address relocation and collision/refusal witnesses preserve the existing carrier contract.
