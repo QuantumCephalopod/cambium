@@ -249,7 +249,7 @@
       if(!labelHost)return;
       if(original===null||original===undefined)labelHost.removeAttribute(ATTR);else labelHost.setAttribute(ATTR,original);
     }
-    function draw(canvasRect,bufferWidth,bufferHeight){
+    function draw(canvasRect,bufferWidth,bufferHeight,additionalTarget=null){
       reset();
       const c=rect(canvasRect||{});
       if(disposed||!gl||!labelHost||!doc||!getStyle||c.width<=0||c.height<=0||!Number.isFinite(bufferWidth)||!Number.isFinite(bufferHeight)||bufferWidth<=0||bufferHeight<=0)return false;
@@ -278,6 +278,11 @@
         gl.enable(gl.BLEND);gl.blendEquationSeparate(gl.FUNC_ADD,gl.FUNC_ADD);gl.blendFuncSeparate(gl.ONE,gl.ONE_MINUS_SRC_ALPHA,gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
         gl.useProgram(gpu.program);gl.uniform1i(gpu.uniform,0);gl.bindVertexArray(gpu.vao);gl.bindBuffer(gl.ARRAY_BUFFER,gpu.buffer);
         gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.DYNAMIC_DRAW);gl.drawArrays(gl.TRIANGLES,0,vertices.length/5);
+        /* The alternate liquid input carries the same foreground ink. Reuse
+         * this prepared batch: no second collection, layout or atlas update. */
+        if(additionalTarget){const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);
+          try{gl.bindFramebuffer(gl.FRAMEBUFFER,additionalTarget);gl.drawArrays(gl.TRIANGLES,0,vertices.length/5)}
+          finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target)}}
         if(gl.getError()!==gl.NO_ERROR)throw new Error('label GL drawing failed');
         if(!releaseStyle)releaseStyle=acquireStyle(doc);
         labelHost.setAttribute(ATTR,'gpu');return true;

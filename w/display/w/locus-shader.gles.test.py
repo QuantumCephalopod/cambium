@@ -224,6 +224,40 @@ def coalescence_contract(width,height):
                 results.update(ellipse_painted_area=area,ellipse_analytic_area=math.pi*100*64,ellipse_bad_core=bad_core,ellipse_bad_outside=bad_outside)
     return results
 
+def reveal_contract(width,height):
+    """Actual optional placeholder route and one common liquid mask, without optics
+    obscuring a leak. The declared own draw supplies procedural checker pixels."""
+    results=[]
+    for mode in ['drop','top','compass','merged','dry','failed']:
+        runs=[]
+        for ready in ['0','1']:
+            env={**os.environ,'REVEAL_SURFACE':mode,'REVEAL_READY':ready}
+            capture=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env=env,text=True))
+            images,_=replay(capture,width,height);runs.append(images[-1][0])
+        changed=outside=0
+        for y in range(height):
+            for x in range(width):
+                i=((height-1-y)*width+x)*4
+                if runs[0][i:i+4]==runs[1][i:i+4]:continue
+                changed+=1
+                if mode=='top':allowed=y<=height*.68+9
+                elif mode=='compass':allowed=width/2-152<=x<=width/2+26 and height*.53-2<=y<=height*.53+212
+                elif mode=='merged':allowed=y<=154 or (x-width*.55)**2+(y-240)**2<=120**2
+                else:allowed=abs(x-width/2)<=90 and abs(y-height/2)<=90
+                outside+=not allowed
+        if mode in ['dry','failed']:assert changed==0,(mode,changed)
+        else:assert changed>1000 and outside==0,(mode,changed,outside)
+        results.append({'surface':mode,'revealed_pixels':changed,'escaped_pixels':outside})
+    # Subpixel motion must move the same edge rather than pop a whole miniature.
+    coverage=[]
+    for offset in [0,.5,1]:
+        env={**os.environ,'REVEAL_SURFACE':'drop','REVEAL_READY':'1','REVEAL_OFFSET':str(offset)}
+        capture=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env=env,text=True))
+        images,_=replay(capture,width,height);coverage.append(images[-1][0])
+    edge_changes=[sum(a[i:i+4]!=b[i:i+4] for i in range(0,len(a),4)) for a,b in zip(coverage,coverage[1:])]
+    assert all(50<n<1500 for n in edge_changes),edge_changes
+    return {'surfaces':results,'subpixel_edge_changes':edge_changes}
+
 def main():
     results=[]
     for width,height in [(1280,800),(390,844)]:
@@ -266,7 +300,7 @@ def main():
                 interior=b''.join(images[-1][0][((height-1-y)*width+x)*4:((height-1-y)*width+x)*4+4] for y in range(frame['top']+20,frame['top']+frame['height']-20) for x in range(frame['left']+20,frame['left']+frame['width']-20))
                 release.append(interior)
         assert len(set(release))==5,'intermediate optical states snapped to an endpoint'
-        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release)),'coalescence':coalescence_contract(width,height)})
+        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release)),'coalescence':coalescence_contract(width,height),'liquid_revelation':reveal_contract(width,height)})
     print(json.dumps({'status':'PASS','backend':gl('GetString',C.c_char_p,[U],7937).decode(),'gles':gl('GetString',C.c_char_p,[U],7938).decode(),'actual_source':'locus-shader.js','cases':results,'scope':'Actual shaders/mesh/passes on software GLES with declared fixture state and procedural preview input; not browser layout, physical GPU or device FPS.'}))
 
 if __name__=='__main__':main()

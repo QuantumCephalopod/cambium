@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.41"
+version: "3.42"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -239,6 +239,8 @@ Display retains placement, content rank, drift, orientation, selection, local-ro
 
 Papers reuses its actual chamber/instance renderer with a bounded, source-checked sample of seven existing public organisms; source genealogy and normalized outer placement are preserved. Schattenseiten reuses its actual occupied-slot sheet renderer with declared64 data, preserving host depth and retaining entered-only512. These are coarse states of the entered species, not screenshots or invented semantic subdivisions.
 
+A host may offer `shader.bodyPlaceholder: {fragment, state}` to keep its floating bodies plain until liquid reveals their already-admitted coarse representation. The host owns the placeholder material; the child keeps its actual cells/draw/material and media readiness. Display routes those existing owner draws into the existing alternate preview target only near current liquid, then reveals them through the same optical coordinates and exterior as every HUD, drop and compatible capillary join. The normal scene keeps the placeholder. The alternate input begins with the same current scene; the existing prepared label-ink batch covers both inputs without a second DOM collection, glyph layout or atlas upload, so miniature content cannot overwrite its foreground title. Unready/failed own draws leave it intact, and one failed child cannot suppress another. Low-tier preloading may run behind it; this never earns detailed projection or higher media. The bounded source mesh supplies cached conservative culling bounds. With no glass or an unavailable GPU, the plain offered geometry remains selectable; Canvas2D does not claim liquid optics. Hosts without this offer retain their existing own-body draw path.
+
 Body-label size is cached from resize observation. Each full title may wrap, remains within its field, follows its own anchor and stays a native accessible button. The label host does not trap interactive buttons below site prose; decorative labels retain ordinary low paint order. Actual projected depth orders body-button overlap; hover/focus owns opaque legible ink. No world-body packing or semantic repositioning is earned by a label collision. Existing camera-relative culling, genealogy-relative resolution and contacted-text work bounds remain in force.
 
 ## Tree-derived public membrane
@@ -431,3 +433,5 @@ Version3.39 capillary coalescence (2026-10-20): a concrete overlap/straight-stre
 Version3.40 nearest-reservoir return (2026-10-20): unheld, unlocked glass is attracted to the closest live compatible reservoir across free space. Physical short contact remains independent, and held/owner-locked relations retain priority. Deformed viewport bounds also constrain the docking equilibrium. Narrow/wide native production-controller and dynamics witnesses cover return, cancellation, boundary selection, target disappearance and reduced motion; existing optical/semantic contracts remain.
 
 Version3.41 spatial compass and legal slot (2026-10-20): shared contained-body placement/drift replaces independent vertex markers; raw mount paths and quotient-group identity remain. Actual field-transform and compass Canvas2D fixtures witness geometry, rotation, clock, relocation and selection. One measured Display footer slot replaces bottom-left legal placement within the membrane, retaining site-owned links and open/closed access. No parent constitution or site meaning changes.
+
+Version3.42 liquid-gated coarse bodies (2026-10-20): an optional host-owned plain material separates presence from source-owned interior readiness. Actual coarse owner draws feed the existing preview target and all shared liquid surfaces reveal it through one optical map/exterior. Philosophy is the first consumer; low-tier acquisition, failed draws, per-child isolation, subpixel edges and HUD-only revelation have narrow/wide native/software-GLES witnesses. No content/media authority, new pass family, semantic split or site-name branch is introduced.

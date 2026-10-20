@@ -7,6 +7,14 @@ const shader=Object.freeze({
   id:'shader:organism:philosophy',
   clear:[0.006,0.009,0.014,1],
   fallbackAlpha:.16,
+  /* The overview keeps a quiet coarse body until liquid reveals its owner's
+   * admitted representation. Display owns the mask, Philosophy this material. */
+  bodyPlaceholder:Object.freeze({state:Object.freeze({blend:false,depthTest:true,depthWrite:true}),fragment:`#version 300 es
+precision highp float;
+in vec3 vN;in float vRegion;uniform vec3 uPalette[4];out vec4 outColor;
+void main(){float light=.5+.5*dot(normalize(vN),normalize(vec3(-.35,.6,.72)));
+  vec3 c=uPalette[int(clamp(floor(vRegion+.5),0.,3.))];
+  outColor=vec4(mix(vec3(.045,.055,.065),c*.42,.25+.55*light),1.);}`}),
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
   fragment:`#version 300 es
 precision highp float;

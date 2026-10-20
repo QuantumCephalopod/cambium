@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.4"
+version: "1.5"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -83,9 +83,13 @@ Pointer inspection is **face-oriented**: the witness selects a recursive address
 
 No second inspect→commit step belongs to Philosophy once the mounted body itself is the explicit encounter choice.
 
-### Accepted presentation targets — current intake
+### Liquid reveals the admitted miniature
 
-The 2026-10-19 observation admits liquid-only revelation of site-owned pre-rendered interiors in `_stomach/NUTRIENT__liquid-gated-site-previews__20261019.md`, including eligible compass/top-border liquid. The current own-body coarse draw can expose those interiors outside the droplette; it is not yet the accepted target. Stronger title visibility on hover is separately owned by `_stomach/NUTRIENT__site-name-hover-contrast__20261019.md`. Footer placement and compass spatial containment remain Display-owned. These targets preserve actual body geometry and source/media ownership.
+Philosophy owns a quiet, opaque `shader.bodyPlaceholder` material for the mounted bodies. Outside liquid their actual coarse geometry remains plain and selectable. Under a droplette, the upper reservoir, compass liquid or their common capillary exterior, Display reveals the site's own already-admitted coarse representation through the same optical map. The source stays in the site: Schattenseiten uses declared64 in the host, Papers its admitted coarse chamber body, and other sites their own offered material. Entry alone earns detailed source or higher media.
+
+Low representations may load behind the placeholder. An unready or failed draw cannot remove it; the site's existing valid media cache survives revisit and higher-tier failure. With GPU glass unavailable, the plain coarse body, labels and entry remain; the reduced Canvas2D representation does not execute those optics. There is no duplicate screenshot, media registry or Philosophy-owned copy of another site's anatomy.
+
+The exact liquid-preview nutrient is retired after narrow/wide production-field and software-GLES witness, including all shared surfaces and subpixel edge motion. Stronger title visibility on hover remains independently owned by `_stomach/NUTRIENT__site-name-hover-contrast__20261019.md`. Display owns the shared optical capability and compass/footer geometry.
 
 ## lifecycle shell
 
@@ -122,3 +126,5 @@ The six residual first-contact questions are resolved at this public membrane:
 These are Philosophy-local consequences of inherited membrane law, not a new ancestor ontology. The original six questions remain preserved in retired intake and the decision HOME.
 
 Version1.4 current-law reconciliation (2026-10-19): documentation follows actual floating body/title entry instead of retired centroid markers, distinguishes quotient identity from occupied space, and inherits the current grid orientation/extent distinction. The accepted liquid-preview and hover targets stay unresolved intake; no new visible behavior or ancestor anatomy is claimed.
+
+Version1.5 liquid-gated miniatures (2026-10-20): the host owns its plain material while Display reveals each actual admitted coarse body under every common liquid surface. Native/software-GLES routing, placeholder/readiness, local64/entered512, failure and revisit witnesses close this nutrient. Browser rasterization and device frame time remain outside the evidence; semantic anatomy, mounts and child-owned media policies remain unchanged.
