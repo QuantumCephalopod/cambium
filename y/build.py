@@ -7,12 +7,14 @@ import html
 import json
 import re
 import shutil
+from types import MappingProxyType
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 DISPLAY = ROOT / 'w' / 'display'
 SITE_ROOT = DISPLAY / 'y'
 GENES = 'wxzy'
+APERTURES = MappingProxyType({'w':'CREATE', 'x':'COPY', 'z':'CONTROL', 'y':'CULTIVATE'})
 SITE_ID = re.compile(r'^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$')
 UI_GRID_SCHEMA = 'sss.display.ui-grid.v2'
 LIFECYCLE_ROLES = {'_stomach', '_feed', '_root', '_waste'}
@@ -148,101 +150,7 @@ def validate_cambium(c, label='_cambium.yaml'):
         raise ValueError(f'{label} 1T is empty')
 
 
-def _validate_display_node(node, path):
-    required = {'noun','de','en','gene','one','children'}
-    if not isinstance(node, dict) or set(node) != required:
-        raise ValueError(f'Philosophy projection node {path} has unexpected fields')
-    if not all(isinstance(node[k], str) and node[k].strip() for k in ('noun','de','en','gene')):
-        raise ValueError(f'Philosophy projection node {path} is unnamed')
-    if node['gene'] not in {'CREATE','COPY','CONTROL','CULTIVATE'}:
-        raise ValueError(f'Philosophy projection node {path} has invalid CCCC gene')
-    if not isinstance(node['one'], dict) or set(node['one']) != {'de','en'}:
-        raise ValueError(f'Philosophy projection node {path} lacks bilingual encounter copy')
-    if not isinstance(node['children'], dict):
-        raise ValueError(f'Philosophy projection node {path} children must be a mapping')
-    if node['children'] and set(node['children']) != set(GENES):
-        raise ValueError(f'Philosophy projection node {path} invents a partial recursive rank')
-    for gene in GENES:
-        if gene in node['children']:
-            _validate_display_node(node['children'][gene], path + gene)
-
-
-def derive_root_projection(site_dir):
-    """Derive the overview projection only from the site's own INDEX, _cambium and locus content."""
-    index = load_yaml(site_dir/'INDEX.yaml'); validate_index(index)
-    constitution = load_yaml(site_dir/'_cambium.yaml'); validate_cambium(constitution, f'{site_dir.name} _cambium.yaml')
-    site = json.loads((site_dir/'site.json').read_text(encoding='utf-8'))
-    names = {'w':'CREATE','x':'COPY','z':'CONTROL','y':'CULTIVATE'}
-    children = {}
-    for gene in GENES:
-        if any(g in index[gene] for g in GENES):
-            raise ValueError(f'{site_dir.name}:{gene} realized a deeper rank that the overview projection cannot yet derive')
-        content = json.loads((site_dir/gene/'content.json').read_text(encoding='utf-8'))
-        if content.get('address') != gene or content.get('gene') != names[gene] or content.get('canonical_concept') != index[gene]['noun']:
-            raise ValueError(f'{site_dir.name}/{gene}/content.json disagrees with INDEX.yaml phenotype')
-        expressions = content['expressions']
-        children[gene] = {
-            'noun': index[gene]['noun'],
-            'de': expressions['de']['concept'],
-            'en': expressions['en']['concept'],
-            'gene': names[gene],
-            'one': {'de': expressions['de']['question'], 'en': expressions['en']['question']},
-            'children': {},
-        }
-    encounter = json.loads((site_dir/'encounter.json').read_text(encoding='utf-8'))
-    languages = encounter['available_languages']
-    expression = {'': {l: {k: encounter['expressions'][l][k] for k in ('title', 'mission', 'position')} for l in languages}}
-    for gene in GENES:
-        content = json.loads((site_dir/gene/'content.json').read_text(encoding='utf-8'))
-        expression[gene] = {l: {'body': content['expressions'][l]['body'], **({'encounters': content['expressions'][l]['encounters']} if content['expressions'][l].get('encounters') else {})} for l in languages}
-    for address, langs in expression.items():
-        for l, fields in langs.items():
-            for k, v in fields.items():
-                if k == 'encounters':
-                    if (not isinstance(v, list) or not v
-                            or any(not isinstance(e, dict) or set(e) != {'interlocutor', 'label'}
-                                   or not isinstance(e['interlocutor'], str)
-                                   or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9:._-]{0,200}', e['interlocutor'])
-                                   or not isinstance(e['label'], str) or not e['label'].strip() for e in v)):
-                        raise ValueError(f'{site_dir.name} expression {address}/{l} has invalid encounter')
-                    continue
-                texts = v if isinstance(v, list) else [v]
-                if not texts or any(not isinstance(t, str) or not t.strip() for t in texts):
-                    raise ValueError(f'{site_dir.name} expression {address or "ε"}/{l}/{k} is empty')
-    return {
-        'source': {'organism': site['id'].split(':', 1)[1], 'derived_from': ['INDEX.yaml', '_cambium.yaml', 'encounter.json', 'w/x/z/y content.json']},
-        'root': {'noun': site['title'], 'children': children},
-        'constitution': constitution,
-        'expression': expression,
-    }
-
-
-def validate_root_projection(data, site_dir):
-    expected = derive_root_projection(site_dir)
-    for gene in GENES:
-        _validate_display_node(expected['root']['children'][gene], gene)
-    if data != expected:
-        raise ValueError(f'{site_dir.relative_to(ROOT)}/projection.json is not derived from its own body; regenerate with python3 y/build.py --derive-root-projection')
-    return data
-
-
-def validate_papers_projection(data):
-    if data.get('source') != 'papers/_feed':
-        raise ValueError('Papers projection source boundary changed')
-    if set(data.get('phenotype', {})) != set(GENES) or set(data.get('groups', {})) != set(GENES):
-        raise ValueError('Papers projection must expose realized local root 4V')
-    for gene in GENES:
-        if not isinstance(data['phenotype'][gene], str) or not data['phenotype'][gene]:
-            raise ValueError('Papers phenotype contains an empty locus')
-        if not isinstance(data['groups'][gene], list):
-            raise ValueError('Papers group is not a list')
-        for item in data['groups'][gene]:
-            if set(item) != {'id','title'}:
-                raise ValueError('Papers projection crossed its public boundary')
-    return data
-
-
-def _inside(site_dir, relative):
+def _inside(site_dir, relative, *, must_exist=True):
     if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
         raise ValueError(f'{site_dir}: site member path must be relative')
     p = (site_dir / relative).resolve()
@@ -250,8 +158,10 @@ def _inside(site_dir, relative):
         p.relative_to(site_dir.resolve())
     except ValueError as exc:
         raise ValueError(f'{site_dir}: site member escaped holon body') from exc
-    if not p.is_file():
+    if must_exist and not p.is_file():
         raise ValueError(f'{site_dir}: missing site member {relative}')
+    if not must_exist and (not p.parent.is_dir() or (p.exists() and not p.is_file())):
+        raise ValueError(f'{site_dir}: invalid derived site member {relative}')
     return p
 
 
@@ -269,7 +179,7 @@ def _site_address(site_dir):
 
 def _validate_site_manifest(site_dir, data):
     required = {'version','id','title','local_scope','shader','manifestation','projection','renderer','style','ui_grid'}
-    if not isinstance(data, dict) or not required <= set(data) or set(data) - required - {'feed_preview'} or data.get('version') != 2:
+    if not isinstance(data, dict) or not required <= set(data) or set(data) - required - {'feed_preview', 'build'} or data.get('version') != 2:
         raise ValueError(f'{site_dir.relative_to(ROOT)}/site.json: invalid v2 site-holon contract')
     if not isinstance(data['id'], str) or not SITE_ID.match(data['id']):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid interlocutor identity')
@@ -295,6 +205,12 @@ def _validate_site_manifest(site_dir, data):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid manifestation contract')
     if 'feed_preview' in data and (not isinstance(data['feed_preview'], str) or not data['feed_preview'].startswith('_feed/')):
         raise ValueError(f'{site_dir.relative_to(ROOT)}: feed_preview must be owned within local _feed')
+    if 'build' in data:
+        hook = data['build']
+        if (not isinstance(hook, dict) or 'module' not in hook
+                or set(hook) - {'module', 'witness'}
+                or any(not isinstance(value, str) or not value for value in hook.values())):
+            raise ValueError(f'{site_dir}: invalid owner build contract')
     return {
         **data,
         'manifestation': {
@@ -332,7 +248,73 @@ def _population_site_files():
     return site_files
 
 
-def discover_sites():
+def _build_common():
+    """Only shared organism invariants cross into the source owner's build."""
+    return MappingProxyType({'genes': GENES, 'apertures': APERTURES,
+                             'load_yaml': load_yaml, 'validate_index': validate_index,
+                             'validate_cambium': validate_cambium})
+
+
+def _build_member_path(site, member):
+    path = _inside(site['site_dir'], member)
+    if path.suffix != '.py':
+        raise ValueError(f"{site['id']}: owner build member must be Python")
+    return path
+
+
+def _load_build_member(site, member):
+    path = _build_member_path(site, member)
+    namespace = {'__file__': str(path), '__name__': 'site_build_' + sha256(str(path).encode()).hexdigest()[:16]}
+    # Compile source afresh without writing bytecode into the movable body.
+    exec(compile(path.read_bytes(), str(path), 'exec'), namespace)
+    return namespace
+
+
+def _owner_build(site):
+    hook = site.get('build')
+    if hook is None:
+        return None
+    for member in hook.values():
+        _build_member_path(site, member)
+    module = _load_build_member(site, hook['module'])
+    if not callable(module.get('validate')):
+        raise ValueError(f"{site['id']}: owner build must expose validate")
+    if 'derive' in module and not callable(module['derive']):
+        raise ValueError(f"{site['id']}: owner derive is not callable")
+    return {key: module[key] for key in ('validate', 'derive') if key in module}
+
+
+def witness_site_build(site):
+    """Run the declared owner's independent evidence, without naming its schema."""
+    if not site.get('build', {}).get('witness'):
+        return False
+    operations = _owner_build(site)
+    module = _load_build_member(site, site['build']['witness'])
+    if not callable(module.get('witness')):
+        raise ValueError(f"{site['id']}: owner build evidence must expose witness")
+    module['witness'](site['site_dir'], _build_common(), MappingProxyType(operations))
+    return True
+
+
+def derive_site_projection(identity=None):
+    """Explicit owner derivation may repair its projection before normal discovery."""
+    sites = _site_manifests()
+    matches = [site for site in sites if site['id'] == identity] if identity is not None else [site for site in sites if site['address'] == '']
+    if len(matches) != 1:
+        raise ValueError(f'unknown site identity: {identity}')
+    site = matches[0]
+    owner = _owner_build(site)
+    if owner is None or 'derive' not in owner:
+        raise ValueError(f"{site['id']}: owner has no derive operation")
+    projection = owner['derive'](site['site_dir'], _build_common())
+    owner['validate'](projection, site['site_dir'], _build_common())
+    payload = json.dumps(projection, ensure_ascii=False, indent=2) + '\n'
+    path = _inside(site['site_dir'], site['projection'], must_exist=False)
+    path.write_text(payload, encoding='utf-8')
+    return path
+
+
+def _site_manifests():
     found = []
     ids, addresses = set(), set()
     site_files = _population_site_files()
@@ -347,6 +329,16 @@ def discover_sites():
         if address in addresses:
             raise ValueError(f'exact raw site address already occupied: {address or "ε"}; differentiate before admitting another holon')
         ids.add(data['id']); addresses.add(address)
+        found.append({**data, 'address': address, 'physical_address': physical, 'site_dir': site_dir})
+    if len([site for site in found if site['address'] == '']) != 1:
+        raise ValueError('Display site-space must contain exactly one overview site-holon')
+    return sorted(found, key=lambda site: (len(site['address']), site['address'], site['id']))
+
+
+def discover_sites():
+    found = []
+    for data in _site_manifests():
+        site_dir, address, physical = data['site_dir'], data['address'], data['physical_address']
         projection_path = _inside(site_dir, data['projection'])
         renderer_path = _inside(site_dir, data['renderer'])
         style_path = _inside(site_dir, data['style'])
@@ -379,10 +371,9 @@ def discover_sites():
             elif isinstance(projection.get('phenotype'), dict):
                 if any(root['children'][g]['noun'] != projection['phenotype'][g] for g in GENES):
                     raise ValueError(f'{site_dir.relative_to(ROOT)}: feed preview drifted from source phenotype')
-        if data['id'] == 'organism:philosophy':
-            validate_root_projection(projection, site_dir)
-        elif data['id'] == 'organism:papers':
-            validate_papers_projection(projection)
+        owner = _owner_build(data)
+        if owner is not None:
+            owner['validate'](projection, site_dir, _build_common())
         found.append({
             **data,
             'address': address,
@@ -397,25 +388,7 @@ def discover_sites():
             'ui_grid_data': ui_grid,
         })
 
-    roots = [s for s in found if s['address'] == '']
-    if len(roots) != 1:
-        raise ValueError('Display site-space must contain exactly one overview site-holon')
-
-    return sorted(found, key=lambda s: (len(s['address']), s['address'], s['id']))
-
-
-def root_projection():
-    site = next((s for s in discover_sites() if s['id'] == 'organism:philosophy'), None)
-    if not site:
-        raise ValueError('Philosophy site-holon missing')
-    return site['projection_data']
-
-
-def papers_projection():
-    site = next((s for s in discover_sites() if s['id'] == 'organism:papers'), None)
-    if not site:
-        raise ValueError('Papers site-holon missing')
-    return site['projection_data']
+    return found
 
 
 def site_mounts():
@@ -652,12 +625,13 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--artifact', type=Path, default=ROOT/'_site')
     ap.add_argument('--check', action='store_true')
-    ap.add_argument('--derive-root-projection', action='store_true', help='rewrite the overview site projection from its own body')
+    derivation = ap.add_mutually_exclusive_group()
+    derivation.add_argument('--derive-site-projection', metavar='IDENTITY', help='derive the declared projection through its source owner')
+    derivation.add_argument('--derive-root-projection', action='store_true', help='derive the current overview through its source owner')
     args = ap.parse_args()
-    if args.derive_root_projection:
-        site_dir = SITE_ROOT/'philosophy'
-        (site_dir/'projection.json').write_text(json.dumps(derive_root_projection(site_dir), ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
-        print(f'derived {(site_dir/"projection.json").relative_to(ROOT)}'); return
+    if args.derive_site_projection is not None or args.derive_root_projection:
+        path = derive_site_projection(args.derive_site_projection)
+        print(f'derived {path.relative_to(ROOT)}'); return
     target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
         verify_artifact(target); print(f'display membrane exactly matches bundle {asset_bundle_id()}')

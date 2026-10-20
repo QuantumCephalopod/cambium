@@ -17,5 +17,9 @@
   "projection": "projection.json",
   "renderer": "render.js",
   "style": "style.css",
-  "ui_grid": "ui-grid.json"
+  "ui_grid": "ui-grid.json",
+  "build": {
+    "module": "z/projection.py",
+    "witness": "z/projection.test.py"
+  }
 }

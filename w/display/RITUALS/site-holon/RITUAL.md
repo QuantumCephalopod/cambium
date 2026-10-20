@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.18"
+version: "3.19"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -47,6 +47,18 @@ Those body-local members, including `ui-grid.json`, travel with the holon. Centr
 A site may contain further local organism anatomy beyond the site membrane, including only the semantic differentiation its own closure has earned. Every independently rooted site-holon carries its own local receptor and all four separately addressable lifecycle roles: `_stomach`, `_feed`, `_root` and `_waste`, under the shared-root field's shell and homecoming law. Empty roles may use inert retention markers. Missing roles are lifecycle debt, not a smaller legitimate membrane.
 
 Source-derived presentation and local organism ownership coexist. A site may carry public tissue admitted by another organism while owning its renderer, interaction, readiness and local continuity. The source's membrane and HOME do not replace the site's own membrane and HOME. Restore a missing local shell without inventing a semantic split, duplicating source anatomy or promoting another owner's history into local history.
+
+### Owner-local build operations
+
+The v2 manifest may carry an optional `build` object with required `module` and optional `witness`, each a body-relative existing Python member. Absolute paths, body escapes (including symlinks), unknown fields and missing/non-callable operations are refused. Absence leaves the existing generic contract intact; it creates no implicit derivation obligation.
+
+The module exposes `validate(data, body, common)` and may expose `derive(body, common)`. It owns source semantics and may refuse by raising. `body` is the discovered local root, independent of carrier name or Population address. The read-only `common` mapping lends only inherited `genes`, `apertures`, `load_yaml`, `validate_index` and `validate_cambium`; it contains no host root, source identity registry or specimen schema. Owner code reads its own members and must not import a fixed enclosing repository location. Modules are reacquired from source without writing bytecode into the body.
+
+If declared, the separate witness member exposes `witness(body, common, operations)`, with a read-only mapping of the owner's available `validate`/`derive` functions. `y/check.py` invokes these positive/refusal witnesses generically. Their source-specific counterexamples remain in the body. An owner predicate alone does not replace independent evidence.
+
+Normal discovery/publication only validates. Explicit `python3 y/build.py --derive-site-projection IDENTITY` locates the current body by stable identity, derives and validates its candidate, then writes only the declared projection. This can repair a missing, malformed or stale projection; a refused candidate preserves old bytes. An owner without `derive` cannot be regenerated through this hook. The legacy `--derive-root-projection` selects whichever owner currently occupies overview, without naming a source body. Neither operation changes mount identity or invents content.
+
+The hook is trusted repository build code, not a sandbox for untrusted execution. Source-only Python members and witness files are not admitted to the runtime registry or public artifact. Common publication path/privacy/collision checks remain enclosing-host obligations. A whole-body move must preserve acceptance, independent evidence and explicit derivation with zero internal edits.
 
 ### Identity-owned static public aperture
 

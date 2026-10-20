@@ -295,8 +295,9 @@ def main():
         ('organism:datenschutz','main','z'),
         ('organism:impressum','main','xz'),
     },'tree-derived mount relation changed')
-    check(build.root_projection()['source']['organism']=='philosophy','Philosophy projection is not derived from its own body')
-    check(build.papers_projection()['source']=='papers/_feed','Papers projection boundary changed')
+    for site in sites:
+        if build.witness_site_build(site):
+            check(True, f'{site["id"]}: owner build evidence passed')
 
     build_source=(ROOT/'y/build.py').read_text(encoding='utf-8')
     check("site-mounts.json" not in build_source,'flat site-mounts.json remains build authority')
@@ -460,6 +461,7 @@ def main():
         print('Software GLES witness unavailable on this host; no real-shader execution claim.')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')
+    result=subprocess.run(['python3',str(ROOT/'y/test-site-build.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'owner build boundary failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-population-discovery.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'Population discovery crossed a body/lifecycle membrane')
     result=subprocess.run(['python3',str(crawler/'y'/'path_privacy.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait path privacy self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'capture.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait capture self-test failed')

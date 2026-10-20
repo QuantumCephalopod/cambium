@@ -18,5 +18,9 @@
   "renderer": "sierpinski.js",
   "style": "sierpinski.css",
   "ui_grid": "ui-grid.json",
-  "feed_preview": "_feed/display-preview.json"
+  "feed_preview": "_feed/display-preview.json",
+  "build": {
+    "module": "validate-projection.py",
+    "witness": "validate-projection.test.py"
+  }
 }
