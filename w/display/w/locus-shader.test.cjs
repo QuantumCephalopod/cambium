@@ -246,3 +246,18 @@ for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [true,fals
  console.log(JSON.stringify({carrier:[width,height],backend:webgl?'WebGL':'Canvas2D',camera_target_travel:travel,stable_identity:true}));
 }
 console.log('PASS — actual camera/body projection carries one lock through descent/ascent/approach/restoration');
+
+/* The compass's shared body frame equals actual production field transforms,
+ * including xz and contained/self-continuing cells, rather than semantic points. */
+for(const [width,height] of [[1280,800],[390,844]]){
+ const tree={...root,children:{...root.children,x:{...root,children:{...root.children,x:root}}}},f=fixture({width,height,tree});
+ for(const ms of [0,13000,42000,99000]){
+  const draws=f.frame(ms).filter(c=>c.type==='draw'&&/\/\/ (custom-|ordinary-)/.test(c.name)),base=width<560?1.42:1.75;
+  for(const [index,key] of f.order.entries()){
+   const body=f.bodies[key],place=N.bodyPlacement(N.collectStructure(tree),body.path),position=N.bodyPosition(N.bodyDrift(place,body.id),ms);
+   for(let j=0;j<3;j++)assert(Math.abs(draws[index].model[12+j]-base*position[j])<1e-6,'compass/field translation and actual clock disagree');
+   assert(Math.abs(draws[index].vao.buffer.data[0])<=place.k,'body mesh retains its contained size');
+  }
+ }
+}
+console.log('PASS — compass host-space physiology equals actual field body transforms at both carriers');

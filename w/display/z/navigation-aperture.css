@@ -4,7 +4,7 @@
  * Shared-locus encounter: aperture lives on the shared compositor seam.
  */
 #mini{
-  --aperture-size:336px;
+  --aperture-size:min(336px,calc(100vh - var(--legal-footer-height,2rem) - 2rem));
   --trigger-shape-inset:7px;
   --trigger-shape-radius:7px;
   --trigger-shape-rotate:0deg;
@@ -207,7 +207,7 @@ html:not([data-composition="split"]):not([data-composition="grid"]) #mini{
   width:calc(var(--hud-t) + 62px);
   height:calc(var(--hud-t) + 80px);
   right:var(--hud-edge);
-  bottom:var(--hud-edge);
+  bottom:calc(var(--hud-edge) + var(--legal-footer-height,2rem) + .5rem);
 }
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini-trigger{width:40px;height:40px;right:0;bottom:0;top:auto;transform:none}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini-trigger::before{inset:5px}
@@ -254,7 +254,7 @@ html[data-composition="grid"] #mini{
   --shell-rotate-closed:45deg;
   --shell-rotate-open:0deg;
   left:50%;
-  top:50%;
+  top:clamp(calc(var(--aperture-size) / 2 + .5rem),50%,calc(100vh - var(--aperture-size) / 2 - var(--legal-footer-height,2rem) - 1rem));
   right:auto;
   bottom:auto;
   transform:translate(-50%,-50%);
@@ -292,7 +292,7 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
   transform:translateY(-.5px);
 }
 @media(max-width:760px){
-  #mini{--aperture-size:286px;bottom:-40px}
+  #mini{--aperture-size:min(286px,calc(100vh - var(--legal-footer-height,2rem) - 2rem));bottom:-40px}
   #mini-core{width:204px;height:204px}
   #navTwin{left:27px;top:28px;width:150px;height:150px}
   #mini #axis-x{left:43px;width:122px;bottom:4px}
@@ -302,7 +302,7 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
   #mini-help{display:none}
 }
 @media(max-width:520px){
-  #mini{--aperture-size:250px;bottom:-34px}
+  #mini{--aperture-size:min(250px,calc(100vh - var(--legal-footer-height,2rem) - 2rem));bottom:-34px}
   #mini-core{width:178px;height:178px}
   #navTwin{left:25px;top:26px;width:128px;height:128px}
   #mini #axis-x{left:39px;width:102px;height:28px}
@@ -313,3 +313,10 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
 @media(prefers-reduced-motion:reduce){
   #mini-pocket,#mini-trigger::before,#mini-pocket::before,#mini-pocket::after{transition-duration:.04s!important;animation-duration:.04s!important}
 }
+
+/* One Display-owned legal slot below the same bounded compass, always reachable
+ * when its pocket closes. Site modules retain link wording and destinations. */
+#mini #legal-links{position:absolute;left:0;right:0;top:calc(100% + .5rem);bottom:auto;width:100%;z-index:4;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:0 .75rem;pointer-events:auto;font:600 var(--type-rn2)/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+#mini #legal-links a{display:flex;align-items:center;min-height:1.5rem;max-width:100%;overflow-wrap:anywhere;color:rgba(238,242,237,.74);text-decoration:none;text-shadow:0 1px 4px var(--bg)}
+#mini #legal-links a:hover,#mini #legal-links a:focus-visible{color:rgba(255,255,255,.98);outline:none;text-decoration:underline;text-underline-offset:.28em}
+@media(max-height:380px){#mini-help{display:none}}

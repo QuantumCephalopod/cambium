@@ -67,36 +67,11 @@ function geometry(cells){const data=[];function tri(a,b,c,region){const no=nrm(c
  * LOD governs content only (pools), never the shape of a body. */
 const CAMERA_MS=330;
 const smooth01=t=>t<=0?0:t>=1?1:t*t*(3-2*t);
-/* A body floats inside its host cell at one organism size, whatever its own depth:
- * organisms refine inward, only composed holons grow outward. */
-/* Content is two ranks smaller than the realized container carrying it. When the
- * container splits, content propagates into the child (self-child for content at the
- * split point, `ua^m ~ ua`) and shrinks with it; its own subdivision is unchanged. */
-const CONTENT_RANKS=2;
-function placement(hostStructure,raw){
-  const realized=new Set(hostStructure.addresses.map(a=>a.path));
-  let p='';for(let i=1;i<=raw.length;i++)if(realized.has(raw.slice(0,i)))p=raw.slice(0,i);
-  if(p===raw&&p)while(realized.has(p+p.at(-1)))p+=p.at(-1);
-  const center=raw.length>p.length?N.cellForPath(raw).center:N.cellForPath(p).center;
-  return Object.freeze({cell:p,center:[...center],k:Math.pow(2,-(p.length+CONTENT_RANKS))});
-}
+const placement=N.bodyPlacement,driftPath=N.bodyDrift,driftAt=N.bodyPosition;
 function bodyGeometry(structure,place){
   const raw=geometry(structure.leaves),k=place.k;
   for(let i=0;i<raw.length;i+=7){for(let j=0;j<3;j++)raw[i+j]*=k}
   return raw;
-}
-/* A body is not pinned to its container's centroid: it drifts inside the space the
- * container bounds, never crossing it (the drift tet is the container shrunk by the
- * body's own extent). */
-const DRIFT_PERIOD_MS=42000;
-function driftPath(place,id){
-  const cell=N.cellForPath(place.cell),c=cell.center,room=Math.max(0,1-place.k/Math.pow(2,-place.cell.length));
-  const tet=cell.tet.map(v=>v.map((x,j)=>c[j]+(x-c[j])*room));
-  return {base:place.center,points:[0,1,2,3].map(i=>pointInTet(tet,{id:id+'·drift-'+i,kind:'source'})),phase:random01(id,'drift-phase')*4,speed:.72+.56*random01(id,'drift-speed')};
-}
-function driftAt(d,now){
-  const u=((now/DRIFT_PERIOD_MS)*d.speed+d.phase)%4,i=Math.floor(u),t=smooth01(u-i),a=d.points[i],b=d.points[(i+1)%4];
-  return a.map((v,j)=>v+(b[j]-v)*t);
 }
 function nodeAt(root,path){let n=root;for(const g of path){n=n?.children?.[g];if(!n)return null}return n}
 function shaderContract(shader){
@@ -104,20 +79,7 @@ function shaderContract(shader){
   if(typeof shader.fragment!=='string'||!shader.fragment.includes('void main')) throw new Error('shader fragment body missing: '+shader.id);
   return shader;
 }
-function hash32(text){
-  let h=2166136261>>>0;
-  for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
-  h^=h>>>16;h=Math.imul(h,0x7feb352d)>>>0;h^=h>>>15;h=Math.imul(h,0x846ca68b)>>>0;h^=h>>>16;
-  return h>>>0;
-}
-function random01(text,salt){return (hash32(text+'·'+salt)+1)/4294967297}
-function pointInTet(tet,spec){
-  let weights=[0,1,2,3].map(i=>-Math.log(Math.max(1e-7,random01(spec.id,i))));
-  const s=weights.reduce((a,b)=>a+b,0);weights=weights.map(v=>v/s);
-  const inset=spec.kind==='holon'?.40:.22;
-  weights=weights.map(v=>(1-inset)*v+inset*.25);
-  return [0,1,2].map(k=>weights.reduce((sum,w,i)=>sum+w*tet[i][k],0));
-}
+function pointInTet(tet,spec){return N.sampleTet(tet,spec.id,spec.kind==='holon'?.40:.22)}
 function fieldPointRecords(structure,projection){
   const specs=Array.isArray(projection?.points)?projection.points:[];
   const byGene=new Map();

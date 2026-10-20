@@ -185,10 +185,11 @@ function globalTargets(){
   for(const id of specs.keys()){
     const m=registry.getMount(id);if(!m||m.scope!==GLOBAL_SCOPE)continue;
     let t=loci.get(m.locus);
-    if(!t){t={path:m.rawAddress,locus:m.locus,interlocutorIds:[],titles:{}};loci.set(m.locus,t)}
+    if(!t){t={path:m.rawAddress,locus:m.locus,interlocutorIds:[],titles:{},bodies:[]};loci.set(m.locus,t)}
     if(m.rawAddress.length<t.path.length||(m.rawAddress.length===t.path.length&&m.rawAddress<t.path))t.path=m.rawAddress;
     if(!t.interlocutorIds.includes(id))t.interlocutorIds.push(id);
     t.titles[id]=siteTitle(id);
+    if(m.rawAddress)t.bodies.push({id,path:m.rawAddress});
   }
   return [...loci.values()].sort((a,b)=>a.path.length-b.path.length||a.path.localeCompare(b.path));
 }

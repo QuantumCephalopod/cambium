@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.40"
+version: "3.41"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -83,6 +83,14 @@ The site-holon owns:
 Therefore two site-holons may look and behave radically differently while the same tetrahedral body moves isomorphically under one global orientation. Shader and local interaction are bound to interlocutor identity, never to global mount address.
 
 Default mutation law: if pressure originates in one site-holon, keep the change inside that body. Lift tissue into Display only when the change is genuinely specimen-agnostic, required by arbitrary future site-holons, and leaves semantic/local behavior in the site body. Central Display must never learn Papers-, Philosophy- or Crawlerbait-specific meaning merely to support their local expression.
+
+### One host space for field and compass
+
+The global compass depicts contained site-body envelopes, not semantic address vertices. The overview field and compass consume the same host-space placement, contained size and identity-seeded drift physiology with the same frame clock. The compass uses the actual overview projection's realized cells and each stable identity's raw mount path; quotient-coalesced targets retain all constituent body frames and their existing encounter group. Semantic address/locus, stable identity, containing cell and physical extent remain distinct. Shared orientation rotates both. The map remains an overview while local camera zoom frames the same world; selecting its moving body silhouette or accommodated label keeps direct target-origin navigation and renderer-refusal/return law.
+
+The compass depicts neutral tetrahedral body envelopes rather than duplicating child shader/content. Labels stay within its measured canvas, are vertically accommodated with leaders to the actual bodies, and prioritize active/hovered targets when available text capacity is exhausted. A closed pocket does not repaint continuous drift; mounted destinations remain available through their existing accessible navigation controls. No empty descendant becomes a destination.
+
+Display owns one legal slot directly below the bounded compass, outside its inert/hidden pocket. Existing legal site modules retain link wording, localization and destinations. Measured link height reserves the necessary viewport margin after wrapping, font readiness, language or resize; single and seam presentations carry the same slot. Exact footer occupancy is published through the common safe-area contract, and plain links opt out of glass. They remain pointer/keyboard reachable with the compass closed. Escape restores trigger focus before closing so focus cannot reopen the pocket.
 
 ### One situated instrument — function arises in encounter
 
@@ -421,3 +429,5 @@ Version3.38 liquid navigation continuity (2026-10-19): owner-held offer lifetime
 Version3.39 capillary coalescence (2026-10-20): a concrete overlap/straight-stretch counterexample earns one compatible liquid exterior, bounded area-preserving viscous shape dynamics and real short-contact separation. Registered contact lifetime and readable apertures remain. Actual live-browser input and native/GLES rendering evidence retain their stated backend limits. No parent anatomy or child meaning changes.
 
 Version3.40 nearest-reservoir return (2026-10-20): unheld, unlocked glass is attracted to the closest live compatible reservoir across free space. Physical short contact remains independent, and held/owner-locked relations retain priority. Deformed viewport bounds also constrain the docking equilibrium. Narrow/wide native production-controller and dynamics witnesses cover return, cancellation, boundary selection, target disappearance and reduced motion; existing optical/semantic contracts remain.
+
+Version3.41 spatial compass and legal slot (2026-10-20): shared contained-body placement/drift replaces independent vertex markers; raw mount paths and quotient-group identity remain. Actual field-transform and compass Canvas2D fixtures witness geometry, rotation, clock, relocation and selection. One measured Display footer slot replaces bottom-left legal placement within the membrane, retaining site-owned links and open/closed access. No parent constitution or site meaning changes.
