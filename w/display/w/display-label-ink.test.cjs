@@ -60,6 +60,21 @@ function fakeGL(){
   gl.created=created;gl.deleted=deleted;return gl;
 }
 
+/* An opaque hovered/focused button owns native foreground ink. Keeping that
+ * same text in a lower canvas makes the button cover it on real WebGL pages. */
+{
+  const f=fixture(),gl=fakeGL(),ink=Ink.create(gl,f.host),r={left:0,top:0,width:400,height:300};
+  let contact=false;f.label.matches=selector=>{assert.equal(selector,'.field-body-label:is(:hover,:focus-visible)');return contact};
+  assert(ink.draw(r,400,300));assert.equal(f.attrs.get('data-display-label-ink'),'gpu');
+  assert(f.styleParent.children[0].textContent.includes('.field-label:not(.field-body-label:is(:hover,:focus-visible))'),'GPU suppression must spare native contact ink');
+  const other={...f.label,nodes:[{data:'Quiet neighbour',parentElement:f.prefix,box:{left:20,top:30,width:100,height:10}}],matches:()=>false};f.host.labels.push(other);
+  contact=true;const runs=T.collect(f.host,f.doc,e=>e.style);
+  assert.deepEqual(runs.map(r=>r.text),['Quiet neighbour'],'contact ink is not also submitted below its opaque surface');
+  assert(ink.draw(r,400,300),'quiet neighbours continue using the optical input');
+  f.host.labels.pop();assert.equal(ink.draw(r,400,300),false);assert.equal(f.attrs.has('data-display-label-ink'),false,'all-native contact cannot leave a stale GPU suppression flag');
+  contact=false;assert(ink.draw(r,400,300));ink.dispose();
+}
+
 /* Range rectangles and inherited opacity remain DOM-derived; shared canvas ancestor
  * opacity is applied by the browser once, rather than baked into the ink twice. */
 {

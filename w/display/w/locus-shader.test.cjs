@@ -72,7 +72,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   const projection={root:tree,points:points?[{id:'point',gene:'w',kind:'source'}]:[]};
   const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,palette:fieldPalette,shader,inspectable,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
-  return {gl,canvas,api,world,shader,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
+  return {gl,canvas,api,world,shader,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index,accept=true){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});if(accept)api.approachBody(events.at(-1).detail.id)}};
 }
 
 function assertClears(f){
@@ -288,3 +288,14 @@ for(const [width,height] of [[1280,800],[390,844]]){
  }
 }
 console.log('PASS — compass host-space physiology equals actual field body transforms at both carriers');
+
+/* A body click requests the membrane immediately; only an accepted Display
+ * transaction starts the real camera. Rejected/busy intent cannot hijack it. */
+for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
+ const f=fixture({width,height,webgl}),control=fixture({width,height,webgl});f.frame(0);control.frame(0);
+ f.clickBody(1,false);assert.equal(f.events.at(-1).type,'sss:enter-body','body intent must precede camera completion');
+ f.frame(100);control.frame(100);assert.deepEqual({...f.api.projectBody('body:b')},{...control.api.projectBody('body:b')},'unaccepted intent changed the field camera');
+ const pane=f.canvas.getBoundingClientRect();f.canvas.getBoundingClientRect=()=>({...pane,left:120,top:60});const before=f.api.projectBody('body:b');f.labels.children.filter(n=>n.className==='field-label field-body-label')[1].click({detail:0,clientX:0,clientY:0,preventDefault(){},stopPropagation(){}});assert.deepEqual({...f.events.at(-1).detail.origin},{x:120+before.x,y:60+before.y},'keyboard entry uses the actual body origin in the viewport');assert(f.api.approachBody('body:b'));f.frame(430);
+ assert(f.api.projectBody('body:b').r>before.r*1.5,'accepted phase must zoom the actual moving body');assert.equal(f.api.approachBody('absent'),false);
+}
+console.log('PASS — immediate body intent, admission-owned camera and actual wide/narrow approach on both backends');

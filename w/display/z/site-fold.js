@@ -42,10 +42,11 @@
         layer.hidden=false;
         await nextFrame();
         layer.dataset.fold='closing';
+        context.onClosing?.(duration);
         await wait(duration);
         layer.dataset.fold='closed';
         if(typeof mutator==='function') await mutator();
-        await wait(reduced?0:54);
+        await nextFrame();
         layer.dataset.fold='opening';
         await wait(duration);
         return true;

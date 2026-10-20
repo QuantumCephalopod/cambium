@@ -30,6 +30,8 @@ const orientation=JSON.stringify(f.W.orientation),view=f.W.view;
 assert.equal(f.document.documentElement.dataset.inverse,'false');
 const inverse=f.elements.get('inverse-mode');inverse.checked=true;inverse.change();
 assert.equal(f.document.documentElement.dataset.inverse,'true','the existing inverse control must have a global material consequence');
+const inverseSheets=['../w/root-view.css','site-runtime.css'].map(file=>fs.readFileSync(path.join(__dirname,file),'utf8')).join('\n');
+assert.equal((inverseSheets.match(/filter\s*:\s*invert\(1\)/g)||[]).length,1,'one global inverse must not cancel itself through a second ancestor filter');
 inverse.checked=false;inverse.change();assert.equal(f.document.documentElement.dataset.inverse,'false');
 assert.equal(JSON.stringify(f.W.orientation),orientation);assert.equal(f.W.view,view);assert.equal(f.W.language,'de');
 f.buttons.find(b=>b.dataset.lang==='en').click();

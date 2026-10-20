@@ -58,8 +58,26 @@
       if(hit&&(!best||d<best.d))best={t,d};
     }return best?best.t:null;
   }
-  function lockTo(L,t){if(!t)return L;L.lock={id:t.id,kind:t.kind};L.attached=false;L.docked=false;L.homeId=null;L.fx=L.fy=L.fvx=L.fvy=0;return L}
+  function lockTo(L,t){if(!t)return L;L.departure=null;L.lock={id:t.id,kind:t.kind};L.attached=false;L.docked=false;L.homeId=null;L.fx=L.fy=L.fvx=L.fvy=0;return L}
   function unlock(L){L.lock=null;return L}
+  /* A declared membrane departure is different from a temporarily missing
+   * projection. The same unheld world drop leaves contact under the camera's
+   * closing cover. Its measured outward route ends at the viewport boundary. */
+  function depart(L,origin,view,duration=.38){
+    if(!L||L.held||L.lock?.kind!=='body'||!view||view.w<=0||view.h<=0)return L;
+    const e=extent(L);let x=L.x-n(origin?.x??view.w/2),y=L.y-n(origin?.y??view.h/2);
+    if(Math.hypot(x,y)<1){x=L.vx;y=L.vy}
+    if(Math.hypot(x,y)<1){
+      const edges=[{d:L.x-e.x,x:-1,y:0},{d:view.w-e.x-L.x,x:1,y:0},{d:L.y-e.y,x:0,y:-1},{d:view.h-e.y-L.y,x:0,y:1}];
+      edges.sort((a,b)=>a.d-b.d);({x,y}=edges[0]);
+    }
+    const length=Math.hypot(x,y);x/=length;y/=length;
+    const dx=x>0?(view.w-e.x-L.x)/x:x<0?(e.x-L.x)/x:Infinity,dy=y>0?(view.h-e.y-L.y)/y:y<0?(e.y-L.y)/y:Infinity;
+    const distance=Math.max(0,Math.min(dx,dy)),seconds=Math.max(.04,n(duration));
+    unlock(L);L.attached=L.docked=false;L.homeId=null;
+    L.departure={x:L.x+x*distance,y:L.y+y*distance,left:seconds,duration:seconds};
+    return L;
+  }
   function ease(value,target,d){const next=target+(value-target)*Math.exp(-12*d);return Math.abs(next-target)<1e-5?target:next}
   function spring(L,key,want,d){
     const v=key+'V';L[v]+=(K.stiff*(want-L[key])-K.damp*L[v])*d;L[key]+=L[v]*d;
@@ -116,8 +134,16 @@
     if(view)L.baseR=radiusOf(null,view);L.U=L.baseR/60;
     if(L.lock&&!L.held&&!(target&&target.id===L.lock.id&&target.kind===L.lock.kind))unlock(L);
     const parts=Math.max(1,Math.ceil(dt/(1/120))),d=dt/parts;
+    if(reduced&&L.departure){L.departure=null;settle(L,hs,view,null);return L}
     if(L.lock&&!L.held){for(let i=0;i<parts;i++){stepLocked(L,target,d,view);capillaryStep(L,null,d);if(target.kind==='body')boundBody(L,view);opticsStep(L,d)}if(reduced)settle(L,hs,view,target);return L}
     for(let i=0;i<parts;i++){
+      if(L.departure&&!L.held){
+        const flow=L.departure,w=6/flow.duration,decay=Math.exp(-w*d);
+        for(const [position,velocity] of [['x','vx'],['y','vy']]){const delta=L[position]-flow[position],c=L[velocity]+w*delta;L[position]=flow[position]+(delta+c*d)*decay;L[velocity]=(L[velocity]-w*c*d)*decay}
+        const radius=L.baseR*K.released;shapeStep(L,radius,radius,radius,d);capillaryStep(L,null,d);opticsStep(L,d);boundBody(L,view);
+        flow.left-=d;if(flow.left<=1e-6)L.departure=null;
+        continue;
+      }
       let h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q))||null;
       if(!h){L.attached=false;L.docked=false}
       const near=nearest(L,hs);
@@ -174,7 +200,7 @@
     return {x:L.x,y:L.y,hx:e.hx,hy:e.hy,boundX:e.x,boundY:e.y,round:shaped?0:1,corner:Math.min(L.corner,e.hx,e.hy),angle:L.angle,wobble:0,phase:0,stretch:Math.exp(L.strain),ax:a?.x??L.x,ay:a?.y??L.y,
       neck:0,smooth:Math.min(L.radius*.5,48*L.U),rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:0,mag:(1-L.protect)*(1-1/K.magnify),protect:L.protect,focus:L.focus,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
-  function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;unlock(L);L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
+  function grab(L,x,y,pid){if(L.held&&L.pid!==pid)return L;L.departure=null;unlock(L);L.held=true;L.pid=pid;L.px=x;L.py=y;L.docked=false;return L}
   function move(L,x,y,pid){if(L.held&&L.pid===pid){L.px=x;L.py=y}return L}
   function release(L,pid){if(L.held&&L.pid===pid){L.held=false;L.pid=null;L.docked=false}return L}
   function contains(L,x,y){const g=geometry(L,null),edge=Math.max(6,(root.SSSDisplayGlass?.readInset?.()??8)*(L.lock?1:L.protect)),c=Math.cos(g.angle),s=Math.sin(g.angle),vx=x-g.x,vy=y-g.y,qx=c*vx+s*vy,qy=-s*vx+c*vy;if(g.round)return Math.hypot(qx/(g.hx+edge),qy/(g.hy+edge))<=1;const r=g.corner,dx=Math.max(0,Math.abs(qx)-g.hx+r),dy=Math.max(0,Math.abs(qy)-g.hy+r);return Math.hypot(dx,dy)<=r+edge}
@@ -301,6 +327,10 @@
     }updatePores(hs);root.requestAnimationFrame(loop);
   }
   function snapshot(){return state&&visible?{lens:geometry(state,homeNow),home:homeNow}:null}
+  function departFrom(origin,duration=380){
+    if(!state||!visible||state.held||state.lock?.kind!=='body')return false;
+    pending=null;cursor.active=false;depart(state,origin,{w:root.innerWidth,h:root.innerHeight},duration/1000);paintPhase();return true;
+  }
   function start(){
     if(started||typeof document!=='object')return;started=true;
     el=document.createElement('div');el.id='display-lens';el.setAttribute('aria-label','Glass drop');el.setAttribute('role','button');el.tabIndex=0;
@@ -326,5 +356,5 @@
     });
     root.requestAnimationFrame(loop);
   }
-  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,offer,withdraw,resolveTargets});
+  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,depart,departFrom,offer,withdraw,resolveTargets});
 });

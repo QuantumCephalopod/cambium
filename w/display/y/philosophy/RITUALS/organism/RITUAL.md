@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.6"
+version: "1.7"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -89,7 +89,7 @@ Philosophy owns a quiet, opaque `shader.bodyPlaceholder` material for the mounte
 
 Low representations may load behind the placeholder. A ready interior replaces the plain cover, including its own transparency. An unready/refused/failed offer retains the cover, and per-slot owners may paint the shared fallback before ready parts; the site's existing valid media cache survives revisit and higher-tier failure. With GPU glass unavailable, the plain coarse body, labels and entry remain; the reduced Canvas2D representation does not execute those optics. There is no duplicate screenshot, media registry or Philosophy-owned copy of another site's anatomy.
 
-The exact liquid-preview nutrient is retired after narrow/wide production-field and software-GLES witness, including all shared surfaces and subpixel edge motion. Stronger title visibility on hover remains independently owned by `_stomach/NUTRIENT__site-name-hover-contrast__20261019.md`. Display owns the shared optical capability and compass/footer geometry.
+The exact liquid-preview nutrient is retired after narrow/wide production-field and software-GLES witness, including all shared surfaces and subpixel edge motion. The stronger-title hover counterexample is closed through shared Display foreground ink; its original carrier retires source-exact to `_waste/NUTRIENT__site-name-hover-contrast__20261019.md`. Display owns the shared optical capability and compass/footer geometry.
 
 ## lifecycle shell
 
@@ -130,3 +130,5 @@ Version1.4 current-law reconciliation (2026-10-19): documentation follows actual
 Version1.5 liquid-gated miniatures (2026-10-20): the host owns its plain material while Display reveals each actual admitted coarse body under every common liquid surface. Native/software-GLES routing, placeholder/readiness, local64/entered512, failure and revisit witnesses close this nutrient. Browser rasterization and device frame time remain outside the evidence; semantic anatomy, mounts and child-owned media policies remain unchanged.
 
 Version1.6 actual-interior counterexample (2026-10-20): the prior all-body cover flattened primitive materials and obscured transparent Papers tissue. Only actual finer offers are gated; ordinary Crawlerbait/legal skins are restored. Papers uses its own chamber/shell/ember renderer and the host input begins before covers. Actual source-renderer pixel comparisons supplement earlier procedural-mask evidence. No new Crawl/Legal interior or higher/detail acquisition is claimed.
+
+Version1.7 contact-name visibility (2026-10-20): hovered/focused site names remain native visible foreground above their own button surface; quiet names continue through shared optical ink. The same body, title, anchor and entry remain. This closes the original hover nutrient without a Philosophy-specific style override; shared inverse and concurrent passage remain Display-owned.
