@@ -118,6 +118,9 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   if(typeof shader.decorate==='function')shader.decorate({id,element,canvas,labelHost,projection,localScope});
   const gl=canvas.getContext('webgl2',{antialias:true,alpha:false,premultipliedAlpha:false});
   let GL=null,PG=null;
+  const placeholder=shader.bodyPlaceholder;
+  let PLAIN=null;
+  if(gl&&placeholder){const p=program(gl,placeholder.fragment);PLAIN={p,U:Object.fromEntries(['proj','view','model','time','focus','resolution','pal'].map((k,i)=>[k,gl.getUniformLocation(p,['uProj','uView','uModel','uTime','uFocus','uResolution','uPalette[0]'][i])]))}}
   /* DESCENT — the walked path. The witness is inside exactly one container; ascent
    * pops back through the container it came through. A field bound to the global
    * scope mirrors its container into World View so the navigator reads the same walk. */
@@ -169,7 +172,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   /* FLOATING BODIES — organisms whose host is this field float in their mount cell,
    * drawn with their own identity shader at full geometry, entered by selection. */
   const BODIES=new Map();
-  function releaseBody(B){if(gl){B.release?.({gl});if(B.p)gl.deleteProgram(B.p);if(B.vao)gl.deleteVertexArray(B.vao);if(B.buf)gl.deleteBuffer(B.buf)}}
+  function releaseBody(B){if(gl){B.release?.({gl});if(B.p)gl.deleteProgram(B.p);if(B.vao)gl.deleteVertexArray(B.vao);if(B.plainVAO)gl.deleteVertexArray(B.plainVAO);if(B.buf)gl.deleteBuffer(B.buf)}}
   function floatingBodies(){
     for(const B of BODIES.values())B.active=false;
     if((!gl&&!ctx)||typeof bodies!=='function')return [];
@@ -180,16 +183,21 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(!B||B.key!==b.shader.id+'|'+b.path){
         if(B)releaseBody(B);
         try{
+          try{b.shader.preload?.()}catch(err){canvas.dataset.previewError=String(err?.message||err)}
           const place=placement(structure,b.path),material=b.shader.body||b.shader;
           const ownCells=typeof material.cells==='function'?material.cells({projection:b.projection,root:b.root}):null;
           if(ownCells&&(!Array.isArray(ownCells)||ownCells.some(c=>!Array.isArray(c.tet)||c.tet.length!==4||c.tet.some(v=>!Array.isArray(v)||v.length!==3||v.some(x=>!Number.isFinite(x)||Math.abs(x)>2)))))throw new Error('invalid site-owned coarse cells');
           const g=bodyGeometry(ownCells?{leaves:ownCells}:N.collectStructure(b.root),place);
-          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],count:g.length/7,preview:b.shader.preview,draw:material.draw,release:material.release,projection:b.projection,state:material.state||{},colors:paletteSet(b.palette),mesh:gl?null:g,fallbackAlpha:Number(material.fallbackAlpha??.28),ready:true};
+          const bounds=[[Infinity,-Infinity],[Infinity,-Infinity],[Infinity,-Infinity]];
+          for(let i=0;i<g.length;i+=7)for(let j=0;j<3;j++){bounds[j][0]=Math.min(bounds[j][0],g[i+j]);bounds[j][1]=Math.max(bounds[j][1],g[i+j])}
+          const corners=Array.from({length:8},(_,i)=>bounds.map((b,j)=>Number.isFinite(b[(i>>j)&1])?b[(i>>j)&1]:0));
+          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],corners,count:g.length/7,preview:b.shader.preview,draw:material.draw,release:material.release,projection:b.projection,state:material.state||{},colors:paletteSet(b.palette),mesh:gl?null:g,fallbackAlpha:Number(material.fallbackAlpha??.28),ready:true};
           if(gl){
             const bp=program(gl,material.fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer();
             gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g,gl.STATIC_DRAW);
             for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(bp,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}
             Object.assign(B,{p:bp,vao:bvao,buf:bbuf,U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}});
+            if(PLAIN){B.plainVAO=gl.createVertexArray();gl.bindVertexArray(B.plainVAO);for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(PLAIN.p,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}}
           }
         }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
         BODIES.set(b.id,B);
@@ -198,7 +206,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }
     return out;
   }
-  addEventListener('pagehide',()=>{for(const B of BODIES.values())releaseBody(B)});
+  addEventListener('pagehide',()=>{for(const B of BODIES.values())releaseBody(B);if(PLAIN)gl.deleteProgram(PLAIN.p)});
   const bodyLabels=new Map(),labelSizes=new WeakMap();
   const labelObserver=typeof ResizeObserver==='function'?new ResizeObserver(entries=>{for(const e of entries){const b=e.borderBoxSize?.[0];labelSizes.set(e.target,{w:b?.inlineSize??e.contentRect.width,h:b?.blockSize??e.contentRect.height})}}):null;
   addEventListener('pagehide',()=>labelObserver?.disconnect());
@@ -386,7 +394,7 @@ uniform sampler2D uScene;uniform sampler2D uPreview;uniform int uPreviewReady;un
 uniform vec4 uA;uniform vec4 uB;uniform vec4 uC;uniform vec4 uT;uniform vec4 uH;
 uniform vec4 uHome;uniform vec4 uHomeRead;uniform vec4 uL0;uniform vec4 uL1;uniform vec4 uL2;uniform vec4 uN;
 out vec4 outColor;
-vec2 gShift=vec2(0.);float gInside=0.,gLit=0.,gShade=0.,gRim=0.;
+vec2 gShift=vec2(0.);float gInside=0.,gLit=0.,gShade=0.,gRim=0.,gDistance=1e9;
 vec2 cmul(vec2 a,vec2 b){return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x);}
 float sdBox(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+min(max(q.x,q.y),0.)-r;}
 float smin(float a,float b,float k){float h=max(k-abs(a-b),0.)/max(k,1e-3);return min(a,b)-h*h*k*.25;}
@@ -416,6 +424,7 @@ float dots(vec2 fc,float ink){
   return 1.-smoothstep(r-aa,r+aa,length(f));
 }
 void surface(float d,vec2 n,float bevW,vec2 pc,vec2 p,float mag){
+  gDistance=min(gDistance,d);
   if(d>=0.){gShade=max(gShade,smoothstep(uC.x,0.,d)*uC.y);return;}
   float bev=clamp(uA.y*2.*bevW,2.,uA.z),t=clamp(-d/bev,0.,1.),edge=1.-t,slope=edge*edge;
   gShift+=cmul(n,vec2(cos(uC.z),sin(uC.z)))*min(uA.w,.9*bev)*slope;
@@ -456,10 +465,10 @@ void main(){
   c.r=texture(uScene,(frag+gShift*(1.-uB.x))/uRes).r;
   c.g=texture(uScene,(frag+gShift)/uRes).g;
   c.b=texture(uScene,(frag+gShift*(1.+uB.x))/uRes).b;
-  /* The interior takes precisely the same optical coordinates as the scene.
-   * Its transparent target contributes only inside the existing lens shape. */
-  if(uPreviewReady>0&&uN.x>-.5){
-    float mask=1.-smoothstep(-1.,1.,sdLens(frag));
+  /* Every liquid surface reveals the same admitted interior through its exact
+   * shared exterior and optical map, including a merged capillary neck. */
+  if(uPreviewReady>0){
+    float mask=1.-smoothstep(-1.,1.,gDistance);
     vec4 pr=texture(uPreview,(frag+gShift*(1.-uB.x))/uRes);
     vec4 pg=texture(uPreview,(frag+gShift)/uRes);
     vec4 pb=texture(uPreview,(frag+gShift*(1.+uB.x))/uRes);
@@ -505,19 +514,28 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.disable(gl.BLEND);gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(unit0);
   }
   function resetLabelInk(){labelInk?.reset();canvas.dataset.refractedLabels='0'}
-  function drawLabelInk(r,w,h){
+  function drawLabelInk(r,w,h,additionalTarget=null){
     const Ink=globalThis.SSSDisplayLabelInk;if(!Ink||!labelHost)return;
     if(!labelInk)labelInk=Ink.create(gl,labelHost);
-    canvas.dataset.refractedLabels=labelInk.draw(r,w,h)?'1':'0';
+    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget)?'1':'0';
   }
   addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview()});
   function disposePreview(){if(!PREVIEW)return;gl.deleteFramebuffer(PREVIEW.fb);gl.deleteRenderbuffer(PREVIEW.depth);gl.deleteTexture(PREVIEW.tex);PREVIEW=null}
   function drawPreview(g,fb,r,d,w,h,proj,view,t,base,ms){
-    const ln=g?.snap?.lens;if(!ln)return false;
+    if(!g)return false;
+    const k=g.pack.scale,ln=g.snap?.lens,q=g.Gm.PARAMS,footprints=[];
+    for(let i=0;i<g.pack.count;i++){const a=g.pack.data.subarray(i*4,i*4+4);footprints.push([a[0]/k,r.height-a[1]/k,a[2]/k,a[3]/k])}
+    const home=g.snap?.home;
+    if(home){const hp=g.Gm.derive([{rect:home.rect,readRect:home.readRect,inset:home.inset}],r,{width:w,height:h});if(hp.count){const a=hp.data;footprints.push([a[0]/k,r.height-a[1]/k,a[2]/k,a[3]/k])}}
+    if(ln)footprints.push([ln.x-r.left,ln.y-r.top,Math.max(ln.hx,ln.hy),Math.max(ln.hx,ln.hy)]);
+    /* Bound the existing optical displacement, including independent overlapping
+     * surfaces, channel spread, top wave and capillary edge. No source scan. */
+    const pad=((q.refract||0)*(1+Math.abs(q.aberr||0))+(q.mag||0)*Math.max(r.width,r.height))*(g.pack.count+1)+(ln?.mag||0)*Math.max(r.width,r.height)+(ln?.smooth||0)+(q.overfillWave||0)+2;
     const candidates=fb.filter(B=>{
-      if(typeof B.preview!=='function')return false;
-      const center=project(B.pos,r),corners=N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),r)),radius=Math.max(...corners.map(p=>Math.hypot(p.x-center.x,p.y-center.y)));
-      return Math.hypot(center.x-(ln.x-r.left),center.y-(ln.y-r.top))<=radius+Math.max(ln.hx,ln.hy);
+      if(!placeholder&&typeof B.preview!=='function')return false;
+      const center=project(B.pos,r),corners=B.corners.map(v=>project(v.map((x,j)=>B.pos[j]+x),r));
+      const radius=Math.max(...corners.map(p=>Math.hypot(p.x-center.x,p.y-center.y)));
+      return footprints.some(([x,y,hx,hy])=>Math.abs(center.x-x)<=hx+radius+pad&&Math.abs(center.y-y)<=hy+radius+pad);
     });
     if(!candidates.length)return false;
     const target=gl.getParameter(gl.FRAMEBUFFER_BINDING),texture=gl.getParameter(gl.TEXTURE_BINDING_2D),rb=gl.getParameter(gl.RENDERBUFFER_BINDING);
@@ -532,9 +550,20 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw new Error('preview target incomplete');
       }
       gl.bindFramebuffer(gl.FRAMEBUFFER,PREVIEW.fb);gl.viewport(0,0,w,h);prepareClear();gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+      /* The alternate input starts with this frame's complete scene. Empty or
+       * failed content retains it; the same foreground ink is applied after
+       * the owner draws, keeping labels above both representations. */
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER,SCENE.ms);gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER,PREVIEW.fb);
+      gl.blitFramebuffer(0,0,w,h,0,0,w,h,gl.COLOR_BUFFER_BIT,gl.NEAREST);gl.bindFramebuffer(gl.FRAMEBUFFER,PREVIEW.fb);
       for(const B of candidates){
-        const previewModel=model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k));
-        B.preview({gl,proj,view,model:previewModel,ms,rect:r,dpr:d,lens:null});
+        try{
+          gl.bindFramebuffer(gl.FRAMEBUFFER,PREVIEW.fb);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.disable(gl.SCISSOR_TEST);
+          if(placeholder&&(typeof B.draw==='function'||typeof B.preview!=='function'))drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,false,true);
+          else{
+            const previewModel=model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k));
+            B.preview({gl,proj,view,model:previewModel,ms,rect:r,dpr:d,lens:null});
+          }
+        }catch(err){canvas.dataset.previewError=String(err?.message||err)}
       }
       return true;
     }catch(err){canvas.dataset.previewError=String(err?.message||err);return false}
@@ -640,6 +669,23 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       ctx.fillStyle=`rgba(${color.map(v=>Math.round(v*255)).join(',')},${alpha})`;ctx.fill();ctx.strokeStyle='rgba(241,239,233,.22)';ctx.stroke();
     }
   }
+  function drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,plain=false,inputOnly=false){
+    const bs=plain?placeholder.state||{}:B.state;if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
+    if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
+    const bm=model(W.orientation,base*t.scale,t.center.map((v,j)=>v-B.pos[j]));
+    if(!plain&&typeof B.draw==='function'){
+      const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);let drawn=false;
+      try{drawn=B.draw({gl,proj,view,model:model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k)),projection:B.projection,ms,rect:r,dpr:d,orientation:W.orientation})!==false}
+      catch(err){canvas.dataset.bodyError=String(err?.message||err)}
+      finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.disable(gl.SCISSOR_TEST)}
+      if(drawn||inputOnly)return;
+      if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
+      if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
+    }
+    const P=plain?PLAIN:B;gl.useProgram(P.p);gl.uniformMatrix4fv(P.U.proj,false,proj);gl.uniformMatrix4fv(P.U.view,false,view);gl.uniformMatrix4fv(P.U.model,false,bm);
+    if(P.U.time)gl.uniform1f(P.U.time,ms*.001);if(P.U.focus)gl.uniform1f(P.U.focus,-1);if(P.U.resolution)gl.uniform2f(P.U.resolution,w,h);if(P.U.pal)gl.uniform3fv(P.U.pal,new Float32Array(B.colors.flat()));
+    gl.bindVertexArray(plain?B.plainVAO:B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
+  }
   function draw(ms){
     if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
@@ -672,23 +718,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       gl.uniform1f(GL.U.time,ms*.001);gl.uniform1f(GL.U.focus,focus);if(GL.U.resolution)gl.uniform2f(GL.U.resolution,w,h);gl.uniform3fv(GL.pal,new Float32Array(colors.flat()));
       if(typeof shader.beforeDraw==='function')shader.beforeDraw({gl,program:GL.p,ms,focus,width:w,height:h,orientation:W.orientation});
       gl.bindVertexArray(GL.vao);gl.drawArrays(gl.TRIANGLES,0,GL.count);
-      for(const B of fb){
-        const bs=B.state;if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
-        if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
-        const bm=model(W.orientation,base*t.scale,t.center.map((v,j)=>v-B.pos[j]));
-        if(typeof B.draw==='function'){
-          const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);let drawn=false;
-          try{B.draw({gl,proj,view,model:model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k)),projection:B.projection,ms,rect:r,dpr:d,orientation:W.orientation});drawn=true}
-          catch(err){canvas.dataset.bodyError=String(err?.message||err)}
-          finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.disable(gl.SCISSOR_TEST)}
-          if(drawn)continue;
-          if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
-          if(bs.depthTest===false)gl.disable(gl.DEPTH_TEST);else gl.enable(gl.DEPTH_TEST);gl.depthMask(bs.depthWrite!==false);
-        }
-        gl.useProgram(B.p);gl.uniformMatrix4fv(B.U.proj,false,proj);gl.uniformMatrix4fv(B.U.view,false,view);gl.uniformMatrix4fv(B.U.model,false,bm);
-        if(B.U.time)gl.uniform1f(B.U.time,ms*.001);if(B.U.focus)gl.uniform1f(B.U.focus,-1);if(B.U.resolution)gl.uniform2f(B.U.resolution,w,h);if(B.U.pal)gl.uniform3fv(B.U.pal,new Float32Array(B.colors.flat()));
-        gl.bindVertexArray(B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
-      }
+      for(const B of fb)drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,!!placeholder);
       /* SITE LAYER — an identity-owned shader may draw its own layer inside this
        * field's Descent frame (same camera, orientation and container), beneath the
        * point layer. Meaning stays in the site; Display only lends the frame. */
@@ -699,7 +729,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       }
       drawPointsGL(proj,view,mdl,d);
       {const comp=glass?compositeSources():null;if(comp?.length)drawComposite(comp,w,h);const on=comp?.length?'1':'0';if(canvas.dataset.composite!==on)canvas.dataset.composite=on}
-      if(glass){drawLabelInk(r,w,h);const previewReady=drawPreview(glass,fb,r,d,w,h,proj,view,t,base,ms);glassEnd(glass,w,h,previewReady)}else resetLabelInk();
+      if(glass){const previewReady=drawPreview(glass,fb,r,d,w,h,proj,view,t,base,ms);drawLabelInk(r,w,h,previewReady?PREVIEW.fb:null);glassEnd(glass,w,h,previewReady)}else resetLabelInk();
     }else if(ctx){
       resetLabelInk();
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);

@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.15"
+version: "3.16"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -170,6 +170,8 @@ A site-holon floats as content inside its host's cell. Its field therefore stand
 
 Seen from its host, a site-holon is a floating body: its own realized geometry at full resolution, drawn with its own identity shader, two ranks smaller than the realized container carrying it, whatever its internal depth, drifting within that container and carrying its title as an attached, selectable label (navigation `Descent`, bodies). Entering the body is Descent across the membrane; inside, the host is present only as that environment. A site whose generic field shader draws nothing may supply its actual coarse cells/draw through the neutral body coupling. A custom entered renderer alone does not supply that outer representation.
 
+A containing host may offer its own `shader.bodyPlaceholder` material so that a floating site's actual coarse representation is revealed only by the common liquid. The site keeps its cells/draw/material, source boundary and readiness; a placeholder is presentation, not a new site identity or an acquisition permission. All shared liquid surfaces use the same optical mask, including HUD-only contact. A failed/unready own draw leaves the plain body present, and low-tier preloading remains bounded by the owner's existing contract. Without GPU glass, the offered coarse geometry and entry remain while liquid optics are unavailable. Hosts that do not offer a placeholder keep their existing body path.
+
 A site-local shader may change color, transparency, grain, blur, density or other material qualities without changing the shared tetrahedral topology. Local interaction may manipulate or populate that same body without replacing global orientation or global site navigation.
 
 ## Activity
@@ -242,3 +244,5 @@ Version3.13 readable-frame ownership (2026-10-19): site-offered field/body recta
 Version3.14 offer lifetime (2026-10-19): `offer` retains a stable contact identity through temporary missing projection and same-frame renderer renewal; `withdraw` on actual departure/unmount ends it. Owners keep target meaning and must withdraw genuinely ended relations. Display dampens pending motion and resumes from current measured geometry without a timeout, then carries true release continuously into eligible liquid or free glass. This common capability does not implement a child's body approach, genealogy or Being handover.
 
 Version3.15 capillary geometry (2026-10-20): Display lends the same drop's orientation and principal half axes alongside the legacy inscribed radius. Free glass can deform with conserved projected area under strain; settled locked frames retain their owner-offered reading geometry. Compatible reservoirs coalesce through one common exterior. Source-owned presentation/meaning remains local, and no richer body approach, camera semantics or new site mode is earned here.
+
+Version3.16 liquid-gated host representation (2026-10-20): the optional host-owned placeholder lends presentation policy without taking child content or readiness authority. The existing preview input and shared liquid exterior carry the coarse reveal; no detailed acquisition, site mode or separate lens is earned.

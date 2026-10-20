@@ -10,7 +10,7 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null}={}){
+function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
   const calls=[],frames=[],queue=[],timers=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
@@ -22,7 +22,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.shaderSource=(shader,body)=>{shader.source=body};gl.attachShader=(program,shader)=>program.shaders.push(shader);
   gl.getShaderParameter=gl.getProgramParameter=()=>true;gl.getUniformLocation=(program,name)=>({program,name});
   gl.getAttribLocation=(_,name)=>({aPos:0,aNormal:1,aRegion:2,aKind:3,aHot:4}[name]??0);
-  gl.getParameter=k=>k===gl.MAX_SAMPLES?4:k===gl.ACTIVE_TEXTURE?textureUnit:k===gl.TEXTURE_BINDING_2D?null:null;
+  gl.getParameter=k=>k===gl.MAX_SAMPLES?4:k===gl.ACTIVE_TEXTURE?textureUnit:k===gl.FRAMEBUFFER_BINDING?drawTarget:k===gl.TEXTURE_BINDING_2D?null:null;
   Object.setPrototypeOf(gl,{bindFramebuffer(target,fb){if(target===gl.READ_FRAMEBUFFER)readTarget=fb;else if(target===gl.DRAW_FRAMEBUFFER)drawTarget=fb;else drawTarget=readTarget=fb}});
   gl.checkFramebufferStatus=()=>gl.FRAMEBUFFER_COMPLETE;
   gl.depthMask=v=>{values.depth=v};gl.colorMask=(...v)=>{values.color=v};gl.clearDepth=v=>{values.clearDepth=v};
@@ -52,9 +52,9 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   const canvas=element();Object.assign(canvas,{width,height,getContext:type=>type==='2d'?ctx2d:webgl?gl:null,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
   const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
-  if(glass){const G=require('../z/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
-  if(preview||lens)context.SSSDisplayLens={snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:typeof lensHome==='function'?lensHome():lensHome})};
-  context.SSSDisplayLabelInk={create:()=>({draw:()=>true,reset(){},dispose(){}})};
+  if(glass){const G=require('../z/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:preview||lens?0:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
+  if(lens!==false&&(preview||lens))context.SSSDisplayLens={snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:typeof lensHome==='function'?lensHome():lensHome})};
+  context.SSSDisplayLabelInk={create:()=>({draw:(_r,_w,_h,additionalTarget)=>{calls.push({type:'labelInk',target:drawTarget,additionalTarget});return true},reset(){},dispose(){}})};
   vm.createContext(context);vm.runInContext(source,context,{filename:SOURCE});
   const bodies={a:{id:'body:a',path:'w',root,shader:{id:'shader:a',fragment:fragment('ordinary-a'),state:{blend:true,depthTest:true,depthWrite:false}}},
     b:{id:'body:b',path:'x',root,shader:{id:'shader:b',fragment:fragment('field-b'),body:{fragment:fragment('custom-b'),state:{blend:true,depthTest:true,depthWrite:true}}}},
@@ -63,6 +63,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
     e:{id:'body:e',path:'xz',root,shader:{id:'shader:e',fragment:fragment('ordinary-e'),state:{blend:true,depthTest:true,depthWrite:false}}}};
   if(preview)bodies.b.shader.preview=args=>calls.push({type:'preview',target:drawTarget,lens:args.lens});
   const shader={id:'fixture:field',fragment:fragment('field'),state:{blend:true,depthTest:true,depthWrite:false}};
+  if(bodyPlaceholder)shader.bodyPlaceholder=typeof bodyPlaceholder==='object'?bodyPlaceholder:{fragment:fragment('plain-body'),state:{blend:false,depthTest:true,depthWrite:true}};
   if(fallbackAlpha!==undefined)shader.fallbackAlpha=fallbackAlpha;
   if(snapshot)shader.snapshot=snapshot;if(afterDraw)shader.afterDraw=afterDraw;
   if(composite)shader.composite=()=>[{width:16,height:16}];
@@ -70,7 +71,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   const projection={root:tree,points:points?[{id:'point',gene:'w',kind:'source'}]:[]};
   const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,shader,inspectable,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
-  return {gl,canvas,api,world,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
+  return {gl,canvas,api,world,shader,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0})}};
 }
 
 function assertClears(f){
@@ -123,6 +124,7 @@ for(const [width,height] of [[1280,800],[390,844]])for(const bodyIndex of [1,2])
   const f=fixture({preview:true});f.frame(0);f.frame(50);assertClears(f);
   for(const frame of f.frames){const p=frame.findIndex(c=>c.type==='preview'),g=frame.findIndex(c=>c.type==='draw'&&c.name.includes('uniform sampler2D uScene'));
     assert(p>=0&&g>p,'preview must be optical input before final glass, not a post-pass overlay');assert(frame[p].target,'preview needs separate transparent target');assert.equal(frame[p].lens,null,'premature circular clipping loses refracted edge input');assert.equal(frame[g].previewReady,1);
+    const ink=frame.find(c=>c.type==='labelInk');assert.equal(ink.additionalTarget,frame[p].target,'foreground ink must cover the alternate input with the same batch');assert(frame.indexOf(ink)>p&&frame.indexOf(ink)<g);
     assert(frame[g].name.includes('texture(uPreview,(frag+gShift*(1.-uB.x))/uRes)')&&frame[g].name.includes('texture(uPreview,(frag+gShift)/uRes)')&&frame[g].name.includes('texture(uPreview,(frag+gShift*(1.+uB.x))/uRes)'),'preview must use all existing optical channel coordinates');
   }
 }
@@ -209,6 +211,30 @@ for(const webgl of [true,false]){
  f.bodies.b.path='y';f.frame(50);if(webgl)assert.equal(released,1,'remount retires context-local own resources before rebuilding');
 }
 console.log('PASS — site-owned coarse geometry, shared body frame, failed-draw fallback and remount retirement');
+
+/* A host can lend a plain material while the owners' existing coarse draws stay
+ * behind the common liquid. No glass/backend means no accidental interior. */
+for(const [width,height] of [[1280,800],[390,844]])for(const glass of [false,true]){
+ const f=fixture({width,height,glass,bodyPlaceholder:true,lens:{x:width/2,y:height/2,hx:2000,hy:2000}});
+ let preloads=0,draws=0;f.bodies.b.shader.preload=()=>preloads++;
+ f.bodies.b.shader.body.draw=({gl,model})=>{draws++;assert(Math.abs(model[0]-(width<560?1.42:1.75)*.125)<1e-6);gl.drawArrays(gl.TRIANGLES,0,0);return false};
+ for(const ms of [0,50]){
+  const frame=f.frame(ms),plain=frame.filter(c=>c.type==='draw'&&c.name.includes('// plain-body'));
+  assert.equal(plain.length,5);assert(plain.every(c=>c.count===48));
+  const actual=frame.filter(c=>c.type==='draw'&&/\/\/ (custom-|ordinary-)/.test(c.name)&&c.count);
+  assert.equal(actual.length,glass?4:0);assert(actual.every(c=>c.target&&c.target!==plain[0].target),'interiors escaped into the plain scene');
+ }
+ assert.equal(preloads,1,'low-tier acquisition starts once, even behind a dry placeholder');assert.equal(draws,glass?2:0);
+ f.bodies.b.path='yw';f.frame(100);assert.equal(preloads,2,'relocation renews the body without changing its media owner');
+}
+for(const [width,height] of [[1280,800],[390,844]]){
+ const f=fixture({width,height,bodyPlaceholder:true,lens:false,glassEntries:[{rect:{left:0,top:0,width,height},kind:'hud',layer:'hud'}]});
+ const frame=f.frame(0);assert.equal(frame.filter(c=>c.type==='draw'&&/\/\/ (custom-|ordinary-)/.test(c.name)).length,5,'HUD-only liquid must reveal without a droplette');
+ const noGPU=fixture({width,height,bodyPlaceholder:true,webgl:false});noGPU.bodies.b.shader.body.draw=()=>{throw Error('GPU draw must not run')};noGPU.frame(0);assert(noGPU.api.projectBody('body:b'));
+ const broken=fixture({width,height,bodyPlaceholder:true,preview:true});broken.bodies.b.shader.preview=()=>{throw Error('unready interior')};
+ broken.frame(0);assert.match(broken.canvas.dataset.previewError,/unready interior/);assert.equal(broken.frames[0].filter(c=>c.type==='draw'&&c.name.includes('// plain-body')).length,5);assert(broken.frames[0].some(c=>c.type==='draw'&&c.name.includes('// ordinary-e')),'one failed preview cannot suppress another body');
+}
+console.log('PASS — plain host bodies, hidden low preload, liquid-only own draws, HUD-only reveal, failure isolation, relocation and GPU fallback');
 
 // A live source changes its addressed field without remounting its body or point
 // identity. Empty births, deeper addresses, withdrawal and Canvas2D all matter.

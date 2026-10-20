@@ -22,8 +22,9 @@ const inject=`
   gl.activeTexture(gl.TEXTURE0);
 `;
 const source=transport.replace('  const canvas=element();',inject+'\n  const canvas=element();').replace('if(composite)shader.composite=()=>[{width:16,height:16}];','if(composite)shader.composite=()=>[{width:WIDTH,height:HEIGHT,dataFile:GLYPH_IMAGE}];');
+const ownModules=new Map();vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../y/philosophy/render.js'),'utf8'),{SSSInterlocutorModules:ownModules,addEventListener(){}});
 const [width,height,preview,magnification=.12]=process.argv.slice(2).map(Number),commands=[];
-const context={require,__dirname,process:{env:{LOCUS_SOURCE:process.env.LOCUS_SOURCE}},console:{log(){},warn(){}},ENUMS:enums,COMMANDS:commands,WIDTH:width,HEIGHT:height,PREVIEW:preview,MAGNIFICATION:magnification,GLYPH_IMAGE:process.env.GLYPH_IMAGE,GLYPH_FRAME:process.env.GLYPH_FRAME?JSON.parse(process.env.GLYPH_FRAME):null,READ_SURFACE:process.env.READ_SURFACE?JSON.parse(process.env.READ_SURFACE):null,READ_LOCK:process.env.READ_LOCK||'',READ_REFERENCE:process.env.READ_REFERENCE==='1',COALESCENCE:process.env.COALESCENCE||'',RETURN_PROTECTION:process.env.RETURN_PROTECTION===undefined?null:Number(process.env.RETURN_PROTECTION)};
+const context={require,__dirname,process:{env:{LOCUS_SOURCE:process.env.LOCUS_SOURCE}},console:{log(){},warn(){}},ENUMS:enums,COMMANDS:commands,WIDTH:width,HEIGHT:height,PREVIEW:preview,MAGNIFICATION:magnification,GLYPH_IMAGE:process.env.GLYPH_IMAGE,GLYPH_FRAME:process.env.GLYPH_FRAME?JSON.parse(process.env.GLYPH_FRAME):null,READ_SURFACE:process.env.READ_SURFACE?JSON.parse(process.env.READ_SURFACE):null,READ_LOCK:process.env.READ_LOCK||'',READ_REFERENCE:process.env.READ_REFERENCE==='1',COALESCENCE:process.env.COALESCENCE||'',RETURN_PROTECTION:process.env.RETURN_PROTECTION===undefined?null:Number(process.env.RETURN_PROTECTION),PHILOSOPHY_PLAIN:ownModules.get('organism:philosophy').shader.bodyPlaceholder,REVEAL_SURFACE:process.env.REVEAL_SURFACE||'',REVEAL_READY:process.env.REVEAL_READY==='1',REVEAL_OFFSET:Number(process.env.REVEAL_OFFSET||0)};
 vm.runInNewContext(source+`
 const sample=(name)=>\`#version 300 es
 precision highp float;out vec4 outColor;
@@ -44,8 +45,23 @@ if(COALESCENCE){
  if(COALESCENCE==='proof'){glassParams=null;lensHome.readRect={left:12,top:10,width:WIDTH-24,height:30};entries[0].readRect={left:x+12,top:212,width:WIDTH-x-36,height:220}}
  if(COALESCENCE==='ellipse'){lensHome=null;entries=[];Object.assign(lens,{x:WIDTH/2,y:HEIGHT/2,hx:100,hy:64,angle:.6});glassParams.tint=[.62,.66,.72,.2]}
 }
-const f=fixture({width:WIDTH,height:HEIGHT,webgl:true,glass:true,preview:!!PREVIEW,composite:!!GLYPH_IMAGE,lens:READ_SURFACE&&!READ_LOCK?null:lens,glassEntries:entries,glassReference:READ_REFERENCE,glassParams,lensHome});
-if(PREVIEW)f.bodies.b.shader.preview=()=>{
+if(REVEAL_SURFACE){
+ glassParams={mag:0,refract:0,shadowK:0,spec:0,fres:0,halftone:0,tint:[0,0,0,0]};
+ Object.assign(lens,{x:WIDTH/2,y:HEIGHT/2,hx:80,hy:60,r:60,angle:.4,mag:0,neck:0,smooth:24,kind:'hud',layer:'hud'});
+ if(REVEAL_SURFACE==='top')entries=[{kind:'hud',layer:'hud',rect:{left:0,top:-10,width:WIDTH,height:HEIGHT*.68+10}}];
+ else if(REVEAL_SURFACE==='compass')entries=[{kind:'hud',layer:'hud',rect:{left:WIDTH/2-150,top:HEIGHT*.53,width:174,height:210}}];
+ else if(REVEAL_SURFACE==='merged'){lens.x=WIDTH*.55;lens.y=190;lens.hx=lens.hy=80;lens.angle=0;lensHome={kind:'hud',layer:'hud',rect:{left:0,top:0,width:WIDTH,height:145}};entries=[];}
+ else entries=[];
+ lens.x+=REVEAL_OFFSET;
+}
+const f=fixture({width:WIDTH,height:HEIGHT,webgl:true,glass:REVEAL_SURFACE!=='dry',bodyPlaceholder:REVEAL_SURFACE?PHILOSOPHY_PLAIN:false,preview:!!PREVIEW,composite:!!GLYPH_IMAGE,lens:REVEAL_SURFACE&&['top','compass'].includes(REVEAL_SURFACE)?false:READ_SURFACE&&!READ_LOCK?null:lens,glassEntries:entries,glassReference:READ_REFERENCE,glassParams,lensHome});
+if(REVEAL_SURFACE==='merged'){f.bodies.b.path='w';lens.y=240;lens.hy=lens.hx=100;}
+if(REVEAL_SURFACE)f.bodies.b.shader.body.draw=()=>{
+ if(!REVEAL_READY)return;
+ if(REVEAL_SURFACE==='failed')throw Error('declared failed source');
+ paintInput();
+};
+function paintInput(){
   const gl=f.gl,p=gl.createProgram();
   for(const [type,body] of [[gl.VERTEX_SHADER,\`#version 300 es
   void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);}\`],[gl.FRAGMENT_SHADER,sample()]]){
@@ -53,8 +69,9 @@ if(PREVIEW)f.bodies.b.shader.preview=()=>{
   }
   gl.linkProgram(p);gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.useProgram(p);gl.drawArrays(gl.TRIANGLES,0,3);
   gl.deleteProgram(p);
-};
-f.frame(0);if(!GLYPH_FRAME&&!READ_SURFACE&&!COALESCENCE){const contacted=f.api.projectBody('body:b');lens.x=contacted.x;lens.y=contacted.y;}
+}
+if(PREVIEW)f.bodies.b.shader.preview=paintInput;
+f.frame(0);if(!GLYPH_FRAME&&!READ_SURFACE&&!COALESCENCE&&!REVEAL_SURFACE){const contacted=f.api.projectBody('body:b');lens.x=contacted.x;lens.y=contacted.y;}
 f.frame(50);COMMANDS.push({name:'readback',width:WIDTH,height:HEIGHT,lens:{x:lens.x,y:lens.y,r:lens.r}});
 f.frame(100);COMMANDS.push({name:'readback',width:WIDTH,height:HEIGHT,lens:{x:lens.x,y:lens.y,r:lens.r}});
 `,context,{filename:'actual-field-gles-capture'});
