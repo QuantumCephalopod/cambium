@@ -15,6 +15,7 @@ SITE_ROOT = DISPLAY / 'y'
 GENES = 'wxzy'
 SITE_ID = re.compile(r'^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$')
 UI_GRID_SCHEMA = 'sss.display.ui-grid.v2'
+LIFECYCLE_ROLES = {'_stomach', '_feed', '_root', '_waste'}
 
 
 def scalar(text):
@@ -303,14 +304,38 @@ def _validate_site_manifest(site_dir, data):
     }
 
 
-def discover_sites():
+def _population_site_files():
+    """Read admitted mount positions; never descend through an owned body."""
     if not SITE_ROOT.is_dir():
         raise ValueError('Display Population vertex/site-space is missing')
-    found = []
-    ids, addresses = set(), set()
-    site_files = sorted(SITE_ROOT.rglob('site.json'))
+    if (SITE_ROOT / 'site.json').is_file():
+        raise ValueError('Display Population is a mount container, not a site-holon body')
+    site_files = []
+    for child in sorted(p for p in SITE_ROOT.iterdir() if p.is_dir()):
+        if child.name in LIFECYCLE_ROLES:
+            continue
+        if (child / 'site.json').is_file():
+            site_files.append(child / 'site.json')
+            continue
+        name = child.name
+        if len(name) >= 2 and name[0] == 'y' and all(c in GENES for c in name):
+            direct = sorted(p / 'site.json' for p in child.iterdir()
+                            if p.is_dir() and p.name not in LIFECYCLE_ROLES
+                            and (p / 'site.json').is_file())
+            if len(direct) != 1:
+                raise ValueError(f'{child.relative_to(ROOT)}: address folder must contain exactly one direct site-holon')
+            site_files.extend(direct)
+            continue
+        raise ValueError(f'{child.relative_to(ROOT)}: Population contains a non-holon/non-address directory')
     if not site_files:
         raise ValueError('Display Population has no site-holons')
+    return site_files
+
+
+def discover_sites():
+    found = []
+    ids, addresses = set(), set()
+    site_files = _population_site_files()
     for site_file in site_files:
         site_dir = site_file.parent
         address, physical = _site_address(site_dir)
@@ -375,18 +400,6 @@ def discover_sites():
     roots = [s for s in found if s['address'] == '']
     if len(roots) != 1:
         raise ValueError('Display site-space must contain exactly one overview site-holon')
-
-    # Address folders are actual population, never empty potential geometry.
-    for child in sorted(p for p in SITE_ROOT.iterdir() if p.is_dir()):
-        if (child/'site.json').is_file():
-            continue
-        name = child.name
-        if len(name) >= 2 and name[0] == 'y' and all(c in GENES for c in name):
-            direct = [p for p in child.iterdir() if p.is_dir() and (p/'site.json').is_file()]
-            if len(direct) != 1:
-                raise ValueError(f'{child.relative_to(ROOT)}: address folder must contain exactly one direct site-holon')
-            continue
-        raise ValueError(f'{child.relative_to(ROOT)}: Population contains a non-holon/non-address directory')
 
     return sorted(found, key=lambda s: (len(s['address']), s['address'], s['id']))
 

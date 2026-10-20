@@ -460,6 +460,7 @@ def main():
         print('Software GLES witness unavailable on this host; no real-shader execution claim.')
     result=subprocess.run(['node',str(ROOT/'y/test-address.cjs')],env={**os.environ,'SITE_DIR':str(artifact)},capture_output=True,text=True); check(result.returncode==0,result.stderr or 'address witness failed')
     result=subprocess.run(['python3',str(ROOT/'y/test-site-relocation.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'whole-site relocation witness failed')
+    result=subprocess.run(['python3',str(ROOT/'y/test-population-discovery.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'Population discovery crossed a body/lifecycle membrane')
     result=subprocess.run(['python3',str(crawler/'y'/'path_privacy.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait path privacy self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'capture.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait capture self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'migrate_path_privacy.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait path migration self-test failed')
