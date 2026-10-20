@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.5"
+version: "1.6"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -85,9 +85,9 @@ No second inspect→commit step belongs to Philosophy once the mounted body itse
 
 ### Liquid reveals the admitted miniature
 
-Philosophy owns a quiet, opaque `shader.bodyPlaceholder` material for the mounted bodies. Outside liquid their actual coarse geometry remains plain and selectable. Under a droplette, the upper reservoir, compass liquid or their common capillary exterior, Display reveals the site's own already-admitted coarse representation through the same optical map. The source stays in the site: Schattenseiten uses declared64 in the host, Papers its admitted coarse chamber body, and other sites their own offered material. Entry alone earns detailed source or higher media.
+Philosophy owns a quiet, opaque `shader.bodyPlaceholder` material for the mounted bodies. Outside liquid bodies with actual finer draw/preview offers keep plain, selectable coarse geometry. A site with only its ordinary body material retains that source-owned material; no generic opaque body is substituted for an absent interior. Under a droplette, the upper reservoir, compass liquid or their common capillary exterior, Display reveals the site's own already-admitted coarse representation through the same optical map. The source stays in the site: Schattenseiten uses declared64 in the host, Papers its admitted coarse chamber body, and other sites their own offered material. Entry alone earns detailed source or higher media.
 
-Low representations may load behind the placeholder. An unready or failed draw cannot remove it; the site's existing valid media cache survives revisit and higher-tier failure. With GPU glass unavailable, the plain coarse body, labels and entry remain; the reduced Canvas2D representation does not execute those optics. There is no duplicate screenshot, media registry or Philosophy-owned copy of another site's anatomy.
+Low representations may load behind the placeholder. A ready interior replaces the plain cover, including its own transparency. An unready/refused/failed offer retains the cover, and per-slot owners may paint the shared fallback before ready parts; the site's existing valid media cache survives revisit and higher-tier failure. With GPU glass unavailable, the plain coarse body, labels and entry remain; the reduced Canvas2D representation does not execute those optics. There is no duplicate screenshot, media registry or Philosophy-owned copy of another site's anatomy.
 
 The exact liquid-preview nutrient is retired after narrow/wide production-field and software-GLES witness, including all shared surfaces and subpixel edge motion. Stronger title visibility on hover remains independently owned by `_stomach/NUTRIENT__site-name-hover-contrast__20261019.md`. Display owns the shared optical capability and compass/footer geometry.
 
@@ -128,3 +128,5 @@ These are Philosophy-local consequences of inherited membrane law, not a new anc
 Version1.4 current-law reconciliation (2026-10-19): documentation follows actual floating body/title entry instead of retired centroid markers, distinguishes quotient identity from occupied space, and inherits the current grid orientation/extent distinction. The accepted liquid-preview and hover targets stay unresolved intake; no new visible behavior or ancestor anatomy is claimed.
 
 Version1.5 liquid-gated miniatures (2026-10-20): the host owns its plain material while Display reveals each actual admitted coarse body under every common liquid surface. Native/software-GLES routing, placeholder/readiness, local64/entered512, failure and revisit witnesses close this nutrient. Browser rasterization and device frame time remain outside the evidence; semantic anatomy, mounts and child-owned media policies remain unchanged.
+
+Version1.6 actual-interior counterexample (2026-10-20): the prior all-body cover flattened primitive materials and obscured transparent Papers tissue. Only actual finer offers are gated; ordinary Crawlerbait/legal skins are restored. Papers uses its own chamber/shell/ember renderer and the host input begins before covers. Actual source-renderer pixel comparisons supplement earlier procedural-mask evidence. No new Crawl/Legal interior or higher/detail acquisition is claimed.

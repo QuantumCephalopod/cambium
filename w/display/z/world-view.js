@@ -17,31 +17,44 @@ function restoreHome(){if(!restActive)return;restActive=false;easeTo(HOME_ORIENT
 let projection=null,scopeId='main',nav=null,STRUCT={leaves:[],addresses:[]},lang=new URLSearchParams(location.search).get('lang')==='de'?'de':'en',last=performance.now();
 let GLOBAL_TARGETS=[],activeGlobalAddress='',activeGlobalLocus='overview';
 let GLOBAL_BODIES=[],targetInk=[],hoverTarget=null;
+let mapZoom=1,mapOffset={x:0,y:0},bodyTree=null,clusterInk=[];
 const twin=document.getElementById('navTwin'),tc=twin.getContext('2d');
 const route=document.getElementById('route-mark'),miniState=document.getElementById('mini-state');
 
-function miniProject(p){const scale=twin.width/2.9,q=qRot(orient,p);return {x:twin.width/2+q[0]*scale,y:twin.height/2-q[1]*scale,z:q[2]}}
+function miniProject(p){const scale=twin.width/2.9*mapZoom,q=qRot(orient,p);return {x:twin.width/2+mapOffset.x+q[0]*scale,y:twin.height/2+mapOffset.y-q[1]*scale,z:q[2]}}
 function targetActive(t){return t.locus===activeGlobalLocus || t.path===activeGlobalAddress}
 function rebuildBodies(){
+  const node=path=>({path,tet:N.cellForPath(path).tet,children:new Map(),bodies:[]});bodyTree=node('');
   GLOBAL_BODIES=GLOBAL_TARGETS.flatMap(target=>target.bodies.map(b=>{
-    const place=N.bodyPlacement(STRUCT,b.path);
-    return {target,id:b.id,path:b.path,place,drift:N.bodyDrift(place,b.id)};
+    const place=N.bodyPlacement(STRUCT,b.path),body={target,id:b.id,path:b.path,place,drift:N.bodyDrift(place,b.id)};
+    let at=bodyTree;for(const gene of place.cell){if(!at.children.has(gene))at.children.set(gene,node(at.path+gene));at=at.children.get(gene)}at.bodies.push(body);return body;
   }));
 }
-function projectedBodies(ms){return GLOBAL_BODIES.map(b=>{
-  const position=N.bodyPosition(b.drift,ms),point=miniProject(position);
-  return {...b,position,point,corners:N.V0.map(v=>miniProject(v.map((x,j)=>position[j]+x*b.place.k)))};
-}).sort((a,b)=>a.point.z-b.point.z)}
+function projectedBodies(ms,U){
+  const out=[];clusterInk=[];
+  function visit(node){
+    const corners=node.tet.map(miniProject),xs=corners.map(p=>p.x),ys=corners.map(p=>p.y),left=Math.min(...xs),top=Math.min(...ys),right=Math.max(...xs),bottom=Math.max(...ys);
+    if(right<0||bottom<0||left>twin.width||top>twin.height)return;
+    if(node.path&&Math.max(right-left,bottom-top)<2*U){clusterInk.push({corners,x:(left+right)/2,y:(top+bottom)/2});return}
+    for(const b of node.bodies){const position=N.bodyPosition(b.drift,ms),point=miniProject(position);out.push({...b,position,point,cellCorners:corners,corners:N.V0.map(v=>miniProject(v.map((x,j)=>position[j]+x*b.place.k)))})}
+    for(const child of node.children.values())visit(child);
+  }
+  if(bodyTree)visit(bodyTree);
+  return out.sort((a,b)=>a.point.z-b.point.z);
+}
 function strokeTet(points){for(const [a,b] of edgeIx){tc.beginPath();tc.moveTo(points[a].x,points[a].y);tc.lineTo(points[b].x,points[b].y);tc.stroke()}}
 function drawTwin(ms=performance.now()){
   if(!nav)return;tc.clearRect(0,0,twin.width,twin.height);
-  const rect=twin.getBoundingClientRect(),U=twin.width/Math.max(1,rect.width),font=globalThis.SSSDisplayType.rankPx(-2,document)*U,pad=3*U;
+  const rect=twin.getBoundingClientRect(),U=twin.width/Math.max(1,rect.width),pad=1.5*U;
   tc.lineWidth=U;tc.strokeStyle='rgba(241,239,233,.16)';
   for(const cell of STRUCT.leaves)strokeTet(cell.tet.map(miniProject));
-  const bodies=projectedBodies(ms);targetInk=[];
+  const bodies=projectedBodies(ms,U);targetInk=[];
   const current=STRUCT.addresses.find(c=>c.path===nav.view);
   if(current){tc.strokeStyle='rgba(241,239,233,.4)';strokeTet(current.tet.map(miniProject))}
   for(const b of bodies){
+    const radius=Math.max(...b.corners.map(q=>Math.hypot(q.x-b.point.x,q.y-b.point.y)));
+    if(b.point.x+radius<0||b.point.y+radius<0||b.point.x-radius>twin.width||b.point.y-radius>twin.height)continue;
+    if(radius<.5*U){const cs=b.cellCorners;clusterInk.push({corners:cs,x:cs.reduce((s,p)=>s+p.x,0)/4,y:cs.reduce((s,p)=>s+p.y,0)/4});continue}
     const active=targetActive(b.target);tc.lineWidth=(active?1.7:1)*U;
     tc.fillStyle=active?'rgba(232,247,241,.23)':'rgba(197,222,229,.10)';
     for(const face of [[0,2,1],[0,1,3],[0,3,2],[1,2,3]]){tc.beginPath();tc.moveTo(b.corners[face[0]].x,b.corners[face[0]].y);for(const i of face.slice(1))tc.lineTo(b.corners[i].x,b.corners[i].y);tc.closePath();tc.fill()}
@@ -49,24 +62,33 @@ function drawTwin(ms=performance.now()){
     if(active){tc.strokeStyle='rgba(241,239,233,.32)';tc.lineWidth=U;strokeTet(N.cellForPath(b.place.cell).tet.map(miniProject))}
     targetInk.push({...b,label:null});
   }
-  /* Labels remain anchored to the moving bodies. Resolve collisions inside the
-   * actual canvas; the leader retains the spatial relation after accommodation. */
-  tc.font=font+'px "SpriteSheet Mono",ui-monospace,monospace';tc.textAlign='left';
+  tc.lineWidth=U;tc.strokeStyle='rgba(241,239,233,.45)';for(const group of clusterInk)strokeTet(group.corners);
+  /* A name belongs beside its own projected body. Scale comes from that body;
+   * crowding removes background ink rather than moving names into rows. */
   const overview=GLOBAL_TARGETS.find(t=>t.path==='');
   if(overview)targetInk.unshift({target:overview,corners:N.V0.map(miniProject),point:miniProject([0,0,0]),root:true,label:null});
-  const height=font*1.35+pad,step=height+pad,capacity=Math.max(1,Math.floor((twin.height-pad)/step));
-  const labels=targetInk.filter(t=>!t.root).sort((a,b)=>Number(targetActive(b.target)||b.target===hoverTarget)-Number(targetActive(a.target)||a.target===hoverTarget)||b.point.z-a.point.z).slice(0,capacity).sort((a,b)=>a.point.y-b.point.y||a.id.localeCompare(b.id));
-  const ys=labels.map(b=>Math.max(pad,Math.min(twin.height-height-pad,b.point.y-height/2)));
-  for(let i=1;i<ys.length;i++)ys[i]=Math.max(ys[i],ys[i-1]+step);
-  if(ys.length){ys[ys.length-1]=Math.min(ys.at(-1),twin.height-height-pad);for(let i=ys.length-2;i>=0;i--)ys[i]=Math.min(ys[i],ys[i+1]-step)}
-  labels.forEach((record,i)=>{
-    const text=globalThis.SSSDisplayType.fold((record.target.titles[record.id]||record.id.replace(/^organism:/,'')).toUpperCase()),p=record.point;
-    const width=Math.min(twin.width-2*pad,(tc.measureText?.(text)?.width||text.length*font*.62)+2*pad),x=Math.max(pad,Math.min(twin.width-width-pad,p.x+6*U)),y=ys[i];
-    record.label={x,y,w:width,h:height};
-    tc.lineWidth=U;tc.strokeStyle='rgba(241,239,233,.28)';tc.beginPath();tc.moveTo(p.x,p.y);tc.lineTo(x+width/2,y+height/2);tc.stroke();
-    tc.fillStyle='rgba(5,7,10,.84)';tc.fillRect(x,y,width,height);
-    tc.fillStyle=targetActive(record.target)||record.target===hoverTarget?'rgba(255,255,255,.98)':'rgba(241,239,233,.8)';tc.fillText(text,x+pad,y+font,width-2*pad);
-  });
+  const occupied=[],captioned=new Set();
+  const labels=targetInk.filter(b=>!b.root).sort((a,b)=>(b.target===hoverTarget?2:Number(targetActive(b.target)))-(a.target===hoverTarget?2:Number(targetActive(a.target)))||b.point.z-a.point.z||a.id.localeCompare(b.id));
+  for(const record of labels){
+    const hot=targetActive(record.target)||record.target===hoverTarget,p=record.point;if(hot&&captioned.has(record.target))continue;
+    const diameter=Math.max(...record.corners.map(q=>Math.hypot(q.x-p.x,q.y-p.y)))*2;
+    const size=hot?globalThis.SSSDisplayType.rankPx(-3,document)*U:Math.min(globalThis.SSSDisplayType.rankPx(-4,document)*U,diameter/5);
+    if(!hot&&size<globalThis.SSSDisplayType.rankPx(-6,document)*U)continue;
+    const ownedTitle=hot&&record.target.interlocutorIds.length>1?record.target.interlocutorIds.map(id=>record.target.titles[id]||id.replace(/^organism:/,'')).join(' + '):record.target.titles[record.id]||record.id.replace(/^organism:/,'');
+    const text=globalThis.SSSDisplayType.fold(ownedTitle.toUpperCase());
+    tc.font=size+'px "SpriteSheet Mono",ui-monospace,monospace';tc.textAlign='left';
+    const width=(tc.measureText?.(text)?.width||text.length*size)+pad*2,height=size*1.4+pad*2;
+    if(width>twin.width-pad*2)continue;
+    const gap=diameter/2+pad;
+    const choices=[{x:p.x+gap,y:p.y-height/2},{x:p.x-gap-width,y:p.y-height/2},{x:p.x-width/2,y:p.y-gap-height},{x:p.x-width/2,y:p.y+gap}];
+    const free=a=>!occupied.some(b=>a.x<b.x+b.w+pad&&a.x+width+pad>b.x&&a.y<b.y+b.h+pad&&a.y+height+pad>b.y);
+    let box=choices.find(a=>a.x>=pad&&a.y>=pad&&a.x+width<=twin.width-pad&&a.y+height<=twin.height-pad&&free(a));
+    if(!box&&hot){const clamped={x:Math.max(pad,Math.min(twin.width-width-pad,p.x-width/2)),y:Math.max(pad,Math.min(twin.height-height-pad,p.y+gap))};if(free(clamped))box=clamped}
+    if(!box)continue;
+    record.label={...box,w:width,h:height};occupied.push(record.label);if(hot)captioned.add(record.target);
+    if(hot){tc.fillStyle='rgba(5,7,10,.86)';tc.fillRect(box.x,box.y,width,height)}
+    tc.fillStyle=hot?'rgba(255,255,255,.98)':'rgba(241,239,233,.64)';tc.fillText(text,box.x+pad,box.y+pad+size);
+  }
 }
 /* Canvas ink must be repainted when the hosted face finishes loading. */
 if(document.fonts){document.fonts.ready.then(()=>drawTwin());document.fonts.addEventListener('loadingdone',()=>drawTwin())}
@@ -93,8 +115,22 @@ function requestGlobalTarget(target,source='global-minimap',origin=null){if(!tar
 function rotateBy(dx,dy,source='background'){ease=null;restActive=false;orient=qNorm(qMul(qAxis([1,0,0],dy*.00325),qMul(qAxis([0,1,0],dx*.00325),orient)));drawTwin();emitOrientation(source)}
 
 twin.addEventListener('pointermove',e=>{const p=twinPoint(e),t=hitTarget(p.x,p.y);if(t!==hoverTarget){hoverTarget=t;drawTwin()}});
+function zoomMap(factor,p={x:twin.width/2,y:twin.height/2}){
+  const next=Math.max(1,mapZoom*factor);if(!Number.isFinite(next))return;const ratio=next/mapZoom;
+  mapOffset.x=(mapOffset.x+twin.width/2-p.x)*ratio-twin.width/2+p.x;
+  mapOffset.y=(mapOffset.y+twin.height/2-p.y)*ratio-twin.height/2+p.y;
+  mapZoom=next;if(next===1)mapOffset={x:0,y:0};hoverTarget=null;drawTwin();
+}
+twin.addEventListener('wheel',e=>{e.preventDefault();zoomMap(Math.exp(-Math.max(-240,Math.min(240,e.deltaY))*.004),twinPoint(e))},{passive:false});
+twin.addEventListener('dblclick',e=>{mapZoom=1;mapOffset={x:0,y:0};hoverTarget=null;drawTwin();e.preventDefault()});
+twin.addEventListener('keydown',e=>{if(e.key.startsWith('Arrow')){e.preventDefault();const d=twin.width/4;mapOffset.x+=e.key==='ArrowLeft'?d:e.key==='ArrowRight'?-d:0;mapOffset.y+=e.key==='ArrowUp'?d:e.key==='ArrowDown'?-d:0;drawTwin();return}if(['+','=','-','0','Escape'].includes(e.key)){e.preventDefault();if(e.key==='0'||e.key==='Escape'){mapZoom=1;mapOffset={x:0,y:0};drawTwin()}else zoomMap(e.key==='-'?.5:2)}});
 twin.addEventListener('pointerleave',()=>{hoverTarget=null;drawTwin()});
-twin.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;drawTwin();const p=twinPoint(e),target=hitTarget(p.x,p.y);if(target){requestGlobalTarget(target,'global-minimap',{x:e.clientX,y:e.clientY});e.preventDefault()}});
+twin.addEventListener('pointerdown',e=>{
+  if(e.button!==0||!nav)return;drawTwin();const p=twinPoint(e),target=hitTarget(p.x,p.y);
+  const group=(!target||target.path==='')&&clusterInk.find(b=>Math.hypot(b.x-p.x,b.y-p.y)<=8*twin.width/Math.max(1,twin.getBoundingClientRect().width));
+  if(group){zoomMap(2,{x:group.x,y:group.y});e.preventDefault()}
+  else if(target){requestGlobalTarget(target,'global-minimap',{x:e.clientX,y:e.clientY});e.preventDefault()}
+});
 
 const axes={x:document.getElementById('axis-x'),y:document.getElementById('axis-y')};
 const AXIS_SETTLE_MS=520,AXIS_SETTLE_EPS=.018;
@@ -137,7 +173,7 @@ function frame(now){
 }
 requestAnimationFrame(frame);
 
-function languageControls(){document.documentElement.lang=lang;document.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.lang===lang)))}
+function languageControls(){const help=lang==='de'?'Globale Site-Koerper: Scrollen oder +/- vergroessert; Pfeile verschieben; 0 setzt zurueck.':'Global site bodies: scroll or +/- to magnify; arrows pan; 0 resets.';twin.setAttribute('aria-label',help);twin.title=help;document.documentElement.lang=lang;document.querySelectorAll('[data-lang]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.lang===lang)))}
 languageControls();
 const inverseControl=document.getElementById('inverse-mode');
 function inverseControls(){document.documentElement.dataset.inverse=String(Boolean(inverseControl?.checked))}

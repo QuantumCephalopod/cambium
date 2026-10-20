@@ -65,9 +65,12 @@
    * Content refines inward two ranks below its realized containing cell. */
   function bodyPlacement(structure,raw) {
     const realized=new Set(structure.addresses.map(a=>a.path));
-    let p='';for(let i=1;i<=raw.length;i++)if(realized.has(raw.slice(0,i)))p=raw.slice(0,i);
-    if(p===raw&&p)while(realized.has(p+p.at(-1)))p+=p.at(-1);
-    const center=raw.length>p.length?cellForPath(raw).center:cellForPath(p).center;
+    // The actual mount realizes its containing path even when the overview's
+    // semantic specimen has no corresponding descendants. Never enlarge a deep
+    // site to its nearest authored Philosophy cell.
+    let p=raw;
+    if(p)while(realized.has(p+p.at(-1)))p+=p.at(-1);
+    const center=cellForPath(p).center;
     return Object.freeze({cell:p,center:[...center],k:Math.pow(2,-(p.length+2))});
   }
   function hash32(text) {

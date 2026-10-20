@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.14"
+version: "3.15"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -16,7 +16,7 @@ Canonical identity/locus/body law is carried by `../site-holon/RITUAL.md`.
 
 The canonical serialized address alphabet/order is `{w,x,y,z}` recursively without fixed depth. Semantic place is the exact quotient vertex/locus. Potential recursion is not fabricated anatomy. This serialization order is not the fixed CCCC semantic phase order and does not require tetrahedral render code to reorder its internal vertex arrays.
 
-A quotient locus identifies an address relation; it does not reduce a hosted body's occupied volume or drift to a zero-dimensional point. The current compass still uses address points. Its accepted replacement must reflect the actual containing cells and body geometry supplied by the parent field, as recorded in Display `_stomach/NUTRIENT__compass-spatial-containment__20261019.md`. That presentation target does not change router equivalence, stable identities or semantic mounts.
+A quotient locus identifies an address relation; it does not reduce a hosted body's occupied volume or drift to a point. Field and compass share the actual raw mount's recursively contained frame. The mount's path itself realizes spatial containment even when Philosophy has no semantic descendants there. Names are small, body-relative spatial ink; collision removes normal ink instead of allocating list rows. Hover/active contact may reveal a readable local caption. Mount-derived occupied cells coalesce only below screen resolution; local map magnification refines them without inventing encounters or changing the global field camera/history. Wheel or plus/minus zoom, arrows pan and zero/Escape or a double click reset; an occupied coarse-cell click refines the map rather than pretending the cluster is a destination. Current real bodies retain direct target-origin entry.
 
 Camera focus is perceptual and distinct:
 
@@ -228,3 +228,5 @@ Version3.12 capillary body/contact (2026-10-20): compatible liquid shares one ex
 Version3.13 nearest-reservoir release (2026-10-20): released glass without an owner-held lock returns to the nearest live compatible boundary across free space. Distant attraction creates no join/bridge, and holding or projection-pending soft-locks retain priority. Reduced motion settles directly; absence of compatible liquid preserves free glass. The actual deformed viewport footprint bounds docking. Native production-controller/dynamics witnesses cover wide/narrow return and unchanged ownership/continuity.
 
 Version3.14 spatial compass/footer (2026-10-20): overview and compass share actual host-body placement, extent, drift clock and orientation. Raw per-identity mount paths survive quotient grouping, selection and relocation. Accommodated labels retain spatial leaders. A measured legal slot below the same compass stays reachable in closed/single/seam states; Escape closes after restoring focus. Existing source/privacy, navigation and child presentation ownership remain.
+
+Version3.15 recursive spatial names (2026-10-20): owner counterexample replaces row accommodation with body-relative labels, measured crowding and occupied-cell LOD. Deep raw mounts keep their own rank. Map-only magnification has no semantic recursion ceiling and never changes global identities, orientation or history. Current native dense/deep and real-font canvas witnesses retain their actual browser/raster limits.
