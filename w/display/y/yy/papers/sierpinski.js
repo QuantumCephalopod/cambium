@@ -109,10 +109,17 @@ function hostCells(preview,ms=0){
   return [...GENES.map((g,i)=>({gene:g,center:N.V0[i].map(v=>v*.5),scale:.5,color:[...PALETTE[g],CHAMBER_FACE_ALPHA],chamber:true})),...records.map(p=>({id:p.id,gene:p.gene,center:flowPoint(p,ms),scale:S_QUANTUM_SCALE*2**p.rank,color:[...PALETTE[p.gene],.65]}))];
 }
 function matrixProduct(a,b){const out=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)out[c*4+r]+=a[k*4+r]*b[c*4+k];return out}
-function drawHostBody({gl,proj,view,model,projection,ms}){
+function drawHostBody({gl,proj,view,model,projection,ms,dpr=1,rect}){
   let renderer=hostRenderers.get(gl);if(!renderer){renderer=createRenderer({getContext:()=>gl});hostRenderers.set(gl,renderer)}
   const clip=matrixProduct(proj,matrixProduct(view,model)),identity=new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]),cells=hostCells(projection,ms);
   renderer.draw(cells,[1,0,0,0],[0,0,0],clip,identity);
+  // Entered Papers uses separate face and shell opacities. Keep that same
+  // distinction at coarse rank; a .05-alpha wire cage is not its actual skin.
+  const shells=cells.filter(c=>c.chamber).map(c=>({...c,color:[...c.color.slice(0,3),CHAMBER_SHELL_ALPHA]}));
+  renderer.draw(shells,[1,0,0,0],[0,0,0],clip,identity,{faces:false});
+  const height=rect?.height||(gl.canvas?.height||1)/dpr,verticalScale=Math.hypot(clip[1],clip[5],clip[9]);
+  const lights=cells.filter(c=>c.id).map(c=>{const p=c.center,z=clip[3]*p[0]+clip[7]*p[1]+clip[11]*p[2]+clip[15];return {center:p,size:Math.max(1,verticalScale*c.scale*height/Math.max(.001,Math.abs(z))),color:[...c.color.slice(0,3),OVERVIEW_LIGHT_GAIN],phase:(hash32(c.id)/4294967296)*Math.PI*2}});
+  renderer.drawLights(lights,[1,0,0,0],[0,0,0],clip,identity,ms*.001,dpr);
 }
 
 function pretextURL(){if(typeof state?.dependency!=='function')throw new Error('Display dependency resolver missing');return state.dependency(PRETEXT_ID,'layout.js')}

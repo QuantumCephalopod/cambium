@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.5"
+version: "3.6"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -516,3 +516,5 @@ Version3.3 truthful host body and readable contact completion (2026-10-17): the 
 Version 3.4 shared-field/specimen return (2026-10-18): actual detailed bodies use Display’s existing frame, focus, chamber walk, host environment and clock; private environment/specimen canvases and dummy explanation retire. Resting authored edge material obeys live endpoints, faces earn reading through facing/size, the whole has its own outer-boundary contact and Source provenance is an explicit outward door. A dynamic real rank-4 explanation uses the manual actions and restores the previous view. Public source freshness remains separately owned by the still-open Drive projection nutrient.
 
 Version3.5 current-law reconciliation (2026-10-19): current authored-whole contact and actual host-environment ownership replace stale omissions and the old Philosophy `y/Inquiry` assumption. New liquid passage/reading/explanation targets remain OPEN intake. Existing source-runtime projection pressure, private source boundary and actual renderer behavior are unchanged.
+
+Version3.6 coarse host visibility (2026-10-20): the actual admitted outer sample reuses the entered renderer’s distinct chamber face/shell opacity and per-organism visibility ember. A shell must not silently inherit the face’s .05 alpha. Embers indicate the existing sampled organisms, not metabolites or new source content. Display removes the opaque cover beneath this ready transparent draw. Integrated actual-host/own-renderer software-GLES comparison supplements the separate host-renderer witness; projection, genealogy, intrinsic scale, source IDs and detail acquisition remain unchanged.

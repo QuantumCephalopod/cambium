@@ -258,6 +258,34 @@ def reveal_contract(width,height):
     assert all(50<n<1500 for n in edge_changes),edge_changes
     return {'surfaces':results,'subpixel_edge_changes':edge_changes}
 
+def actual_site_contract(width,height):
+    """The real Papers renderer, admitted population and actual Philosophy skin.
+    A successful mask with a failed/blank/opaque specimen must never pass."""
+    runs=[]
+    for mode,reference in [('dry','0'),('wet','0'),('wet','1')]:
+        env={**os.environ,'SPECIMEN':mode,'NATIVE_REFERENCE':reference}
+        cap=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env=env,text=True))
+        images,_=replay(cap,width,height);pixels,meta=images[-1]
+        assert not any(k.endswith('Error') for k in meta['errors']),meta['errors']
+        assert any(c['name']=='drawArraysInstanced' for c in cap),'actual source-owned renderer was never executed'
+        runs.append((pixels,meta))
+    point=runs[-1][1]['body'];errors=[0,0];examined=0
+    for y in range(height):
+        for x in range(width):
+            if (x-point['x'])**2+(y-point['y'])**2>(point['r']*.9)**2:continue
+            i=((height-1-y)*width+x)*4;examined+=1
+            for j in (0,1):errors[j]+=sum(abs(runs[j][0][i+k]-runs[2][0][i+k]) for k in range(3))
+    assert errors[0]>1000 and errors[1]<errors[0]*.6,('interior still painted over its opaque cover',errors)
+    # Primitive sites offer an ordinary body, not an interior. Their actual
+    # material must be byte-identical with and without host reveal policy.
+    ordinary=[]
+    for reference in ['0','1']:
+        env={**os.environ,'SPECIMEN':'ordinary','NATIVE_REFERENCE':reference}
+        cap=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env=env,text=True))
+        images,_=replay(cap,width,height);ordinary.append(images[-1][0])
+    assert ordinary[0]==ordinary[1],'Crawlerbait/legal materials were replaced by a manufactured placeholder'
+    return {'papers_actual_renderer':True,'body_pixels_examined':examined,'distance_from_direct_papers':{'plain':errors[0],'revealed':errors[1]},'ordinary_actual_materials_byte_exact':True,'scope':'actual admitted Papers sample and production materials; GL transport replaces the browser; multisample scene and single-sample alternate input retain their real raster difference'}
+
 def main():
     results=[]
     for width,height in [(1280,800),(390,844)]:
@@ -300,7 +328,7 @@ def main():
                 interior=b''.join(images[-1][0][((height-1-y)*width+x)*4:((height-1-y)*width+x)*4+4] for y in range(frame['top']+20,frame['top']+frame['height']-20) for x in range(frame['left']+20,frame['left']+frame['width']-20))
                 release.append(interior)
         assert len(set(release))==5,'intermediate optical states snapped to an endpoint'
-        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release)),'coalescence':coalescence_contract(width,height),'liquid_revelation':reveal_contract(width,height)})
+        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release)),'coalescence':coalescence_contract(width,height),'liquid_revelation':reveal_contract(width,height),'actual_sites':actual_site_contract(width,height)})
     print(json.dumps({'status':'PASS','backend':gl('GetString',C.c_char_p,[U],7937).decode(),'gles':gl('GetString',C.c_char_p,[U],7938).decode(),'actual_source':'locus-shader.js','cases':results,'scope':'Actual shaders/mesh/passes on software GLES with declared fixture state and procedural preview input; not browser layout, physical GPU or device FPS.'}))
 
 if __name__=='__main__':main()

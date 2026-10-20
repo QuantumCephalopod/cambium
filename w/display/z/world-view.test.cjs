@@ -5,7 +5,7 @@ function boot(search='',{width=1280,height=800,reduced=false}={}){
   const texts=[],events=[],buttons=[],listeners=new Map(),elements=new Map(),state={activeIds:['independent:one']};
   let clock=0,nextTimer=0;const timers=new Map(),frames=new Map();
   const painted={faces:[],labels:[]};let shape=[],box=null;
-  const ink=new Proxy({clearRect(){painted.faces=[];painted.labels=[]},beginPath(){shape=[]},moveTo(x,y){shape.push({x,y})},lineTo(x,y){shape.push({x,y})},fill(){painted.faces.push(shape.map(p=>({...p})))},fillRect(x,y,w,h){box={x,y,w,h}},measureText(text){return {width:text.length*parseFloat(this.font)*.62}},fillText(text){texts.push(text);painted.labels.push({text,...box})}},{get:(o,k)=>o[k]||(()=>{})});
+  const ink=new Proxy({clearRect(){painted.faces=[];painted.labels=[]},beginPath(){shape=[]},moveTo(x,y){shape.push({x,y})},lineTo(x,y){shape.push({x,y})},fill(){painted.faces.push(shape.map(p=>({...p})))},fillRect(x,y,w,h){box={x,y,w,h}},measureText(text){return {width:text.length*parseFloat(this.font)}},fillText(text,x,y){texts.push(text);const font=parseFloat(this.font);painted.labels.push({text,x,y:y-font,w:this.measureText(text).width,h:font*1.4,font})}},{get:(o,k)=>o[k]||(()=>{})});
   function node(){return {dataset:{},children:[],style:{setProperty(k,v){this[k]=v}},attrs:{},setAttribute(k,v){this.attrs[k]=v},appendChild(n){this.children.push(n)},addEventListener(k,fn){this[k]=fn},querySelector(){return this.knob||(this.knob=node())},getBoundingClientRect:()=>({left:width-210,top:height-200,width:180,height:160}),setPointerCapture(){},hasPointerCapture:()=>true,releasePointerCapture(){}}}
   for(const name of ['navTwin','route-mark','mini-state','axis-x','axis-y','inverse-mode'])elements.set(name,node());
   const mapSize=width<520?118:width<760?138:160;
@@ -14,7 +14,7 @@ function boot(search='',{width=1280,height=800,reduced=false}={}){
   const location={search,href:'https://site.invalid/?keep=yes'+(search?'&'+search.slice(1):'')+'#main:wx'};
   const document={documentElement:{dataset:{}},getElementById:id=>elements.get(id),querySelectorAll:s=>s==='[data-lang]'?buttons:[],createElementNS:()=>node()};
   const history={state,replaceState(s,_,url){assert.strictEqual(s,state);location.href=new URL(url,location.href).href;this.last=url}};
-  const context={document,history,location,URL,URLSearchParams,performance:{now:()=>clock},requestAnimationFrame(fn){const id=++nextTimer;frames.set(id,fn);return id},cancelAnimationFrame:id=>frames.delete(id),setTimeout(fn,ms){const id=++nextTimer;timers.set(id,{at:clock+ms,fn});return id},clearTimeout:id=>timers.delete(id),matchMedia:()=>({matches:reduced}),addEventListener(k,fn){listeners.set(k,fn)},dispatchEvent:e=>events.push(e),CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},SSSDisplayNavigation:N,SSSDisplayType:{fold:s=>s,rankPx:()=>10}};
+  const context={document,history,location,URL,URLSearchParams,performance:{now:()=>clock},requestAnimationFrame(fn){const id=++nextTimer;frames.set(id,fn);return id},cancelAnimationFrame:id=>frames.delete(id),setTimeout(fn,ms){const id=++nextTimer;timers.set(id,{at:clock+ms,fn});return id},clearTimeout:id=>timers.delete(id),matchMedia:()=>({matches:reduced}),addEventListener(k,fn){listeners.set(k,fn)},dispatchEvent:e=>events.push(e),CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},SSSDisplayNavigation:N,SSSDisplayType:{fold:s=>s,rankPx:r=>16*2**(r/2)}};
   vm.runInNewContext(fs.readFileSync(process.env.WORLD_VIEW_SOURCE||path.join(__dirname,'world-view.js'),'utf8'),context);
   return {W:context.SSSWorldView,document,buttons,events,history,texts,elements,painted,advance(ms){clock+=ms;for(const [id,t] of timers)if(t.at<=clock){timers.delete(id);t.fn()}const current=[...frames];frames.clear();for(const [,fn] of current)fn(clock)},back(url){location.href=url;listeners.get('popstate')()}};
 }
@@ -24,6 +24,7 @@ for(const [query,expected] of [['','en'],['?lang=de','de'],['?lang=en','en'],['?
 }
 const f=boot('?lang=de');f.W.setScope({id:'main',projection:{root:{noun:'root',children:{}}}});
 f.W.setGlobalTargets([{path:'wx',locus:'place',interlocutorIds:['independent:one'],titles:{'independent:one':'Owned translated name'}}]);
+f.W.setActiveGlobalAddress('wx','place');
 assert(f.texts.includes('OWNED TRANSLATED NAME'),'canvas paints owned title rather than identity');
 const orientation=JSON.stringify(f.W.orientation),view=f.W.view;
 assert.equal(f.document.documentElement.dataset.inverse,'false');
@@ -79,12 +80,38 @@ for(const width of [390,1280]){
  const roots=[{path:'',locus:'overview',interlocutorIds:['host'],titles:{host:'Overview'},bodies:[]}];
  const ts=['w','x','y','z','xz'].map((path,i)=>({path,locus:path,interlocutorIds:['site:'+i],titles:{['site:'+i]:['Crawlerbait','Schattenseiten','Papers','Datenschutz','Impressum'][i]},bodies:[{id:'site:'+i,path}]}));
  f.W.setGlobalTargets([...roots,...ts]);f.advance(16000);
- assert.equal(f.painted.labels.length,5);
+ assert(f.painted.labels.length<=5,'crowding suppresses normal labels instead of moving them into rows');assert(f.painted.labels.every(l=>l.font<=4*300/f.elements.get('navTwin').getBoundingClientRect().width),'normal body names stay at most rank -4');
  for(const a of f.painted.labels){assert(a.x>=0&&a.y>=0&&a.x+a.w<=300&&a.y+a.h<=300,'label stays inside the real compass canvas');for(const b of f.painted.labels)if(a!==b)assert(!(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y),'labels remain distinct while their leaders track bodies')}
  const aliases={path:'xyw',locus:'same',interlocutorIds:['alias:a','alias:b'],titles:{'alias:a':'One','alias:b':'Two'},bodies:[{id:'alias:a',path:'xyw'},{id:'alias:b',path:'xwy'}]};
  f.W.setGlobalTargets([aliases]);assert.equal(f.painted.faces.length,8,'quotient-coalesced identities retain their two actual body frames');assert.equal(f.W.globalTargets[0].bodies[1].path,'xwy');
- const label=f.painted.labels[1],r=f.elements.get('navTwin').getBoundingClientRect();f.elements.get('navTwin').pointerdown({button:0,clientX:r.left+(label.x+label.w/2)*r.width/300,clientY:r.top+(label.y+label.h/2)*r.height/300,preventDefault(){}});
+ const r=f.elements.get('navTwin').getBoundingClientRect(),face=f.painted.faces[0],point={x:face.reduce((a,p)=>a+p.x,0)/3,y:face.reduce((a,p)=>a+p.y,0)/3};f.elements.get('navTwin').pointermove({clientX:r.left+point.x*r.width/300,clientY:r.top+point.y*r.height/300});const label=f.painted.labels[0];assert(label,'hover lends a readable local name to a fine body');f.elements.get('navTwin').pointerdown({button:0,clientX:r.left+(label.x+label.w/2)*r.width/300,clientY:r.top+(label.y+label.h/2)*r.height/300,preventDefault(){}});
  assert.deepEqual(Array.from(f.events.at(-1).detail.interlocutorIds),['alias:a','alias:b'],'spatial picking preserves the existing coalesced encounter');
  f.W.setGlobalTargets([]);assert.equal(f.painted.faces.length,0,'withdrawn mount has no stale compass body');
 }
 console.log('PASS — actual contained body extent/drift/rotation, relocation, spatial picking, bounded labels and quotient-coalesced identities');
+
+// A physically mounted deep path earns its own contained frame without requiring
+// Philosophy to invent semantic descendants. Scale recurs; it is never clamped
+// to the handful of currently authored overview concepts.
+{
+ const structure=N.collectStructure(split());
+ for(const depth of [2,8,24]){const path='wx'.repeat(depth/2),p=N.bodyPlacement(structure,path);assert.equal(p.cell,path);assert.equal(p.k,2**-(path.length+2))}
+ const f=boot(),tree=split();f.W.setScope({id:'main',projection:{root:tree}});
+ const paths=Array.from({length:4096},(_,i)=>i.toString(4).padStart(6,'0').replace(/[0-3]/g,n=>'wxyz'[+n]));
+ f.W.setGlobalTargets(paths.map((path,i)=>({path,locus:path,interlocutorIds:['dense:'+i],titles:{['dense:'+i]:'A real deep holon '+i},bodies:[{id:'dense:'+i,path}]})));
+ assert(f.painted.labels.length<50,'dense populations cannot turn into a name list');
+ assert(f.painted.faces.length<paths.length*4,'subpixel mount branches stay spatially coalesced');
+ const canvas=f.elements.get('navTwin'),r=canvas.getBoundingClientRect();
+ const chosen=N.bodyPosition(N.bodyDrift(N.bodyPlacement(N.collectStructure(tree),'wwwwww'),'dense:0'),0),at=project(f.W.orientation,chosen);
+ const center={clientX:r.left+at.x*r.width/300,clientY:r.top+at.y*r.height/300,deltaY:-240,preventDefault(){}};
+ const priorOrientation=JSON.stringify(f.W.orientation),priorView=f.W.view,priorEvents=f.events.length;
+ canvas.pointerdown({...center,button:0,pointerType:'touch'});
+ assert.equal(f.events.length,priorEvents,'touching an occupied coarse cell refines the map without manufacturing a destination');
+ canvas.keydown({key:'0',preventDefault(){}});
+ const before=f.painted.faces.length;for(let i=0;i<8;i++)canvas.wheel(center);
+ assert(f.painted.faces.length>0,'fine physical bodies become available by map magnification');
+ canvas.keydown({key:'ArrowRight',preventDefault(){}});
+ assert.equal(JSON.stringify(f.W.orientation),priorOrientation);assert.equal(f.W.view,priorView);assert.equal(f.events.length,priorEvents,'magnification and pan stay local to the map camera');
+ canvas.keydown({key:'0',preventDefault(){}});assert.equal(f.painted.faces.length,before,'reset returns to the same coarse spatial projection');
+}
+console.log('PASS — recursive mounted scale, dense spatial LOD, small local labels and unbounded map magnification');

@@ -73,7 +73,7 @@ const shader={
    * cuts the body into shadows and light without any grey between */
   body:Object.freeze({
     cells:()=>BODY.list.map(b=>({path:'x',tet:V0.map(v=>v.map((x,j)=>b.world[j]+x*Math.sqrt(3)*b.size))})),
-    draw:args=>{ensureTier(64);drawSheet({...args,clearDepth:false},false)},
+    draw:args=>{args.drawPlaceholder?.();ensureTier(64);drawSheet({...args,clearDepth:false},false)},
     release:({gl})=>{const record=GPU.get(gl);if(record)disposeGPU(gl,record)},
     state:Object.freeze({blend:true,depthTest:true,depthWrite:true}),
     fragment:`#version 300 es

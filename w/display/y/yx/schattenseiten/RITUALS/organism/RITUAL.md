@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.8"
+version: "1.9"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -61,3 +61,5 @@ Version1.7 admitted-media/body completion (2026-10-17): all110 declared occupied
 The selected-work sidebar also bounds its own inline/scroll extent from Display's derived UI anchor. This keeps admitted cluster/animation content reachable inside the viewport without imposing the grid cell's dimensions or changing the sheet.
 
 Version1.8 current-law reconciliation (2026-10-19): retired continuity and earned media acceptance replace stale open-carrier/gate wording. Current sheet behavior is distinguished from the accepted first-row, description and work-led presentation targets in local intake. Original work words, media, source genealogy and runtime remain unchanged by this receptor correction.
+
+Version1.9 partial host fallback (2026-10-20): the host draw invokes the optional shared `drawPlaceholder()` in its current input before painting ready declared64 slots. Thus missing/slow/failed slots keep plain presence while ready opaque source tiles replace it, alongside transparent owner bodies that need no cover. Entered draws, source nearest sampling, media declarations, tier queues and actual works remain unchanged.
