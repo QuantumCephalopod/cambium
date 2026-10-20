@@ -1,0 +1,227 @@
+{
+  "kind": "HOME",
+  "event_id": "display-spritesheet-mono-v3-20261020T161945Z",
+  "home_at_utc": "2026-10-20T16:19:45.882438Z",
+  "organism": "display",
+  "entrypoint": "display:ε",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "operation": "adopt-mono-v3-and-repair-source-grid-character-assignment",
+  "outcome": "PASS/BOUNDED_NATIVE_FONT_RETURN: v3 digits and umlauts inhabit the existing stable font identity; source-grid cmap repair preserves original outline/metric tables and corrects all39 drawn character assignments.",
+  "changed_scope": [
+    "The complete supplied v3 package remains source-exact in Display _waste. Hosted @sss/spritesheet3.0.1 repairs shifted Unicode assignment against its original sprite image; only cmap and name/head version metadata change. glyf/hmtx/hhea/maxp/post remain byte-identical.",
+    "Mono retains the same family/member paths, source-supplied1200-unit em and fixed centred advances, and lowercase aliases. Regular1.0.1 is unchanged. Superseded Mono v2 bytes/provenance remain in one local retired carrier.",
+    "The shared presentation fold preserves supported umlauts and normalizes decomposed umlauts, retaining ss/SS for unsupported sharp-s. Existing ASCII source spelling, identities, type ranks and local site layout remain owned as before.",
+    "Display receptor3.45 records current glyph/zero-cell support. The language nutrient keeps name/localization execution OPEN, with its exact former carrier separately recoverable. The v3 admission closes unchanged after its bounded exit.",
+    "Native source-image, font-metric and Skia witnesses and the unchanged complete public artifact suite pass. No new browser rasterization, physical-device timing or all-platform acceptance claim."
+  ],
+  "context": {
+    "base_revision": "83f251811ab539629d477b7c40073d8609772b71",
+    "verified_source_tree_before_HOME": "e48c75e58f7571a2dd18565edf835c53bc1e7910",
+    "validation_steps": [
+      {
+        "step": "build",
+        "exit_code": 0,
+        "seconds": 12.29
+      },
+      {
+        "step": "check",
+        "exit_code": 0,
+        "seconds": 76.95
+      },
+      {
+        "step": "address",
+        "exit_code": 0,
+        "seconds": 0.23
+      },
+      {
+        "step": "fold",
+        "exit_code": 0,
+        "seconds": 0.15
+      },
+      {
+        "step": "exact",
+        "exit_code": 0,
+        "seconds": 15.2
+      }
+    ],
+    "public_checker": {
+      "status": "pass",
+      "checks": 283626,
+      "display_4V": {
+        "w": "Embodiment",
+        "x": "Continuity",
+        "z": "Orientation",
+        "y": "Population"
+      },
+      "population": "w/display/y tree is canonical mount truth",
+      "sites": {
+        "organism:philosophy": "ε",
+        "organism:crawlerbait": "w",
+        "organism:schattenseiten": "x",
+        "organism:papers": "y",
+        "organism:datenschutz": "z",
+        "organism:impressum": "xz"
+      },
+      "runtime": "generic identity modules; no specimen names in central runtime",
+      "relocation": "whole Papers body moves by folder with zero internal edits",
+      "crawlerbait": "independently rooted Baits/Traces/Membrane/Tide holon + same-type bait-space + static reef",
+      "bundle": "f6aea6ef73f3ab91",
+      "artifact": "single Display index + identity-owned static site apertures"
+    },
+    "font_metrics": {
+      "coverage": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789ÄÖÜäöü ",
+      "units_per_em": 1200,
+      "fixed_advance": 1200,
+      "max_centring_error": 0.0,
+      "source_outline_and_metric_tables_unchanged": true,
+      "cmap_corrected_from_original_grid": true,
+      "sharp_s_present": false
+    },
+    "source_grid_assignment": {
+      "supplied": {
+        "source_matching": 1,
+        "source_mismatches": [
+          "Ä",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+          "K",
+          "L",
+          "M",
+          "N",
+          "O",
+          "Ö",
+          "P",
+          "Q",
+          "R",
+          "S",
+          "T",
+          "U",
+          "Ü",
+          "V",
+          "W",
+          "X",
+          "Y",
+          "Z",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "0"
+        ],
+        "total": 39
+      },
+      "corrected": {
+        "source_matching": 39,
+        "source_mismatches": [],
+        "total": 39
+      },
+      "scope": "Unhinted font outlines sampled at original source-pixel centres, independent original sprite-grid image. Native renderer grid-fitting may alter edge pixels; separate Skia TTF/WOFF2 raster equivalence verifies their actual native rendering."
+    },
+    "actual_font_raster": {
+      "engine": "Skia",
+      "cases": [
+        {
+          "width": 390,
+          "height": 844,
+          "all_glyph_advances": 32,
+          "glyphs": 68,
+          "ttf_woff2_raster_equivalent": true
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "all_glyph_advances": 32,
+          "glyphs": 68,
+          "ttf_woff2_raster_equivalent": true
+        }
+      ]
+    },
+    "mapping_repair": {
+      "package": "3.0.1",
+      "source_grid_order": "AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ1234567890",
+      "original_wrong_order": "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ0123456789",
+      "preserved_tables": [
+        "glyf",
+        "hmtx",
+        "hhea",
+        "maxp",
+        "post"
+      ],
+      "source_sha256": {
+        "sourceGridOrder": "AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ1234567890",
+        "suppliedCmapOrder": "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ0123456789",
+        "sourceGridColumns": 7,
+        "sourceGridRows": 6,
+        "sourceCellPixels": 12,
+        "sourceImage": "1000192377.png inside archived original package",
+        "sourceArchive": "../../_waste/SOURCE__SpriteSheet-Mono-v3-package__20261020.zip",
+        "sourceArchiveSha256": "c08180184f467fe5d647f7923121699adf47c920527e59a68285126abc657d96",
+        "suppliedTtfSha256": "1bed4205f89f5c5060ca28761d71d1e21a8cbe5e25da88ff80e2135aa92f8bf9",
+        "suppliedWoff2Sha256": "a2d524334f35155b316d2e9368c726b2fc20a7a16f90871053a7ee5b4bd1c334",
+        "outlineAndMetricTablesUnchanged": true
+      },
+      "corrected_ttf": "ee5ff3747cc127f8b63e3fc1f82cd443fa42592d20695c537f9f04dc8bbb7810",
+      "corrected_woff2": "476ed7f3053e33c76418b3d60a0c006e507265a5ee6533863185701d98622827"
+    },
+    "source_package": {
+      "sourceGridOrder": "AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ1234567890",
+      "suppliedCmapOrder": "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ0123456789",
+      "sourceGridColumns": 7,
+      "sourceGridRows": 6,
+      "sourceCellPixels": 12,
+      "sourceImage": "1000192377.png inside archived original package",
+      "sourceArchive": "../../_waste/SOURCE__SpriteSheet-Mono-v3-package__20261020.zip",
+      "sourceArchiveSha256": "c08180184f467fe5d647f7923121699adf47c920527e59a68285126abc657d96",
+      "suppliedTtfSha256": "1bed4205f89f5c5060ca28761d71d1e21a8cbe5e25da88ff80e2135aa92f8bf9",
+      "suppliedWoff2Sha256": "a2d524334f35155b316d2e9368c726b2fc20a7a16f90871053a7ee5b4bd1c334",
+      "outlineAndMetricTablesUnchanged": true
+    },
+    "hosted_font_sha256": {
+      "ttf": "ee5ff3747cc127f8b63e3fc1f82cd443fa42592d20695c537f9f04dc8bbb7810",
+      "woff2": "476ed7f3053e33c76418b3d60a0c006e507265a5ee6533863185701d98622827"
+    },
+    "published_font_bytes_match": true,
+    "regular_unchanged": true,
+    "language_residual": {
+      "active": "w/display/_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md",
+      "source_exact_preimage": "w/display/_waste/pre-v3-NUTRIENT__language-glyphs-and-site-names__20261019.md",
+      "remaining": "Proper-name/localization execution C01 and DE/EN paths; the former absent-umlaut condition is superseded by owner-supplied v3."
+    },
+    "retired_nutrient": {
+      "source": "w/display/_stomach/NUTRIENT__spritesheet-mono-v3__20261020.md",
+      "archive": "w/display/_waste/NUTRIENT__spritesheet-mono-v3__20261020.md",
+      "sha256": "ecd6ceb0e4c056e08fe8fd3cc1081df1a74b1b285d91b3faa51f6c53d5a8b9f5"
+    },
+    "source_sha256": {
+      "w/display/RITUALS/organism/RITUAL.md": "211f65a449f4d313f8498291052ece0b42b9578ff63b6da9ca4dd2d1ecf0db9c",
+      "w/display/_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md": "3ace50dd2536bf35b465a9f68616472f7012c6524e470722d586c8c7e437fd0e",
+      "w/display/_waste/NUTRIENT__spritesheet-mono-v3__20261020.md": "ecd6ceb0e4c056e08fe8fd3cc1081df1a74b1b285d91b3faa51f6c53d5a8b9f5",
+      "w/display/_waste/SOURCE__SpriteSheet-Mono-v3-package__20261020.zip": "c08180184f467fe5d647f7923121699adf47c920527e59a68285126abc657d96",
+      "w/display/_waste/SOURCE__SpriteSheet-Mono-v3__20261020.css": "23de5d841526e827b106afd15de6f214b426e0fb76e2efc507631d04f5ff5be5",
+      "w/display/_waste/pre-v3-NUTRIENT__language-glyphs-and-site-names__20261019.md": "ff137e310b2f19834f1cd5ca6e0dfc47e1875fad5829406e78e7d0a0ffbe87b1",
+      "w/display/_waste/spritesheet-mono-v2-20261020.carrier/README.txt": "b8627440ac74ca5e49c9442a3bb14236d6ecb210ae7e01637398ce7b4254aa4a",
+      "w/display/_waste/spritesheet-mono-v2-20261020.carrier/SpriteSheet-Mono.ttf": "7f8e7c9368d935dcbc6e6d9cb5d91668b9505f9738a6f0ac360f222f4c3ca5df",
+      "w/display/_waste/spritesheet-mono-v2-20261020.carrier/SpriteSheet-Mono.woff2": "15cbc02ad7315f4caa27e867b468573c2f2b854402425f4beb0a79cc6426b9b7",
+      "w/display/_waste/spritesheet-mono-v2-20261020.carrier/VERSION.json": "ab56f3a74710f401db43385fa9fc49be1bdce8c514055a448d0de606b488fc61",
+      "w/display/w/display-type.js": "5ba1f57fa126aa0ed453b817d2ea065d40231337ff2c08258244ce61ed4fe39b",
+      "w/display/w/display-type.test.cjs": "b956e05f7cca15911f745e72a8236d8270439ec672daa9437b0c4e56fba7781a",
+      "w/display/w/spritesheet/README.txt": "271643db2c2ae5396fed6ac82e56634f534dad4dc8756aad54aba6678275406c",
+      "w/display/w/spritesheet/SpriteSheet-Mono.ttf": "ee5ff3747cc127f8b63e3fc1f82cd443fa42592d20695c537f9f04dc8bbb7810",
+      "w/display/w/spritesheet/SpriteSheet-Mono.woff2": "476ed7f3053e33c76418b3d60a0c006e507265a5ee6533863185701d98622827",
+      "w/display/w/spritesheet/VERSION.json": "bdaddefc07fb285531af60f3e2e5d8daadc8556c1f03469a06d77714ea6a2702"
+    },
+    "canonical_tide_preserved": true
+  }
+}
