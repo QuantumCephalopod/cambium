@@ -126,145 +126,73 @@
   right:6px;
   top:6px;
 }
-#mini-core{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:236px;
-  height:236px;
-  transform:translate(-50%,-50%);
-}
-#mini-title{
-  position:absolute;
-  left:50%;
-  top:2px;
-  right:auto;
-  transform:translateX(-50%);
-  width:max-content;
-  max-width:210px;
-  font:var(--type-rn2)/1 var(--mono);
-  letter-spacing:.13em;
-  text-transform:uppercase;
-  text-align:center;
-  color:rgba(241,239,233,.38);
-}
-#mini-state{
-  position:absolute;
-  left:50%;
-  top:16px;
-  right:auto;
-  transform:translateX(-50%);
-  width:210px;
-  text-align:center;
-  font:var(--type-rn2)/1.25 var(--mono);
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:rgba(241,239,233,.58);
-}
-#navTwin{
-  position:absolute;
-  left:29px;
-  top:31px;
-  right:auto;
-  width:180px;
-  height:180px;
-  pointer-events:auto;
-  touch-action:none;
-  outline:none;
-  cursor:default;
-}
-#navTwin:focus-visible{filter:drop-shadow(0 0 10px rgba(255,255,255,.18))}
-#mini .axis{z-index:2}
-#mini #axis-x{left:50px;right:auto;bottom:4px;width:144px;height:32px}
-#mini #axis-x::before{left:8px;right:8px;top:16px;height:1px}
-#mini #axis-x .knob{top:16px;left:50%}
-#mini #axis-x .axis-letter{right:-8px;top:12px}
-#mini #axis-y{left:4px;top:49px;width:32px;height:144px}
-#mini #axis-y::before{top:8px;bottom:8px;left:16px;width:1px}
-#mini #axis-y .knob{left:16px;top:50%}
-#mini #axis-y .axis-letter{left:12px;top:-8px}
-#mini-help{
-  position:absolute;
-  left:50%;
-  right:auto;
-  bottom:-14px;
-  transform:translateX(-50%);
-  width:230px;
-  font:var(--type-rn2)/1.25 var(--mono);
-  letter-spacing:.02em;
-  text-align:center;
-  color:rgba(241,239,233,.28);
-  pointer-events:none;
-}
-/* ---- Global navigator as HUD (single encounter) ---------------------------------
- * Philipp 2026-09-30: the navigator is an overlay; he wants a HUD like Crawlerbait's: ink on the
- * field, locked to the screen borders, no plate, the centre free. The octagonal plate, its
- * near-opaque fill and its drop-shadow belong to the seam aperture of split/grid encounters below.
- * Size is one knob: --hud-t, the side of the map. Everything else is derived from it. */
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini{
+/* Text is intrinsic flow; only the controls retain local physical coordinates. */
+#mini-core{position:relative;display:flex;flex-direction:column;gap:.5rem;padding:.75rem;min-width:0;box-sizing:border-box;max-height:var(--compass-core-cap,calc(100vh - 8rem));overflow:auto;overscroll-behavior:contain}
+#mini-core[data-scroll="true"]{pointer-events:auto}
+#mini-state{position:static;flex:none;min-width:0;margin:0;font:var(--type-rn2)/1.4 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:rgba(241,239,233,.7);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#mini-instrument{display:grid;grid-template-columns:1.75rem minmax(0,1fr);grid-template-rows:var(--hud-t) 1.75rem;gap:.25rem;flex:none}
+#navTwin{position:static;display:block;grid-column:2;grid-row:1;width:100%;height:100%;min-width:0;min-height:0;pointer-events:auto;touch-action:none;outline:none;cursor:default}
+#navTwin:focus-visible{filter:drop-shadow(0 0 5px rgba(255,255,255,.22))}
+#mini .axis{position:relative;z-index:2;min-width:0;pointer-events:auto}
+#mini #axis-x{grid-column:2;grid-row:2;left:auto;right:auto;top:auto;bottom:auto;width:100%;height:100%}
+#mini #axis-x::before{left:.5rem;right:.5rem;top:50%;height:1px}
+#mini #axis-x .knob{top:50%;left:50%}
+#mini #axis-x .axis-letter{right:0;top:0}
+#mini #axis-y{grid-column:1;grid-row:1;left:auto;right:auto;top:auto;bottom:auto;width:100%;height:100%}
+#mini #axis-y::before{top:.5rem;bottom:.5rem;left:50%;width:1px}
+#mini #axis-y .knob{left:50%;top:50%}
+#mini #axis-y .axis-letter{left:0;top:0}
+#mini-help-bar{display:flex;flex:none;gap:.5rem;align-items:center;min-width:0;pointer-events:auto}
+#mini-help{position:static;flex:1;min-width:0;font:var(--type-rn2)/1.4 var(--mono);letter-spacing:0;color:rgba(241,239,233,.62);overflow-wrap:anywhere;pointer-events:none}
+#mini-help-toggle{flex:none;width:2rem;height:2rem;padding:0;border:1px solid rgba(241,239,233,.3);border-radius:50%;background:transparent;color:rgba(241,239,233,.85);font:var(--type-rn1)/1 var(--mono);cursor:pointer}
+#mini-help-toggle:focus-visible{outline:1px solid currentColor;outline-offset:3px}
+#mini-guide{font:var(--type-rn2)/1.5 var(--mono);letter-spacing:0;color:rgba(241,239,233,.8);overflow:auto;max-height:var(--compass-guide-cap,12rem);overscroll-behavior:contain;pointer-events:auto}
+#mini-guide[hidden]{display:none}
+#mini-guide p{margin:0 0 .75rem;overflow-wrap:anywhere}
+#mini-guide p:last-child{margin-bottom:0}
+/* Global navigator as HUD — one measured cluster and one size knob, shared with the seam. */
+#mini{
   --hud-edge:clamp(.9rem,2.2vw,1.6rem);
-  --hud-t:160px;
-  width:calc(var(--hud-t) + 62px);
-  height:calc(var(--hud-t) + 80px);
+  --hud-t:min(var(--compass-ideal,10rem),var(--compass-map-cap,10rem),calc(100vw - 2 * var(--hud-edge) - 3.5rem));
+  width:calc(var(--hud-t) + 3.5rem);
+  height:calc(var(--compass-core-height,15rem) + 3rem);
   right:var(--hud-edge);
   bottom:calc(var(--hud-edge) + var(--legal-footer-height,2rem) + .5rem);
 }
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-trigger{width:40px;height:40px;right:0;bottom:0;top:auto;transform:none}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-trigger::before{inset:5px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket{
-  inset:0;
-  background:none;
-  clip-path:none;
-  filter:none;
-  transform:translate(10px,10px);
-  transform-origin:100% 100%;
-  text-shadow:0 0 6px rgba(5,7,10,.92),0 0 14px rgba(5,7,10,.92);
-  transition:transform .28s cubic-bezier(.2,.78,.18,1),opacity .2s ease;
-}
+#mini-trigger{width:2.5rem;height:2.5rem;right:0;bottom:0;top:auto;transform:none}
+#mini-trigger::before{inset:5px}
+#mini-pocket{inset:0 0 3rem;transform-origin:100% 100%;clip-path:var(--pocket-closed-clip)}
+#mini{--pocket-open-clip:inset(0 round .5rem)}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket{background:none;clip-path:none;filter:none;transform:translate(10px,10px);text-shadow:0 0 6px rgba(5,7,10,.92),0 0 14px rgba(5,7,10,.92)}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket::after{display:none}
-/* not a box: a soft halo of the page's own dark behind the instruments, fading to nothing (inverse mode inverts it with everything else) */
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket::before{display:block;content:"";position:absolute;inset:-22px;z-index:-1;clip-path:none;border:0;pointer-events:none;background:radial-gradient(closest-side,rgba(5,7,10,.6),rgba(5,7,10,.34) 58%,rgba(5,7,10,0))}
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-pocket::before{display:block;inset:-.75rem;z-index:-1;clip-path:none;border:0;background:radial-gradient(closest-side,rgba(5,7,10,.6),rgba(5,7,10,.34) 58%,rgba(5,7,10,0))}
 html:not([data-composition="split"]):not([data-composition="grid"]) #mini[data-aperture="open"] #mini-pocket{transform:none;clip-path:none;pointer-events:none}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-core{left:0;top:0;width:100%;height:100%;transform:none}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-title{left:calc(30px + var(--hud-t) / 2);top:0;max-width:calc(var(--hud-t) + 16px);font-size:var(--type-rn2)}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-state{left:calc(30px + var(--hud-t) / 2);top:12px;width:calc(var(--hud-t) + 16px);font-size:var(--type-rn2)}
-html:not([data-composition="split"]):not([data-composition="grid"]) #navTwin{left:30px;top:26px;width:var(--hud-t);height:var(--hud-t);filter:drop-shadow(0 0 5px rgba(5,7,10,.85))}
-html:not([data-composition="split"]):not([data-composition="grid"]) #navTwin:focus-visible{filter:drop-shadow(0 0 5px rgba(5,7,10,.85)) drop-shadow(0 0 10px rgba(255,255,255,.22))}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini .axis::before{background:rgba(241,239,233,.3)}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y{left:0;top:26px;width:28px;height:var(--hud-t)}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y::before{top:8px;bottom:8px;left:14px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y .knob{left:14px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-y .axis-letter{left:10px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x{left:30px;top:calc(var(--hud-t) + 30px);bottom:auto;width:calc(var(--hud-t) - 12px);height:28px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x::before{left:8px;right:8px;top:14px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x .knob{top:14px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini #axis-x .axis-letter{top:10px}
-html:not([data-composition="split"]):not([data-composition="grid"]) #mini-help{left:30px;bottom:auto;top:calc(var(--hud-t) + 62px);transform:none;width:calc(var(--hud-t) - 12px);font-size:var(--type-rn2);text-align:left}
-@media(max-width:760px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:138px}}
-@media(max-width:520px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:118px}}
-/* a short viewport has no room under the header for the captions: keep the instruments, drop the words */
-@media(max-height:380px){html:not([data-composition="split"]):not([data-composition="grid"]) #mini{--hud-t:104px}html:not([data-composition="split"]):not([data-composition="grid"]) #mini-title,html:not([data-composition="split"]):not([data-composition="grid"]) #mini-state{display:none}}
-
+html:not([data-composition="split"]):not([data-composition="grid"]) #mini-core{padding:0 .75rem}
+@media(max-width:760px){#mini{--compass-ideal:8.625rem}}
+@media(max-width:520px){#mini{--compass-ideal:7.375rem}}
 html[data-composition="split"] #mini,
 html[data-composition="grid"] #mini{
   --trigger-shape-radius:0;
   --trigger-shape-rotate:45deg;
   --pocket-origin:50% 50%;
-  --pocket-open-clip:polygon(8% 14%,92% 14%,92% 86%,8% 86%);
   --shell-rotate-closed:45deg;
   --shell-rotate-open:0deg;
   left:50%;
-  top:clamp(calc(var(--aperture-size) / 2 + .5rem),50%,calc(100vh - var(--aperture-size) / 2 - var(--legal-footer-height,2rem) - 1rem));
+  top:clamp(calc(var(--compass-top,0px) + (var(--compass-core-height,15rem) + 3rem) / 2 + .5rem),50%,calc(100vh - (var(--compass-core-height,15rem) + 3rem) / 2 - var(--legal-footer-height,2rem) - var(--hud-edge) - .5rem));
   right:auto;
   bottom:auto;
   transform:translate(-50%,-50%);
+  transition:height .28s ease,top .28s ease;
 }
+html[data-composition="split"] #mini[data-aperture="closed"],
+html[data-composition="grid"] #mini[data-aperture="closed"]{height:2.5rem;top:50%}
 html[data-composition="split"] #mini-trigger,
 html[data-composition="grid"] #mini-trigger{
   left:50%;
-  top:50%;
+  top:auto;
+  bottom:0;
   right:auto;
-  transform:translate(-50%,-50%);
+  transform:translateX(-50%);
 }
 html[data-composition="split"] #mini-trigger .shape-square,
 html[data-composition="grid"] #mini-trigger .shape-square{display:none}
@@ -291,27 +219,8 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
   height:1px;
   transform:translateY(-.5px);
 }
-@media(max-width:760px){
-  #mini{--aperture-size:min(286px,calc(100vh - var(--legal-footer-height,2rem) - 2rem));bottom:-40px}
-  #mini-core{width:204px;height:204px}
-  #navTwin{left:27px;top:28px;width:150px;height:150px}
-  #mini #axis-x{left:43px;width:122px;bottom:4px}
-  #mini #axis-y{left:4px;top:43px;height:122px}
-  #mini-title{top:0;font-size:var(--type-rn2)}
-  #mini-state{top:13px;font-size:var(--type-rn2);width:180px}
-  #mini-help{display:none}
-}
-@media(max-width:520px){
-  #mini{--aperture-size:min(250px,calc(100vh - var(--legal-footer-height,2rem) - 2rem));bottom:-34px}
-  #mini-core{width:178px;height:178px}
-  #navTwin{left:25px;top:26px;width:128px;height:128px}
-  #mini #axis-x{left:39px;width:102px;height:28px}
-  #mini #axis-x::before{top:14px}#mini #axis-x .knob{top:14px}
-  #mini #axis-y{left:3px;top:39px;height:102px;width:28px}
-  #mini #axis-y::before{left:14px}#mini #axis-y .knob{left:14px}
-}
 @media(prefers-reduced-motion:reduce){
-  #mini-pocket,#mini-trigger::before,#mini-pocket::before,#mini-pocket::after{transition-duration:.04s!important;animation-duration:.04s!important}
+  #mini,#mini-pocket,#mini-trigger::before,#mini-pocket::before,#mini-pocket::after{transition-duration:.04s!important;animation-duration:.04s!important}
 }
 
 /* One Display-owned legal slot below the same bounded compass, always reachable
@@ -319,4 +228,3 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
 #mini #legal-links{position:absolute;left:0;right:0;top:calc(100% + .5rem);bottom:auto;width:100%;z-index:4;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:0 .75rem;pointer-events:auto;font:600 var(--type-rn2)/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase}
 #mini #legal-links a{display:flex;align-items:center;min-height:1.5rem;max-width:100%;overflow-wrap:anywhere;color:rgba(238,242,237,.74);text-decoration:none;text-shadow:0 1px 4px var(--bg)}
 #mini #legal-links a:hover,#mini #legal-links a:focus-visible{color:rgba(255,255,255,.98);outline:none;text-decoration:underline;text-underline-offset:.28em}
-@media(max-height:380px){#mini-help{display:none}}

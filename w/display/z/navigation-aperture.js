@@ -5,9 +5,54 @@ const trigger=document.getElementById('mini-trigger');
 const pocket=document.getElementById('mini-pocket');
 if(!mini||!trigger||!pocket) throw new Error('global navigation aperture surface missing');
 const legal=document.getElementById('legal-links');
-function measureLegal(){if(!legal)return;const height=legal.getBoundingClientRect().height,value=Math.ceil(height)+'px';if(height>0&&mini.style.getPropertyValue('--legal-footer-height')!==value)mini.style.setProperty('--legal-footer-height',value)}
-if(legal&&typeof ResizeObserver==='function')new ResizeObserver(measureLegal).observe(legal);
-addEventListener('resize',measureLegal,{passive:true});addEventListener('sss:language',measureLegal);measureLegal();
+const core=document.getElementById('mini-core'),map=document.getElementById('navTwin');
+const hint=document.getElementById('mini-help'),helpButton=document.getElementById('mini-help-toggle'),guide=document.getElementById('mini-guide');
+const mapHelp=document.getElementById('mini-map-help'),axisHelp=document.getElementById('mini-axis-help');
+const COPY={
+  en:{map:'scroll to explore · select a body',mapKeys:'+/− zoom · arrows pan · 0 resets',axis:'pull a rail · hold still to lock',keys:'hold an arrow · release to stop',help:'Navigator help',mapHelp:'Map: scroll or +/− to magnify; arrows pan; 0 resets. Select a body to enter; select a cluster to magnify.',axisHelp:'Rotation: pull an x/y rail; hold still to lock its speed. The midpoint stops rotation. With a keyboard, hold an arrow to rotate and release to stop.'},
+  de:{map:'scrollen erkundet · Körper wählen',mapKeys:'+/− Zoom · Pfeile schieben · 0 zurück',axis:'Regler ziehen · stillhalten fixiert',keys:'Pfeil halten · loslassen stoppt',help:'Kompasshilfe',mapHelp:'Karte: Scrollen oder +/− vergrößert; Pfeile verschieben; 0 setzt zurück. Einen Körper zum Betreten wählen; eine Gruppe zum Vergrößern wählen.',axisHelp:'Drehung: Am x/y-Regler ziehen; Stillhalten fixiert die Geschwindigkeit. Die Mitte stoppt die Drehung. Mit der Tastatur einen Pfeil zum Drehen halten; Loslassen stoppt.'}
+};
+let pointerContext='map',focusContext=null,keyboard=true;
+function copy(){return COPY[document.documentElement.lang==='de'?'de':'en']}
+function renderHint(){const key=focusContext&&keyboard?(focusContext==='axis'?'keys':'mapKeys'):pointerContext||focusContext||'map';if(hint)hint.textContent=copy()[key]}
+function language(){const c=copy();renderHint();if(helpButton)helpButton.setAttribute('aria-label',c.help);if(mapHelp)mapHelp.textContent=c.mapHelp;if(axisHelp)axisHelp.textContent=c.axisHelp;measure()}
+for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[document.getElementById('axis-y'),'axis']]){
+  if(!el)continue;
+  el.setAttribute('aria-describedby',key==='map'?'mini-map-help':'mini-axis-help');
+  el.addEventListener('pointerenter',()=>{keyboard=false;pointerContext=key;renderHint()});
+  el.addEventListener('pointerdown',()=>{keyboard=false;pointerContext=key;renderHint()});
+  el.addEventListener('pointerleave',()=>{pointerContext=null;renderHint()});
+  el.addEventListener('focus',()=>{focusContext=key;renderHint()});
+  el.addEventListener('blur',()=>{focusContext=null;renderHint()});
+}
+function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));measure()}
+helpButton?.addEventListener('click',()=>setHelp(guide.hidden));
+
+function px(name,value){const v=Math.ceil(value)+'px';if(mini.style.getPropertyValue(name)!==v)mini.style.setProperty(name,v)}
+function measure(){
+  const legalHeight=legal?.offsetHeight??legal?.getBoundingClientRect().height??0;
+  px('--legal-footer-height',legalHeight);
+  if(!core||!map)return;
+  // Layout extents do not inherit the pocket's opening transform. No frame polling.
+  const top=globalThis.SSSDisplaySafeArea?.snapshot().insets.top||0;
+  const rem=globalThis.SSSDisplayType?.rootRemPx?.()||16;
+  const available=Math.max(0,innerHeight-top-legalHeight-6*rem);
+  px('--compass-top',top);px('--compass-core-cap',available);
+  px('--compass-guide-cap',available*.45);
+  const chrome=core.scrollHeight-map.offsetHeight;
+  px('--compass-map-cap',Math.max(24,available-chrome));
+  px('--compass-core-height',core.offsetHeight);
+  core.dataset.scroll=String(core.scrollHeight>core.clientHeight+1);
+}
+if(typeof ResizeObserver==='function'){
+  const observer=new ResizeObserver(measure);
+  for(const el of [legal,core,document.getElementById('mini-state'),document.getElementById('mini-help-bar'),guide])if(el)observer.observe(el);
+}
+addEventListener('resize',measure,{passive:true});
+addEventListener('sss:safe-area',measure);
+addEventListener('sss:language',language);
+document.fonts?.ready.then(measure);
+language();
 
 let pinned=false,closeTimer=null;
 const CLOSE_DELAY=170;
@@ -27,6 +72,7 @@ function close(reason='leave'){
   trigger.setAttribute('aria-expanded','false');
   pocket.setAttribute('aria-hidden','true');
   if('inert' in pocket) pocket.inert=true;
+  setHelp(false);
   mini.dataset.reason=reason;
 }
 function scheduleClose(){clearClose();closeTimer=setTimeout(()=>{closeTimer=null;close('leave')},CLOSE_DELAY)}
@@ -40,6 +86,7 @@ trigger.addEventListener('focus',()=>open('focus'));
 mini.addEventListener('focusout',e=>{if(!mini.contains(e.relatedTarget))scheduleClose()});
 trigger.addEventListener('click',e=>{e.preventDefault();setPinned(!pinned)});
 addEventListener('keydown',e=>{
+  keyboard=true;renderHint();
   if(e.key!=='Escape'||mini.dataset.aperture!=='open')return;
   e.preventDefault();e.stopImmediatePropagation();pinned=false;mini.dataset.pinned='false';trigger.focus({preventScroll:true});close('escape');
 },true);
@@ -49,6 +96,7 @@ addEventListener('keydown',e=>{
 new MutationObserver(()=>{
   mini.dataset.composition=document.documentElement.dataset.composition||'single';
   mini.dataset.axis=document.documentElement.dataset.compositionAxis||'';
+  measure();
 }).observe(document.documentElement,{attributes:true,attributeFilter:['data-composition','data-composition-axis']});
 
 mini.dataset.aperture='closed';

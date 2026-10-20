@@ -42,12 +42,20 @@
   </button>
   <div id="mini-pocket" data-display-occupancy="right bottom" aria-hidden="true">
     <div id="mini-core">
-      <div id="mini-title">global orientation · minimap</div>
       <div id="mini-state">global overview</div>
-      <canvas id="navTwin" tabindex="0" width="448" height="448" tabindex="0" aria-label="global mounted site-holon navigator"></canvas>
+      <div id="mini-instrument">
+      <canvas id="navTwin" tabindex="0" width="448" height="448" aria-label="global mounted site-holon navigator" aria-describedby="mini-map-help"></canvas>
       <div id="axis-y" class="axis" tabindex="0" role="slider" aria-label="Vertical rotation speed" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0"><span class="knob"></span><span class="axis-letter">y</span></div>
       <div id="axis-x" class="axis" tabindex="0" role="slider" aria-label="Horizontal rotation speed" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0"><span class="knob"></span><span class="axis-letter">x</span></div>
-      <div id="mini-help">pull anywhere · hold still → lock exact velocity</div>
+      </div>
+      <div id="mini-help-bar">
+        <div id="mini-help">scroll to explore · select a body</div>
+        <button id="mini-help-toggle" type="button" aria-expanded="false" aria-controls="mini-guide" aria-label="Navigator help">?</button>
+      </div>
+      <div id="mini-guide" hidden tabindex="0">
+        <p id="mini-map-help">Map: scroll or +/− to magnify; arrows pan; 0 resets. Select a body to enter; select a cluster to magnify.</p>
+        <p id="mini-axis-help">Rotation: pull an x/y rail; hold still to lock its speed. The midpoint stops rotation. With a keyboard, hold an arrow to rotate and release to stop.</p>
+      </div>
     </div>
   </div>
   <nav id="legal-links" aria-label="Legal" data-display-occupancy="right bottom" data-display-glass="off"></nav>

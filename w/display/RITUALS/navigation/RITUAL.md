@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.16"
+version: "3.17"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -136,6 +136,7 @@ In a single encounter the global navigator is a HUD, not a plate:
 - the transparent area never captures the pointer; only the instruments do;
 - a closed navigator reserves its corner mark and persistent legal slot through the safe-area contract; an open one also publishes its actual instrument cluster;
 - bodies occupy the same realized containing cells, size and identity-seeded moving frames as the overview field, under shared orientation. The compass draws their tetrahedral envelopes and selects their current silhouette/label; semantic address points remain address identity rather than body location. Local camera zoom does not fabricate a second global space;
+- one compact context/count header and contextual guidance flow around the reserved map/rails. Focused map keys, keyboard axis hold/release and pointer/touch axis settling retain their distinct actual semantics. A persistent help control discloses the complete localized instructions. Measured text/font/viewport extents bound the existing occupancy surface; constrained help/control continuation remains scrollable. Long recursive addresses keep their full accessible text/title while visual ink may elide;
 - legal links sit directly below the bounded compass in one Display-owned slot. Measured wrapping/localized height reserves viewport space; links remain available outside the closed pocket and publish occupancy, while their wording and destinations remain site-owned;
 - split and grid encounters keep the seam aperture (plate, clip, bloom), because there the navigator lives on the shared seam between two fields.
 
@@ -232,3 +233,5 @@ Version3.14 spatial compass/footer (2026-10-20): overview and compass share actu
 Version3.15 recursive spatial names (2026-10-20): owner counterexample replaces row accommodation with body-relative labels, measured crowding and occupied-cell LOD. Deep raw mounts keep their own rank. Map-only magnification has no semantic recursion ceiling and never changes global identities, orientation or history. Current native dense/deep and real-font canvas witnesses retain their actual browser/raster limits.
 
 Version3.16 concurrent membrane (2026-10-20): actual body contact requests entry immediately; only the admitted closing frame starts its field camera and unheld world-drop departure. Feed readiness, busy rejection, renderer refusal, cold-load cancellation and history remain one covered transaction. No new local site mode, destination or offer-lifetime timeout is introduced.
+
+Version3.17 compass guidance (2026-10-20): header, map/rails and help share measured intrinsic flow rather than fixed text offsets. Deliberately disclosed DE/EN guidance and input-specific hints retain all existing navigation actions; source geometry, recursive targets, axis latch and site-local meaning are unchanged.
