@@ -4,6 +4,10 @@ const mini=document.getElementById('mini');
 const trigger=document.getElementById('mini-trigger');
 const pocket=document.getElementById('mini-pocket');
 if(!mini||!trigger||!pocket) throw new Error('global navigation aperture surface missing');
+const legal=document.getElementById('legal-links');
+function measureLegal(){if(!legal)return;const height=legal.getBoundingClientRect().height,value=Math.ceil(height)+'px';if(height>0&&mini.style.getPropertyValue('--legal-footer-height')!==value)mini.style.setProperty('--legal-footer-height',value)}
+if(legal&&typeof ResizeObserver==='function')new ResizeObserver(measureLegal).observe(legal);
+addEventListener('resize',measureLegal,{passive:true});addEventListener('sss:language',measureLegal);measureLegal();
 
 let pinned=false,closeTimer=null;
 const CLOSE_DELAY=170;
@@ -37,7 +41,7 @@ mini.addEventListener('focusout',e=>{if(!mini.contains(e.relatedTarget))schedule
 trigger.addEventListener('click',e=>{e.preventDefault();setPinned(!pinned)});
 addEventListener('keydown',e=>{
   if(e.key!=='Escape'||mini.dataset.aperture!=='open')return;
-  e.preventDefault();e.stopImmediatePropagation();pinned=false;mini.dataset.pinned='false';close('escape');trigger.focus({preventScroll:true});
+  e.preventDefault();e.stopImmediatePropagation();pinned=false;mini.dataset.pinned='false';trigger.focus({preventScroll:true});close('escape');
 },true);
 
 /* Composition changes move the same global aperture between outer membrane and shared seam.

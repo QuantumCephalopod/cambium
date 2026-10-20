@@ -61,6 +61,37 @@
     return {path,tet,center:centroid(tet),point:semanticPoint(path),locus:path?A.key(path):'overview'};
   }
 
+  /* One host-space body frame for the actual field and its global compass.
+   * Content refines inward two ranks below its realized containing cell. */
+  function bodyPlacement(structure,raw) {
+    const realized=new Set(structure.addresses.map(a=>a.path));
+    let p='';for(let i=1;i<=raw.length;i++)if(realized.has(raw.slice(0,i)))p=raw.slice(0,i);
+    if(p===raw&&p)while(realized.has(p+p.at(-1)))p+=p.at(-1);
+    const center=raw.length>p.length?cellForPath(raw).center:cellForPath(p).center;
+    return Object.freeze({cell:p,center:[...center],k:Math.pow(2,-(p.length+2))});
+  }
+  function hash32(text) {
+    let h=2166136261>>>0;
+    for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+    h^=h>>>16;h=Math.imul(h,0x7feb352d)>>>0;h^=h>>>15;h=Math.imul(h,0x846ca68b)>>>0;h^=h>>>16;
+    return h>>>0;
+  }
+  function random01(text,salt){return (hash32(text+'·'+salt)+1)/4294967297}
+  function sampleTet(tet,id,inset=.22) {
+    let weights=[0,1,2,3].map(i=>-Math.log(Math.max(1e-7,random01(id,i))));
+    const sum=weights.reduce((a,b)=>a+b,0);weights=weights.map(v=>v/sum);weights=weights.map(v=>(1-inset)*v+inset*.25);
+    return [0,1,2].map(k=>weights.reduce((s,w,i)=>s+w*tet[i][k],0));
+  }
+  function bodyDrift(place,id) {
+    const cell=cellForPath(place.cell),c=cell.center,room=Math.max(0,1-place.k/Math.pow(2,-place.cell.length));
+    const tet=cell.tet.map(v=>v.map((x,j)=>c[j]+(x-c[j])*room));
+    return {base:place.center,points:[0,1,2,3].map(i=>sampleTet(tet,id+'·drift-'+i)),phase:random01(id,'drift-phase')*4,speed:.72+.56*random01(id,'drift-speed')};
+  }
+  function bodyPosition(d,ms) {
+    const u=((ms/42000)*d.speed+d.phase)%4,i=Math.floor(u),f=u-i,t=f<=0?0:f>=1?1:f*f*(3-2*f),a=d.points[i],b=d.points[(i+1)%4];
+    return a.map((v,j)=>v+(b[j]-v)*t);
+  }
+
   /* The address/locus remains a vertex. The camera instead frames the recursive
    * tetrahedral cell rooted at that address. That keeps the selected continuation
    * and its three peer directions perceptually co-equal rather than throwing the
@@ -108,5 +139,5 @@
     });
   }
 
-  return Object.freeze({GENES,V0,hasFullSplit,splitTet,centroid,semanticPoint,cellForPath,collectStructure,addressRecord,focusTarget,velocity,axisValue,createState});
+  return Object.freeze({GENES,V0,hasFullSplit,splitTet,centroid,semanticPoint,cellForPath,collectStructure,addressRecord,bodyPlacement,bodyDrift,bodyPosition,sampleTet,focusTarget,velocity,axisValue,createState});
 });

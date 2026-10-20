@@ -61,6 +61,7 @@ const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
 once();assert.strictEqual(f.W.projection,f.projected.get('organism:origin'));
 assert.equal(f.W.targets.find(t=>t.path==='w').titles['organism:branch'],'English organism:branch');
+for(const target of f.W.targets)for(const body of target.bodies)assert.equal(body.path,runtime.registry.getMount(body.id).rawAddress,'compass receives each identity actual raw mount path');
 assert.equal(f.options.get('organism:origin').bodies().find(b=>b.id==='organism:branch').title,'English organism:branch');
 for(const id of ids.slice(0,3))assert.strictEqual(f.options.get(id).projection,f.projected.get(id));
 const slotBounds=runtime.ui.get(ids[0]).field('slot').bounds;assert.equal(slotBounds.x,0);assert.equal(slotBounds.y,0);assert.equal(slotBounds.w,.5);assert.equal(slotBounds.h,.5);

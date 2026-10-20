@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.13"
+version: "3.14"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -134,7 +134,9 @@ In a single encounter the global navigator is a HUD, not a plate:
 - locked to the screen's borders on the same edge margin as site HUDs, so the centre stays free;
 - the side of the map (`--hud-t`) is the one size knob; every other measure derives from it;
 - the transparent area never captures the pointer; only the instruments do;
-- a closed navigator reserves only its corner mark through the safe-area contract, an open one only its own cluster;
+- a closed navigator reserves its corner mark and persistent legal slot through the safe-area contract; an open one also publishes its actual instrument cluster;
+- bodies occupy the same realized containing cells, size and identity-seeded moving frames as the overview field, under shared orientation. The compass draws their tetrahedral envelopes and selects their current silhouette/label; semantic address points remain address identity rather than body location. Local camera zoom does not fabricate a second global space;
+- legal links sit directly below the bounded compass in one Display-owned slot. Measured wrapping/localized height reserves viewport space; links remain available outside the closed pocket and publish occupancy, while their wording and destinations remain site-owned;
 - split and grid encounters keep the seam aperture (plate, clip, bloom), because there the navigator lives on the shared seam between two fields.
 
 ## Glass and the goo lens
@@ -224,3 +226,5 @@ Version3.11 continuous liquid passage (2026-10-19): contact lifetime and project
 Version3.12 capillary body/contact (2026-10-20): compatible liquid shares one exterior across every offered reservoir; interior overlap rims and stacked optical displacement are removed. Bounded viscous strain redistributes free-drop area, and actual short-contact separation replaces the long connecting capsule. Rotation, pointer contact, viewport bounds and render-context geometry remain coherent. Native/GLES narrow/wide witnesses retain readable apertures, identity lifetime, input and reduced-motion laws; the live-browser baseline is Canvas2D, not a claimed optical witness.
 
 Version3.13 nearest-reservoir release (2026-10-20): released glass without an owner-held lock returns to the nearest live compatible boundary across free space. Distant attraction creates no join/bridge, and holding or projection-pending soft-locks retain priority. Reduced motion settles directly; absence of compatible liquid preserves free glass. The actual deformed viewport footprint bounds docking. Native production-controller/dynamics witnesses cover wide/narrow return and unchanged ownership/continuity.
+
+Version3.14 spatial compass/footer (2026-10-20): overview and compass share actual host-body placement, extent, drift clock and orientation. Raw per-identity mount paths survive quotient grouping, selection and relocation. Accommodated labels retain spatial leaders. A measured legal slot below the same compass stays reachable in closed/single/seam states; Escape closes after restoring focus. Existing source/privacy, navigation and child presentation ownership remain.
