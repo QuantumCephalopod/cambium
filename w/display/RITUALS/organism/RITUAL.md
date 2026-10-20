@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.44"
+version: "3.45"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -165,9 +165,9 @@ Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives direc
 
 ### Type is body
 
-Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 2.0.0), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v2 build is the main type for both Display font tokens, with 1024 units per em; every glyph sits centred in one fixed 1024-unit cell, and fixed width is part of the face's identity, so a correction that lets letters drift out of their cells is a wound to the face. The alphabet is A–Z and space: rendered text is folded into it (`Ä→AE`, `Ö→OE`, `Ü→UE`, `ß→SS`, case kept) by `w/display-type.js`, and digits and marks fall back glyph by glyph to the next family. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
+Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 3.0.1), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v3 build is the main type for both Display font tokens, with 1200 units per em; every glyph sits centred in one fixed 1200-unit cell, and fixed width is part of the face's identity. The supplied alphabet includes A–Z, lowercase aliases, digits 0–9, Ä/Ö/Ü with lowercase aliases, and spaces. Supported umlauts retain their spelling; decomposed umlauts normalize to the supplied composed glyphs. Unsupported sharp-s still becomes ss/SS through `w/display-type.js`; punctuation uses ordinary per-glyph family fallback. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
 
-Entry-copy scale belongs to the site's actual mounted content class, not an obsolete carrier selector. The overview introduction remains secondary to the field, with bounded responsive type and a width tied to its real panel. `ch` is not a truthful main-alphabet cell here: it measures the zero glyph or its fallback measure, while this face has no zero glyph. Typography does not alter semantic labels, camera, body geometry or navigation.
+Entry-copy scale belongs to the site's actual mounted content class, not an obsolete carrier selector. The overview introduction remains secondary to the field, with bounded responsive type and a width tied to its real panel. Mono v3 supplies zero in the same fixed cell as its other glyphs, so `ch` now measures that supplied cell rather than a fallback zero. Typography does not alter semantic labels, camera, body geometry or navigation.
 
 #### Fractal type scale — one half-octave lattice
 
@@ -396,9 +396,9 @@ Version 3.27 receiving-renderer acceptance correction (staged 2026-10-14): the l
 
 ### Language belongs to expression
 
-Site proper names are language-invariant: **Philosophy, Crawlerbait, Schattenseiten and Papers** remain the same names in DE and EN. Among the current site-holons, only the legal titles are localized. Other authored concepts, questions, prose and interface wording may be translated without renaming organism identities, mounts, addresses or anatomy. German Display expression must use `ae / oe / ue` (and case-preserving capitals) until the face actually supports umlauts; the existing spelling fold is a presentation transduction, not permission to rewrite source-owned wording or identifiers.
+Site proper names are language-invariant: **Philosophy, Crawlerbait, Schattenseiten and Papers** remain the same names in DE and EN. Among the current site-holons, only the legal titles are localized. Other authored concepts, questions, prose and interface wording may be translated without renaming organism identities, mounts, addresses or anatomy. Mono v3 now supports German umlauts, ending the face-dependent ae/oe/ue requirement. Preserve authored umlauts and existing authored ASCII spelling; do not reverse-transliterate source-owned wording or identifiers. Unsupported sharp-s retains the bounded ss/SS presentation fold.
 
-The current target/floating-body title path still derives the site's field-root `de` / `en` label, with its manifest title and stable identity as fallbacks. The accepted proper-name policy and complete glyph-path coverage remain OPEN execution in `_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md`; recording that policy does not claim those runtime paths are repaired. A language-only update must not remint GPU bodies. Navigator targets carry the derived titles to consumers.
+The current target/floating-body title path still derives the site's field-root `de` / `en` label, with its manifest title and stable identity as fallbacks. The accepted proper-name/localization policy remains OPEN execution in `_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md`; Mono v3 closes only its former font-dependent spelling limitation. A language-only update must not remint GPU bodies. Navigator targets carry the derived titles to consumers.
 
 The chosen German/English expression travels in the ordinary `lang` URL query, including history restoration and return from standalone public apertures. No cookie or browser storage is introduced. An unsupported/missing language retains the existing English default.
 
@@ -440,3 +440,5 @@ Version3.42 liquid-gated coarse bodies (2026-10-20): an optional host-owned plai
 Version3.43 owner counterexamples (2026-10-20): compass names no longer become oversized rows. Actual raw mount rank, spatial LOD and local magnification preserve recursive scale without manufacturing destinations. The liquid input begins before opaque covers, keeps primitive materials natural and is tested with the actual Papers renderer/admitted sample and actual Crawlerbait/legal shaders, alongside procedural optical tests. Papers restores its own distinct chamber-shell opacity and organism embers; Schattenseiten owns partial-slot fallback. Prior mask-only evidence did not prove all site interiors, and remains scoped to its original inputs.
 
 Version3.44 contact and concurrent passage (2026-10-20): owner counterexamples remove cancelling html/body inversions and the opaque-hover/GPU-ink mismatch. Accepted shared entry begins camera, four-facet closure and neutral unheld-body departure in one closing phase; acquisition, failure and cancellation retain their covered transaction boundary. Existing local traversal/offer continuity, pointer ownership, site content and renderer authority remain. Native actual-fold/camera/lens/ink witnesses and actual software-GLES keep their declared browser/physical-driver limits.
+
+Version 3.45 Mono v3 (2026-10-20): supplied digits and umlauts enter the existing stable font identity. The supplied cmap was shifted against its original sprite grid; hosted3.0.1 corrects Unicode assignment and version metadata while preserving the source glyph/metric tables byte-for-byte, with the original package archived source-exact. Fixed centred cells are now1200 units, and the common presentation fold preserves supported umlauts while keeping ss/SS for unsupported sharp-s. Source spelling, Regular, font ranks and site-local layout remain owned as before; the name/localization residual stays open.

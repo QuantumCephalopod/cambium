@@ -1,6 +1,6 @@
 /* Display's main type: Philipp's SpriteSheet face, resolved by stable identity through the Display
- * dependency projection, never by path. Its alphabet is A-Z and space, so rendered text is folded into
- * it (Ä→AE, Ö→OE, Ü→UE, ß→SS, case kept); digits and marks fall back glyph by glyph to the next family.
+ * dependency projection, never by path. Mono v3 supplies letters, digits and umlauts. Preserve them;
+ * normalize decomposed umlauts and fold only unsupported sharp-s (ß→ss, ẞ→SS). Marks use family fallback.
  * A subtree may keep its own spelling with data-type-fold="off". */
 (function(root,factory){
   'use strict';const api=factory(root);
@@ -20,10 +20,10 @@
     return Number.isFinite(px)&&px>0?px:ROOT_REM_FALLBACK;
   }
   function rankPx(rank,doc=root.document){return rootRemPx(doc)*rankFactor(rank)}
-  const MAP={'Ä':'AE','Ö':'OE','Ü':'UE','ä':'ae','ö':'oe','ü':'ue','ß':'ss','ẞ':'SS'};
-  const ANY=/[ÄÖÜäöüßẞ]/,ALL=/[ÄÖÜäöüßẞ]/g;
+  const MAP={'ß':'ss','ẞ':'SS'};
+  const ANY=/[ßẞ]|[aouAOU]\u0308/,ALL=/[ßẞ]/g;
   const SKIP=new Set(['SCRIPT','STYLE','TEXTAREA','INPUT','NOSCRIPT']);
-  function fold(text){return typeof text==='string'&&ANY.test(text)?text.replace(ALL,c=>MAP[c]):text}
+  function fold(text){return typeof text==='string'&&ANY.test(text)?text.normalize('NFC').replace(ALL,c=>MAP[c]):text}
   function skipped(el){return !el||SKIP.has(el.tagName)||!!el.closest?.('[data-type-fold="off"]')}
   function foldNode(node){
     if(!node)return;
