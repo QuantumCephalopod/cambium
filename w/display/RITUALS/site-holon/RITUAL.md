@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.17"
+version: "3.18"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -248,3 +248,5 @@ Version3.15 capillary geometry (2026-10-20): Display lends the same drop's orien
 Version3.16 liquid-gated host representation (2026-10-20): the optional host-owned placeholder lends presentation policy without taking child content or readiness authority. The existing preview input and shared liquid exterior carry the coarse reveal; no detailed acquisition, site mode or separate lens is earned.
 
 Version3.17 truthful reveal readiness (2026-10-20): a finer interior is an actual owner offer, not an assumption about every shader. The same-frame alternate world precedes plain covers; refusal/error and per-part fallback keep presence truthful while ready transparent tissue remains transparent. Actual specimen execution is required in addition to procedural mask inputs.
+
+Version3.18 shared contact transport (2026-10-20): body-name hover/focus uses native foreground ink above its own contact surface, while quiet optical ink remains derived. An accepted membrane intent lends the body camera to the shared closing phase; acquisition may hold closure and explicit unheld world-drop departure does not alter local reading/content authority. Site meanings, media and renderer refusal remain source-owned.

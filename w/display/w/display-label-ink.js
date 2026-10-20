@@ -9,7 +9,7 @@
   else root.SSSDisplayLabelInk=api;
 })(typeof globalThis==='object'?globalThis:this,function(){
   'use strict';
-  const ATTR='data-display-label-ink',styles=new WeakMap();
+  const ATTR='data-display-label-ink',DOM_FOREGROUND='.field-body-label:is(:hover,:focus-visible)',styles=new WeakMap();
   const VERTEX=`#version 300 es
   layout(location=0) in vec2 aPosition;
   layout(location=1) in vec2 aUV;
@@ -30,7 +30,8 @@
     let record=styles.get(doc);
     if(!record){
       const node=doc.createElement('style');
-      node.textContent=`[${ATTR}="gpu"] .field-label,[${ATTR}="gpu"] .field-label *{-webkit-text-fill-color:transparent!important;text-shadow:none!important;text-decoration-color:transparent!important}`;
+      const derived=`.field-label:not(${DOM_FOREGROUND})`;
+      node.textContent=`[${ATTR}="gpu"] ${derived},[${ATTR}="gpu"] ${derived} *{-webkit-text-fill-color:transparent!important;text-shadow:none!important;text-decoration-color:transparent!important}`;
       (doc.head||doc.documentElement).appendChild(node);
       record={node,users:0};styles.set(doc,record);
     }
@@ -75,6 +76,9 @@
     // Opacity ancestors and paint may share elements; styles live for this collect only.
     const styleFor=element=>{if(!computed.has(element))computed.set(element,getStyle(element));return computed.get(element)};
     for(const label of host.querySelectorAll('.field-label')){
+      // Contact owns foreground DOM ink above its own opaque button surface.
+      // Quiet labels remain in the shared optical input; never paint both.
+      if(label.matches?.(DOM_FOREGROUND))continue;
       const walk=doc.createTreeWalker(label,4); // NodeFilter.SHOW_TEXT, including renderer-owned spans/b.
       for(let node=walk.nextNode();node;node=walk.nextNode()){
         if(!node.data||!node.data.trim())continue;

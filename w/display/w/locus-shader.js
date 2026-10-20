@@ -213,15 +213,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   function bodyLabel(B){
     let n=bodyLabels.get(B.id);
     if(!n){n=document.createElement('button');n.type='button';n.className='field-label field-body-label';n.innerHTML='<b></b>';n.querySelector('b').textContent=B.title;
-      n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();enterBody(B.id,{x:e.clientX,y:e.clientY})});
+      n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const p=e.detail===0?projectBody(B.id):null,r=p&&canvas.getBoundingClientRect();enterBody(B.id,p?{x:r.left+p.x,y:r.top+p.y}:{x:e.clientX,y:e.clientY})});
       (labelHost||element).append(n);bodyLabels.set(B.id,n);labelObserver?.observe(n)}
     const ink=n.querySelector('b');if(ink.textContent!==B.title)ink.textContent=B.title;
     return n;
   }
   function enterBody(bodyId,origin){
     const B=BODIES.get(bodyId);if(!B?.active)return;
-    cam={from:currentFrame(),to:{center:[...B.pos],scale:1/B.place.k},start:performance.now()};
-    setTimeout(()=>dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:bodyId,origin}})),CAMERA_MS);
+    dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:bodyId,origin}}));
   }
   function hitBody(x,y,rect){
     let best=null;
@@ -778,7 +777,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   requestAnimationFrame(draw);
   api=Object.freeze({
     id,shaderId:shader.id,element,canvas,get projection(){return projection},palette,inspectable,draggable,interactive:inspectable,localScope,
-    selectPoint,projectAddressCenter,projectBody,get container(){return container()},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
+    selectPoint,projectAddressCenter,projectBody,get container(){return container()},approachBody(bodyId){const B=BODIES.get(bodyId);if(!B?.active)return false;cam={from:currentFrame(),to:{center:[...B.pos],scale:1/B.place.k},start:performance.now()};return true},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},
     get selectedPointId(){return selectedPointId},
     get points(){return pointRecords.map(p=>p.spec)},

@@ -306,3 +306,26 @@ for(const v of [{w:390,h:844},{w:1280,h:800}]){
  L.step(t,h,1/120,v,null,null,true);assert.equal(L.geometry(t,h).stretch,1,'reduced motion settles deformation too');
 }
 console.log('area-preserving viscous capillary mode, rotated contact, relaxation and physical separation PASS');
+
+/* A declared membrane crossing releases only unheld world contact. It is not
+ * a guessed timeout on a missing projection or a change to local traversal. */
+for(const v of [{w:390,h:844},{w:1280,h:800}]){
+ const s=L.create(null,v);s.x=v.w*.6;s.y=v.h*.5;
+ const body={id:'owned:world',kind:'body',cx:s.x,cy:s.y};L.lockTo(s,body);
+ const before={x:s.x,y:s.y,hx:s.hx,hy:s.hy,vx:s.vx,vy:s.vy};
+ L.depart(s,{x:v.w*.5,y:v.h*.5},v,.38);
+ assert.equal(s.lock,null);assert.deepEqual({x:s.x,y:s.y,hx:s.hx,hy:s.hy,vx:s.vx,vy:s.vy},before,'departure begins from the same physical state');
+ let previous=s.x,travel=0;
+ for(let i=0;i<46;i++){
+  L.step(s,[],1/120,v,null,body);const g=L.geometry(s,null);
+  assert.equal(s.lock,null,'a surviving offer does not silently relock a departed body');assert(Number.isFinite(g.x)&&Number.isFinite(g.y));
+  assert(g.x-g.hx>=-.01&&g.x+g.hx<=v.w+.01&&g.y-g.hy>=-.01&&g.y+g.hy<=v.h+.01,'outward flesh remains inside its actual viewport');
+  assert(Math.abs(s.x-previous)<v.w*.12,'departure has no positional jump');travel+=s.x-previous;previous=s.x;
+ }
+ assert(travel>v.w*.15,'closing-camera flow must carry the drop outward');assert(!s.departure,'departure ends with its declared closing interval');
+ const held=L.create(null,v);L.grab(held,v.w/2,v.h/2,7);L.depart(held,{x:0,y:0},v);assert(held.held&&!held.departure,'owning pointer has priority');
+ const field=L.create(null,v);L.lockTo(field,{id:'reading',kind:'field'});L.depart(field,{x:0,y:0},v);assert.equal(field.lock.id,'reading','screen tissue is not world-camera flow');
+ const quiet=L.create(null,v);L.lockTo(quiet,body);L.depart(quiet,{x:0,y:0},v);L.step(quiet,[],1/120,v,null,null,true);assert(!quiet.departure&&quiet.vx===0&&quiet.vy===0,'reduced motion settles without flight');
+ L.lockTo(s,body);L.depart(s,{x:s.x,y:s.y},v,.04);L.grab(s,s.x,s.y,4);assert(!s.departure,'a new deliberate take cancels departure');
+ console.log(JSON.stringify({carrier:[v.w,v.h],membrane_outward_travel:travel,continuous_start:true,held_and_reading_priority:true}));
+}

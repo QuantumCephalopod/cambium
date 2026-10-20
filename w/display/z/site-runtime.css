@@ -1,6 +1,3 @@
-html:has(#inverse-mode:checked){color-scheme:light}
-html:has(#inverse-mode:checked) body{filter:invert(1)}
-body{transition:filter .18s ease}
 .inverse-control{position:relative;display:grid;place-items:center;min-width:28px;min-height:30px;cursor:pointer;color:var(--dim)}
 .inverse-control input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .inverse-control span{font:var(--type-rn1)/1 var(--mono);transition:transform .18s ease,color .18s ease}

@@ -9,8 +9,8 @@ const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom(
 function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
-  const heldFolds=[];let foldBusy=false;
-  const fold={get busy(){return foldBusy},swap(fn,details){swaps.push(details);if(!holdFold)return fn();foldBusy=true;return new Promise((resolve,reject)=>heldFolds.push(()=>{try{resolve(fn())}catch(error){reject(error)}finally{foldBusy=false}}))}};
+  const heldFolds=[],approaches=[],foldLayer={dataset:{fold:'open'},hidden:true};let foldBusy=false;
+  const fold=holdFold==='real'?require('../z/site-fold.js').createFold(foldLayer,{reduced:true}):{get busy(){return foldBusy},swap(fn,details){swaps.push(details);details.onClosing?.(380);if(!holdFold)return fn();foldBusy=true;return new Promise((resolve,reject)=>heldFolds.push(()=>{try{resolve(fn())}catch(error){reject(error)}finally{foldBusy=false}}))}};
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
@@ -46,7 +46,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
-  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
+  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {approachBody(id){approaches.push({from:config.id,id});return true},pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
   if(lens)context.SSSDisplayLens=lens;
   if(lens)for(const [id,owner] of Modules){
     const render=owner.render,unmount=owner.unmount;
@@ -55,7 +55,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   }
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
-  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
+  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
 }
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
@@ -319,3 +319,27 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  assert.equal(got.angle,g.angle);assert.equal(got.hx,g.hx);assert.equal(got.hy,g.hy);assert.equal(got.r,Math.min(g.hx,g.hy));
  for(const owner of ids)L.withdraw(owner+'|tissue');
 }
+
+/* Execute the actual fold, not the immediate-swap fixture: closing starts
+ * camera/lens together while acquisition is pending and commits only covered. */
+(async()=>{
+ const departures=[],id=ids[1],origin={x:320,y:260};let f;
+ f=boot(1,'',{}, {[id]:'hold'}, {},'real',{offer(){},withdraw(){},departFrom:(point,duration)=>departures.push({point,duration,phase:f.foldLayer.dataset.fold})});
+ f.emit('sss:enter-body',{from:ids[0],id,origin});
+ assert.equal(f.runtime.state.activeAddress,'');assert.equal(f.approaches.length,0,'motion starts at the fold frame, not from an independent timeout');
+ await new Promise(resolve=>setTimeout(resolve,100));
+ assert.equal(f.foldLayer.dataset.fold,'closed');assert.equal(f.runtime.state.activeAddress,'','pending acquisition cannot reveal an unready receiver');assert(f.fold.busy);
+ assert.deepEqual(f.approaches,[{from:ids[0],id}]);assert.deepEqual(departures,[{point:origin,duration:40,phase:'closing'}]);
+ assert.equal(f.runtime.navigateGlobal('y'),false,'a busy fold rejects another camera transaction');assert.equal(f.approaches.length,1);assert.equal(departures.length,1);
+ f.held.shift()();
+ for(let i=0;i<50&&f.fold.busy;i++)await new Promise(resolve=>setTimeout(resolve,10));
+ assert.equal(f.fold.busy,false);assert.equal(f.foldLayer.dataset.fold,'open');assert(f.foldLayer.hidden);assert.equal(f.runtime.state.activeAddress,'w');
+ assert.equal(f.history.filter(h=>h.kind==='push').length,1,'only the accepted covered swap earns history');
+ const cancelled=boot(1,'',{}, {[id]:'hold'}, {},'real');cancelled.emit('sss:enter-body',{from:ids[0],id,origin});
+ await new Promise(resolve=>setTimeout(resolve,100));assert.equal(cancelled.foldLayer.dataset.fold,'closed');
+ cancelled.home.click({preventDefault(){}});
+ for(let i=0;i<50&&cancelled.fold.busy;i++)await new Promise(resolve=>setTimeout(resolve,10));
+ assert(!cancelled.fold.busy&&cancelled.foldLayer.hidden,'home cancellation must open the prior encounter without waiting for the cold feed');
+ cancelled.held.shift()();for(let i=0;i<24;i++)await Promise.resolve();assert.equal(cancelled.runtime.state.activeAddress,'','late feed readiness cannot resurrect the cancelled swap');
+ console.log('PASS — actual concurrent fold, covered feed readiness, busy admission, cold-load cancellation and one committed history boundary');
+})().catch(error=>{console.error(error);process.exitCode=1});

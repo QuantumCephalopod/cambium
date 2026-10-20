@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.43"
+version: "3.44"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -242,7 +242,7 @@ Papers reuses its actual chamber/instance renderer with a bounded, source-checke
 A host may offer `shader.bodyPlaceholder: {fragment, state}` for bodies whose owners actually offer a finer `body.draw` or `shader.preview`. Bodies with only an ordinary material keep it; absence of an interior is not permission to manufacture an opaque universal replacement. Before painting those plain covers, Display copies the current world and natural bodies into the existing alternate input. Ready owner draws therefore replace the cover locally, including genuine transparency, through every common liquid footprint and the same optical map. A failed/refused own draw retains the plain body. An owner can return `false` while pending or use the offered `drawPlaceholder()` inside its current target before painting per-part ready data. Schattenseiten uses that callback for partially loaded declared64 slots; Papers' synchronous transparent chambers do not paint a cover below themselves. Low preload remains owner-bounded and earns no detailed source or higher media. The prepared foreground label batch covers both inputs once per collection/layout/upload. Source-cell bounds and fixed-budget liquid footprints bound culling; Canvas2D keeps the offered geometry and entry while not executing optics. Current Philosophy has no independent field after-layer or point population; no claim about new host-layer combinations is inferred from that specimen.
 
 
-Body-label size is cached from resize observation. Each full title may wrap, remains within its field, follows its own anchor and stays a native accessible button. The label host does not trap interactive buttons below site prose; decorative labels retain ordinary low paint order. Actual projected depth orders body-button overlap; hover/focus owns opaque legible ink. No world-body packing or semantic repositioning is earned by a label collision. Existing camera-relative culling, genealogy-relative resolution and contacted-text work bounds remain in force.
+Body-label size is cached from resize observation. Each full title may wrap, remains within its field, follows its own anchor and stays a native accessible button. The label host does not trap interactive buttons below site prose; decorative labels retain ordinary low paint order. Actual projected depth orders body-button overlap. Quiet labels may use the derived GPU optical input. A hovered or keyboard-focused body button owns native foreground text above its own opaque surface and is excluded from both GPU glyph submission and DOM-ink suppression; returning to quiet contact restores the derived path without reminting the button. No world-body packing or semantic repositioning is earned by a label collision. Existing camera-relative culling, genealogy-relative resolution and contacted-text work bounds remain in force.
 
 ## Tree-derived public membrane
 
@@ -292,7 +292,7 @@ Distinct raw addresses may nevertheless quotient-coalesce onto one geometric loc
 
 The selected global minimap point supplies the transition origin. Four membrane facets close from the viewport boundaries onto that point, the encounter changes only under complete closure, and the facets reverse to reveal the destination.
 
-The global navigator, orientation and browser history survive this swap.
+A validated body intent starts its real camera approach at the same closing frame as the four facets, not through an independent completion timer. An unheld world-body drop explicitly releases into bounded outward transport during that closing interval, preserving its initial position, velocity, shape and optical continuity; held pointers and screen-tissue reading locks retain their own relation. Feed acquisition runs concurrently and can hold only the fully closed cover. Cancellation opens the prior live encounter without waiting for a cold feed; late readiness cannot commit it. Ready destinations open on the next prepared frame, without an extra black dwell. Renderer acceptance still precedes address/history mutation. The global navigator, orientation and browser history survive this swap.
 
 ## Closure / acceptance
 
@@ -304,7 +304,7 @@ The optional offscreen GLES witness replays the existing production-field regres
 
 Current bounded choices retain the520ms pointer settle, smoothstep circle-to-triangle swell and release/rearm behavior; keyboard operation remains a press/release control without an invented latch. The existing HUD/aperture placement, current focus/background separation, nearest realized hit relation and target-origin membrane transition remain the chosen embodiment. There is no new global blur layer, automatic rail relocation or compulsory second personal taste pass. Concrete label crowding, clipping and site-local readable tissue keep their actual implementation owners. The original1.0.0 font/prototype package is spent source, retired byte-for-byte after the current @sss/spritesheet body, fallback policy and engine were witnessed; its reversible carrier disposition needs no additional user decision.
 
-The existing inverse checkbox owns one ephemeral global material state: `html[data-inverse="true"]` inverts the composed Display colors through CSS. It does not change source colors, identities, language, addresses or orientation and introduces no storage. The old disconnected checkbox is a concrete repaired implementation gap, not a reason to demand user QA.
+The existing inverse checkbox owns one ephemeral global material state: `html[data-inverse="true"]` inverts the composed Display colors exactly once through CSS; a second ancestor/descendant inverse is not another authority for the same checkbox. It does not change source colors, identities, language, addresses or orientation and introduces no storage. The old disconnected checkbox is a concrete repaired implementation gap, not a reason to demand user QA.
 
 A Display mutation closes only when:
 
@@ -438,3 +438,5 @@ Version3.41 spatial compass and legal slot (2026-10-20): shared contained-body p
 Version3.42 liquid-gated coarse bodies (2026-10-20): an optional host-owned plain material separates presence from source-owned interior readiness. Actual coarse owner draws feed the existing preview target and all shared liquid surfaces reveal it through one optical map/exterior. Philosophy is the first consumer; low-tier acquisition, failed draws, per-child isolation, subpixel edges and HUD-only revelation have narrow/wide native/software-GLES witnesses. No content/media authority, new pass family, semantic split or site-name branch is introduced.
 
 Version3.43 owner counterexamples (2026-10-20): compass names no longer become oversized rows. Actual raw mount rank, spatial LOD and local magnification preserve recursive scale without manufacturing destinations. The liquid input begins before opaque covers, keeps primitive materials natural and is tested with the actual Papers renderer/admitted sample and actual Crawlerbait/legal shaders, alongside procedural optical tests. Papers restores its own distinct chamber-shell opacity and organism embers; Schattenseiten owns partial-slot fallback. Prior mask-only evidence did not prove all site interiors, and remains scoped to its original inputs.
+
+Version3.44 contact and concurrent passage (2026-10-20): owner counterexamples remove cancelling html/body inversions and the opaque-hover/GPU-ink mismatch. Accepted shared entry begins camera, four-facet closure and neutral unheld-body departure in one closing phase; acquisition, failure and cancellation retain their covered transaction boundary. Existing local traversal/offer continuity, pointer ownership, site content and renderer authority remain. Native actual-fold/camera/lens/ink witnesses and actual software-GLES keep their declared browser/physical-driver limits.
