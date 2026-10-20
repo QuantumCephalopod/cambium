@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.7"
+version: "1.8"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -59,7 +59,7 @@ Root-level expression configuration lives in `encounter.json`; leaf expression t
 
 ## projection
 
-Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Regenerate with `python3 y/build.py --derive-root-projection`; the build refuses any drift from that derivation.
+Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Care owns this truth check through `z/projection.py`, declared by the local `site.json` build hook. It derives only from this body's own INDEX, constitution, encounter and locus content, and refuses disagreement, empty expression, invalid encounter and unsupported deeper source rank. Its independent positive/refusal evidence lives at `z/projection.test.py`; the common witness path invokes it without learning Philosophy's schema. Regenerate from the repository with `python3 y/build.py --derive-site-projection organism:philosophy`, even after a lawful whole-body remount. Normal builds validate read-only; only explicit regeneration writes the admitted projection after owner acceptance. Shared manifest/path/structural/publication checks remain inherited host obligations.
 
 Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's self-relative recursive UI grid. Its current fields are `header` at the top, `viewfocus` at the centre, `compass` at `zz`, and `Description` at first-split `y`. All prose — root mission/position or an inspected locus body — currently lives in `Description`, whose local renderer sizes and scrolls it from that field's bounds. That is the present carrier choice, not a shared grid-capacity law: Display owns address-derived orientation, Philosophy owns functional extent and internal flow, and carrier variants are admissible when concrete pressure earns them.
 
