@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.10"
+version: "1.11"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -117,6 +117,8 @@ A source body owns the derivation and semantic acceptance of its own public proj
 Ordinary validation is read-only. Regeneration is an explicit owner operation whose result must satisfy its owner before replacing the declared projection. Independent owner evidence travels with that body and is invoked through the common witness path. Source-only build members do not become public assets merely because a manifest declares them.
 
 Cambium's current carrier is the optional body-relative `site.json` build hook documented by Display's site-holon receptor. The host lends inherited structural predicates; local sources remain local. Whole-body relocation must preserve both semantic acceptance and internal bytes without a host edit.
+
+Derived work may be shared within one unchanged source generation and invocation phase. A new source state reacquires its derivation; a long-lived cache must not silently substitute an earlier generation. When several writers maintain one admitted state, witness the complete ordinary writer cycle as a byte fixed point. Isolated writer idempotence does not prove that the cycle closes, and equivalent descriptive metadata must not repeatedly actuate organism work.
 
 ## current living pressure
 

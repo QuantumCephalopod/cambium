@@ -29,6 +29,18 @@ OWN_PUBLIC_ROOT = CRAWLERBAIT_ROOT / "z" / "public" / "crawlerbait"
 DERIVED_PREFIXES = ("/crawlerbait/bait/", "/crawlerbait/receipt/")
 
 
+def cursor_policy(key_epoch: str, key_fingerprint: str) -> dict:
+    """Capture and migration describe the same current membrane state."""
+    return {
+        "scheme": "offered-literal / otherwise keyed opaque Bait path",
+        "domain": PATH_DOMAIN,
+        "raw_unoffered_path_persisted": False,
+        "key_epoch": key_epoch,
+        "key_fingerprint": key_fingerprint,
+        "offered_resolution": OFFERED_RESOLUTION,
+    }
+
+
 def canonical_path(value) -> str:
     return value if isinstance(value, str) else str(value or "")
 
