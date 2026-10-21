@@ -31,6 +31,44 @@ assert.deepEqual(N.semanticPoint('xyw'),N.semanticPoint('xwy'),'reciprocal addre
 assert.deepEqual(N.focusTarget(s,'wx').center,N.addressRecord(s,'wx').center,'deeper focus must move to the centroid of the smaller recursive split-tet');
 assert.ok(N.focusTarget(s,'wx').scale>N.focusTarget(s,'w').scale,'deeper focus must compensate rank-local scale');
 
+// Exact raw genealogy stays distinct even when quotient geometry coincides.
+for(const record of s.addresses)assert.strictEqual(N.addressRecord(s,record.path),record);
+assert.notStrictEqual(N.addressRecord(s,'w'),N.addressRecord(s,'ww'));
+for(const absent of ['', 'www', 'xy', 'invalid', undefined, null, 0]){
+  assert.strictEqual(N.addressRecord(s,absent),null,'lookup must not realize a potential descendant');
+}
+assert.deepEqual(Object.keys(s),['leaves','addresses'],'lookup acceleration must preserve the public structure carrier');
+const beforeLookup=JSON.stringify(s);
+for(const record of s.addresses)N.addressRecord(s,record.path);
+assert.equal(JSON.stringify(s),beforeLookup,'lookup must not mutate public records');
+
+// A new projection generation, including a reused source object, acquires a
+// different index. Earlier collected generations retain their own records.
+const generationRoot={noun:'generation',children:{w:atom('w'),x:atom('x'),z:atom('z'),y:atom('y')}};
+const first=N.collectStructure(generationRoot),firstW=N.addressRecord(first,'w');
+generationRoot.children.w={noun:'split',children:{w:atom('ww'),x:atom('wx'),z:atom('wz'),y:atom('wy')}};
+const second=N.collectStructure(generationRoot),secondWX=N.addressRecord(second,'wx');
+assert.equal(N.addressRecord(first,'wx'),null);
+assert.ok(secondWX);
+assert.notStrictEqual(N.addressRecord(second,'w'),firstW);
+generationRoot.children.w=atom('collapsed');
+const third=N.collectStructure(generationRoot);
+assert.equal(N.addressRecord(third,'wx'),null);
+assert.strictEqual(N.addressRecord(second,'wx'),secondWX);
+
+// Legacy carriers keep their existing first-match and mutation behavior.
+const legacyFirst={path:'w'},legacySecond={path:'w'},legacy={addresses:[legacyFirst,legacySecond]};
+assert.strictEqual(N.addressRecord(legacy,'w'),legacyFirst);
+legacy.addresses.unshift({path:'x'});
+assert.strictEqual(N.addressRecord(legacy,'x'),legacy.addresses[0]);
+assert.equal(N.addressRecord(legacy,'z'),null);
+
+// Measure the actual obligation: collected lookups must not rescan the array.
+// Array instrumentation preserves every address/record and is not source-text matching.
+second.addresses.find=()=>{throw new Error('collected address lookup rescanned the flat array')};
+assert.strictEqual(N.addressRecord(second,'wx'),secondWX);
+assert.equal(N.addressRecord(second,'not-realized'),null);
+
 const bounds = {left:100,top:100,width:200,height:200};
 const xA = N.axisValue('x', bounds, 160, 101);
 const xB = N.axisValue('x', bounds, 160, 299);

@@ -26,6 +26,7 @@
   const centroid = t => t.reduce((s,p) => add(s,p), [0,0,0]).map(v => v / 4);
   const splitTet = t => GENES.map((_,i) => t.map((p,j) => i === j ? p : mid(t[i],p)));
   const hasFullSplit = node => !!node && !!node.children && GENES.every(g => node.children[g]);
+  const addressIndexes = new WeakMap();
 
   function semanticPoint(path) {
     A.validate(path);
@@ -35,10 +36,13 @@
   }
 
   function collectStructure(rootNode) {
-    const leaves = [], addresses = [];
+    const leaves = [], addresses = [], byAddress = new Map();
     function walk(node, tet, path) {
       const center = centroid(tet);
-      if (path) addresses.push({path, node, tet, center, point:semanticPoint(path), locus:A.key(path)});
+      if (path) {
+        const record = {path, node, tet, center, point:semanticPoint(path), locus:A.key(path)};
+        addresses.push(record); byAddress.set(path, record);
+      }
       if (hasFullSplit(node)) {
         const children = splitTet(tet);
         GENES.forEach((g,i) => walk(node.children[g], children[i], path + g));
@@ -47,10 +51,15 @@
       }
     }
     walk(rootNode, V0, '');
-    return {leaves, addresses};
+    const structure = {leaves, addresses};
+    addressIndexes.set(structure, byAddress);
+    return structure;
   }
 
   function addressRecord(structure, path) {
+    const index = addressIndexes.get(structure);
+    if (index) return index.get(path) || null;
+    // Preserve uncollected legacy carriers without caching their mutable arrays.
     return structure.addresses.find(a => a.path === path) || null;
   }
 

@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.18"
+version: "3.19"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -23,6 +23,14 @@ Camera focus is perceptual and distinct:
 The membrane minimap is **not** a generic Philosophy VIEW selector.
 
 so each selected recursive cell is framed as one co-equal fourfold rather than throwing the witness onto an outer vertex.
+
+## Generation-local lookup of realized addresses
+
+`z/navigation-physiology.js` owns the common realized structure and exact raw-address lookup. Each `collectStructure` call derives its own private address→record index together with the existing public `leaves`/`addresses` arrays. `addressRecord` returns the same actual record, or null for a missing address; a lookup does not realize potential descendants. Raw paths remain distinct even when their quotient locus or point coincides.
+
+The index belongs only to that collected projection generation. Changes to authored projection state, including reuse of the same source object, require a new collection. Earlier collected generations keep their own records. A private weak association releases the index with its structure; it is not a persistent identity/address registry or organism truth. It adds no depth limit or synthetic anatomy. Uncollected legacy carriers retain their original first-match array behavior and are not cached as owned generations.
+
+Point placement, labels, focus, pool lookup and child consumers inherit this common geometric operation without naming a site. Source-exact consumer evidence must retain every record and world point, with missing/alias/generation tests and a no-scan counterexample. Native CPU preparation timing is separate from browser/GPU/visitor timing.
 
 ## Population-derived target set
 
