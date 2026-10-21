@@ -677,14 +677,7 @@ def main():
                 "exact_user_agent_persisted": False,
                 "public_identity": "opaque artwork-local beingId only",
             },
-            "path_privacy": {
-                "scheme": "offered-literal / otherwise keyed opaque Bait path",
-                "domain": pathmembrane.PATH_DOMAIN,
-                "raw_unoffered_path_persisted": False,
-                "key_epoch": IDENTITY_KEY_EPOCH,
-                "key_fingerprint": key_fingerprint,
-                "offered_resolution": pathmembrane.OFFERED_RESOLUTION,
-            },
+            "path_privacy": pathmembrane.cursor_policy(IDENTITY_KEY_EPOCH, key_fingerprint),
             "provider_limits": {
                 "maxDuration": int(cfg["maxDuration"]),
                 "maxNumberOfFields": max_fields,

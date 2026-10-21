@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.5"
+version: "5.6"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -177,6 +177,10 @@ plus independently:
 then:
 
 `metabolized Traces → x/state → w Baits + opaque Beings/encounters → z public Membrane`
+
+Capture and the owned-path migration share the current cursor policy from `y/path_membrane.py`. The ordinary capture→migration cycle preserves the freshly captured cursor's exact bytes when source evidence is already current. A stale description may normalize once; genuine old capture/checkpoint evidence still crosses its required migration and refusal checks. A migration must not manufacture repeated pre-acquisition rebuilds merely by alternating equivalent descriptions. `y/tide.test.py`, invoked by the enclosing witness path, tests both production CLI writers with a substituted provider boundary and preserves key-rotation refusal.
+
+Bait addresses remain the shortest unique nonempty prefixes of the existing unbounded identity stream. `y/tide.py` refines only colliding prefix groups, consumes each needed identity block once per path, and uses an iterative worklist so neither Python recursion depth nor the initial128-symbol block limits realized rank. Deterministic path ordering, identity and existing addresses remain unchanged. Within `write_outputs`, one map and one public projection serve the Bait bodies, projection file and public secretion from the same fixed state. A later generation reacquires both; this is temporary derived work, not a new source of traffic truth or a persistent address registry.
 
 The scheduled tide runs every six hours. A change to capture/metabolism law also earns one immediate main-branch tide so the body need not wait for the next clock edge.
 

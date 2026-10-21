@@ -176,14 +176,9 @@ def main():
         write_json(CHECKPOINT_PATH, checkpoint_after)
 
     cursor = read_json(CURSOR_PATH)
-    cursor.setdefault("path_privacy", {}).update({
-        "scheme": "Crawlerbait-owned literal / otherwise keyed opaque Bait path",
-        "domain": P.PATH_DOMAIN,
-        "key_epoch": C.IDENTITY_KEY_EPOCH,
-        "key_fingerprint": C.identity_key_fingerprint(key),
-        "raw_unoffered_path_persisted": False,
-        "offered_resolution": P.OFFERED_RESOLUTION,
-    })
+    cursor.setdefault("path_privacy", {}).update(
+        P.cursor_policy(C.IDENTITY_KEY_EPOCH, C.identity_key_fingerprint(key))
+    )
     if args.write:
         write_json(CURSOR_PATH, cursor)
 

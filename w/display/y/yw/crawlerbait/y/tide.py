@@ -328,22 +328,28 @@ def identity_prefix(path: str, length: int) -> str:
 def bait_addresses(paths) -> dict[str, str]:
     paths = sorted(set(paths))
     addresses = {}
-    cache = {}
-
-    def prefix(path: str, depth: int) -> str:
-        key = (path, depth)
-        if key not in cache:
-            cache[key] = identity_prefix(path, depth)
-        return cache[key]
-
-    for path in paths:
-        depth = 1
-        while any(other != path and prefix(other, depth) == prefix(path, depth) for other in paths):
-            depth += 1
-        addresses[path] = prefix(path, depth)
-    if len(set(addresses.values())) != len(addresses):
-        raise RuntimeError("bait-space exact raw occupancy collision")
-    return addresses
+    streams = {}
+    pending = [("", paths)] if paths else []
+    # Only colliding groups refine. Each path consumes its own identity stream;
+    # a singleton has found exactly its shortest unique, nonempty prefix.
+    # The worklist and lazy blocks impose neither a recursion nor a depth cap.
+    while pending:
+        prefix, members = pending.pop()
+        depth = len(prefix)
+        groups = {}
+        for path in members:
+            stream = streams.get(path, "")
+            if depth == len(stream):
+                stream += identity_block(path, depth // 128)
+                streams[path] = stream
+            address = prefix + stream[depth]
+            groups.setdefault(address, []).append(path)
+        for address, group in groups.items():
+            if len(group) == 1:
+                addresses[group[0]] = address
+            else:
+                pending.append((address, group))
+    return {path: addresses[path] for path in paths}
 
 
 def local_bait_parts(path: str):
@@ -386,11 +392,12 @@ def bait_snapshot(route: dict, address: str) -> dict:
     }
 
 
-def render_bait_space(state: dict):
+def render_bait_space(state: dict, addresses=None):
     if BAIT_ROOT.exists():
         shutil.rmtree(BAIT_ROOT)
     BAIT_ROOT.mkdir(parents=True, exist_ok=True)
-    addresses = bait_addresses(state["routes"])
+    if addresses is None:
+        addresses = bait_addresses(state["routes"])
     for path in sorted(state["routes"]):
         target = BAIT_ROOT / ("w" + addresses[path])
         target.mkdir(parents=True, exist_ok=False)
@@ -399,8 +406,9 @@ def render_bait_space(state: dict):
 
 # --- public embodiment ----------------------------------------------------------------
 
-def projection_from(state: dict):
-    addresses = bait_addresses(state["routes"])
+def projection_from(state: dict, addresses=None):
+    if addresses is None:
+        addresses = bait_addresses(state["routes"])
     routes = sorted(
         state["routes"].values(),
         key=lambda r: (-(r["raw_requests"] + r["legacy_404_observations"]), r["path"]),
@@ -500,8 +508,9 @@ def page(title: str, body: str) -> str:
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow"><title>{escape(title)}</title><link rel="alternate" type="application/json" href="/crawlerbait/state.json"><style>:root{{--type-rn4:0.25rem;--type-rn3:0.3535533905932738rem;--type-rn2:0.5rem;--type-rn1:0.7071067811865476rem;--type-r0:1rem;--type-rp1:1.4142135623730951rem;--type-rp2:2rem;--type-rp3:2.8284271247461903rem;--type-rp4:4rem;color-scheme:dark}}body{{max-width:860px;margin:7vh auto;padding:24px;font:var(--type-r0)/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;background:#071016;color:#d8e1df}}h1{{font-size:var(--type-rp2)}}h2{{font-size:var(--type-rp1)}}a{{color:#ff8a5b}}code{{color:#ffd3c2}}.dim{{color:#8fa29e}}li{{margin:.45rem 0;overflow-wrap:anywhere}}</style></head><body>{body}</body></html>'''
 
 
-def render_public(state: dict):
-    projection = projection_from(state)
+def render_public(state: dict, projection=None):
+    if projection is None:
+        projection = projection_from(state)
     if PUBLIC_ROOT.exists():
         shutil.rmtree(PUBLIC_ROOT)
     root = PUBLIC_ROOT / "crawlerbait"
@@ -552,10 +561,12 @@ def render_public(state: dict):
 
 
 def write_outputs(state: dict):
+    addresses = bait_addresses(state["routes"])
+    projection = projection_from(state, addresses)
     write_json(STATE_PATH, state)
-    render_bait_space(state)
-    write_json(PROJECTION_PATH, projection_from(state))
-    render_public(state)
+    render_bait_space(state, addresses)
+    write_json(PROJECTION_PATH, projection)
+    render_public(state, projection)
 
 
 def self_test():

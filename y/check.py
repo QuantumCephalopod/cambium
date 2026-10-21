@@ -467,6 +467,7 @@ def main():
     result=subprocess.run(['python3',str(crawler/'y'/'capture.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait capture self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'migrate_path_privacy.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait path migration self-test failed')
     result=subprocess.run(['python3',str(crawler/'y'/'tide.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait tide self-test failed')
+    result=subprocess.run(['python3',str(crawler/'y'/'tide.test.py')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait writer cycle/address work failed')
     result=subprocess.run(['python3',str(crawler/'y'/'replay.py'),'--self-test'],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait replay self-test failed')
     result=subprocess.run(['node',str(crawler/'z'/'render.test.cjs')],capture_output=True,text=True); check(result.returncode==0,result.stderr or 'crawlerbait visualization witness failed')
 
