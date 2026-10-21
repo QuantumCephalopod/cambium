@@ -96,7 +96,8 @@ function fieldPointRecords(structure,projection){
     if(!geneIndex.hasOwnProperty(gene))continue;
     const cell=addressed||byGene.get(gene);if(!cell)continue;seen.add(raw.id);
     const spec=Object.freeze({...raw,gene});
-    out.push({spec,path:(addressed||cell).path||'',world:pointInTet(cell.tet,spec)});
+    const pool=raw.fold===true&&!!addressed&&Number.isInteger(raw.count)&&raw.count>0;
+    out.push({spec,path:(addressed||cell).path||'',world:pool?[...cell.center]:pointInTet(cell.tet,spec),pool});
   }
   return out;
 }
@@ -245,7 +246,10 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(!pool){const cellRec=N.addressRecord(structure,key)||N.cellForPath(key);pool={pool:true,path:key,members:[],world:[...cellRec.center],spec:null};pools.set(key,pool);visible.push(pool)}
       pool.members.push(rec);
     }
-    for(const pool of pools.values())pool.spec=Object.freeze({id:'pool:'+pool.path,gene:pool.path[0],kind:'holon',path:pool.path,label:pool.members.length+' within '+pool.path,meta:'pool · '+pool.members.length+' constituents · click to enter'});
+    for(const pool of pools.values()){
+      const count=pool.members.reduce((n,rec)=>n+(rec.pool?rec.spec.count:1),0);
+      pool.spec=Object.freeze({id:'pool:'+pool.path,gene:pool.path[0],kind:'holon',path:pool.path,label:count+' within '+pool.path,meta:'pool · '+count+' constituents · click to enter'});
+    }
     if(PG){PG.count=visible.length;uploadPoints()}
   }
   function descendTo(path,source){

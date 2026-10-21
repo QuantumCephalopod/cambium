@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.11"
+version: "1.12"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -119,6 +119,9 @@ Ordinary validation is read-only. Regeneration is an explicit owner operation wh
 Cambium's current carrier is the optional body-relative `site.json` build hook documented by Display's site-holon receptor. The host lends inherited structural predicates; local sources remain local. Whole-body relocation must preserve both semantic acceptance and internal bytes without a host edit.
 
 Derived work may be shared within one unchanged source generation and invocation phase. A new source state reacquires its derivation; a long-lived cache must not silently substitute an earlier generation. When several writers maintain one admitted state, witness the complete ordinary writer cycle as a byte fixed point. Isolated writer idempotence does not prove that the cycle closes, and equivalent descriptive metadata must not repeatedly actuate organism work.
+
+A folded membrane bounds the work its enclosing consumer actually performs. A parent consumes the summaries/references of its realized children; resolving a child repeats that relation at the child's rank. A mutation renews its affected genealogy while unchanged siblings remain reusable. Traversing or preparing the whole hidden population before hiding/coalescing it is not a bounded fold. Witness consumed work against increasing populations as well as source equality and reverse/reacquisition behavior. A current carrier may still acquire/index a complete source generation; name that remaining global cost instead of claiming that bounded presentation has also bounded storage, acquisition or every other consumer. Concrete summaries, refinement policies and cache/transport mechanisms stay owner-local.
+
 
 ## current living pressure
 

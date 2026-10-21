@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.19"
+version: "3.20"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -31,6 +31,9 @@ so each selected recursive cell is framed as one co-equal fourfold rather than t
 The index belongs only to that collected projection generation. Changes to authored projection state, including reuse of the same source object, require a new collection. Earlier collected generations keep their own records. A private weak association releases the index with its structure; it is not a persistent identity/address registry or organism truth. It adds no depth limit or synthetic anatomy. Uncollected legacy carriers retain their original first-match array behavior and are not cached as owned generations.
 
 Point placement, labels, focus, pool lookup and child consumers inherit this common geometric operation without naming a site. Source-exact consumer evidence must retain every record and world point, with missing/alias/generation tests and a no-scan counterexample. Native CPU preparation timing is separate from browser/GPU/visitor timing.
+
+Collection is iterative in the same depth-first gene order. A resolved spine therefore has no recursive-call-stack end rank; actual carrier precision/resources remain finite. Fields may receive owner-folded points at realized raw addresses under the site-holon contract. They retain existing pool centres, count addition and click-to-descend; Display never asks for their concealed population. The owner decides which current frontier is supplied. Narrow/wide WebGL-command and Canvas2D transports witness this coupling; they are native consumer evidence, not browser rasterization or physical GPU timing.
+
 
 ## Population-derived target set
 

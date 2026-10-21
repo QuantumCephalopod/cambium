@@ -37,7 +37,9 @@
 
   function collectStructure(rootNode) {
     const leaves = [], addresses = [], byAddress = new Map();
-    function walk(node, tet, path) {
+    const pending = [{node:rootNode, tet:V0, path:''}];
+    while (pending.length) {
+      const {node, tet, path} = pending.pop();
       const center = centroid(tet);
       if (path) {
         const record = {path, node, tet, center, point:semanticPoint(path), locus:A.key(path)};
@@ -45,12 +47,14 @@
       }
       if (hasFullSplit(node)) {
         const children = splitTet(tet);
-        GENES.forEach((g,i) => walk(node.children[g], children[i], path + g));
+        for (let i=GENES.length-1;i>=0;i--) {
+          const g=GENES[i];
+          pending.push({node:node.children[g], tet:children[i], path:path+g});
+        }
       } else {
         leaves.push({path, node, tet, center});
       }
     }
-    walk(rootNode, V0, '');
     const structure = {leaves, addresses};
     addressIndexes.set(structure, byAddress);
     return structure;

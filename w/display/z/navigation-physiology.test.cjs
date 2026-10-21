@@ -69,6 +69,21 @@ second.addresses.find=()=>{throw new Error('collected address lookup rescanned t
 assert.strictEqual(N.addressRecord(second,'wx'),secondWX);
 assert.equal(N.addressRecord(second,'not-realized'),null);
 
+// Isolate traversal stack behavior from the separately witnessed exact address
+// algebra. This executes the production collector with only that dependency
+// substituted; it does not claim deep floating-point carrier resolution.
+{
+  const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+  const context={CambiumAddress:{validate:p=>p,barycentric:()=>[1,0,0,0],key:p=>p}};
+  vm.runInNewContext(fs.readFileSync(process.env.NAVIGATION_SOURCE||path.join(__dirname,'navigation-physiology.js'),'utf8'),context);
+  let deep=atom('end');
+  for(let i=0;i<2048;i++)deep={children:{w:deep,x:atom('x'),z:atom('z'),y:atom('y')}};
+  const collected=context.SSSDisplayNavigation.collectStructure(deep);
+  assert.equal(collected.addresses.length,2048*4);
+  assert.equal(collected.leaves.length,2048*3+1);
+  assert.equal(collected.addresses[2047].path,'w'.repeat(2048),'depth-first gene order changed');
+}
+
 const bounds = {left:100,top:100,width:200,height:200};
 const xA = N.axisValue('x', bounds, 160, 101);
 const xB = N.axisValue('x', bounds, 160, 299);

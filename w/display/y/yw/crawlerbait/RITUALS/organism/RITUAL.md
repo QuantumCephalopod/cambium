@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.6"
+version: "5.7"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -185,6 +185,16 @@ Bait addresses remain the shortest unique nonempty prefixes of the existing unbo
 The scheduled tide runs every six hours. A change to capture/metabolism law also earns one immediate main-branch tide so the body need not wait for the next clock edge.
 
 A successful Tide that changed canonical Crawlerbait bytes has one further bounded mechanical consequence: after its final main-branch push has settled, it deliberately dispatches Display's `pages.yml` on `main`. GitHub explicitly suppresses ordinary workflow recursion from `GITHUB_TOKEN`-authored pushes, so those pushes are not treated as publication triggers. The explicit `workflow_dispatch` is the earned actuation edge: Crawlerbait finishes sensing/metabolism first; Display independently rebuilds, witnesses and deploys current main afterward. A no-change Tide dispatches nothing.
+
+## Recursive Bait replay geography
+
+`z/render.js` derives exact address-native forward/reverse changes while constructing the existing birth/collision index. Its generation-local Bait fold is either one actual source Bait or the sum of four child folds. An edit copies only the affected address spine and shares unchanged siblings. Rewind applies inverse changes through the same operation; it does not rebuild a flat population or retain a catalog of historical roots. Leaf source identity and all source facts remain intact. Empty cells are not Baits, and the ordinary self-child remains inhabited when earned.
+
+The actual field entry and `shader.snapshot` supply only the current container's two-rank frontier plus its enclosing spine. A closed nonempty branch lends its exact current count through Display's common folded-point/pool relation. Entering it resolves that same genealogy; finer leaf points keep their exact prior identities, metadata and world placement. Crawlercam lends its current locally followed genealogy to this refinement; the common camera and encounter law are unchanged. Snapshot reuse belongs to one unchanged replay index and container; explicit field acquisition reacquires a reused source object as well. Walkers are iterative with no configured depth/population ceiling.
+
+This closes the local full-geography rebuild in replay, not the whole initial acquisition pressure. The immutable public projection is still acquired in full. Growth/history indexing, the in-memory realized fold and Being/session/walk preparation still scale with the current generation; Being geometry updates remain their own consumer. Persisted lazy source/fold transport and local Being-history resolution remain OPEN under efficient-initial-projection. Neither a small visible frontier nor native preparation timings prove bounded transfer, total memory, browser/GPU frame time or an infinite finite carrier. Source/privacy/Tide/publication anatomy remains unchanged.
+
+`z/render.test.cjs` witnesses exact real source at replay/rewind times, every small fixture birth (including simultaneous collisions), shared siblings, no flat-population query, fresh generation acquisition and unchanged-clock snapshot reuse. Exponentially increasing populations must leave overview visits constant; descent adds only its resolved spine. Source-exact fine placement and actual shared field transports are separate evidence. This earns only Cambium's work-locality distinction and Display's specimen-neutral folded-point coupling; Crawlerbait summaries and replay grammar remain here.
 
 ## address-space invariants
 

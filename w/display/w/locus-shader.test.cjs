@@ -10,7 +10,7 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined}={}){
+function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
   const calls=[],frames=[],queue=[],timers=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
@@ -69,7 +69,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   if(snapshot)shader.snapshot=snapshot;if(afterDraw)shader.afterDraw=afterDraw;
   if(composite)shader.composite=()=>[{width:16,height:16}];
   if(layer)shader.afterDraw=()=>{gl.depthMask(false);gl.colorMask(false,false,false,false);gl.enable(gl.SCISSOR_TEST);gl.clearDepth(0)};
-  const projection={root:tree,points:points?[{id:'point',gene:'w',kind:'source'}]:[]};
+  const projection={root:tree,points:pointSpecs||(points?[{id:'point',gene:'w',kind:'source'}]:[])};
   const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,palette:fieldPalette,shader,inspectable,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
   return {gl,canvas,api,world,shader,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index,accept=true){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});if(accept)api.approachBody(events.at(-1).detail.id)}};
@@ -299,3 +299,27 @@ for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,tru
  assert(f.api.projectBody('body:b').r>before.r*1.5,'accepted phase must zoom the actual moving body');assert.equal(f.api.approachBody('absent'),false);
 }
 console.log('PASS — immediate body intent, admission-owned camera and actual wide/narrow approach on both backends');
+
+
+// An owner supplies already folded constituents through the same neutral point
+// contract. Display enters their actual cell; it never needs their population.
+for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
+ const split=noun=>({noun,children:Object.fromEntries(N.GENES.map(g=>[g,atom(g)]))});
+ const tree=split('root');for(const g of N.GENES)tree.children[g]=split(g);
+ const fold={id:'owned:fold',gene:'w',path:'wx',kind:'holon',fold:true,count:100,label:'100 within wx'};
+ const refined=split('wx');tree.children.w.children.x=refined;
+ let last='',revision=0,cache=null;
+ const snapshot=({container})=>{
+   if(cache&&last===container)return cache;last=container;
+   const points=container==='wx'?N.GENES.map((g,i)=>({...fold,id:'child:'+g,path:'wx'+g,count:25})): [fold];
+   return cache={root:tree,points,revision:++revision};
+ };
+ const f=fixture({width,height,webgl,tree,pointSpecs:[fold],snapshot,order:[],glass:false});f.frame(0);
+ const p=f.api.projectAddressCenter('wx'),e={button:0,pointerId:1,clientX:p.x,clientY:p.y,preventDefault(){}};
+ f.canvas.pointerdown(e);f.canvas.pointerup(e);
+ assert.equal(f.api.container,'wx','clicking an owner fold must descend rather than select a fake Bait');
+ f.frame(500);assert.equal(f.api.points.length,4);assert(f.api.points.every(p=>p.path.startsWith('wx')));
+ assert.equal(f.api.points.reduce((n,p)=>n+p.count,0),100);
+ assert(f.api.ascend('fold-test'));f.frame(1000);assert.equal(f.api.container,'w');
+}
+console.log('PASS — source-owned folds refine the same address on narrow/wide WebGL and Canvas2D transports');
