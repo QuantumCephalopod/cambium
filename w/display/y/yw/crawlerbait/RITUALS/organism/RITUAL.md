@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.7"
+version: "5.8"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -188,13 +188,13 @@ A successful Tide that changed canonical Crawlerbait bytes has one further bound
 
 ## Recursive Bait replay geography
 
-`z/render.js` derives exact address-native forward/reverse changes while constructing the existing birth/collision index. Its generation-local Bait fold is either one actual source Bait or the sum of four child folds. An edit copies only the affected address spine and shares unchanged siblings. Rewind applies inverse changes through the same operation; it does not rebuild a flat population or retain a catalog of historical roots. Leaf source identity and all source facts remain intact. Empty cells are not Baits, and the ordinary self-child remains inhabited when earned.
+`z/render.js` derives exact address-native forward/reverse changes while constructing the existing birth/collision index. Its generation-local Bait adapter consumes Display's `SSSRecursiveFold` capability; the structural operation no longer has a second live implementation here. One leaf carries the actual source Bait, and each parent sums its four children. Birth/collision indexing, forward/reverse delta order, source identities, Bait counts, labels and the two-rank refinement policy remain here. An edit copies only the affected address spine and shares unchanged siblings. Rewind applies inverse changes through the same operation; it does not rebuild a flat population or retain a catalog of historical roots. Leaf source identity and all source facts remain intact. Empty cells are not Baits, and the ordinary self-child remains inhabited when earned.
 
 The actual field entry and `shader.snapshot` supply only the current container's two-rank frontier plus its enclosing spine. A closed nonempty branch lends its exact current count through Display's common folded-point/pool relation. Entering it resolves that same genealogy; finer leaf points keep their exact prior identities, metadata and world placement. Crawlercam lends its current locally followed genealogy to this refinement; the common camera and encounter law are unchanged. Snapshot reuse belongs to one unchanged replay index and container; explicit field acquisition reacquires a reused source object as well. Walkers are iterative with no configured depth/population ceiling.
 
 This closes the local full-geography rebuild in replay, not the whole initial acquisition pressure. The immutable public projection is still acquired in full. Growth/history indexing, the in-memory realized fold and Being/session/walk preparation still scale with the current generation; Being geometry updates remain their own consumer. Persisted lazy source/fold transport and local Being-history resolution remain OPEN under efficient-initial-projection. Neither a small visible frontier nor native preparation timings prove bounded transfer, total memory, browser/GPU frame time or an infinite finite carrier. Source/privacy/Tide/publication anatomy remains unchanged.
 
-`z/render.test.cjs` witnesses exact real source at replay/rewind times, every small fixture birth (including simultaneous collisions), shared siblings, no flat-population query, fresh generation acquisition and unchanged-clock snapshot reuse. Exponentially increasing populations must leave overview visits constant; descent adds only its resolved spine. Source-exact fine placement and actual shared field transports are separate evidence. This earns only Cambium's work-locality distinction and Display's specimen-neutral folded-point coupling; Crawlerbait summaries and replay grammar remain here.
+The enclosing witness invokes `node <body>/z/render.test.cjs <Display>/x/recursive-fold.js`, lending the capability explicitly so relocation needs no owner-internal host path. `z/render.test.cjs` witnesses exact real source at replay/rewind times, every small fixture birth (including simultaneous collisions), shared siblings, no flat-population query, fresh generation acquisition and unchanged-clock snapshot reuse. Exponentially increasing populations must leave overview visits constant; descent adds only its resolved spine. Source-exact fine placement and actual shared field transports are separate evidence. This earns only Cambium's work-locality distinction and Display's specimen-neutral folded-point coupling; Crawlerbait summaries and replay grammar remain here.
 
 ## address-space invariants
 
@@ -267,3 +267,5 @@ The two September publication-membrane proposals are superseded by the subsequen
 The October history-remediation residual follows the Datenschutz-owned GitHub provider-cleanup closure, without probing retired objects or rewriting history again. Independent copies and the unavailable earlier exact audit/HOME remain provenance limits. The separate visitor-generation residual closes on the observed deployed generation and its visible counts matching the current canonical public projection; subsequent presentation work is verified as a build candidate before owner merge and normal Display publication.
 
 Version5.5 presentation-contract reconciliation (2026-10-19): current kind-corner labels are distinguished from actual reef occupancy. The accepted separate type view, shared time and visit-coalescent place growth remain unresolved local intake. Existing traffic, capture, replay, privacy and publication law are unchanged.
+
+Version5.8 shared fold adoption (2026-10-21): Crawlerbait retains source/replay meaning and consumes the generic Display structure/frontier instead of maintaining a parallel fold engine. Fine metadata, actual geometry and replay/rewind remain equivalent to the prior local fold. A source-parcel/Being-index prototype grew far beyond source size and was rejected before publication; efficient-initial-projection stays OPEN, along with full source/growth/history/Being preparation.

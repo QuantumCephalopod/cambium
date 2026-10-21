@@ -99,48 +99,30 @@ function buildGrowth(routes=[]){
  * the changed genealogy, sharing every untouched child. No catalog of historical
  * roots is retained: reverse deltas walk the same law when the clock rewinds.
  * The full public projection remains source; this is generation-local geometry. */
-function createBaitFold(G){
-  const empty=Object.freeze({count:0,children:null,route:null});
-  let root=empty,cursor=0,revision=0,edits=0,visited=0;
-  function replace(path,value){
-    const spine=[];let n=root;
-    for(const g of path){spine.push([n,g]);n=n.children?.[g]||empty}
-    n=value;
-    for(let i=spine.length-1;i>=0;i--){const [p,g]=spine[i],children={};
-      for(const k of GENES)children[k]=k===g?n:(p.children?.[k]||empty);
-      const count=GENES.reduce((sum,k)=>sum+children[k].count,0);
-      n=count?Object.freeze({count,children:Object.freeze(children),route:null}):empty;edits++;
-    }
-    root=n;revision++;
-  }
+function createBaitFold(G,carrier=globalThis.SSSRecursiveFold){
+  if(!carrier?.create)throw new Error('Display recursive fold carrier missing');
+  const tissue=carrier.create();let root=tissue.empty,cursor=0,revision=0,edits=0,visited=0;
+  function replace(path,value=tissue.empty){const change=tissue.replace(root,path,value);root=change.root;edits+=change.edits;if(change.edits||!path)revision++}
   function seek(t){
     const end=G.index(t);edits=0;
-    while(cursor<end){for(const d of G.births[cursor++].changes){if(d.from)replace(d.from,empty);replace(d.to,Object.freeze({count:1,children:null,route:d.r}))}}
-    while(cursor>end){const ds=G.births[--cursor].changes;for(let i=ds.length-1;i>=0;i--){const d=ds[i];replace(d.to,empty);if(d.from)replace(d.from,Object.freeze({count:1,children:null,route:d.r}))}}
+    while(cursor<end){for(const d of G.births[cursor++].changes){if(d.from)replace(d.from);replace(d.to,tissue.leaf(d.r))}}
+    while(cursor>end){const ds=G.births[--cursor].changes;for(let i=ds.length-1;i>=0;i--){const d=ds[i];replace(d.to);if(d.from)replace(d.from,tissue.leaf(d.r))}}
     return revision;
   }
-  function routeAt(path){let n=root;for(const g of path){n=n.children?.[g];if(!n)return null}return n.route?{...n.route,address:path}:null}
+  function routeAt(path){const n=tissue.at(root,path);return n?.value?{...n.value,address:path}:null}
   function view(container=''){
-    if(!/^[wxzy]*$/.test(container))throw new TypeError('invalid Bait container');
-    const points=[],limit=container.length+2;visited=0;
-    // Iterative traversal keeps the same law beyond the engine's call stack.
-    const tasks=[{node:root,path:'',parent:null,g:null}],out={};
-    while(tasks.length){const task=tasks.pop(),{node:n,path,parent,g}=task;visited++;
-      const within=path.startsWith(container),ancestor=container.startsWith(path);
-      let body;
-      if(n.route){const route={...n.route,address:path};body={noun:route.path,de:route.path,en:route.path,bait:true,address:path,children:{}};
-        if(within)points.push(Object.freeze({id:`bait:${route.path}`,gene:path[0],path,kind:'bait',label:route.path,
-          meta:`${path} · ${route.raw_requests??route.observed_404??0} requests · ${route.crawlers?.length??route.signatures?.length??0} beings`,address:path,route}));
-      }else if(((n.children||!path)&&ancestor)||(n.children&&within&&path.length<limit)){
-        body={noun:path||'Baits',de:path||'Köder',en:path||'Baits',gene:'CREATE',children:{}};
-        for(let i=GENES.length-1;i>=0;i--){const k=GENES[i];tasks.push({node:n.children?.[k]||empty,path:path+k,parent:body.children,g:k})}
-      }else{body={noun:n.count?`${n.count} within ${path}`:'open',children:{},fold:true,count:n.count};
-        if(within&&n.count)points.push(Object.freeze({id:'fold:'+path,gene:path[0],path,kind:'holon',fold:true,label:body.noun,
-          meta:`${n.count} Baits · click to enter`,count:n.count}));
-      }
-      if(parent)parent[g]=body;else out.root=body;
-    }
-    return {root:out.root,points,revision,container};
+    const v=tissue.view(root,{container,project({path,count,value,open}){
+      if(value)return {noun:value.path,de:value.path,en:value.path,bait:true,address:path};
+      if(open)return {noun:path||'Baits',de:path||'Köder',en:path||'Baits',gene:'CREATE'};
+      return {noun:count?`${count} within ${path}`:'open',fold:true,count};
+    }});visited=v.visited;
+    const points=v.terminals.map(({path,count,value})=>{
+      if(value){const route={...value,address:path};return Object.freeze({id:`bait:${route.path}`,gene:path[0],path,kind:'bait',label:route.path,
+        meta:`${path} · ${route.raw_requests??route.observed_404??0} requests · ${route.crawlers?.length??route.signatures?.length??0} beings`,address:path,route})}
+      return Object.freeze({id:'fold:'+path,gene:path[0],path,kind:'holon',fold:true,label:`${count} within ${path}`,
+        meta:`${count} Baits · click to enter`,count});
+    });
+    return {root:v.root,points,revision,container};
   }
   return Object.freeze({seek,view,routeAt,get root(){return root},get index(){return cursor},get work(){return {edits,visited}}});
 }

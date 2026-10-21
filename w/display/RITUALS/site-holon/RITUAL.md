@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.20"
+version: "3.21"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -101,6 +101,10 @@ The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected
 A site-holon may expose an optional bounded public `feed_preview` under its own `_feed`, while keeping the detailed projection and renderer body identity-owned. Its enclosing Display membrane represents the site through that preview until perceptual entry justifies acquiring detail. The public preview cannot claim private `_feed/current.json` or replace the actual site identity, source or root. Readiness belongs to the receiving browser's shared representation-continuity physiology; resolution/content thresholds and resource disposal stay with the child. The same relation holds inside a site at smaller rank, as in Schattenseiten's 64px→512px artwork. A failed higher representation preserves the last good low representation.
 
 The field point contract may carry `fold: true` with a positive exact `count` at an actually realized raw `path`. This represents an owner's folded constituents, not a new occupant or source identity. Display places it at that cell's centre and clicking it uses existing pool Descent. If further coalesced, counts add without enumerating descendants. A finer snapshot resolves the same raw genealogy, preserving source ownership and existing leaf points. An unresolved point cannot acquire fold traversal by falling back to a gene. There is no member-list, fixed depth or specimen dispatch requirement. The owner is responsible for truthful counts, local work and generation consistency.
+
+A site may use Display's `SSSRecursiveFold` capability without importing a host filesystem location. `create()` acquires a fresh generation; `empty`, `leaf(value, count=1)`, `replace(root, rawPath, node)`, `at(root, rawPath)` and `view(root, {container, ranks=2, project})` carry only immutable four-child structure. Replacement returns `{root, edits}`; view returns `{root, terminals, visited, container}`. Its projector receives `{path, count, value, fold, open, within}` and supplies its own body fields; the common traversal supplies `children`. Closed branches expose no descendant values to that projector. Empty overview retains the four empty directions, while source count stays zero. A successful replacement leaves older roots valid and reuses unchanged siblings; deleting a leaf uses `empty`. Continuing through an occupied leaf requires the owner to remove/differentiate it explicitly. Complete source acquisition, payload stability and exact count authority remain owner obligations.
+
+Counts accept positive safe integers or positive `BigInt`; mixed sums preserve exact `BigInt` precision and unsafe Number sums are refused. This internal arithmetic is not a new JSON/public point-count format: an owner must project truthfully into the receiving carrier's supported representation. No fixed semantic rank or population ceiling is introduced. Native resource/number/coordinate limits remain finite. An enclosing native witness lends the same module capability explicitly rather than requiring the movable site to know a host-relative path.
  No fixed rank limit, media family or duplicate renderer law is imposed.
 
 A site's existing `render` hook may refuse with `false`, throw, or leave its host hidden. Display's encounter handoff then retains the prior valid body under the organism receptor's acceptance law. A legacy hook returning no value remains accepted when its host is visible; no new rendering schema or shared hardware fallback is imposed.
@@ -265,3 +269,5 @@ Version3.16 liquid-gated host representation (2026-10-20): the optional host-own
 Version3.17 truthful reveal readiness (2026-10-20): a finer interior is an actual owner offer, not an assumption about every shader. The same-frame alternate world precedes plain covers; refusal/error and per-part fallback keep presence truthful while ready transparent tissue remains transparent. Actual specimen execution is required in addition to procedural mask inputs.
 
 Version3.18 shared contact transport (2026-10-20): body-name hover/focus uses native foreground ink above its own contact surface, while quiet optical ink remains derived. An accepted membrane intent lends the body camera to the shared closing phase; acquisition may hold closure and explicit unheld world-drop departure does not alter local reading/content authority. Site meanings, media and renderer refusal remain source-owned.
+
+Version3.21 shared fold capability (2026-10-21): source-owned bodies may consume one immutable, generation-scoped four-child carrier while keeping identity, source schema, replay and refinement meaning. The first production adapter loses its duplicate structural implementation. An unrelated owner and both real field transports witness the same relation; lazy source transport is not claimed.
