@@ -4,7 +4,7 @@ const id='organism:crawlerbait';
 const GENES=Object.freeze(['w','x','z','y']);
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 let inspectorHost=null,selectedAddress='',crawlerById=new Map(),lastProjection=null;
-let growth=null,fieldCache=null,fieldRevision=-1;
+let growth=null,fieldCache=null,fieldRevision=-1,baitFold=null;
 
 /* ============ KINDS — one exhaustive CCCC split of what a being did (y/tide.py) ============
  * Each kind owns one quarter of the complex phase circle, and one riso ink. */
@@ -78,21 +78,71 @@ function route(sa,sb){
  * collisions. Identity is the public path, never its changing address. Legacy sightings
  * are a baseline, not invented exact births inside the whole-traffic clock. */
 function buildGrowth(routes=[]){
-  const histories=new Map(),leaves=new Map(),splits=new Set(),births=[];
+  const histories=new Map(),leaves=new Map(),splits=new Set(),births=[];let changes;
   const ordered=routes.filter(r=>/^[wxzy]+$/.test(r.address)).map(r=>({r,t:r.legacy_404_observations>0?-Infinity:(Date.parse(r.first_seen)||Infinity)}))
     .sort((a,b)=>a.t-b.t||a.r.path.localeCompare(b.r.path));
-  const put=(r,a,t)=>{leaves.set(a,r);let h=histories.get(r.path);if(!h)histories.set(r.path,h=[]);h.push({t,a})};
-  for(const {r,t} of ordered){let a=r.address[0];
+  const put=(r,a,t,from=null)=>{leaves.set(a,r);let h=histories.get(r.path);if(!h)histories.set(r.path,h=[]);h.push({t,a});changes.push({r,from,to:a})};
+  for(const {r,t} of ordered){changes=[];let a=r.address[0];
     for(;;){const old=leaves.get(a);
       if(old){leaves.delete(a);let n=a.length+1;while(old.address.slice(0,n)===r.address.slice(0,n))n++;
         for(let d=a.length;d<n;d++)splits.add(a+r.address.slice(a.length,d));
-        put(old,old.address.slice(0,n),t);a=r.address.slice(0,n);break}
+        put(old,old.address.slice(0,n),t,a);a=r.address.slice(0,n);break}
       if(splits.has(a)){a=r.address.slice(0,a.length+1);continue}break}
-    put(r,a,t);births.push({r,t});
+    put(r,a,t);births.push({r,t,changes});
   }
   const upper=(list,t)=>{let lo=0,hi=list.length;while(lo<hi){const m=(lo+hi)>>>1;if(list[m].t<=t)lo=m+1;else hi=m}return lo};
   return {births,histories,index:t=>upper(births,t),address(path,t){const h=histories.get(path);const i=h?upper(h,t):0;return i?h[i-1].a:null},
     routesAt(t){return births.slice(0,upper(births,t)).map(({r})=>({...r,address:this.address(r.path,t)}))}};
+}
+
+/* One fold is either a Bait or the sum of its four children. Replay edits only
+ * the changed genealogy, sharing every untouched child. No catalog of historical
+ * roots is retained: reverse deltas walk the same law when the clock rewinds.
+ * The full public projection remains source; this is generation-local geometry. */
+function createBaitFold(G){
+  const empty=Object.freeze({count:0,children:null,route:null});
+  let root=empty,cursor=0,revision=0,edits=0,visited=0;
+  function replace(path,value){
+    const spine=[];let n=root;
+    for(const g of path){spine.push([n,g]);n=n.children?.[g]||empty}
+    n=value;
+    for(let i=spine.length-1;i>=0;i--){const [p,g]=spine[i],children={};
+      for(const k of GENES)children[k]=k===g?n:(p.children?.[k]||empty);
+      const count=GENES.reduce((sum,k)=>sum+children[k].count,0);
+      n=count?Object.freeze({count,children:Object.freeze(children),route:null}):empty;edits++;
+    }
+    root=n;revision++;
+  }
+  function seek(t){
+    const end=G.index(t);edits=0;
+    while(cursor<end){for(const d of G.births[cursor++].changes){if(d.from)replace(d.from,empty);replace(d.to,Object.freeze({count:1,children:null,route:d.r}))}}
+    while(cursor>end){const ds=G.births[--cursor].changes;for(let i=ds.length-1;i>=0;i--){const d=ds[i];replace(d.to,empty);if(d.from)replace(d.from,Object.freeze({count:1,children:null,route:d.r}))}}
+    return revision;
+  }
+  function routeAt(path){let n=root;for(const g of path){n=n.children?.[g];if(!n)return null}return n.route?{...n.route,address:path}:null}
+  function view(container=''){
+    if(!/^[wxzy]*$/.test(container))throw new TypeError('invalid Bait container');
+    const points=[],limit=container.length+2;visited=0;
+    // Iterative traversal keeps the same law beyond the engine's call stack.
+    const tasks=[{node:root,path:'',parent:null,g:null}],out={};
+    while(tasks.length){const task=tasks.pop(),{node:n,path,parent,g}=task;visited++;
+      const within=path.startsWith(container),ancestor=container.startsWith(path);
+      let body;
+      if(n.route){const route={...n.route,address:path};body={noun:route.path,de:route.path,en:route.path,bait:true,address:path,children:{}};
+        if(within)points.push(Object.freeze({id:`bait:${route.path}`,gene:path[0],path,kind:'bait',label:route.path,
+          meta:`${path} · ${route.raw_requests??route.observed_404??0} requests · ${route.crawlers?.length??route.signatures?.length??0} beings`,address:path,route}));
+      }else if(((n.children||!path)&&ancestor)||(n.children&&within&&path.length<limit)){
+        body={noun:path||'Baits',de:path||'Köder',en:path||'Baits',gene:'CREATE',children:{}};
+        for(let i=GENES.length-1;i>=0;i--){const k=GENES[i];tasks.push({node:n.children?.[k]||empty,path:path+k,parent:body.children,g:k})}
+      }else{body={noun:n.count?`${n.count} within ${path}`:'open',children:{},fold:true,count:n.count};
+        if(within&&n.count)points.push(Object.freeze({id:'fold:'+path,gene:path[0],path,kind:'holon',fold:true,label:body.noun,
+          meta:`${n.count} Baits · click to enter`,count:n.count}));
+      }
+      if(parent)parent[g]=body;else out.root=body;
+    }
+    return {root:out.root,points,revision,container};
+  }
+  return Object.freeze({seek,view,routeAt,get root(){return root},get index(){return cursor},get work(){return {edits,visited}}});
 }
 function prefixFacts(events,t){
   let lo=0,hi=events.length;while(lo<hi){const m=(lo+hi)>>>1;if(events[m].t<=t)lo=m+1;else hi=m}
@@ -123,14 +173,14 @@ function syncWalk(o,T){
 /* ============ beings and their walks — recorded order is truth, pace is the body's own ============ */
 const DAY=86400,GAP=8*3600,LEAD=1800,LINGER=12*3600,DISS=5*3600,V_BASE=2.4/DAY,V_REAL=.035;
 const bytesOf=hex=>{const b=[];for(let i=0;i+1<hex.length;i+=2)b.push(parseInt(hex.slice(i,i+2),16));while(b.length<32)b.push(0);return b};
-function buildLife(projection){
+function buildLife(projection,G=null){
   const enc=Array.isArray(projection?.encounters)?projection.encounters:[];
   const crawlers=Array.isArray(projection?.crawlers)?projection.crawlers:[];
   if(!enc.length||!crawlers.length)return null;
   const by=new Map();let t0=Infinity;
   for(const e of enc){if(!e||typeof e.bait_address!=='string'||!/^[wxzy]+$/.test(e.bait_address))continue;const t=Date.parse(e.t);if(!isFinite(t))continue;if(t<t0)t0=t;let l=by.get(e.crawler);if(!l)by.set(e.crawler,l=[]);l.push({t,a:e.bait_address,path:e.path,method:e.method,status:e.status})}
   const end=Date.parse(projection.raw_capture_end||projection.updated_at)||t0;
-  const G=buildGrowth(projection.routes||[]);
+  G ||= buildGrowth(projection.routes||[]);
   const sessions=[],totals={w:0,x:0,z:0,y:0};
   for(const c of crawlers){
     const k=KIND[c.kind]?c.kind:'x';totals[k]++;
@@ -394,7 +444,7 @@ function sizeTarget(Lr,w,h){
   Lr.fw=fw;Lr.fh=fh;
 }
 function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container}){
-  if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection);resetTo(0)}
+  if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection,growth);resetTo(0)}
   if(!SIM.life)return;
   const dt=SIM.lastMs?Math.min(.05,(ms-SIM.lastMs)/1000):0;SIM.lastMs=ms;
   // a body keeps its world size near the whole reef and shrinks gently as Descent zooms, so it never swallows a deep container
@@ -503,11 +553,11 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
   if(usable[0])paintWords(ctx,STORY[Math.floor(ms/16000)%STORY.length],triangleRows(usable[0],typePx(-1)*1.4),'#ece5d3',ms);
   // Kind counts grow on the four vertices instead of another panel surface.
   for(let i=0;i<4;i++){const p=screen(tet[i]),k=GENES[i];if(p.front&&p.x>safe.x+8&&p.x<safe.x+safe.w-110&&p.y>safe.y+12&&p.y<safe.y+safe.h-70)paintWords(ctx,`${KIND[k].name} ${SIM.counts[k]||0}`, [{x:p.x+8,y:p.y,w:128}],KIND[k].ink,0)}
-  if(selectedAddress){const r=lastProjection.routes.find(r=>r.path===selectedAddress),a=growth?.address(selectedAddress,SIM.life.t0+SIM.simT*1000);if(r&&a){const t=cellIn(V0,a),tri=[0,1,2].map(i=>screen(t[i]));const ids=[...new Set([...SIM.alive].filter(o=>o.facts.events&&o.S.wps[o.reached].path===selectedAddress).map(o=>o.S.b.id))];paintWords(ctx,`${r.path}. ${ids.length?ids.join(' · '):'No being here at this replay time.'}`,triangleRows(tri,typePx(-1)*1.4),'#ece5d3')}}
+  if(selectedAddress){const a=growth?.address(selectedAddress,SIM.life.t0+SIM.simT*1000),r=a?baitFold?.routeAt(a):null;if(r){const t=cellIn(V0,a),tri=[0,1,2].map(i=>screen(t[i]));const ids=[...new Set([...SIM.alive].filter(o=>o.facts.events&&o.S.wps[o.reached].path===selectedAddress).map(o=>o.S.b.id))];paintWords(ctx,`${r.path}. ${ids.length?ids.join(' · '):'No being here at this replay time.'}`,triangleRows(tri,typePx(-1)*1.4),'#ece5d3')}}
   const snap=L?.snapshot?.()?.lens,target=snap?.lock?INK.offers.get(snap.lock.id):null;
   if(INK.reader){const text=target?beingText(target.o):'';if(INK.reader.textContent!==text)INK.reader.textContent=text}
   if(target){const f=lensFrame(target.point);if(f&&snap.round===0&&Math.abs(snap.hx*2-f.width)<2&&Math.abs(snap.hy*2-f.height)<2){ctx.save();ctx.beginPath();ctx.roundRect(snap.x-snap.hx-rect.left,snap.y-snap.hy-rect.top,2*snap.hx,2*snap.hy,12);ctx.clip();const lh=typePx(-1)*1.4,rows=Array.from({length:Math.floor((f.height-24)/lh)},(_,i)=>({x:f.left-rect.left+12,y:f.top-rect.top+12+i*lh,w:f.width-24}));paintWords(ctx,beingText(target.o),rows,KIND[target.o.facts.k].ink,ms,false);ctx.restore();c.dataset.lensBeing=target.o.S.b.id}else delete c.dataset.lensBeing}
-  c.dataset.replayBaits=String(fieldCache?.points.length||0);
+  c.dataset.replayBaits=String(baitFold?.root.count||0);
 }
 function drawFallback(ctx,screen){
   if(!ctx)return;ctx.save();const colonies=new Map();
@@ -523,70 +573,24 @@ function el(tag,cls,text){
   if(text!==undefined)n.textContent=text;
   return n;
 }
-function freezeNode(node){
-  if(node.children){
-    for(const g of Object.keys(node.children))node.children[g]=freezeNode(node.children[g]);
-    Object.freeze(node.children);
-  }
-  return Object.freeze(node);
-}
-function baitTree(routes){
-  const byAddress=new Map();
-  const prefixes=new Set(['']);
-  for(const route of routes){
-    if(!route||typeof route.address!=='string'||!route.address||!new RegExp('^[wxzy]+$').test(route.address))continue;
-    byAddress.set(route.address,route);
-    for(let i=0;i<route.address.length;i++)prefixes.add(route.address.slice(0,i));
-  }
-  function branch(prefix){
-    const route=byAddress.get(prefix);
-    if(route){
-      return {
-        noun:route.path,
-        de:route.path,
-        en:route.path,
-        bait:true,
-        address:route.address,
-        children:{}
-      };
-    }
-    if(!prefixes.has(prefix))return {noun:'open',de:'offen',en:'open',children:{}};
-    const children={};
-    for(const g of GENES)children[g]=branch(prefix+g);
-    return {
-      noun:prefix||'Baits',
-      de:prefix||'Köder',
-      en:prefix||'Baits',
-      gene:'CREATE',
-      children
-    };
-  }
-  return branch('');
-}
 function fieldProjection(projection={}){
-  if(projection&&Array.isArray(projection.encounters)&&projection!==lastProjection){lastProjection=projection;SIM.life=null;fieldRevision=-1;}
-  const routes=Array.isArray(projection.routes)?projection.routes:[];
-  const root=freezeNode(baitTree(routes));
-  const points=routes
-    .filter(route=>route&&typeof route.address==='string'&&/^[wxzy]+$/.test(route.address))
-    .map(route=>Object.freeze({
-      id:`bait:${route.path}`,
-      gene:route.address[0],
-      path:route.address,
-      kind:'bait',
-      label:route.path,
-      meta:`${route.address} · ${route.raw_requests ?? route.observed_404 ?? 0} requests · ${(route.crawlers?.length ?? route.signatures?.length ?? 0)} beings`,
-      address:route.address,
-      route
-    }));
-  return Object.freeze({root,points});
+  lastProjection=projection;SIM.life=null;fieldRevision=-1;fieldCache=null;
+  growth=buildGrowth(projection.routes||[]);baitFold=createBaitFold(growth);
+  const start=Date.parse(projection.raw_capture_start)||Date.parse(projection.updated_at)||Infinity;
+  baitFold.seek(start);
+  return baitFold.view('');
 }
-function temporalField(){
+function temporalField({container=''}={}){
   if(!lastProjection)return null;
-  if(!SIM.life){SIM.life=buildLife(lastProjection);if(!SIM.life)return null;resetTo(0);growth=SIM.life.growth;fieldRevision=-1}
-  growth=SIM.life.growth;const t=SIM.life.t0+SIM.simT*1000,i=growth.index(t);
-  if(fieldRevision!==i){fieldRevision=i;fieldCache={...fieldProjection({...lastProjection,encounters:undefined,routes:growth.routesAt(t)}),revision:lastProjection.updated_at+':'+i};
-    if(selectedAddress){const selected=fieldCache.points.find(p=>p.route.path===selectedAddress)?.route;if(!selected)selectedAddress='';renderInspector(selected||null)}
+  if(!SIM.life){SIM.life=buildLife(lastProjection,growth);if(!SIM.life)return null;resetTo(0);fieldRevision=-1}
+  const t=SIM.life.t0+SIM.simT*1000,i=growth.index(t);
+  if(CAM.on&&CAM.o&&SIM.alive.has(CAM.o)){
+    const a=growth.address(CAM.o.S.wps[CAM.o.reached].path,t);
+    if(a)container=a.slice(0,Math.min(a.length,FOLLOW_RANK-1));
+  }
+  if(fieldRevision!==i||fieldCache?.container!==container){fieldRevision=i;baitFold.seek(t);
+    fieldCache={...baitFold.view(container),revision:Object.freeze({index:i,container})};
+    if(selectedAddress){const a=growth.address(selectedAddress,t),selected=a?baitFold.routeAt(a):null;if(!selected)selectedAddress='';renderInspector(selected)}
   }
   return fieldCache;
 }
@@ -635,7 +639,7 @@ function camCard(){
   if(HUD.camBtn)HUD.camBtn.textContent=CAM.on?'stop following':'crawlercam';
   const o=CAM.o;if(!CAM.on||!o){HUD.cam.hidden=true;return}
   HUD.cam.hidden=false;const K=KIND[o.facts.k],c=crawlerById.get(o.S.b.id)||{},w=o.S.wps[Math.min(o.reached+1,o.S.wps.length-1)];
-  const bait=(lastProjection?.routes||[]).find(r=>r.address===w.a);
+  const bait=baitFold?.routeAt(w.a);
   const h=el('b','crawlerbait-cam-kind',`${K.name} · ${K.gene}`);h.style.setProperty('--kind',K.ink);
   const nx=nextIn(o);
   HUD.cam.append(h,el('span','crawlerbait-cam-row',`heading for ${bait?.path||w.a}`),
@@ -748,7 +752,7 @@ function renderInspector(route){
 }
 function render({host,content,projection,ui=null,dependency=null}={}){
   if(!host||!content||!projection?.summary)return false;
-  if(Array.isArray(projection.encounters)&&projection!==lastProjection){lastProjection=projection;if(SIM.life&&SIM.life.key!==(projection.updated_at||''))SIM.life=null}
+  if(projection!==lastProjection)fieldProjection(projection);
   host.hidden=false;
   content.className='interlocutor-content crawlerbait-content';
   content.replaceChildren();
@@ -756,13 +760,13 @@ function render({host,content,projection,ui=null,dependency=null}={}){
 
   const routes=projection.routes||[];
   crawlerById=new Map((projection.crawlers||[]).map(c=>[c.id,c]));
-  const depths=routes.map(r=>String(r.address||'').length).filter(Boolean);
+  const maxDepth=routes.reduce((max,r)=>Math.max(max,String(r.address||'').length),0);
   const fmt=n=>Number(n||0).toLocaleString('en').replace(/,/g,' ');
 
   // top line: identity and the whole reef in one breath
   const top=el('div','crawlerbait-hud-top');
   top.append(el('h1','','Crawlerbait'));
-  for(const [v,l] of [[projection.summary.baits ?? routes.length,'baits'],[projection.summary.web_requests ?? 0,'requests'],[projection.summary.crawlers ?? 0,'beings'],[depths.length?Math.max(...depths):0,'deep']]){
+  for(const [v,l] of [[projection.summary.baits ?? routes.length,'baits'],[projection.summary.web_requests ?? 0,'requests'],[projection.summary.crawlers ?? 0,'beings'],[maxDepth,'deep']]){
     const m=el('span','crawlerbait-hud-stat');m.append(el('b','',fmt(v)),el('small','',l));top.append(m)}
   const through=el('span','crawlerbait-hud-through',projection.updated_at?`through ${prettyTime(projection.updated_at)}`:'waiting for first tide');top.append(through);
   const machine=el('a','crawlerbait-hud-link','reef ↗');machine.href='/crawlerbait/';machine.target='_blank';machine.rel='noopener';top.append(machine);
@@ -799,7 +803,7 @@ function unmount({host,content}={}){
 }
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,
   // pure witnesses for tests: the walk law, the life built from a projection, and the frame cost of living it
-  _law:Object.freeze({pointOf,route,buildLife,buildGrowth,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,KIND,
+  _law:Object.freeze({pointOf,route,buildLife,buildGrowth,createBaitFold,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,KIND,
     simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container='',changeAt=null,nextContainer=''}){
       SIM.life=buildLife(projection);resetTo(at*SIM.life.seconds);SIM.paceLog=SIM.paceCur=pace;SIM.playing=true;SIM.container=container;SIM.sizeK=Math.pow(1.02*Math.pow(2,container.length),-.75);
       const pxOf=(P,r)=>r*900;let worst=0,sum=0;

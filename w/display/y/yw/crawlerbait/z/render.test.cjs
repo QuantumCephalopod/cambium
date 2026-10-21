@@ -12,7 +12,9 @@ const projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json
 const field=moduleRef.fieldProjection(projection);
 
 assert(field&&field.root&&Array.isArray(field.points),'crawlerbait field projection missing root/points');
-assert.strictEqual(field.points.length,projection.routes.length,'every projected bait must have one field point');
+assert(field.points.length<=16,'entry must resolve at most its two-rank frontier');
+const folded=moduleRef._law.createBaitFold(moduleRef._law.buildGrowth(projection.routes));folded.seek(Infinity);
+const endField=folded.view('');
 
 function nodeAt(root,address){
   let node=root;
@@ -33,17 +35,15 @@ function assertClosedSplits(node,address=''){
 assertClosedSplits(field.root,'');
 for(const route of projection.routes){
   assert(/^[wxzy]+$/.test(route.address),`invalid bait address ${route.address}`);
-  const point=field.points.find(p=>p.address===route.address);
-  assert(point,`missing point for bait:${route.address}`);
-  assert.strictEqual(point.path,route.address,`point escaped real bait cell ${route.address}`);
-  assert.strictEqual(point.label,route.path,`point label diverged from observed path ${route.path}`);
-  const node=nodeAt(field.root,route.address);
-  assert(node&&node.bait===true,`real bait anatomy missing at ${route.address}`);
-  assert.strictEqual(node.address,route.address,`bait anatomy address mismatch ${route.address}`);
+  assert.deepStrictEqual(folded.routeAt(route.address),route,'fold lost exact source tissue');
 }
+assert.strictEqual(folded.root.count,projection.routes.length,'fold lost an occupant');
+const represented=endField.points.reduce((n,p)=>n+(p.fold?p.count:1),0);
+assert.strictEqual(represented,projection.routes.length,'frontier folds must carry every contained Bait');
+assertClosedSplits(endField.root);
 assert.strictEqual(field.root.noun,'Baits','field root must be bait-space ε, not Crawlerbait root anatomy');
 assert(!['Traces','Membrane','Tide'].includes(field.root.children?.w?.noun),'non-bait root anatomy leaked into bait-space field');
-console.log(`PASS · ${projection.routes.length} baits render as the complete background from bait-space ε`);
+console.log(`PASS · ${projection.routes.length} baits remain exact behind the bounded two-rank Bait frontier`);
 // beings: every being keeps its derived kind, walks only Sierpinski edges between its own recorded baits, and the goo stays inside its splat budget
 const law=moduleRef._law;
 assert(law&&typeof law.buildLife==='function','crawlerbait life law missing');
@@ -93,3 +93,76 @@ console.log('PASS · stable tissue, eligible self-child, all canonical addresses
 const blend=law.simulate({projection,at:.3,frames:91,container:'',changeAt:90,nextContainer:'w'});assert(blend.fineShares.every(x=>x>=0&&x<=1));assert(blend.fineShares.some(x=>x>0&&x<1),'resolution changed with a cut');
 
 for(const S of life.sessions){assert.equal(law.prefixFacts(S.b.history,Infinity).k,S.b.k,'prefix replay kind fails to recover canonical kind')}
+
+// Full source is an independent oracle for folds, including reverse replay.
+// A fold must never ask growth for the flat population it is replacing.
+const reference=law.buildGrowth(projection.routes),indexed=law.buildGrowth(projection.routes);
+indexed.routesAt=()=>{throw new Error('fold requested the flat population')};
+const F=law.createBaitFold(indexed),start=Date.parse(projection.raw_capture_start),end=Date.parse(projection.raw_capture_end);
+for(const fraction of [0,.01,.1,.3,.85,1,.3,0,1]){
+  const t=start+(end-start)*fraction;F.seek(t);
+  const expected=reference.routesAt(t);
+  assert.equal(F.root.count,expected.length);
+  for(const r of expected)assert.deepStrictEqual(F.routeAt(r.address),r,'replay/rewind lost source truth');
+  const v=F.view('');assertClosedSplits(v.root);
+  assert(v.points.length<=16);assert(F.work.visited<=21);
+  assert.equal(v.points.reduce((n,p)=>n+(p.fold?p.count:1),0),expected.length);
+  const same=F.root;F.seek(t);assert.strictEqual(F.root,same);assert.equal(F.work.edits,0);
+}
+const small=law.createBaitFold(law.buildGrowth(births));small.seek(t);
+const untouched=small.root.children.w;
+small.seek(Date.parse('2026-01-03T12:00:00Z'));
+assert.strictEqual(small.root.children.w.children.w.route,births[0],'leaf must retain actual source identity');
+const w=small.root.children.w;small.seek(Date.parse('2026-01-02T12:00:00Z'));
+assert.strictEqual(small.root.children.w,w,'an x birth/rewind rebuilt its w sibling');
+small.seek(t);assert.strictEqual(small.routeAt('w').path,'/a');assert.equal(small.routeAt('ww'),null);
+assert.equal(untouched.route.path,'/a','a prior generation was mutated');
+assert.throws(()=>small.view('invalid'),/invalid/);
+
+// Every birth and collision in a small independent source, including equal-time
+// births, is compared with the old full-history projection in both directions.
+function population(depth){
+  const genes=['w','x','z','y'],out=[];
+  for(let i=0;i<4**depth;i++){
+    let n=i,address='';for(let j=0;j<depth;j++){address=genes[n%4]+address;n=Math.floor(n/4)}
+    out.push({path:'/fixture/'+i,address,first_seen:new Date(1700000000000+Math.floor(i/2)).toISOString()});
+  }return out;
+}
+const fixtureSource=population(3),fixtureG=law.buildGrowth(fixtureSource),fixtureFold=law.createBaitFold(fixtureG);
+for(const order of [fixtureG.births,[...fixtureG.births].reverse()])for(const birth of order){
+  fixtureFold.seek(birth.t);const expected=fixtureG.routesAt(birth.t);
+  assert.equal(fixtureFold.root.count,expected.length);
+  for(const r of expected)assert.deepStrictEqual(fixtureFold.routeAt(r.address),r);
+}
+const scaling=[];
+for(const depth of [4,6,8]){
+  const G=law.buildGrowth(population(depth)),fold=law.createBaitFold(G);fold.seek(Infinity);
+  const v=fold.view('');assert.equal(v.points.length,16);assert.equal(fold.work.visited,21);
+  assert.equal(v.points.reduce((n,p)=>n+p.count,0),4**depth);
+  const path='w'.repeat(depth-2),deep=fold.view(path);
+  assert(deep.points.length<=16);assert(fold.work.visited<=4*path.length+21);
+  const last=G.births.at(-1).t;fold.seek(last-1);fold.seek(last);
+  assert(fold.work.edits<=12*depth,'one equal-time birth group paid for unrelated population');
+  scaling.push({baits:4**depth,overviewVisits:21,descentVisits:fold.work.visited,birthPathEdits:fold.work.edits});
+}
+// Genealogy is iterative; no configured end rank or JS recursion ceiling.
+const prefix='w'.repeat(1536),deepRoutes=[{path:'/deep-a',address:prefix+'x',first_seen:'2026-01-01T00:00:00Z'},
+  {path:'/deep-b',address:prefix+'z',first_seen:'2026-01-02T00:00:00Z'}];
+const deep=law.createBaitFold(law.buildGrowth(deepRoutes));deep.seek(Infinity);
+assert.equal(deep.routeAt(prefix+'x').path,'/deep-a');
+assert.equal(deep.view(prefix).points.length,2);assert(deep.work.visited<=4*prefix.length+21);
+deep.seek(Date.parse('2026-01-01T12:00:00Z'));assert.equal(deep.routeAt('w').path,'/deep-a');
+
+// Explicit generation acquisition also reacquires a reused source object.
+const reused={routes:[...births]};moduleRef.fieldProjection(reused);reused.routes=[];
+assert.equal(moduleRef.fieldProjection(reused).points.length,0);
+const actual=moduleRef.fieldProjection(projection);assert(actual.points.length<=16);
+const snapshot=moduleRef.shader.snapshot({container:''});assert(snapshot.root&&snapshot.points.length<=16);
+assert.strictEqual(moduleRef.shader.snapshot({container:''}),snapshot,'unchanged clock/container rebuilt a carrier');
+const entered=moduleRef.shader.snapshot({container:'w'});assert.notStrictEqual(entered,snapshot);
+assert.strictEqual(moduleRef.shader.snapshot({container:'w'}),entered);
+moduleRef.fieldProjection(projection);
+const reacquired=moduleRef.shader.snapshot({container:'w'});
+assert.notStrictEqual(reacquired.revision,entered.revision,'a new source acquisition reused an old revision token at the same clock/container');
+console.log('PASS · changed-path replay, exact rewind, immutable siblings, 1537-rank genealogy, fresh generation, cached production snapshots');
+console.log(JSON.stringify({foldWork:scaling}));

@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.49"
+version: "3.50"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -66,6 +66,9 @@ Current bodies (the tree is the authority; this list only orients re-entry):
 Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `y`. Crawlerbait remains locally rooted at `crawlerbait:ε`; its machine-facing HTTP bait routes are local public apertures, not additional global site-space addresses.
 
 Realized address lookup is shared Display geometry. A collected structure owns one private exact-address index for its own projection generation; consumers reuse its actual records without repeatedly searching the population. Projection changes recollect the structure, and absent addresses remain absent. The navigation receptor owns this carrier mechanism. Its arrays and semantic/quotient relations remain unchanged; inherited Cambium generation-lifetime law already bounds reuse, so no new host-root distinction is earned.
+
+An identity-owned field snapshot may supply already folded point constituents. Display treats an explicitly folded, actually realized address as the same neutral pool/Descent relation; its count survives further coalescence without acquiring member lists. The owner retains source meaning, the exact descendants and resolution policy. The common structure collector walks iteratively so a long resolved spine does not become a JavaScript recursion ceiling. Crawlerbait's local replay fold is the first consumer: geography prepares only its enclosing spine and current frontier. Its still-complete source/Being-history acquisition remains separately named pressure. Cambium organism1.12 receives only the rank-invariant distinction between bounded consumed work and hiding after global preparation.
+
 
 ## Shared body / local phenomenology
 

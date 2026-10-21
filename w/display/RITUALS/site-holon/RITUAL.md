@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.19"
+version: "3.20"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -98,7 +98,10 @@ The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected
 
 ### Feed-owned rank-relative representations
 
-A site-holon may expose an optional bounded public `feed_preview` under its own `_feed`, while keeping the detailed projection and renderer body identity-owned. Its enclosing Display membrane represents the site through that preview until perceptual entry justifies acquiring detail. The public preview cannot claim private `_feed/current.json` or replace the actual site identity, source or root. Readiness belongs to the receiving browser's shared representation-continuity physiology; resolution/content thresholds and resource disposal stay with the child. The same relation holds inside a site at smaller rank, as in Schattenseiten's 64px→512px artwork. A failed higher representation preserves the last good low representation. No fixed rank limit, media family or duplicate renderer law is imposed.
+A site-holon may expose an optional bounded public `feed_preview` under its own `_feed`, while keeping the detailed projection and renderer body identity-owned. Its enclosing Display membrane represents the site through that preview until perceptual entry justifies acquiring detail. The public preview cannot claim private `_feed/current.json` or replace the actual site identity, source or root. Readiness belongs to the receiving browser's shared representation-continuity physiology; resolution/content thresholds and resource disposal stay with the child. The same relation holds inside a site at smaller rank, as in Schattenseiten's 64px→512px artwork. A failed higher representation preserves the last good low representation.
+
+The field point contract may carry `fold: true` with a positive exact `count` at an actually realized raw `path`. This represents an owner's folded constituents, not a new occupant or source identity. Display places it at that cell's centre and clicking it uses existing pool Descent. If further coalesced, counts add without enumerating descendants. A finer snapshot resolves the same raw genealogy, preserving source ownership and existing leaf points. An unresolved point cannot acquire fold traversal by falling back to a gene. There is no member-list, fixed depth or specimen dispatch requirement. The owner is responsible for truthful counts, local work and generation consistency.
+ No fixed rank limit, media family or duplicate renderer law is imposed.
 
 A site's existing `render` hook may refuse with `false`, throw, or leave its host hidden. Display's encounter handoff then retains the prior valid body under the organism receptor's acceptance law. A legacy hook returning no value remains accepted when its host is visible; no new rendering schema or shared hardware fallback is imposed.
 
