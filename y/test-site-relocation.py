@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prove that moving one entire site-holon body remounts it without internal edits."""
+"""Prove that moving entire site-holon bodies remounts them without internal edits."""
 from pathlib import Path
 from hashlib import sha256
 import importlib.util
@@ -32,43 +32,32 @@ with tempfile.TemporaryDirectory(prefix='display-relocation-') as td:
     try:
         build.DISPLAY = temp_display
         build.SITE_ROOT = temp_display / 'y'
-        before = build.discover_sites()
-        papers_before = site_by_id(before, 'organism:papers')
-        body_before = digest_tree(papers_before['site_dir'])
-        identity_before = {
-            'id': papers_before['id'], 'title': papers_before['title'],
-            'local_scope': papers_before['local_scope'], 'shader': papers_before['shader'],
-            'manifestation': papers_before['manifestation'],
-        }
-        assert papers_before['address'] == 'y'
+        for identity in ('organism:papers', 'organism:crawlerbait'):
+            before = build.discover_sites()
+            original = site_by_id(before, identity)
+            body_before = digest_tree(original['site_dir'])
+            contract = {key: original[key] for key in
+                        ('id', 'title', 'local_scope', 'shader', 'manifestation', 'build')}
+            occupied = {site['address'] for site in before}
+            address = next('wxyz' * 31 + gene + 'xyz' for gene in 'wxzy'
+                           if 'wxyz' * 31 + gene + 'xyz' not in occupied)
+            source = original['site_dir']
+            target = build.SITE_ROOT / ('y' + address) / 'changed-carrier-name'
+            target.parent.mkdir()
+            old_parent = source.parent
+            shutil.move(source, target)
+            old_parent.rmdir()
 
-        src = temp_display / 'y' / 'yy' / 'papers'
-        occupied = {site['address'] for site in before}
-        target_address = next(
-            a + b for a in 'wxzy' for b in 'wxzy'
-            if a + b not in occupied
-        )
-        dst_parent = temp_display / 'y' / ('y' + target_address)
-        dst_parent.mkdir()
-        shutil.move(str(src), str(dst_parent / 'papers'))
-        (temp_display / 'y' / 'yy').rmdir()
+            relocated = site_by_id(build.discover_sites(), identity)
+            assert relocated['address'] == address
+            assert {key: relocated[key] for key in contract} == contract
+            assert build.witness_site_build(relocated), 'declared owner witness was disconnected'
+            assert digest_tree(target) == body_before, 'relocation or witness changed body bytes'
+            registry = build.site_mounts()
+            mount = next(m for m in registry['mounts'] if m['interlocutor'] == identity)
+            assert mount == {'interlocutor': identity, 'scope': 'main', 'address': address}
 
-        after = build.discover_sites()
-        papers_after = site_by_id(after, 'organism:papers')
-        body_after = digest_tree(papers_after['site_dir'])
-        identity_after = {
-            'id': papers_after['id'], 'title': papers_after['title'],
-            'local_scope': papers_after['local_scope'], 'shader': papers_after['shader'],
-            'manifestation': papers_after['manifestation'],
-        }
-        assert papers_after['address'] == target_address
-        assert body_after == body_before, 'relocation mutated Papers body bytes'
-        assert identity_after == identity_before, 'relocation mutated Papers identity contract'
-
-        registry = build.site_mounts()
-        mount = next(m for m in registry['mounts'] if m['interlocutor'] == 'organism:papers')
-        assert mount == {'interlocutor':'organism:papers','scope':'main','address':target_address}
     finally:
         build.DISPLAY, build.SITE_ROOT = old_display, old_site_root
 
-print('PASS · whole Papers body relocated to a dynamically free site address with zero internal edits; tree alone remounted identity')
+print('PASS · real Papers and Crawlerbait bodies relocate to dynamically free 128-symbol addresses under changed carrier names; owner validation and independent evidence retain exact internal bytes')

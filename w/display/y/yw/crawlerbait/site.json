@@ -19,5 +19,9 @@
   "renderer": "z/render.js",
   "style": "z/style.css",
   "ui_grid": "ui-grid.json",
-  "feed_preview": "_feed/display-preview.json"
+  "feed_preview": "_feed/display-preview.json",
+  "build": {
+    "module": "z/validate.py",
+    "witness": "y/validate.test.py"
+  }
 }
