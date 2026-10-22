@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.20"
+version: "3.21"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -32,7 +32,7 @@ The index belongs only to that collected projection generation. Changes to autho
 
 Point placement, labels, focus, pool lookup and child consumers inherit this common geometric operation without naming a site. Source-exact consumer evidence must retain every record and world point, with missing/alias/generation tests and a no-scan counterexample. Native CPU preparation timing is separate from browser/GPU/visitor timing.
 
-Collection is iterative in the same depth-first gene order. A resolved spine therefore has no recursive-call-stack end rank; actual carrier precision/resources remain finite. Fields may receive owner-folded points at realized raw addresses under the site-holon contract. They retain existing pool centres, count addition and click-to-descend; Display never asks for their concealed population. The owner decides which current frontier is supplied. Narrow/wide WebGL-command and Canvas2D transports witness this coupling; they are native consumer evidence, not browser rasterization or physical GPU timing.
+Collection is iterative in the same depth-first gene order. A resolved spine therefore has no recursive-call-stack end rank; actual carrier precision/resources remain finite. Fields may receive owner-folded points at realized raw addresses under the site-holon contract. They retain existing pool centres, count addition and click-to-descend; Display never asks for their concealed population. The owner decides which current frontier is supplied. Display Continuity's `SSSRecursiveFold` supplies an optional common immutable frontier operation; navigation consumes its owner-projected result through exactly this existing point/cell contract, without seeing its source population or acquiring a second source index. Narrow/wide WebGL-command and Canvas2D transports witness this coupling; they are native consumer evidence, not browser rasterization or physical GPU timing.
 
 
 ## Population-derived target set
@@ -248,3 +248,5 @@ Version3.16 concurrent membrane (2026-10-20): actual body contact requests entry
 Version3.17 compass guidance (2026-10-20): header, map/rails and help share measured intrinsic flow rather than fixed text offsets. Deliberately disclosed DE/EN guidance and input-specific hints retain all existing navigation actions; source geometry, recursive targets, axis latch and site-local meaning are unchanged.
 
 Version3.18 stable hint slot (2026-10-20): current hint variants lend their actual extents to one intrinsic slot. Only the active variant is visually/accessibly exposed; input-context changes keep map and rails stationary.
+
+Version3.21 shared frontier consumer (2026-10-21): independent opaque owner and actual Crawlerbait snapshots now exercise the common recursive carrier through the existing field. Pool click/Descent, refinement, ascent, source counts and fine world placement keep their existing meaning. This is native consumer evidence at two carrier sizes/backends, not a browser/FPS or bounded-source-acquisition claim.

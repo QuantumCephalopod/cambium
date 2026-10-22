@@ -3,6 +3,9 @@ const assert=require('assert');
 const fs=require('fs');
 const path=require('path');
 
+// The enclosing witness lends a capability, so whole-body relocation needs no host path edit.
+if(!process.argv[2])throw new Error('pass the shared recursive-fold module as the witness argument');
+globalThis.SSSRecursiveFold=require(path.resolve(process.argv[2]));
 globalThis.SSSInterlocutorModules=new Map();
 require('./render.js');
 
@@ -112,11 +115,11 @@ for(const fraction of [0,.01,.1,.3,.85,1,.3,0,1]){
 const small=law.createBaitFold(law.buildGrowth(births));small.seek(t);
 const untouched=small.root.children.w;
 small.seek(Date.parse('2026-01-03T12:00:00Z'));
-assert.strictEqual(small.root.children.w.children.w.route,births[0],'leaf must retain actual source identity');
+assert.strictEqual(small.root.children.w.children.w.value,births[0],'leaf must retain actual source identity');
 const w=small.root.children.w;small.seek(Date.parse('2026-01-02T12:00:00Z'));
 assert.strictEqual(small.root.children.w,w,'an x birth/rewind rebuilt its w sibling');
 small.seek(t);assert.strictEqual(small.routeAt('w').path,'/a');assert.equal(small.routeAt('ww'),null);
-assert.equal(untouched.route.path,'/a','a prior generation was mutated');
+assert.equal(untouched.value.path,'/a','a prior generation was mutated');
 assert.throws(()=>small.view('invalid'),/invalid/);
 
 // Every birth and collision in a small independent source, including equal-time

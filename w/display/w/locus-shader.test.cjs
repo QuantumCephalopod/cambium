@@ -301,25 +301,50 @@ for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,tru
 console.log('PASS — immediate body intent, admission-owned camera and actual wide/narrow approach on both backends');
 
 
-// An owner supplies already folded constituents through the same neutral point
-// contract. Display enters their actual cell; it never needs their population.
+// An unrelated source owner uses the shared carrier, then the actual field
+// consumes that frontier on both rendering transports. No member-list API is
+// passed to Display; pointer Descent simply asks for the next local frontier.
+const Q=require('../x/recursive-fold.js');
 for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
- const split=noun=>({noun,children:Object.fromEntries(N.GENES.map(g=>[g,atom(g)]))});
- const tree=split('root');for(const g of N.GENES)tree.children[g]=split(g);
- const fold={id:'owned:fold',gene:'w',path:'wx',kind:'holon',fold:true,count:100,label:'100 within wx'};
- const refined=split('wx');tree.children.w.children.x=refined;
- let last='',revision=0,cache=null;
+ const tissue=Q.create();let data=tissue.empty;
+ for(let i=0;i<256;i++){
+   let n=i,path='';for(let j=0;j<4;j++){path=N.GENES[n%4]+path;n=Math.floor(n/4)}
+   data=tissue.replace(data,'wx'+path,tissue.leaf({pigment:'mineral '+i})).root;
+ }
+ let cache=null;
  const snapshot=({container})=>{
-   if(cache&&last===container)return cache;last=container;
-   const points=container==='wx'?N.GENES.map((g,i)=>({...fold,id:'child:'+g,path:'wx'+g,count:25})): [fold];
-   return cache={root:tree,points,revision:++revision};
+   if(cache?.container===container)return cache;
+   const view=tissue.view(data,{container,project:({path,count,value})=>({noun:value?.pigment||`${count} samples in ${path}`})});
+   const points=view.terminals.map(({path,count,value,fold})=>({id:value?.pigment||'stratum:'+path,gene:path[0],path,kind:'holon',fold,count,label:String(count)+' samples'}));
+   return cache={root:view.root,points,container,revision:{}};
  };
- const f=fixture({width,height,webgl,tree,pointSpecs:[fold],snapshot,order:[],glass:false});f.frame(0);
+ const initial=snapshot({container:''});assert.equal(initial.points.length,1);assert.equal(initial.points[0].count,256);
+ const f=fixture({width,height,webgl,tree:initial.root,pointSpecs:initial.points,snapshot,order:[],glass:false});f.frame(0);
  const p=f.api.projectAddressCenter('wx'),e={button:0,pointerId:1,clientX:p.x,clientY:p.y,preventDefault(){}};
  f.canvas.pointerdown(e);f.canvas.pointerup(e);
- assert.equal(f.api.container,'wx','clicking an owner fold must descend rather than select a fake Bait');
- f.frame(500);assert.equal(f.api.points.length,4);assert(f.api.points.every(p=>p.path.startsWith('wx')));
- assert.equal(f.api.points.reduce((n,p)=>n+p.count,0),100);
+ assert.equal(f.api.container,'wx','shared owner fold must descend at its actual cell');
+ f.frame(500);assert.equal(f.api.points.length,16);assert(f.api.points.every(p=>p.path.startsWith('wx')));
+ assert.equal(f.api.points.reduce((n,p)=>n+p.count,0),256);
  assert(f.api.ascend('fold-test'));f.frame(1000);assert.equal(f.api.container,'w');
 }
-console.log('PASS — source-owned folds refine the same address on narrow/wide WebGL and Canvas2D transports');
+console.log('PASS — unrelated owner uses shared folds and pointer Descent on narrow/wide WebGL-command and Canvas2D transports');
+
+// The real first adopter uses the same capability. Source comparisons stay in
+// this independent witness; the actual field receives only the owner's frontier.
+{
+ const modules=new Map(),context={SSSInterlocutorModules:modules,SSSRecursiveFold:Q,performance};
+ const body=path.join(__dirname,'../y/yw/crawlerbait/z');
+ vm.runInNewContext(fs.readFileSync(path.join(body,'render.js'),'utf8'),context);
+ const owner=modules.get('organism:crawlerbait'),source=JSON.parse(fs.readFileSync(path.join(body,'projection.json'),'utf8'));
+ const law=owner._law,G=law.buildGrowth(source.routes),current=G.routesAt(Date.parse(source.raw_capture_start));
+ for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
+   const initial=owner.fieldProjection(source),snapshot=owner.shader.snapshot;
+   const f=fixture({width,height,webgl,tree:initial.root,pointSpecs:initial.points,snapshot,order:[],glass:false});f.frame(0);
+   const fold=f.api.points.find(p=>p.fold);assert(fold,'real generation did not exercise a closed fold');
+   assert(f.api.descendTo(fold.path,'shared-fold-witness'));f.frame(500);
+   assert.equal(f.api.container,fold.path);
+   assert.equal(f.api.points.reduce((n,p)=>n+(p.fold?p.count:1),0),current.filter(r=>r.address.startsWith(fold.path)).length);
+   for(const point of f.api.points.filter(p=>!p.fold))assert.equal(point.route.path,point.label);
+ }
+}
+console.log('PASS — real Crawlerbait snapshots use the shared carrier through both actual field transports at narrow/wide sizes');

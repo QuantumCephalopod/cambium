@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.12"
+version: "1.13"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -120,7 +120,7 @@ Cambium's current carrier is the optional body-relative `site.json` build hook d
 
 Derived work may be shared within one unchanged source generation and invocation phase. A new source state reacquires its derivation; a long-lived cache must not silently substitute an earlier generation. When several writers maintain one admitted state, witness the complete ordinary writer cycle as a byte fixed point. Isolated writer idempotence does not prove that the cycle closes, and equivalent descriptive metadata must not repeatedly actuate organism work.
 
-A folded membrane bounds the work its enclosing consumer actually performs. A parent consumes the summaries/references of its realized children; resolving a child repeats that relation at the child's rank. A mutation renews its affected genealogy while unchanged siblings remain reusable. Traversing or preparing the whole hidden population before hiding/coalescing it is not a bounded fold. Witness consumed work against increasing populations as well as source equality and reverse/reacquisition behavior. A current carrier may still acquire/index a complete source generation; name that remaining global cost instead of claiming that bounded presentation has also bounded storage, acquisition or every other consumer. Concrete summaries, refinement policies and cache/transport mechanisms stay owner-local.
+A folded membrane bounds the work its enclosing consumer actually performs. A parent consumes the summaries/references of its realized children; resolving a child repeats that relation at the child's rank. A mutation renews its affected genealogy while unchanged siblings remain reusable. Traversing or preparing the whole hidden population before hiding/coalescing it is not a bounded fold. Witness consumed work against increasing populations as well as source equality and reverse/reacquisition behavior. A current carrier may still acquire/index a complete source generation; name that remaining global cost instead of claiming that bounded presentation has also bounded storage, acquisition or every other consumer. Concrete summaries, refinement policies and cache/transport mechanisms stay owner-local. A recurring structural fold operation may be shared by the enclosing carrier when it accepts opaque owner tissue and is independently witnessed with an unrelated owner. Sharing that mechanism does not transfer source authority or make the first consumer's identity, clock, summaries or acquisition policy into global law.
 
 
 ## current living pressure
@@ -150,3 +150,5 @@ Version1.7 global-orientation repair (2026-10-19): current Population mounts are
 Version1.8 Population discovery boundary (2026-10-20): living mount positions delimit discovery before manifest validation. Archived and locally nested manifests stay behind their owner's membrane; generic long-address relocation and collision/refusal witnesses preserve the existing carrier contract.
 
 Version1.9 Catabolism receptor (2026-10-20): repeated owner-local source returns and the witnessed README invocation quotient earn a repository-local Catabolism differential. Invocation state and Git-carried return addresses remain local application of resident HOME; semantic constitution and child ownership are unchanged.
+
+Version1.13 shared fold operation (2026-10-21): rank substitution permits one source-agnostic carrier mechanism while source meaning and refinement remain owner-local. Independent-owner and real-consumer evidence must earn that reuse. Bounded presentation remains distinct from full-generation acquisition/preparation; an expansive derived index is not accepted as a transfer optimization merely because its frontier is small.
