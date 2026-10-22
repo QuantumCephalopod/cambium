@@ -2,7 +2,7 @@
 name: catabolism
 kind: target-local-differential
 organism: cambium
-version: "0.1"
+version: "0.2"
 resident_home: /regeneration/catabolism
 ---
 
@@ -19,6 +19,8 @@ Trace dependencies through the actual build/runtime/workflow path. Classify gene
 ## Quotient at the same invocation boundary
 
 When two checks consume the same unchanged inputs under the same condition and phase, establish their relevant effects and witness both acceptance and rejection through the actual surviving checker. An extra read-only invocation may be released when it contributes no separately consumed result or independent evidence. The checker and its obligation remain owned at the surviving invocation.
+
+A result-only success message consumes the completed operation's return; it does not justify repeating that operation. Publication may reuse explicitly passed acquired rows/bytes only within the same read-only phase, with fresh acquisition at its next invocation. Releasing a disconnected entrypoint also requires tracing documentation and evidence consumers, not merely runtime imports; immutable Git revision/path plus any still-required exact retired carrier preserve its return address.
 
 A check after a source/projection mutation, a differently guarded call, a different backend or a separate publication/visitor obligation is outside that equivalence. Re-trace that boundary before reducing it. Successful CI, public byte equality and organism/visitor acceptance retain the separate roles assigned by the current owner law.
 

@@ -391,8 +391,8 @@ def discover_sites():
     return found
 
 
-def site_mounts():
-    sites = discover_sites()
+def site_mounts(sites=None):
+    sites = discover_sites() if sites is None else sites
     return {
         'version': 3,
         'source': 'w/display/y tree',
@@ -413,18 +413,18 @@ def site_mounts():
     }
 
 
-def site_projections():
+def site_projections(sites=None):
     # Child-owned _feed capsules orient parents; detailed source crosses only on encounter.
-    return {s['id']: s['feed_preview_data'] or s['projection_data'] for s in discover_sites()}
+    return {s['id']: s['feed_preview_data'] or s['projection_data'] for s in (discover_sites() if sites is None else sites)}
 
 
-def site_feed_urls(bundle):
+def site_feed_urls(bundle, sites=None):
     return {s['id']: f'assets/{bundle}/site-{_slug(s["id"])}-feed.json'
-            for s in discover_sites() if s['feed_preview_data'] is not None}
+            for s in (discover_sites() if sites is None else sites) if s['feed_preview_data'] is not None}
 
 
-def site_ui_grids():
-    return {s['id']: s['ui_grid_data'] for s in discover_sites()}
+def site_ui_grids(sites=None):
+    return {s['id']: s['ui_grid_data'] for s in (discover_sites() if sites is None else sites)}
 
 
 def _enc(v):
@@ -435,7 +435,7 @@ def _slug(site_id):
     return re.sub(r'[^A-Za-z0-9_-]+', '-', site_id).strip('-').lower()
 
 
-def template_asset_sources():
+def template_asset_sources(sites=None):
     """Template-linked Display assets plus identity-owned site tissue."""
     out = {
         'root-view.css': DISPLAY/'w'/'root-view.css',
@@ -463,7 +463,7 @@ def template_asset_sources():
         'favicon.svg': DISPLAY/'w'/'favicon.svg',
     }
     slugs = set()
-    for site in discover_sites():
+    for site in (discover_sites() if sites is None else sites):
         slug = _slug(site['id'])
         if not slug or slug in slugs:
             raise ValueError(f'non-unique public site asset slug: {site["id"]}')
@@ -473,10 +473,10 @@ def template_asset_sources():
     return out
 
 
-def dependency_asset_sources():
+def dependency_asset_sources(dependencies=None):
     out={}
     slugs=set()
-    for identity,dep in sorted(display_dependencies().items()):
+    for identity,dep in sorted((display_dependencies() if dependencies is None else dependencies).items()):
         slug=dep['slug']
         if not slug or slug in slugs:
             raise ValueError(f'non-unique Display dependency slug for {identity}')
@@ -490,39 +490,50 @@ def dependency_asset_sources():
     return out
 
 
-def asset_sources():
-    out=template_asset_sources()
+def asset_sources(sites=None, dependencies=None, template_sources=None):
+    sites = discover_sites() if sites is None else sites
+    out = dict(template_asset_sources(sites) if template_sources is None else template_sources)
     # Immutable detailed feed bytes are emitted separately, never inside the global HTML.
-    for site in discover_sites():
+    for site in sites:
         if site['feed_preview_data'] is not None:
             out[f'site-{_slug(site["id"])}-feed.json'] = site['projection_path']
-    for name,source in dependency_asset_sources().items():
+    for name,source in dependency_asset_sources(dependencies).items():
         if name in out:
             raise ValueError(f'Display dependency asset collides with membrane asset: {name}')
         out[name]=source
     return out
 
 
-def dependency_projection(bundle):
+def dependency_projection(bundle, dependencies=None):
     return {
         identity:{'version':dep['version'],'base':f'assets/{bundle}/dependencies/{dep["slug"]}/'}
-        for identity,dep in sorted(display_dependencies().items())
+        for identity,dep in sorted((display_dependencies() if dependencies is None else dependencies).items())
     }
 
 
-def asset_bundle_id():
-    h = sha256()
-    for name, source in sorted(asset_sources().items()):
+def _asset_bytes(sources):
+    assets = {}
+    for name, source in sources.items():
         if not source.is_file():
             raise ValueError(f'missing membrane dependency: {source.relative_to(ROOT)}')
-        data = source.read_bytes()
+        assets[name] = source.read_bytes()
+    return assets
+
+
+def _bundle_id(assets):
+    h = sha256()
+    for name, data in sorted(assets.items()):
         h.update(name.encode('utf-8')); h.update(b'\0'); h.update(data); h.update(b'\0')
     return h.hexdigest()[:16]
 
 
-def _site_surfaces():
+def asset_bundle_id():
+    return _bundle_id(_asset_bytes(asset_sources()))
+
+
+def _site_surfaces(sites=None):
     rows = []
-    for site in discover_sites():
+    for site in (discover_sites() if sites is None else sites):
         sid = html.escape(site['id'], quote=True)
         title = html.escape(site['title'], quote=True)
         rows.append(
@@ -534,39 +545,43 @@ def _site_surfaces():
     return '\n'.join(rows)
 
 
-def _site_style_links():
+def _site_style_links(sites=None):
     return '\n'.join(
         f'<link rel="stylesheet" href="assets/site-{_slug(s["id"])}.css">'
-        for s in discover_sites()
+        for s in (discover_sites() if sites is None else sites)
     )
 
 
-def _site_script_tags():
+def _site_script_tags(sites=None):
     return '\n'.join(
         f'<script src="assets/site-{_slug(s["id"])}.js"></script>'
-        for s in discover_sites()
+        for s in (discover_sites() if sites is None else sites)
     )
 
 
-def render():
+def render(sites=None, *, bundle=None, template_sources=None, dependencies=None):
+    sites = discover_sites() if sites is None else sites
+    dependencies = display_dependencies() if dependencies is None else dependencies
+    template_sources = template_asset_sources(sites) if template_sources is None else template_sources
     text = (DISPLAY/'w'/'template.html').read_text(encoding='utf-8')
-    bundle = asset_bundle_id()
+    if bundle is None:
+        bundle = _bundle_id(_asset_bytes(asset_sources(sites, dependencies, template_sources)))
     replacements = {
-        '/*__INTERLOCUTOR_SURFACES__*/': _site_surfaces(),
-        '/*__SITE_STYLES__*/': _site_style_links(),
-        '/*__SITE_REGISTRY__*/': _enc(site_mounts()),
-        '/*__SITE_PROJECTIONS__*/': _enc(site_projections()),
-        '/*__SITE_FEED_URLS__*/': _enc(site_feed_urls(bundle)),
-        '/*__SITE_UI_GRIDS__*/': _enc(site_ui_grids()),
-        '/*__DISPLAY_DEPENDENCIES__*/': _enc(dependency_projection(bundle)),
-        '/*__SITE_SCRIPTS__*/': _site_script_tags(),
+        '/*__INTERLOCUTOR_SURFACES__*/': _site_surfaces(sites),
+        '/*__SITE_STYLES__*/': _site_style_links(sites),
+        '/*__SITE_REGISTRY__*/': _enc(site_mounts(sites)),
+        '/*__SITE_PROJECTIONS__*/': _enc(site_projections(sites)),
+        '/*__SITE_FEED_URLS__*/': _enc(site_feed_urls(bundle, sites)),
+        '/*__SITE_UI_GRIDS__*/': _enc(site_ui_grids(sites)),
+        '/*__DISPLAY_DEPENDENCIES__*/': _enc(dependency_projection(bundle, dependencies)),
+        '/*__SITE_SCRIPTS__*/': _site_script_tags(sites),
     }
     for marker, value in replacements.items():
         if text.count(marker) != 1:
             raise ValueError(f'display template must contain exactly one {marker} slot')
         text = text.replace(marker, value)
 
-    for name in template_asset_sources():
+    for name in template_sources:
         flat = f'assets/{name}'
         # Asset rewriting is an HTML-reference operation, not a free-text
         # substitution. Site projections intentionally contain arbitrary observed
@@ -592,11 +607,17 @@ def render():
     )
 
 
-def artifact_files():
-    bundle = asset_bundle_id()
-    files = {'index.html': render().encode('utf-8'), '.nojekyll': b''}
-    for name, source in asset_sources().items():
-        files[f'assets/{bundle}/{name}'] = source.read_bytes()
+def artifact_files(sites=None):
+    # One operation owns this acquired source state. Nothing survives into the next
+    # invocation, derivation or source mutation; callers must not retain these rows.
+    sites = discover_sites() if sites is None else sites
+    dependencies = display_dependencies()
+    template_sources = template_asset_sources(sites)
+    assets = _asset_bytes(asset_sources(sites, dependencies, template_sources))
+    bundle = _bundle_id(assets)
+    files = {'index.html': render(sites, bundle=bundle, template_sources=template_sources,
+                                 dependencies=dependencies).encode('utf-8'), '.nojekyll': b''}
+    files.update((f'assets/{bundle}/{name}', data) for name, data in assets.items())
     return files
 
 
@@ -606,8 +627,10 @@ def write_artifact(target):
         raise ValueError('artifact target must be outside living anatomy')
     if target.exists():
         shutil.rmtree(target) if target.is_dir() else target.unlink()
-    for rel, data in artifact_files().items():
+    files = artifact_files()
+    for rel, data in files.items():
         path = target/rel; path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(data)
+    return files
 
 
 def verify_artifact(target):
@@ -620,6 +643,7 @@ def verify_artifact(target):
     for path, data in expected.items():
         if actual[path] != data:
             raise ValueError(f'stale artifact byte content: {path}')
+    return expected
 
 
 def main():
@@ -635,10 +659,11 @@ def main():
         print(f'derived {path.relative_to(ROOT)}'); return
     target = args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
     if args.check:
-        verify_artifact(target); print(f'display membrane exactly matches bundle {asset_bundle_id()}')
+        files = verify_artifact(target)
+        print(f'display membrane exactly matches {len(files)} files')
     else:
-        write_artifact(target); files = artifact_files()
-        print(f'built {target} bundle={asset_bundle_id()} ({sum(map(len,files.values()))} bytes across {len(files)} files)')
+        files = write_artifact(target)
+        print(f'built {target} ({sum(map(len,files.values()))} bytes across {len(files)} files)')
 
 
 if __name__ == '__main__':

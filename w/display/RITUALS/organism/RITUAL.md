@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.51"
+version: "3.52"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -262,6 +262,8 @@ Body-label size is cached from resize observation. Each full title may wrap, rem
 A separately authored mount table is not semantic authority. Central Display runtime must not name Philosophy, Papers, Crawlerbait, or future sites. Adding a lawful new site-holon is a Population mutation, not a central runtime feature edit.
 
 One immutable content-addressed asset bundle carries the shared visual generation; identity-owned static site apertures remain ordinary generated artifact files outside the reserved shared bundle namespace.
+
+One read-only publication operation acquires and validates Population once, then lends that exact site list to registry, HTML, UI, detailed-feed and static-public construction. Admitted foreign dependencies are likewise acquired once; immutable asset bytes are read once for both bundle hashing and emission. This state is explicit call-local work, never a process-global cache or source authority. A new render/build/check, owner derivation, relocation or source change reacquires its own phase; independent semantic evidence and later artifact verification remain separate invocations. CLI reporting consumes the completed result without another publication pass.
 
 ### Materialized-shadow publication continuation
 

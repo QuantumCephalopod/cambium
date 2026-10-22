@@ -15,11 +15,11 @@ RESERVED_FILES = {"index.html", ".nojekyll", "CNAME"}
 RESERVED_PREFIXES = ("assets/",)
 
 
-def site_public_files():
+def site_public_files(sites=None):
     """Return root-relative public files carried beside each holon's declared projection."""
     out = {}
     owners = {}
-    for site in build.discover_sites():
+    for site in (build.discover_sites() if sites is None else sites):
         # Public secretion is body-local and follows the site's projection membrane.
         # A root projection therefore looks beside itself; a differentiated holon may
         # carry projection + public surface together in one local child without Display
@@ -51,8 +51,9 @@ def site_public_files():
 
 
 def artifact_files():
-    files = dict(build.artifact_files())
-    for rel, data in site_public_files().items():
+    sites = build.discover_sites()
+    files = dict(build.artifact_files(sites))
+    for rel, data in site_public_files(sites).items():
         if rel in files:
             raise ValueError(f'public path collision with base Display artifact: {rel}')
         files[rel] = data
@@ -65,10 +66,12 @@ def write_artifact(target: Path):
         raise ValueError("artifact target must be outside living anatomy")
     if target.exists():
         shutil.rmtree(target) if target.is_dir() else target.unlink()
-    for rel, data in artifact_files().items():
+    files = artifact_files()
+    for rel, data in files.items():
         path = target / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
+    return files
 
 
 def verify_artifact(target: Path):
@@ -82,6 +85,7 @@ def verify_artifact(target: Path):
     for rel, data in expected.items():
         if actual[rel] != data:
             raise ValueError(f"stale artifact byte content: {rel}")
+    return expected
 
 
 def main():
@@ -91,12 +95,11 @@ def main():
     args = ap.parse_args()
     target = args.artifact if args.artifact.is_absolute() else ROOT / args.artifact
     if args.check:
-        verify_artifact(target)
-        print(f"display + site public surfaces exactly match {len(artifact_files())} files")
+        files = verify_artifact(target)
+        print(f"display + site public surfaces exactly match {len(files)} files")
     else:
-        write_artifact(target)
-        public = site_public_files()
-        print(f"built {target} with {len(public)} identity-owned static site files")
+        files = write_artifact(target)
+        print(f"built {target} ({sum(map(len, files.values()))} bytes across {len(files)} files)")
 
 
 if __name__ == "__main__":
