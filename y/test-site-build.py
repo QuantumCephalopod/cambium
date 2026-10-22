@@ -176,6 +176,122 @@ def validate(data, body, common):
                 build.derive_site_projection(identity)
         self.assertEqual(digest(self.population), before)
 
+    def publication_fixture(self):
+        """Use the production template and real owner hook with small local assets."""
+        from unittest.mock import patch
+        template = self.saved[1] / 'w' / 'template.html'
+        target = build.DISPLAY / 'w' / 'template.html'
+        target.parent.mkdir(exist_ok=True)
+        target.write_bytes(template.read_bytes())
+        dependencies = patch.object(build, 'display_dependencies', return_value={})
+        dependencies.start(); self.addCleanup(dependencies.stop)
+        for path in build.template_asset_sources().values():
+            if not path.exists():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('/* small publication asset */\n')
+        manifest = json.loads((self.site / 'site.json').read_text())
+        manifest['feed_preview'] = '_feed/preview.json'
+        (self.site / 'site.json').write_text(json.dumps(manifest))
+        (self.site / '_feed').mkdir()
+        (self.site / '_feed/preview.json').write_text(json.dumps({
+            'schema': 'sss.display.feed-preview.v1', 'identity': manifest['id'],
+            'root': {'children': {g: {'noun': g, 'children': {}} for g in build.GENES}}}))
+        spec = importlib.util.spec_from_file_location('public_test', Path(__file__).with_name('site-public.py'))
+        public = importlib.util.module_from_spec(spec); spec.loader.exec_module(public)
+        public.build, public.ROOT = build, self.root
+        return public
+
+    def test_publication_acquires_once_and_emits_the_hashed_asset_bytes(self):
+        from unittest.mock import patch
+        public = self.publication_fixture()
+        projection = self.site / 'projection.json'
+        original_text, original_bytes = Path.read_text, Path.read_bytes
+        text_reads, byte_reads = [], []
+        def text_read(path, *args, **kwargs):
+            text_reads.append(path); return original_text(path, *args, **kwargs)
+        def byte_read(path, *args, **kwargs):
+            byte_reads.append(path); return original_bytes(path, *args, **kwargs)
+        with patch.object(Path, 'read_text', text_read), patch.object(Path, 'read_bytes', byte_read):
+            files = public.artifact_files()
+        self.assertEqual(text_reads.count(projection.resolve()), 1)
+        self.assertEqual(byte_reads.count(projection.resolve()), 1)
+        assets = {p.split('/', 2)[2]: data for p, data in files.items() if p.startswith('assets/')}
+        # Independent reconstruction of the existing public bundle hash contract.
+        h = sha256()
+        for name, data in sorted(assets.items()):
+            h.update(name.encode()); h.update(b'\0'); h.update(data); h.update(b'\0')
+        bundle = h.hexdigest()[:16]
+        self.assertIn(f'membrane bundle {bundle};'.encode(), files['index.html'])
+        self.assertTrue(all(p.startswith(f'assets/{bundle}/') for p in files if p.startswith('assets/')))
+        self.assertEqual(assets['site-test-unfamiliar-feed.json'], projection.read_bytes())
+
+    def test_new_publication_reacquires_derivation_refusals_and_public_bytes(self):
+        public = self.publication_fixture()
+        first = public.artifact_files()
+        (self.site / 'source.json').write_text('{"value": 9}')
+        with self.assertRaisesRegex(ValueError, 'owner-specific drift'):
+            public.artifact_files()
+        build.derive_site_projection('test:unfamiliar')
+        second = public.artifact_files()
+        self.assertNotEqual(first, second)
+        feed = next(data for p, data in second.items() if p.endswith('/site-test-unfamiliar-feed.json'))
+        self.assertEqual(json.loads(feed), {'owned': 9})
+        (self.site / 'projection.json').write_text('{broken JSON')
+        with self.assertRaises(json.JSONDecodeError):
+            public.artifact_files()
+        build.derive_site_projection('test:unfamiliar')
+        owner = self.site / 'owned.py'
+        owner.write_text(owner.read_text().replace('"owner-specific drift"', '"new phase refusal"'))
+        (self.site / 'projection.json').write_text('{"owned": 7}')
+        with self.assertRaisesRegex(ValueError, 'new phase refusal'):
+            public.artifact_files()
+
+    def test_publication_reacquires_relocated_body_and_refuses_static_collisions(self):
+        public = self.publication_fixture()
+        first = public.artifact_files()
+        original = digest(self.site)
+        target = self.population / ('y' + 'wxyz' * 32) / 'changed-carrier'
+        target.parent.mkdir()
+        old_parent = self.site.parent
+        shutil.move(self.site, target); old_parent.rmdir(); self.site = target
+        second = public.artifact_files()
+        self.assertNotEqual(first['index.html'], second['index.html'])
+        self.assertEqual(original, digest(target))
+        static = target / 'public'; static.mkdir(); (static / 'route.txt').write_text('first')
+        self.assertEqual(public.artifact_files()['route.txt'], b'first')
+        (static / 'route.txt').write_text('second')
+        self.assertEqual(public.artifact_files()['route.txt'], b'second')
+        (static / 'index.html').write_text('must refuse')
+        with self.assertRaisesRegex(ValueError, 'reserved'):
+            public.artifact_files()
+        (static / 'index.html').unlink()
+        other = self.overview / 'public'; other.mkdir(); (other / 'route.txt').write_text('collision')
+        with self.assertRaisesRegex(ValueError, 'public path collision'):
+            public.artifact_files()
+        (other / 'route.txt').unlink()
+        (static / 'escape').symlink_to(self.root / 'outside')
+        with self.assertRaisesRegex(ValueError, 'symlink'):
+            public.artifact_files()
+
+    def test_build_and_check_messages_do_not_repeat_publication(self):
+        import sys
+        from unittest.mock import patch
+        public = self.publication_fixture()
+        # Both actual CLI paths: an independent check still reacquires and rejects drift.
+        for module, target in ((build, self.root / 'base'), (public, self.root / 'combined')):
+            with patch.object(module, 'artifact_files', wraps=module.artifact_files) as calls:
+                with patch.object(sys, 'argv', ['build', '--artifact', str(target)]):
+                    module.main()
+                self.assertEqual(calls.call_count, 1)
+                with patch.object(sys, 'argv', ['build', '--artifact', str(target), '--check']):
+                    module.main()
+                self.assertEqual(calls.call_count, 2)
+                (target / 'index.html').write_text('stale')
+                with patch.object(sys, 'argv', ['build', '--artifact', str(target), '--check']):
+                    with self.assertRaisesRegex(ValueError, 'stale artifact byte content'):
+                        module.main()
+                self.assertEqual(calls.call_count, 3)
+
 
 if __name__ == '__main__':
     unittest.main()
