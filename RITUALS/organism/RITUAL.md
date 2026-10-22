@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.15"
+version: "1.16"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -39,6 +39,8 @@ Canonical motion:
 `act -> witness -> durable HOME -> asynchronous _feed refresh -> return/circulation`
 
 HOME closes when source outcome and local `_root` event are durable. `_feed` catch-up is a separate mechanical consequence. GitHub Actions may actuate projection but do not decide semantic validity.
+
+A multi-owner return may refer to shared evidence at its actual owner by immutable HOME event/path/hash plus the bounded claim consumed. Each owner still records its distinct outcome and return; reference integrity does not transfer semantic authority or collapse independent evidence. Existing HOME events are never rewritten to remove repeated context.
 
 ## rank-invariant split and membrane law
 
