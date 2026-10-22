@@ -23,7 +23,7 @@ const displayRoot=path.join(__dirname,'..');
 const rankedCss=[
   'w/root-view.css','w/interlocutors.css','z/site-runtime.css','z/navigation-aperture.css',
   'y/philosophy/style.css','y/yw/crawlerbait/z/style.css','y/yx/schattenseiten/style.css',
-  'y/yy/papers/style.css','y/yy/papers/sierpinski.css','y/yz/datenschutz/style.css','y/yxz/impressum/style.css',
+  'y/yy/papers/sierpinski.css','y/yz/datenschutz/style.css','y/yxz/impressum/style.css',
   'y/yz/datenschutz/public/privacy/index.html','y/yxz/impressum/public/impressum/index.html',
   'y/yw/crawlerbait/y/tide.py'
 ];

@@ -3,10 +3,14 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.22"
+version: "3.23"
 ---
 
 # SITE-HOLON RITUAL — display local
+
+## Current law and provenance
+
+The sections below own current decisions. Re-enter inherited law and the affected current sections; ordinary work does not require reading the historical version sequence. Exact earlier version paragraphs remain in `../../_waste/ritual-history-20261022/site-holon.md`; the [retirement HOME](../../_root/display-current-law-return-20261022T161609Z.json) maps every paragraph to its surviving owner or supersession and names the immutable original revision/path/hash. Consult that source only for the original claim, genealogy or evidence scope. Earlier pending flags do not create current intake or enlarge their original witnesses.
 
 A site-holon is an autonomous interlocutor body encountered through Display Population. It is not a page template and not an address record.
 
@@ -85,10 +89,11 @@ Default locality rule:
 
 Promote tissue into Display only when the capability is genuinely site-agnostic and required to let arbitrary autonomous bodies inhabit the shared geometry. Never move one site's semantic labels, content schema, shader choices or interaction policy into central runtime merely for convenience.
 
-A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens. Identity-bound soft-lock and optional measured readable frames are realized under the organism/navigation receptors; shared navigation continuity is earned below, while site-owned approach, transport and topology accommodation remain current intake rather than an implemented promise.
-
+A site may offer the **same global droplette** an identity-bound local relation: which present organism part can be contacted, what that contact is *for*, what source-owned material can be exposed, and how the instrument's bodily affordance should answer. Display supplies neutral contact/physics/optics without selecting a site's meaning from its address or forcing a common icon, mode, overlay, rectangle or readability template. The same rule can recur inside any locally rooted child without a different instrument identity. Site refusal/absence preserves free lens. Identity-bound soft-lock and optional measured readable frames are realized under the organism/navigation receptors; shared navigation continuity is owned by the current organism/navigation receptors, while site-owned approach, transport and topology accommodation remain current intake rather than an implemented promise.
 
 Same body does not mean same skin. Two site-holons may use radically different shader, density, typography, point grammar, motion and local traversal while remaining geometrically isomorphic because their tetrahedral mesh, projection and shared orientation are Display invariants.
+
+Current optional `shader.focus`, `shader.view`, revisioned `shader.snapshot`, `afterDraw`, `preload` and `preview` calls are owned by the organism receptor's **Shared body / local phenomenology** section. Sites retain their meaning, source clock and readiness; shared pointer/Descent and backend limits remain Display-owned. The same receptor's **Continuous liquid contact**, **One capillary phase** and **Readable liquid interior** sections own current offer lifetime, finer axes and exact reading protection. Missing projection is not owner withdrawal; these couplings do not implement a site's still-open approach, genealogy or Being handover.
 
 Every site-holon owns one canonical recursive UI-field state for the screen-space presentation tissue it actually carries. Display lends the address algebra and projects site-owned field **orientation** into the local presentation plane; its canonical cells are reference coordinates, not exclusive regions or compulsory content dimensions. Field size, internal flow, clipping choices and interaction are identity-owned. Multiple fields may overlap and order themselves by an identity-owned integer `z`, without escaping the globally higher shared liquid presentation layer. Existing neutral `portrait` variants remain alternate orientation references for the same fields, selected only from carrier shape. The site can supply one field or many without borrowing a universal template.
 
@@ -193,6 +198,8 @@ A containing host may offer its own `shader.bodyPlaceholder` material so that a 
 
 A site-local shader may change color, transparency, grain, blur, density or other material qualities without changing the shared tetrahedral topology. Local interaction may manipulate or populate that same body without replacing global orientation or global site navigation.
 
+An ordinary `shader.body: {fragment, state}` material follows the organism receptor's **Site-owned coarse bodies and context resources** contract. Native contact ink, actual-owner representation witnesses and the covered camera/closure transaction inherit that receptor and navigation law; none transfers source meaning or readiness to Display.
+
 ## Activity
 
 Activity targets stable interlocutor identity, never global placement. Remounting must not break the receptor. If several separately addressed identities quotient-coalesce at one locus, locus-level activity is ambiguous and must target an identity explicitly.
@@ -216,58 +223,3 @@ A site-holon change is accepted when:
 ## Compression
 
 **A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal tissue determines identity, projection, phenomenology, local interaction and any earned static public aperture. Display contributes one shared tetrahedral geometry/orientation law and specimen-agnostic publication hooks; each holon contributes its own skin and behavior. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
-
-
-## Living provenance
-
-Versioned pending flags below describe their original witness boundary. Later completion and Display's current bounded acceptance law supersede them; they do not create a second live nutrient or a physical-device approval requirement.
-
-Version 2.3 global occupied-region correction (2026-09-18): a cooked cross-site collision pressure earned one specimen-agnostic Display safe-area contract. Global membrane surfaces expose their actual occupied rectangles plus derived conservative insets to every site render and as CSS variables; site-local presentation remains identity-owned, central Display does not branch on specimen identity, and concrete pixels remain implementation rather than ontology.
-
-Version 2.8 body-label correction (2026-09-26): floating bodies drift within their container and carry a selectable label.
-
-Version 2.7 content-rank correction (2026-09-26): floating bodies sit two ranks below their realized container.
-
-Version 2.6 floating-bodies correction (2026-09-26): site-holons are seen from their host as floating full-resolution bodies of one organism size and are entered by selection.
-
-Version 2.5 descent correction (2026-09-26): site-holons now share Display Descent, ascent crosses the site membrane back through the walked path, and a site's field shows its host seen from inside its locus with a local `environment: false` refusal.
-
-Version 2.4 global background-drag correction (2026-09-18): background tetrahedral drag became a default-true Display/site-holon invariant independent of background inspection. New site-holons inherit shared drag/orientation without local enabling code; an explicit local `background_drag: false` opts out only that site while global navigator orientation and local semantic interaction remain intact. Custom renderers receive the same effective toggle through the generic render contract.
-
-Version 2.9 site-layer correction (2026-09-29): a site-holon whose phenomenology needs more than shaded faces may carry `shader.afterDraw` and draw its own layer in its field's Descent frame (same camera, orientation and container) beneath Display's point layer. The layer owns no pointer: Descent, drag, pools and point selection remain the shared field's.
-
-Version 3.0 rest-view correction (2026-09-30): a site-holon may carry `shader.view = {rest, projection}` (see organism RITUAL 3.9). The site decides what its rest view means; Display only lends the quaternion, the parallel projection and the placement. A site whose meaning is a flat picture seen along an axis (Schattenseiten) uses it so; every other site is unchanged.
-
-Version 3.1 body-material correction (2026-09-30): a site whose field shader draws nothing gives its floating body a material through `shader.body` (see organism RITUAL 3.10); the material is the site's own.
-
-
-Version 3.2 canonical-ui-field correction (2026-10-04): site-holons may consume Display's address-native recursive UI carrier without surrendering local phenomenology. Global raw-address notation is stated canonically as `w,x,y,z`; no CCCC semantic remapping or site-template ontology is introduced.
-
-Version 3.3 canonical screen-measurement correction (2026-10-05): the optional capability became the common screen-space measurement membrane. `site.json` v2 names one identity-owned `ui_grid`; fields are local/content-agnostic spans projected by Display inside the current safe carrier. All six current bodies carry the invariant, while world/body geometry, semantic addresses, site meaning and local skins remain independent.
-
-
-Version 3.4 carrier-shape correction (2026-10-06): the stable site-owned field name is now distinguished from the span it occupies on a particular neutral carrier shape. A field may carry a bounded `portrait` alternate span using the same canonical `w,x,y,z` realized leaves; Display selects it only when the current safe carrier is taller than wide. This is not a device breakpoint or second template. Rich Crawlerbait, Schattenseiten and Papers screen tissue earned top/middle/bottom portrait bands after exact generated-artifact browser witness showed their broad-carrier side rails were uninhabitable on a tall carrier. CSS may still alter internal local content but may not re-cap the canonical field extent.
-
-Version 3.5 orientation/extent/z distinction (staged 2026-10-09; browser witness pending): a field address names orientation only; independently sized field bodies may overlap, with deterministic local z. The navigator and other liquid Display surfaces are not capacity exclusions for all fields. Current source and native witnesses alone do not close visual acceptance.
-
-Version 3.6 recursive representation handoff (staged 2026-10-10): site-owned preview and local media tiers now share the same generic readiness/retirement law through Display Continuity. This is not a new site identity or public disclosure scope; GPU/browser performance acceptance remains open.
-
-Version 3.7 situated-instrument sovereignty (2026-10-12): a body may lend its own function/contact/readability constraints to the globally invariant droplette. Four currently named site-space functions do not form a universal site `mode` enum or overwrite local recursion.
-
-Version3.11 truthful coarse-body coupling (2026-10-17): the optional body cells/draw/release contract lends the site's actual coarse representation into Display's normalized host frame. Bounded public preview input remains source-owned, and actual source geometry survives Canvas2D fallback. Display retains host placement/selection/Descent/orientation and retires context resources on remount; no detailed-feed acquisition, specimen branch or duplicate ontology is earned by an own draw.
-
-Version3.12 current-law reconciliation (2026-10-19): soft-lock/readable frames and actual custom coarse bodies replace obsolete unimplemented wording. New UX targets remain in owner-local intake; no new renderer, gesture or semantic anatomy is claimed here.
-
-Version3.13 readable-frame ownership (2026-10-19): site-offered field/body rectangles retain their exact reading geometry. Display adds its common optical perimeter outside that geometry and preserves the source pixels within it, including overlap. Owners keep actual wording, font/layout, clipping shape and complete continuation; no new site mode or duplicated text layer is introduced. The common implementation and bounded evidence are owned by Display's organism receptor.
-
-Version3.14 offer lifetime (2026-10-19): `offer` retains a stable contact identity through temporary missing projection and same-frame renderer renewal; `withdraw` on actual departure/unmount ends it. Owners keep target meaning and must withdraw genuinely ended relations. Display dampens pending motion and resumes from current measured geometry without a timeout, then carries true release continuously into eligible liquid or free glass. This common capability does not implement a child's body approach, genealogy or Being handover.
-
-Version3.15 capillary geometry (2026-10-20): Display lends the same drop's orientation and principal half axes alongside the legacy inscribed radius. Free glass can deform with conserved projected area under strain; settled locked frames retain their owner-offered reading geometry. Compatible reservoirs coalesce through one common exterior. Source-owned presentation/meaning remains local, and no richer body approach, camera semantics or new site mode is earned here.
-
-Version3.16 liquid-gated host representation (2026-10-20): the optional host-owned placeholder lends presentation policy without taking child content or readiness authority. The existing preview input and shared liquid exterior carry the coarse reveal; no detailed acquisition, site mode or separate lens is earned.
-
-Version3.17 truthful reveal readiness (2026-10-20): a finer interior is an actual owner offer, not an assumption about every shader. The same-frame alternate world precedes plain covers; refusal/error and per-part fallback keep presence truthful while ready transparent tissue remains transparent. Actual specimen execution is required in addition to procedural mask inputs.
-
-Version3.18 shared contact transport (2026-10-20): body-name hover/focus uses native foreground ink above its own contact surface, while quiet optical ink remains derived. An accepted membrane intent lends the body camera to the shared closing phase; acquisition may hold closure and explicit unheld world-drop departure does not alter local reading/content authority. Site meanings, media and renderer refusal remain source-owned.
-
-Version3.21 shared fold capability (2026-10-21): source-owned bodies may consume one immutable, generation-scoped four-child carrier while keeping identity, source schema, replay and refinement meaning. The first production adapter loses its duplicate structural implementation. An unrelated owner and both real field transports witness the same relation; lazy source transport is not claimed.

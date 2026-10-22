@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.7"
+version: "3.8"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -29,6 +29,8 @@ Papers is globally mounted at site-space `y` while remaining locally rooted at:
 Its global mount is environment. Its public body, shader, local traversal and research projection belong to `organism:papers` identity and must survive lawful remounting unchanged.
 
 Current public carrier members are site-local projection, admitted inquiry tissue, renderer, style, shader/interaction behavior and this ritual. Generic navigation/orientation machinery remains Display-owned.
+
+`site.json` selects `sierpinski.js` and `sierpinski.css`; the five admitted `inquiry/*.json` bodies own their present public research wording and genealogy. The unselected earlier `render.js` / `style.css` pair is retired source at `_waste/legacy-renderer-20261022/`, retained byte-exact for historical reconstruction, including its typographic apostrophe. It is neither another live renderer nor research authority. Historical references retain their original scope; the [retirement HOME](../../_root/papers-legacy-renderer-return-20261022T161609Z.json) names the exact preimage, surviving owners and revocation conditions.
 
 ## Source of public truth
 
