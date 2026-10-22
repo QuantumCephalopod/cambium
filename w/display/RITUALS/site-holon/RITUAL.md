@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.21"
+version: "3.22"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -54,7 +54,7 @@ The v2 manifest may carry an optional `build` object with required `module` and 
 
 The module exposes `validate(data, body, common)` and may expose `derive(body, common)`. It owns source semantics and may refuse by raising. `body` is the discovered local root, independent of carrier name or Population address. The read-only `common` mapping lends only inherited `genes`, `apertures`, `load_yaml`, `validate_index` and `validate_cambium`; it contains no host root, source identity registry or specimen schema. Owner code reads its own members and must not import a fixed enclosing repository location. Modules are reacquired from source without writing bytecode into the body.
 
-If declared, the separate witness member exposes `witness(body, common, operations)`, with a read-only mapping of the owner's available `validate`/`derive` functions. `y/check.py` invokes these positive/refusal witnesses generically. Their source-specific counterexamples remain in the body. An owner predicate alone does not replace independent evidence.
+If declared, the separate witness member exposes `witness(body, common, operations)`, with a read-only mapping of the owner's available `validate`/`derive` functions. `y/check.py` invokes these positive/refusal witnesses generically. Their source-specific counterexamples remain in the body. An owner predicate alone does not replace independent evidence. The witness may additionally run owner-local full-source continuity checks and existing independent local suites. These need not be repeated by each ordinary projection discovery. Any evidence that consumes the enclosing artifact or an external shared capability retains its actual integration owner; the common hook does not pretend that dependency became local.
 
 Normal discovery/publication only validates. Explicit `python3 y/build.py --derive-site-projection IDENTITY` locates the current body by stable identity, derives and validates its candidate, then writes only the declared projection. This can repair a missing, malformed or stale projection; a refused candidate preserves old bytes. An owner without `derive` cannot be regenerated through this hook. The legacy `--derive-root-projection` selects whichever owner currently occupies overview, without naming a source body. Neither operation changes mount identity or invents content.
 

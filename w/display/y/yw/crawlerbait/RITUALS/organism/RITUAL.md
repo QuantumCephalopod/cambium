@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.8"
+version: "5.9"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -195,6 +195,14 @@ The actual field entry and `shader.snapshot` supply only the current container's
 This closes the local full-geography rebuild in replay, not the whole initial acquisition pressure. The immutable public projection is still acquired in full. Growth/history indexing, the in-memory realized fold and Being/session/walk preparation still scale with the current generation; Being geometry updates remain their own consumer. Persisted lazy source/fold transport and local Being-history resolution remain OPEN under efficient-initial-projection. Neither a small visible frontier nor native preparation timings prove bounded transfer, total memory, browser/GPU frame time or an infinite finite carrier. Source/privacy/Tide/publication anatomy remains unchanged.
 
 The enclosing witness invokes `node <body>/z/render.test.cjs <Display>/x/recursive-fold.js`, lending the capability explicitly so relocation needs no owner-internal host path. `z/render.test.cjs` witnesses exact real source at replay/rewind times, every small fixture birth (including simultaneous collisions), shared siblings, no flat-population query, fresh generation acquisition and unchanged-clock snapshot reuse. Exponentially increasing populations must leave overview visits constant; descent adds only its resolved spine. Source-exact fine placement and actual shared field transports are separate evidence. This earns only Cambium's work-locality distinction and Display's specimen-neutral folded-point coupling; Crawlerbait summaries and replay grammar remain here.
+
+## Owner-local validation
+
+`site.json` declares `z/validate.py` and the independent `y/validate.test.py` through Display's existing common build/witness contract. Ordinary discovery accepts the existing public source/population carrier without regenerating it or running every source-history suite. No generic derive operation is declared; Tide/replay retain their own source regeneration.
+
+The explicit owner witness runs `validate_body(body, common)`: Crawlerbait anatomy, recognition/query/phenotype/path policy, checkpoint/cursor/capture continuity, retained-source retirement and addressed Bait carriers are checked inside the owning body. These predicates consume only the current body and inherited structural helpers; the host does not independently maintain Crawlerbait's schema. The independent witness challenges projection and source refusals on a small valid generation, then runs the existing capture, Tide, writer-cycle/address and replay suites. All inputs are local public evidence or substituted provider fixtures; production source bytes and capture cadence are unchanged.
+
+Two legacy exact-offer tests still consume the enclosing generated public artifact, and the renderer witness consumes Display's shared recursive-fold capability. Those remain explicit host integration witnesses. Keeping them there does not give the host ownership of current capture or privacy semantics. The real body must retain ordinary validation and its independent owner witness after relocation and carrier renaming without internal edits.
 
 ## address-space invariants
 

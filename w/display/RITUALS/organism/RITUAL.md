@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.52"
+version: "3.53"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -52,7 +52,7 @@ A site-holon is one movable body. Its `site.json` declares stable identity, loca
 
 Address is environment, not identity. Moving the whole body to another lawful Population address must remount it without editing its internal bytes.
 
-This includes build-time meaning: the optional body-relative build hook lets a site own derivation, semantic validation and independent counterexamples. Display/Cambium retain common manifest, path, structural and public-transport checks; they do not choose a schema by interlocutor identity. The site-holon receptor defines the common call contract. Build members remain source-only; ordinary discovery validates without regenerating a body.
+This includes build-time meaning: the optional body-relative build hook lets a site own derivation, semantic validation and independent counterexamples. Display/Cambium retain common manifest, path, structural and public-transport checks; they do not choose a schema by interlocutor identity. The site-holon receptor defines the common call contract. Build members remain source-only; ordinary discovery validates without regenerating a body. Source-history continuity and independent local suites run through the explicit declared owner witness, separately from ordinary projection acceptance. Enclosing-artifact and shared-capability integration evidence remains at that boundary rather than being silently dropped or called body-local.
 
 Current bodies (the tree is the authority; this list only orients re-entry):
 

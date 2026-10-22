@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.14"
+version: "1.15"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -114,7 +114,7 @@ Population discovery reads only admitted mount positions: direct overview bodies
 
 A source body owns the derivation and semantic acceptance of its own public projection. An enclosing host owns shared structural invariants, admitted member paths and publication/transport boundaries. The host invokes an owner-declared operation without an identity-to-schema registry or a fixed source-body location. This distinction survives rank substitution; concrete source schemas stay with their owners.
 
-Ordinary validation is read-only. Regeneration is an explicit owner operation whose result must satisfy its owner before replacing the declared projection. Independent owner evidence travels with that body and is invoked through the common witness path. Source-only build members do not become public assets merely because a manifest declares them.
+Ordinary validation is read-only. Regeneration is an explicit owner operation whose result must satisfy its owner before replacing the declared projection. Independent owner evidence travels with that body and is invoked through the common witness path. The declared witness may also own full-source continuity checks and existing local suites; ordinary projection discovery does not repeatedly execute those suites. A check that actually consumes an enclosing artifact or shared capability retains that separate integration boundary. Source-only build members do not become public assets merely because a manifest declares them.
 
 Cambium's current carrier is the optional body-relative `site.json` build hook documented by Display's site-holon receptor. The host lends inherited structural predicates; local sources remain local. Whole-body relocation must preserve both semantic acceptance and internal bytes without a host edit.
 
