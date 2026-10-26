@@ -117,7 +117,7 @@ function createBaitFold(G,carrier=globalThis.SSSRecursiveFold){
       return {noun:count?`${count} within ${path}`:'open',fold:true,count};
     }});visited=v.visited;
     const points=v.terminals.map(({path,count,value})=>{
-      if(value){const route={...value,address:path};return Object.freeze({id:`bait:${route.path}`,gene:path[0],path,kind:'bait',label:route.path,
+      if(value){const route={...value,address:path};return Object.freeze({id:`bait:${route.path}`,gene:path[0],path,kind:'bait',anchor:'locus',label:route.path,
         meta:`${path} · ${route.raw_requests??route.observed_404??0} requests · ${route.crawlers?.length??route.signatures?.length??0} beings`,address:path,route})}
       return Object.freeze({id:'fold:'+path,gene:path[0],path,kind:'holon',fold:true,label:`${count} within ${path}`,
         meta:`${count} Baits · click to enter`,count});
@@ -192,7 +192,7 @@ function rot(axis,ang,v){const c=Math.cos(ang),s=Math.sin(ang),[x,y,z]=axis,d=x*
   return [v[0]*c+(y*v[2]-z*v[1])*s+x*d*(1-c),v[1]*c+(z*v[0]-x*v[2])*s+y*d*(1-c),v[2]*c+(x*v[1]-y*v[0])*s+z*d*(1-c)]}
 const MAXS=90000;
 const SIM={life:null,simT:0,paceLog:3.2,paceCur:3.2,playing:true,alive:new Set(),drops:[],cursor:0,lastMs:0,container:'',
-  sPos:new Float32Array(MAXS*7),ns:0,counts:{w:0,x:0,z:0,y:0},sizeK:1,perf:{upd:0,splats:0},resolved:0,colonies:0};
+  sPos:new Float32Array(MAXS*7),ns:0,counts:{w:0,x:0,z:0,y:0},perf:{upd:0,splats:0},resolved:0,colonies:0};
 /* a splat adds w·(1−r²)³·coh·e^{iφ} to the complex field and w to its density; coh < 1 lets one splat carry a crowd whose phases partly cancel */
 function splat(x,y,z,r,w,ph,coh=1){if(SIM.ns>=MAXS||w<=.001)return;const o=SIM.ns++*7,a=SIM.sPos;a[o]=x;a[o+1]=y;a[o+2]=z;a[o+3]=r*2.2;a[o+4]=w;a[o+5]=ph;a[o+6]=coh}
 function posAt(S,dist,o){const c=S.cum;while(o.seg<c.length-2&&c[o.seg+1]<dist)o.seg++;while(o.seg>0&&c[o.seg]>dist)o.seg--;
@@ -203,9 +203,22 @@ function spawn(S){const o={S,seg:0,hot:0,trail:[],off:[0,0,0],head:[0,0,0],done:
   const j=allowed(S,SIM.simT,o);o.dist=S.wd[j];o.reached=j;const r=posAt(S,o.dist,o);o.base=r.p;o.p=r.p.slice();S.o=o;SIM.alive.add(o)}
 function despawn(o){o.S.o=null;SIM.alive.delete(o)}
 function resetTo(t){for(const o of [...SIM.alive])despawn(o);SIM.drops.length=0;SIM.simT=t;SIM.cursor=0}
-function bodySize(o){return .02*(1+Math.log10(Math.max(1,o.facts.events))*.3)}
+/* The existing Display content relation: each cell halves per digit, its content
+ * lives two ranks inside it. A Being is content of the Bait it contacts. During
+ * an earned walk, interpolate the two actual cell spans logarithmically, just as
+ * Display interpolates its camera scale. Adding a shared prefix halves every
+ * world length while doubling focus, without a second camera/body-size law. */
+const CONTENT_RANKS=2;
+function beingFrame(o){
+  const S=o.S,i=o.reached,a=S.wps[i].a,b=S.wps[Math.min(i+1,S.wps.length-1)].a;
+  const length=(S.wd[i+1]??S.wd[i])-S.wd[i];
+  const u=length>0?Math.max(0,Math.min(1,(o.dist-S.wd[i])/length)):0;
+  const span=Math.pow(2,-(a.length+(b.length-a.length)*u));
+  return {container:a.slice(0,-1),unit:span/Math.pow(2,CONTENT_RANKS),scale:1.02/(2*span)};
+}
+function bodySize(o){return beingFrame(o).unit*(1+Math.log10(Math.max(1,o.facts.events))*.3)}
 function body(o,now,pxOf){
-  const S=o.S,g=S.g,k=o.facts.k,sz=bodySize(o)*SIM.sizeK,f=o.fade*o.fine,t=now*.001,P=o.p;
+  const S=o.S,g=S.g,k=o.facts.k,sz=o.radius,f=o.fade*o.fine,t=now*.001,P=o.p;
   if(pxOf(P,sz)<4){const ph=KIND[k].phase;splat(P[0],P[1],P[2],sz*.62,f,ph);const tr=o.trail;for(let i=tr.length-1;i>=0;i-=3){const a=i/tr.length;splat(tr[i][0],tr[i][1],tr[i][2],sz*(.2+.22*a),.9*a*a*f,ph)}return}
   const ph0=KIND[k].phase+(g[4]/255-.5)*.5;
   const axis=S.axis||(S.axis=(()=>{const v=[g[10]/255-.5,g[11]/255-.5,g[12]/255-.5];const m=Math.hypot(...v)||1;return v.map(x=>x/m)})());
@@ -267,7 +280,7 @@ function droplet(o,now){
 }
 /* Display: content sits two ranks below its container. Baits are the field's content (container + 2);
  * beings are the content of baits, so they resolve two ranks further down. */
-const BEING_RANKS=4;
+const BEING_RANKS=CONTENT_RANKS*2;
 const grid=new Map(),cellKey=(x,y,z)=>((x*73856093)^(y*19349663)^(z*83492791))|0;
 function step(dt,now,pxOf){
   const L=SIM.life;if(!L)return;
@@ -278,7 +291,7 @@ function step(dt,now,pxOf){
   // spawn by time: sessions are sorted by start, so only a window needs scanning
   while(SIM.cursor<ss.length&&ss[SIM.cursor].t0-LEAD<=T){const S=ss[SIM.cursor++];if(T<=S.tEnd&&!S.o)spawn(S)}
   for(const o of SIM.alive)if(T>o.S.tEnd||T<o.S.t0-LEAD)despawn(o);
-  const K=SIM.sizeK,C=SIM.container,H=C.length+BEING_RANKS,crowd=new Map();
+  const C=SIM.container,H=C.length+BEING_RANKS,crowd=new Map();
   for(const o of SIM.alive){const S=o.S;o.facts=prefixFacts(S.b.history,L.t0+T*1000);syncWalk(o,L.t0+T*1000);const lim=S.wd[allowed(S,T,o)];
     let r=posAt(S,o.dist,o);const hw=Math.min(3,.7+1.3*Math.sqrt(r.seg/.08));
     // never before a recorded time; at slow pace the body still crawls at its own real speed
@@ -289,7 +302,7 @@ function step(dt,now,pxOf){
     o.hot*=Math.exp(-dt*1.2);
     if(o.done==null&&o.dist>=S.L-1e-9&&T>=S.tLast)o.done=T;
     const inF=Math.min(1,(T-(S.t0-LEAD))/LEAD),outF=o.done==null?1:1-Math.max(0,T-o.done-LINGER)/DISS;o.fade=Math.max(0,Math.min(inF,outF));
-    o.pri=S.v*(S.L-o.dist+S.size);for(let k=0;k<3;k++)o.p[k]=o.base[k]+o.off[k];
+    o.radius=bodySize(o);o.pri=S.v*(S.L-o.dist+S.size);for(let k=0;k<3;k++)o.p[k]=o.base[k]+o.off[k];
     /* COARSE RESOLUTION — Display's pool law, applied to beings: a being is its own body only while the bait it
      * last touched lies within the viewed resolution (container + 2 ranks); deeper, it belongs to the colony of
      * that rank's cell; outside the container it is not drawn. Coalesced beings keep walking but pay no body. */
@@ -320,20 +333,21 @@ function step(dt,now,pxOf){
     o.transit=o.cu<Lc-1e-9;o.wasFine=false;
   }
   // right of way, felt through actual bodies: further to go and faster passes; the other gives way sideways and slows
-  const cs=.08*K;grid.clear();
+  let maxRadius=0;for(const o of SIM.alive)if(o.cell==='')maxRadius=Math.max(maxRadius,o.radius);
+  const cs=maxRadius*3.2||1;grid.clear();
   for(const o of SIM.alive){if(o.cell!=='')continue;const key=cellKey(Math.floor(o.p[0]/cs),Math.floor(o.p[1]/cs),Math.floor(o.p[2]/cs));let l=grid.get(key);if(!l)grid.set(key,l=[]);l.push(o)}
-  for(const o of SIM.alive){if(o.cell!==''){o.slow=1;continue}const push=[0,0,0];let slow=1;const b=o.p,R0=o.S.size*K*1.6;
+  for(const o of SIM.alive){if(o.cell!==''){o.slow=1;continue}const push=[0,0,0];let slow=1;const b=o.p,R0=o.radius*1.6;
     const gx=Math.floor(b[0]/cs),gy=Math.floor(b[1]/cs),gz=Math.floor(b[2]/cs);
     for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){const l=grid.get(cellKey(gx+x,gy+y,gz+z));if(!l)continue;
-      for(const q of l){if(q===o)continue;const R=R0+q.S.size*K*1.6,d0=b[0]-q.p[0],d1=b[1]-q.p[1],d2=b[2]-q.p[2];let dl=Math.sqrt(d0*d0+d1*d1+d2*d2);if(dl>=R)continue;let d=[d0,d1,d2];
+      for(const q of l){if(q===o)continue;const R=R0+q.radius*1.6,d0=b[0]-q.p[0],d1=b[1]-q.p[1],d2=b[2]-q.p[2];let dl=Math.sqrt(d0*d0+d1*d1+d2*d2);if(dl>=R)continue;let d=[d0,d1,d2];
         if(dl<1e-6){const g=o.S.g;d=[g[20]/255-.5,g[21]/255-.5,g[22]/255-.5];dl=1e-6}
         const dm=Math.sqrt(d[0]*d[0]+d[1]*d[1]+d[2]*d[2])||1,s=(1-dl/R)*R,yields=(o.pri<q.pri||(o.pri===q.pri&&o.S.b.id<q.S.b.id)),share=yields?.85:.15;
         push[0]+=d[0]/dm*s*share;push[1]+=d[1]/dm*s*share;push[2]+=d[2]/dm*s*share;if(yields)slow=Math.min(slow,.3+.7*dl/R)}}
-    o.slow=slow;const cap=o.S.size*K*3;
+    o.slow=slow;const cap=o.radius*3;
     for(let k=0;k<3;k++){o.off[k]+=push[k]*Math.min(1,dt*6);o.off[k]*=Math.exp(-dt*.6)}
     const om=Math.sqrt(o.off[0]*o.off[0]+o.off[1]*o.off[1]+o.off[2]*o.off[2]);if(om>cap)for(let k=0;k<3;k++)o.off[k]*=cap/om;
     for(let k=0;k<3;k++)o.p[k]=o.base[k]+o.off[k];
-    const tl=o.trail[o.trail.length-1];if(!tl||Math.hypot(o.p[0]-tl[0],o.p[1]-tl[1],o.p[2]-tl[2])>o.S.size*K*.18){o.trail.push(o.p.slice());if(o.trail.length>34)o.trail.shift()}}
+    const tl=o.trail[o.trail.length-1];if(!tl||Math.hypot(o.p[0]-tl[0],o.p[1]-tl[1],o.p[2]-tl[2])>o.radius*.18){o.trail.push(o.p.slice());if(o.trail.length>34)o.trail.shift()}}
   // Resolution blends complementary shares; changing container does not cut a body away.
   for(const o of SIM.alive){const target=o.cell===''?1:0;o.fine+=(target-o.fine)*(1-Math.exp(-dt*7));if(Math.abs(target-o.fine)<.001)o.fine=target}
   // print every body into the field
@@ -347,7 +361,7 @@ function step(dt,now,pxOf){
   for(const [key,c] of cols)colony(key,c,now);
   SIM.resolved=resolved;SIM.colonies=cols.size;
   for(let i=SIM.drops.length-1;i>=0;i--){const d=SIM.drops[i],age=(now-d.t)/1400;if(age>1||!d.a.startsWith(C)){SIM.drops.splice(i,1);continue}
-    splat(d.p[0],d.p[1],d.p[2],.013*K*(1.2-age*.5),d.w*Math.min(1,age*6)*(1-age*age),d.ph)}
+    splat(d.p[0],d.p[1],d.p[2],Math.pow(2,-(d.a.length+CONTENT_RANKS))*(1.2-age*.5),d.w*Math.min(1,age*6)*(1-age*age),d.ph)}
   SIM.counts=counts;
 }
 
@@ -429,9 +443,8 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection,growth);resetTo(0)}
   if(!SIM.life)return;
   const dt=SIM.lastMs?Math.min(.05,(ms-SIM.lastMs)/1000):0;SIM.lastMs=ms;
-  // a body keeps its world size near the whole reef and shrinks gently as Descent zooms, so it never swallows a deep container
-  SIM.sizeK=Math.pow(Math.max(1,frame?.scale||1),-.75);SIM.container=typeof container==='string'?container:'';
-  if(CAM.on&&CAM.o&&SIM.alive.has(CAM.o)){const a=CAM.o.S.wps[CAM.o.reached].a;SIM.container=a.slice(0,Math.min(a.length,FOLLOW_RANK-1))}
+  SIM.container=typeof container==='string'?container:'';
+  if(CAM.on&&CAM.o&&SIM.alive.has(CAM.o))SIM.container=beingFrame(CAM.o).container;
   const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5],pxBase=ms3*f*height/2;
   const pxOf=(P,r)=>{const z=model[2]*P[0]+model[6]*P[1]+model[10]*P[2]+model[14];return r*pxBase/Math.max(.05,3.2-z)};
   const u0=performance.now();step(dt,ms,pxOf);SIM.perf.upd+=((performance.now()-u0)-SIM.perf.upd)*.05;SIM.perf.splats=SIM.ns;
@@ -544,7 +557,7 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
 function drawFallback(ctx,screen){
   if(!ctx)return;ctx.save();const colonies=new Map();
   for(const o of SIM.alive){if(o.cell===null||o.fade<=0)continue;const p=screen(o.cell&&o.cp?o.cp:o.p);if(!p.front)continue;ctx.fillStyle=KIND[o.facts.k].ink;ctx.globalAlpha=o.fade*.7;
-    if(o.cell){if(colonies.has(o.cell))continue;colonies.set(o.cell,true);ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill()}else{const r=Math.max(2,Math.min(11,2+Math.log2(1+o.facts.events)));ctx.beginPath();for(let i=0;i<4;i++){const a=i*Math.PI/2+INK.ms*.0003;const x=p.x+Math.cos(a)*r,y=p.y+Math.sin(a)*r;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.fill()}}
+    if(o.cell){if(colonies.has(o.cell))continue;colonies.set(o.cell,true);ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill()}else{const r=Math.max(...[0,1,2].map(i=>{const q=screen(o.p.map((v,j)=>v+(j===i?o.radius:0)));return Math.hypot(q.x-p.x,q.y-p.y)}));if(!Number.isFinite(r))continue;ctx.beginPath();for(let i=0;i<4;i++){const a=i*Math.PI/2+INK.ms*.0003;const x=p.x+Math.cos(a)*r,y=p.y+Math.sin(a)*r;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.fill()}}
   ctx.restore();
 }
 
@@ -568,7 +581,7 @@ function temporalField({container=''}={}){
   const t=SIM.life.t0+SIM.simT*1000,i=growth.index(t);
   if(CAM.on&&CAM.o&&SIM.alive.has(CAM.o)){
     const a=growth.address(CAM.o.S.wps[CAM.o.reached].path,t);
-    if(a)container=a.slice(0,Math.min(a.length,FOLLOW_RANK-1));
+    if(a)container=a.slice(0,-1);
   }
   if(fieldRevision!==i||fieldCache?.container!==container){fieldRevision=i;baitFold.seek(t);
     fieldCache={...baitFold.view(container),revision:Object.freeze({index:i,container})};
@@ -589,11 +602,10 @@ const HUD={legend:null,clock:null,pace:null,paceLabel:null,alive:null,story:null
 /* CRAWLERCAM — follows one being with Display's continuous focus: the camera eases after the body (a spring, never
  * Descent steps), a little ahead along its heading; the walk, pools and selection remain Display's. */
 const CAM={on:false,o:null,target:null,moved:0};
-const FOLLOW_RANK=4,FOLLOW_SCALE=1.02*Math.pow(2,FOLLOW_RANK);
 function camFocus(){
   const o=CAM.on?CAM.o:null;if(!o||!SIM.alive.has(o))return null;
-  const P=o.cell===''||!o.cp?o.p:o.cp,lead=.004;
-  return {center:[P[0]+o.head[0]*lead,P[1]+o.head[1]*lead,P[2]+o.head[2]*lead],scale:FOLLOW_SCALE,stiffness:3.4};
+  const P=o.cell===''||!o.cp?o.p:o.cp,lead=bodySize(o),frame=beingFrame(o);
+  return {center:[P[0]+o.head[0]*lead,P[1]+o.head[1]*lead,P[2]+o.head[2]*lead],scale:frame.scale,stiffness:3.4};
 }
 /* who is worth riding with: beings whose next recorded encounter comes soonest; a being that has nothing left, or
  * nothing within a dozen real seconds at the current pace, has gone quiet and hands the cam to the next */
@@ -785,9 +797,9 @@ function unmount({host,content}={}){
 }
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,
   // pure witnesses for tests: the walk law, the life built from a projection, and the frame cost of living it
-  _law:Object.freeze({pointOf,route,buildLife,buildGrowth,createBaitFold,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,KIND,
+  _law:Object.freeze({pointOf,route,buildLife,buildGrowth,createBaitFold,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,beingFrame,bodySize,KIND,
     simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container='',changeAt=null,nextContainer=''}){
-      SIM.life=buildLife(projection);resetTo(at*SIM.life.seconds);SIM.paceLog=SIM.paceCur=pace;SIM.playing=true;SIM.container=container;SIM.sizeK=Math.pow(1.02*Math.pow(2,container.length),-.75);
+      SIM.life=buildLife(projection);resetTo(at*SIM.life.seconds);SIM.paceLog=SIM.paceCur=pace;SIM.playing=true;SIM.container=container;
       const pxOf=(P,r)=>r*900;let worst=0,sum=0;
       for(let i=0;i<frames;i++){if(i===changeAt)SIM.container=nextContainer;const a=performance.now();step(dt,i*dt*1000,pxOf);const d=performance.now()-a;if(i>=frames/4){sum+=d;worst=Math.max(worst,d)}}
       const cells=[...SIM.alive].map(o=>o.cell);

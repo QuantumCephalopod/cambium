@@ -169,3 +169,29 @@ const reacquired=moduleRef.shader.snapshot({container:'w'});
 assert.notStrictEqual(reacquired.revision,entered.revision,'a new source acquisition reused an old revision token at the same clock/container');
 console.log('PASS · changed-path replay, exact rewind, immutable siblings, 1537-rank genealogy, fresh generation, cached production snapshots');
 console.log(JSON.stringify({foldWork:scaling}));
+
+// The contact relation uses the existing Display cell/content dimensions, not a
+// fixed follow rank or a camera-dependent body exponent. Public source facts
+// and collision addresses are the independent input to each replay witness.
+const N=require('../../../../z/navigation-physiology.js');
+for(const at of [start,start+(end-start)*.3,end]){
+ const current=reference.routesAt(at);
+ for(const bait of current){
+  const a=bait.address,place=N.bodyPlacement({addresses:[]},a),cell=N.cellForPath(a);
+  const o={S:{wps:[{a}],wd:[0]},reached:0,dist:0,facts:{events:1}};
+  const f=law.beingFrame(o);assert.equal(f.container,a.slice(0,-1));
+  assert.equal(law.bodySize(o),place.k,'Being is not two content ranks inside its actual Bait cell');
+  assert(near(law.pointOf(a),cell.point),'Being contact is not Display exact address locus');
+  const edge=Math.hypot(...cell.tet[0].map((v,i)=>v-cell.tet[1][i]));
+  const rootEdge=Math.hypot(...N.V0[0].map((v,i)=>v-N.V0[1][i]));
+  assert(Math.abs(f.scale*edge/rootEdge-.51)<1e-10,'camera does not frame the same local cell relation');
+ }
+}
+const moving=(a,b,u)=>({S:{wps:[{a},{a:b}],wd:[0,1]},reached:0,dist:u,facts:{events:43}});
+for(const u of [0,.01,.25,.5,.99,1])for(const prefix of ['w','xz','w'.repeat(24)]){
+ const a=moving('wx','xzy',u),b=moving(prefix+'wx',prefix+'xzy',u),fa=law.beingFrame(a),fb=law.beingFrame(b);
+ assert(Math.abs(fb.scale/fa.scale-Math.pow(2,prefix.length))<1e-7);
+ assert(Math.abs(law.bodySize(b)/law.bodySize(a)-Math.pow(.5,prefix.length))<1e-12);
+ assert(Math.abs(fa.scale*law.bodySize(a)-fb.scale*law.bodySize(b))<1e-12,'same encounter changes apparent size after rank substitution');
+}
+console.log('PASS · real replay contact and scale, camera/body covariance through unequal-rank travel and 24-rank substitution');

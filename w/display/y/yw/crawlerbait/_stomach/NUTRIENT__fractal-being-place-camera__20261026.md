@@ -1,6 +1,6 @@
 # NUTRIENT — Being / place / camera share existing fractal dimensioning — 2026-10-26
 
-status: OPEN / ADMITTED — bounded derivation and implementation witness pending
+status: PARTIAL / EARNED NATIVE — exact candidate visitor witness pending
 owner: w/display/y/yw/crawlerbait
 kind: source-faithful conversational encounter
 source: Philipp, 2026-10-26, current project conversation
@@ -23,3 +23,7 @@ Live cloud-browser visit on 2026-10-26: main overview → Crawlerbait, pause/pla
 ## Exit
 
 Reacquire owner implementation and existing shared fractal dimensions; derive the smallest coherent position/scale relation. Witness real replay contact at coarse/fine resolution, temporal/collision and camera continuity under the changed scope. Preserve traffic/source truth and existing identity. Record bounded outcome and owner HOME; leave any unwitnessed remainder OPEN. Work is staged for owner review/promotion, not deployed directly.
+
+## Bounded return
+
+Implemented on the staging candidate. Full build, 247 integration checks, 38 address assertions, real-source replay/dimension witnesses, both native field transports and narrow/wide software-GLES execution pass. Browser observations so far belong to the earlier deployed generation; they are not acceptance of this candidate. This carrier stays unresolved for the remaining visitor witness. Existing address-lod and crawlercam-lock-continuity carriers stay OPEN.

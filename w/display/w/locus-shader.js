@@ -97,7 +97,9 @@ function fieldPointRecords(structure,projection){
     const cell=addressed||byGene.get(gene);if(!cell)continue;seen.add(raw.id);
     const spec=Object.freeze({...raw,gene});
     const pool=raw.fold===true&&!!addressed&&Number.isInteger(raw.count)&&raw.count>0;
-    out.push({spec,path:(addressed||cell).path||'',world:pool?[...cell.center]:pointInTet(cell.tet,spec),pool});
+    // An owner may contact the actual address locus rather than an interior sample.
+    // Folded populations still represent their containing cell, never a leaf vertex.
+    out.push({spec,path:(addressed||cell).path||'',world:pool?[...cell.center]:raw.anchor==='locus'&&addressed?[...addressed.point]:pointInTet(cell.tet,spec),pool});
   }
   return out;
 }
