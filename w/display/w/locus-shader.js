@@ -461,13 +461,13 @@ void main(){
     vec4 R=uRect[i];float d=sdPanel(frag,R);
     vec4 A=uReadRect[i];if(min(A.z,A.w)>0.)readD=min(readD,sdBox(frag-A.xy,A.zw,0.));
     if(uN.x>-.5&&uMerge[i]>.5)continue;
-    vec2 n=vec2(sdPanel(frag+h.xy,R)-sdPanel(frag-h.xy,R),sdPanel(frag+h.yx,R)-sdPanel(frag-h.yx,R));n/=max(length(n),1e-4);
+    vec2 n=vec2(0.);if(d<0.&&d>-uA.z){n=vec2(sdPanel(frag+h.xy,R)-sdPanel(frag-h.xy,R),sdPanel(frag+h.yx,R)-sdPanel(frag-h.yx,R));n/=max(length(n),1e-4);}
     surface(d,n,min(R.z,R.w),R.xy,frag,uB.y);
   }
   if(uN.x>-.5){
     if(uN.x>.5&&min(uHomeRead.z,uHomeRead.w)>0.)readD=min(readD,sdBox(frag-uHomeRead.xy,uHomeRead.zw,0.));
     float d=gooD(frag);
-    vec2 n=vec2(gooD(frag+h.xy)-gooD(frag-h.xy),gooD(frag+h.yx)-gooD(frag-h.yx));n/=max(length(n),1e-4);
+    vec2 n=vec2(0.);if(d<0.&&d>-uA.z){n=vec2(gooD(frag+h.xy)-gooD(frag-h.xy),gooD(frag+h.yx)-gooD(frag-h.yx));n/=max(length(n),1e-4);}
     surface(d,n,min(uL0.z,uL0.w),uL0.xy,frag,0.);
     if(d<0.){
       vec3 panel=panelSample(frag);float blend=clamp(.5+.5*(panel.x-sdLens(frag))/max(uN.w,1e-3),0.,1.);
@@ -494,8 +494,8 @@ void main(){
   if(uN.x>-.5&&uN.y>0.&&uForegroundReady>0){
     float focus=(1.-smoothstep(-2.,0.,sdReadingLens(frag)))*uN.y;
     if(focus>0.){vec3 blurred=vec3(0.);float weight=0.;
-      for(int y=-2;y<=2;y++)for(int x=-2;x<=2;x++){
-        vec2 off=vec2(float(x),float(y))*uH.x*1.6;float w=exp(-float(x*x+y*y)*.45);
+      for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
+        vec2 off=vec2(float(x),float(y))*uH.x*2.2;float w=exp(-float(x*x+y*y)*.45);
         vec2 uv=(frag+gShift+off)/uRes;vec3 sampleColor=texture(uScene,uv).rgb;
         if(uPreviewReady>0){vec4 preview=texture(uPreview,uv);sampleColor=mix(sampleColor,preview.rgb,preview.a);}
         blurred+=sampleColor*w;weight+=w;

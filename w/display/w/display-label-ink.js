@@ -9,7 +9,7 @@
   else root.SSSDisplayLabelInk=api;
 })(typeof globalThis==='object'?globalThis:this,function(){
   'use strict';
-  const ATTR='data-display-label-ink',DOM_FOREGROUND='.field-body-label:is(:hover,:focus-visible)',styles=new WeakMap();
+  const ATTR='data-display-label-ink',styles=new WeakMap();
   const VERTEX=`#version 300 es
   layout(location=0) in vec2 aPosition;
   layout(location=1) in vec2 aUV;
@@ -30,8 +30,8 @@
     let record=styles.get(doc);
     if(!record){
       const node=doc.createElement('style');
-      const derived=`.field-label:not(${DOM_FOREGROUND})`;
-      node.textContent=`[${ATTR}="gpu"] ${derived},[${ATTR}="gpu"] ${derived} *{-webkit-text-fill-color:transparent!important;text-shadow:none!important;text-decoration-color:transparent!important}`;
+      const derived=`.field-label`;
+      node.textContent=`[${ATTR}="gpu"] ${derived},[${ATTR}="gpu"] ${derived} *{-webkit-text-fill-color:transparent!important;text-shadow:none!important;text-decoration-color:transparent!important}[${ATTR}="gpu"] .field-body-label{background:transparent!important;outline-color:transparent!important}`;
       (doc.head||doc.documentElement).appendChild(node);
       record={node,users:0};styles.set(doc,record);
     }
@@ -76,9 +76,7 @@
     // Opacity ancestors and paint may share elements; styles live for this collect only.
     const styleFor=element=>{if(!computed.has(element))computed.set(element,getStyle(element));return computed.get(element)};
     for(const label of host.querySelectorAll('.field-label')){
-      // Contact owns foreground DOM ink above its own opaque button surface.
-      // Quiet labels remain in the shared optical input; never paint both.
-      if(label.matches?.(DOM_FOREGROUND))continue;
+      // Hover is interaction state, not permission to escape the optical background.
       const walk=doc.createTreeWalker(label,4); // NodeFilter.SHOW_TEXT, including renderer-owned spans/b.
       for(let node=walk.nextNode();node;node=walk.nextNode()){
         if(!node.data||!node.data.trim())continue;
@@ -88,6 +86,7 @@
         const boxes=Array.from(range.getClientRects()).filter(r=>r.width>0&&r.height>0);
         if(!boxes.length)continue;
         const paint=paintStyle(styleFor(element));
+        if(host.getAttribute(ATTR)==='gpu'&&doc.documentElement){const rem=parseFloat(styleFor(doc.documentElement)?.fontSize)||16,inverse=doc.documentElement?.dataset?.inverse==='true';paint.decorationColor=paint.color;paint.shadow=`${inverse?'rgba(252,250,247,.8)':'rgba(3,5,8,.8)'} ${rem*3/32}px ${rem*3/32}px ${rem/16}px`;}
         if(boxes.length===1){runs.push({text:transformed(node.data,paint.transform),paint,rect:rect(boxes[0]),opacity,label});continue}
         // Wrapped runs: derive each line from character ranges rather than guessing wrap widths.
         let line=null,offset=0;
@@ -254,14 +253,13 @@
       if(original===null||original===undefined)labelHost.removeAttribute(ATTR);else labelHost.setAttribute(ATTR,original);
     }
     function draw(canvasRect,bufferWidth,bufferHeight,additionalTarget=null,foreground=null){
-      reset();
       const c=rect(canvasRect||{});
-      if(disposed||!gl||!labelHost||!doc||!getStyle||c.width<=0||c.height<=0||!Number.isFinite(bufferWidth)||!Number.isFinite(bufferHeight)||bufferWidth<=0||bufferHeight<=0)return false;
-      if(gl.isContextLost()){release(gl,gpu);gpu=null;atlas=null;return false}
+      if(disposed||!gl||!labelHost||!doc||!getStyle||c.width<=0||c.height<=0||!Number.isFinite(bufferWidth)||!Number.isFinite(bufferHeight)||bufferWidth<=0||bufferHeight<=0){reset();return false;}
+      if(gl.isContextLost()){release(gl,gpu);gpu=null;atlas=null;reset();return false}
       let saved=null;
       try{
         const runs=collect(labelHost,doc,getStyle);
-        if(!runs.length)return false;
+        if(!runs.length){reset();return false;}
         const density=Math.max(bufferWidth/c.width,bufferHeight/c.height);
         for(const run of runs)run.key=cacheKey(run,density,fontEpoch);
         saved=state(gl);if(!gpu)gpu=resources(gl);
@@ -290,7 +288,7 @@
         if(foreground?.element){const chosen=runs.filter(run=>run.label===foreground.element);if(chosen.length){const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);try{gl.bindFramebuffer(gl.FRAMEBUFFER,foreground.framebuffer);gl.bufferData(gl.ARRAY_BUFFER,quads(chosen,atlas,c),gl.DYNAMIC_DRAW);gl.drawArrays(gl.TRIANGLES,0,chosen.length*6)}finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target)}}}
         if(gl.getError()!==gl.NO_ERROR)throw new Error('label GL drawing failed');
         if(!releaseStyle)releaseStyle=acquireStyle(doc);
-        labelHost.setAttribute(ATTR,'gpu');return true;
+        if(labelHost.getAttribute(ATTR)!=='gpu')labelHost.setAttribute(ATTR,'gpu');return true;
       }catch(_){atlas=null;reset();return false}
       finally{if(saved)restore(gl,saved)}
     }

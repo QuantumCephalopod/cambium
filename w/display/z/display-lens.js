@@ -104,7 +104,7 @@
     const delta=.5*Math.atan2(Math.sin(2*(aim-L.angle)),Math.cos(2*(aim-L.angle)));
     L.angleV+=(60*delta-16*L.angleV)*d;L.angle+=L.angleV*d;
   }
-  function extent(L){const stretch=Math.exp(L.strain),hx=L.hx*stretch,hy=L.hy/stretch,c=Math.abs(Math.cos(L.angle)),s=Math.abs(Math.sin(L.angle)),shaped=Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4,r=Math.min(L.corner,hx,hy);return {hx,hy,x:shaped?(hx-r)*c+(hy-r)*s+r:Math.hypot(hx*c,hy*s),y:shaped?(hx-r)*s+(hy-r)*c+r:Math.hypot(hx*s,hy*c)}}
+  function extent(L){const stretch=Math.exp(L.strain),hx=L.hx*stretch,hy=L.hy/stretch,c=Math.abs(Math.cos(L.angle)),s=Math.abs(Math.sin(L.angle)),shaped=!L.ellipse&&(Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4),r=Math.min(L.corner,hx,hy);return {hx,hy,x:shaped?(hx-r)*c+(hy-r)*s+r:Math.hypot(hx*c,hy*s),y:shaped?(hx-r)*s+(hy-r)*c+r:Math.hypot(hx*s,hy*c)}}
   function boundBody(L,view){
     if(!view)return;let e=extent(L);const fit=Math.min(1,view.w/(2*e.x),view.h/(2*e.y));
     if(fit<1){L.hx*=fit;L.hy*=fit;e=extent(L)}
@@ -118,7 +118,7 @@
       const decay=Math.exp(-K.damp*d);L.vx*=decay;L.vy*=decay;L.x+=L.vx*d;L.y+=L.vy*d;
       L.hxV*=decay;L.hyV*=decay;L.cornerV*=decay;if(t.kind==='body')boundBody(L,view);return;
     }
-    const f=t.kind==='body'&&t.frame,shape=f||t;
+    const f=t.kind==='body'&&t.frame,shape=f||t;L.ellipse=!!shape.ellipse;
     L.vx+=(K.stiff*(shape.cx-L.x)-K.damp*L.vx)*d;L.vy+=(K.stiff*(shape.cy-L.y)-K.damp*L.vy)*d;L.x+=L.vx*d;L.y+=L.vy*d;
     L.fvx=L.fvy=0;L.fx+=(0-L.fx)*Math.min(1,d*12);L.fy+=(0-L.fy)*Math.min(1,d*12);
     if(t.kind==='field'||f){
@@ -188,7 +188,7 @@
     const f=L.lock&&(t.frame||t),framed=f&&(t.kind==='field'||t.frame),h=hs.find(q=>idOf(q)===L.homeId&&compatible(L,q));
     const p=f?{x:f.cx,y:f.cy}:L.held?{x:L.px,y:L.py}:L.attached&&h?dockPoint(h,L.U,L.edge,L.u,L.baseR):L;
     const radius=L.baseR*(L.held?1:L.attached?K.docked:K.released);
-    L.hx=framed?f.hx:radius;L.hy=framed?f.hy:radius;L.corner=framed?Math.min(Number.isFinite(f.r)?Math.max(0,f.r):14*L.U,L.hx,L.hy):radius;
+    L.ellipse=!!(framed&&f.ellipse);L.hx=framed?f.hx:radius;L.hy=framed?f.hy:radius;L.corner=framed?Math.min(Number.isFinite(f.r)?Math.max(0,f.r):14*L.U,L.hx,L.hy):radius;
     L.x=p.x;L.y=p.y;if(view){L.hx=Math.min(L.hx,view.w/2);L.hy=Math.min(L.hy,view.h/2);L.x=clamp(L.x,L.hx,view.w-L.hx);L.y=clamp(L.y,L.hy,view.h-L.hy)}
     L.radius=Math.min(L.hx,L.hy);L.corner=Math.min(L.corner,L.radius);L.docked=!L.held&&!L.lock&&L.attached;
     L.vx=L.vy=L.hxV=L.hyV=L.cornerV=L.fx=L.fy=L.fvx=L.fvy=0;L.protect=L.lock?1:0;L.focus=L.lock?.kind==='field'?1:0;L.join=L.attached?1:0;
@@ -196,7 +196,7 @@
   function geometry(L,home){
     const h=homesOf(home).find(q=>idOf(q)===L.homeId&&compatible(L,q)),a=h&&L.attached?anchor(h,L.edge,L.u):null;
     const thin=a?clamp(1-Math.hypot(L.x-a.x,L.y-a.y)/(K.breakAt*L.U),0,1):0;
-    const locked=L.lock?.kind||null,shaped=Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4,e=extent(L);
+    const locked=L.lock?.kind||null,shaped=!L.ellipse&&(Math.abs(L.hx-L.hy)>1e-4||L.corner<Math.min(L.hx,L.hy)-1e-4),e=extent(L);
     return {x:L.x,y:L.y,hx:e.hx,hy:e.hy,boundX:e.x,boundY:e.y,round:shaped?0:1,corner:Math.min(L.corner,e.hx,e.hy),angle:L.angle,wobble:0,phase:0,stretch:Math.exp(L.strain),ax:a?.x??L.x,ay:a?.y??L.y,
       neck:0,smooth:Math.min(L.radius*.5,48*L.U),rx:locked?0:n(L.fx),ry:locked?0:n(L.fy),reachR:0,mag:(1-L.protect)*(1-1/K.magnify),protect:L.protect,focus:L.focus,lock:L.lock?{...L.lock}:null,thin,docked:L.docked,held:L.held,attached:!!a,homeId:L.homeId,kind:L.kind,layer:L.layer};
   }
@@ -232,7 +232,7 @@
           const t={id,kind:'body',cx:p.x,cy:p.y,hx:Number.isFinite(p.r)?p.r:24};
           /* Readable extent is lent only by the contacted body. It is never a
            * second hit area, a site-selected mode, or work for every candidate. */
-          if(id===lockedId&&typeof spec.frame==='function'){try{const r=spec.frame();if(r&&Number.isFinite(r.left)&&Number.isFinite(r.top)&&Number.isFinite(r.width)&&Number.isFinite(r.height)&&r.width>0&&r.height>0)t.frame={cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:r.r}}catch(_){/* retain the valid ordinary body if its finer extent is unavailable */}}
+          if(id===lockedId&&typeof spec.frame==='function'){try{const r=spec.frame();if(r&&Number.isFinite(r.left)&&Number.isFinite(r.top)&&Number.isFinite(r.width)&&Number.isFinite(r.height)&&r.width>0&&r.height>0)t.frame={cx:r.left+r.width/2,cy:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:r.r,ellipse:r.ellipse===true}}catch(_){/* retain the valid ordinary body if its finer extent is unavailable */}}
           out.push(t);
         }}
       }catch(_){/* geometry unavailable; the owner still controls lifetime */}

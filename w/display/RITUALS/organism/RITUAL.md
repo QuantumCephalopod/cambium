@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.56"
+version: "3.57"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -388,3 +388,13 @@ SpriteSheet reading support includes a light contrasting drop shadow. DOM uses t
 ## Compression
 
 **Display is a tetrahedrally differentiated oriented membrane. Embodiment gives autonomous interlocutors local worlds, Continuity preserves identity through relocation, Orientation makes the global recursive field navigable, and Population physically plants site-holons into that field. Display preserves one shared tetrahedral body and orientation law while each site-holon owns its projection, shader, rendering, local interaction and any earned static public aperture. The Population tree is mount truth: what is bodily present is globally reachable, while each holon remains locally itself.**
+
+## Live liquid readability return — 2026-10-26
+
+Hover/focus is interaction state, not optical foreground ownership. All background site-body captions enter the shared scene ink, including contacted buttons; their accessible DOM controls remain. While GPU ink is ready, native text, shadow and button backing must not paint a second unblurred overlay. Only the actually softlocked target is lent into sharp foreground. On refusal/context loss the original DOM ink returns. This supersedes the earlier native-hover foreground exception, including its Philosophy contact-name application.
+
+Keep the GPU suppression attribute stable across successful frames. Read the shared authored shadow material independently of suppression; movement/opacity do not rebuild glyph tiles. A contrasting shadow is chosen before the single global inverse so it remains a dark support in the light view, across DOM, Canvas, cached glyph sprites and tissue. Root-rem and actual density retain their existing authority.
+
+A body may offer an elliptical measured reading frame through the same frame channel. Physical axes, containment, hit testing and shader silhouette must agree; ordinary field rectangles remain source-owned. The owner fits actual text into ellipse chords and retains continuation.
+
+Focus work is bounded: the current background filter uses nine weighted samples, and bevel normals are evaluated only in their contributing band. Source foreground canvases retain storage while dimensions remain unchanged. A source may scissor its own foreground work to the actual drop bounds at each render-target scale, restoring the field state. Pixel evidence and synchronized software timing remain distinct from browser/device FPS.

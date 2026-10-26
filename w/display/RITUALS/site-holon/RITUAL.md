@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.26"
+version: "3.27"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -229,3 +229,7 @@ A site-holon change is accepted when:
 ## Compression
 
 **A site-holon is one movable autonomous body planted into Display Population. Its physical folder determines global address; its internal tissue determines identity, projection, phenomenology, local interaction and any earned static public aperture. Display contributes one shared tetrahedral geometry/orientation law and specimen-agnostic publication hooks; each holon contributes its own skin and behavior. The tree is mount truth, exact raw slots exclude pile-up, quotient-coalesced genealogies may compose, and relocation changes environment without rewriting the organism.**
+
+## Visitor contact fit — 2026-10-26
+
+The optional body frame may include ellipse:true to lend measured ellipse axes. This is geometry on the existing contact, not a new mode or identity. Fit actual page ink to the interior chords; share the same layout for the frame and foreground draw. Keep source canvas allocations across unchanged drawing-buffer dimensions. Source-owned intermediate render targets may clip contact work to the same normalized drop bounds, including sampling padding; restore scissor state before returning. Shared hover/focus captions inherit Display's background-ink law rather than escaping as a native foreground overlay.

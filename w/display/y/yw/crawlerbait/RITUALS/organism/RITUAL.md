@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.12"
+version: "5.13"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -293,3 +293,7 @@ Version5.8 shared fold adoption (2026-10-21): Crawlerbait retains source/replay 
 ## Sharp liquid contact — 2026-10-26
 
 The existing selected Being/narrative offer lends actual target-only goo geometry and/or actual readable words into Display's isolated foreground pass. It redraws the same source body with the current frame, restores simulation buffers and never advances replay. The common Canvas type helper supplies the light glyph shadow. Target identity, public source/privacy boundary and continuation are unchanged.
+
+## Text-fitted reading ellipse — 2026-10-26
+
+Being/type/narrative contact fits actual Pretext lines into ellipse chords, selecting the smallest tested frame that contains the complete short text; longer source text retains complete page continuation within the safe carrier. Cache measured layout per wording/font/carrier generation and invalidate with font readiness. Both the offered axes and painted page consume that layout. The same shared body lock remains authoritative. Retain foreground Canvas storage and bound target-only Goo/Ink/copy raster work to the actual drop region at each target scale; simulation geometry/time remain unchanged.
