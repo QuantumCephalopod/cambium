@@ -25,17 +25,25 @@
   },
   "home": {
     "changed_scope": [
+      "RITUALS/organism/RITUAL.md",
+      "RITUALS/site-holon/RITUAL.md",
+      "w/display-label-ink.js",
+      "w/display-text-tissue.js",
+      "w/display-type.js",
+      "w/display-type.test.cjs",
+      "w/locus-shader.gles-capture.cjs",
+      "w/locus-shader.gles.test.py",
       "w/locus-shader.js",
       "w/locus-shader.test.cjs",
-      "x/recursive-fold.js",
-      "x/recursive-fold.test.cjs",
-      "RITUALS/organism/RITUAL.md",
-      "RITUALS/site-holon/RITUAL.md"
+      "w/root-view.css",
+      "z/display-lens.js",
+      "z/world-view.js",
+      "w/liquid-reading-ink.cjs"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "EARNED_NATIVE / CANDIDATE — owner-neutral visible-context refinement and attached moving focus"
+    "outcome": "IMPLEMENTED_NATIVE / LIVE_ACCEPTANCE_PENDING — continuous liquid, light type shadow and sharp source-owned softlock foreground"
   },
-  "observed_at_utc": "2026-10-26T19:46:12.350360Z",
+  "observed_at_utc": "2026-10-26T21:48:47.713820Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -51,7 +59,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-visible-context-native-20261026",
+  "reflected_home_event": "display-continuous-liquid-focus-native-20261026",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -59,25 +67,28 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "3febc0ef4f43c7846123c49b5b50261a78088aaa7c1cb2463b72cd271b668f34"
+      "sha256": "bbf899b45a820925a0e1645b68616cff0d342acc9d32080ff6624a6220237250"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "0ffdc13168c6cc12c54f381687853e9861e471b4226146c76e1ef2325ffbe532"
+      "sha256": "9e2982948c1a1fa96ebc23f3e21f2f789959f51a0e50d271901ae23ca644942a"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
+      "NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
       "NUTRIENT__explicit-locus-point-anchor__20261026.md",
       "NUTRIENT__language-glyphs-and-site-names__20261019.md",
-      "NUTRIENT__selection-is-not-visibility__20261026.md"
+      "NUTRIENT__selection-is-not-visibility__20261026.md",
+      "NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
+      "NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md"
     ],
     "waste_direct_count": 105
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "89b05a855960d9a98584092c8dab1260c280a121"
+    "source_revision": "2c63a798c41103142dfe2d58dbb05ee37d3709fe"
   }
 }
