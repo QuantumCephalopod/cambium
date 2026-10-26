@@ -1,0 +1,28 @@
+{
+  "changed_scope": [
+    "_root/display-liquid-focus-evidence-20261026.json"
+  ],
+  "context": {
+    "cause": "Native evidence JSON lacked the filename-matching event_id required by read_root_event before non-HOME filtering.",
+    "correction": "Add matching event_id and kind EVIDENCE; retain the production projector contract. Existing HOME events remain unmodified.",
+    "evidence": {
+      "path": "_root/display-liquid-focus-evidence-20261026.json",
+      "sha256": "18881c88be7edec4dd1fe5682400590e538eee7ad879c12b004dbf573c996381"
+    },
+    "failure_run": "https://github.com/self-similar-systems/cambium/actions/runs/40411843434",
+    "prior_evidence": {
+      "path": "w/display/_root/display-liquid-focus-evidence-20261026.json",
+      "return": "The prior Display HOME hash refers to these immutable pre-envelope bytes. All prior evidence content is preserved in the current envelope.",
+      "revision": "222dcd3dbc10fc4b09a5d3c9b4c29deb947f6158",
+      "sha256": "4e85f0387f3eaeb764388a375747cb576983c2572bdf366575d564454bbb2d16"
+    },
+    "witness": "Real merge-delta feed projection, README projection and full build/check/address/fold/artifact sequence; run before remote persistence."
+  },
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "event_id": "display-liquid-evidence-feed-envelope-repair-20261026",
+  "home_at_utc": "2026-10-26T22:25:51.353448Z",
+  "kind": "HOME",
+  "organism": "display",
+  "outcome": "Liquid native evidence has a valid non-HOME root-event envelope; native display acceptance remains unchanged and live acceptance remains pending."
+}

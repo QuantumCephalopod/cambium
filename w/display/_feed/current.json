@@ -25,25 +25,12 @@
   },
   "home": {
     "changed_scope": [
-      "RITUALS/organism/RITUAL.md",
-      "RITUALS/site-holon/RITUAL.md",
-      "w/display-label-ink.js",
-      "w/display-text-tissue.js",
-      "w/display-type.js",
-      "w/display-type.test.cjs",
-      "w/locus-shader.gles-capture.cjs",
-      "w/locus-shader.gles.test.py",
-      "w/locus-shader.js",
-      "w/locus-shader.test.cjs",
-      "w/root-view.css",
-      "z/display-lens.js",
-      "z/world-view.js",
-      "w/liquid-reading-ink.cjs"
+      "_root/display-liquid-focus-evidence-20261026.json"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "IMPLEMENTED_NATIVE / LIVE_ACCEPTANCE_PENDING — continuous liquid, light type shadow and sharp source-owned softlock foreground"
+    "outcome": "Liquid native evidence has a valid non-HOME root-event envelope; native display acceptance remains unchanged and live acceptance remains pending."
   },
-  "observed_at_utc": "2026-10-26T21:48:47.713820Z",
+  "observed_at_utc": "2026-10-26T22:27:53.294474Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -59,7 +46,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-continuous-liquid-focus-native-20261026",
+  "reflected_home_event": "display-liquid-evidence-feed-envelope-repair-20261026",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -81,6 +68,7 @@
       "NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
       "NUTRIENT__explicit-locus-point-anchor__20261026.md",
       "NUTRIENT__language-glyphs-and-site-names__20261019.md",
+      "NUTRIENT__liquid-evidence-feed-envelope__20261026.md",
       "NUTRIENT__selection-is-not-visibility__20261026.md",
       "NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
       "NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md"
@@ -89,6 +77,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "2c63a798c41103142dfe2d58dbb05ee37d3709fe"
+    "source_revision": "88aa52d7cbcec8e0043ea7d082640e16c3b5b33b"
   }
 }
