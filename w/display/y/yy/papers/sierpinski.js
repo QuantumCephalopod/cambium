@@ -921,7 +921,7 @@ function paperLensReader(part,r){const reader=state.lensReader;if(!reader)return
 function paperLensClip(ctx,L,rect,outside=false){ctx.beginPath();if(outside)ctx.rect(0,0,rect.width,rect.height);if(L.round===0)ctx.roundRect(L.x-L.hx,L.y-L.hy,2*L.hx,2*L.hy,Math.min(L.corner||0,L.hx,L.hy));else ctx.arc(L.x,L.y,L.r,0,Math.PI*2);ctx.clip(outside?'evenodd':'nonzero')}
 function paperForeground(target,frame){
   if(frame.fieldId!==id||!state?.mounted)return false;const part=livePaperLensPart(target),L=lensLocal(state.textCanvas.getBoundingClientRect());if(!part||!L||!paperLensReady(L,paperLensReading(part)))return false;
-  const c=state.focusCanvas||(state.focusCanvas=document.createElement('canvas'));c.width=frame.width;c.height=frame.height;const ctx=c.getContext('2d'),old=state.tissueLetters;ctx.setTransform(frame.dpr||1,0,0,frame.dpr||1,0,0);ctx.clearRect(0,0,c.width/(frame.dpr||1),c.height/(frame.dpr||1));
+  const c=state.focusCanvas||(state.focusCanvas=document.createElement('canvas'));if(c.width!==frame.width)c.width=frame.width;if(c.height!==frame.height)c.height=frame.height;const ctx=c.getContext('2d'),old=state.tissueLetters;ctx.setTransform(frame.dpr||1,0,0,frame.dpr||1,0,0);ctx.clearRect(0,0,c.width/(frame.dpr||1),c.height/(frame.dpr||1));
   try{state.tissueLetters=null;drawPaperLens(ctx,L,part,state.textCanvas.getBoundingClientRect(),frame.dpr||1)}finally{state.tissueLetters=old}return [c];
 }
 function drawPaperLens(ctx,L,part,rect,d){
@@ -986,12 +986,12 @@ function inkDust(ctx,glyphs,pick,size,color,alpha,ox=0,oy=0){
  * was the measured cost on CPU-only machines, a blit is not. Positions and metrics are unchanged. */
 const glyphAtlas=new Map();let glyphMeasure=null;
 function glyphSprite(font,color,baseline,ch,scale){
-  const key=font+'|'+color+'|'+baseline+'|'+scale+'|'+ch;let g=glyphAtlas.get(key);if(g)return g;
+  const inverse=document.documentElement?.dataset?.inverse||'false',key=font+'|'+color+'|'+baseline+'|'+scale+'|'+ch+'|'+inverse;let g=glyphAtlas.get(key);if(g)return g;
   if(!glyphMeasure)glyphMeasure=document.createElement('canvas').getContext('2d');glyphMeasure.font=font;
-  const size=Number((font.match(/([\d.]+)px/)||[0,typePx(-1)])[1]),w=Math.ceil(glyphMeasure.measureText(ch).width)+4,h=Math.ceil(size*1.7)+4,oy=baseline==='top'?2:Math.ceil(size*1.25)+2;
+  const size=Number((font.match(/([\d.]+)px/)||[0,typePx(-1)])[1]),pad=Math.ceil((globalThis.SSSDisplayType?.rootRemPx?.()||16)*.25),w=Math.ceil(glyphMeasure.measureText(ch).width)+2*pad,h=Math.ceil(size*1.7)+2*pad,oy=baseline==='top'?pad:Math.ceil(size*1.25)+pad;
   const c=document.createElement('canvas');c.width=Math.max(1,Math.ceil(w*scale));c.height=Math.max(1,Math.ceil(h*scale));
-  const x=c.getContext('2d');x.scale(scale,scale);x.font=font;x.fillStyle=color;x.textBaseline=baseline;x.fillText(ch,2,oy);
-  g={c,w,h,ox:2,oy};if(glyphAtlas.size>4000)glyphAtlas.clear();glyphAtlas.set(key,g);return g;
+  const x=c.getContext('2d');x.scale(scale,scale);x.font=font;x.fillStyle=color;x.textBaseline=baseline;typeInk(x,ch,pad,oy);
+  g={c,w,h,ox:pad,oy};if(glyphAtlas.size>4000)glyphAtlas.clear();glyphAtlas.set(key,g);return g;
 }
 function inkText(ctx,glyphs,pick,color,alphaOf,fontOf,ox=0,oy=0){
   const baseline=ctx.textBaseline==='top'?'top':'alphabetic',scale=state?.inkScale||1;let f=fontOf?'':ctx.font;

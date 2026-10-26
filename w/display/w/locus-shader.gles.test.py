@@ -56,7 +56,7 @@ simple={
  'BindTexture':[U,U],'BindRenderbuffer':[U,U],
  'BlendEquation':[U],'ActiveTexture':[U],'Enable':[U],'Disable':[U],'BlendFunc':[U,U],
  'DepthMask':[C.c_ubyte],'ColorMask':[C.c_ubyte]*4,'ClearDepthf':[F],
- 'ClearColor':[F]*4,'Clear':[U],'Viewport':[I]*4,'DrawArrays':[U,I,I],
+ 'ClearColor':[F]*4,'Clear':[U],'Scissor':[I]*4,'Viewport':[I]*4,'DrawArrays':[U,I,I],
  'TexParameteri':[U,U,I],'TexStorage2D':[U,I,U,I,I],
  'TexStorage3D':[U,I,U,I,I,I],'DrawArraysInstanced':[U,I,I,I],'DepthFunc':[U],
  'BlendFuncSeparate':[U]*4,'GenerateMipmap':[U],
@@ -169,7 +169,10 @@ def readable_contract(width,height):
         fg=target.read_bytes();plain=Path(tmp)/'plain.rgba';subprocess.check_call(['node',str(Path(__file__).with_name('liquid-reading-ink.cjs')),str(width),str(height),json.dumps(frame),str(plain),'plain']);bare=plain.read_bytes()
         shadow_pixels=sum(bare[i+3]==0 and fg[i+3]>0 for i in range(0,len(fg),4));assert shadow_pixels>100
         assert all(fg[i:i+4]==bare[i:i+4] for i in range(0,len(fg),4) if bare[i+3]==255),'shadow changes solid glyph colour'
-        results.append({'kind':'type-shadow','additional_edge_support_pixels':shadow_pixels,'solid_glyph_pixels_unchanged':True})
+        inverse=Path(tmp)/'inverse.rgba';subprocess.check_call(['node',str(Path(__file__).with_name('liquid-reading-ink.cjs')),str(width),str(height),json.dumps(frame),str(inverse),'inverse']);light=inverse.read_bytes()
+        support=[i for i in range(0,len(light),4) if bare[i+3]==0 and light[i+3]>40]
+        assert len(support)>100 and all(light[i+k]>=light[i+3]*.9 for i in support for k in range(3)), 'global inverse loses contrasting shadow'
+        results.append({'kind':'type-shadow','additional_edge_support_pixels':shadow_pixels,'solid_glyph_pixels_unchanged':True,'inverse_dark_shadow_support_pixels':len(support)})
         combined=bytearray(background)
         for i in range(0,len(fg),4):
             a=fg[i+3]/255

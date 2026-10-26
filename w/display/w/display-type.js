@@ -20,7 +20,8 @@
     return Number.isFinite(px)&&px>0?px:ROOT_REM_FALLBACK;
   }
   function rankPx(rank,doc=root.document){return rootRemPx(doc)*rankFactor(rank)}
-  function shadow(ctx){if(!ctx)return;const m=ctx.getTransform?.(),density=m?Math.hypot(m.a,m.b):1,rem=rootRemPx()*density;ctx.shadowColor='rgba(3,5,8,.65)';ctx.shadowOffsetX=rem/16;ctx.shadowOffsetY=rem/16;ctx.shadowBlur=rem/8}
+  function shadowColor(doc=root.document){return doc?.documentElement?.dataset?.inverse==='true'?'rgba(252,250,247,.8)':'rgba(3,5,8,.8)'}
+  function shadow(ctx){if(!ctx)return;const m=ctx.getTransform?.(),density=m?Math.hypot(m.a,m.b):1,rem=rootRemPx()*density;ctx.shadowColor=shadowColor();ctx.shadowOffsetX=rem*3/32;ctx.shadowOffsetY=rem*3/32;ctx.shadowBlur=rem/16}
   function fillText(ctx,...args){ctx.save();try{shadow(ctx);ctx.fillText(...args)}finally{ctx.restore()}}
   const MAP={'ß':'ss','ẞ':'SS'};
   const ANY=/[ßẞ]|[aouAOU]\u0308/,ALL=/[ßẞ]/g;
@@ -51,5 +52,5 @@
       for(const r of records){if(r.type==='characterData')foldNode(r.target);else for(const n of r.addedNodes)foldNode(n)}
     }).observe(document.body,{subtree:true,childList:true,characterData:true});
   }
-  return Object.freeze({IDENTITY,rankFactor,rankVar,rankRem,rootRemPx,rankPx,shadow,fillText,fold,foldNode,faceUrl,start});
+  return Object.freeze({IDENTITY,rankFactor,rankVar,rankRem,rootRemPx,rankPx,shadowColor,shadow,fillText,fold,foldNode,faceUrl,start});
 });

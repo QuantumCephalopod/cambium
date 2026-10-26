@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.9"
+version: "3.10"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -526,3 +526,7 @@ Version3.6 coarse host visibility (2026-10-20): the actual admitted outer sample
 ## Sharp liquid contact — 2026-10-26
 
 An authored-part offer lends a transparent canvas of its actual current reading page and shared glyph shadow to the shared sharp-target pass. The existing source wording, Pretext line ranges, continuation, current organism and tissue state are retained; drawing this reading resolution does not step time, navigate or change source/genealogy. It is not another visible panel.
+
+## Shared shadow and contact allocation — 2026-10-26
+
+Cached SpriteSheet glyph sprites carry the shared shadow with sufficient tile padding; global inverse is part of the glyph paint key so an old light/dark shadow cannot survive the material change. The contacted-page Canvas retains storage while buffer dimensions are unchanged. Actual source wording, layout, pagination, organism/tissue state and contact readiness remain owned here.

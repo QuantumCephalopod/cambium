@@ -329,3 +329,7 @@ for(const v of [{w:390,h:844},{w:1280,h:800}]){
  L.lockTo(s,body);L.depart(s,{x:s.x,y:s.y},v,.04);L.grab(s,s.x,s.y,4);assert(!s.departure,'a new deliberate take cancels departure');
  console.log(JSON.stringify({carrier:[v.w,v.h],membrane_outward_travel:travel,continuous_start:true,held_and_reading_priority:true}));
 }
+
+{
+ const id='unrelated:elliptical-reading',s=L.create(null,{w:800,h:600});L.offer(id,{kind:'body',point:()=>({x:400,y:300,r:8}),frame:()=>({left:280,top:250,width:240,height:100,ellipse:true})});const t=L.resolveTargets(id).find(t=>t.id===id);L.lockTo(s,t);for(let i=0;i<300;i++)L.step(s,[],1/120,{w:800,h:600},null,t);const g=L.geometry(s,null);assert.equal(g.round,1);assert(Math.abs(g.hx-120)<.1&&Math.abs(g.hy-50)<.1);assert(!L.contains(s,s.x+110,s.y+45),'ellipse corners are outside the drop');assert(L.contains(s,s.x+100,s.y),'actual ellipse remains interactive');L.withdraw(id);
+}
