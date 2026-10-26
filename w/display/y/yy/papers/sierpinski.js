@@ -1,5 +1,6 @@
 (() => {
 'use strict';
+const typeInk=(ctx,...args)=>{if(globalThis.SSSDisplayType?.fillText)return globalThis.SSSDisplayType.fillText(ctx,...args);ctx.fillText(...args)};
 
 const id='organism:papers';
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
@@ -604,7 +605,7 @@ function drawOverviewPhysiology(now){
   if(!tour.copy||now<tour.readyAt||state.transition<.98)return;
   const target=state.beingTargetQ;if(target&&Math.abs(target.reduce((s,v,i)=>s+v*state.localQ[i],0))<.995)return;
   const rect=state.textCanvas.getBoundingClientRect(),ctx=state.textCanvas.getContext('2d'),font=typeFont(-1,500),width=Math.max(80,Math.min(rect.width*.84,520)),lines=paperLensLines('tutorial:'+tour.specimen+':'+tour.step,tour.copy,font,width);
-  if(!lines)return;const lh=BEING_LH*1.3,x=(rect.width-width)/2,carrier=state.ui?.carrier,y=Math.max(80,(carrier?carrier.y+carrier.h:rect.height*.72)-lh*(lines.length+1));const captionBox=inkNudge(tour,{x,y,w:width,h:lines.length*lh},rect,[]);setData(state.textCanvas,'tutorialCommentaryBounds',[captionBox.x,captionBox.y,captionBox.w,captionBox.h].map(v=>v.toFixed(1)).join(','));ctx.save();ctx.font=font;ctx.textBaseline='top';ctx.fillStyle='rgba(229,246,237,.88)';lines.forEach((line,i)=>ctx.fillText(line.text,captionBox.x,captionBox.y+i*lh));ctx.restore();
+  if(!lines)return;const lh=BEING_LH*1.3,x=(rect.width-width)/2,carrier=state.ui?.carrier,y=Math.max(80,(carrier?carrier.y+carrier.h:rect.height*.72)-lh*(lines.length+1));const captionBox=inkNudge(tour,{x,y,w:width,h:lines.length*lh},rect,[]);setData(state.textCanvas,'tutorialCommentaryBounds',[captionBox.x,captionBox.y,captionBox.w,captionBox.h].map(v=>v.toFixed(1)).join(','));ctx.save();ctx.font=font;ctx.textBaseline='top';ctx.fillStyle='rgba(229,246,237,.88)';lines.forEach((line,i)=>typeInk(ctx,line.text,captionBox.x,captionBox.y+i*lh));ctx.restore();
 }
 function projectedPixels(scale,cameraZ,height){return (scale/cameraZ)*(height/2)/Math.tan(FOV/2)*2}
 function childBodies(current){
@@ -888,7 +889,7 @@ function syncPaperLens(B,G){
   state.lensParts=paperLensParts(B,G);
   for(const target of paperLensOffers)if(!state.lensParts.has(target)){L.withdraw(target);paperLensOffers.delete(target)}
   for(const target of state.lensParts.keys())if(!paperLensOffers.has(target)){
-    L.offer(target,{kind:'body',point:()=>{const p=livePaperLensPart(target);if(!p)return null;const r=state.textCanvas.getBoundingClientRect();return {x:r.left+p.point.x,y:r.top+p.point.y,r:9}},frame:()=>{const p=livePaperLensPart(target),r=p?paperLensReading(p):null;return r?.ready?r.frame:null}});paperLensOffers.add(target);
+    L.offer(target,{kind:'body',foreground:frame=>paperForeground(target,frame),point:()=>{const p=livePaperLensPart(target);if(!p)return null;const r=state.textCanvas.getBoundingClientRect();return {x:r.left+p.point.x,y:r.top+p.point.y,r:9}},frame:()=>{const p=livePaperLensPart(target),r=p?paperLensReading(p):null;return r?.ready?r.frame:null}});paperLensOffers.add(target);
   }
 }
 /* All line ranges are retained until Pretext reaches the end. The finite
@@ -918,6 +919,11 @@ function paperLensPage(delta){const r=state?.lensReading;if(!r?.ready)return fal
 function paperLensReady(L,r){return r?.ready&&L?.round===0&&Math.abs(2*L.hx-r.width)<2&&Math.abs(2*L.hy-r.height)<2}
 function paperLensReader(part,r){const reader=state.lensReader;if(!reader)return;reader.hidden=false;if(reader.dataset.target!==part.id||reader.querySelector('p').textContent!==part.text){reader.dataset.target=part.id;reader.querySelector('p').textContent=part.text}reader.querySelector('small').textContent=(r.page+1)+' / '+r.pages}
 function paperLensClip(ctx,L,rect,outside=false){ctx.beginPath();if(outside)ctx.rect(0,0,rect.width,rect.height);if(L.round===0)ctx.roundRect(L.x-L.hx,L.y-L.hy,2*L.hx,2*L.hy,Math.min(L.corner||0,L.hx,L.hy));else ctx.arc(L.x,L.y,L.r,0,Math.PI*2);ctx.clip(outside?'evenodd':'nonzero')}
+function paperForeground(target,frame){
+  if(frame.fieldId!==id||!state?.mounted)return false;const part=livePaperLensPart(target),L=lensLocal(state.textCanvas.getBoundingClientRect());if(!part||!L||!paperLensReady(L,paperLensReading(part)))return false;
+  const c=state.focusCanvas||(state.focusCanvas=document.createElement('canvas'));c.width=frame.width;c.height=frame.height;const ctx=c.getContext('2d'),old=state.tissueLetters;ctx.setTransform(frame.dpr||1,0,0,frame.dpr||1,0,0);ctx.clearRect(0,0,c.width/(frame.dpr||1),c.height/(frame.dpr||1));
+  try{state.tissueLetters=null;drawPaperLens(ctx,L,part,state.textCanvas.getBoundingClientRect(),frame.dpr||1)}finally{state.tissueLetters=old}return [c];
+}
 function drawPaperLens(ctx,L,part,rect,d){
   const r=paperLensReading(part);paperLensReader(part,r);
   state.textCanvas.dataset.lensReading=part.id;state.textCanvas.dataset.lensReadingPage=(r.page+1)+'/'+r.pages;
@@ -926,8 +932,8 @@ function drawPaperLens(ctx,L,part,rect,d){
   const x=L.x-L.hx+r.pad,y=L.y-L.hy+r.pad;
   ctx.save();ctx.setTransform(d,0,0,d,0,0);paperLensClip(ctx,L,rect);ctx.textBaseline='top';ctx.font=r.font;
   if(state.tissueLetters)for(const g of glyphs){if(g.ch!==' ')state.tissueLetters.push({ch:g.ch,x:x+g.tx,y:y+g.ty,size:typePx(-1),fat:0,weight:1})}
-  else{ctx.fillStyle='rgb(223,243,234)';ctx.globalAlpha=1;for(const line of r.lines.slice(r.page*r.rows,(r.page+1)*r.rows).entries())ctx.fillText(line[1].text,x,y+line[0]*r.lh)}
-  if(r.pages>1){ctx.fillStyle='rgb(191,245,220)';ctx.globalAlpha=.8;ctx.font=typeFont(-2,400);ctx.fillText((r.page+1)+' / '+r.pages+' · SCROLL',x,L.y+L.hy-r.pad-r.lh)}ctx.restore();
+  else{ctx.fillStyle='rgb(223,243,234)';ctx.globalAlpha=1;for(const line of r.lines.slice(r.page*r.rows,(r.page+1)*r.rows).entries())typeInk(ctx,line[1].text,x,y+line[0]*r.lh)}
+  if(r.pages>1){ctx.fillStyle='rgb(191,245,220)';ctx.globalAlpha=.8;ctx.font=typeFont(-2,400);typeInk(ctx,(r.page+1)+' / '+r.pages+' · SCROLL',x,L.y+L.hy-r.pad-r.lh)}ctx.restore();
 }
 /* ---------- ink membrane: an open sentence finds free space ----------
  * Open or folding sentences never overlap Papers/Display chrome or one another. Lights and vertices search a ring
@@ -1037,7 +1043,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   for(const light of lights){const p=proj(light.center);metGeo.push({id:light.id,x:p.x,y:p.y,light})}
   const whole=B.volume?bodyDoorPoint(P,rect):null;
   state.beingGeo={P,front,mets:metGeo,whole,doors:B.verts.map(v=>v.door)};
-  if(whole){ctx.font=BEING_FONT;ctx.fillStyle=`rgba(223,243,234,${alpha*.6})`;ctx.fillText('1T',whole.x-BEING_LH*.5,whole.y);}
+  if(whole){ctx.font=BEING_FONT;ctx.fillStyle=`rgba(223,243,234,${alpha*.6})`;typeInk(ctx,'1T',whole.x-BEING_LH*.5,whole.y);}
   if(state.originButton){state.originButton.hidden=entity.kind!=='source';const origin=bodyDoorPoint(P,rect,-1);if(origin){state.originButton.style.left=origin.x+'px';state.originButton.style.top=origin.y+'px';}else state.originButton.hidden=true;}
   syncPaperLens(B,state.beingGeo);
   const contact=LZ?.lock?.kind==='body'?livePaperLensPart(LZ.lock.id):null,layout=contact?paperLensReading(contact):null,reading=paperLensReady(LZ,layout)?contact:null;

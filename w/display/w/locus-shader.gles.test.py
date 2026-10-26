@@ -158,38 +158,50 @@ def replay(commands,width,height,min_depth_clears=3):
     return images,programs
 
 def readable_contract(width,height):
-    """Source pixels survive to every reading edge; optics remain outside it."""
-    frame={'left':24,'top':height//3,'width':min(300,width-48),'height':110,'r':14}
-    cases=[('body',frame),('field',frame),('overlap',frame),('top',{'left':0,'top':0,'width':width,'height':62}),('compass',{'left':width-190,'top':height-220,'width':174,'height':204})]
-    source=bytes(v for y in range(height) for x in range(width) for v in ((225,235,218,255) if (x//3+y//5)%2 else (30,85,70,255)))
+    """Actual foreground stays sharp; scene keeps optics and gains focus blur."""
+    import statistics
+    frame={'left':24,'top':height//3,'width':min(300,width-48),'height':120,'r':14}
+    background=bytes(v for y in range(height) for x in range(width) for v in ((225,235,218,255) if (x//3+y//5)%2 else (30,85,70,255)))
     results=[]
     with tempfile.TemporaryDirectory() as tmp:
-        image=Path(tmp)/'reading.rgba';image.write_bytes(source)
-        for kind,r in cases:
-            env={**os.environ,'GLYPH_IMAGE':str(image)}
-            if kind in {'body','field','overlap'}:
-                env.update(GLYPH_FRAME=json.dumps(r),READ_LOCK='body' if kind=='overlap' else kind)
-                if kind=='overlap':env.update(READ_SURFACE=json.dumps({'left':r['left']-12,'top':r['top']+16,'width':80,'height':90}))
-            else:env.update(READ_SURFACE=json.dumps(r))
-            runs=[]
-            for reference in ['1','0']:
-                capture=subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env={**env,'READ_REFERENCE':reference},text=True)
-                images,_=replay(json.loads(capture),width,height);runs.append(images[-1][0])
-            examined=changed=0
-            for y in range(height):
-                for x in range(width):
+        target=Path(tmp)/'target.rgba';image=Path(tmp)/'scene.rgba'
+        subprocess.check_call(['node',str(Path(__file__).with_name('liquid-reading-ink.cjs')),str(width),str(height),json.dumps(frame),str(target)])
+        fg=target.read_bytes();plain=Path(tmp)/'plain.rgba';subprocess.check_call(['node',str(Path(__file__).with_name('liquid-reading-ink.cjs')),str(width),str(height),json.dumps(frame),str(plain),'plain']);bare=plain.read_bytes()
+        shadow_pixels=sum(bare[i+3]==0 and fg[i+3]>0 for i in range(0,len(fg),4));assert shadow_pixels>100
+        assert all(fg[i:i+4]==bare[i:i+4] for i in range(0,len(fg),4) if bare[i+3]==255),'shadow changes solid glyph colour'
+        results.append({'kind':'type-shadow','additional_edge_support_pixels':shadow_pixels,'solid_glyph_pixels_unchanged':True})
+        combined=bytearray(background)
+        for i in range(0,len(fg),4):
+            a=fg[i+3]/255
+            for channel in range(3):combined[i+channel]=min(255,round(fg[i+channel]+background[i+channel]*(1-a)))
+        image.write_bytes(combined)
+        def capture(extra):
+            env={**os.environ,'GLYPH_IMAGE':str(image),'GLYPH_FRAME':json.dumps(frame),**extra}
+            commands=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'0','0'],env=env,text=True))
+            return replay(commands,width,height)[0][-1][0]
+        dry=capture({'READ_REFERENCE':'1'})
+        for kind in ['body','field','overlap']:
+            args={'READ_LOCK':'field' if kind=='field' else 'body','FOREGROUND_IMAGE':str(target)}
+            if kind=='overlap':args['READ_SURFACE']=json.dumps({'left':12,'top':frame['top']+20,'width':90,'height':90})
+            focused=capture(args);sharp=0;before=[];after=[]
+            for y in range(frame['top']+12,frame['top']+frame['height']-12):
+                for x in range(frame['left']+12,frame['left']+frame['width']-12):
                     i=((height-1-y)*width+x)*4
-                    corner=r.get('r',0)
-                    dx=max(0,abs(x+.5-r['left']-r['width']/2)-r['width']/2+corner)
-                    dy=max(0,abs(y+.5-r['top']-r['height']/2)-r['height']/2+corner)
-                    inside=r['left']<=x+.5<=r['left']+r['width'] and r['top']<=y+.5<=r['top']+r['height'] and (not corner or dx*dx+dy*dy<=corner*corner)
-                    if inside:
-
-                        assert runs[0][i:i+4]==runs[1][i:i+4],f'{kind}: reading pixel altered at {x},{y}'
-                        examined+=1
-                    elif runs[0][i:i+4]!=runs[1][i:i+4]:changed+=1
-            assert examined>1000 and changed>50,(kind,examined,changed)
-            results.append({'kind':kind,'unchanged_reading_pixels':examined,'optical_pixels_outside':changed})
+                    if fg[i+3]==255:
+                        assert max(abs(focused[i+k]-fg[i+k]) for k in range(3))<=2,(kind,'foreground softened',x,y,focused[i:i+4],fg[i:i+4]);sharp+=1
+                    elif fg[i+3]==0:before.append(dry[i]);after.append(focused[i])
+            assert sharp>100,(kind,sharp)
+            ratio=statistics.pstdev(after)/statistics.pstdev(before);assert ratio<.55,(kind,'background remained sharp',ratio)
+            outside=[i for y in range(height) for x in range(width) if x<frame['left']-40 or x>frame['left']+frame['width']+40 for i in [((height-1-y)*width+x)*4]]
+            assert sum(dry[i:i+4]!=focused[i:i+4] for i in outside)<len(outside)*.02
+            results.append({'kind':kind,'sharp_glyph_and_shape_pixels':sharp,'background_contrast_ratio':round(ratio,4)})
+        for kind,r in [('top',{'left':0,'top':0,'width':width,'height':62}),('compass',{'left':width-190,'top':height-220,'width':174,'height':204})]:
+            reference=capture({'READ_SURFACE':json.dumps(r),'READ_REFERENCE':'1'});liquid=capture({'READ_SURFACE':json.dumps(r)});changed=total=0
+            for y in range(r['top']+8,r['top']+r['height']-8):
+                for x in range(r['left']+8,r['left']+r['width']-8):
+                    i=((height-1-y)*width+x)*4;changed+=reference[i:i+4]!=liquid[i:i+4];total+=1
+            assert changed>total*.15,(kind,'dry reading rectangle remains',changed,total)
+            results.append({'kind':kind,'refracted_pixels_inside_text_rectangle':changed,'examined':total})
     return results
 
 def coalescence_contract(width,height):

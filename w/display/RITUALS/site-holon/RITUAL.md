@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.25"
+version: "3.26"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -100,6 +100,10 @@ Every site-holon owns one canonical recursive UI-field state for the screen-spac
 When a canonical field determines screen placement, site CSS/render code must not secretly substitute independent absolute pixel *orientation*. Site styling may and must determine its own functional width/height, material, typography, scrolling, intrinsic overflow and visual behavior. An address may stay realized as its lattice cell subdivides more finely; overlap is not a conflict unless local interaction makes it one. Carrier variants remain address state rather than a second viewport-specific positioning system.
 
 The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected labels, bodies, beings, chamber marks and other tissue whose position is derived from organism/world coordinates remain in that native frame. Global Display-owned membrane surfaces likewise remain Display tissue rather than being assigned to one site's local grid.
+
+### Source-owned sharp contact foreground
+
+The existing shared lens offer may lend foreground(frame), invoked only for the contacted identity. The frame contains fieldId, actual camera/projection/model, drawing-buffer dimensions, DPR and a drawBody(identity) capability for an actual mounted body. Return transparent canvases in paint order or draw into the isolated target and return true; an authored DOM target may acknowledge its existing foreground with true and no GL draw; return false/null to decline. Check field identity before lending local pixels. Null framebuffer binds during this callback belong to the isolated target. Display contains render state and composites actual foreground coverage sharply over the defocused, continuously refracted background only inside the current drop. An absent foreground cannot justify blurring that same inseparable body as background. The callback may not actuate source changes, simulate another clock step, replace target identity or publish private source. The existing offer owns lifetime, wording and continuation; there is no second visible text panel.
 
 ### Feed-owned rank-relative representations
 

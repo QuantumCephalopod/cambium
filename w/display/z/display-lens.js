@@ -220,6 +220,7 @@
     if(!spec||(spec.kind==='field'?typeof spec.rect!=='function':spec.kind==='body'?typeof spec.point!=='function':true))throw new TypeError('lock target '+id+' needs kind field+rect() or body+point()');
     offers.set(id,spec);return id;
   }
+  function foreground(id,frame){const spec=offers.get(id);return typeof spec?.foreground==='function'?spec.foreground(frame):null}
   function withdraw(id){return offers.delete(id)}
   function resolveTargets(lockedId=state?.lock?.id){
     const out=[];
@@ -356,5 +357,5 @@
     });
     root.requestAnimationFrame(loop);
   }
-  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,depart,departFrom,offer,withdraw,resolveTargets});
+  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,depart,departFrom,offer,withdraw,foreground,resolveTargets});
 });

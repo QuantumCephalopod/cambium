@@ -1,5 +1,6 @@
 (() => {
 'use strict';
+const typeInk=(ctx,...args)=>{if(globalThis.SSSDisplayType?.fillText)return globalThis.SSSDisplayType.fillText(ctx,...args);ctx.fillText(...args)};
 const id='organism:crawlerbait';
 const GENES=Object.freeze(['w','x','z','y']);
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
@@ -513,22 +514,9 @@ function typeBodies(now,pxOf){
   }
   return out;
 }
-function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container}){
-  if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection,growth);resetTo(0)}
-  if(!SIM.life)return;
-  SIM.container=typeof container==='string'?container:'';
-  if(CAM.on&&CAM.o&&SIM.alive.has(CAM.o))SIM.container=beingFrame(CAM.o).container;
-  const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5],pxBase=ms3*f*height/2;
-  const pxOf=(P,r)=>{const z=model[2]*P[0]+model[6]*P[1]+model[10]*P[2]+model[14];return r*pxBase/Math.max(.05,3.2-z)};
-  SIM.pxOf=pxOf;advance(ms);
-  SIM.renderBodies=MODE==='beings'?typeBodies(ms,pxOf):null;
-  SIM.placeStart=SIM.ns;if(MODE==='reef')placeForms(ms);
-  const screen=screenFrame(proj,view,model,width/(dpr||1),height/(dpr||1));
-  if(CAM.on&&CAM.o){const p=screen(CAM.o.p),r=canvas?.getBoundingClientRect?.();if(p.front)CAM.origin={x:(r?.left||0)+p.x,y:(r?.top||0)+p.y}}
-  updateInk(screen,ms,width,height,dpr||1,canvas);
-  if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
-  if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
-  const Lr=layerFor(gl);if(Lr.off){gl.canvas.dataset.gooLayer='off: '+Lr.off;camFollow(ms);tickHud();return}
+function paintGoo({gl,proj,view,model,width,height,dpr},diagnostic=true){
+  const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5];
+  const Lr=layerFor(gl);if(Lr.off)return false;
   sizeTarget(Lr,width,height);
   // 1 · accumulate the complex field
   gl.bindFramebuffer(gl.FRAMEBUFFER,Lr.fbo);gl.viewport(0,0,Lr.fw,Lr.fh);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
@@ -546,8 +534,26 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   gl.bindVertexArray(Lr.ivao);gl.drawArrays(gl.TRIANGLES,0,3);
   gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,width,height);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   gl.useProgram(Lr.copy);gl.bindTexture(gl.TEXTURE_2D,Lr.inkTex);gl.uniform1i(Lr.copyTex,0);gl.uniform2f(Lr.copySize,width,height);gl.drawArrays(gl.TRIANGLES,0,3);
-  gl.canvas.dataset.inkPixels=String(Lr.fw*Lr.fh);
-  gl.canvas.dataset.gooLayer=`${SIM.alive.size} alive · ${SIM.resolved} bodies · ${SIM.colonies} colonies · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;
+  if(diagnostic){gl.canvas.dataset.inkPixels=String(Lr.fw*Lr.fh);
+  gl.canvas.dataset.gooLayer=`${SIM.alive.size} alive · ${SIM.resolved} bodies · ${SIM.colonies} colonies · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;}
+  return true;
+}
+function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container}){
+  if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection,growth);resetTo(0)}
+  if(!SIM.life)return;
+  SIM.container=typeof container==='string'?container:'';
+  if(CAM.on&&CAM.o&&SIM.alive.has(CAM.o))SIM.container=beingFrame(CAM.o).container;
+  const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5],pxBase=ms3*f*height/2;
+  const pxOf=(P,r)=>{const z=model[2]*P[0]+model[6]*P[1]+model[10]*P[2]+model[14];return r*pxBase/Math.max(.05,3.2-z)};
+  SIM.pxOf=pxOf;advance(ms);
+  SIM.renderBodies=MODE==='beings'?typeBodies(ms,pxOf):null;
+  SIM.placeStart=SIM.ns;if(MODE==='reef')placeForms(ms);
+  const screen=screenFrame(proj,view,model,width/(dpr||1),height/(dpr||1));
+  if(CAM.on&&CAM.o){const p=screen(CAM.o.p),r=canvas?.getBoundingClientRect?.();if(p.front)CAM.origin={x:(r?.left||0)+p.x,y:(r?.top||0)+p.y}}
+  updateInk(screen,ms,width,height,dpr||1,canvas);
+  if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
+  if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
+  paintGoo({gl,proj,view,model,width,height,dpr});
   camFollow(ms);
   if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
     const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.cell===''?'body':'colony'} · fade ${CAM.o.fade.toFixed(2)}`}
@@ -596,7 +602,7 @@ function textPages(text,font,rows){
 }
 function textLines(text,font,rows,page=0){const pages=textPages(text,font,rows);return pages.length?pages[page%pages.length]:[]}
 function freeRows(rows){return rows.flatMap(r=>{let spans=[[r.x,r.x+r.w]];for(const b of INK.reserved){if(r.y+typePx(-1)*1.4<=b.top||r.y>=b.bottom)continue;spans=spans.flatMap(([l,h])=>h<=b.left||l>=b.right?[[l,h]]:[[l,Math.min(h,b.left-6)],[Math.max(l,b.right+6),h]].filter(([a,z])=>z-a>=Math.max(96,typePx(-1)*10)))}spans.sort((a,b)=>(b[1]-b[0])-(a[1]-a[0]));return spans.length?[{...r,x:spans[0][0],w:spans[0][1]-spans[0][0]}]:[]})}
-function paintWords(ctx,text,rows,color,ms=INK.ms,world=true){if(world)rows=freeRows(rows);ctx.font=typeFont(-1);ctx.fillStyle=color;ctx.textBaseline='top';const lines=textLines(text,ctx.font,rows,Math.floor(ms/8000));for(const r of lines)ctx.fillText(r.text,r.x,r.y);return lines}
+function paintWords(ctx,text,rows,color,ms=INK.ms,world=true){if(world)rows=freeRows(rows);ctx.font=typeFont(-1);ctx.fillStyle=color;ctx.textBaseline='top';const lines=textLines(text,ctx.font,rows,Math.floor(ms/8000));for(const r of lines)typeInk(ctx,r.text,r.x,r.y);return lines}
 function lensFrame(point,narrative=false){
   if(!point)return null;const c=INK.canvas;if(!c)return null;const r=c.getBoundingClientRect(),pad=16,carrier=INK.ui?.carrier;
   const leftMin=r.left+(carrier?.x||0)+pad,topMin=r.top+(carrier?.y||0)+pad;
@@ -627,6 +633,14 @@ function fitHud(){
   const field={...INK.layout.base};if(plan.variant)field.variants={...field.variants,[plan.variant]:plan.cells};else field.cells=plan.cells;
   ui.state.fields.bottom=field;ui.refresh();bottom.style.maxInlineSize=plan.width+'px';rail.style.maxBlockSize=Math.max(0,plan.top-rail.getBoundingClientRect().top-8)+'px';
 }
+const FOCUS_SPLATS=new Float32Array(MAXS*7);
+function focusTarget(targetId,frame){
+  if(frame.fieldId!==id||!INK.canvas)return false;const target=INK.offers.get(targetId),snap=globalThis.SSSDisplayLens?.snapshot?.()?.lens;if(!target||!snap||snap.lock?.id!==targetId||(!target.o&&!INK.pretext))return false;
+  if(target.o&&frame.gl){const old=SIM.sPos,n=SIM.ns;try{SIM.sPos=FOCUS_SPLATS;SIM.ns=0;body(target.o,frame.ms,SIM.pxOf||((p,r)=>r*900));paintGoo(frame,false)}finally{SIM.sPos=old;SIM.ns=n}}
+  const c=INK.focusCanvas||(INK.focusCanvas=document.createElement('canvas')),d=frame.dpr||1;c.width=frame.width;c.height=frame.height;const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,c.width/d,c.height/d);
+  const rect=INK.canvas.getBoundingClientRect(),f=lensFrame(target.point,target.narrative);if(INK.pretext&&f&&snap.round===0&&Math.abs(snap.hx*2-f.width)<2&&Math.abs(snap.hy*2-f.height)<2){const lh=typePx(-1)*1.4,rows=Array.from({length:Math.floor((f.height-24)/lh)},(_,i)=>({x:f.left-rect.left+12,y:f.top-rect.top+12+i*lh,w:f.width-24}));paintWords(ctx,target.o?beingText(target.o):target.text,rows,target.o?KIND[target.o.facts.k].ink:target.color,frame.ms,false)}
+  return [c];
+}
 function updateInk(screen,ms,w,h,d,fieldCanvas){
   const c=INK.canvas;if(!c)return;INK.ms=ms;if(c.width!==w||c.height!==h){c.width=w;c.height=h}
   c.style.visibility=fieldCanvas?.dataset.composite==='1'?'hidden':'visible';
@@ -638,12 +652,12 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
     if(MODE!=='reef'||o.fade<.15||o.fine<.2||!point.front||point.x<0||point.y<0||point.x>rect.width||point.y>rect.height)point=null;
     if(!old&&!point)continue;
     seen.add(id);if(old){Object.assign(old,{o,point});continue}
-    const target={o,point};INK.offers.set(id,target);L?.offer?.(id,{kind:'body',point:()=>{const p=INK.offers.get(id)?.point,r=c.getBoundingClientRect();return p?{x:r.left+p.x,y:r.top+p.y,r:Math.max(7,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext&&t?.point?lensFrame(t.point):null}});
+    const target={o,point};INK.offers.set(id,target);L?.offer?.(id,{kind:'body',foreground:frame=>focusTarget(id,frame),point:()=>{const p=INK.offers.get(id)?.point,r=c.getBoundingClientRect();return p?{x:r.left+p.x,y:r.top+p.y,r:Math.max(7,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext&&t?.point?lensFrame(t.point):null}});
   }
   function offerWords(id,point,text,color,narrative=false){
     const old=INK.offers.get(id);if(!old&&!point)return;seen.add(id);
     if(old){Object.assign(old,{point,text,color,narrative});return}
-    INK.offers.set(id,{point,text,color,narrative});L?.offer?.(id,{kind:'body',point:()=>{const p=INK.offers.get(id)?.point;return p?{x:rect.left+p.x,y:rect.top+p.y,r:Math.max(9,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext&&t?.point?lensFrame(t.point,t.narrative):null}});
+    INK.offers.set(id,{point,text,color,narrative});L?.offer?.(id,{kind:'body',foreground:frame=>focusTarget(id,frame),point:()=>{const p=INK.offers.get(id)?.point;return p?{x:rect.left+p.x,y:rect.top+p.y,r:Math.max(9,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext&&t?.point?lensFrame(t.point,t.narrative):null}});
   }
   if(MODE==='beings')for(const k of GENES){const p=screen(colonyGeom(k).cen);offerWords('crawlerbait:type:'+k,p.front?p:null,`${KIND[k].name}. ${word(KIND_DE[k],KIND[k].does)}. ${SIM.typeCounts?.[k]||0} ${word('Besucher an dieser Stelle des Verlaufs','visitors at this point in the record')}.`,KIND[k].ink)}
   // Narrative identity survives a grazing angle: only its world projection can disappear.

@@ -8,8 +8,8 @@ global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};global.
 const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),Type=require('../../../w/display-type.js'),Tissue=require('../../../w/display-text-tissue.js'),N=require('../../../z/navigation-physiology.js');
 const [width=390,height=844]=process.argv.slice(2).map(Number),box={left:0,top:0,width,height,right:width,bottom:height},canvas=createCanvas(width,height);canvas.dataset={};canvas.getBoundingClientRect=()=>box;
 const projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),bodies=Object.fromEntries(fs.readdirSync(path.join(__dirname,'inquiry')).filter(x=>x.endsWith('.json')).map(f=>[f.slice(0,-5),JSON.parse(fs.readFileSync(path.join(__dirname,'inquiry',f)))]));
-const context={console,performance,Map,Set,Intl,Float32Array,document:{},SSSDisplayType:Type,SSSDisplayNavigation:N,SSSWorldView:{orientation:[1,0,0,0]},SSSInterlocutorModules:new Map()};
-const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8').replace(/\}\)\(\);\s*$/,`globalThis.api={ensureBeing,identityIndex,parentIndex,paperLensParts,paperLensReading,paperLensPage,drawPaperLens,setState:s=>state=s,setPretext:p=>pretextModule=p};})();`);vm.runInNewContext(source,context);const api=context.api;
+const context={console,performance,Map,Set,Intl,Float32Array,document:{createElement:()=>createCanvas(1,1)},SSSDisplayType:Type,SSSDisplayNavigation:N,SSSWorldView:{orientation:[1,0,0,0]},SSSInterlocutorModules:new Map()};
+const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8').replace(/\}\)\(\);\s*$/,`globalThis.api={ensureBeing,identityIndex,parentIndex,paperLensParts,paperLensReading,paperLensPage,drawPaperLens,paperForeground,setLens:f=>lensAccess=f,setState:s=>state=s,setPretext:p=>pretextModule=p};})();`);vm.runInNewContext(source,context);const api=context.api;
 const paragraph={textContent:''},small={textContent:''},state={mounted:true,host:{hidden:false,getBoundingClientRect:()=>box},transition:1,ui:{carrier:{x:0,y:60,w:width,h:height-60}},textCanvas:canvas,wisdomPrepared:new Map(),inquiryBodies:bodies,identities:api.identityIndex(projection),parents:api.parentIndex(projection),renderer:{V0:N.V0},lensReader:{dataset:{},querySelector:k=>k==='p'?paragraph:small},tissueLetters:[]};api.setState(state);
 const tissue=Tissue.create({getContext:()=>gl}),audits=[],frames=[],kinds=new Set();
 (async()=>{
@@ -26,6 +26,9 @@ const tissue=Tissue.create({getContext:()=>gl}),audits=[],frames=[],kinds=new Se
     api.paperLensPage(-Infinity);api.paperLensPage(page);state.tissueLetters=[];
     const L={x:r.frame.left+r.width/2,y:r.frame.top+r.height/2,hx:r.width/2,hy:r.height/2,round:0,corner:r.pad,r:Math.min(r.width,r.height)/2};api.drawPaperLens(canvas.getContext('2d'),L,part,box,1);
     assert.equal(paragraph.textContent,part.text);assert(state.tissueLetters.length);assert(state.tissueLetters.every(g=>g.fat===0));
+    state.lensParts=new Map([[part.id,part]]);api.setLens(()=>L);const selected=state.current,letters=state.tissueLetters,oldPage=state.lensReading.page;
+    const sharp=api.paperForeground(part.id,{fieldId:'organism:papers',width,height,dpr:1});assert.equal(sharp.length,1);const pixels=sharp[0].getContext('2d').getImageData(0,0,width,height).data;assert(pixels.some((v,i)=>i%4===3&&v>0));assert.equal(state.current,selected);assert.equal(state.tissueLetters,letters);assert.equal(state.lensReading.page,oldPage);
+
     tissue.draw(state.tissueLetters,{width,height,dpr:1,tissue:0,ink:[.87,.95,.92]});commands.push({name:'readback',width,height,lens:{}});frames.push({kind:part.kind,page:page+1,letters:state.tissueLetters.length,frame:r.frame});
    }
   }

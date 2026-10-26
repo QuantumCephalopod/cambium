@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.8"
+version: "1.9"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -132,3 +132,7 @@ Version1.5 liquid-gated miniatures (2026-10-20): the host owns its plain materia
 Version1.6 actual-interior counterexample (2026-10-20): the prior all-body cover flattened primitive materials and obscured transparent Papers tissue. Only actual finer offers are gated; ordinary Crawlerbait/legal skins are restored. Papers uses its own chamber/shell/ember renderer and the host input begins before covers. Actual source-renderer pixel comparisons supplement earlier procedural-mask evidence. No new Crawl/Legal interior or higher/detail acquisition is claimed.
 
 Version1.7 contact-name visibility (2026-10-20): hovered/focused site names remain native visible foreground above their own button surface; quiet names continue through shared optical ink. The same body, title, anchor and entry remain. This closes the original hover nutrient without a Philosophy-specific style override; shared inverse and concurrent passage remain Display-owned.
+
+## Sharp liquid contact — 2026-10-26
+
+Mounted-body offers lend their actual stable body identity through Display's existing drawBody capability for isolated sharp foreground. Description stays source-owned DOM text. Shared type supplies the light shadow; no new target identity, navigation or source topology is introduced.

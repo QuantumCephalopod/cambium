@@ -51,9 +51,11 @@
     }`);
     const full=prog(`#version 300 es
     void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0.,1.);}`,`#version 300 es
-    precision highp float;uniform sampler2D F;uniform vec2 res;uniform float scale,alpha;uniform vec3 ink;out vec4 o;
+    precision highp float;uniform sampler2D F;uniform vec2 res;uniform float scale,alpha;uniform vec2 shadowPx;uniform vec3 ink;out vec4 o;
     void main(){float S=texture(F,gl_FragCoord.xy/res).r/scale,L=log(max(S,1e-6));
-      float a=clamp(L/max(fwidth(L),1e-4)+.5,0.,1.)*alpha;o=vec4(ink*a,a);}`);
+      float edge=max(fwidth(L),1e-4),a=clamp(L/edge+.5,0.,1.)*alpha,sh=0.;
+      for(int i=0;i<5;i++){vec2 off=i==0?vec2(0.):(i==1?vec2(shadowPx.y,0.):(i==2?vec2(-shadowPx.y,0.):(i==3?vec2(0.,shadowPx.y):vec2(0.,-shadowPx.y))));float v=texture(F,(gl_FragCoord.xy+vec2(-shadowPx.x,shadowPx.x)+off)/res).r/scale;sh+=clamp(log(max(v,1e-6))/edge+.5,0.,1.);}
+      sh=sh*.13*alpha*(1.-a);o=vec4(ink*a+vec3(.012,.02,.031)*sh,a+sh);}`);
     const half=!!gl.getExtension('EXT_color_buffer_float');
     const cvs=document.createElement('canvas'),cx=cvs.getContext('2d',{willReadFrequently:true});
     cx.font=EM+'px '+FACE;const cw=Math.ceil(cx.measureText('M').width)+PAD*2+8,ch=Math.ceil(EM*1.3)+PAD*2;cvs.width=cw;cvs.height=ch;
@@ -77,7 +79,7 @@
     gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,buf);
     gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,4,gl.FLOAT,false,32,0);gl.vertexAttribDivisor(0,1);
     gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,4,gl.FLOAT,false,32,16);gl.vertexAttribDivisor(1,1);gl.bindVertexArray(null);
-    const u=(p,n)=>gl.getUniformLocation(p,n),UB={A:u(body,'A'),res:u(body,'res'),cell:u(body,'cell'),atlasPx:u(body,'atlasPx'),pad:u(body,'pad'),cols:u(body,'cols'),scale:u(body,'scale')},UC={F:u(full,'F'),res:u(full,'res'),scale:u(full,'scale'),ink:u(full,'ink'),alpha:u(full,'alpha')};
+    const u=(p,n)=>gl.getUniformLocation(p,n),UB={A:u(body,'A'),res:u(body,'res'),cell:u(body,'cell'),atlasPx:u(body,'atlasPx'),pad:u(body,'pad'),cols:u(body,'cols'),scale:u(body,'scale')},UC={F:u(full,'F'),res:u(full,'res'),scale:u(full,'scale'),ink:u(full,'ink'),alpha:u(full,'alpha'),shadowPx:u(full,'shadowPx')};
     const SCALE=half?1:1/16;let W=0,H=0,data=new Float32Array(0);
     /* letters: [{ch, x, y (top-left in CSS px), size (CSS px), angle, fat (0..1, multiple of size), weight (0..1)}] */
     function draw(letters,{width,height,dpr=1,presses=[],ink=[.87,.95,.92],alpha=1,tissue=.3}={}){
@@ -100,7 +102,7 @@
         gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,count);gl.disable(gl.BLEND)}
       gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
       if(count){gl.useProgram(full);gl.bindVertexArray(empty);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,field);gl.uniform1i(UC.F,0);
-        gl.uniform2f(UC.res,w,h);gl.uniform1f(UC.scale,SCALE);gl.uniform3fv(UC.ink,ink);gl.uniform1f(UC.alpha,alpha);gl.drawArrays(gl.TRIANGLES,0,3)}
+        gl.uniform2f(UC.res,w,h);gl.uniform1f(UC.scale,SCALE);gl.uniform3fv(UC.ink,ink);gl.uniform1f(UC.alpha,alpha);const rem=(root.SSSDisplayType?.rootRemPx?.()||16)*dpr;gl.uniform2f(UC.shadowPx,rem/16,rem/8);gl.drawArrays(gl.TRIANGLES,0,3)}
       return count;
     }
     return Object.freeze({draw,canvas});
