@@ -1,6 +1,6 @@
 # NUTRIENT — Continuous liquid across reading tissue
 
-status: OPEN / ADMITTED — implementation and actual-raster witness pending
+status: OPEN / IMPLEMENTED_NATIVE — live visitor acceptance pending
 owner: display
 source: Philipp, 2026-10-26 (Europe/Berlin), direct owner correction with screenshot grafik(20261026-205342).png
 baseline: f3928c83f16fcaa10905e5307b40be9cf5c8eab4
@@ -26,3 +26,7 @@ Retain actual hull, safe-area, source ownership, shared drop, target identity an
 - Structured background continues to refract behind sharp text; a whole clear rectangle is a failure even if its text is readable.
 - Preserve source/identity, geometry, truthful fallback, clipping and continuation.
 - Record implementation/witness in owner HOME, derive feed separately, and retire this same intake only after its outcome is earned.
+
+## Native return — 2026-10-26
+
+Implementation is recorded in the owner-local sharp-liquid-contact HOME, with shared evidence at w/display/_root/display-liquid-focus-evidence-20261026.json. Actual production/font/foreground raster tests pass at narrow/wide carriers. The source-owned semantics are preserved. This same intake stays live for the exact-candidate visitor witness after owner promotion; no browser pass is inferred from native pixels.
