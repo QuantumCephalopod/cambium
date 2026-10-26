@@ -6,7 +6,7 @@ global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};global.
 const Type=require(path.join(display,'w/display-type.js')),{gl,commands}=require(path.join(display,'w/gles-transport.cjs')).createTransport();gl.canvas={dataset:{}};
 const [width=390,height=844]=process.argv.slice(2).map(Number),canvas=createCanvas(width,height);Object.assign(canvas,{dataset:{},style:{},getBoundingClientRect:()=>({left:0,top:0,width,height,right:width,bottom:height})});
 const offers=new Map(),RealLens=require(path.join(display,'z/display-lens.js'));let lens=null;const context={console,performance,Map,Set,Intl,Float32Array,document:{},SSSDisplayType:Type,SSSDisplayLens:{snapshot:()=>lens?{lens}:null,offer:(id,target)=>{offers.set(id,target);RealLens.offer(id,target)},withdraw:id=>{offers.delete(id);RealLens.withdraw(id)}},SSSInterlocutorModules:new Map()};
-vm.runInNewContext(fs.readFileSync(path.join(__dirname,'render.js'),'utf8').replace(/\}\)\(\);\s*$/,`globalThis.api={INK,SIM,buildLife,resetTo,updateInk,afterDraw,textPages,triangleRows,STORY,beingText,CAM,camRide,camFollow,typeBodies,fieldProjection,placeForms,setMode:v=>{MODE=v},setPlace:point=>{fieldCache={points:[point]}},setProjection:p=>{lastProjection=p;crawlerById=new Map(p.crawlers.map(c=>[c.id,c]))}};})();`),context);
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'render.js'),'utf8').replace(/\}\)\(\);\s*$/,`globalThis.api={INK,SIM,buildLife,resetTo,updateInk,afterDraw,textPages,triangleRows,STORY,STORY_DE,beingText,CAM,camRide,camFollow,typeBodies,fieldProjection,placeForms,setMode:v=>{MODE=v},setPlace:point=>{fieldCache={points:[point]}},setProjection:p=>{lastProjection=p;crawlerById=new Map(p.crawlers.map(c=>[c.id,c]))}};})();`),context);
 const A=context.api,projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),I=new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]),P=new Float32Array([1,0,0,0,0,width/height,0,0,0,0,1,0,0,0,0,1]);
 (async()=>{
  const placeCount=Number(process.argv[4]);if(placeCount){
@@ -16,7 +16,7 @@ const A=context.api,projection=JSON.parse(fs.readFileSync(path.join(__dirname,'p
   A.afterDraw({gl,canvas:gl.canvas,proj:Pp,view:V,model:M,ms:1000,width,height,dpr:1,container:a});commands.push({name:'readback',width,height,lens:{}});process.stdout.write(JSON.stringify({commands,place,count:placeCount,time:events[placeCount-1].t,address:a,splats:A.SIM.ns}));return;
  }
  A.setProjection(projection);A.SIM.life=A.buildLife(projection);A.resetTo(A.SIM.life.seconds*.3);A.INK.canvas=canvas;A.INK.ui={carrier:{x:0,y:60,w:width,h:height-60}};A.INK.pretext=await import(pathToFileURL(path.join(display,'w/pretext/layout.js')).href);
- const audits=[];for(const text of [...A.STORY,'Harvester 1234. Being 0123456789abcdef01234567. Body genome '+ 'abcd'.repeat(16)+'. 12 encounters, 3 baits, 2 days at this replay time.']){
+ const audits=[];for(const text of [...A.STORY,...A.STORY_DE,'Harvester 1234. Being 0123456789abcdef01234567. Body genome '+ 'abcd'.repeat(16)+'. 12 encounters, 3 baits, 2 days at this replay time.']){
   const rows=A.triangleRows([{x:24,y:70},{x:width-24,y:70},{x:width/2,y:height-90}],16);const pages=A.textPages(text,'400 12px "SpriteSheet Mono", monospace',rows);assert(pages.length);const compact=s=>Type.fold(s).replace(/\s/g,'');assert.equal(compact(pages.flat().map(x=>x.text).join('')),compact(text));audits.push({characters:text.length,pages:pages.length});
  }
  // Execute the actual simulation and all actual goo/ink shaders, not substitutes.

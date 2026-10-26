@@ -1,6 +1,6 @@
 # NUTRIENT — Reconcile Crawlerbait layout and proper name — 2026-10-19
 
-status: OPEN / ADMITTED — implementation and visitor witness pending
+status: OPEN / IMPLEMENTED_NATIVE — exact-candidate visitor acceptance pending
 kind: owner observation + bounded presentation/design pressure
 owner: w/display/y/yw/crawlerbait
 priority: normal
@@ -32,3 +32,9 @@ baseline: canonical main 65f4ac9493e15d879e47cd87a7b6665b3935d9a3
 - DE/EN keep the name and meaningful localized operational copy. Check light/dark field states; the browser review saw low text contrast after being selection.
 - Verify the actual changed behavior at narrow and wide viewport sizes. Native/render and browser evidence retain their real limits; no personal-phone signoff is required.
 - Append owner-local HOME, refresh its derived feed, and retire this same nutrient only after the implemented outcome is witnessed. Intake capture alone leaves it OPEN.
+
+## Candidate digestion — 2026-10-26
+
+All seven original pressures have implementation in the fork candidate based on canonical main `f804e0ae031f01c7fa0daac79eaab61cdf565aef`. Current evidence and this nutrient's bounded outcome are recorded in `_root/crawlerbait-seven-nutrients-native-20261026.json`; the shared-camera refinement is committed as `aca34cd9b9b6d8dcc31e4c3a1e166c417495765d`.
+
+This same intake remains live. Exact-candidate visitor acceptance has not been earned: this environment's browser URL security policy rejected the local candidate file, and organization promotion remains owner-controlled. Native source, controls, camera/field transports and software-GLES evidence keep their stated limits. Do not interpret implementation or passing native checks as completed visitor acceptance or archive this record on that basis.
