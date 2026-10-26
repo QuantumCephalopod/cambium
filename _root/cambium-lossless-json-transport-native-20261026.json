@@ -1,0 +1,31 @@
+{
+  "changed_scope": [
+    "y/build.py",
+    "y/check.py",
+    "y/test-site-build.py",
+    "RITUALS/organism/RITUAL.md"
+  ],
+  "context": {
+    "baseline": "f804e0ae031f01c7fa0daac79eaab61cdf565aef",
+    "boundary": "Only emitted JSON structural whitespace changes; source files, strings, member order and number lexemes remain exact. No source/provider, workflow or deployment mutation.",
+    "implementation_commit": "aca34cd9b9b6d8dcc31e4c3a1e166c417495765d",
+    "intake": "_stomach/NUTRIENT__lossless-json-transport__20261026.md",
+    "source_hashes": {
+      "RITUALS/organism/RITUAL.md": "5ad8b69855ebcbeb8b89597ab3acec83bbac04eda03438162f1f74506199b7ec",
+      "y/build.py": "7d8e0f3c273d42c6b30c1f332f2e997921e5acbe98b94bebf77698211dd2a136",
+      "y/check.py": "ba8fd528669f8b72660f08d8c03e720778b588a3eefbc85e97e325a3d856b72a",
+      "y/test-site-build.py": "bfa57ca78bae71a9778fe4475bd4c9b7751feb4596618e78929c0a8cd2f290e9"
+    },
+    "witness": [
+      "14 publisher tests PASS, including exact strings/number lexemes, idempotence, single-generation hashing/emission",
+      "247 enclosing checks, 345955 Crawlerbait owner checks, 188 captures, 23 refusals and whole-body relocation PASS"
+    ]
+  },
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "event_id": "cambium-lossless-json-transport-native-20261026",
+  "home_at_utc": "2026-10-26T19:44:53.605677Z",
+  "kind": "HOME",
+  "organism": "cambium",
+  "outcome": "EARNED_NATIVE / CANDIDATE — lossless source-preserving JSON transport; child visitor acceptance remains OPEN"
+}

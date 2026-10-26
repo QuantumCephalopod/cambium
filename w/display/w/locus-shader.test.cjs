@@ -337,15 +337,15 @@ console.log('PASS — unrelated owner uses shared folds and pointer Descent on n
  const body=path.join(__dirname,'../y/yw/crawlerbait/z');
  vm.runInNewContext(fs.readFileSync(path.join(body,'render.js'),'utf8'),context);
  const owner=modules.get('organism:crawlerbait'),source=JSON.parse(fs.readFileSync(path.join(body,'projection.json'),'utf8'));
- const law=owner._law,G=law.buildGrowth(source.routes),current=G.routesAt(Date.parse(source.raw_capture_start));
+ const law=owner._law,G=law.buildGrowth(source.routes),current=G.routesAt(law.buildLife(source).t0);
  for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
    const initial=owner.fieldProjection(source),snapshot=owner.shader.snapshot;
    const f=fixture({width,height,webgl,tree:initial.root,pointSpecs:initial.points,snapshot,order:[],glass:false});f.frame(0);
    const fold=f.api.points.find(p=>p.fold);assert(fold,'real generation did not exercise a closed fold');
    assert(f.api.descendTo(fold.path,'shared-fold-witness'));f.frame(500);
    assert.equal(f.api.container,fold.path);
-   assert.equal(f.api.points.reduce((n,p)=>n+(p.fold?p.count:1),0),current.filter(r=>r.address.startsWith(fold.path)).length);
-   for(const point of f.api.points.filter(p=>!p.fold))assert.equal(point.route.path,point.label);
+   assert.equal(f.api.points.reduce((n,p)=>n+(p.fold?p.count:1),0),current.length);
+   for(const point of f.api.points.filter(p=>!p.fold))assert.equal(point.id,'bait:'+point.route.path);
  }
 }
 console.log('PASS — real Crawlerbait snapshots use the shared carrier through both actual field transports at narrow/wide sizes');
@@ -353,16 +353,16 @@ console.log('PASS — real Crawlerbait snapshots use the shared carrier through 
 // An unrelated owner requests actual locus contact. Ordinary samples and fold
 // centres remain distinct; malformed/unrealized paths cannot claim a locus.
 for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
- const tree={...root,children:{...root.children,w:root,x:root}};
+ const tree={...root,children:{...root.children,w:root,x:root,y:root}};
  const structure=N.collectStructure(tree);
  const specs=[{id:'mineral:1',path:'ww',anchor:'locus'},
   {id:'mineral:2',path:'wx',anchor:'locus'}, {id:'mineral:3',path:'xw',anchor:'locus'},
-  {id:'ordinary',path:'xy'}, {id:'fold',path:'xx',anchor:'locus',fold:true,count:12,kind:'holon'},
+  {id:'ordinary',path:'xy'}, {id:'cell-centre',path:'yx',anchor:'cell'}, {id:'fold',path:'xx',anchor:'locus',fold:true,count:12,kind:'holon'},
   {id:'unrealized',path:'zzzz',gene:'z',anchor:'locus'}];
  const f=fixture({width,height,webgl,tree,pointSpecs:specs,order:[],glass:false});
  const frame=f.frame(0),expected=specs.map(spec=>{
   const a=N.addressRecord(structure,spec.path),cell=a||structure.leaves.find(c=>c.path.startsWith(spec.gene));
-  return spec.fold?a.center:spec.anchor==='locus'&&a?a.point:N.sampleTet(cell.tet,spec.id,.22);
+  return spec.fold?a.center:spec.anchor==='cell'&&a?a.center:spec.anchor==='locus'&&a?a.point:N.sampleTet(cell.tet,spec.id,.22);
  });
  if(webgl){const draw=frame.find(c=>c.type==='draw'&&c.mode===f.gl.POINTS);assert(draw);const a=draw.vao.buffer.data;
   for(let i=0;i<expected.length;i++)for(let j=0;j<3;j++)assert(Math.abs(a[i*6+j]-expected[i][j])<1e-7,'point GPU buffer diverged from owner anchor');
@@ -374,3 +374,22 @@ for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,tru
  }
 }
 console.log('PASS — unrelated owner locus/self/reciprocal anchors, ordinary samples and folded centres agree on both field transports');
+
+// An unrelated owner opts into sibling context, then actually enters that sibling.
+for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
+ const f=fixture({width,height,webgl,tree:{...root,children:{...root.children,w:root,x:root}},order:[],glass:false,pointSpecs:[{id:'mineral:w',path:'ww',anchor:'cell',context:true},{id:'mineral:x',path:'xx',anchor:'cell',context:true}]});
+ f.frame(0);assert(f.api.descendTo('ww','context-test'));f.frame(500);
+ assert.equal(f.api.points.length,2);assert(f.api.descendTo('xx','context-test'));f.frame(1000);assert.equal(f.api.container,'xx');
+}
+// The camera first approaches, then stays attached even when its source moves
+// farther per frame than a world-space spring can catch at a high magnification.
+for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
+ let p=[0,0,0];const f=fixture({width,height,webgl,order:[],glass:false,fieldShader:{id:'mineral-focus',fragment:fragment('attached'),focus:()=>({id:'moving-mineral',attached:true,center:p,scale:128,stiffness:4})}});
+ for(let t=0;t<=3000;t+=50)f.frame(t);
+ for(let t=3050;t<=5000;t+=50){p=[Math.sin(t)*.3,Math.cos(t)*.4,0];const frame=f.frame(t);
+  if(webgl){const m=frame.find(c=>c.type==='draw'&&c.name.includes('// attached')).model;
+    for(let j=0;j<3;j++)assert(Math.abs(m[j]*p[0]+m[4+j]*p[1]+m[8+j]*p[2]+m[12+j])<1e-4,'attached camera lags behind actual target');
+  }
+ }
+}
+console.log('PASS — optional cell centres, visible sibling entry and moving attached focus on both carriers/backends');

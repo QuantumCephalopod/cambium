@@ -19,6 +19,16 @@ def digest(root):
 
 
 class SiteBuild(unittest.TestCase):
+    def test_json_transport_preserves_tokens_and_string_whitespace(self):
+        source = (b' { "s": " space  \\n \\"quote\\" \\\\ ", '
+                  b'"number": -1.2300e+04, "n": 123456789012345678901, '
+                  b'"a": [ true, null ] } ')
+        packed = build.json_transport(source)
+        self.assertEqual(json.loads(source), json.loads(packed))
+        self.assertIn(b'-1.2300e+04', packed)
+        self.assertIn(b'123456789012345678901', packed)
+        self.assertEqual(build.json_transport(packed), packed)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='site-build-')
         self.addCleanup(self.temp.cleanup)
@@ -223,7 +233,8 @@ def validate(data, body, common):
         bundle = h.hexdigest()[:16]
         self.assertIn(f'membrane bundle {bundle};'.encode(), files['index.html'])
         self.assertTrue(all(p.startswith(f'assets/{bundle}/') for p in files if p.startswith('assets/')))
-        self.assertEqual(assets['site-test-unfamiliar-feed.json'], projection.read_bytes())
+        self.assertEqual(json.loads(assets['site-test-unfamiliar-feed.json']), json.loads(projection.read_bytes()))
+        self.assertNotIn(b'\n', assets['site-test-unfamiliar-feed.json'])
 
     def test_new_publication_reacquires_derivation_refusals_and_public_bytes(self):
         public = self.publication_fixture()

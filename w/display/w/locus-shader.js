@@ -99,7 +99,7 @@ function fieldPointRecords(structure,projection){
     const pool=raw.fold===true&&!!addressed&&Number.isInteger(raw.count)&&raw.count>0;
     // An owner may contact the actual address locus rather than an interior sample.
     // Folded populations still represent their containing cell, never a leaf vertex.
-    out.push({spec,path:(addressed||cell).path||'',world:pool?[...cell.center]:raw.anchor==='locus'&&addressed?[...addressed.point]:pointInTet(cell.tet,spec),pool});
+    out.push({spec,path:(addressed||cell).path||'',world:pool||raw.anchor==='cell'&&addressed?[...cell.center]:raw.anchor==='locus'&&addressed?[...addressed.point]:pointInTet(cell.tet,spec),pool});
   }
   return out;
 }
@@ -113,7 +113,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   let structure=N.collectStructure(projection.root),pointRecords=fieldPointRecords(structure,projection),pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));
   const colors=paletteSet(palette);let fieldRevision=null,shapeDirty=false;
   function refreshProjection(ms){
-    if(typeof shader.snapshot!=='function')return;const next=shader.snapshot({ms,container:container()});
+    if(typeof shader.snapshot!=='function')return;const rect=canvas.getBoundingClientRect(),next=shader.snapshot({ms,container:container(),project:point=>project(point,rect),viewport:{width:rect.width,height:rect.height}});
     if(!next?.root||!Array.isArray(next.points)||next.revision===fieldRevision)return;
     fieldRevision=next.revision;projection=next;structure=N.collectStructure(next.root);pointRecords=fieldPointRecords(structure,next);pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));shapeDirty=true;
     if(selectedPointId&&!pointById.has(selectedPointId))selectedPointId='';if(hoverPointId&&!pointById.has(hoverPointId))setHover('');
@@ -242,7 +242,8 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(gl&&GL){const data=geometry(cells);gl.bindBuffer(gl.ARRAY_BUFFER,GL.buf);gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);GL.count=data.length/7}
     const hint=c.length+2,pools=new Map();visible=[];
     for(const rec of pointRecords){
-      if(!rec.path.startsWith(c))continue;
+      if(rec.spec.context===true){visible.push(rec);continue}
+      if(!rec.path.startsWith(c))continue
       if(rec.path.length<=hint){visible.push(rec);continue}
       const key=rec.path.slice(0,hint);let pool=pools.get(key);
       if(!pool){const cellRec=N.addressRecord(structure,key)||N.cellForPath(key);pool={pool:true,path:key,members:[],world:[...cellRec.center],spec:null};pools.set(key,pool);visible.push(pool)}
@@ -255,8 +256,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(PG){PG.count=visible.length;uploadPoints()}
   }
   function descendTo(path,source){
-    const c=container();if(!path.startsWith(c)||path===c)return false;
-    for(let i=c.length+1;i<=path.length;i++)walk.push(path.slice(0,i));
+    const c=container();if(path===c)return false;
+    let from=c.length;
+    if(!path.startsWith(c)){
+      if(!visible.some(rec=>rec.spec.context===true&&rec.path===path))return false;
+      from=0;while(from<c.length&&from<path.length&&c[from]===path[from])from++;
+      walk=walk.slice(0,from);
+    }
+    for(let i=from+1;i<=path.length;i++)walk.push(path.slice(0,i));
     if(scopeBound())W.inspect(path,source);
     return true;
   }
@@ -304,19 +311,26 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
    * The walk, pools and selection are untouched; Display never learns what is being followed. */
   let follow=null;
   function followStep(ms){
-    const want=typeof shader.focus==='function'?shader.focus():null;
+    const want=typeof shader.focus==='function'?shader.focus({ms}):null;
     if(want&&Array.isArray(want.center)&&want.scale>0){
       if(!follow){const f=currentFrame();follow={c:[...f.center],v:[0,0,0],l:Math.log(f.scale),vl:0,ms}}
+      const attached=want.attached===true&&typeof want.id==='string';
+      if(attached&&follow.id!==want.id){follow.offset=follow.c.map((v,i)=>v-want.center[i]);follow.v=[0,0,0];follow.id=want.id}
+      if(!attached){follow.id=null;follow.offset=null}
       // real elapsed time in fixed substeps: the spring feels the same at 12 fps and at 144
       let rest=Math.min(.5,Math.max(0,(ms-follow.ms)/1000));follow.ms=ms;
       const w=Number(want.stiffness)>0?Number(want.stiffness):2.4,k=w*w,b=2*w,tl=Math.log(want.scale);
       while(rest>1e-6){const dt=Math.min(1/120,rest);rest-=dt;
-        for(let i=0;i<3;i++){follow.v[i]+=(k*(want.center[i]-follow.c[i])-b*follow.v[i])*dt;follow.c[i]+=follow.v[i]*dt}
+        for(let i=0;i<3;i++){
+          if(attached){follow.v[i]+=(-k*follow.offset[i]-b*follow.v[i])*dt;follow.offset[i]+=follow.v[i]*dt}
+          else{follow.v[i]+=(k*(want.center[i]-follow.c[i])-b*follow.v[i])*dt;follow.c[i]+=follow.v[i]*dt}
+        }
         follow.vl+=(k*(tl-follow.l)-b*follow.vl)*dt;follow.l+=follow.vl*dt}
+      if(attached)follow.c=want.center.map((v,i)=>v+follow.offset[i]);
     }else if(follow){cam={from:{center:[...follow.c],scale:Math.exp(follow.l)},to:frameFor(container()),start:performance.now()};follow=null}
   }
   function target(){return follow?{center:follow.c,scale:Math.exp(follow.l)}:currentFrame()}
-  function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2]}}
+  function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2],front:z>0}}
   function pointInTriangle(x,y,a,b,c){
     const area=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
     const p={x,y},s1=area(a,b,p),s2=area(b,c,p),s3=area(c,a,p);
@@ -695,7 +709,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   function draw(ms){
     if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
-    refreshProjection(ms);refreshVisible();followStep(ms);const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
+    followStep(ms);refreshProjection(ms);refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
     const proj=ORTHO?orthographic(3.2*Math.tan(Math.PI/6.6),w/h,.1,20):perspective(Math.PI/3.3,w/h,.1,20),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
     updateLabels(r);
     const fb=floatingBodies();

@@ -142,7 +142,7 @@ def main():
     check(all(by_id[s]['projection_data'] is not previews[s] for s in feed_urls),'detail state reentered global preview')
     check(len(actual.encode('utf-8')) < 600000,'global entry still carries detailed feed state')
     check(all((artifact / url).is_file()
-              and (artifact / url).read_bytes()==by_id[s]['projection_path'].read_bytes()
+              and (artifact / url).read_bytes()==build.json_transport(by_id[s]['projection_path'].read_bytes())
               for s,url in feed_urls.items()),'detailed site feed bytes drifted from child-owned source')
     check(all(url.startswith(f'assets/{build.asset_bundle_id()}/') for url in feed_urls.values()),'site feed escaped immutable publication membrane')
 

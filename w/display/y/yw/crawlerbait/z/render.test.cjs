@@ -44,7 +44,7 @@ assert.strictEqual(folded.root.count,projection.routes.length,'fold lost an occu
 const represented=endField.points.reduce((n,p)=>n+(p.fold?p.count:1),0);
 assert.strictEqual(represented,projection.routes.length,'frontier folds must carry every contained Bait');
 assertClosedSplits(endField.root);
-assert.strictEqual(field.root.noun,'Baits','field root must be bait-space ε, not Crawlerbait root anatomy');
+assert.strictEqual(field.root.noun,'Crawlerbait','public name must remain Crawlerbait at root');
 assert(!['Traces','Membrane','Tide'].includes(field.root.children?.w?.noun),'non-bait root anatomy leaked into bait-space field');
 console.log(`PASS · ${projection.routes.length} baits remain exact behind the bounded two-rank Bait frontier`);
 // beings: every being keeps its derived kind, walks only Sierpinski edges between its own recorded baits, and the goo stays inside its splat budget
@@ -56,7 +56,8 @@ const kinds={w:0,x:0,z:0,y:0};for(const c of projection.crawlers)kinds[c.kind]++
 assert.deepStrictEqual(life.totals,kinds,'life kind totals diverged from projected being kinds');
 assert.strictEqual(Object.values(life.totals).reduce((a,b)=>a+b,0),projection.crawlers.length,'a being fell out of its kind');
 const near=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2])<1e-9;
-for(const S of life.sessions.slice(0,400)){
+assert(life.sessions.every(S=>!S.prepared),'initial acquisition prepared future walks');
+for(const S of life.sessions.slice(0,400)){law.prepareWalk(S);
   assert(near(S.pts[0],law.pointOf(S.wps[0].a)),'a walk does not begin at its first recorded bait');
   assert(near(S.pts[S.pts.length-1],law.pointOf(S.wps[S.wps.length-1].a))||S.wps.length===1,'a walk does not end at its last recorded bait');
   for(let j=1;j<S.wps.length;j++)assert(S.wps[j].t>=S.wps[j-1].t,'a walk reorders its own record');
@@ -66,13 +67,19 @@ for(const at of [.3,.85]){
   assert(r.alive>0,`no being alive at ${at} of the record`);
   assert(r.splats>0&&r.splats<=90000,`goo splat budget broken at ${at}: ${r.splats}`);
 }
-// coarse resolution: beings coalesce by the pool law one bait-rank deeper (container + 4); a colony has at least two
-for(const container of ['','z']){
+// A foreground sibling selection must never remove source population. With the
+// same camera/pixel resolution, all local containers yield the same LOD tissue.
+const neutral=law.simulate({projection,at:.3,frames:90,container:''});
+for(const container of ['w','z','wxzy']){
   const r=law.simulate({projection,at:.3,frames:90,container});
+  assert.deepStrictEqual(r.ids,neutral.ids,'selection removed an observed sibling Being');
+  assert.deepStrictEqual(r.cells,neutral.cells,'selection, rather than pixels, changed LOD');
+  assert.equal(r.hidden,0);assert(r.splats<90000);
   const byCell=new Map();for(const c of r.cells)if(c)byCell.set(c,(byCell.get(c)||0)+1);
-  for(const [cell,n] of byCell){assert.strictEqual(cell.length,container.length+4,`colony at wrong rank: ${cell} under ${container||'ε'}`);assert(cell.startsWith(container),'colony outside its container');assert(n>=2,`a colony of one at ${cell}`)}
-  assert(r.splats<4000,`coarse view still pays for every body: ${r.splats} splats`);
+  for(const n of byCell.values())assert(n>=2,'a lone Being cannot coalesce with itself');
 }
+assert.equal(law.resolutionCell('wxyz',(p,r)=>r*1e8),'');
+assert(law.resolutionCell('wxzy',(p,r)=>r)>='w');
 console.log(`PASS · ${life.sessions.length} walks by ${projection.crawlers.length} beings keep their kinds and their recorded order`);
 
 // The same public tissue changes address without changing identity. A terminal
@@ -93,7 +100,7 @@ const rows=law.triangleRows([{x:0,y:0},{x:240,y:0},{x:120,y:240}],16);
 assert(rows.length>5);for(const r of rows){assert(r.w>0);assert(r.x>=0&&r.x+r.w<=240)}
 console.log('PASS · stable tissue, eligible self-child, all canonical addresses, temporal births and earned morphology');
 
-const blend=law.simulate({projection,at:.3,frames:91,container:'',changeAt:90,nextContainer:'w'});assert(blend.fineShares.every(x=>x>=0&&x<=1));assert(blend.fineShares.some(x=>x>0&&x<1),'resolution changed with a cut');
+const blend=law.simulate({projection,at:.3,frames:91,container:'',changeAt:90,nextContainer:'w'});assert(blend.fineShares.every(x=>x>=0&&x<=1));assert.deepStrictEqual(blend.ids,law.simulate({projection,at:.3,frames:91}).ids,'container change removed a Being');
 
 for(const S of life.sessions){assert.equal(law.prefixFacts(S.b.history,Infinity).k,S.b.k,'prefix replay kind fails to recover canonical kind')}
 
@@ -180,7 +187,7 @@ for(const at of [start,start+(end-start)*.3,end]){
   const a=bait.address,place=N.bodyPlacement({addresses:[]},a),cell=N.cellForPath(a);
   const o={S:{wps:[{a}],wd:[0]},reached:0,dist:0,facts:{events:1}};
   const f=law.beingFrame(o);assert.equal(f.container,a.slice(0,-1));
-  assert.equal(law.bodySize(o),place.k,'Being is not two content ranks inside its actual Bait cell');
+  assert.equal(law.bodySize(o),place.k/4,'Being is not two content ranks inside the Bait body');
   assert(near(law.pointOf(a),cell.point),'Being contact is not Display exact address locus');
   const edge=Math.hypot(...cell.tet[0].map((v,i)=>v-cell.tet[1][i]));
   const rootEdge=Math.hypot(...N.V0[0].map((v,i)=>v-N.V0[1][i]));
@@ -195,3 +202,83 @@ for(const u of [0,.01,.25,.5,.99,1])for(const prefix of ['w','xz','w'.repeat(24)
  assert(Math.abs(fa.scale*law.bodySize(a)-fb.scale*law.bodySize(b))<1e-12,'same encounter changes apparent size after rank substitution');
 }
 console.log('PASS · real replay contact and scale, camera/body covariance through unequal-rank travel and 24-rank substitution');
+
+// Independent earned-prefix oracle: no future encounter or incomplete group is lost.
+const visitSource={crawlers:[{id:'a',genome:'01234567'},{id:'b',genome:'89abcdef'}],encounters:Array.from({length:69},(_,i)=>({path:'/p',crawler:i%2?'a':'b',t:new Date(1700000000000+i*1000).toISOString()}))};
+const visits=law.buildVisits(visitSource);assert(!visits.places.get('/p').ready,'unseen place prepared its entire future sculpture');
+for(let n=0;n<=69;n++){
+ const at=visits.at('/p',1700000000000+(n-1)*1000);
+ assert.equal(at.count,n);assert.equal(at.beings,Math.min(n,2));
+ assert.equal(at.roots.reduce((sum,r)=>sum+r.node.count,0),n);
+ const walk=node=>{if(node.children){assert.equal(node.children.length,4);assert.equal(node.count,node.children.reduce((sum,c)=>sum+c.count,0));for(const c of node.children)walk(c)}};
+ for(const {node} of at.roots)walk(node);
+}
+for(const n of [1,4,16,64])assert.equal(visits.at('/p',1700000000000+(n-1)*1000).roots.length,1);
+assert.deepStrictEqual(visits.at('/p',1699999999999),{count:0,beings:0,roots:[]});
+const contextual=F.view('wx',{context:true});
+assert.equal(contextual.points.reduce((sum,p)=>sum+(p.fold?p.count:1),0),F.root.count);
+assert(contextual.points.some(p=>p.context));assert(contextual.points.length<=16+3*2);
+console.log('PASS · selection-independent population, pixel LOD, bounded sibling context and earned 1/4/16/64 visit composition');
+
+// Lazy admission yields the same actual geometry, speed and session end as the
+// independently applied eager formula, and repeated demand retains the tissue.
+for(const S of life.sessions){law.prepareWalk(S);const pts=[law.pointOf(S.wps[0].a)];let length=0;for(let j=1;j<S.wps.length;j++){const path=law.route(S.wps[j-1].a,S.wps[j].a);for(let i=1;i<path.length;i++){const d=Math.hypot(...path[i].map((v,k)=>v-pts.at(-1)[k]));if(d<1e-7)continue;length+=d;pts.push(path[i])}}assert(Math.abs(S.L-length)<1e-9);const keep=S.pts;law.prepareWalk(S);assert.strictEqual(S.pts,keep)}
+console.log('PASS · all actual session geometries are deferred, source-exact and retained on repeated demand');
+
+// Execute the actual native controls at frozen historical time. This verifies
+// semantics and intrinsic grouping, not a browser CSS-layout or pointer witness.
+const originalDocument=global.document,originalWorld=global.SSSWorldView,originalSetTimeout=global.setTimeout,originalClearTimeout=global.clearTimeout;
+class Element {
+ constructor(tag){this.tag=tag;this.children=[];this.dataset={};this.attributes={};this.style={setProperty(){}};this.classList={add(){},remove(){}};this.textContent='';this.listeners={};this.hidden=false}
+ append(...nodes){for(const n of nodes){n.parentNode=this;this.children.push(n)}}
+ replaceChildren(...nodes){this.children=[];this.append(...nodes)}
+ setAttribute(k,v){this.attributes[k]=v} addEventListener(k,fn){this.listeners[k]=fn}
+ querySelector(selector){return this.querySelectorAll(selector)[0]||null}
+ querySelectorAll(selector){const out=[];for(const c of this.children){if(selector.startsWith('.')?c.className?.split(' ').includes(selector.slice(1)):c.tag===selector)out.push(c);out.push(...c.querySelectorAll(selector))}return out}
+ remove(){if(this.parentNode)this.parentNode.children=this.parentNode.children.filter(n=>n!==this)}
+}
+try {
+ global.document={createElement:tag=>new Element(tag)};global.setTimeout=()=>0;global.clearTimeout=()=>{};
+ for(const language of ['en','de']){
+  global.SSSWorldView={language};moduleRef.fieldProjection(projection);
+  const host=new Element('section'),content=new Element('div'),bound=[];
+  assert(moduleRef.render({host,content,projection,ui:{bind:(el,name)=>bound.push(name)}}));
+  assert.deepStrictEqual(bound,['rail','bottom'],'selected context created a competing overlay');
+  assert.equal(content.querySelector('h1').textContent,'Crawlerbait');
+  const scrub=content.querySelector('.crawlerbait-scrub');scrub.value='400';scrub.listeners.input();
+  const before=moduleRef.shader.snapshot({container:''}),modes=content.querySelector('.crawlerbait-modes').children;
+  modes[1].listeners.click();assert.equal(moduleRef.shader.snapshot({container:''}).revision,'being-types');
+  assert(content.querySelector('.crawlerbait-inspector').hidden);modes[0].listeners.click();
+  assert.strictEqual(moduleRef.shader.snapshot({container:''}),before,'view switch reset clock or geography');
+  assert(!content.querySelector('.crawlerbait-inspector').hidden);
+  const route=projection.routes.find(r=>r.path.includes('/~/'));moduleRef.activateFieldPoint({point:{route}});
+  assert(content.querySelector('.crawlerbait-place-name').textContent.length<14,'opaque public path is still compulsory label');
+  const details=content.querySelector('details');details.open=true;moduleRef.activateFieldPoint({point:{route}});assert.strictEqual(content.querySelector('details'),details);assert(details.open);
+  assert.equal(content.querySelector('.crawlerbait-transport').children[0].textContent,language==='de'?'Pause':'pause');moduleRef.unmount({host,content});
+ }
+} finally {global.document=originalDocument;global.SSSWorldView=originalWorld;global.setTimeout=originalSetTimeout;global.clearTimeout=originalClearTimeout}
+console.log('PASS · actual DE/EN controls preserve historical clock and geography, one current rail and disclosed provenance');
+
+const UI=require('../../../../w/ui-grid.js'),layout=JSON.parse(fs.readFileSync(path.join(__dirname,'../ui-grid.json')));
+for(const [w,h] of [[390,844],[1280,800]])for(const open of [false,true]){
+ const carrier={x:0,y:50,w,h:h-50},occupied=open?[{rect:{left:w-344,right:w,top:h-474,bottom:h}}]:[{rect:{left:w-40,right:w,top:h-44,bottom:h}}];
+ const state=UI.normalizeState(layout),plan=law.hudPlacement(UI,state,carrier,occupied,44,136);assert(plan);
+ assert(UI.spanInfo(state,plan.cells).ok);assert(plan.top>=carrier.y&&plan.left+plan.width<=w);
+ for(const {rect:r} of occupied)assert(plan.top+44<=r.top||plan.top>=r.bottom||plan.left+plan.width<=r.left||plan.left>=r.right,'time controls intersect actual compass occupancy');
+ if(w===390&&open)assert(plan.top<carrier.y+carrier.h/2,'open portrait compass did not earn an earlier canonical row');
+}
+console.log('PASS · canonical time rows and intrinsic widths avoid open/closed compass rectangles on both carriers');
+
+const clipped=law.triangleRows([{x:0,y:-1e9},{x:1e9,y:1e9},{x:-1e9,y:1e9}],16,5,{top:0,bottom:844});assert(clipped.length<=53,'near-camera narrative enumerated offscreen rows');
+// A large visible place in a sibling must retain its actual form, rather than
+// becoming a blank summary simply because a foreground cell was selected.
+moduleRef.fieldProjection(projection);
+const visibleSource=reference.routesAt(law.buildLife(projection).t0),neighbour=visibleSource.find(r=>!r.address.startsWith('w')&&r.address.length>3);assert(neighbour);
+const neighbourCell=N.cellForPath(neighbour.address),zoom=Math.pow(2,neighbour.address.length)*320;
+const witnessProject=p=>({x:640+(p[0]-neighbourCell.center[0])*zoom,y:400-(p[1]-neighbourCell.center[1])*zoom,front:true});
+const request={container:'w',project:witnessProject,viewport:{width:1280,height:800}},nearby=moduleRef.shader.snapshot(request);
+const visibleBait=nearby.points.find(p=>p.id==='bait:'+neighbour.path);assert(visibleBait&&!visibleBait.fold&&visibleBait.context,'visible sibling lost its actual place');
+assert.strictEqual(moduleRef.shader.snapshot(request),nearby,'unchanged projected frontier rebuilt GPU tissue');
+const away=moduleRef.shader.snapshot({...request,project:p=>({x:1e8+p[0],y:1e8+p[1],front:true})});
+assert(away.points.length<nearby.points.length);assert.equal(nearby.points.reduce((n,p)=>n+(p.fold?p.count:1),0),visibleSource.length);
+console.log('PASS · a visible fine sibling survives foreground selection; offscreen context remains folded and unchanged geometry is reused');
