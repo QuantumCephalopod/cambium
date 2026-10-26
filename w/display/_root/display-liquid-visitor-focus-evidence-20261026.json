@@ -1,0 +1,550 @@
+{
+  "baseline": "93bba7ef0727cb565d263e8dd97632cefba805bf",
+  "browser_observation": "Live inverse mode had a dark pre-inversion shadow; this browser exposed Canvas2D fallback and cannot witness the production WebGL branch or user-device FPS. Uploaded owner images establish the visual counterexamples.",
+  "checks": [
+    "Real inverse shadow support retains solid glyph colour.",
+    "Hovered/focused captions stay in shared background ink; successful frames do not flip CSS suppression.",
+    "Actual source words fit ellipse chords; tiny and short phrases shrink; complete narrative continuation remains.",
+    "Target-only Goo/Ink/copy uses a bounded scissor at each target scale and preserves source geometry/time.",
+    "Source canvases reuse dimensions; cached paper glyphs retain shared shadow and inverse paint identity."
+  ],
+  "code_commit": "f6f6b0ca4ee5c324b6424876751b39e4b63d3d9b",
+  "crawlerbait": {
+    "cases": [
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "field": {
+          "gooBackend": "webgl2",
+          "gooLayer": "195 alive · 0 bodies · 4 colonies · 44 splats · 2.7 ms",
+          "inkPixels": "185469",
+          "replayTime": "1107880"
+        },
+        "lens": {
+          "ellipse": true,
+          "foregroundClipPixels": [
+            21375,
+            37064
+          ],
+          "fullFramePixels": 329160,
+          "inkPixels": 40111,
+          "longArea": 25342.707037725864,
+          "safe": true,
+          "shortArea": 7167.999999999999,
+          "target": "crawlerbait:being:5e799495316e57f07453e0e6"
+        },
+        "linked_programs": 3,
+        "pixel_values": 31088,
+        "pretext": [
+          {
+            "characters": 43,
+            "pages": 1
+          },
+          {
+            "characters": 129,
+            "pages": 1
+          },
+          {
+            "characters": 145,
+            "pages": 1
+          },
+          {
+            "characters": 120,
+            "pages": 1
+          },
+          {
+            "characters": 47,
+            "pages": 1
+          },
+          {
+            "characters": 149,
+            "pages": 1
+          },
+          {
+            "characters": 167,
+            "pages": 1
+          },
+          {
+            "characters": 119,
+            "pages": 1
+          },
+          {
+            "characters": 177,
+            "pages": 1
+          }
+        ]
+      },
+      {
+        "carrier": [
+          1280,
+          800
+        ],
+        "field": {
+          "gooBackend": "webgl2",
+          "gooLayer": "195 alive · 2 bodies · 14 colonies · 156 splats · 2.6 ms",
+          "inkPixels": "576000",
+          "replayTime": "1107880"
+        },
+        "lens": {
+          "ellipse": true,
+          "foregroundClipPixels": [
+            21805,
+            37700
+          ],
+          "fullFramePixels": 1024000,
+          "inkPixels": 40266,
+          "longArea": 25342.707037725864,
+          "safe": true,
+          "shortArea": 7167.999999999999,
+          "target": "crawlerbait:being:bfe444f0d5891630599f7b03"
+        },
+        "linked_programs": 3,
+        "pixel_values": 75188,
+        "pretext": [
+          {
+            "characters": 43,
+            "pages": 1
+          },
+          {
+            "characters": 129,
+            "pages": 1
+          },
+          {
+            "characters": 145,
+            "pages": 1
+          },
+          {
+            "characters": 120,
+            "pages": 1
+          },
+          {
+            "characters": 47,
+            "pages": 1
+          },
+          {
+            "characters": 149,
+            "pages": 1
+          },
+          {
+            "characters": 167,
+            "pages": 1
+          },
+          {
+            "characters": 119,
+            "pages": 1
+          },
+          {
+            "characters": 177,
+            "pages": 1
+          }
+        ]
+      }
+    ],
+    "scope": "Actual public history, pinned Pretext and real SpriteSheet font with software GLES goo/ink pixels. Synthetic contact places one actual Being in the safe frame; browser interaction and physical GPU FPS are separate.",
+    "status": "PASS"
+  },
+  "event_id": "display-liquid-visitor-focus-evidence-20261026",
+  "fixture_hashes": {
+    "w/display/y/yw/crawlerbait/z/projection.json": "82d3e6f972b249a705d3a6fc66cba5349b2c6b7bfc7e6c1c24356afc68ff3e8f",
+    "w/display/y/yy/papers/projection.json": "493cd4af9d558e9d7eaade9c5e41c82e771f6c759180881f8da537bc50e90b21"
+  },
+  "focus_timing": [
+    {
+      "carrier": [
+        1280,
+        800
+      ],
+      "frames": 3,
+      "glass_draw_ms": 6.904458000159745,
+      "mip_build_ms_per_frame": 0.0,
+      "scope": "synchronized software GLES wall timing; actual production fragment shader, not browser or device FPS",
+      "source": "before",
+      "total_focus_ms": 6.904458000159745
+    },
+    {
+      "carrier": [
+        1280,
+        800
+      ],
+      "frames": 3,
+      "glass_draw_ms": 5.634193999867421,
+      "mip_build_ms_per_frame": 0.0,
+      "scope": "synchronized software GLES wall timing; actual production fragment shader, not browser or device FPS",
+      "source": "after",
+      "total_focus_ms": 5.634193999867421
+    },
+    {
+      "carrier": [
+        390,
+        844
+      ],
+      "frames": 3,
+      "glass_draw_ms": 2.979643000192785,
+      "mip_build_ms_per_frame": 0.0,
+      "scope": "synchronized software GLES wall timing; actual production fragment shader, not browser or device FPS",
+      "source": "before",
+      "total_focus_ms": 2.979643000192785
+    },
+    {
+      "carrier": [
+        390,
+        844
+      ],
+      "frames": 3,
+      "glass_draw_ms": 2.0490429997153115,
+      "mip_build_ms_per_frame": 0.0,
+      "scope": "synchronized software GLES wall timing; actual production fragment shader, not browser or device FPS",
+      "source": "after",
+      "total_focus_ms": 2.0490429997153115
+    }
+  ],
+  "full": {
+    "artifact": "single Display index + identity-owned static site apertures",
+    "bundle": "00b651b2a6a40c9e",
+    "checks": 247,
+    "display_4V": {
+      "w": "Embodiment",
+      "x": "Continuity",
+      "y": "Population",
+      "z": "Orientation"
+    },
+    "owner_build": "declared source/refusal suites retain ownership; external integration evidence remains independent",
+    "population": "w/display/y tree is canonical mount truth",
+    "relocation": "real Papers and Crawlerbait bodies move to 128-symbol addresses and new carrier names with zero internal edits",
+    "runtime": "generic identity modules; no specimen names in central runtime",
+    "sites": {
+      "organism:crawlerbait": "w",
+      "organism:datenschutz": "z",
+      "organism:impressum": "xz",
+      "organism:papers": "y",
+      "organism:philosophy": "ε",
+      "organism:schattenseiten": "x"
+    },
+    "status": "pass"
+  },
+  "graphics": {
+    "actual_source": "locus-shader.js",
+    "backend": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "cases": [
+      {
+        "actual_depth_clears_unmasked": true,
+        "actual_sites": {
+          "body_pixels_examined": 10374,
+          "distance_from_direct_papers": {
+            "plain": 450785,
+            "revealed": 157644
+          },
+          "ordinary_actual_materials_byte_exact": true,
+          "papers_actual_renderer": true,
+          "scope": "actual admitted Papers sample and production materials; GL transport replaces the browser; multisample scene and single-sample alternate input retain their real raster difference"
+        },
+        "carrier": [
+          1280,
+          800
+        ],
+        "coalescence": {
+          "ellipse_analytic_area": 20106.192982974677,
+          "ellipse_bad_core": 0,
+          "ellipse_bad_outside": 0,
+          "ellipse_painted_area": 20098,
+          "kind_interior_rim_pixels": 98,
+          "layer_interior_rim_pixels": 98,
+          "long_bridge_pixels": 0,
+          "same_interior_rim_pixels": 0
+        },
+        "distinct_release_optical_states": 5,
+        "frames_per_mode": 2,
+        "interior_optics_changed_pixels": [
+          2315,
+          2315
+        ],
+        "linked_programs": 27,
+        "liquid_revelation": {
+          "subpixel_edge_changes": [
+            961,
+            959
+          ],
+          "surfaces": [
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 15488,
+              "surface": "drop"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 703262,
+              "surface": "top"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 36856,
+              "surface": "compass"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 223891,
+              "surface": "merged"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 0,
+              "surface": "dry"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 0,
+              "surface": "failed"
+            }
+          ]
+        },
+        "outside_lens_changed_pixels": 0,
+        "preview_changed_pixels": 41180,
+        "readable_interiors": [
+          {
+            "additional_edge_support_pixels": 3918,
+            "inverse_dark_shadow_support_pixels": 1324,
+            "kind": "type-shadow",
+            "solid_glyph_pixels_unchanged": true
+          },
+          {
+            "background_contrast_ratio": 0.3205,
+            "kind": "body",
+            "sharp_glyph_and_shape_pixels": 1329
+          },
+          {
+            "background_contrast_ratio": 0.3205,
+            "kind": "field",
+            "sharp_glyph_and_shape_pixels": 1329
+          },
+          {
+            "background_contrast_ratio": 0.3137,
+            "kind": "overlap",
+            "sharp_glyph_and_shape_pixels": 1329
+          },
+          {
+            "examined": 58144,
+            "kind": "top",
+            "refracted_pixels_inside_text_rectangle": 58144
+          },
+          {
+            "examined": 29704,
+            "kind": "compass",
+            "refracted_pixels_inside_text_rectangle": 29704
+          }
+        ]
+      },
+      {
+        "actual_depth_clears_unmasked": true,
+        "actual_sites": {
+          "body_pixels_examined": 6470,
+          "distance_from_direct_papers": {
+            "plain": 317285,
+            "revealed": 117298
+          },
+          "ordinary_actual_materials_byte_exact": true,
+          "papers_actual_renderer": true,
+          "scope": "actual admitted Papers sample and production materials; GL transport replaces the browser; multisample scene and single-sample alternate input retain their real raster difference"
+        },
+        "carrier": [
+          390,
+          844
+        ],
+        "coalescence": {
+          "ellipse_analytic_area": 20106.192982974677,
+          "ellipse_bad_core": 0,
+          "ellipse_bad_outside": 0,
+          "ellipse_painted_area": 20098,
+          "kind_interior_rim_pixels": 81,
+          "layer_interior_rim_pixels": 81,
+          "long_bridge_pixels": 0,
+          "same_interior_rim_pixels": 0
+        },
+        "distinct_release_optical_states": 5,
+        "frames_per_mode": 2,
+        "interior_optics_changed_pixels": [
+          2214,
+          2214
+        ],
+        "linked_programs": 27,
+        "liquid_revelation": {
+          "subpixel_edge_changes": [
+            962,
+            961
+          ],
+          "surfaces": [
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 15488,
+              "surface": "drop"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 225946,
+              "surface": "top"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 36854,
+              "surface": "compass"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 90038,
+              "surface": "merged"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 0,
+              "surface": "dry"
+            },
+            {
+              "escaped_pixels": 0,
+              "revealed_pixels": 0,
+              "surface": "failed"
+            }
+          ]
+        },
+        "outside_lens_changed_pixels": 0,
+        "preview_changed_pixels": 41146,
+        "readable_interiors": [
+          {
+            "additional_edge_support_pixels": 3918,
+            "inverse_dark_shadow_support_pixels": 1324,
+            "kind": "type-shadow",
+            "solid_glyph_pixels_unchanged": true
+          },
+          {
+            "background_contrast_ratio": 0.3197,
+            "kind": "body",
+            "sharp_glyph_and_shape_pixels": 1329
+          },
+          {
+            "background_contrast_ratio": 0.3197,
+            "kind": "field",
+            "sharp_glyph_and_shape_pixels": 1329
+          },
+          {
+            "background_contrast_ratio": 0.3129,
+            "kind": "overlap",
+            "sharp_glyph_and_shape_pixels": 1329
+          },
+          {
+            "examined": 17204,
+            "kind": "top",
+            "refracted_pixels_inside_text_rectangle": 17204
+          },
+          {
+            "examined": 29704,
+            "kind": "compass",
+            "refracted_pixels_inside_text_rectangle": 29704
+          }
+        ]
+      }
+    ],
+    "gles": "OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.2",
+    "scope": "Actual shaders/mesh/passes on software GLES with declared fixture state and procedural preview input; not browser layout, physical GPU or device FPS.",
+    "status": "PASS"
+  },
+  "kind": "EVIDENCE",
+  "limits": [
+    "Native capture fixtures are identified by their hashes; the later canonical Tide data is preserved in the remote code tree and separately checked by CI.",
+    "No live visual acceptance or physical-device FPS is inferred from synchronized software timing.",
+    "Nine-sample filter reduces texture taps and still defocuses native background contrast; foreground canvas uploads remain full buffer."
+  ],
+  "papers": {
+    "cases": [
+      {
+        "actual_text_changed_glass_pixels": 3521,
+        "authored_parts": 85,
+        "carrier": [
+          390,
+          844
+        ],
+        "native_ink": [
+          {
+            "ink_pixels": 3232,
+            "inside_readable_frame": true,
+            "kind": "vert"
+          },
+          {
+            "ink_pixels": 11290,
+            "inside_readable_frame": true,
+            "kind": "edge"
+          },
+          {
+            "ink_pixels": 15896,
+            "inside_readable_frame": true,
+            "kind": "face"
+          },
+          {
+            "ink_pixels": 5709,
+            "inside_readable_frame": true,
+            "kind": "met"
+          }
+        ],
+        "source_characters": 12926
+      },
+      {
+        "actual_text_changed_glass_pixels": 2997,
+        "authored_parts": 85,
+        "carrier": [
+          1280,
+          800
+        ],
+        "native_ink": [
+          {
+            "ink_pixels": 3227,
+            "inside_readable_frame": true,
+            "kind": "vert"
+          },
+          {
+            "ink_pixels": 11256,
+            "inside_readable_frame": true,
+            "kind": "edge"
+          },
+          {
+            "ink_pixels": 15803,
+            "inside_readable_frame": true,
+            "kind": "face"
+          },
+          {
+            "ink_pixels": 5640,
+            "inside_readable_frame": true,
+            "kind": "met"
+          }
+        ],
+        "source_characters": 12926
+      }
+    ],
+    "scope": "Actual admitted wording and complete pagination with Skia/real SpriteSheet font, pinned Pretext, production tissue GLSL and actual glyph input through shared glass on software GLES; not browser text rasterization or physical-device FPS.",
+    "status": "PASS"
+  },
+  "source_hashes": {
+    "w/display/RITUALS/organism/RITUAL.md": "86cfb99efd179b916a6a691f48614b815eb43ec190cbbdda71a2502d38e23ca3",
+    "w/display/RITUALS/site-holon/RITUAL.md": "958c056da0f6662c4fb7de9aa366d959a7c4ed102d0eeb0fb9bd8a1f493f4968",
+    "w/display/w/display-label-ink.js": "c3e5bc124dc21cea142f4bbce9a0acc2a29e32e86a81c4b6e5cba134feaa7932",
+    "w/display/w/display-label-ink.test.cjs": "00f014e0b4b1711897f4840b5ee73769bde4ece62f33784660064e2fde881434",
+    "w/display/w/display-text-tissue.js": "4344700c5c261cfa263d86f312e4b7615153883038624ebde02debab7111845f",
+    "w/display/w/display-type.js": "b8110f6afc619193443c20cba7853df80a0f2e39d0ba991edfb74ec06492fecc",
+    "w/display/w/display-type.test.cjs": "996be8ee2a140c8d62be210876a281f3346f3837f398a4f834daa86ead2664d5",
+    "w/display/w/liquid-reading-ink.cjs": "e268c77d951e385ce585397a9bf99b0c717bd4ea9b8940a4601db2bf08d2afbb",
+    "w/display/w/locus-shader.focus-perf.py": "7770d46a1b275acf48e725546c6d7eb7e31be33c60fa9e4bc155e60fbd224b07",
+    "w/display/w/locus-shader.gles.test.py": "ab6c16c3f7095de6c8fd170988ccdbeb55ef3d8379941b4be50aa7921abf940e",
+    "w/display/w/locus-shader.js": "f5620879af0b3d7b05fc3b0e7899bbc3ef9d2c5640ac995c37c91d2d41d31ca9",
+    "w/display/w/root-view.css": "cb04d88d5bb76cc21ee012aa95771235bbdaf1e2a54b7872184ed5a8291808af",
+    "w/display/y/yw/crawlerbait/RITUALS/organism/RITUAL.md": "cd8dd75fe84634ff17cadaeb5ab835a78a058da1f5f0322a3147e7039783aa1b",
+    "w/display/y/yw/crawlerbait/z/meal.gles-capture.cjs": "d7bbfa3b8c5db6323b1b3a36c2df51478fab90dd8680933bfc765addef0bc24b",
+    "w/display/y/yw/crawlerbait/z/render.js": "b42f30349d61caa1cffe3862d95e74322072ec7d6481ba72babcdf33f94b5b37",
+    "w/display/y/yy/papers/RITUALS/organism/RITUAL.md": "155e76881b1a66c6827cad29df7bdc088a35b067333c6b0e2e84ca8b580c2576",
+    "w/display/y/yy/papers/sierpinski.js": "e6cffa1c5a243d94c5e5fef5e333afff9b3002c82f9d9e66f7d336432db0767a",
+    "w/display/z/display-lens.js": "0fa9d767db3fb380e1fc97ec090fc045cfee805ff0bb7049461d9ebd826e6fb0",
+    "w/display/z/display-lens.test.cjs": "71a6b41eba34149e5f53521886cd0cd587006f387d0cc90227340b31ebc1849b"
+  },
+  "timing_baseline": {
+    "path": "w/display/w/locus-shader.js",
+    "revision": "d24f9d2b2fa6308146e13befa807a32f8bb4f8c6",
+    "sha256": "8ead743abe441ccb52f0385f7036ac3e4d758fb32f3bdd812bbc3c261ef7dd41"
+  }
+}
