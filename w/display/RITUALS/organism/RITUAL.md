@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.54"
+version: "3.55"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -94,7 +94,7 @@ Therefore two site-holons may look and behave radically differently while the sa
 
 Optional site offers remain neutral couplings:
 
-- `shader.focus()` lends `{center, scale}` to Display's frame-rate-independent critically damped camera spring. Releasing the offer glides back to the walked container. Following motion never fabricates Descent steps; those belong to the witness's gestures.
+- `shader.focus({ms})` lends `{center, scale}` to Display's frame-rate-independent critically damped camera spring. An optional `{id, attached:true}` keeps the approach offset in the moving source frame, so settled motion remains central; a changed identity earns a new continuous approach. Source focus runs before the snapshot, camera and draw. Releasing the offer glides back to the walked container. Following motion never fabricates Descent steps; those belong to the witness's gestures.
 - `shader.view = {rest, projection}` lends a rest quaternion and, optionally, `projection: 'orthographic'`, matched to perspective at the centre plane and shared by hit testing. Display eases to that rest and back to home on another encounter unless the witness has manually turned it since. Absence preserves the ordinary view.
 - `shader.snapshot({ms,container})` may lend current `{root,points,revision}`. Only a changed revision rebuilds addressed geometry/content. Selection follows a surviving point identity to its new address; withdrawal ends selection. The owner owns time, source schema and revision truth.
 - `afterDraw` owns no separate pointer: Descent, drag, pools and selection stay with the shared field. The same optional frame is available in Canvas2D with `gl:null`, `context2D` and `canvas`; fallback never claims GLSL execution.

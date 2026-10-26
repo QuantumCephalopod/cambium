@@ -136,3 +136,21 @@
 .crawlerbait-story{display:block!important}
 
 @media(max-width:720px){.crawlerbait-pace{display:block;flex:0 1 3rem}.crawlerbait-transport{gap:.45rem}.crawlerbait-clock{white-space:nowrap}}
+
+/* One intrinsic owner rail; the shared compass keeps its own aperture. */
+.crawlerbait-hud-rail{inline-size:min(19rem,calc(100% - var(--ui-field-x,0px) - 1rem));max-block-size:calc(100dvh - var(--ui-field-y,0px) - 9rem);gap:.7rem}
+.crawlerbait-hud-side{position:static;inline-size:100%;max-inline-size:100%;max-block-size:none;overflow:visible;gap:.6rem}
+.crawlerbait-hud-bottom{inline-size:min(46rem,calc(100% - var(--ui-field-x,0px) - 1rem))}
+.crawlerbait-transport{flex-wrap:wrap;min-height:2.5rem}
+.crawlerbait-scrub{min-width:6rem}
+.crawlerbait-modes{display:flex;gap:.4rem;pointer-events:auto}
+.crawlerbait-modes [aria-pressed="true"]{border-color:var(--ink)}
+.crawlerbait-details{pointer-events:auto;font-size:var(--type-rn1)}
+.crawlerbait-details summary{cursor:pointer}
+.crawlerbait-details[open]{display:grid;gap:.5rem}
+.crawlerbait-place-name{margin:0;font-size:var(--type-r0);font-weight:500}
+.crawlerbait-place-summary{margin:.2rem 0;font-size:var(--type-rn1)}
+[data-interlocutor="organism:crawlerbait"] .field-point-tooltip-id{display:none}
+@media(max-width:720px){.crawlerbait-hud-rail{inline-size:min(15rem,calc(100% - var(--ui-field-x,0px) - 1rem))}.crawlerbait-transport{row-gap:.5rem}.crawlerbait-scrub{flex-basis:45%}}
+
+.crawlerbait-content [hidden]{display:none}

@@ -511,12 +511,20 @@ def dependency_projection(bundle, dependencies=None):
     }
 
 
+# Strip only structural JSON whitespace: strings and number lexemes stay exact.
+_JSON_TRANSPORT = re.compile(rb'("(?:[^"\\]|\\.)*")|[ \t\r\n]+')
+
+def json_transport(data):
+    return _JSON_TRANSPORT.sub(lambda match: match.group(1) or b'', data)
+
+
 def _asset_bytes(sources):
     assets = {}
     for name, source in sources.items():
         if not source.is_file():
             raise ValueError(f'missing membrane dependency: {source.relative_to(ROOT)}')
-        assets[name] = source.read_bytes()
+        data = source.read_bytes()
+        assets[name] = json_transport(data) if name.endswith('.json') else data
     return assets
 
 

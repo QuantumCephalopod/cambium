@@ -46,7 +46,7 @@
       check(root);if(!validPath(path))throw new TypeError('invalid fold path');
       let n=root;for(const g of path){n=n.children?.[g];if(!n)return null}return n;
     }
-    function view(root,{container='',ranks=2,project=record=>({...record})}={}){
+    function view(root,{container='',ranks=2,context=false,project=record=>({...record})}={}){
       check(root);if(!validPath(container))throw new TypeError('invalid fold container');
       if(!Number.isSafeInteger(ranks)||ranks<0)throw new TypeError('invalid fold resolution');
       if(typeof project!=='function')throw new TypeError('fold projector required');
@@ -63,7 +63,7 @@
         body.children={};
         if(parent)parent[g]=body;else result=body;
         if(open){for(let i=GENES.length-1;i>=0;i--){const k=GENES[i];tasks.push({node:n.children?.[k]||empty,path:path+k,parent:body.children,g:k})}}
-        else if(within&&n.count)terminals.push({...record,body});
+        else if((within||context)&&n.count)terminals.push({...record,body});
       }
       return {root:result,terminals,visited,container};
     }
