@@ -49,6 +49,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   let inkPath=[];
   const ctx2d={beginPath(){inkPath=[]},moveTo(x,y){inkPath.push([x,y])},lineTo(x,y){inkPath.push([x,y])},fill(){calls.push({type:'fill2d',path:inkPath.map(p=>[...p]),style:this.fillStyle})}};
   for(const name of ['setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};
+  ctx2d.translate=(x,y)=>calls.push({type:'point2d',x,y});
   const canvas=element();Object.assign(canvas,{width,height,getContext:type=>type==='2d'?ctx2d:webgl?gl:null,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   gl.canvas=canvas;
   const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
@@ -348,3 +349,28 @@ console.log('PASS — unrelated owner uses shared folds and pointer Descent on n
  }
 }
 console.log('PASS — real Crawlerbait snapshots use the shared carrier through both actual field transports at narrow/wide sizes');
+
+// An unrelated owner requests actual locus contact. Ordinary samples and fold
+// centres remain distinct; malformed/unrealized paths cannot claim a locus.
+for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
+ const tree={...root,children:{...root.children,w:root,x:root}};
+ const structure=N.collectStructure(tree);
+ const specs=[{id:'mineral:1',path:'ww',anchor:'locus'},
+  {id:'mineral:2',path:'wx',anchor:'locus'}, {id:'mineral:3',path:'xw',anchor:'locus'},
+  {id:'ordinary',path:'xy'}, {id:'fold',path:'xx',anchor:'locus',fold:true,count:12,kind:'holon'},
+  {id:'unrealized',path:'zzzz',gene:'z',anchor:'locus'}];
+ const f=fixture({width,height,webgl,tree,pointSpecs:specs,order:[],glass:false});
+ const frame=f.frame(0),expected=specs.map(spec=>{
+  const a=N.addressRecord(structure,spec.path),cell=a||structure.leaves.find(c=>c.path.startsWith(spec.gene));
+  return spec.fold?a.center:spec.anchor==='locus'&&a?a.point:N.sampleTet(cell.tet,spec.id,.22);
+ });
+ if(webgl){const draw=frame.find(c=>c.type==='draw'&&c.mode===f.gl.POINTS);assert(draw);const a=draw.vao.buffer.data;
+  for(let i=0;i<expected.length;i++)for(let j=0;j<3;j++)assert(Math.abs(a[i*6+j]-expected[i][j])<1e-7,'point GPU buffer diverged from owner anchor');
+ }else{const drawn=frame.filter(c=>c.type==='point2d'),base=width<560?1.42:1.75,project=p=>{
+   const z=3.2-p[2]*base,k=(height/2)/Math.tan(Math.PI/6.6);return {x:width/2+p[0]*base*k/z,y:height/2-p[1]*base*k/z,z:p[2]};
+  },points=expected.map(project).sort((a,b)=>a.z-b.z);
+  assert.equal(drawn.length,points.length);
+  for(let i=0;i<points.length;i++){assert(Math.abs(drawn[i].x-points[i].x)<1e-7);assert(Math.abs(drawn[i].y-points[i].y)<1e-7)}
+ }
+}
+console.log('PASS — unrelated owner locus/self/reciprocal anchors, ordinary samples and folded centres agree on both field transports');

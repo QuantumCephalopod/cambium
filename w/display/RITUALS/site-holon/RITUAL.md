@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.23"
+version: "3.24"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -102,6 +102,8 @@ When a canonical field determines screen placement, site CSS/render code must no
 The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected labels, bodies, beings, chamber marks and other tissue whose position is derived from organism/world coordinates remain in that native frame. Global Display-owned membrane surfaces likewise remain Display tissue rather than being assigned to one site's local grid.
 
 ### Feed-owned rank-relative representations
+
+An owner field point at a realized raw `path` may request `anchor: 'locus'`. Display uses that address record's existing quotient vertex for both drawing and contact, instead of the default identity-seeded interior sample. An absent/unrealized path does not earn an exact locus by falling back to a gene. Folded population points retain their containing-cell centre and count. This optional spatial relation carries no source/body meaning and does not alter existing points, source identities, cell geometry or navigation.
 
 A site-holon may expose an optional bounded public `feed_preview` under its own `_feed`, while keeping the detailed projection and renderer body identity-owned. Its enclosing Display membrane represents the site through that preview until perceptual entry justifies acquiring detail. The public preview cannot claim private `_feed/current.json` or replace the actual site identity, source or root. Readiness belongs to the receiving browser's shared representation-continuity physiology; resolution/content thresholds and resource disposal stay with the child. The same relation holds inside a site at smaller rank, as in Schattenseiten's 64px→512px artwork. A failed higher representation preserves the last good low representation.
 
