@@ -1,5 +1,6 @@
 (() => {
 'use strict';
+const typeInk=(ctx,...args)=>{if(globalThis.SSSDisplayType?.fillText)return globalThis.SSSDisplayType.fillText(ctx,...args);ctx.fillText(...args)};
 const N=globalThis.SSSDisplayNavigation;
 if(!N) throw new Error('navigation physiology missing');
 const edgeIx=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
@@ -87,7 +88,7 @@ function drawTwin(ms=performance.now()){
     if(!box)continue;
     record.label={...box,w:width,h:height};occupied.push(record.label);if(hot)captioned.add(record.target);
     if(hot){tc.fillStyle='rgba(5,7,10,.86)';tc.fillRect(box.x,box.y,width,height)}
-    tc.fillStyle=hot?'rgba(255,255,255,.98)':'rgba(241,239,233,.64)';tc.fillText(text,box.x+pad,box.y+pad+size);
+    tc.fillStyle=hot?'rgba(255,255,255,.98)':'rgba(241,239,233,.64)';typeInk(tc,text,box.x+pad,box.y+pad+size);
   }
 }
 /* Canvas ink must be repainted when the hosted face finishes loading. */

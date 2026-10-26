@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.11"
+version: "5.12"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -289,3 +289,7 @@ The October history-remediation residual follows the Datenschutz-owned GitHub pr
 Version5.5 presentation-contract reconciliation (2026-10-19): current kind-corner labels are distinguished from actual reef occupancy. The accepted separate type view, shared time and visit-coalescent place growth remain unresolved local intake. Existing traffic, capture, replay, privacy and publication law are unchanged.
 
 Version5.8 shared fold adoption (2026-10-21): Crawlerbait retains source/replay meaning and consumes the generic Display structure/frontier instead of maintaining a parallel fold engine. Fine metadata, actual geometry and replay/rewind remain equivalent to the prior local fold. A source-parcel/Being-index prototype grew far beyond source size and was rejected before publication; efficient-initial-projection stays OPEN, along with full source/growth/history/Being preparation.
+
+## Sharp liquid contact — 2026-10-26
+
+The existing selected Being/narrative offer lends actual target-only goo geometry and/or actual readable words into Display's isolated foreground pass. It redraws the same source body with the current frame, restores simulation buffers and never advances replay. The common Canvas type helper supplies the light glyph shadow. Target identity, public source/privacy boundary and continuation are unchanged.

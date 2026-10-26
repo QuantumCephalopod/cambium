@@ -95,10 +95,10 @@ function offerLocks(host){
   const Lens=globalThis.SSSDisplayLens;if(!Lens?.offer)return;
   for(const x of lockIds)Lens.withdraw(x);lockIds.clear();
   const live=()=>host&&!host.hidden&&host.isConnected!==false;
-  lockIds.add(Lens.offer(id+'|Description',{kind:'field',r:14,rect:()=>live()&&describe?.el?.isConnected?describe.el.getBoundingClientRect():null}));
+  lockIds.add(Lens.offer(id+'|Description',{kind:'field',r:14,foreground:frame=>frame.fieldId===id&&live()&&!!describe?.el?.isConnected,rect:()=>live()&&describe?.el?.isConnected?describe.el.getBoundingClientRect():null}));
   for(const row of targets())for(const site of row.target.interlocutorIds||[]){
     if(site===id)continue;
-    lockIds.add(Lens.offer(id+'|'+site,{kind:'body',point:()=>{if(!live())return null;const f=Fields?.get(id),b=f?.projectBody?.(site);if(!b||!f.canvas)return null;const r=f.canvas.getBoundingClientRect();return {x:r.left+b.x,y:r.top+b.y,r:b.r}}}));
+    lockIds.add(Lens.offer(id+'|'+site,{kind:'body',foreground:frame=>frame.fieldId===id?frame.drawBody(site):false,point:()=>{if(!live())return null;const f=Fields?.get(id),b=f?.projectBody?.(site);if(!b||!f.canvas)return null;const r=f.canvas.getBoundingClientRect();return {x:r.left+b.x,y:r.top+b.y,r:b.r}}}));
   }
 }
 function withdrawLocks(){const Lens=globalThis.SSSDisplayLens;for(const x of lockIds)Lens?.withdraw(x);lockIds.clear()}

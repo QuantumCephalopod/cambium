@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.55"
+version: "3.56"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -377,9 +377,13 @@ Outside-click ascent follows actual body-host offers and local container descent
 
 A HUD surface's measured DOM rectangle and a locked lens's offered frame are reading geometry. The shared optical hull carries a half-root-rem perimeter outside that geometry; safe-area and reservoir acquisition use the actual expanded HUD hull. Existing top overfill remains part of the hull. The same rule applies to arbitrary HUDs and field/body locks without site-name branches.
 
-The production glass pass preserves source sampling, color and glyph pixels inside the declared reading aperture, including overlapping optical surfaces and merged/nested HUDs. Refraction, dispersion, tint and rim ink yield there and remain outside it. Zero halftone ink emits zero dots. The existing field-lock backdrop dimming remains its own focus relation; foreground DOM content stays source-owned. Free glass keeps its 13-percent magnification and bounded optical edge.
+The liquid keeps one continuous background optical field across its hull, including the top reading strip, overfill and capillary joins. Reading rectangles describe layout/containment; they no longer turn a whole rectangle of background into unbent glass. Refraction, dispersion and tint therefore continue behind sharp foreground tissue. Zero halftone ink still emits zero dots.
 
-No extra text layer, text scan, texture or render pass is introduced. Owners keep their current font/layout/pagination; Display carries fixed-budget reading rectangles beside the existing optical rectangles (at most eight HUD surfaces plus the one lens/home). Moving geometry still updates; text-length-dependent work is not added to the animation loop. Required reading tissue survives one-slab coalescence.
+A valid field/body softlock strongly defocuses the background inside the actual drop silhouette. Source-owned target coverage is composited sharply after background optics and focus. The foreground is alpha/geometry, never a rectangular copy of the original scene. The shared offer may lend optional foreground(frame): it receives the actual field identity/frame and may return transparent source canvases or draw into the isolated target and return true. An authored DOM target may acknowledge its already-sharp foreground while the GL attachment stays transparent. Missing/refused foreground preserves the ordinary scene rather than pretending that the target can be separated. The existing offer lifetime, pending projection, physical drop, reading continuation and departure remain authoritative. No second instrument or per-site mode is introduced.
+
+Display uses one context-local transparent target attachment only while there is contact, reuses it, resizes with the drawing buffer and retires it with the field. An actual mounted body may be redrawn by its existing renderer through drawBody(identity). The source owner supplies source-only words/parts or Being geometry; Display never identifies foreground by colour, text content or schema. The existing label atlas can replay the selected body's glyph quads into that same attachment without a second text collection. Framebuffer/viewport/paint state is contained, including refusal or failure. Native raster evidence does not claim browser/device timing.
+
+SpriteSheet reading support includes a light contrasting drop shadow. DOM uses the common root-rem shadow token; Canvas uses DisplayType.fillText/shadow with the actual context density and restores unrelated paint; derived label atlases use the computed style, and tissue glyphs carry the same small shadow in their final coverage pass. A large halo or an opaque rectangle is not equivalent. Source-owned wording, type rank, layout, glyph shape, colour and pagination remain unchanged.
 
 ## Compression
 

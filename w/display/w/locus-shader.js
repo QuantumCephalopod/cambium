@@ -409,7 +409,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
 void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);}`;
   const GLASS_FRAGMENT=`#version 300 es
 precision highp float;
-uniform sampler2D uScene;uniform sampler2D uPreview;uniform int uPreviewReady;uniform vec2 uRes;uniform vec4 uRect[8];uniform vec4 uReadRect[8];uniform float uMerge[8];uniform int uCount;
+uniform sampler2D uScene;uniform sampler2D uPreview;uniform sampler2D uForeground;uniform int uForegroundReady;uniform int uPreviewReady;uniform vec2 uRes;uniform vec4 uRect[8];uniform vec4 uReadRect[8];uniform float uMerge[8];uniform int uCount;
 uniform vec4 uA;uniform vec4 uB;uniform vec4 uC;uniform vec4 uT;uniform vec4 uH;
 uniform vec4 uHome;uniform vec4 uHomeRead;uniform vec4 uL0;uniform vec4 uL1;uniform vec4 uL2;uniform vec4 uN;
 out vec4 outColor;
@@ -474,12 +474,8 @@ void main(){
       gShift-=mix((frag-panel.yz)*uB.y,(frag-uL0.xy)*uL1.w,blend);
     }
   }
-  /* One measured reading aperture wins over every overlapping optical surface.
-   * The glyphs stay in the original scene/composite; only the sampling map and
-   * decorative rim yield. No duplicate sharp-text pass or text-length work. */
-  float optical=smoothstep(0.,max(fwidth(readD),1.),readD);
-  if(uN.x>-.5){float lensD=sdReadingLens(frag);optical*=mix(1.,smoothstep(0.,max(fwidth(lensD),1.),lensD),uN.y);}
-  gShift*=optical;gRim*=optical;gLit*=optical;
+  // Reading protects actual foreground coverage, never a dry scene rectangle.
+  float optical=1.;
   vec3 c;
   c.r=texture(uScene,(frag+gShift*(1.-uB.x))/uRes).r;
   c.g=texture(uScene,(frag+gShift)/uRes).g;
@@ -494,11 +490,18 @@ void main(){
     c.r=mix(c.r,pr.r,pr.a*mask);c.g=mix(c.g,pg.g,pg.a*mask);c.b=mix(c.b,pb.b,pb.a*mask);
   }
   c=mix(c,uT.rgb,uT.a*gInside*optical);
-  /* a field-locked drop frames its target: the field beneath the drop is blurred and dimmed so the target reads */
-  if(uL2.w>0.&&uN.x>-.5){
-    float o=(1.-smoothstep(-8.,0.,sdLens(frag)))*uL2.w;
-    if(o>0.){vec3 b=vec3(0.);for(int i=0;i<8;i++){float a=float(i)*.7854;b+=texture(uScene,(frag+gShift+vec2(cos(a),sin(a))*6.)/uRes).rgb;}
-      c=mix(c,b*(1./8.)*.28,o*.82);}
+  // Both field and body contacts focus only inside the physical drop.
+  if(uN.x>-.5&&uN.y>0.&&uForegroundReady>0){
+    float focus=(1.-smoothstep(-2.,0.,sdReadingLens(frag)))*uN.y;
+    if(focus>0.){vec3 blurred=vec3(0.);float weight=0.;
+      for(int y=-2;y<=2;y++)for(int x=-2;x<=2;x++){
+        vec2 off=vec2(float(x),float(y))*uH.x*1.6;float w=exp(-float(x*x+y*y)*.45);
+        vec2 uv=(frag+gShift+off)/uRes;vec3 sampleColor=texture(uScene,uv).rgb;
+        if(uPreviewReady>0){vec4 preview=texture(uPreview,uv);sampleColor=mix(sampleColor,preview.rgb,preview.a);}
+        blurred+=sampleColor*w;weight+=w;
+      }
+      c=mix(c,blurred/weight,focus);
+    }
   }
   /* the soft shadow and the rim are printed as ink, not blended: dots forgive pixels, and cost less than a gradient */
   vec3 ink=vec3(.014,.019,.027);
@@ -507,10 +510,15 @@ void main(){
   c=mix(c*(1.-shadowInk*(1.-k)),ink,dots(frag,shadowInk)*k*.78);
   vec3 paper=vec3(.93,.91,.85);
   c=mix(c,paper,dots(frag+vec2(1.7,.9),rimInk)*k*.5);
-  outColor=vec4(c+gLit,1.);
+  c+=gLit;
+  if(uForegroundReady>0&&uN.x>-.5){
+    float focus=(1.-smoothstep(-1.,1.,sdReadingLens(frag)))*uN.y;
+    vec4 target=texture(uForeground,frag/uRes);c=target.rgb*focus+c*(1.-target.a*focus);
+  }
+  outColor=vec4(c,1.);
 }`;
   const EMPTY_READ_RECTS=new Float32Array(32),EMPTY_MERGE=new Float32Array(8);
-  let SCENE=null,GLASS_PG=null,GLASS_OFF=false,labelInk=null,PREVIEW=null;
+  let SCENE=null,GLASS_PG=null,GLASS_OFF=false,labelInk=null,PREVIEW=null,FOREGROUND=null;
   /* SITE COMPOSITE — a site whose body lives in its own canvases may offer shader.composite()
    * returning them in paint order. While glass is active the field draws them into its scene, so the
    * same invariant glass (drop, HUD surfaces, rim) refracts the site's own pixels; the field marks
@@ -533,12 +541,12 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.disable(gl.BLEND);gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(unit0);
   }
   function resetLabelInk(){labelInk?.reset();canvas.dataset.refractedLabels='0'}
-  function drawLabelInk(r,w,h,additionalTarget=null){
+  function drawLabelInk(r,w,h,additionalTarget=null,foreground=null){
     const Ink=globalThis.SSSDisplayLabelInk;if(!Ink||!labelHost)return;
     if(!labelInk)labelInk=Ink.create(gl,labelHost);
-    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget)?'1':'0';
+    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget,foreground)?'1':'0';
   }
-  addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview()});
+  addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview();disposeForeground()});
   function disposePreview(){if(!PREVIEW)return;gl.deleteFramebuffer(PREVIEW.fb);gl.deleteRenderbuffer(PREVIEW.depth);gl.deleteTexture(PREVIEW.tex);PREVIEW=null}
   function drawPreview(g,fb,r,d,w,h,proj,view,t,base,ms){
     if(!g)return false;
@@ -588,6 +596,34 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     }catch(err){canvas.dataset.previewError=String(err?.message||err);return false}
     finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.bindRenderbuffer(gl.RENDERBUFFER,rb);gl.bindTexture(gl.TEXTURE_2D,texture);gl.viewport(0,0,w,h)}
   }
+  function disposeForeground(){if(!FOREGROUND)return;gl.deleteFramebuffer(FOREGROUND.fb);gl.deleteRenderbuffer(FOREGROUND.depth);gl.deleteTexture(FOREGROUND.tex);FOREGROUND=null}
+  function drawForeground(g,fb,r,d,w,h,proj,view,t,base,ms){
+    if(!g.snap?.lens?.lock)return false;
+    const target=gl.getParameter(gl.FRAMEBUFFER_BINDING),active=gl.getParameter(gl.ACTIVE_TEXTURE),texture=gl.getParameter(gl.TEXTURE_BINDING_2D),rb=gl.getParameter(gl.RENDERBUFFER_BINDING),bind=gl.bindFramebuffer,blend=gl.blendFunc;
+    let ready=false;g.targetBody=null;
+    try{
+      if(!FOREGROUND||FOREGROUND.w!==w||FOREGROUND.h!==h){
+        disposeForeground();FOREGROUND={w,h,fb:gl.createFramebuffer(),depth:gl.createRenderbuffer(),tex:gl.createTexture()};
+        gl.bindTexture(gl.TEXTURE_2D,FOREGROUND.tex);gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA8,w,h);
+        for(const k of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,k,gl.LINEAR);
+        for(const k of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,k,gl.CLAMP_TO_EDGE);
+        gl.bindFramebuffer(gl.FRAMEBUFFER,FOREGROUND.fb);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,FOREGROUND.tex,0);
+        gl.bindRenderbuffer(gl.RENDERBUFFER,FOREGROUND.depth);gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT24,w,h);gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,FOREGROUND.depth);
+        if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw Error('foreground target incomplete');
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER,FOREGROUND.fb);gl.viewport(0,0,w,h);prepareClear();gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+      // Owner draws that bind null remain in this isolated target, never the scene.
+      gl.bindFramebuffer=function(kind,value){return bind.call(gl,kind,value===null?FOREGROUND.fb:value)};
+      // Straight-alpha owner draws need coverage alpha in a transparent target.
+      gl.blendFunc=function(src,dst){if(src===gl.SRC_ALPHA&&dst===gl.ONE_MINUS_SRC_ALPHA)gl.blendFuncSeparate(src,dst,gl.ONE,dst);else blend.call(gl,src,dst)};
+      const result=globalThis.SSSDisplayLens?.foreground?.(g.snap.lens.lock.id,{fieldId:id,gl,proj,view,model:model(W.orientation,base*t.scale,t.center),ms,width:w,height:h,dpr:d,rect:r,drawBody:bodyId=>{
+        const B=fb.find(b=>b.id===bodyId);if(!B)return false;g.targetBody=bodyId;drawBodyGL(B,proj,view,t,base,ms,r,d,w,h);return true;
+      }});
+      if(Array.isArray(result)){drawComposite(result.filter(c=>c?.width>0&&c?.height>0),w,h);ready=true}else ready=result===true;
+    }catch(error){canvas.dataset.foregroundError=String(error?.message||error)}
+    finally{gl.blendFunc=blend;gl.bindFramebuffer=bind;gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.bindRenderbuffer(gl.RENDERBUFFER,rb);gl.activeTexture(active);gl.bindTexture(gl.TEXTURE_2D,texture);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.depthMask(false);gl.disable(gl.SCISSOR_TEST)}
+    return ready;
+  }
   function disposeScene(){if(!SCENE)return;gl.deleteFramebuffer(SCENE.ms);gl.deleteFramebuffer(SCENE.res);gl.deleteRenderbuffer(SCENE.rc);gl.deleteRenderbuffer(SCENE.rd);gl.deleteTexture(SCENE.tex);SCENE=null}
   function buildScene(w,h){
     disposeScene();
@@ -606,7 +642,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     if(a!==gl.FRAMEBUFFER_COMPLETE||b!==gl.FRAMEBUFFER_COMPLETE)throw new Error('glass scene target incomplete');
     if(!GLASS_PG){
       const p=program(gl,GLASS_FRAGMENT,GLASS_VERTEX);
-      GLASS_PG={p,vao:gl.createVertexArray(),U:{scene:gl.getUniformLocation(p,'uScene'),preview:gl.getUniformLocation(p,'uPreview'),previewReady:gl.getUniformLocation(p,'uPreviewReady'),res:gl.getUniformLocation(p,'uRes'),rect:gl.getUniformLocation(p,'uRect[0]'),readRect:gl.getUniformLocation(p,'uReadRect[0]'),merge:gl.getUniformLocation(p,'uMerge[0]'),count:gl.getUniformLocation(p,'uCount'),a:gl.getUniformLocation(p,'uA'),b:gl.getUniformLocation(p,'uB'),c:gl.getUniformLocation(p,'uC'),t:gl.getUniformLocation(p,'uT'),h:gl.getUniformLocation(p,'uH'),home:gl.getUniformLocation(p,'uHome'),homeRead:gl.getUniformLocation(p,'uHomeRead'),l0:gl.getUniformLocation(p,'uL0'),l1:gl.getUniformLocation(p,'uL1'),l2:gl.getUniformLocation(p,'uL2'),n:gl.getUniformLocation(p,'uN')}};
+      GLASS_PG={p,vao:gl.createVertexArray(),U:{scene:gl.getUniformLocation(p,'uScene'),preview:gl.getUniformLocation(p,'uPreview'),previewReady:gl.getUniformLocation(p,'uPreviewReady'),foreground:gl.getUniformLocation(p,'uForeground'),foregroundReady:gl.getUniformLocation(p,'uForegroundReady'),res:gl.getUniformLocation(p,'uRes'),rect:gl.getUniformLocation(p,'uRect[0]'),readRect:gl.getUniformLocation(p,'uReadRect[0]'),merge:gl.getUniformLocation(p,'uMerge[0]'),count:gl.getUniformLocation(p,'uCount'),a:gl.getUniformLocation(p,'uA'),b:gl.getUniformLocation(p,'uB'),c:gl.getUniformLocation(p,'uC'),t:gl.getUniformLocation(p,'uT'),h:gl.getUniformLocation(p,'uH'),home:gl.getUniformLocation(p,'uHome'),homeRead:gl.getUniformLocation(p,'uHomeRead'),l0:gl.getUniformLocation(p,'uL0'),l1:gl.getUniformLocation(p,'uL1'),l2:gl.getUniformLocation(p,'uL2'),n:gl.getUniformLocation(p,'uN')}};
     }
     return S;
   }
@@ -625,7 +661,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     canvas.dataset.glass=String(pack.count+(snap?1:0));
     return {pack,Gm,snap,r};
   }
-  function glassEnd(g,w,h,previewReady=false){
+  function glassEnd(g,w,h,previewReady=false,foregroundReady=false){
     delete gl.bindFramebuffer;
     const S=SCENE,P=GLASS_PG,q=g.Gm.PARAMS,k=g.pack.scale,tex0=gl.getParameter(gl.TEXTURE_BINDING_2D),unit0=gl.getParameter(gl.ACTIVE_TEXTURE);
     gl.bindFramebuffer(gl.READ_FRAMEBUFFER,S.ms);gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER,S.res);
@@ -635,6 +671,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,S.tex);
     gl.useProgram(P.p);gl.uniform1i(P.U.scene,0);gl.uniform2f(P.U.res,w,h);gl.uniform4fv(P.U.rect,g.pack.data);gl.uniform4fv(P.U.readRect,g.pack.readData||EMPTY_READ_RECTS);gl.uniform1fv(P.U.merge,g.pack.mergeData||EMPTY_MERGE);gl.uniform1i(P.U.count,g.pack.count);
     gl.activeTexture(gl.TEXTURE1);const tex1=gl.getParameter(gl.TEXTURE_BINDING_2D);gl.bindTexture(gl.TEXTURE_2D,previewReady?PREVIEW.tex:S.tex);gl.uniform1i(P.U.preview,1);gl.uniform1i(P.U.previewReady,previewReady?1:0);gl.activeTexture(gl.TEXTURE0);
+    gl.activeTexture(gl.TEXTURE0+2);const tex2=gl.getParameter(gl.TEXTURE_BINDING_2D);gl.bindTexture(gl.TEXTURE_2D,foregroundReady?FOREGROUND.tex:S.tex);gl.uniform1i(P.U.foreground,2);gl.uniform1i(P.U.foregroundReady,foregroundReady?1:0);gl.activeTexture(gl.TEXTURE0);
     const rim=g.pack.inset??q.bevelMax;gl.uniform4f(P.U.a,q.radius*(rim/8)*k,q.bevel,rim*k,q.refract*k);gl.uniform4f(P.U.b,q.aberr,q.mag,q.spec,q.fres);gl.uniform4f(P.U.c,q.shadow*k,q.shadowK,q.theta,0);gl.uniform4f(P.U.t,...q.tint);gl.uniform4f(P.U.h,q.dot*k,q.halftone,(q.overfillWave||0)*k,rim*k);
     {const sn=g.snap,R=g.r;
       if(sn){const Ls=sn.lens,Hm=sn.home,X=x=>(x-R.left)*k,Y=y=>h-(y-R.top)*k;
@@ -643,7 +680,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         else{gl.uniform4f(P.U.homeRead,0,0,0,0);gl.uniform4f(P.U.home,0,0,1,1);gl.uniform4f(P.U.n,0,Ls.protect??(Ls.lock?1:0),0,Ls.smooth*k)}}
       else gl.uniform4f(P.U.n,-1,0,0,0);}
     gl.bindVertexArray(P.vao);gl.drawArrays(gl.TRIANGLES,0,3);
-    gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,tex1);gl.activeTexture(unit0);
+    gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,tex1);gl.activeTexture(gl.TEXTURE0+2);gl.bindTexture(gl.TEXTURE_2D,tex2);gl.activeTexture(unit0);
   }
   function applyState(){
     const state=shader.state||{};
@@ -754,7 +791,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       }
       drawPointsGL(proj,view,mdl,d);
       {const comp=glass?compositeSources():null;if(comp?.length)drawComposite(comp,w,h);const on=comp?.length?'1':'0';if(canvas.dataset.composite!==on)canvas.dataset.composite=on}
-      if(glass){if(!placeholder)previewReady=drawPreview(glass,fb,r,d,w,h,proj,view,t,base,ms);drawLabelInk(r,w,h,previewReady?PREVIEW.fb:null);glassEnd(glass,w,h,previewReady)}else resetLabelInk();
+      if(glass){if(!placeholder)previewReady=drawPreview(glass,fb,r,d,w,h,proj,view,t,base,ms);const sharp=drawForeground(glass,fb,r,d,w,h,proj,view,t,base,ms);drawLabelInk(r,w,h,previewReady?PREVIEW.fb:null,sharp&&glass.targetBody?{framebuffer:FOREGROUND.fb,element:bodyLabels.get(glass.targetBody)}:null);glassEnd(glass,w,h,previewReady,sharp)}else resetLabelInk();
     }else if(ctx){
       resetLabelInk();
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);

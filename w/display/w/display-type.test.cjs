@@ -56,3 +56,6 @@ T.foldNode({nodeType:1,tagName:'MAIN',closest:()=>null,childNodes:[a,b]});
 assert.strictEqual(a.data,'Schöne Grüsse');
 assert.strictEqual(b.data,'Schöne Grüße');
 console.log('display type fold witness: PASS');
+
+// The shared shadow follows CSS/root scale and restores unrelated canvas paint.
+{const seen=[],ctx={shadowColor:'old',shadowOffsetX:0,shadowOffsetY:0,shadowBlur:0,getTransform:()=>({a:2,b:0}),save(){this.saved=[this.shadowColor,this.shadowOffsetX,this.shadowOffsetY,this.shadowBlur]},restore(){[this.shadowColor,this.shadowOffsetX,this.shadowOffsetY,this.shadowBlur]=this.saved},fillText(...args){seen.push([args,this.shadowOffsetX,this.shadowOffsetY,this.shadowBlur])}};const T=require('./display-type.js');T.fillText(ctx,'source',4,8);assert.deepEqual(seen[0],[['source',4,8],2,2,4]);assert.equal(ctx.shadowColor,'old')}

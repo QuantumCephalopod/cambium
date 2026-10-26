@@ -16,3 +16,7 @@ header{position:fixed;z-index:12;top:0;left:0;right:0;display:flex;justify-conte
 @media(max-width:760px){#page-copy h1{font-size:var(--type-rp2)}header{padding:18px}.brand{font-size:var(--type-rn2)}#route-mark{left:18px;top:47px}#status{left:18px;top:64px}#mini{right:7px;bottom:7px;width:228px;height:246px}#navTwin{width:178px;height:178px;top:29px}#axis-x{right:8px;width:154px;height:34px}#axis-x::before{top:17px}#axis-x .knob{top:17px}#axis-y{left:5px;top:40px;height:154px;width:34px}#axis-y::before{left:17px}#axis-y .knob{left:17px}#mini-help{display:none}#page-copy{left:18px;bottom:22px;width:calc(100vw - 242px)}#page-copy.root{width:calc(100vw - 238px)}.vertex-label .concept{font-size:var(--type-rn1)}.vertex-label .gene{font-size:var(--type-rn2)}}
 @media(max-width:520px){#page-copy{display:none}#mini{opacity:.94}.brand span{display:none}#tree-eye span{display:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Shared SpriteSheet reading support; derived ink uses the computed shadow. */
+:root{--display-text-shadow:.0625rem .0625rem .125rem rgba(3,5,8,.65)}
+:where(body,body *){text-shadow:var(--display-text-shadow)!important}

@@ -88,7 +88,7 @@
         const boxes=Array.from(range.getClientRects()).filter(r=>r.width>0&&r.height>0);
         if(!boxes.length)continue;
         const paint=paintStyle(styleFor(element));
-        if(boxes.length===1){runs.push({text:transformed(node.data,paint.transform),paint,rect:rect(boxes[0]),opacity});continue}
+        if(boxes.length===1){runs.push({text:transformed(node.data,paint.transform),paint,rect:rect(boxes[0]),opacity,label});continue}
         // Wrapped runs: derive each line from character ranges rather than guessing wrap widths.
         let line=null,offset=0;
         for(const char of node.data){
@@ -97,7 +97,7 @@
           if(boxes.length!==1)throw new Error('ambiguous label text fragment');
           const r=rect(boxes[0]);
           if(!line||Math.abs(line.rect.top-r.top)>.5||Math.abs(line.rect.height-r.height)>.5){
-            line={text:char,paint,rect:r,opacity};runs.push(line);
+            line={text:char,paint,rect:r,opacity,label};runs.push(line);
           }else{
             const right=Math.max(line.rect.left+line.rect.width,r.left+r.width);
             line.rect.left=Math.min(line.rect.left,r.left);line.rect.width=right-line.rect.left;line.text+=char;
@@ -253,7 +253,7 @@
       if(!labelHost)return;
       if(original===null||original===undefined)labelHost.removeAttribute(ATTR);else labelHost.setAttribute(ATTR,original);
     }
-    function draw(canvasRect,bufferWidth,bufferHeight,additionalTarget=null){
+    function draw(canvasRect,bufferWidth,bufferHeight,additionalTarget=null,foreground=null){
       reset();
       const c=rect(canvasRect||{});
       if(disposed||!gl||!labelHost||!doc||!getStyle||c.width<=0||c.height<=0||!Number.isFinite(bufferWidth)||!Number.isFinite(bufferHeight)||bufferWidth<=0||bufferHeight<=0)return false;
@@ -287,6 +287,7 @@
         if(additionalTarget){const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);
           try{gl.bindFramebuffer(gl.FRAMEBUFFER,additionalTarget);gl.drawArrays(gl.TRIANGLES,0,vertices.length/5)}
           finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target)}}
+        if(foreground?.element){const chosen=runs.filter(run=>run.label===foreground.element);if(chosen.length){const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);try{gl.bindFramebuffer(gl.FRAMEBUFFER,foreground.framebuffer);gl.bufferData(gl.ARRAY_BUFFER,quads(chosen,atlas,c),gl.DYNAMIC_DRAW);gl.drawArrays(gl.TRIANGLES,0,chosen.length*6)}finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target)}}}
         if(gl.getError()!==gl.NO_ERROR)throw new Error('label GL drawing failed');
         if(!releaseStyle)releaseStyle=acquireStyle(doc);
         labelHost.setAttribute(ATTR,'gpu');return true;
