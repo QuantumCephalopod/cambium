@@ -142,17 +142,17 @@ function createBaitFold(G,carrier=globalThis.SSSRecursiveFold){
     return revision;
   }
   function routeAt(path){const n=tissue.at(root,path);return n?.value?{...n.value,address:path}:null}
-  function view(container='',{context=false}={}){
-    const v=tissue.view(root,{container,context,project({path,count,value,open}){
+  function view(container='',{context=false,refine=null}={}){
+    const v=tissue.view(root,{container,context,refine,project({path,count,value,open}){
       if(value)return {noun:value.path,de:value.path,en:value.path,bait:true,address:path};
       if(open)return {noun:path||'Crawlerbait',de:path||'Crawlerbait',en:path||'Crawlerbait',gene:'CREATE'};
       return {noun:count?`${count} within ${path}`:'open',fold:true,count};
     }});visited=v.visited;
     const points=v.terminals.map(({path,count,value,within})=>{
-      if(value){const route={...value,address:path};return Object.freeze({id:`bait:${route.path}`,gene:path[0],path,kind:'bait',anchor:'cell',context:!within,label:placeName(route.path),
-        meta:`${path} · ${route.raw_requests??route.observed_404??0} requests · ${route.crawlers?.length??route.signatures?.length??0} beings`,address:path,route})}
-      return Object.freeze({id:'fold:'+path,gene:path[0],path,kind:'holon',context:!within,fold:true,label:`${count} ${word('Orte','places')}`,
-        meta:`${count} Baits · click to enter`,count});
+      if(value){const route={...value,address:path};return Object.freeze({id:`bait:${route.path}`,gene:path[0],path,kind:'bait',anchor:'cell',context:context||!within,label:placeName(route.path),
+        meta:word('Aus beobachteten Begegnungen gewachsen','Grown from recorded encounters'),address:path,route})}
+      return Object.freeze({id:'fold:'+path,gene:path[0],path,kind:'holon',context:context||!within,fold:true,label:`${count} ${word('Orte','places')}`,
+        meta:`${count} ${word('Orte · zum Erkunden öffnen','places · open to explore')}`,count});
     });
     return {root:v.root,points,revision,container};
   }
@@ -689,7 +689,13 @@ function fieldProjection(projection={}){
   baitFold.seek(start);
   return baitFold.view('');
 }
-function temporalField({container=''}={}){
+function visibleCell(path,project,viewport){
+  const points=cellIn(V0,path).map(project);if(points.every(p=>p.front===false))return false;
+  const xs=points.map(p=>p.x),ys=points.map(p=>p.y),left=Math.min(...xs),right=Math.max(...xs),top=Math.min(...ys),bottom=Math.max(...ys);
+  if(right<0||left>viewport.width||bottom<0||top>viewport.height)return false;
+  return Math.max(right-left,bottom-top)>typePx(0)*8;
+}
+function temporalField({container='',project=null,viewport=null}={}){
   if(!lastProjection)return null;
   if(!SIM.life){SIM.life=buildLife(lastProjection,growth);if(!SIM.life)return null;resetTo(0);fieldRevision=-1}
   const t=SIM.life.t0+SIM.simT*1000,i=growth.index(t);
@@ -698,9 +704,14 @@ function temporalField({container=''}={}){
     const a=growth.address(CAM.o.S.wps[CAM.o.reached].path,t);
     if(a)container=a.slice(0,-1);
   }
-  if(fieldRevision!==i||fieldCache?.container!==container){fieldRevision=i;baitFold.seek(t);
-    fieldCache={...baitFold.view(container,{context:true}),revision:Object.freeze({index:i,container})};
-    if(selectedAddress){const a=growth.address(selectedAddress,t),selected=a?baitFold.routeAt(a):null;if(!selected)selectedAddress='';renderInspector(selected)}
+  const projected=typeof project==='function'&&viewport?.width>0&&viewport?.height>0,language=globalThis.SSSWorldView?.language||'en';
+  if(projected||fieldRevision!==i||fieldCache?.container!==container||fieldCache?.language!==language){
+    baitFold.seek(t);const candidate=baitFold.view(container,{context:true,refine:projected?({path})=>visibleCell(path,project,viewport):null});
+    const frontier=candidate.points.map(p=>p.path+':'+(p.count||1)).join('|');
+    if(fieldRevision!==i||fieldCache?.container!==container||fieldCache?.frontier!==frontier||fieldCache?.language!==language){
+      fieldRevision=i;fieldCache={...candidate,frontier,language,revision:Object.freeze({index:i,container,frontier,language})};
+      if(selectedAddress){const a=growth.address(selectedAddress,t),selected=a?baitFold.routeAt(a):null;if(!selected)selectedAddress='';renderInspector(selected)}
+    }
   }
   return fieldCache;
 }
@@ -877,7 +888,7 @@ function unmount({host,content}={}){
 }
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,
   // pure witnesses for tests: the walk law, the life built from a projection, and the frame cost of living it
-  _law:Object.freeze({pointOf,route,buildLife,prepareWalk,buildGrowth,createBaitFold,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,beingFrame,bodySize,buildVisits,resolutionCell,hudPlacement,KIND,
+  _law:Object.freeze({pointOf,route,buildLife,prepareWalk,buildGrowth,createBaitFold,prefixFacts,publicFacts,triangleRows,textLines,screenFrame,beingFrame,bodySize,buildVisits,resolutionCell,hudPlacement,visibleCell,KIND,
     simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container='',changeAt=null,nextContainer=''}){
       SIM.life=buildLife(projection);resetTo(at*SIM.life.seconds);SIM.paceLog=SIM.paceCur=pace;SIM.playing=true;SIM.container=container;
       const pxOf=(P,r)=>r*900;let worst=0,sum=0;

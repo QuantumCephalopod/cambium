@@ -270,3 +270,15 @@ for(const [w,h] of [[390,844],[1280,800]])for(const open of [false,true]){
 console.log('PASS · canonical time rows and intrinsic widths avoid open/closed compass rectangles on both carriers');
 
 const clipped=law.triangleRows([{x:0,y:-1e9},{x:1e9,y:1e9},{x:-1e9,y:1e9}],16,5,{top:0,bottom:844});assert(clipped.length<=53,'near-camera narrative enumerated offscreen rows');
+// A large visible place in a sibling must retain its actual form, rather than
+// becoming a blank summary simply because a foreground cell was selected.
+moduleRef.fieldProjection(projection);
+const visibleSource=reference.routesAt(law.buildLife(projection).t0),neighbour=visibleSource.find(r=>!r.address.startsWith('w')&&r.address.length>3);assert(neighbour);
+const neighbourCell=N.cellForPath(neighbour.address),zoom=Math.pow(2,neighbour.address.length)*320;
+const witnessProject=p=>({x:640+(p[0]-neighbourCell.center[0])*zoom,y:400-(p[1]-neighbourCell.center[1])*zoom,front:true});
+const request={container:'w',project:witnessProject,viewport:{width:1280,height:800}},nearby=moduleRef.shader.snapshot(request);
+const visibleBait=nearby.points.find(p=>p.id==='bait:'+neighbour.path);assert(visibleBait&&!visibleBait.fold&&visibleBait.context,'visible sibling lost its actual place');
+assert.strictEqual(moduleRef.shader.snapshot(request),nearby,'unchanged projected frontier rebuilt GPU tissue');
+const away=moduleRef.shader.snapshot({...request,project:p=>({x:1e8+p[0],y:1e8+p[1],front:true})});
+assert(away.points.length<nearby.points.length);assert.equal(nearby.points.reduce((n,p)=>n+(p.fold?p.count:1),0),visibleSource.length);
+console.log('PASS · a visible fine sibling survives foreground selection; offscreen context remains folded and unchanged geometry is reused');

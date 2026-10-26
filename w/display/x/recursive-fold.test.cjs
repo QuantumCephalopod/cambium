@@ -84,6 +84,8 @@ for(const depth of [4,6,8]){
   assert.equal(sum(detail.terminals),16);
   const surroundings=tissue.view(tree,{container,context:true,project:r=>({count:r.count})});
   assert.equal(surroundings.visited,detail.visited);assert.equal(surroundings.terminals.length,16+3*container.length);assert.equal(sum(surroundings.terminals),4**depth);
+  const refined=tissue.view(tree,{container,context:true,refine:record=>{assert(!('children' in record));return record.path==='x'||record.path==='xw'},project:r=>({count:r.count})});
+  assert.equal(sum(refined.terminals),4**depth);assert(refined.visited<=detail.visited+8,'refinement scanned hidden population');
   const mutation=tissue.replace(tree,'y'.repeat(depth),tissue.leaf({changed:true}));
   assert.equal(mutation.edits,depth);assert.strictEqual(mutation.root.children.w,tree.children.w);
   scaling.push({population:4**depth,overview:overview.visited,descent:detail.visited,mutation:mutation.edits});

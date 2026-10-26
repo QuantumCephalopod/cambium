@@ -46,16 +46,18 @@
       check(root);if(!validPath(path))throw new TypeError('invalid fold path');
       let n=root;for(const g of path){n=n.children?.[g];if(!n)return null}return n;
     }
-    function view(root,{container='',ranks=2,context=false,project=record=>({...record})}={}){
+    function view(root,{container='',ranks=2,context=false,refine=null,project=record=>({...record})}={}){
       check(root);if(!validPath(container))throw new TypeError('invalid fold container');
       if(!Number.isSafeInteger(ranks)||ranks<0)throw new TypeError('invalid fold resolution');
+      if(refine!==null&&typeof refine!=='function')throw new TypeError('invalid fold refinement');
       if(typeof project!=='function')throw new TypeError('fold projector required');
       const limit=container.length+ranks,terminals=[],tasks=[{node:root,path:'',parent:null,g:null}];
       let result,visited=0;
       while(tasks.length){
         const {node:n,path,parent,g}=tasks.pop();visited++;
         const within=path.startsWith(container),ancestor=container.startsWith(path);
-        const open=!!n.children&&(ancestor&&path.length<container.length||within&&path.length<limit)||(!path&&!n.count);
+        let open=!!n.children&&(ancestor&&path.length<container.length||within&&path.length<limit)||(!path&&!n.count);
+        if(!open&&n.children&&refine)open=refine({path,count:n.count,within})===true;
         // Closed parents lend their exact count, never their hidden leaves.
         const record={path,count:n.count,value:n.children?null:n.value,fold:!!n.children&&!open,open,within};
         const body=project(record);

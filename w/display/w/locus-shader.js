@@ -113,7 +113,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   let structure=N.collectStructure(projection.root),pointRecords=fieldPointRecords(structure,projection),pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));
   const colors=paletteSet(palette);let fieldRevision=null,shapeDirty=false;
   function refreshProjection(ms){
-    if(typeof shader.snapshot!=='function')return;const next=shader.snapshot({ms,container:container()});
+    if(typeof shader.snapshot!=='function')return;const rect=canvas.getBoundingClientRect(),next=shader.snapshot({ms,container:container(),project:point=>project(point,rect),viewport:{width:rect.width,height:rect.height}});
     if(!next?.root||!Array.isArray(next.points)||next.revision===fieldRevision)return;
     fieldRevision=next.revision;projection=next;structure=N.collectStructure(next.root);pointRecords=fieldPointRecords(structure,next);pointById=new Map(pointRecords.map(p=>[p.spec.id,p]));shapeDirty=true;
     if(selectedPointId&&!pointById.has(selectedPointId))selectedPointId='';if(hoverPointId&&!pointById.has(hoverPointId))setHover('');
@@ -242,7 +242,8 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(gl&&GL){const data=geometry(cells);gl.bindBuffer(gl.ARRAY_BUFFER,GL.buf);gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);GL.count=data.length/7}
     const hint=c.length+2,pools=new Map();visible=[];
     for(const rec of pointRecords){
-      if(!rec.path.startsWith(c)){if(rec.spec.context===true)visible.push(rec);continue}
+      if(rec.spec.context===true){visible.push(rec);continue}
+      if(!rec.path.startsWith(c))continue
       if(rec.path.length<=hint){visible.push(rec);continue}
       const key=rec.path.slice(0,hint);let pool=pools.get(key);
       if(!pool){const cellRec=N.addressRecord(structure,key)||N.cellForPath(key);pool={pool:true,path:key,members:[],world:[...cellRec.center],spec:null};pools.set(key,pool);visible.push(pool)}
@@ -329,7 +330,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }else if(follow){cam={from:{center:[...follow.c],scale:Math.exp(follow.l)},to:frameFor(container()),start:performance.now()};follow=null}
   }
   function target(){return follow?{center:follow.c,scale:Math.exp(follow.l)}:currentFrame()}
-  function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2]}}
+  function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2],front:z>0}}
   function pointInTriangle(x,y,a,b,c){
     const area=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
     const p={x,y},s1=area(a,b,p),s2=area(b,c,p),s3=area(c,a,p);
