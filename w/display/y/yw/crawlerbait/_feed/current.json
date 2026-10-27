@@ -26,13 +26,13 @@
   "home": {
     "changed_scope": [
       "RITUALS/organism/RITUAL.md",
-      "z/meal.gles-capture.cjs",
-      "z/render.js"
+      "z/render.js",
+      "z/render.test.cjs"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "IMPLEMENTED_NATIVE / LIVE_ACCEPTANCE_PENDING — Existing Goo material lent to shared Display operation; default source Goo pixels remain byte-exact."
+    "outcome": "IMPLEMENTED_NATIVE / OWNER_PROMOTION_PENDING — Cooperative source-local visits/growth/life preparation retains exact field and first replay state, installs only completed generations and preserves cancelled/failed encounter boundaries."
   },
-  "observed_at_utc": "2026-10-27T00:13:41.695703Z",
+  "observed_at_utc": "2026-10-27T11:50:19.237105Z",
   "owner": "crawlerbait",
   "phenotype": {
     "w": {
@@ -48,11 +48,11 @@
       "noun": "Membrane"
     }
   },
-  "reflected_home_event": "crawlerbait-shared-goop-material-native-20261027",
+  "reflected_home_event": "crawlerbait-cooperative-preparation-native-20261027",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "3e911d5f5976535f4aa1045c5bffda282f308116ccc88e86c352ae0aab78ed90"
+      "sha256": "91971f584a9cff401f0ee3ee8a148324b69b4c30584b6a2b1a61a7605dd88aab"
     }
   ],
   "shell": {
@@ -60,6 +60,7 @@
     "root_history": "_root",
     "stomach_direct": [
       "NUTRIENT__address-lod-and-being-loci__20261019.md",
+      "NUTRIENT__cooperative-encounter-preparation__20261027.md",
       "NUTRIENT__crawlercam-lock-continuity__20261019.md",
       "NUTRIENT__efficient-initial-projection__20261019.md",
       "NUTRIENT__fractal-being-place-camera__20261026.md",
@@ -76,6 +77,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "586fd43a230cfdc2acca481bb7ef416cc635b980"
+    "source_revision": "c0e547176bcf6dd845861e67a10b130d0f64bff3"
   }
 }

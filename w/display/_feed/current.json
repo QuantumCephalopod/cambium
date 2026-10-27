@@ -27,28 +27,23 @@
     "changed_scope": [
       "RITUALS/navigation/RITUAL.md",
       "RITUALS/organism/RITUAL.md",
-      "w/display-label-ink.js",
-      "w/display-text-tissue.js",
-      "w/display-type.js",
-      "w/display-type.test.cjs",
-      "w/liquid-reading-ink.cjs",
-      "w/locus-shader.gles.test.py",
-      "w/root-view.css",
+      "RITUALS/site-holon/RITUAL.md",
       "w/template.html",
-      "z/site-fold.js",
-      "z/site-fold.test.cjs",
-      "z/site-runtime.css",
-      "z/world-view.test.cjs",
-      "w/goo-material.js",
+      "x/display-runtime-v2.js",
+      "x/display-runtime-v2.test.cjs",
+      "z/site-fold-particles.gles-capture.cjs",
+      "z/site-fold-particles.gles.test.py",
       "z/site-fold-particles.js",
       "z/site-fold-particles.test.cjs",
-      "z/site-fold-particles.gles-capture.cjs",
-      "z/site-fold-particles.gles.test.py"
+      "z/site-fold.js",
+      "z/site-fold.test.cjs",
+      "x/feed-acquisition.js",
+      "x/feed-acquisition.test.cjs"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "IMPLEMENTED_NATIVE / LIVE_ACCEPTANCE_PENDING — Selected root-relative shadow and four-track instanced black tetrahedron flood; covered 1650ms/1650ms handover."
+    "outcome": "IMPLEMENTED_NATIVE / OWNER_PROMOTION_PENDING — Moving black particle fill follows actual preparation, preserves an opening until ready, seals before covered acceptance and reverses on cancellation/refusal."
   },
-  "observed_at_utc": "2026-10-27T00:13:41.693262Z",
+  "observed_at_utc": "2026-10-27T11:50:19.234522Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -64,19 +59,19 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-selected-shadow-tetra-goop-native-20261027",
+  "reflected_home_event": "display-goop-loading-progress-native-20261027",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "91808c5a016b0bd81d99c13275098d21465b6a52db2670ebda3e3850bce34147"
+      "sha256": "340be206ef0866660881b7dee07a93957cca9587d5781392b4a56b1a8f99265c"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "33b29885570426fe3ec8c0024486c9d59440ec9f2f0228250179436e0c47f944"
+      "sha256": "3b8327d524f058e5c6fa15f8040f82edc44b85502c3b5b67a0e67a9f094e19f7"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "958c056da0f6662c4fb7de9aa366d959a7c4ed102d0eeb0fb9bd8a1f493f4968"
+      "sha256": "2223b30b3dac6b4d688d93b4f5bbed747b714c0796976b95de5246b244bb3ec8"
     }
   ],
   "shell": {
@@ -86,6 +81,7 @@
       "NUTRIENT__chosen-relative-type-shadow__20261027.md",
       "NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
       "NUTRIENT__explicit-locus-point-anchor__20261026.md",
+      "NUTRIENT__goop-as-loading-progress__20261027.md",
       "NUTRIENT__language-glyphs-and-site-names__20261019.md",
       "NUTRIENT__liquid-evidence-feed-envelope__20261026.md",
       "NUTRIENT__liquid-visitor-regressions__20261026.md",
@@ -98,6 +94,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "586fd43a230cfdc2acca481bb7ef416cc635b980"
+    "source_revision": "c0e547176bcf6dd845861e67a10b130d0f64bff3"
   }
 }
