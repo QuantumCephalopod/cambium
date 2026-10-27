@@ -86,7 +86,7 @@
         const boxes=Array.from(range.getClientRects()).filter(r=>r.width>0&&r.height>0);
         if(!boxes.length)continue;
         const paint=paintStyle(styleFor(element));
-        if(host.getAttribute(ATTR)==='gpu'&&doc.documentElement){const rem=parseFloat(styleFor(doc.documentElement)?.fontSize)||16,inverse=doc.documentElement?.dataset?.inverse==='true';paint.decorationColor=paint.color;paint.shadow=`${inverse?'rgba(252,250,247,.8)':'rgba(3,5,8,.8)'} ${rem*3/32}px ${rem*3/32}px ${rem/16}px`;}
+        if(host.getAttribute(ATTR)==='gpu'&&doc.documentElement){paint.decorationColor=paint.color;paint.shadow=globalThis.SSSDisplayType?.cssShadow?.(doc)||paint.shadow;}
         if(boxes.length===1){runs.push({text:transformed(node.data,paint.transform),paint,rect:rect(boxes[0]),opacity,label});continue}
         // Wrapped runs: derive each line from character ranges rather than guessing wrap widths.
         let line=null,offset=0;

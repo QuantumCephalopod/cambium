@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.10"
+version: "3.11"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -530,3 +530,9 @@ An authored-part offer lends a transparent canvas of its actual current reading 
 ## Shared shadow and contact allocation — 2026-10-26
 
 Cached SpriteSheet glyph sprites carry the shared shadow with sufficient tile padding; global inverse is part of the glyph paint key so an old light/dark shadow cannot survive the material change. The contacted-page Canvas retains storage while buffer dimensions are unchanged. Actual source wording, layout, pagination, organism/tissue state and contact readiness remain owned here.
+
+## Selected relative shadow return — 2026-10-27
+
+Cached glyph sprites reserve the shared shadow material's actual blur/spread padding. Existing type sizes, glyph advances, reading frames, source wording and page continuation remain unchanged; the selected laboratory font size is not a new Papers font size.
+
+The enlarged glyph sprites retain a 32MiB/4000-entry ceiling. Shared font readiness changes the paint generation so fallback-font shadows cannot survive the actual SpriteSheet load.

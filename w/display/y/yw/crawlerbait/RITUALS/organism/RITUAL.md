@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.13"
+version: "5.14"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -297,3 +297,7 @@ The existing selected Being/narrative offer lends actual target-only goo geometr
 ## Text-fitted reading ellipse — 2026-10-26
 
 Being/type/narrative contact fits actual Pretext lines into ellipse chords, selecting the smallest tested frame that contains the complete short text; longer source text retains complete page continuation within the safe carrier. Cache measured layout per wording/font/carrier generation and invalidate with font readiness. Both the offered axes and painted page consume that layout. The same shared body lock remains authoritative. Retain foreground Canvas storage and bound target-only Goo/Ink/copy raster work to the actual drop region at each target scale; simulation geometry/time remain unchanged.
+
+## Shared Goo material return — 2026-10-27
+
+The existing point accumulation and colored/halftone ink shaders are lent through Display's source-agnostic Goo material. Shared density and threshold coverage are consumed independently by Display's black tetrahedron flood. Crawlerbait still owns splat geometry, kind palette, coalescence inputs, replay clock, acquisition and source meaning. No simulation step or source schema is transferred into the shared operation. Actual default Goo pixels must remain equivalent; new shared type shadow values inherit Display without replacing local type size.

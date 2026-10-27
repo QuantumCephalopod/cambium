@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.22"
+version: "3.23"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -183,7 +183,7 @@ No target means current free-lens behavior remains. Locking alone is neither glo
 
 ## Target-origin closure
 
-Pointer navigation supplies the actual minimap target as membrane origin. Four facets converge on that point, encounter state changes only under full closure, then the destination is revealed by the inverse opening. Non-pointer/direct access may use viewport center as a neutral origin.
+Pointer navigation supplies the actual minimap target as membrane origin. Four facet regions track repeated tetrahedral particles toward that point; their black Goo union closes the cover. Encounter state changes only under full closure, then the particle flow withdraws to reveal the destination. Non-pointer/direct access may use viewport center as a neutral origin.
 
 ## Address hash
 
@@ -206,3 +206,7 @@ Native pointer/touch, restoration and sibling/direct-jump witnesses pass within 
 ## Compression
 
 **The witness moves directly among site-holons physically present in Display Population. Philosophy may independently inspect the larger realized recursive field. Global targets come from the Population tree, exact raw addresses require unique occupancy, quotient-coalesced genealogies may compose, camera focus uses recursive cell centroids, and the persistent membrane closes on the actual chosen target. Site-local routes remain local and never silently become global navigation addresses.**
+
+## Particle-carried closure — 2026-10-27
+
+The existing four target-origin facets are trajectory regions for a shared instanced tetrahedron flood. Black Goo coverage replaces the four visible sheets, using the shared density/threshold material. Both phases use 1650ms and cubic-bezier(.76,0,.24,1); no independent completion timer decides the actual cover. Renderer/source handover happens only after complete closure; readiness may hold that cover. Failure, cancellation and reduced motion release the same navigation transaction. No navigation destination, address or history law changes. Backend/resolution/instance budgets inherit the Display organism receptor.

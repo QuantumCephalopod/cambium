@@ -187,7 +187,8 @@ def main():
     check('breakAt' in lens and 'assets/display-lens.js' in template and 'uHome' in fields and 'dots(' in fields,'goo lens or halftone missing')
     check('glassBegin' in fields and 'glassEnd' in fields and 'renderbufferStorageMultisample' in fields and 'cmul' in fields,'field does not refract occupied surfaces')
     check('context.origin' in fold and '--fold-x' in fold and '--fold-y' in fold,'transition is not anchored to chosen target')
-    check('clip-path:polygon(0 0,100% 0,var(--fold-x) var(--fold-y))' in site_css,'target-origin tetrahedral iris missing')
+    particles=(DISPLAY/'z'/'site-fold-particles.js').read_text()
+    check('assets/site-fold-particles.js' in template and 'assets/goo-material.js' in template and 'SSSSiteFoldParticles' in fold and 'uTracks[4]' in particles and 'drawArraysInstanced' in particles,'target-origin tetrahedral particle closure missing')
     check("data-aperture=\"closed\"" in actual and "dataset.aperture='open'" in aperture,'global navigator is not aperture-owned')
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
     hud=aperture_css.split('Global navigator as HUD',1)[1].split('html[data-composition="split"] #mini,',1)[0] if 'Global navigator as HUD' in aperture_css else ''
@@ -250,10 +251,10 @@ def main():
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
     check('philosophy-global-site' in philosophy_render and 'requestGlobalTarget' in philosophy_render,'Philosophy mounted-address direct encounter missing')
 
-    js_sources=['w/ui-grid.js','z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','x/display-runtime-v2.js','x/representation-handoff.js','x/recursive-fold.js','w/locus-shader.js','w/display-label-ink.js','z/navigation-aperture.js','z/display-safe-area.js','z/display-glass.js','z/display-lens.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
+    js_sources=['w/ui-grid.js','z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','z/site-fold-particles.js','w/goo-material.js','x/display-runtime-v2.js','x/representation-handoff.js','x/recursive-fold.js','w/locus-shader.js','w/display-label-ink.js','z/navigation-aperture.js','z/display-safe-area.js','z/display-glass.js','z/display-lens.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
     for source in js_sources:
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'JS syntax failure {source}')
-    for test in ('y/philosophy/render.test.cjs','z/world-view.test.cjs','z/navigation-aperture.test.cjs','y/yxz/impressum/render.test.cjs','y/yz/datenschutz/render.test.cjs','z/navigation-physiology.test.cjs','x/site-holon.test.cjs','x/display-runtime-v2.test.cjs','x/representation-handoff.test.cjs','x/recursive-fold.test.cjs','z/site-fold.test.cjs','z/display-safe-area.test.cjs','z/display-glass.test.cjs','z/display-lens.test.cjs','w/display-type.test.cjs','w/ui-grid.test.cjs','w/ui-grid-sites.test.cjs','w/display-label-ink.test.cjs','w/locus-shader.test.cjs','y/yx/schattenseiten/render.test.cjs','y/yy/papers/sierpinski.test.cjs'):
+    for test in ('y/philosophy/render.test.cjs','z/world-view.test.cjs','z/navigation-aperture.test.cjs','y/yxz/impressum/render.test.cjs','y/yz/datenschutz/render.test.cjs','z/navigation-physiology.test.cjs','x/site-holon.test.cjs','x/display-runtime-v2.test.cjs','x/representation-handoff.test.cjs','x/recursive-fold.test.cjs','z/site-fold.test.cjs','z/site-fold-particles.test.cjs','z/display-safe-area.test.cjs','z/display-glass.test.cjs','z/display-lens.test.cjs','w/display-type.test.cjs','w/ui-grid.test.cjs','w/ui-grid-sites.test.cjs','w/display-label-ink.test.cjs','w/locus-shader.test.cjs','y/yx/schattenseiten/render.test.cjs','y/yy/papers/sierpinski.test.cjs'):
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     if ctypes.util.find_library('EGL'):
         result=subprocess.run(['python3',str(DISPLAY/'w/locus-shader.gles.test.py')],capture_output=True,text=True)
