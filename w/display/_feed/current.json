@@ -25,25 +25,30 @@
   },
   "home": {
     "changed_scope": [
+      "RITUALS/navigation/RITUAL.md",
       "RITUALS/organism/RITUAL.md",
-      "RITUALS/site-holon/RITUAL.md",
       "w/display-label-ink.js",
-      "w/display-label-ink.test.cjs",
       "w/display-text-tissue.js",
       "w/display-type.js",
       "w/display-type.test.cjs",
       "w/liquid-reading-ink.cjs",
       "w/locus-shader.gles.test.py",
-      "w/locus-shader.js",
       "w/root-view.css",
-      "z/display-lens.js",
-      "z/display-lens.test.cjs",
-      "w/locus-shader.focus-perf.py"
+      "w/template.html",
+      "z/site-fold.js",
+      "z/site-fold.test.cjs",
+      "z/site-runtime.css",
+      "z/world-view.test.cjs",
+      "w/goo-material.js",
+      "z/site-fold-particles.js",
+      "z/site-fold-particles.test.cjs",
+      "z/site-fold-particles.gles-capture.cjs",
+      "z/site-fold-particles.gles.test.py"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "IMPLEMENTED_NATIVE / LIVE_ACCEPTANCE_PENDING — Shared shadow/inverse, background captions, elliptical body frames and bounded focus rendering."
+    "outcome": "IMPLEMENTED_NATIVE / LIVE_ACCEPTANCE_PENDING — Selected root-relative shadow and four-track instanced black tetrahedron flood; covered 1650ms/1650ms handover."
   },
-  "observed_at_utc": "2026-10-26T23:00:44.531490Z",
+  "observed_at_utc": "2026-10-27T00:13:41.693262Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -59,15 +64,15 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-liquid-visitor-focus-native-20261026",
+  "reflected_home_event": "display-selected-shadow-tetra-goop-native-20261027",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "cd43614085a7bdb65caedb0ec128d70d6296948205479a4e19e48c3719dd872c"
+      "sha256": "91808c5a016b0bd81d99c13275098d21465b6a52db2670ebda3e3850bce34147"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "86cfb99efd179b916a6a691f48614b815eb43ec190cbbdda71a2502d38e23ca3"
+      "sha256": "33b29885570426fe3ec8c0024486c9d59440ec9f2f0228250179436e0c47f944"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
@@ -78,6 +83,7 @@
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
+      "NUTRIENT__chosen-relative-type-shadow__20261027.md",
       "NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
       "NUTRIENT__explicit-locus-point-anchor__20261026.md",
       "NUTRIENT__language-glyphs-and-site-names__20261019.md",
@@ -85,12 +91,13 @@
       "NUTRIENT__liquid-visitor-regressions__20261026.md",
       "NUTRIENT__selection-is-not-visibility__20261026.md",
       "NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
-      "NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md"
+      "NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md",
+      "NUTRIENT__tetra-particle-black-goop-transition__20261027.md"
     ],
     "waste_direct_count": 105
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "5d0c0d1e6fb52b4630b1837d50d6def6b982609a"
+    "source_revision": "586fd43a230cfdc2acca481bb7ef416cc635b980"
   }
 }
