@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.27"
+version: "3.28"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -233,3 +233,9 @@ A site-holon change is accepted when:
 ## Visitor contact fit — 2026-10-26
 
 The optional body frame may include ellipse:true to lend measured ellipse axes. This is geometry on the existing contact, not a new mode or identity. Fit actual page ink to the interior chords; share the same layout for the frame and foreground draw. Keep source canvas allocations across unchanged drawing-buffer dimensions. Source-owned intermediate render targets may clip contact work to the same normalized drop bounds, including sampling padding; restore scissor state before returning. Shared hover/focus captions inherit Display's background-ink law rather than escaping as a native foreground overlay.
+
+## Optional cooperative source preparation — 2026-10-27
+
+A runtime module may expose `prepareFieldProjection(projection, {yieldControl, onProgress})`. It prepares its own opaque source generation before crossing without mounting, mutating the visible encounter, deciding global addresses or acquiring another owner's source. `onProgress(0..1)` acknowledges completed owner work; Display maps it to the existing loading flow and awaits completion before sealing. `yieldControl()` lends an opportunity for input/animation between source-local portions. The optional hook does not make a synchronous source algorithm nonblocking automatically. `fieldProjection` installs the completed generation only at the covered acceptance boundary. Unopted owners keep their existing projection behavior.
+
+Reuse is generation-local, bounded by reachable source objects and the existing resource handoff. Failure may retry with the same immutable acquired source. Late completion after cancellation is a reusable resource, never permission to resurrect an obsolete encounter. Whole-body relocation requires no internal host path or identity branch.

@@ -23,3 +23,20 @@ const F=require('./site-fold.js');
  await assert.rejects(f.swap(()=>{throw Error('source refuses')}),/source refuses/);assert.equal(f.busy,false);assert.equal(layer.hidden,true);
  }finally{global.SSSSiteFoldParticles=old;}
 })().catch(err=>{console.error(err);process.exitCode=1});
+
+/* The actual fold and actual particle driver share one deterministic frame
+ * clock. This witnesses the complete visible-wait -> closure -> transaction. */
+(async()=>{
+ const fs=require('fs'),vm=require('vm'),G=require('../w/goo-material.js');let now=0,id=0;const frames=new Map();
+ const canvas={setAttribute(){},getContext:()=>null,addEventListener(){},remove(){}},layer={dataset:{},hidden:true,style:{setProperty(){}},appendChild(){},ownerDocument:{createElement:()=>canvas}};
+ const c={SSSGooMaterial:G,Float32Array,innerWidth:800,innerHeight:600,performance:{now:()=>now},requestAnimationFrame:f=>{frames.set(++id,f);return id},cancelAnimationFrame:i=>frames.delete(i)};
+ vm.runInNewContext(fs.readFileSync(require.resolve('./site-fold-particles.js'),'utf8'),c);vm.runInNewContext(fs.readFileSync(require.resolve('./site-fold.js'),'utf8'),c);
+ const fold=c.SSSSiteFold.createFold(layer,{reduced:false}),frame=async()=>{now+=16;const jobs=[...frames.values()];frames.clear();for(const f of jobs)f(now);for(let i=0;i<8;i++)await Promise.resolve()};
+ let done,progress=.45,commits=0;const ready=new Promise(r=>done=r),start=now;
+ const run=fold.swap(()=>{assert.equal(layer.dataset.fold,'closed');assert.equal(layer.hidden,false);commits++},{readiness:ready,progress:()=>progress});
+ for(let i=0;i<180;i++)await frame();assert.equal(commits,0);assert.equal(layer.dataset.fold,'closing');assert(fold.busy);assert.equal(await fold.swap(()=>{}),false);
+ progress=1;done({ok:true});for(let i=0;i<400&&fold.busy;i++)await frame();assert.equal(await run,true);assert.equal(commits,1);assert(now-start>=3300);assert.equal(frames.size,0);assert(layer.hidden);
+ let cancel;const pending=new Promise(r=>cancel=r);const cancelled=fold.swap(()=>{throw Error('cancelled mutation ran')},{readiness:pending,progress:()=>.2});await frame();cancel({cancelled:true});for(let i=0;i<220&&fold.busy;i++)await frame();assert.equal(await cancelled,false);assert(layer.hidden);assert.equal(frames.size,0);
+ const failure=fold.swap(()=>{throw Error('refused mutation ran')},{readiness:Promise.resolve({ok:false,error:Error('owner refused')}),progress:()=>.6});const rejection=assert.rejects(failure,/owner refused/);for(let i=0;i<230&&fold.busy;i++)await frame();await rejection;assert(layer.hidden);assert.equal(frames.size,0);
+ console.log('actual progress-driven fold: cold visible wait, busy gate, covered commit, animated cancellation/refusal and idle cleanup PASS');
+})().catch(e=>{console.error(e);process.exitCode=1});

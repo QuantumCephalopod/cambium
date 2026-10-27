@@ -15,5 +15,7 @@ for w,h in [(1280,800),(390,844)]:
  assert coverage[0]==coverage[-1]==0,'idle surface leaks ink'
  assert coverage[4]>.9999,('closed flood leaks the old scene',coverage)
  assert 0<coverage[2]<1,('particle phase is a hidden full-screen plane',coverage)
- cases.append({'css_carrier':[w,h],'render_carrier':[d['width'],d['height']],'instances':d['count'],'tetrahedron_vertices':12,'opaque_coverage':coverage,'black_only':True,'one_instance_upload':True,'programs':n})
+ assert 0<coverage[7]<.95 and 0<coverage[8]<.95,('waiting fill has no visible gap',coverage)
+ assert images[7][0]!=images[8][0],'held progress froze the liquid'
+ cases.append({'moving_wait_with_gap':True,'css_carrier':[w,h],'render_carrier':[d['width'],d['height']],'instances':d['count'],'tetrahedron_vertices':12,'opaque_coverage':coverage,'black_only':True,'one_instance_upload':True,'programs':n})
 print(json.dumps({'status':'PASS','cases':cases,'scope':'Actual production shared density/ink and tetrahedral geometry on software GLES; not browser/device FPS.'}))
