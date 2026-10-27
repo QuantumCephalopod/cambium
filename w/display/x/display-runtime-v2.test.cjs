@@ -38,11 +38,12 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
     const target=Object.keys(feedUrls).find(id=>String(url).endsWith(feedUrls[id]));
     assert(target,'unexpected feed URL '+String(url));fetches.push(target);
     if(feedKinds[target]==='fail')return Promise.reject(new Error('offline'));
-    if(feedKinds[target]==='hold')return new Promise(resolve=>held.push(()=>resolve({ok:true,json:async()=>input[target]})));
-    return Promise.resolve({ok:true,json:async()=>input[target]});
+    if(feedKinds[target]==='hold')return new Promise(resolve=>held.push(()=>resolve({ok:true,text:async()=>JSON.stringify(input[target])})));
+    return Promise.resolve({ok:true,text:async()=>JSON.stringify(input[target])});
   }
   const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSRepresentationHandoff:RH,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>fold},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
   vm.createContext(context);
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'feed-acquisition.js'),'utf8'),context);
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
@@ -55,7 +56,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   }
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
-  return {runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
+  return {Modules,runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
 }
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
@@ -328,7 +329,7 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  f.emit('sss:enter-body',{from:ids[0],id,origin});
  assert.equal(f.runtime.state.activeAddress,'');assert.equal(f.approaches.length,0,'motion starts at the fold frame, not from an independent timeout');
  await new Promise(resolve=>setTimeout(resolve,100));
- assert.equal(f.foldLayer.dataset.fold,'closed');assert.equal(f.runtime.state.activeAddress,'','pending acquisition cannot reveal an unready receiver');assert(f.fold.busy);
+ assert.equal(f.foldLayer.dataset.fold,'closing');assert.equal(f.runtime.state.activeAddress,'','pending acquisition cannot reveal an unready receiver');assert(f.fold.busy);
  assert.deepEqual(f.approaches,[{from:ids[0],id}]);assert.deepEqual(departures,[{point:origin,duration:40,phase:'closing'}]);
  assert.equal(f.runtime.navigateGlobal('y'),false,'a busy fold rejects another camera transaction');assert.equal(f.approaches.length,1);assert.equal(departures.length,1);
  f.held.shift()();
@@ -336,10 +337,22 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  assert.equal(f.fold.busy,false);assert.equal(f.foldLayer.dataset.fold,'open');assert(f.foldLayer.hidden);assert.equal(f.runtime.state.activeAddress,'w');
  assert.equal(f.history.filter(h=>h.kind==='push').length,1,'only the accepted covered swap earns history');
  const cancelled=boot(1,'',{}, {[id]:'hold'}, {},'real');cancelled.emit('sss:enter-body',{from:ids[0],id,origin});
- await new Promise(resolve=>setTimeout(resolve,100));assert.equal(cancelled.foldLayer.dataset.fold,'closed');
+ await new Promise(resolve=>setTimeout(resolve,100));assert.equal(cancelled.foldLayer.dataset.fold,'closing');
  cancelled.home.click({preventDefault(){}});
  for(let i=0;i<50&&cancelled.fold.busy;i++)await new Promise(resolve=>setTimeout(resolve,10));
  assert(!cancelled.fold.busy&&cancelled.foldLayer.hidden,'home cancellation must open the prior encounter without waiting for the cold feed');
  cancelled.held.shift()();for(let i=0;i<24;i++)await Promise.resolve();assert.equal(cancelled.runtime.state.activeAddress,'','late feed readiness cannot resurrect the cancelled swap');
  console.log('PASS — actual concurrent fold, covered feed readiness, busy admission, cold-load cancellation and one committed history boundary');
 })().catch(error=>{console.error(error);process.exitCode=1});
+
+(async()=>{
+ const drain=async()=>{for(let i=0;i<40;i++)await Promise.resolve()},id=ids[1],f=boot(1,'',{}, {[id]:'hold'});let release,prepared=0;
+ f.Modules.get(id).prepareFieldProjection=async(source,{onProgress})=>{assert.equal(source.sourceMarker,id);prepared++;onProgress(.4);await new Promise(r=>release=r);onProgress(1)};
+ f.runtime.navigateGlobal('w');f.held.shift()();await drain();assert.equal(prepared,1);assert.equal(f.runtime.state.activeAddress,'');assert(!f.calls.has(id),'unfinished owner state was installed');assert(Math.abs(f.swaps.at(-1).progress()-.76)<1e-9);
+ f.home.click({preventDefault(){}});await drain();release();await drain();assert.equal(f.runtime.state.activeAddress,'','late preparation resurrected cancelled encounter');
+ f.runtime.navigateGlobal('w');await drain();assert.equal(f.runtime.state.activeAddress,'w');assert.equal(prepared,1,'completed preparation was rebuilt on retry');assert.equal(f.fetches.length,1);
+ const refused=boot(1,'',{}, {[id]:'hold'});let tries=0;refused.Modules.get(id).prepareFieldProjection=async()=>{if(++tries===1)throw Error('preparation refused')};
+ refused.runtime.navigateGlobal('w');refused.held.shift()();await drain();assert.equal(refused.runtime.state.activeAddress,'');assert(!refused.calls.has(id));assert.match(refused.stateEl.textContent,/UNAVAILABLE/);
+ refused.runtime.navigateGlobal('w');await drain();assert.equal(refused.runtime.state.activeAddress,'w');assert.equal(tries,2);assert.equal(refused.fetches.length,1);
+ console.log('owner preparation progresses before install, cancellation preserves scene, ready reuse and refused preparation retry PASS');
+})().catch(e=>{console.error(e);process.exitCode=1});

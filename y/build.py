@@ -460,6 +460,7 @@ def template_asset_sources(sites=None):
         'display-type.js': DISPLAY/'w'/'display-type.js',
         'display-text-tissue.js': DISPLAY/'w'/'display-text-tissue.js',
         'representation-handoff.js': DISPLAY/'x'/'representation-handoff.js',
+        'feed-acquisition.js': DISPLAY/'x'/'feed-acquisition.js',
         'recursive-fold.js': DISPLAY/'x'/'recursive-fold.js',
         'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
         'favicon.svg': DISPLAY/'w'/'favicon.svg',

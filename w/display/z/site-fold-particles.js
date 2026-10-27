@@ -71,9 +71,29 @@ function create(layer){
   if(!request||duration<=0){paint(to);return Promise.resolve();}
   return new Promise(resolve=>{active=resolve;const tick=now=>{raf=0;const t=Math.max(0,Math.min(1,(now-start)/duration));paint(from+(to-from)*ease(t));if(t<1&&!disposed)raf=request(tick);else{active=null;resolve();}};raf=request(tick);});
  }
- function stop(){if(raf&&cancel)cancel(raf);raf=0;const done=active;active=null;if(done)done();}
+ // Follow completed work, while time keeps the liquid alive at a held fill.
+ // .62 reserves actual uncovered pixels (coverage is nonlinear, not percent).
+ function fill(state,duration){
+  if(disposed)return Promise.resolve(false);
+  const start=clock();let previous=start,smoothWork=current;
+  return new Promise((resolve,reject)=>{
+   active=()=>resolve(false);
+   const tick=now=>{raf=0;const s=state();
+    if(s.error||s.cancelled){active=null;if(s.error)reject(s.error);else resolve(false);return}
+    const elapsed=Math.max(0,now-start),dt=Math.max(0,Math.min(100,now-previous));previous=now;
+    const work=s.done?1:Math.min(.62,Math.max(0,s.progress||0)*.62);
+    smoothWork+=(work-smoothWork)*(1-Math.exp(-dt/100));if(s.done&&1-smoothWork<.0005)smoothWork=1;
+    const next=Math.max(current,Math.min(smoothWork,ease(Math.min(1,elapsed/Math.max(1,duration)))));
+    paint(next);
+    if(s.done&&elapsed>=duration&&1-current<.0005){paint(1);active=null;resolve(true);return}
+    if(!disposed)raf=request?request(tick):root.setTimeout(()=>tick(clock()),16);else{active=null;resolve(false)}
+   };
+   raf=request?request(tick):root.setTimeout(()=>tick(clock()),16);
+  });
+ }
+ function stop(){if(raf){if(cancel)cancel(raf);else root.clearTimeout?.(raf);}raf=0;const done=active;active=null;if(done)done();}
  function dispose(){stop();cleanup();disposed=true;canvas.remove?.();}
- return Object.freeze({prepare,paint,animate,stop,dispose,get progress(){return current;},get count(){return plan?.count||0;}});
+ return Object.freeze({prepare,paint,animate,fill,stop,dispose,get progress(){return current;},get count(){return plan?.count||0;}});
 }
 return Object.freeze({create,layout,ease,MESH,VERTEX,DENSITY,LIMIT,MAX_SIDE});
 });

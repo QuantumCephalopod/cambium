@@ -142,19 +142,29 @@ function activateField(id){
 // Existing small/inlined bodies keep their established eager behavior.
 // Feed-opted children remain real mounted identities without GPU initialization.
 for(const [id,s] of surfaces)if(s.projection)activateField(id);
-const detailHandoff=RH.create({limit:2});
+const detailHandoff=RH.create({limit:2}),preparationHandoff=RH.create({limit:2}),feedProgress=new Map();
+const yieldPreparation=()=>new Promise(resolve=>setTimeout(resolve,0));
 function acquireDetail(id){
   const s=surfaces.get(id);if(!s)throw new Error('unknown site identity: '+id);
   if(s.projection)return null;
   const entry=FEED_URLS[id];
   if(typeof entry!=='string'||!/^assets\/[a-f0-9]{16}\/site-[a-z0-9-]+-feed\.json$/.test(entry))throw new Error('untrusted feed source for '+id);
-  const record=detailHandoff.request(id,()=>fetch(new URL(entry,document.baseURI),{credentials:'same-origin',cache:'force-cache'})
-    .then(response=>{if(!response.ok)throw new Error('feed HTTP '+response.status+' for '+id);return response.json()})
-    .then(detail=>{if(!detail||typeof detail!=='object'||Array.isArray(detail))throw new Error('malformed public feed for '+id);s.projection=detail;return detail}),{retryFailed:true});
+  const record=detailHandoff.request(id,()=>globalThis.SSSFeedAcquisition.acquire(new URL(entry,document.baseURI),{onProgress:value=>feedProgress.set(id,value)})
+    .then(detail=>{if(!detail||typeof detail!=='object'||Array.isArray(detail))throw new Error('malformed public feed for '+id);s.projection=detail;feedProgress.set(id,.6);return detail}),{retryFailed:true});
   return record.promise;
 }
 function acquireTarget(ids){
-  const jobs=ids.map(acquireDetail).filter(Boolean);
+  const jobs=ids.map(id=>{
+    const acquired=acquireDetail(id),s=surfaces.get(id);
+    if(!acquired&&(fieldById.has(id)||typeof s.module.prepareFieldProjection!=='function')){feedProgress.set(id,1);return null}
+    const record=preparationHandoff.request(id,()=>Promise.resolve(acquired).then(async()=>{
+      if(typeof s.module.prepareFieldProjection==='function'&&!fieldById.has(id)){
+        await s.module.prepareFieldProjection(s.projection,{yieldControl:yieldPreparation,onProgress:value=>feedProgress.set(id,.6+.4*Math.max(0,Math.min(1,value)))});
+      }
+      feedProgress.set(id,1);
+    }),{retryFailed:true});
+    return record.promise;
+  }).filter(Boolean);
   return jobs.length?Promise.all(jobs):null;
 }
 let activeIds=[...ROOT_IDS],activeAddress='',stack=[],restoring=false;
@@ -279,9 +289,10 @@ function navigateGlobal(path,push=true,origin=null,parents=[],contact=null){
     globalThis.SSSDisplayLens?.departFrom?.(origin,duration);
   }};
   const acquired=acquireTarget(ids);
-  // Acquisition and closing run together. An unsettled feed holds only the
-  // already closed loading membrane; failure opens the prior live encounter.
+  // Acquisition and owner preparation drive a moving, deliberately incomplete
+  // fill. Failure/cancellation reverse it over the still-live prior encounter.
   const ready=acquired?Promise.race([acquired.then(()=>({ok:true}),error=>({ok:false,error})),new Promise(resolve=>{cancelHandoff=()=>resolve({cancelled:true})})]):null;
+  context.readiness=ready;context.progress=()=>ids.reduce((sum,id)=>sum+(feedProgress.get(id)||0),0)/Math.max(1,ids.length);
   const commit=()=>token===handoffIntent?enter(r,path,push,parents):false;
   const swap=()=>fold.swap(()=>ready?ready.then(result=>{if(result.cancelled)return false;if(!result.ok)throw result.error;return commit()}):commit(),context);
   const launch=()=>{try{const result=swap();if(result&&typeof result.catch==='function')result.catch(error=>{if(token===handoffIntent)feedWound(error)})}catch(error){if(token===handoffIntent)feedWound(error)}};

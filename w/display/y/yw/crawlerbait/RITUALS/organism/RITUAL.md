@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.14"
+version: "5.15"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -301,3 +301,9 @@ Being/type/narrative contact fits actual Pretext lines into ellipse chords, sele
 ## Shared Goo material return — 2026-10-27
 
 The existing point accumulation and colored/halftone ink shaders are lent through Display's source-agnostic Goo material. Shared density and threshold coverage are consumed independently by Display's black tetrahedron flood. Crawlerbait still owns splat geometry, kind palette, coalescence inputs, replay clock, acquisition and source meaning. No simulation step or source schema is transferred into the shared operation. Actual default Goo pixels must remain equivalent; new shared type shadow values inherit Display without replacing local type size.
+
+## Cooperative first-encounter preparation — 2026-10-27
+
+Visits, growth and life/session derivation share one generator implementation with their existing synchronous witnesses. The optional Display preparation hook drains these actual operations in cooperative slices, targeting4ms between yields. Actual atomic operations, sorts and GC are measured separately;4ms is not a hard realtime guarantee. Completed visits/growth/life are kept by source object in a WeakMap and are installed only when `fieldProjection` accepts the covered crossing. Preparing or a late cancelled completion never changes the live replay state. A failed preparation removes that candidate and may retry. No future walk geometry is eagerly materialized.
+
+This bounds uninterrupted preparation work rather than total source acquisition/storage: the complete public projection is still acquired and indexed. Recursive transport/refinement remains its existing open owner pressure. Field frontier, replay, chronology, source wording, genome/kind and all public encounter content remain equivalent to the synchronous source generation. Display source-worker transport does not transfer Crawlerbait semantics.

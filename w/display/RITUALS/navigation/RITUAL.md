@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.23"
+version: "3.24"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -103,7 +103,7 @@ The witness is always inside exactly one current container: a realized cell of t
 - render: geometry is drawn at full realized resolution — a Sierpinski body is cheap and each rank quadruples capacity, so depth settles. LOD governs content only: content below the container's children and their realized children coalesces into pools (Display invariant); a pool opens into its four sub-pools, never a flat list, and entering it fills the walked path through every intermediate container;
 - bodies: organisms float as bodies in their host, drawn with their own identity shader at full geometry and entered by selection. Content is two ranks smaller than the realized container carrying it; when that container splits, the content propagates into the finer child (self-child for content at the split point) and shrinks with it, keeping its own subdivision. A body drifts inside the space its container bounds and never crosses it. Every body carries a label attached to it; the label is selectable exactly like the body's face. Organisms refine inward; composed holons grow with rank (composition grows outward);
 - ascend: a gesture that enters no child pops the walked path — back through the container the witness came through;
-- membranes: entering or leaving a site-holon is the same gesture. Entering begins the accepted camera approach and target-origin fold together; leaving crosses under the same fold and the host zooms out from the body it left while the cover opens. Detailed readiness may hold complete closure, never postpone the beginning of the cut. The active interlocutor is the organism whose container is innermost on the walked path; Continuity reads it rather than switching separately. The target-origin fold remains a loading cover at membrane crossings.
+- membranes: entering or leaving a site-holon is the same gesture. Entering begins the accepted camera approach and target-origin fold together; leaving crosses under the same fold and the host zooms out from the body it left while the cover opens. Detailed readiness drives an incomplete moving particle fill, never postponing the beginning of the cut; only prepared readiness earns its final seal. The active interlocutor is the organism whose container is innermost on the walked path; Continuity reads it rather than switching separately. The target-origin fold remains a loading cover at membrane crossings.
 
 The global minimap and x/y rails remain shared orientation controls. A fresh witness meets the navigator open (pinned); a click tucks it away.
 

@@ -282,3 +282,15 @@ assert.strictEqual(moduleRef.shader.snapshot(request),nearby,'unchanged projecte
 const away=moduleRef.shader.snapshot({...request,project:p=>({x:1e8+p[0],y:1e8+p[1],front:true})});
 assert(away.points.length<nearby.points.length);assert.equal(nearby.points.reduce((n,p)=>n+(p.fold?p.count:1),0),visibleSource.length);
 console.log('PASS · a visible fine sibling survives foreground selection; offscreen context remains folded and unchanged geometry is reused');
+
+(async()=>{
+ const vm=require('vm'),source=fs.readFileSync(path.join(__dirname,'render.js'),'utf8');
+ function fresh(){const scope={SSSRecursiveFold:globalThis.SSSRecursiveFold,performance,SSSInterlocutorModules:new Map()};vm.runInNewContext(source,scope);return scope.SSSInterlocutorModules.get('organism:crawlerbait')}
+ const sync=fresh(),asyncOwner=fresh();const field=sync.fieldProjection(projection);sync.shader.focus({ms:0});const before=JSON.stringify(sync.shader.snapshot({container:''}));
+ let yields=0;const progress=[];const prepared=await asyncOwner.prepareFieldProjection(projection,{yieldControl:async()=>{yields++;assert.equal(asyncOwner.shader.snapshot(),null,'preparation mutated the current source')},onProgress:p=>progress.push(p)});
+ assert(yields>=2);assert.deepEqual(progress,[1/3,2/3,1]);assert.equal(asyncOwner.shader.snapshot(),null,'prepared source installed before acceptance');
+ const readyField=asyncOwner.fieldProjection(projection);asyncOwner.shader.focus({ms:0});assert.equal(JSON.stringify(readyField),JSON.stringify(field));assert.equal(JSON.stringify(asyncOwner.shader.snapshot({container:''})),before,'cooperative preparation changed source/replay frontier');
+ const again=await asyncOwner.prepareFieldProjection(projection,{yieldControl:()=>{throw Error('completed generation rebuilt')}});assert.strictEqual(again,prepared);
+ const refusal=fresh();await assert.rejects(refusal.prepareFieldProjection(projection,{yieldControl:()=>{throw Error('yield refused')}}),/yield refused/);assert.equal(refusal.shader.snapshot(),null);await refusal.prepareFieldProjection(projection,{yieldControl:async()=>{}});
+ console.log('PASS · cooperative source preparation preserves exact field/first replay, stays uninstalled, reuses completed generation and retries refusal');
+})().catch(error=>{console.error(error);process.exitCode=1});

@@ -29,9 +29,12 @@ const KIND_DE={w:'schreibt erfolgreich in unsere offenen Schnittstellen',x:'lies
 /* Public encounters compose a place. Four equal-rank constituents become one
  * parent; incomplete groups remain independently present. Blocks are source
  * prefix summaries, not another address registry or a catalog of time states. */
-function buildVisits(projection){
+function finish(iterator){let step;do{step=iterator.next()}while(!step.done);return step.value}
+function buildVisits(projection){return finish(buildVisitsSteps(projection))}
+function* buildVisitsSteps(projection){
   const genomes=new Map((projection.crawlers||[]).map(c=>[c.id,String(c.genome||c.id)])),places=new Map();
   for(const [order,e]of (projection.encounters||[]).entries()){
+    if(order%64===0)yield;
     const t=Date.parse(e.t);if(!Number.isFinite(t))continue;
     let p=places.get(e.path);if(!p)places.set(e.path,p={events:[],levels:[],visitors:[]});
     p.events.push({t,id:e.crawler,order});
@@ -110,12 +113,13 @@ function route(sa,sb){
 /* The current prefix-free public addresses contain every digit needed to replay earlier
  * collisions. Identity is the public path, never its changing address. Legacy sightings
  * are a baseline, not invented exact births inside the whole-traffic clock. */
-function buildGrowth(routes=[]){
+function buildGrowth(routes=[]){return finish(buildGrowthSteps(routes))}
+function* buildGrowthSteps(routes=[]){
   const histories=new Map(),leaves=new Map(),splits=new Set(),births=[];let changes;
   const ordered=routes.filter(r=>/^[wxzy]+$/.test(r.address)).map(r=>({r,t:r.legacy_404_observations>0?-Infinity:(Date.parse(r.first_seen)||Infinity)}))
     .sort((a,b)=>a.t-b.t||a.r.path.localeCompare(b.r.path));
   const put=(r,a,t,from=null)=>{leaves.set(a,r);let h=histories.get(r.path);if(!h)histories.set(r.path,h=[]);h.push({t,a});changes.push({r,from,to:a})};
-  for(const {r,t} of ordered){changes=[];let a=r.address[0];
+  for(const {r,t} of ordered){yield;changes=[];let a=r.address[0];
     for(;;){const old=leaves.get(a);
       if(old){leaves.delete(a);let n=a.length+1;while(old.address.slice(0,n)===r.address.slice(0,n))n++;
         for(let d=a.length;d<n;d++)splits.add(a+r.address.slice(a.length,d));
@@ -163,9 +167,10 @@ function prefixFacts(events,t){
   let lo=0,hi=events.length;while(lo<hi){const m=(lo+hi)>>>1;if(events[m].t<=t)lo=m+1;else hi=m}
   return lo?events[lo-1].facts:{events:0,days:0,baits:0,k:'x'};
 }
-function publicFacts(events){
+function publicFacts(events){return finish(publicFactsSteps(events))}
+function* publicFactsSteps(events){
   const days=new Set(),baits=new Set();let feeder=false,prober=false;
-  for(let i=0;i<events.length;i++){const e=events[i],status=Number(e.status)||0,read=['GET','HEAD','OPTIONS'].includes(String(e.method||'').toUpperCase());
+  for(let i=0;i<events.length;i++){if(i%64===0)yield;const e=events[i],status=Number(e.status)||0,read=['GET','HEAD','OPTIONS'].includes(String(e.method||'').toUpperCase());
     days.add(Math.floor(e.t/86400000));baits.add(e.path||e.a);feeder ||= !read&&status>0&&status<300;
     prober ||= status>=400&&status<500||!read&&!(status>0&&status<300);
     e.facts={events:i+1,days:days.size,baits:baits.size,k:feeder?'w':prober?'z':days.size>1?'y':'x'};
@@ -188,18 +193,19 @@ function syncWalk(o,T){
 /* ============ beings and their walks — recorded order is truth, pace is the body's own ============ */
 const DAY=86400,GAP=8*3600,LEAD=1800,LINGER=12*3600,DISS=5*3600,V_BASE=2.4/DAY,V_REAL=.035;
 const bytesOf=hex=>{const b=[];for(let i=0;i+1<hex.length;i+=2)b.push(parseInt(hex.slice(i,i+2),16));while(b.length<32)b.push(0);return b};
-function buildLife(projection,G=null){
+function buildLife(projection,G=null){return finish(buildLifeSteps(projection,G))}
+function* buildLifeSteps(projection,G=null){
   const enc=Array.isArray(projection?.encounters)?projection.encounters:[];
   const crawlers=Array.isArray(projection?.crawlers)?projection.crawlers:[];
   if(!enc.length||!crawlers.length)return null;
   const by=new Map();let t0=Infinity;
-  for(const e of enc){if(!e||typeof e.bait_address!=='string'||!/^[wxzy]+$/.test(e.bait_address))continue;const t=Date.parse(e.t);if(!isFinite(t))continue;if(t<t0)t0=t;let l=by.get(e.crawler);if(!l)by.set(e.crawler,l=[]);l.push({t,a:e.bait_address,path:e.path,method:e.method,status:e.status})}
+  for(const [index,e] of enc.entries()){if(index%64===0)yield;if(!e||typeof e.bait_address!=='string'||!/^[wxzy]+$/.test(e.bait_address))continue;const t=Date.parse(e.t);if(!isFinite(t))continue;if(t<t0)t0=t;let l=by.get(e.crawler);if(!l)by.set(e.crawler,l=[]);l.push({t,a:e.bait_address,path:e.path,method:e.method,status:e.status})}
   const end=Date.parse(projection.raw_capture_end||projection.updated_at)||t0;
   G ||= buildGrowth(projection.routes||[]);
   const sessions=[],totals={w:0,x:0,z:0,y:0};
   for(const c of crawlers){
-    const k=KIND[c.kind]?c.kind:'x';totals[k]++;
-    const es=publicFacts((by.get(c.id)||[]).sort((a,b)=>a.t-b.t));if(!es.length)continue;
+    yield;const k=KIND[c.kind]?c.kind:'x';totals[k]++;
+    const es=yield* publicFactsSteps((by.get(c.id)||[]).sort((a,b)=>a.t-b.t));if(!es.length)continue;
     const dna=String(c.genome||c.id),g=bytesOf(dna.padEnd(64,'0'));
     const days=new Set(es.map(e=>new Date(e.t).toISOString().slice(0,10))).size,baits=new Set(es.map(e=>e.a)).size;
     const b={id:c.id,k,events:c.events||es.length,days,baits,history:es};
@@ -208,7 +214,7 @@ function buildLife(projection,G=null){
       if(!cur||t-cur.tLast>GAP){cur={b,g,wps:[],tLast:t};sessions.push(cur)}
       const w=cur.wps[cur.wps.length-1];if(w&&w.a===e.a)w.n++;else cur.wps.push({a:e.a,path:e.path,t,n:1});cur.tLast=t}
   }
-  for(const S of sessions){S.t0=S.wps[0].t;S.size=.02*(1+Math.log10(Math.max(1,S.b.events))*.3)}
+  for(const S of sessions){yield;S.t0=S.wps[0].t;S.size=.02*(1+Math.log10(Math.max(1,S.b.events))*.3)}
   sessions.sort((a,b)=>a.t0-b.t0);
   return {key:projection.updated_at||'',t0,seconds:Math.max(1,Math.round((end-t0)/1000)),sessions,totals,growth:G};
 }
@@ -687,10 +693,24 @@ function el(tag,cls,text){
   if(text!==undefined)n.textContent=text;
   return n;
 }
+const preparedFields=new WeakMap();
+async function prepareFieldProjection(projection,{yieldControl=()=>new Promise(r=>setTimeout(r,0)),onProgress=()=>{}}={}){
+ const prior=preparedFields.get(projection);if(prior)return prior;
+ const run=(async()=>{
+  async function drain(iterator){let start=performance.now(),step;do{step=iterator.next();if(!step.done&&performance.now()-start>=4){await yieldControl();start=performance.now()}}while(!step.done);return step.value}
+  const visits=await drain(buildVisitsSteps(projection));onProgress(1/3);await yieldControl();
+  const growth=await drain(buildGrowthSteps(projection.routes||[]));onProgress(2/3);await yieldControl();
+  const life=await drain(buildLifeSteps(projection,growth));onProgress(1);
+  return {visits,growth,life};
+ })();preparedFields.set(projection,run);
+ try{const ready=await run;preparedFields.set(projection,ready);return ready}catch(error){preparedFields.delete(projection);throw error}
+}
 function fieldProjection(projection={}){
   lastProjection=projection;SIM.life=null;SIM.advancedAt=null;SIM.lastMs=0;fieldRevision=-1;fieldCache=null;
-  VISITS=buildVisits(projection);
-  growth=buildGrowth(projection.routes||[]);baitFold=createBaitFold(growth);
+  const ready=preparedFields.get(projection);
+  VISITS=ready?.visits||buildVisits(projection);
+  growth=ready?.growth||buildGrowth(projection.routes||[]);baitFold=createBaitFold(growth);
+  if(ready?.life){SIM.life=ready.life;resetTo(0)}
   const start=Date.parse(projection.raw_capture_start)||Date.parse(projection.updated_at)||Infinity;
   baitFold.seek(start);
   return baitFold.view('');
@@ -892,7 +912,7 @@ function unmount({host,content}={}){
   inspectorHost=null;crawlerById=new Map();
   for(const k of Object.keys(HUD))if(k!=='storyTimer')HUD[k]=null;
 }
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,prepareFieldProjection,activateFieldPoint,
   // pure witnesses for tests: the walk law, the life built from a projection, and the frame cost of living it
   _law:Object.freeze({pointOf,route,buildLife,prepareWalk,buildGrowth,createBaitFold,prefixFacts,publicFacts,triangleRows,textLines,lensLayout,screenFrame,beingFrame,bodySize,buildVisits,resolutionCell,hudPlacement,visibleCell,KIND,
     simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container='',changeAt=null,nextContainer=''}){
