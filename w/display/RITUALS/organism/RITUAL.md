@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.57"
+version: "3.58"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -316,9 +316,9 @@ Distinct raw addresses may nevertheless quotient-coalesce onto one geometric loc
 
 ## Target-origin page swap
 
-The selected global minimap point supplies the transition origin. Four membrane facets close from the viewport boundaries onto that point, the encounter changes only under complete closure, and the facets reverse to reveal the destination.
+The selected global minimap point supplies the transition origin. Four membrane facet regions guide a repeated tetrahedron particle flood from the viewport boundaries toward that point. Their shared black Goo coverage closes completely before the encounter changes; the flow reverses to reveal the destination.
 
-A validated body intent starts its real camera approach at the same closing frame as the four facets, not through an independent completion timer. An unheld world-body drop explicitly releases into bounded outward transport during that closing interval, preserving its initial position, velocity, shape and optical continuity; held pointers and screen-tissue reading locks retain their own relation. Feed acquisition runs concurrently and can hold only the fully closed cover. Cancellation opens the prior live encounter without waiting for a cold feed; late readiness cannot commit it. Ready destinations open on the next prepared frame, without an extra black dwell. Renderer acceptance still precedes address/history mutation. The global navigator, orientation and browser history survive this swap.
+A validated body intent starts its real camera approach at the same closing frame as the four particle tracks, not through an independent completion timer. An unheld world-body drop explicitly releases into bounded outward transport during that closing interval, preserving its initial position, velocity, shape and optical continuity; held pointers and screen-tissue reading locks retain their own relation. Feed acquisition runs concurrently and can hold only the fully closed cover. Cancellation opens the prior live encounter without waiting for a cold feed; late readiness cannot commit it. Ready destinations open on the next prepared frame, without an extra black dwell. Renderer acceptance still precedes address/history mutation. The global navigator, orientation and browser history survive this swap.
 
 ## Closure / acceptance
 
@@ -398,3 +398,13 @@ Keep the GPU suppression attribute stable across successful frames. Read the sha
 A body may offer an elliptical measured reading frame through the same frame channel. Physical axes, containment, hit testing and shader silhouette must agree; ordinary field rectangles remain source-owned. The owner fits actual text into ellipse chords and retains continuation.
 
 Focus work is bounded: the current background filter uses nine weighted samples, and bevel normals are evaluated only in their contributing band. Source foreground canvases retain storage while dimensions remain unchanged. A source may scissor its own foreground work to the actual drop bounds at each render-target scale, restoring the field state. Pixel evidence and synchronized software timing remain distinct from browser/device FPS.
+
+## Selected type material and particle closure — 2026-10-27
+
+Philipp's selected shadow is relative to the 16px root-rem reference: x -.03125rem, y .09375rem, blur .65625rem, spread .09375rem, opacity .86, black with inverse-aware automatic contrast. The laboratory's 20px specimen never replaces existing font ranks or local font sizes. Preserve glyph wording, advances, line layout and source identity.
+
+Canvas expands a reusable opaque glyph mask and blurs/tints that mask before drawing the original glyph once; cached shadow images have an 8MiB/256-entry limit and renew when the actual font loads. DOM/derived label paint uses a bounded nine-direction CSS shadow kernel because CSS text-shadow has no spread parameter. GPU tissue uses distance-based dilation and a bounded blur kernel over its actual glyph field. These are explicitly representation-specific approximations of one selected material, not a claim of pixel identity with the laboratory. Bitmap padding includes blur and spread. Native shadow overlap may differ by one UNORM rounding unit at otherwise opaque neighboring glyph pixels; it does not change font size or layout.
+
+The transition repeats one actual four-vertex/twelve-triangle-vertex tetrahedron through instanced drawing. The existing four face regions track its edge-to-target flow; they are not four painted sheets. The shared Goo material owns density and threshold coverage, extracted from Crawlerbait without source semantics; Crawlerbait retains its colored/halftone presentation while the unrelated transition prints only black. Closure and opening each last 1650ms with cubic-bezier(.76,0,.24,1). A fully covered swap and owner-held readiness/cancellation remain authoritative.
+
+Particle count is viewport-derived and capped at 2048. One mesh and one instance generation feed two passes; there is no per-particle DOM or per-frame CPU simulation/upload. The transition canvas is half CSS resolution with a 1024px long-side ceiling and retires its active RAF at phase completion. Context loss/unavailable WebGL uses a bounded black opacity cover. Reduced motion preserves cover/transaction semantics with the short existing transition. Inverse display is compensated so this transition stays black. Native pixels/work bounds do not assert user-device FPS.

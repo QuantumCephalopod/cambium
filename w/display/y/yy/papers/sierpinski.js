@@ -984,14 +984,14 @@ function inkDust(ctx,glyphs,pick,size,color,alpha,ox=0,oy=0){
 /* Glyph atlas: each (font, colour, baseline, character) is rasterized once into a tiny bitmap and then
  * blitted with drawImage. Opening an edge or face weaves hundreds of letters at once; per-glyph fillText
  * was the measured cost on CPU-only machines, a blit is not. Positions and metrics are unchanged. */
-const glyphAtlas=new Map();let glyphMeasure=null;
+const glyphAtlas=new Map();let glyphMeasure=null,glyphAtlasBytes=0;
 function glyphSprite(font,color,baseline,ch,scale){
-  const inverse=document.documentElement?.dataset?.inverse||'false',key=font+'|'+color+'|'+baseline+'|'+scale+'|'+ch+'|'+inverse;let g=glyphAtlas.get(key);if(g)return g;
+  const inverse=document.documentElement?.dataset?.inverse||'false',key=font+'|'+color+'|'+baseline+'|'+scale+'|'+ch+'|'+inverse+'|'+(globalThis.SSSDisplayType?.fontEpoch?.()||0);let g=glyphAtlas.get(key);if(g)return g;
   if(!glyphMeasure)glyphMeasure=document.createElement('canvas').getContext('2d');glyphMeasure.font=font;
-  const size=Number((font.match(/([\d.]+)px/)||[0,typePx(-1)])[1]),pad=Math.ceil((globalThis.SSSDisplayType?.rootRemPx?.()||16)*.25),w=Math.ceil(glyphMeasure.measureText(ch).width)+2*pad,h=Math.ceil(size*1.7)+2*pad,oy=baseline==='top'?pad:Math.ceil(size*1.25)+pad;
+  const size=Number((font.match(/([\d.]+)px/)||[0,typePx(-1)])[1]),pad=globalThis.SSSDisplayType?.shadowPadding?.()||26,w=Math.ceil(glyphMeasure.measureText(ch).width)+2*pad,h=Math.ceil(size*1.7)+2*pad,oy=baseline==='top'?pad:Math.ceil(size*1.25)+pad;
   const c=document.createElement('canvas');c.width=Math.max(1,Math.ceil(w*scale));c.height=Math.max(1,Math.ceil(h*scale));
   const x=c.getContext('2d');x.scale(scale,scale);x.font=font;x.fillStyle=color;x.textBaseline=baseline;typeInk(x,ch,pad,oy);
-  g={c,w,h,ox:pad,oy};if(glyphAtlas.size>4000)glyphAtlas.clear();glyphAtlas.set(key,g);return g;
+  g={c,w,h,ox:pad,oy,bytes:c.width*c.height*4};while(glyphAtlas.size&&(glyphAtlas.size>=4000||glyphAtlasBytes+g.bytes>32*1024*1024)){const first=glyphAtlas.keys().next().value;glyphAtlasBytes-=glyphAtlas.get(first).bytes;glyphAtlas.delete(first);}if(g.bytes<=32*1024*1024){glyphAtlas.set(key,g);glyphAtlasBytes+=g.bytes;}return g;
 }
 function inkText(ctx,glyphs,pick,color,alphaOf,fontOf,ox=0,oy=0){
   const baseline=ctx.textBaseline==='top'?'top':'alphabetic',scale=state?.inkScale||1;let f=fontOf?'':ctx.font;

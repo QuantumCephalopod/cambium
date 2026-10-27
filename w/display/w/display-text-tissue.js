@@ -51,11 +51,11 @@
     }`);
     const full=prog(`#version 300 es
     void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0.,1.);}`,`#version 300 es
-    precision highp float;uniform sampler2D F;uniform vec2 res;uniform float scale,alpha;uniform vec2 shadowPx;uniform vec3 ink,shadowInk;out vec4 o;
+    precision highp float;uniform sampler2D F;uniform vec2 res;uniform float scale,alpha;uniform vec4 shadowPx;uniform vec3 ink,shadowInk;out vec4 o;
     void main(){float S=texture(F,gl_FragCoord.xy/res).r/scale,L=log(max(S,1e-6));
       float edge=max(fwidth(L),1e-4),a=clamp(L/edge+.5,0.,1.)*alpha,sh=0.;
-      for(int i=0;i<5;i++){vec2 off=i==0?vec2(0.):(i==1?vec2(shadowPx.y,0.):(i==2?vec2(-shadowPx.y,0.):(i==3?vec2(0.,shadowPx.y):vec2(0.,-shadowPx.y))));float v=texture(F,(gl_FragCoord.xy+vec2(-shadowPx.x,shadowPx.x)+off)/res).r/scale;sh+=clamp(log(max(v,1e-6))/edge+.5,0.,1.);}
-      sh=sh*.16*alpha*(1.-a);o=vec4(ink*a+shadowInk*sh,a+sh);}`);
+      for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){vec2 off=vec2(float(x),float(y))*shadowPx.z*.65;vec2 uv=(gl_FragCoord.xy+vec2(-shadowPx.x,shadowPx.y)+off)/res;float v=texture(F,uv).r/scale,z=log(max(v,1e-6));float slope=max(length(vec2(dFdx(z),dFdy(z))),1e-4);sh+=clamp(z/slope+.5+shadowPx.w,0.,1.);}
+      sh=sh*(.86/9.)*alpha*(1.-a);o=vec4(ink*a+shadowInk*sh,a+sh);}`);
     const half=!!gl.getExtension('EXT_color_buffer_float');
     const cvs=document.createElement('canvas'),cx=cvs.getContext('2d',{willReadFrequently:true});
     cx.font=EM+'px '+FACE;const cw=Math.ceil(cx.measureText('M').width)+PAD*2+8,ch=Math.ceil(EM*1.3)+PAD*2;cvs.width=cw;cvs.height=ch;
@@ -102,7 +102,7 @@
         gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,count);gl.disable(gl.BLEND)}
       gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
       if(count){gl.useProgram(full);gl.bindVertexArray(empty);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,field);gl.uniform1i(UC.F,0);
-        gl.uniform2f(UC.res,w,h);gl.uniform1f(UC.scale,SCALE);gl.uniform3fv(UC.ink,ink);gl.uniform1f(UC.alpha,alpha);const rem=(root.SSSDisplayType?.rootRemPx?.()||16)*dpr;gl.uniform2f(UC.shadowPx,rem*3/32,rem/16);gl.uniform3fv(UC.shadowInk,root.document?.documentElement?.dataset?.inverse==='true'?[.988,.98,.969]:[.012,.02,.031]);gl.drawArrays(gl.TRIANGLES,0,3)}
+        gl.uniform2f(UC.res,w,h);gl.uniform1f(UC.scale,SCALE);gl.uniform3fv(UC.ink,ink);gl.uniform1f(UC.alpha,alpha);const rem=(root.SSSDisplayType?.rootRemPx?.()||16)*dpr;gl.uniform4f(UC.shadowPx,-rem/32,rem*3/32,rem*21/32,rem*3/32);gl.uniform3fv(UC.shadowInk,root.document?.documentElement?.dataset?.inverse==='true'?[1,1,1]:[0,0,0]);gl.drawArrays(gl.TRIANGLES,0,3)}
       return count;
     }
     return Object.freeze({draw,canvas});

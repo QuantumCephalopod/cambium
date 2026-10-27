@@ -448,6 +448,8 @@ def template_asset_sources(sites=None):
         'address.js': ROOT/'z'/'address.js',
         'site-holon.js': DISPLAY/'x'/'site-holon.js',
         'site-fold.js': DISPLAY/'z'/'site-fold.js',
+        'site-fold-particles.js': DISPLAY/'z'/'site-fold-particles.js',
+        'goo-material.js': DISPLAY/'w'/'goo-material.js',
         'locus-shader.js': DISPLAY/'w'/'locus-shader.js',
         'navigation-aperture.js': DISPLAY/'z'/'navigation-aperture.js',
         'display-safe-area.js': DISPLAY/'z'/'display-safe-area.js',
