@@ -3,40 +3,35 @@
   "constitution": null,
   "home": {
     "changed_scope": [
+      "RITUALS/organism/RITUAL.md",
+      "ui-grid.json",
       "render.js",
       "render.test.cjs",
       "style.css",
-      "RITUALS/organism/RITUAL.md",
-      "_stomach/.gitkeep",
-      "_stomach/NUTRIENT__first-row-headroom__20261019.md",
-      "_waste/metabolized-20261028-NUTRIENT__first-row-headroom__20261019.md",
-      "_stomach/NUTRIENT__work-description__20261019.md",
-      "_waste/metabolized-20261028-NUTRIENT__work-description__20261019.md",
-      "_stomach/NUTRIENT__work-led-navigation-and-documentation__20261019.md",
-      "_waste/metabolized-20261028-NUTRIENT__work-led-navigation-and-documentation__20261019.md",
-      "_root/schattenseiten-work-led-presentation-20261028-evidence.json"
+      "_stomach/NUTRIENT__bounded-work-and-documentation__20261028.md",
+      "_waste/metabolized-20261028-NUTRIENT__bounded-work-and-documentation__20261028.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — Schattenseiten keeps its first display row empty, explains gefallen, gefunden from its admitted source, and navigates through actual rows, shadows, source clusters and recorded movement with readable bounded documentation. All three local presentation nutrients are spent; all49 works and55 occupied slots retain source identity."
+    "outcome": "COMPLETED — header, documentation and actual artwork no longer compete for the same plane; selection keeps its source body in viewfocus and description in its scroller. Footer shares the invariant timeline,49 works and55 occupied source slots remain intact."
   },
-  "observed_at_utc": "2026-10-28T12:47:12.400444Z",
+  "observed_at_utc": "2026-10-28T20:21:51.003716Z",
   "owner": "schattenseiten",
   "phenotype": null,
-  "reflected_home_event": "schattenseiten-work-led-presentation-20261028",
+  "reflected_home_event": "schattenseiten-bounded-work-return-20261028",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "ae5d66aeb6c72ab2e4a94c989e9fcb6b09b4ef1339fcf0af3d3aff90a40f9bb6"
+      "sha256": "b9a5dc5186cfdd56072bbbf9f27d892089a02924b6bfc3bfd26a20ac1768b54d"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [],
-    "waste_direct_count": 5
+    "waste_direct_count": 6
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "e5e3c894240164520bff2ba31d02098b7a5ef551"
+    "source_revision": "de1a2405c77fcdcd9a31fd4ed625b7e91fac1eaa"
   }
 }
