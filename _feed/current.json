@@ -25,15 +25,18 @@
   },
   "home": {
     "changed_scope": [
-      "y/build.py",
+      "_stomach/NUTRIENT__lossless-json-transport__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__lossless-json-transport__20261026.md",
+      "RITUALS/organism/RITUAL.md",
+      "RITUALS/catabolism/RITUAL.md",
       "y/check.py",
-      "y/test-site-build.py",
-      "RITUALS/organism/RITUAL.md"
+      "y/test-lifecycle.py",
+      "_waste/metabolized-20261028-NUTRIENT__autonomous-completion-and-spent-intake__20261028.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "EARNED_NATIVE / CANDIDATE — lossless source-preserving JSON transport; child visitor acceptance remains OPEN"
+    "outcome": "COMPLETED — 1 previously consumed local intake carriers returned unchanged to local waste; only 1 concrete unfinished local carriers remain. Personal acceptance/promotion is not a metabolic condition."
   },
-  "observed_at_utc": "2026-10-26T19:46:12.349016Z",
+  "observed_at_utc": "2026-10-28T11:21:22.870220Z",
   "owner": "cambium",
   "phenotype": {
     "w": {
@@ -49,28 +52,27 @@
       "noun": "orientation"
     }
   },
-  "reflected_home_event": "cambium-lossless-json-transport-native-20261026",
+  "reflected_home_event": "cambium-autonomous-metabolic-completion-20261028",
   "rituals": [
     {
       "path": "RITUALS/catabolism/RITUAL.md",
-      "sha256": "6a7395c1f9b4608c4023ff8cae739cd12cae732e4a8d59c6781b4a1dd5905dc5"
+      "sha256": "309717bfead47cdfef6f79f2f487cf978ccaa712cb22a8b3b0141cf60f6747eb"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "5ad8b69855ebcbeb8b89597ab3acec83bbac04eda03438162f1f74506199b7ec"
+      "sha256": "9648202823a1959cb8627badd1442bc1a451b3a4c5d97b5fce23d335fa1dedea"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
-      "NUTRIENT__lossless-json-transport__20261026.md",
       "NUTRIENT__textual-address-order__20261020.md"
     ],
-    "waste_direct_count": 17
+    "waste_direct_count": 19
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "89b05a855960d9a98584092c8dab1260c280a121"
+    "source_revision": "2031a1a1c67290bffc2a8b8a8ff9357547c739e6"
   }
 }
