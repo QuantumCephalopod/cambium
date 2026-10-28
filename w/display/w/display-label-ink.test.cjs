@@ -32,10 +32,10 @@ function fixture(){
 }
 
 function fakeGL(){
-  const gl={},names=['FRAMEBUFFER','FRAMEBUFFER_BINDING','CURRENT_PROGRAM','VERTEX_ARRAY_BINDING','ARRAY_BUFFER_BINDING','ACTIVE_TEXTURE','VIEWPORT','COLOR_WRITEMASK','DEPTH_WRITEMASK','BLEND_SRC_RGB','BLEND_DST_RGB','BLEND_SRC_ALPHA','BLEND_DST_ALPHA','BLEND_EQUATION_RGB','BLEND_EQUATION_ALPHA','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','UNPACK_ALIGNMENT','PIXEL_UNPACK_BUFFER_BINDING','BLEND','DEPTH_TEST','CULL_FACE','SCISSOR_TEST','STENCIL_TEST','RASTERIZER_DISCARD','TEXTURE0','TEXTURE_BINDING_2D','SAMPLER_BINDING','TEXTURE_2D','ARRAY_BUFFER','PIXEL_UNPACK_BUFFER','VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','FLOAT','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','MAX_TEXTURE_SIZE','RGBA','UNSIGNED_BYTE','FUNC_ADD','ONE','ONE_MINUS_SRC_ALPHA','DYNAMIC_DRAW','TRIANGLES'];
+  const gl={},names=['FRAMEBUFFER','FRAMEBUFFER_BINDING','CURRENT_PROGRAM','VERTEX_ARRAY_BINDING','ARRAY_BUFFER_BINDING','ACTIVE_TEXTURE','VIEWPORT','SCISSOR_BOX','COLOR_WRITEMASK','DEPTH_WRITEMASK','BLEND_SRC_RGB','BLEND_DST_RGB','BLEND_SRC_ALPHA','BLEND_DST_ALPHA','BLEND_EQUATION_RGB','BLEND_EQUATION_ALPHA','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','UNPACK_ALIGNMENT','PIXEL_UNPACK_BUFFER_BINDING','BLEND','DEPTH_TEST','CULL_FACE','SCISSOR_TEST','STENCIL_TEST','RASTERIZER_DISCARD','TEXTURE0','TEXTURE_BINDING_2D','SAMPLER_BINDING','TEXTURE_2D','ARRAY_BUFFER','PIXEL_UNPACK_BUFFER','VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','FLOAT','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','MAX_TEXTURE_SIZE','RGBA','UNSIGNED_BYTE','FUNC_ADD','ONE','ONE_MINUS_SRC_ALPHA','DYNAMIC_DRAW','TRIANGLES'];
   names.forEach((name,i)=>gl[name]=i+1);gl.NO_ERROR=0;
   const values=new Map([[gl.FRAMEBUFFER_BINDING,'scene-target'],[gl.CURRENT_PROGRAM,'scene-program'],[gl.VERTEX_ARRAY_BINDING,'scene-vao'],[gl.ARRAY_BUFFER_BINDING,'scene-buffer'],[gl.PIXEL_UNPACK_BUFFER_BINDING,'scene-unpack'],
-    [gl.ACTIVE_TEXTURE,gl.TEXTURE0+5],[gl.VIEWPORT,[2,3,600,400]],[gl.COLOR_WRITEMASK,[false,true,false,true]],[gl.DEPTH_WRITEMASK,true],
+    [gl.ACTIVE_TEXTURE,gl.TEXTURE0+5],[gl.VIEWPORT,[2,3,600,400]],[gl.SCISSOR_BOX,[7,9,37,51]],[gl.COLOR_WRITEMASK,[false,true,false,true]],[gl.DEPTH_WRITEMASK,true],
     [gl.BLEND_SRC_RGB,200],[gl.BLEND_DST_RGB,201],[gl.BLEND_SRC_ALPHA,202],[gl.BLEND_DST_ALPHA,203],[gl.BLEND_EQUATION_RGB,204],[gl.BLEND_EQUATION_ALPHA,205],
     [gl.UNPACK_FLIP_Y_WEBGL,true],[gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false],[gl.UNPACK_ALIGNMENT,8],[gl.MAX_TEXTURE_SIZE,4096]]);
   const enabled=new Set([gl.DEPTH_TEST,gl.CULL_FACE,gl.SCISSOR_TEST,gl.STENCIL_TEST]),textures=new Map([[gl.TEXTURE0,'unit-zero'],[gl.TEXTURE0+5,'unit-five']]),samplers=new Map([[gl.TEXTURE0,'sampler-zero']]);
@@ -49,7 +49,7 @@ function fakeGL(){
   gl.activeTexture=u=>values.set(gl.ACTIVE_TEXTURE,u);gl.bindTexture=(_,t)=>textures.set(values.get(gl.ACTIVE_TEXTURE),t);gl.bindSampler=(u,s)=>samplers.set(gl.TEXTURE0+u,s);
   gl.useProgram=p=>values.set(gl.CURRENT_PROGRAM,p);gl.bindVertexArray=v=>values.set(gl.VERTEX_ARRAY_BINDING,v);
   gl.bindBuffer=(target,b)=>values.set(target===gl.ARRAY_BUFFER?gl.ARRAY_BUFFER_BINDING:gl.PIXEL_UNPACK_BUFFER_BINDING,b);
-  gl.viewport=(...v)=>values.set(gl.VIEWPORT,v);gl.colorMask=(...v)=>values.set(gl.COLOR_WRITEMASK,v);gl.depthMask=v=>values.set(gl.DEPTH_WRITEMASK,v);
+  gl.scissor=(...v)=>values.set(gl.SCISSOR_BOX,v);gl.viewport=(...v)=>values.set(gl.VIEWPORT,v);gl.colorMask=(...v)=>values.set(gl.COLOR_WRITEMASK,v);gl.depthMask=v=>values.set(gl.DEPTH_WRITEMASK,v);
   gl.pixelStorei=(k,v)=>values.set(k,v);gl.enable=k=>enabled.add(k);gl.disable=k=>enabled.delete(k);gl.isEnabled=k=>enabled.has(k);
   gl.blendFuncSeparate=(a,b,c,d)=>{for(const [k,v] of [[gl.BLEND_SRC_RGB,a],[gl.BLEND_DST_RGB,b],[gl.BLEND_SRC_ALPHA,c],[gl.BLEND_DST_ALPHA,d]])values.set(k,v)};
   gl.blendEquationSeparate=(a,b)=>{values.set(gl.BLEND_EQUATION_RGB,a);values.set(gl.BLEND_EQUATION_ALPHA,b)};
@@ -175,4 +175,10 @@ console.log('display label ink: DOM layout, atlas caching, GL isolation and fall
  let calls=0;const draw=gl.drawArrays;gl.drawArrays=()=>{if(++calls===2)throw Error('alternate unavailable');draw()};
  assert.equal(ink.draw({width:400,height:300},400,300,'liquid-input'),false);assert.deepEqual(gl.snapshot(),before);assert(!f.attrs.has('data-display-label-ink'));
  ink.dispose();
+}
+
+{
+ const f=fixture(),gl=fakeGL(),ink=Ink.create(gl,f.host),before=gl.snapshot(),boxes=[],draw=gl.drawArrays;gl.drawArrays=()=>{boxes.push({enabled:gl.isEnabled(gl.SCISSOR_TEST),box:gl.getParameter(gl.SCISSOR_BOX)});draw()};
+ assert(ink.draw({width:400,height:300},800,600,'alternate',null,{x:100,y:75,width:200,height:150}));assert.equal(boxes.length,2);for(const b of boxes){assert(b.enabled);assert.deepEqual(b.box,[200,150,400,300]);}assert.deepEqual(gl.snapshot(),before);ink.dispose();
+ console.log('PASS — world glyphs obey the same bounded clip in scene and alternate input; complete GL scissor state restored');
 }

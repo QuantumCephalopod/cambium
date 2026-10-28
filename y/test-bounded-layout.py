@@ -31,6 +31,10 @@ try:
    for identity,address in [('organism:philosophy','overview'),('organism:schattenseiten','x'),('organism:crawlerbait','w')]:
     page=browser.new_page(viewport={'width':w,'height':h},device_scale_factor=.5 if identity=='organism:crawlerbait' else 1);errors=[];console=[];page.on('console',lambda m:console.append(m.text) if m.type in ['warning','error'] else None);page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'
     try:
+     # CSS acceptance does not depend on high-volume acknowledged Worker
+     # transfer in software GL. Exercise its documented absent-capability
+     # fallback with the same complete immutable public JSON, never a stub.
+     if identity=='organism:crawlerbait':page.add_init_script("Object.defineProperty(window,'Worker',{value:undefined,configurable:true})")
      page.goto(base+'#main:'+address,wait_until='domcontentloaded');wait_scene(page,identity)
      host=f'[data-interlocutor="{identity}"]:not([hidden])';description=host+' [data-ui-field="description"]'
      close(bounds(page,description),'description',w,h);close(bounds(page,'#mini'),'compass',w,h)
@@ -38,7 +42,7 @@ try:
      # GL source projection and pointer equivalence have separate native tests.
      world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewfocus',w,h)
      canvas=page.locator(host+' .interlocutor-background');assert not canvas.get_attribute('data-layer-error')
-     records={'identity':identity,'viewport':[w,h],'render_dpr':.5 if identity=='organism:crawlerbait' else 1,'description':bounds(page,description),'compass':bounds(page,'#mini'),'viewfocus':world}
+     records={'identity':identity,'viewport':[w,h],'render_dpr':.5 if identity=='organism:crawlerbait' else 1,'feed_transport':'documented no-Worker fallback, exact complete source' if identity=='organism:crawlerbait' else 'normal','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewfocus':world}
      if identity!='organism:philosophy':
       timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h);records['timeline']=before
       if identity=='organism:schattenseiten':

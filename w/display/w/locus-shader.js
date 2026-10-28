@@ -226,6 +226,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:bodyId,origin}}));
   }
   function hitBody(x,y,rect){
+    if(!insidePresentation(x,y,rect))return '';
     let best=null;
     for(const B of BODIES.values()){
       if(!B.active)continue;const pts=N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),rect));
@@ -337,6 +338,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(!p||![p.x??p.left,p.y??p.top,p.width,p.height].every(Number.isFinite)||p.width<=0||p.height<=0)return {x:0,y:0,width:rect.width,height:rect.height,bounded:false};
     const x=Math.max(0,Math.min(rect.width,p.x??p.left)),y=Math.max(0,Math.min(rect.height,p.y??p.top)),box={x,y,width:Math.max(1,Math.min(p.width,rect.width-x)),height:Math.max(1,Math.min(p.height,rect.height-y)),bounded:true};viewCache={width:rect.width,height:rect.height,box};return box;
   }
+  function insidePresentation(x,y,rect){const b=viewBox(rect);return !b.bounded||(x>=b.x&&x<=b.x+b.width&&y>=b.y&&y<=b.y+b.height)}
   function worldClip(rect,d=1){if(!gl)return;const b=viewBox(rect);if(!b.bounded){gl.disable(gl.SCISSOR_TEST);return}gl.enable(gl.SCISSOR_TEST);gl.scissor(Math.floor(b.x*d),Math.floor((rect.height-b.y-b.height)*d),Math.ceil(b.width*d),Math.ceil(b.height*d));}
   function fieldProjectionMatrix(rect){
     const b=viewBox(rect),span=b.bounded?Math.min(b.width,b.height):b.height,stretch=b.height/Math.max(1,span),half=3.2*Math.tan(Math.PI/6.6)*stretch;
@@ -352,6 +354,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return !(hasNeg&&hasPos);
   }
   function hitFace(x,y,rect){
+    if(!insidePresentation(x,y,rect))return '';
     let best=null;
     for(const a of structure.addresses){
       const pts=a.tet.map(p=>project(p,rect));
@@ -366,6 +369,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   /* Selection is local: only the current container's children can be entered. */
   function hitChild(x,y,rect){
+    if(!insidePresentation(x,y,rect))return '';
     const c=container();let best=null;
     for(const a of structure.addresses){
       if(a.path.length!==c.length+1||!a.path.startsWith(c))continue;
@@ -386,6 +390,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return {id:bodyId,x:c.x,y:c.y,z:c.z,r:ext,width:r.width,height:r.height};
   }
   function hitPoint(x,y,rect){
+    if(!insidePresentation(x,y,rect))return null;
     let best=null;
     for(const rec of visible){
       const p=project(rec.world,rect),radius=rec.spec.kind==='holon'?14:10,d=Math.hypot(x-p.x,y-p.y);
@@ -558,7 +563,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   function drawLabelInk(r,w,h,additionalTarget=null,foreground=null){
     const Ink=globalThis.SSSDisplayLabelInk;if(!Ink||!labelHost)return;
     if(!labelInk)labelInk=Ink.create(gl,labelHost);
-    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget,foreground)?'1':'0';
+    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget,foreground,viewBox(r).bounded?viewBox(r):null)?'1':'0';
   }
   addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview();disposeForeground()});
   function disposePreview(){if(!PREVIEW)return;gl.deleteFramebuffer(PREVIEW.fb);gl.deleteRenderbuffer(PREVIEW.depth);gl.deleteTexture(PREVIEW.tex);PREVIEW=null}
@@ -708,9 +713,9 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   function prepareClear(){
     gl.disable(gl.SCISSOR_TEST);gl.colorMask(true,true,true,true);gl.depthMask(true);gl.clearDepth(1);
   }
-  function drawPointsGL(proj,view,mdl,d){
+  function drawPointsGL(proj,view,mdl,d,rect){
     if(!PG)return;
-    prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);
+    prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);worldClip(rect,d);
     gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.enable(gl.DEPTH_TEST);gl.depthMask(true);
     gl.useProgram(PG.p);gl.uniformMatrix4fv(PG.U.proj,false,proj);gl.uniformMatrix4fv(PG.U.view,false,view);gl.uniformMatrix4fv(PG.U.model,false,mdl);gl.uniform1f(PG.U.pointScale,d);gl.uniform3fv(PG.pal,new Float32Array(colors.flat()));gl.bindVertexArray(PG.vao);gl.drawArrays(gl.POINTS,0,PG.count);
   }
@@ -805,7 +810,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         catch(err){if(!canvas.dataset.layerError)console.warn('site layer failed for '+id,err);canvas.dataset.layerError=String(err?.message||err)}
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
       }
-      worldClip(r,d);drawPointsGL(proj,view,mdl,d);gl.disable(gl.SCISSOR_TEST);
+      worldClip(r,d);drawPointsGL(proj,view,mdl,d,r);gl.disable(gl.SCISSOR_TEST);
       {const comp=glass?compositeSources():null;if(comp?.length)drawComposite(comp,w,h);const on=comp?.length?'1':'0';if(canvas.dataset.composite!==on)canvas.dataset.composite=on}
       if(glass){if(!placeholder)previewReady=drawPreview(glass,fb,r,d,w,h,proj,view,t,base,ms);const sharp=drawForeground(glass,fb,r,d,w,h,proj,view,t,base,ms);drawLabelInk(r,w,h,previewReady?PREVIEW.fb:null,sharp&&glass.targetBody?{framebuffer:FOREGROUND.fb,element:bodyLabels.get(glass.targetBody)}:null);glassEnd(glass,w,h,previewReady,sharp)}else resetLabelInk();
     }else if(ctx){

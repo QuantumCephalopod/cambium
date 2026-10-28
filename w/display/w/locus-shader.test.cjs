@@ -37,7 +37,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   };
   gl.drawArrays=(mode,first,count)=>{
     const name=currentProgram.shaders.find(s=>s.source.includes('outColor')||s.source.includes('out vec4 o;'))?.source||'';
-    calls.push({type:'draw',mode,first,count,name,vao:currentVAO,depthWrite:values.depth,target:drawTarget,model:currentProgram.uniforms?.uModel,proj:currentProgram.uniforms?.uProj,view:currentProgram.uniforms?.uView,previewReady:currentProgram.uniforms?.uPreviewReady,foregroundReady:currentProgram.uniforms?.uForegroundReady,lensControl:currentProgram.uniforms?.uN,lensShape:currentProgram.uniforms?.uL2,mergeFlags:currentProgram.uniforms?.['uMerge[0]']});
+    calls.push({type:'draw',mode,first,count,name,scissor:enabled.has(gl.SCISSOR_TEST),vao:currentVAO,depthWrite:values.depth,target:drawTarget,model:currentProgram.uniforms?.uModel,proj:currentProgram.uniforms?.uProj,view:currentProgram.uniforms?.uView,previewReady:currentProgram.uniforms?.uPreviewReady,foregroundReady:currentProgram.uniforms?.uForegroundReady,lensControl:currentProgram.uniforms?.uN,lensShape:currentProgram.uniforms?.uL2,mergeFlags:currentProgram.uniforms?.['uMerge[0]']});
     if(values.depth&&enabled.has(gl.DEPTH_TEST))depths.set(drawTarget,(depths.get(drawTarget)||0)+count);
   };
   for(const name of ['bufferSubData','drawArraysInstanced','vertexAttribDivisor','uniform3f','compileShader','linkProgram','enableVertexAttribArray','uniform1f','uniform1fv','uniform2f','uniform3fv','uniform4fv','uniform4f','scissor','viewport','clearColor','blendFunc','blendFuncSeparate','pixelStorei','bindTexture','texImage2D','texParameteri','texStorage2D','bindRenderbuffer','renderbufferStorage','renderbufferStorageMultisample','framebufferRenderbuffer','framebufferTexture2D','blitFramebuffer'])gl[name]=()=>{};
@@ -418,3 +418,5 @@ console.log('PASS — independently lent target draw, carrier ownership and with
  let reads=0;const f=fixture({glass:false,order:[],presentation:()=>{reads++;return {x:100,y:200,width:600,height:400}}});reads=0;f.frame(0);const once=reads;for(let i=0;i<100;i++)f.api.projectAddressCenter('w');assert.equal(reads,once,'projection re-read DOM/layout per point');assert.equal(once,1);f.frame(16);assert.equal(reads,2,'a new frame did not refresh the presentation generation');
  console.log('PASS — viewfocus is sampled once per frame, never once per body/point');
 }
+
+{const f=fixture({glass:false,points:true,order:[],presentation:()=>({x:100,y:200,width:600,height:400})});f.frame(0);assert(f.frames[0].filter(c=>c.type==='draw'&&c.mode===f.gl.POINTS).every(c=>c.scissor),'point depth clear disabled the declared clipping');console.log('PASS — point rendering restores bounded scissor after its unmasked depth clear');}

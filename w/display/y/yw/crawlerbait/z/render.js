@@ -640,6 +640,7 @@ function focusTarget(targetId,frame){
   return [c];
 }
 function updateInk(screen,ms,w,h,d,fieldCanvas){
+  const view=INK.ui?.bounded?INK.ui.rect('viewfocus'):null,within=p=>p?.front&&(!view||(p.x>=view.x&&p.x<=view.x+view.width&&p.y>=view.y&&p.y<=view.y+view.height));
   const c=INK.canvas;if(!c)return;INK.ms=ms;if(c.width!==w||c.height!==h){c.width=w;c.height=h}
   c.style.visibility=fieldCanvas?.dataset.composite==='1'?'hidden':'visible';
   const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w/d,h/d);
@@ -657,10 +658,10 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
     if(old){Object.assign(old,{point,text,color,narrative});return}
     INK.offers.set(id,{point,text,color,narrative});L?.offer?.(id,{kind:'body',foreground:frame=>focusTarget(id,frame),point:()=>{const p=INK.offers.get(id)?.point;return p?{x:rect.left+p.x,y:rect.top+p.y,r:Math.max(9,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext?targetFrame(t):null}});
   }
-  if(MODE==='beings')for(const k of GENES){const p=screen(colonyGeom(k).cen);offerWords('crawlerbait:type:'+k,p.front?p:null,`${KIND[k].name}. ${word(KIND_DE[k],KIND[k].does)}. ${SIM.typeCounts?.[k]||0} ${word('Besucher an dieser Stelle des Verlaufs','visitors at this point in the record')}.`,KIND[k].ink)}
+  if(MODE==='beings')for(const k of GENES){const p=screen(colonyGeom(k).cen);offerWords('crawlerbait:type:'+k,within(p)?p:null,`${KIND[k].name}. ${word(KIND_DE[k],KIND[k].does)}. ${SIM.typeCounts?.[k]||0} ${word('Besucher an dieser Stelle des Verlaufs','visitors at this point in the record')}.`,KIND[k].ink)}
   // Narrative identity survives a grazing angle: only its world projection can disappear.
   const tet=cellIn(V0,SIM.container),faces=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]],holes=faces.map(f=>f.map((i,j)=>screen(mid(tet[i],tet[f[(j+1)%3]]))));
-  const safe=INK.ui?.carrier||{x:0,y:0,w:rect.width,h:rect.height};
+  const safe=view?{x:view.x,y:view.y,w:view.width,h:view.height}:INK.ui?.carrier||{x:0,y:0,w:rect.width,h:rect.height};
   const rowSets=holes.filter(tri=>tri.every(p=>p.front)).map(tri=>freeRows(triangleRows(tri,typePx(-1)*1.4,5,{top:safe.y,bottom:safe.y+safe.h}).map(r=>{const x=Math.max(r.x,safe.x+10),right=Math.min(r.x+r.w,safe.x+safe.w-10);return {...r,x,w:right-x}}).filter(r=>r.y>=safe.y+10&&r.y+typePx(-1)*1.4<safe.y+safe.h-54&&r.w>Math.max(96,typePx(-1)*10))));
   rowSets.sort((a,b)=>b.reduce((n,r)=>n+r.w,0)-a.reduce((n,r)=>n+r.w,0));
   const rows=rowSets[0]||[];
