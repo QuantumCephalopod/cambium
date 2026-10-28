@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.12"
+version: "1.13"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -74,3 +74,6 @@ Version1.11 bounded work/documentation (2026-10-28): the live overlap/cropping c
 
 
 Version1.12 focus-context correction2026-10-28: retain selected-work framing without scissoring the rest of the source sheet. Receding context remains visible in the actual camera field. Documentation remains in its own bounded description and the footer remains fixed.49 works/55 slots, source positions, row/rank/cluster identity, emphasis, media and source wording are unchanged. The live usability counterexample has its own intake/return; older HOME is not rewritten.
+
+
+Layout return2026-10-29: The supplied common ui-grid.json supersedes the earlier field coordinates and names. Viewport frames the actual source camera, while world context remains available; documentation and compass consume their expanded declarations. All49 works/55 slots, source geometry, media and timeline stay intact.

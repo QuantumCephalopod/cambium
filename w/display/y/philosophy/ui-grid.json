@@ -1,8 +1,7 @@
 {
   "schema": "sss.display.ui-grid.v2",
   "meta": {
-    "name": "organism:philosophy",
-    "extent": "bounded"
+    "name": "site-holon-layout"
   },
   "splits": [
     "",
@@ -12,12 +11,14 @@
     "z",
     "ww",
     "wx",
+    "wz",
     "xw",
     "xx",
+    "xy",
     "xz",
-    "yw",
-    "yy",
+    "yx",
     "yz",
+    "zw",
     "zx",
     "zy",
     "zz"
@@ -25,6 +26,10 @@
   "fields": {
     "compass": {
       "cells": [
+        "zxw",
+        "zxx",
+        "zxy",
+        "zxz",
         "zzw",
         "zzx",
         "zzy",
@@ -34,14 +39,9 @@
     },
     "description": {
       "cells": [
-        "yww",
-        "ywx",
-        "ywy",
-        "ywz",
-        "yyw",
-        "yyx",
-        "yyy",
-        "yyz"
+        "wy",
+        "yw",
+        "yy"
       ],
       "label": "description"
     },
@@ -75,14 +75,35 @@
       ],
       "label": "time"
     },
-    "viewfocus": {
+    "viewport": {
       "cells": [
-        "wz",
-        "xy",
-        "yx",
-        "zw"
+        "wzw",
+        "wzx",
+        "wzy",
+        "wzz",
+        "xyw",
+        "xyx",
+        "xyy",
+        "xyz",
+        "xzw",
+        "xzy",
+        "yxw",
+        "yxx",
+        "yxy",
+        "yxz",
+        "yzw",
+        "yzx",
+        "zww",
+        "zwx",
+        "zwy",
+        "zwz",
+        "zxw",
+        "zxy",
+        "zyw",
+        "zyx",
+        "zzw"
       ],
-      "label": "view"
+      "label": "viewport"
     }
   },
   "elements": {}

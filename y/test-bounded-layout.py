@@ -14,7 +14,7 @@ p=argparse.ArgumentParser();p.add_argument('--artifact',type=Path,required=True)
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/index.html';results=[]
-expected={'header':(0,0,1,.25),'description':(0,.5,.25,.5),'timeline':(.25,.875,.5,.125),'compass':(.75,.75,.25,.25),'viewfocus':(.25,.25,.5,.5)}
+expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.75,.5,.25,.5),'viewport':(.25,.25,.625,.625)}
 def bounds(page,selector):return page.locator(selector).evaluate('(e)=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}}')
 def close(actual,field,w,h):
  x,y,fw,fh=expected[field]
@@ -37,9 +37,9 @@ try:
      close(bounds(page,description),'description',w,h);close(bounds(page,'#mini'),'compass',w,h)
      # The exact neutral camera rectangle is lent to the actual field. Its
      # GL source projection and pointer equivalence have separate native tests.
-     world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewfocus',w,h)
+     world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewport',w,h)
      canvas=page.locator(host+' .interlocutor-background');assert not canvas.get_attribute('data-layer-error')
-     records={'identity':identity,'viewport':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if identity=='organism:crawlerbait' else 'software WebGL','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewfocus':world}
+     records={'identity':identity,'viewport':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if identity=='organism:crawlerbait' else 'software WebGL','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewport':world}
      if identity!='organism:philosophy':
       timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h);records['timeline']=before
       if identity=='organism:schattenseiten':

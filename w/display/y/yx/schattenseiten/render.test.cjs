@@ -59,7 +59,7 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
   const bound=fixture(),state=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json')))),before=JSON.stringify(state),bindings=[];
   const ui={bounded:true,state,carrier:{x:0,y:0,w,h},rect(name){const b=UI.fieldInfo(state,name).bounds;return {x:b.x*w,y:b.y*h,width:b.w*w,height:b.h*h}},bind(el,name){bindings.push({el,name})}};
   bound.module.render({host:node('host'),content:node('content'),projection:bound.projection,ui});assert.deepEqual(bindings.map(b=>b.name),['header','description','timeline']);
-  const timeline=UI.fieldInfo(state,'timeline').bounds,description=UI.fieldInfo(state,'description').bounds,view=UI.fieldInfo(state,'viewfocus').bounds;assert.deepEqual(description,{x:0,y:.5,w:.25,h:.5});assert.deepEqual(timeline,{x:.25,y:.875,w:.5,h:.125});assert.deepEqual(view,{x:.25,y:.25,w:.5,h:.5});
+  const timeline=UI.fieldInfo(state,'timeline').bounds,description=UI.fieldInfo(state,'description').bounds,view=UI.fieldInfo(state,'viewport').bounds;assert.deepEqual(description,{x:0,y:.25,w:.25,h:.75});assert.deepEqual(timeline,{x:.25,y:.875,w:.5,h:.125});assert.deepEqual(view,{x:.25,y:.25,w:.625,h:.625});
   for(const work of bound.projection.works)bound.module.activateFieldPoint({point:{work}});bound.law.fitPanel();assert.equal(JSON.stringify(state),before,'selection relocated a declared field');
   assert.equal(bound.law.layout().side.parentNode,bound.law.layout().rail,'documentation escaped its description scroller');
  }

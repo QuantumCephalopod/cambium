@@ -26,14 +26,16 @@
   "home": {
     "changed_scope": [
       "w/display/y/yw/crawlerbait/RITUALS/organism/RITUAL.md",
-      "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__focus-context-continuity__20261028.md",
+      "w/display/y/yw/crawlerbait/ui-grid.json",
       "w/display/y/yw/crawlerbait/z/render.js",
-      "w/display/y/yw/crawlerbait/_waste/metabolized-20261028-NUTRIENT__focus-context-continuity__20261028.md"
+      "w/display/y/yw/crawlerbait/z/render.test.cjs",
+      "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__viewport-layout__20261029.md",
+      "w/display/y/yw/crawlerbait/_waste/metabolized-20261029-NUTRIENT__viewport-layout__20261029.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — remove injected focus-only goo clip and contact admission guard while preserving camera framing, source-specific lens clipping, historical replay and fixed timeline."
+    "outcome": "COMPLETED — exact supplied layout and viewport narrative frame installed; source replay/clock/identity and fixed timeline remain unchanged."
   },
-  "observed_at_utc": "2026-10-28T21:32:15.150019Z",
+  "observed_at_utc": "2026-10-28T23:50:05.665909Z",
   "owner": "crawlerbait",
   "phenotype": {
     "w": {
@@ -49,21 +51,21 @@
       "noun": "Membrane"
     }
   },
-  "reflected_home_event": "crawlerbait-layout-usability-return-20261028",
+  "reflected_home_event": "crawlerbait-viewport-layout-return-20261029",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "180e082e4ab72ef798ead233dd3ef7d9fc8889b6dde1912411c53e2a3ba6c56d"
+      "sha256": "ae6f02290579d95449e78e4200eb11a971755eafbe8ce5d1f1d3dbdca955b039"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [],
-    "waste_direct_count": 34
+    "waste_direct_count": 35
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "1359a790a27fa804382859443d9eb3b7448628ad"
+    "source_revision": "8da54be7720bee8a47225955b5c15c6e10130ac6"
   }
 }

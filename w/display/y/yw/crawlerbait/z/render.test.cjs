@@ -262,12 +262,12 @@ console.log('PASS · actual DE/EN controls preserve historical clock and geograp
 const UI=require('../../../../w/ui-grid.js'),layout=JSON.parse(fs.readFileSync(path.join(__dirname,'../ui-grid.json')));
 for(const [w,h] of [[390,844],[1280,800]]){
  const state=UI.normalizeState(layout);
- assert.equal(state.meta.extent,'bounded');const time=UI.fieldInfo(state,'timeline').bounds;
+ assert.equal(state.meta.name,'site-holon-layout');const time=UI.fieldInfo(state,'timeline').bounds;
  assert.deepStrictEqual(time,{x:.25,y:.875,w:.5,h:.125});
- const view=UI.fieldInfo(state,'viewfocus').bounds,description=UI.fieldInfo(state,'description').bounds,compass=UI.fieldInfo(state,'compass').bounds;
+ const view=UI.fieldInfo(state,'viewport').bounds,description=UI.fieldInfo(state,'description').bounds,compass=UI.fieldInfo(state,'compass').bounds;
  assert.equal(description.x+description.w,view.x);assert(time.x+time.w<=compass.x);assert(view.y+view.h<=time.y);
 }
-console.log('PASS · one immutable timeline geometry shared by Crawlerbait/Schattenseiten, disjoint from viewfocus/description/compass');
+console.log('PASS · one immutable timeline geometry shared by Crawlerbait/Schattenseiten, with declared viewport/description/compass overlap');
 
 const clipped=law.triangleRows([{x:0,y:-1e9},{x:1e9,y:1e9},{x:-1e9,y:1e9}],16,5,{top:0,bottom:844});assert(clipped.length<=53,'near-camera narrative enumerated offscreen rows');
 // A large visible place in a sibling must retain its actual form, rather than
