@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.17"
+version: "1.18"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -36,7 +36,7 @@ Root `_cambium.yaml` is the closed host `4V/6E/4F/1T`. Raw recursive address sym
 
 Canonical motion:
 
-`act -> witness -> durable HOME -> asynchronous _feed refresh -> return/circulation`
+`act -> witness -> durable HOME -> source-local spent-carrier clearance + asynchronous _feed refresh -> return/circulation`
 
 HOME closes when source outcome and local `_root` event are durable. `_feed` catch-up is a separate mechanical consequence. GitHub Actions may actuate projection but do not decide semantic validity.
 
@@ -130,7 +130,7 @@ A folded membrane bounds the work its enclosing consumer actually performs. A pa
 - First public launch is closed; its spent intake record lives in `_waste/metabolized-first-public-launch-20260927.md`.
 - Display-local nutrients remain owned by `w/display/_stomach/` until metabolized.
 - Crawlerbait's Cloudflare tide remains Crawlerbait-local physiology; provider credentials remain outside repository/public bytes.
-- Completed child pressure may be retired only after witnessed anatomy, durable child HOME and feed return close its local cycle.
+- Retire completed child intake in its own `_waste` after appropriate bounded witnesses and durable child HOME. Feed/clearance transport retains its separate retry state; no personal approval or organization promotion is a digestive condition.
 - A child change backpropagates upward only when its witnessed consequence changes a rank-invariant parent distinction; implementation-local child detail remains local.
 
 ## closure
@@ -143,7 +143,7 @@ A cambium mutation closes only when:
 5. durable local HOME is appended in the mutated organism `_root` when the mutation is an organism-owned organic act;
 6. `_feed` catch-up remains a separate mechanical consequence;
 7. optional site-owned public secretion remains bounded by generic collision-safe publication law;
-8. build/address/browser witnesses pass when the public membrane is affected.
+8. appropriate build/address/interaction/render witnesses pass within their stated scope when the public membrane is affected; untested browser/device scope is stated without inventing a personal acceptance gate.
 
 Compression: **same organism dance, whole-body recursive differentiation, structural membrane restart, identity-owned site secretion through generic transport, substrate mechanics beneath semantic law.**
 
@@ -154,3 +154,9 @@ Version1.8 Population discovery boundary (2026-10-20): living mount positions de
 Version1.9 Catabolism receptor (2026-10-20): repeated owner-local source returns and the witnessed README invocation quotient earn a repository-local Catabolism differential. Invocation state and Git-carried return addresses remain local application of resident HOME; semantic constitution and child ownership are unchanged.
 
 Version1.13 shared fold operation (2026-10-21): rank substitution permits one source-agnostic carrier mechanism while source meaning and refinement remain owner-local. Independent-owner and real-consumer evidence must earn that reuse. Bounded presentation remains distinct from full-generation acquisition/preparation; an expansive derived index is not accepted as a transfer optimization merely because its frontier is small.
+
+## Autonomous completion — inherited Metabolism
+
+[Shared Metabolism](https://drive.google.com/file/d/1l1uGIctId8j9GK3Z1jyyzoa9vz7gZul-/view) owns autonomous completion, spent-intake clearance and admission of later counterexamples as new nutrients. Cambium applies it to Git-carried bodies: preserve exact spent bytes in the same owner's `_waste`, rebind live references and append truthful owner HOME. Immutable older HOME/evidence retains its original bounded claims; a new return may supersede an invented pending-acceptance condition without pretending new browser/device evidence exists.
+
+Fork promotion remains a separate, owner-controlled repository permission boundary. It cannot keep an implemented/witnessed nutrient in `_stomach`. A concrete required delivery failure may have its own bounded operational intake; mere absence of a merge or personal visit is not unresolved digestion. Keep only genuinely unfinished functional obligations active. The enclosing checker refuses the previously recurring completed-intake/personal-gate status at each admitted local shell.

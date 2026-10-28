@@ -25,14 +25,38 @@
   },
   "home": {
     "changed_scope": [
-      "RITUALS/organism/RITUAL.md",
-      "z/render.js",
-      "z/render.test.cjs"
+      "_stomach/NUTRIENT__visit-coalescent-place-growth__20261019.md",
+      "_waste/metabolized-20261028-NUTRIENT__visit-coalescent-place-growth__20261019.md",
+      "_stomach/NUTRIENT__visible-neighbours-and-readable-encounters__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__visible-neighbours-and-readable-encounters__20261026.md",
+      "_stomach/NUTRIENT__text-fitted-elliptical-droplet__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__text-fitted-elliptical-droplet__20261026.md",
+      "_stomach/NUTRIENT__shared-liquid-foreground-adapter__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__shared-liquid-foreground-adapter__20261026.md",
+      "_stomach/NUTRIENT__reef-and-being-types__20261019.md",
+      "_waste/metabolized-20261028-NUTRIENT__reef-and-being-types__20261019.md",
+      "_stomach/NUTRIENT__liquid-readable-narrative__20261019.md",
+      "_waste/metabolized-20261028-NUTRIENT__liquid-readable-narrative__20261019.md",
+      "_stomach/NUTRIENT__lend-existing-goop-material__20261027.md",
+      "_waste/metabolized-20261028-NUTRIENT__lend-existing-goop-material__20261027.md",
+      "_stomach/NUTRIENT__fractal-layout-and-stable-name__20261019.md",
+      "_waste/metabolized-20261028-NUTRIENT__fractal-layout-and-stable-name__20261019.md",
+      "_stomach/NUTRIENT__fractal-being-place-camera__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__fractal-being-place-camera__20261026.md",
+      "_stomach/NUTRIENT__efficient-initial-projection__20261019.md",
+      "_waste/metabolized-20261028-NUTRIENT__efficient-initial-projection__20261019.md",
+      "_stomach/NUTRIENT__crawlercam-lock-continuity__20261019.md",
+      "_waste/metabolized-20261028-NUTRIENT__crawlercam-lock-continuity__20261019.md",
+      "_stomach/NUTRIENT__cooperative-encounter-preparation__20261027.md",
+      "_waste/metabolized-20261028-NUTRIENT__cooperative-encounter-preparation__20261027.md",
+      "_stomach/NUTRIENT__address-lod-and-being-loci__20261019.md",
+      "_waste/metabolized-20261028-NUTRIENT__address-lod-and-being-loci__20261019.md",
+      "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "IMPLEMENTED_NATIVE / OWNER_PROMOTION_PENDING — Cooperative source-local visits/growth/life preparation retains exact field and first replay state, installs only completed generations and preserves cancelled/failed encounter boundaries."
+    "outcome": "COMPLETED — 13 previously consumed local intake carriers returned unchanged to local waste; only 0 concrete unfinished local carriers remain. Personal acceptance/promotion is not a metabolic condition."
   },
-  "observed_at_utc": "2026-10-27T11:50:19.237105Z",
+  "observed_at_utc": "2026-10-28T11:21:22.874029Z",
   "owner": "crawlerbait",
   "phenotype": {
     "w": {
@@ -48,35 +72,21 @@
       "noun": "Membrane"
     }
   },
-  "reflected_home_event": "crawlerbait-cooperative-preparation-native-20261027",
+  "reflected_home_event": "crawlerbait-spent-intake-clearance-20261028",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "91971f584a9cff401f0ee3ee8a148324b69b4c30584b6a2b1a61a7605dd88aab"
+      "sha256": "ca5cf16c67f29dc86cddf2d22ec6640cffec26834fe5f96d93ec73f99ae7c8d6"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [
-      "NUTRIENT__address-lod-and-being-loci__20261019.md",
-      "NUTRIENT__cooperative-encounter-preparation__20261027.md",
-      "NUTRIENT__crawlercam-lock-continuity__20261019.md",
-      "NUTRIENT__efficient-initial-projection__20261019.md",
-      "NUTRIENT__fractal-being-place-camera__20261026.md",
-      "NUTRIENT__fractal-layout-and-stable-name__20261019.md",
-      "NUTRIENT__lend-existing-goop-material__20261027.md",
-      "NUTRIENT__liquid-readable-narrative__20261019.md",
-      "NUTRIENT__reef-and-being-types__20261019.md",
-      "NUTRIENT__shared-liquid-foreground-adapter__20261026.md",
-      "NUTRIENT__text-fitted-elliptical-droplet__20261026.md",
-      "NUTRIENT__visible-neighbours-and-readable-encounters__20261026.md",
-      "NUTRIENT__visit-coalescent-place-growth__20261019.md"
-    ],
-    "waste_direct_count": 19
+    "stomach_direct": [],
+    "waste_direct_count": 32
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "c0e547176bcf6dd845861e67a10b130d0f64bff3"
+    "source_revision": "2031a1a1c67290bffc2a8b8a8ff9357547c739e6"
   }
 }

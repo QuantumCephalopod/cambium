@@ -25,13 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "render.js",
-      "RITUALS/organism/RITUAL.md"
+      "_stomach/NUTRIENT__shared-liquid-foreground-adapter__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__shared-liquid-foreground-adapter__20261026.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "IMPLEMENTED_NATIVE / LIVE_ACCEPTANCE_PENDING — continuous liquid, light type shadow and sharp source-owned softlock foreground"
+    "outcome": "COMPLETED — 1 previously consumed local intake carriers returned unchanged to local waste; only 0 concrete unfinished local carriers remain. Personal acceptance/promotion is not a metabolic condition."
   },
-  "observed_at_utc": "2026-10-26T21:48:47.715532Z",
+  "observed_at_utc": "2026-10-28T11:21:22.873223Z",
   "owner": "philosophy",
   "phenotype": {
     "w": {
@@ -47,7 +47,7 @@
       "noun": "Care"
     }
   },
-  "reflected_home_event": "philosophy-sharp-liquid-contact-native-20261026",
+  "reflected_home_event": "philosophy-spent-intake-clearance-20261028",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
@@ -57,13 +57,11 @@
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [
-      "NUTRIENT__shared-liquid-foreground-adapter__20261026.md"
-    ],
-    "waste_direct_count": 13
+    "stomach_direct": [],
+    "waste_direct_count": 14
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "2c63a798c41103142dfe2d58dbb05ee37d3709fe"
+    "source_revision": "2031a1a1c67290bffc2a8b8a8ff9357547c739e6"
   }
 }

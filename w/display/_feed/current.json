@@ -25,25 +25,34 @@
   },
   "home": {
     "changed_scope": [
-      "RITUALS/navigation/RITUAL.md",
+      "_stomach/NUTRIENT__tetra-particle-black-goop-transition__20261027.md",
+      "_waste/metabolized-20261028-NUTRIENT__tetra-particle-black-goop-transition__20261027.md",
+      "_stomach/NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md",
+      "_stomach/NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
+      "_stomach/NUTRIENT__selection-is-not-visibility__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__selection-is-not-visibility__20261026.md",
+      "_stomach/NUTRIENT__liquid-visitor-regressions__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__liquid-visitor-regressions__20261026.md",
+      "_stomach/NUTRIENT__liquid-evidence-feed-envelope__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__liquid-evidence-feed-envelope__20261026.md",
+      "_stomach/NUTRIENT__goop-as-loading-progress__20261027.md",
+      "_waste/metabolized-20261028-NUTRIENT__goop-as-loading-progress__20261027.md",
+      "_stomach/NUTRIENT__explicit-locus-point-anchor__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__explicit-locus-point-anchor__20261026.md",
+      "_stomach/NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
+      "_waste/metabolized-20261028-NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
+      "_stomach/NUTRIENT__chosen-relative-type-shadow__20261027.md",
+      "_waste/metabolized-20261028-NUTRIENT__chosen-relative-type-shadow__20261027.md",
       "RITUALS/organism/RITUAL.md",
       "RITUALS/site-holon/RITUAL.md",
-      "w/template.html",
-      "x/display-runtime-v2.js",
-      "x/display-runtime-v2.test.cjs",
-      "z/site-fold-particles.gles-capture.cjs",
-      "z/site-fold-particles.gles.test.py",
-      "z/site-fold-particles.js",
-      "z/site-fold-particles.test.cjs",
-      "z/site-fold.js",
-      "z/site-fold.test.cjs",
-      "x/feed-acquisition.js",
-      "x/feed-acquisition.test.cjs"
+      "_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "IMPLEMENTED_NATIVE / OWNER_PROMOTION_PENDING — Moving black particle fill follows actual preparation, preserves an opening until ready, seals before covered acceptance and reverses on cancellation/refusal."
+    "outcome": "COMPLETED — 10 previously consumed local intake carriers returned unchanged to local waste; only 1 concrete unfinished local carriers remain. Personal acceptance/promotion is not a metabolic condition."
   },
-  "observed_at_utc": "2026-10-27T11:50:19.234522Z",
+  "observed_at_utc": "2026-10-28T11:21:22.871538Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -59,7 +68,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-goop-loading-progress-native-20261027",
+  "reflected_home_event": "display-spent-intake-clearance-20261028",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -67,33 +76,23 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "3b8327d524f058e5c6fa15f8040f82edc44b85502c3b5b67a0e67a9f094e19f7"
+      "sha256": "51d8901a1435feb2b97e294f78fe10d78ee79ee9bfdde71584908b57d9aaef18"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "2223b30b3dac6b4d688d93b4f5bbed747b714c0796976b95de5246b244bb3ec8"
+      "sha256": "bbbe7fe8c03b18a5bbced5053b0064040708925d5bb3717244e69c4edbb99859"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
-      "NUTRIENT__chosen-relative-type-shadow__20261027.md",
-      "NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
-      "NUTRIENT__explicit-locus-point-anchor__20261026.md",
-      "NUTRIENT__goop-as-loading-progress__20261027.md",
-      "NUTRIENT__language-glyphs-and-site-names__20261019.md",
-      "NUTRIENT__liquid-evidence-feed-envelope__20261026.md",
-      "NUTRIENT__liquid-visitor-regressions__20261026.md",
-      "NUTRIENT__selection-is-not-visibility__20261026.md",
-      "NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
-      "NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md",
-      "NUTRIENT__tetra-particle-black-goop-transition__20261027.md"
+      "NUTRIENT__language-glyphs-and-site-names__20261019.md"
     ],
-    "waste_direct_count": 105
+    "waste_direct_count": 115
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "c0e547176bcf6dd845861e67a10b130d0f64bff3"
+    "source_revision": "2031a1a1c67290bffc2a8b8a8ff9357547c739e6"
   }
 }
