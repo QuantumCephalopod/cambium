@@ -2,7 +2,7 @@
 name: catabolism
 kind: target-local-differential
 organism: cambium
-version: "0.2"
+version: "0.3"
 resident_home: /regeneration/catabolism
 ---
 
@@ -37,3 +37,7 @@ Apply the existing fork/organization boundary to the return: durable staging out
 The source-preserving root address-uplink return (`_root/cambium-catabolism-canonical-address-uplink-20261005T181530Z.json`) and Display's owner-local safe-area/UI-grid returns already exercise Git-carried intake release. The 2026-10-20 README cast adds invocation-level release: one read-only check retains current-README acceptance and stale-README rejection, replacing two consecutive identical calls. Its exact preimage and revocation conditions belong to the cast's root HOME.
 
 These encounters earn one repository-local procedural receptor. They do not declare a semantic split or make Catabolism another mandatory shared-root field member.
+
+## Completed intake is spent
+
+Inherit autonomous completion and new-pressure admission from shared Metabolism, via the organism receptor. For this carrier, trace a completed intake to its actual durable owner HOME, verify source-faithful movement to that owner's `_waste`, and rebind live current references. Historical pending-acceptance notes remain preimage/evidence scope, not current work. A later counterexample enters as a new nutrient with a bounded causal return; do not reactivate spent intake. A truly unfinished portion stays explicitly unresolved. Git publication/merge permissions remain separate from metabolic completion.

@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.11"
+version: "3.12"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -474,7 +474,7 @@ A public Papers mutation closes when:
 17. realized chamber passage preserves exact recursive cell identity/centroid/scale and does not invent semantic depth from packing;
 18. the overview center remains free of explanatory/demo overlays and HOW PAPERS LIVES remains one peripheral unit when present;
 19. any Philosophy-derived parent field references Philosophy-owned live shader/projection tissue without copying its interior or becoming interactive Papers semantics;
-20. the exact generated artifact is browser-witnessed for chamber passage, point selection, lineage traversal, relation/metabolite trace focus and external-source handoff when those surfaces change.
+20. the actual changed artifact has appropriate chamber/selection/lineage/relation/handoff witnesses at their own source/carrier/render level. Preserve browser/device limits without a personal acceptance gate; lifecycle closure inherits shared Metabolism through Cambium/Display.
 
 ## Compression
 
@@ -536,3 +536,7 @@ Cached SpriteSheet glyph sprites carry the shared shadow with sufficient tile pa
 Cached glyph sprites reserve the shared shadow material's actual blur/spread padding. Existing type sizes, glyph advances, reading frames, source wording and page continuation remain unchanged; the selected laboratory font size is not a new Papers font size.
 
 The enlarged glyph sprites retain a 32MiB/4000-entry ceiling. Shared font readiness changes the paint generation so fallback-font shadows cannot survive the actual SpriteSheet load.
+
+## Current intake boundary — 2026-10-28
+
+The source-owned sharp foreground adapter has completed bounded technical witnesses/HOME and is spent local intake. The three 2026-10-19 interaction targets named above remain genuinely unimplemented, and source-runtime projection freshness remains its separate unresolved source-owned operation. Their actual functional remainder, not a personal sign-off requirement, keeps them in `_stomach`. Later failures of completed work enter as new nutrients.

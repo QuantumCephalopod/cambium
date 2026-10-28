@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.59"
+version: "3.60"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -322,7 +322,7 @@ A validated body intent starts its real camera approach at the same closing fram
 
 ## Closure / acceptance
 
-Acceptance belongs to the affected contract, not to a mandatory device or a recurring personal sign-off. Relevant narrow/wide carrier, pointer/touch/key, source/identity/navigation and rendering witnesses may close that contract without Philipp opening the site on a physical phone. Routine reversible parameter/visual choices are agent-owned decisions; a new concrete counterexample can reopen them. Only indispensable source facts, intent or authority require Philipp's input.
+Technical completion belongs to the affected bounded contract and inherits shared Metabolism through Cambium. Personal sign-off, owner live acceptance and promotion are not digestive stages. Relevant narrow/wide carrier, pointer/touch/key, source/identity/navigation and rendering witnesses may close that contract without Philipp opening the site on a physical phone. Routine reversible parameter/visual choices are agent-owned decisions; a new concrete counterexample can reopen them. Only indispensable source facts, intent or authority require Philipp's input.
 
 Keep evidence scopes exact: native geometry/input fixtures, actual software-GLES shader execution, browser layout/interaction, hardware-specific behavior and measured frame time are different witnesses. An untested platform is a stated limit, not automatically another nutrient. Retain a technical question only when it names a concrete unresolved behavior, dependency or implementation with an actionable exit; never expand acceptance into an indefinite all-device/taste matrix. A known clipping, unreadable-content or performance defect still needs work and is not dismissed by this rule. Technical tool limitations remain agent-owned work, not a demand for the user to conduct QA.
 
@@ -342,12 +342,12 @@ A Display mutation closes only when:
 6. optional identity-owned public secretion is copied only through the generic collision-safe hook;
 7. site-local shader/render/interaction divergence does not fork the shared tetrahedral geometry or global orientation law;
 8. exact generated artifact passes structural/address/closure witnesses;
-9. browser-owned behavior is exercised against the exact delivered code; relevant carrier/input/rendering contracts are checked at their own level, without a default physical-phone or personal-taste gate;
+9. relevant carrier/input/rendering contracts are checked at their actual level against the delivered code; native evidence is not called browser/device evidence, and an untested platform alone creates neither an open nutrient nor a personal acceptance gate;
 10. target-origin closure surrounds the actual encounter swap;
 11. manual Philosophy orientation remains persistent;
 12. durable HOME is appended only after witnessed anatomy exists; `_feed` catch-up remains a separate mechanical consequence.
 
-CI success alone is not browser closure.
+CI success alone does not establish browser pixels or device FPS. Preserve that evidence limit without converting it into indefinite unresolved intake.
 
 For a return spanning owners, store shared acquisition or witness evidence once in the HOME of its actual owner. A dependent HOME names the exact event/path/hash, the bounded claim it consumes and its own distinct outcome/dependency/return. Verify the referenced bytes and preserve independent evidence as separate evidence even when conclusions agree. Existing HOME events remain immutable; archival wording or a repeated context block is not silently rewritten or promoted into current law. A failed reference or newly relevant omitted distinction reopens the quotient at its actual owner.
 
@@ -365,7 +365,7 @@ Interactive floating-body labels are native buttons. Their shared host must rema
 
 Site proper names are language-invariant: **Philosophy, Crawlerbait, Schattenseiten and Papers** remain the same names in DE and EN. Among the current site-holons, only the legal titles are localized. Other authored concepts, questions, prose and interface wording may be translated without renaming organism identities, mounts, addresses or anatomy. Mono v3 now supports German umlauts, ending the face-dependent ae/oe/ue requirement. Preserve authored umlauts and existing authored ASCII spelling; do not reverse-transliterate source-owned wording or identifiers. Unsupported sharp-s retains the bounded ss/SS presentation fold.
 
-The current target/floating-body title path still derives the site's field-root `de` / `en` label, with its manifest title and stable identity as fallbacks. The accepted proper-name/localization policy remains OPEN execution in `_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md`; Mono v3 closes only its former font-dependent spelling limitation. A language-only update must not remint GPU bodies. Navigator targets carry the derived titles to consumers.
+The current target/floating-body title path still derives the site's field-root `de` / `en` label, with its manifest title and stable identity as fallbacks. Crawlerbait's proper-name path is implemented in its seven-nutrient HOME. Remaining global/local proper-name and DE/EN presentation paths stay explicitly scoped in `_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md`; Mono v3 closes the former font-dependent spelling limitation. A language-only update must not remint GPU bodies. Navigator targets carry the derived titles to consumers.
 
 The chosen German/English expression travels in the ordinary `lang` URL query, including history restoration and return from standalone public apertures. No cookie or browser storage is introduced. An unsupported/missing language retains the existing English default.
 
@@ -414,3 +414,7 @@ Particle count is viewport-derived and capped at 2048. One mesh and one instance
 The black particle flow is the loading indication; no separate numeric bar is introduced. Keep time-dependent particle movement active while source preparation holds the fill. A completed source generation permits full closure; field/renderer acceptance and its prepared frame remain covered before opening. Refusal/cancellation reverse the actual current fill and preserve the prior encounter/history. Cached/warm targets retain the chosen minimum close duration. Reduced motion uses a quiet partial cover while waiting and the short existing crossing rather than a continuous particle loop.
 
 The same-origin `feed-acquisition.js` asset can acquire, decode and parse in a transient Worker. Completion milestones describe headers, complete body and parsed detail, not measured percentages; compressed Content-Length is not interchangeable with decoded stream bytes. A missing Worker capability uses the same declared main-thread acquisition boundary; HTTP/parse/worker errors refuse the target. Workers deliver depth-first portions with at most one acknowledged batch of64 records/about64KiB in flight. Small source subtrees remain intact; larger containers repeat the same transport relation. Literal object keys and source order are preserved without prototype mutation. A single authored scalar remains atomic. Workers terminate at completion/failure. Structured-clone delivery/GC, renderer setup, GPU compilation, complete source storage and atomic sorts remain real costs. Preparation progress is generic; source interpretation is owner-local.
+
+## Spent intake return — local application
+
+After bounded technical completion and durable owner HOME, move spent Display intake unchanged into Display `_waste` and refresh its derived feed. Source adapters close through their own owner HOME/waste, not a shared personal-acceptance queue. Concrete later clipping, unreadability, camera or performance failures enter as new nutrients. Preserve a named genuinely unfinished functional remainder; do not retain completed work for unspecified visitor approval.

@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.28"
+version: "3.29"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -223,7 +223,7 @@ A site-holon change is accepted when:
 4. optional static public secretion remains identity-owned, bounded and collision-safe;
 5. relocation still changes only environment, not body bytes;
 6. local traversal does not hijack global navigation or orientation law;
-7. public/browser witnesses exercise the actual generated body when visible behavior changes.
+7. appropriate source/carrier/interaction/render witnesses exercise the actual changed body with exact evidence scope; shared Metabolism/Cambium completion is autonomous and never waits for personal approval.
 8. the independently rooted body retains all four local lifecycle roles; source-derived content does not exempt it from local intake, HOME and current self-presentation.
 
 ## Compression

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Structural witness for the tree-addressed Display organism."""
 from pathlib import Path
-import argparse, ctypes.util, html.parser, importlib.util, json, os, subprocess
+import argparse, ctypes.util, html.parser, importlib.util, json, os, re, subprocess
 
 ROOT=Path(__file__).resolve().parent.parent
 DISPLAY=ROOT/'w'/'display'
@@ -10,6 +10,20 @@ count=0
 def check(condition,why):
     global count; count+=1
     if not condition: raise AssertionError(why)
+
+def check_current_intakes(root):
+    """A direct current intake cannot be a completed-work approval queue.
+
+    This checks declared current status only. Semantic retirement still belongs
+    to the organism; historical waste/HOME and genuine partial work are not
+    inferred as open/closed by searching their prose.
+    """
+    for path in sorted((root/'_stomach').glob('*.md')):
+        status=next((line.split(':',1)[1].strip().lower() for line in path.read_text(encoding='utf-8-sig').splitlines() if line.strip().lower().startswith('status:')), '')
+        normalized=re.sub(r'[_–—-]+',' ',status)
+        completed='implemented native' in normalized and not any(word in normalized for word in ('partial','residual'))
+        gate=any(marker in normalized for marker in ('owner acceptance pending','owner promotion pending','live visitor acceptance pending','live owner acceptance pending','exact candidate visitor acceptance pending','exact candidate visitor witness pending'))
+        check(not (completed or gate),f'{path}: spent intake/personal acceptance gate remains current; inherit shared Metabolism, close bounded work through HOME and local waste, or name a genuinely unfinished functional remainder')
 
 class Page(html.parser.HTMLParser):
     def __init__(self):
@@ -51,6 +65,9 @@ def main():
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
+    for owner in (ROOT,DISPLAY,*(site['site_dir'] for site in sites)):check_current_intakes(owner)
+    lifecycle=subprocess.run(['python3',str(ROOT/'y/test-lifecycle.py')],capture_output=True,text=True)
+    check(lifecycle.returncode==0,lifecycle.stderr or 'intake completion refusal witness failed')
     expected_sites={'organism:philosophy','organism:papers','organism:crawlerbait','organism:schattenseiten','organism:datenschutz','organism:impressum'}
     check(set(by_id)==expected_sites,'unexpected Population site set')
     for site in sites:
