@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.24"
+version: "3.25"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -210,3 +210,8 @@ Native pointer/touch, restoration and sibling/direct-jump witnesses pass within 
 ## Particle-carried closure — 2026-10-27
 
 The existing four target-origin facets are trajectory regions for a shared instanced tetrahedron flood. Black Goo coverage replaces the four visible sheets, using the shared density/threshold material. Both phases use 1650ms and cubic-bezier(.76,0,.24,1); no independent completion timer decides the actual cover. Renderer/source handover happens only after complete closure; readiness may hold that cover. Failure, cancellation and reduced motion release the same navigation transaction. No navigation destination, address or history law changes. Backend/resolution/instance budgets inherit the Display organism receptor.
+
+
+## Declared compass and camera presentation — 2026-10-28
+
+The current site-holon receptor owns bounded UI rectangles. A declared global compass rectangle constrains the complete navigator and its legal slot, through open/closed state, help, language and resize. Internal map magnification/rotation remains the same instrument; content scrolls rather than enlarging or moving that rectangle. Its global viewport mapping remains shared even in a composed encounter. Source bodies retain native world geometry while the optional viewfocus supplies their common camera/pointer presentation rectangle; no address or traversal is fabricated by this framing.

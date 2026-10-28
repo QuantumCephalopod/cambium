@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.29"
+version: "3.30"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -95,11 +95,13 @@ Same body does not mean same skin. Two site-holons may use radically different s
 
 Current optional `shader.focus`, `shader.view`, revisioned `shader.snapshot`, `afterDraw`, `preload` and `preview` calls are owned by the organism receptor's **Shared body / local phenomenology** section. Sites retain their meaning, source clock and readiness; shared pointer/Descent and backend limits remain Display-owned. The same receptor's **Continuous liquid contact**, **One capillary phase** and **Readable liquid interior** sections own current offer lifetime, finer axes and exact reading protection. Missing projection is not owner withdrawal; these couplings do not implement a site's still-open approach, genealogy or Being handover.
 
-Every site-holon owns one canonical recursive UI-field state for the screen-space presentation tissue it actually carries. Display lends the address algebra and projects site-owned field **orientation** into the local presentation plane; its canonical cells are reference coordinates, not exclusive regions or compulsory content dimensions. Field size, internal flow, clipping choices and interaction are identity-owned. Multiple fields may overlap and order themselves by an identity-owned integer `z`, without escaping the globally higher shared liquid presentation layer. Existing neutral `portrait` variants remain alternate orientation references for the same fields, selected only from carrier shape. The site can supply one field or many without borrowing a universal template.
+Every site-holon owns its canonical recursive UI-field state. A declaration of the common `header / description / compass / viewfocus` fields means actual containing rectangles; `meta.extent: bounded` also admits that same capability for any arbitrary owner/field names. The supplied v2 JSON therefore works without an additional user-authored sizing instruction. The canonical geometry is computed from realized addresses, not independently copied pixel sizes. Bounded mode uses the full local presentation surface; the reserved header is already part of that grid and is not subtracted again.
 
-When a canonical field determines screen placement, site CSS/render code must not secretly substitute independent absolute pixel *orientation*. Site styling may and must determine its own functional width/height, material, typography, scrolling, intrinsic overflow and visual behavior. An address may stay realized as its lattice cell subdivides more finely; overlap is not a conflict unless local interaction makes it one. Carrier variants remain address state rather than a second viewport-specific positioning system.
+A bounded binding fixes both origin and border-box extent, contains paint, and provides scroll continuation. Local typography, source wording, material and internal flow stay owner-owned. CSS or selection must not silently enlarge, relocate or replace declared rectangles. A carrier variant is explicit address state; it is not permission for runtime selection to move the footer. Existing intrinsically sized/orientation-only carriers retain their earlier relation; explicit `meta.extent: intrinsic` records that alternative and survives normalization. An invalid extent is refused.
 
-The UI grid does **not** absorb world/body geometry. Tetrahedral/world-projected labels, bodies, beings, chamber marks and other tissue whose position is derived from organism/world coordinates remain in that native frame. Global Display-owned membrane surfaces likewise remain Display tissue rather than being assigned to one site's local grid.
+The optional `viewfocus` is a neutral camera presentation rectangle, not source anatomy. The same camera/projection maps actual world geometry, pointer/hit positions and owner layers into it on both backends. World positions, source membership, genealogy, selection and simulation remain native. Full-size liquid/composite targets remain Display-owned; clipping source geometry must not crop the common glass. Sites receive both the full `rect` and the actual `viewRect` in their layer frame. Shared DOM HUD fields are distinct from world-projected labels and bodies.
+
+The global compass, including its trigger, legal links, map, rails and help, fits the active declared compass rectangle in the viewport; the overview declaration is fallback when a child supplies no compass field. Internal scrolling/readability cannot grow that rectangle. Global surfaces remain Display-owned. Owner-local timeline/footer controls consume their declared field; the current Crawlerbait and Schattenseiten carriers share the exact `yzy / yzz / zyy / zyz` footprint. The enclosing carrier witness checks that invariant without making either child import its sibling’s anatomy.
 
 ### Source-owned sharp contact foreground
 

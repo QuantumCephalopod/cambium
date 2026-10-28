@@ -37,11 +37,11 @@ function measure(){
   // Layout extents do not inherit the pocket's opening transform. No frame polling.
   const top=globalThis.SSSDisplaySafeArea?.snapshot().insets.top||0;
   const rem=globalThis.SSSDisplayType?.rootRemPx?.()||16;
-  const available=Math.max(0,innerHeight-top-legalHeight-6*rem);
+  const bounded=mini.dataset.gridBounded==='true',field=mini.getBoundingClientRect?.(),available=bounded?Math.max(0,(field?.height||0)-legalHeight-3*rem):Math.max(0,innerHeight-top-legalHeight-6*rem);
   px('--compass-top',top);px('--compass-core-cap',available);
   px('--compass-guide-cap',available*.45);
   const chrome=core.scrollHeight-map.offsetHeight;
-  px('--compass-map-cap',Math.max(24,available-chrome));
+  px('--compass-map-cap',bounded?Math.max(24,Math.min(available*.7,(field?.width||0)-3.5*rem)):Math.max(24,available-chrome));
   px('--compass-core-height',core.offsetHeight);
   core.dataset.scroll=String(core.scrollHeight>core.clientHeight+1);
 }

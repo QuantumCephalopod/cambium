@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.10"
+version: "1.11"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -67,4 +67,7 @@ Version1.8 current-law reconciliation (2026-10-19): retired continuity and earne
 Version1.9 partial host fallback (2026-10-20): the host draw invokes the optional shared `drawPlaceholder()` in its current input before painting ready declared64 slots. Thus missing/slow/failed slots keep plain presence while ready opaque source tiles replace it, alongside transparent owner bodies that need no cover. Entered draws, source nearest sampling, media declarations, tier queues and actual works remain unchanged.
 
 
-Version1.10 work-led return (2026-10-28): the empty top display row preserves all49 works and55 occupied slots; source rows and identities remain unchanged. Source-grounded description and row/work/cluster/movement/return controls replace the unimplemented presentation targets above. Selected documentation uses only declared media and fits its intrinsic scroll extent around actual shared occupancy at existing UI-lattice anchors; when a short carrier cannot fit a separate panel, the existing rail carries one bounded scrollable reading flow. Actual source-pixel GLES at390×844 and1280×800, native control/geometry/refusal/cache/lifetime checks and the complete artifact check retain their precise technical scope. These checks do not claim browser decoder/CSS rasterization or physical-device FPS. Source projection and media tier law remain unchanged.
+Version1.10 work-led return (2026-10-28): the empty top display row preserves all49 works and55 occupied slots; source rows and identities remain unchanged. Source-grounded description and row/work/cluster/movement/return controls replace the unimplemented presentation targets above. That version’s intrinsic panel relocation is superseded by the bounded1.11 layout below; its source-media/control evidence retains its actual original scope. Actual source-pixel GLES at390×844 and1280×800, native control/geometry/refusal/cache/lifetime checks and the complete artifact check retain their precise technical scope. These checks do not claim browser decoder/CSS rasterization or physical-device FPS. Source projection and media tier law remain unchanged.
+
+
+Version1.11 bounded work/documentation (2026-10-28): the live overlap/cropping counterexample is new pressure after the completed presentation act. Header, lower-left description and centre-bottom timeline now consume the exact supplied containing rectangles. Documentation, row/work controls and admitted media flow inside the description scroller; they no longer choose another leaf or escape into the work. Breadcrumb/orthogonal controls keep the same timeline footprint as Crawlerbait through selection and resize. The actual sheet and its source-owned continuous focus use shared viewfocus projection; row selection visibly recedes other source rows and work selection retains its own body. All49 works/55 occupied slots, empty first display row, source row/rank/cluster identity, original words and strict64/entered512 media/lifetime remain unchanged. Earlier source-exact HOME/evidence remains immutable; its native rectangle-only witness did not certify the later live composition.

@@ -72,3 +72,7 @@ assert.equal(legacy.schema,G.SCHEMA);
 assert.deepStrictEqual(legacy.fields,{});
 
 console.log('ui-grid v2: persistent orientation across splits + overlapping z fields PASS');
+
+for(const extent of ['bounded','intrinsic']){const state=G.emptyState();state.meta.extent=extent;assert.equal(G.normalizeState(state).meta.extent,extent);}
+assert.throws(()=>G.normalizeState({...G.emptyState(),meta:{extent:'invented'}}),/unknown UI extent/);
+console.log('PASS — explicit bounding intent survives canonical normalization and invalid extent refuses');

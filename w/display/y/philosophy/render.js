@@ -102,7 +102,7 @@ function offerLocks(host){
   }
 }
 function withdrawLocks(){const Lens=globalThis.SSSDisplayLens;for(const x of lockIds)Lens?.withdraw(x);lockIds.clear()}
-function fitDescription(){if(!describe?.el?.isConnected)return;const c=describe.ui.carrier,b=describe.ui.field('Description').bounds;describe.el.style.inlineSize=b.w*c.w+'px';describe.el.style.blockSize=b.h*c.h+'px';describe.ui.refresh()}
+function fitDescription(){if(!describe?.el?.isConnected)return;const c=describe.ui.carrier,b=describe.ui.field('description').bounds;describe.el.style.inlineSize=b.w*c.w+'px';describe.el.style.blockSize=b.h*c.h+'px';describe.ui.refresh()}
 addEventListener('resize',fitDescription);
 function render({host,content,projection,path='',language='en',ui=null}={}){
   if(!host||!content||!projection?.root)return false;
@@ -125,7 +125,7 @@ function render({host,content,projection,path='',language='en',ui=null}={}){
     copy.append(el('p','hint',language==='de'?'Die Flächen fokussieren rekursive Adresszellen. Echte globale Site-Holons erscheinen an ihren tree-derived Adressen; ihre Marker wechseln direkt den Encounter.':'Faces focus recursive address cells. Actual global site-holons appear at their tree-derived addresses; their markers switch encounters directly.'));
   }
   content.append(copy);
-  if(ui){describe={el:copy,ui};fitDescription();ui.bind(copy,'Description')}
+  if(ui){describe={el:copy,ui};fitDescription();ui.bind(copy,'description')}
   offerLocks(host);markerLayer?.remove();markerLayer=null;return true; /* site labels are now Display body labels */
 }
 function unmount({host,content}={}){withdrawLocks();if(markerLayer)markerLayer.hidden=true;if(host)host.hidden=true;if(content)content.replaceChildren()}

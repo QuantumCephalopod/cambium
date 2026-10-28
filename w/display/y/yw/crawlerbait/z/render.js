@@ -486,8 +486,8 @@ function typeBodies(now,pxOf){
   }
   return out;
 }
-function paintGoo({gl,proj,view,model,width,height,dpr,clip=null},diagnostic=true){
-  const region=(w,h)=>{if(!clip)return;const l=Math.max(0,Math.floor(clip[0]*w)-2),b=Math.max(0,Math.floor(clip[1]*h)-2),r=Math.min(w,Math.ceil(clip[2]*w)+2),t=Math.min(h,Math.ceil(clip[3]*h)+2);gl.enable(gl.SCISSOR_TEST);gl.scissor(l,b,Math.max(0,r-l),Math.max(0,t-b));};
+function paintGoo({gl,proj,view,model,width,height,dpr,clip=null,exact=false},diagnostic=true){
+  const region=(w,h)=>{if(!clip)return;const pad=exact?0:2,l=Math.max(0,Math.floor(clip[0]*w)-pad),b=Math.max(0,Math.floor(clip[1]*h)-pad),r=Math.min(w,Math.ceil(clip[2]*w)+pad),t=Math.min(h,Math.ceil(clip[3]*h)+pad);gl.enable(gl.SCISSOR_TEST);gl.scissor(l,b,Math.max(0,r-l),Math.max(0,t-b));};
   const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5];
   const Lr=layerFor(gl);if(Lr.off)return false;
   sizeTarget(Lr,width,height);
@@ -512,7 +512,7 @@ function paintGoo({gl,proj,view,model,width,height,dpr,clip=null},diagnostic=tru
   gl.canvas.dataset.gooLayer=`${SIM.alive.size} alive · ${SIM.resolved} bodies · ${SIM.colonies} colonies · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;}
   return true;
 }
-function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container}){
+function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container,viewRect=null,rect=null}){
   if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection,growth);resetTo(0)}
   if(!SIM.life)return;
   SIM.container=typeof container==='string'?container:'';
@@ -527,7 +527,7 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   updateInk(screen,ms,width,height,dpr||1,canvas);
   if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
   if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
-  paintGoo({gl,proj,view,model,width,height,dpr});
+  const clip=viewRect?.bounded&&rect?[viewRect.x/rect.width,1-(viewRect.y+viewRect.height)/rect.height,(viewRect.x+viewRect.width)/rect.width,1-viewRect.y/rect.height]:null;paintGoo({gl,proj,view,model,width,height,dpr,clip,exact:!!clip});
   camFollow(ms);
   if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
     const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.cell===''?'body':'colony'} · fade ${CAM.o.fade.toFixed(2)}`}
@@ -623,7 +623,7 @@ function hudPlacement(UI,state,carrier,occupied,height,minWidth){
   return null;
 }
 function fitHud(){
-  const ui=INK.ui,UI=globalThis.SSSUIGrid,parent=INK.canvas?.parentNode;if(!ui?.state||!UI||!parent)return;
+  const ui=INK.ui,UI=globalThis.SSSUIGrid,parent=INK.canvas?.parentNode;if(!ui?.state||!UI||!parent||ui.bounded)return;
   const bottom=parent.querySelector('.crawlerbait-hud-bottom'),rail=parent.querySelector('.crawlerbait-hud-rail');if(!bottom||!rail)return;
   if(!INK.layout)INK.layout={base:JSON.parse(JSON.stringify(ui.state.fields.bottom))};
   const state={...ui.state,fields:{...ui.state.fields,bottom:INK.layout.base}},height=Math.max(bottom.getBoundingClientRect().height,typePx(0)*2.5);
@@ -884,7 +884,7 @@ function render({host,content,projection,ui=null,dependency=null}={}){
   // the HUD is locked to the screen's borders so the centre stays free:
   // left — who the reef is and who lives in it; right — the one being you ride with and the bait you chose; bottom-left — time
   const rail=el('div','crawlerbait-hud-rail');
-  rail.append(top);
+  content.append(top);if(ui)ui.bind(top,'header');
   const modes=el('div','crawlerbait-modes');for(const [mode,label]of [['reef',word('Riff','Reef')],['beings',word('Beings','Beings')]]){const button=el('button','crawlerbait-play',label);button.type='button';button.setAttribute('aria-pressed',String(MODE===mode));button.addEventListener('click',()=>{MODE=mode;camSet(false);if(life)life.camBox.hidden=mode!=='reef';if(inspectorHost)inspectorHost.hidden=mode!=='reef';for(const b of modes.children)b.setAttribute('aria-pressed',String(b===button));});modes.append(button)}rail.append(modes);
   storyLine(rail);
   const life=Array.isArray(projection.encounters)&&projection.encounters.length?lifeParts(projection):null;
@@ -894,8 +894,8 @@ function render({host,content,projection,ui=null,dependency=null}={}){
   inspectorHost=el('section','crawlerbait-inspector');inspectorHost.hidden=MODE!=='reef';
   side.append(inspectorHost);
 
-  rail.append(side);content.append(rail);if(ui)ui.bind(rail,'rail')
-  if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom);if(ui)ui.bind(bottom,'bottom')}
+  rail.append(side);content.append(rail);if(ui)ui.bind(rail,'description')
+  if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom);if(ui)ui.bind(bottom,'timeline')}
   const selected=selectedAddress?routes.find(r=>r.path===selectedAddress):null;
   renderInspector(selected||null);
   return true;

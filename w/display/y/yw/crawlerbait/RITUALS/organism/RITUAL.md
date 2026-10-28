@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.16"
+version: "5.17"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -311,3 +311,8 @@ This bounds uninterrupted preparation work rather than total source acquisition/
 ## Local completion inheritance — 2026-10-28
 
 Apply shared Metabolism through Cambium/Display: the recorded bounded technical outcomes close without personal acceptance or promotion. The original seven and the later source adapters, contact corrections, shared Goo and cooperative preparation have been returned to local `_waste` with source equality and durable HOME references. Later visitor/source counterexamples are new local nutrients. Earlier dated pending/OPEN statements are historical witness scope, not active food or permission to invent a browser/device pass. Current no-intake status does not claim unlimited performance or erase those limits.
+
+
+## Bounded presentation — 2026-10-28
+
+The supplied v2 fields are actual containing rectangles. The owner header, description/control rail and timeline bind to them; camera/geometry/pointer projection uses the neutral shared viewfocus. The fixed `yzy / yzz / zyy / zyz` timeline footprint is the same as Schattenseiten’s and is not dynamically relocated by compass occupancy, replay, selection or mode. Local internal scrolling keeps controls/provenance readable. This supersedes the previous intrinsic time-row relocation for this bounded carrier. Goo’s offscreen stages and final source print use the same exact clipping rectangle at their own target resolutions. Actual source replay, clock, rate, source positions, paths, Being identities, cameras and droplet contact keep their owners and meaning. This presentation pressure does not close any separate source-acquisition operation.

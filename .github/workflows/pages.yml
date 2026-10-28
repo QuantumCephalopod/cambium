@@ -109,6 +109,24 @@ jobs:
         if: steps.publication.outputs.publish == 'true'
         run: python3 y/site-public.py --artifact _site --check
 
+      - name: Prepare bounded layout browser witness
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+
+      - name: Witness actual bounded browser layout
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')
+        run: python3 y/test-bounded-layout.py --artifact _site --out _layout-witness
+
+      - name: Retain bounded layout screenshots
+        if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: bounded-layout-witness
+          path: _layout-witness
+          if-no-files-found: warn
+
       - name: Upload staging browser witness
         if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium'
         uses: actions/upload-artifact@v4
