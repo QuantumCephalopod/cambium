@@ -1,0 +1,375 @@
+{
+  "baseline": "df389d15fbfdaab275365078ea444b18bd6fbe54",
+  "browser": {
+    "artifact_digest": "sha256:aa13b725d0c54447e480bb0e08aece1da493e8a642a75a7e499a9c9e263d60e7",
+    "artifact_id": 12847779022,
+    "commit": "a088238d4fef07dedba0ef0c3556f84fb9f6a45e",
+    "conclusion": "success",
+    "job_id": 123070620940,
+    "receipt": {
+      "cases": [
+        {
+          "compass": {
+            "height": 200,
+            "width": 320,
+            "x": 960,
+            "y": 600
+          },
+          "description": {
+            "height": 400,
+            "width": 320,
+            "x": 0,
+            "y": 400
+          },
+          "errors": [],
+          "feed_transport": "normal",
+          "identity": "organism:philosophy",
+          "render_dpr": 1,
+          "viewfocus": {
+            "bounded": true,
+            "height": 400,
+            "width": 640,
+            "x": 320,
+            "y": 200
+          },
+          "viewport": [
+            1280,
+            800
+          ]
+        },
+        {
+          "compass": {
+            "height": 200,
+            "width": 320,
+            "x": 960,
+            "y": 600
+          },
+          "description": {
+            "height": 400,
+            "width": 320,
+            "x": 0,
+            "y": 400
+          },
+          "errors": [],
+          "feed_transport": "normal",
+          "identity": "organism:schattenseiten",
+          "render_dpr": 1,
+          "timeline": {
+            "height": 100,
+            "width": 640,
+            "x": 320,
+            "y": 700
+          },
+          "viewfocus": {
+            "bounded": true,
+            "height": 400,
+            "width": 640,
+            "x": 320,
+            "y": 200
+          },
+          "viewport": [
+            1280,
+            800
+          ]
+        },
+        {
+          "compass": {
+            "height": 200,
+            "width": 320,
+            "x": 960,
+            "y": 600
+          },
+          "description": {
+            "height": 400,
+            "width": 320,
+            "x": 0,
+            "y": 400
+          },
+          "errors": [],
+          "feed_transport": "documented no-Worker fallback, exact complete source",
+          "identity": "organism:crawlerbait",
+          "render_dpr": 0.5,
+          "timeline": {
+            "height": 100,
+            "width": 640,
+            "x": 320,
+            "y": 700
+          },
+          "viewfocus": {
+            "bounded": true,
+            "height": 400,
+            "width": 640,
+            "x": 320,
+            "y": 200
+          },
+          "viewport": [
+            1280,
+            800
+          ]
+        },
+        {
+          "compass": {
+            "height": 211,
+            "width": 97.5,
+            "x": 292.5,
+            "y": 633
+          },
+          "description": {
+            "height": 422,
+            "width": 97.5,
+            "x": 0,
+            "y": 422
+          },
+          "errors": [],
+          "feed_transport": "normal",
+          "identity": "organism:philosophy",
+          "render_dpr": 1,
+          "viewfocus": {
+            "bounded": true,
+            "height": 422,
+            "width": 195,
+            "x": 97.5,
+            "y": 211
+          },
+          "viewport": [
+            390,
+            844
+          ]
+        },
+        {
+          "compass": {
+            "height": 211,
+            "width": 97.5,
+            "x": 292.5,
+            "y": 633
+          },
+          "description": {
+            "height": 422,
+            "width": 97.5,
+            "x": 0,
+            "y": 422
+          },
+          "errors": [],
+          "feed_transport": "normal",
+          "identity": "organism:schattenseiten",
+          "render_dpr": 1,
+          "timeline": {
+            "height": 105.5,
+            "width": 195,
+            "x": 97.5,
+            "y": 738.5
+          },
+          "viewfocus": {
+            "bounded": true,
+            "height": 422,
+            "width": 195,
+            "x": 97.5,
+            "y": 211
+          },
+          "viewport": [
+            390,
+            844
+          ]
+        },
+        {
+          "compass": {
+            "height": 211,
+            "width": 97.5,
+            "x": 292.5,
+            "y": 633
+          },
+          "description": {
+            "height": 422,
+            "width": 97.5,
+            "x": 0,
+            "y": 422
+          },
+          "errors": [],
+          "feed_transport": "documented no-Worker fallback, exact complete source",
+          "identity": "organism:crawlerbait",
+          "render_dpr": 0.5,
+          "timeline": {
+            "height": 105.5,
+            "width": 195,
+            "x": 97.5,
+            "y": 738.5
+          },
+          "viewfocus": {
+            "bounded": true,
+            "height": 422,
+            "width": 195,
+            "x": 97.5,
+            "y": 211
+          },
+          "viewport": [
+            390,
+            844
+          ]
+        }
+      ],
+      "scope": "Browser integration witness for the actual built bounded presentation fields.\n\nThis test uses an isolated Chromium test process against the supplied static\nartifact, not the user's browser/session. Source pictures and actual GL run as\npublished; screen/device performance is not inferred from this witness.\n"
+    },
+    "run_id": 40760447920,
+    "screenshots": {
+      "crawlerbait-1280.png": "ecad13eb7dac08ab6d1308c4442aa65d64e86bac928829102ac812aa2e8f3042",
+      "crawlerbait-390.png": "a6bac9c98401c6685beca9bc0afb37dc4c534247c3b81590f5b2fc138587fdd8",
+      "philosophy-1280.png": "df480a1e127a97ada41f57251a697c97411d75a2580059b57db5f411a05ad986",
+      "philosophy-390.png": "508a12f0e7f7b63be05af31ab3853ae3efbb5678b460b298aeb16f5592c191b6",
+      "schattenseiten-1280.png": "4fad5453f387f997a4f90be61e8ab41a03f240a00938e260acf4015e4fef60a7",
+      "schattenseiten-390.png": "1d283f11e6da94e3205b24b84602aa296a5d0d1063bdfe3435e0735209176243"
+    },
+    "transport_limit": "Crawlerbait software-browser cases use the documented no-Worker fallback on the same complete immutable source, half physical rendering resolution and unchanged CSS viewport. Actual worker throughput and physical-device FPS are not certified.",
+    "url": "https://github.com/QuantumCephalopod/cambium/actions/runs/40760447920",
+    "visual_inspection": "Actual passing wide/narrow Schattenseiten and Crawlerbait screenshots were inspected. Work and documentation occupy separate fields; controls/labels remain within the supplied geometry."
+  },
+  "event_id": "display-bounded-layout-evidence-20261028",
+  "implementation_commit": "a088238d4fef07dedba0ef0c3556f84fb9f6a45e",
+  "kind": "EVIDENCE",
+  "limits": [
+    "Browser evidence is actual isolated Chromium with software rendering; it does not certify a physical GPU/device, Worker throughput or perceived FPS.",
+    "Canvas2D remains the documented reduced geometry path; source GLSL/media acceptance keeps its explicit native/software-GLES witness.",
+    "Earlier completed HOME/evidence and original spent carriers remain immutable. The later live overlap is new pressure, not a retroactive personal approval condition."
+  ],
+  "native": {
+    "actual_schattenseiten_source_pixels": {
+      "backend": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "cases": [
+        {
+          "carrier": [
+            390,
+            844
+          ],
+          "entered_high_uploads": 55,
+          "failed_high_retains_low": true,
+          "low_high_changed_pixels": 46149,
+          "one_failed_slot_changed_pixels": 1110,
+          "source_low_uploads": 55
+        },
+        {
+          "carrier": [
+            1280,
+            800
+          ],
+          "entered_high_uploads": 55,
+          "failed_high_retains_low": true,
+          "low_high_changed_pixels": 174010,
+          "one_failed_slot_changed_pixels": 4480,
+          "source_low_uploads": 55
+        }
+      ],
+      "scope": "Actual consumer shaders and source-media pixel uploads on software GLES; Pillow supplies decoded/resized source bytes. Browser decoder/CSS, physical-driver behavior and device FPS are not certified.",
+      "status": "PASS"
+    },
+    "complete_artifact": {
+      "artifact": "single Display index + identity-owned static site apertures",
+      "bundle": "944c285752305d08",
+      "checks": 265,
+      "display_4V": {
+        "w": "Embodiment",
+        "x": "Continuity",
+        "y": "Population",
+        "z": "Orientation"
+      },
+      "owner_build": "declared source/refusal suites retain ownership; external integration evidence remains independent",
+      "population": "w/display/y tree is canonical mount truth",
+      "relocation": "real Papers and Crawlerbait bodies move to 128-symbol addresses and new carrier names with zero internal edits",
+      "runtime": "generic identity modules; no specimen names in central runtime",
+      "sites": {
+        "organism:crawlerbait": "w",
+        "organism:datenschutz": "z",
+        "organism:impressum": "xz",
+        "organism:papers": "y",
+        "organism:philosophy": "ε",
+        "organism:schattenseiten": "x"
+      },
+      "status": "pass"
+    },
+    "new_regressions": [
+      "Arbitrary-owner bounding and source role inference, resize/address immutability, shared compass viewport mapping",
+      "Actual camera matrix / pointer equivalence at both carriers and both backends",
+      "Once-per-frame presentation generation; bounded point pass after unmasked clear",
+      "Same world-glyph scissor in scene/alternate target with complete state restoration",
+      "Owner field bindings, fixed timeline and documentation containment; actual DE/EN replay controls/source geometry retained"
+    ],
+    "owner_witness": {
+      "checks": 368136,
+      "local_suites": 4,
+      "refusal_cases": 23,
+      "traffic_captures": 198
+    }
+  },
+  "shared_contract": [
+    "Declared common roles activate actual containing boxes without an extra user sizing flag; arbitrary future field sets may explicitly choose bounded extent. Intrinsic carriers remain explicit and invalid extent refuses.",
+    "Source camera matrix, pointer projection, source layers, points and world glyphs use the same optional viewfocus; point depth clear restores scissor and glyph GL state is completely restored. Full-size glass/composite surfaces remain invariant.",
+    "Viewfocus is sampled once per frame, not once per projected point.",
+    "Header/description controls stay in their declared boxes; owner selection and resize never relocate the timeline. The active compass including legal links/help uses its whole declared viewport rectangle."
+  ],
+  "source_exact_spent_intakes": [
+    {
+      "blob_sha": "5bcc4e16ea62413e981e70c588cfca8fe2b9abc2",
+      "from": "w/display/_stomach/NUTRIENT__bounded-ui-grid__20261028.md",
+      "owner": "w/display",
+      "sha256": "86b5a6a6ffb0f5cf38a443eb65b9b6db479cd07a4381909f6a8aa7738294a8fd",
+      "to": "w/display/_waste/metabolized-20261028-NUTRIENT__bounded-ui-grid__20261028.md"
+    },
+    {
+      "blob_sha": "f45a94c46f6ba0c612f8ce07fd15372c9f52e1d1",
+      "from": "w/display/y/philosophy/_stomach/NUTRIENT__bounded-presentation-layout__20261028.md",
+      "owner": "w/display/y/philosophy",
+      "sha256": "856fb4f8f2c5275feaa9b5e3e080073f6cd9f3fdf4a8e45f90b16eeb5d102c3e",
+      "to": "w/display/y/philosophy/_waste/metabolized-20261028-NUTRIENT__bounded-presentation-layout__20261028.md"
+    },
+    {
+      "blob_sha": "216c689442f26721e86313b0f305ed703eb2c401",
+      "from": "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__invariant-timeline-layout__20261028.md",
+      "owner": "w/display/y/yw/crawlerbait",
+      "sha256": "c23e1ee40990b025c9844a00c9aed494ecbfe7ff400ad40e4159cacfa7f6376a",
+      "to": "w/display/y/yw/crawlerbait/_waste/metabolized-20261028-NUTRIENT__invariant-timeline-layout__20261028.md"
+    },
+    {
+      "blob_sha": "5ae462df1b6004bb01923e5ed31a82396047ed10",
+      "from": "w/display/y/yx/schattenseiten/_stomach/NUTRIENT__bounded-work-and-documentation__20261028.md",
+      "owner": "w/display/y/yx/schattenseiten",
+      "sha256": "f6a0ae20ea52d8db4f307ee7bc15a2b65312423a2d1bb26e07f99ff75247927d",
+      "to": "w/display/y/yx/schattenseiten/_waste/metabolized-20261028-NUTRIENT__bounded-work-and-documentation__20261028.md"
+    }
+  ],
+  "supplied_geometry": {
+    "compass": [
+      0.75,
+      0.75,
+      0.25,
+      0.25
+    ],
+    "description": [
+      0,
+      0.5,
+      0.25,
+      0.5
+    ],
+    "header": [
+      0,
+      0,
+      1,
+      0.25
+    ],
+    "timeline": [
+      0.25,
+      0.875,
+      0.5,
+      0.125
+    ],
+    "viewfocus": [
+      0.25,
+      0.25,
+      0.5,
+      0.5
+    ]
+  },
+  "unchanged_source_projections": {
+    "w/display/y/philosophy/projection.json": "1483a8181764ba45becccc5231a635e1a352fb3a9fea4c5acf32dee09acbc17d",
+    "w/display/y/yw/crawlerbait/z/projection.json": "3c596d074397cdf5879533094299c37fa0d9e4ac3c401453df176bdc0263d3d9",
+    "w/display/y/yx/schattenseiten/projection.json": "f0d2423dc3f6d6f5827970b41d21a8430eec656f5211c3befa9c7c60e3995c71",
+    "w/display/y/yy/papers/projection.json": "493cd4af9d558e9d7eaade9c5e41c82e771f6c759180881f8da537bc50e90b21"
+  }
+}
