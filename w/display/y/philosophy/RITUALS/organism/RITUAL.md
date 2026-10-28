@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.9"
+version: "1.10"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -61,7 +61,7 @@ Root-level expression configuration lives in `encounter.json`; leaf expression t
 
 Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Care owns this truth check through `z/projection.py`, declared by the local `site.json` build hook. It derives only from this body's own INDEX, constitution, encounter and locus content, and refuses disagreement, empty expression, invalid encounter and unsupported deeper source rank. Its independent positive/refusal evidence lives at `z/projection.test.py`; the common witness path invokes it without learning Philosophy's schema. Regenerate from the repository with `python3 y/build.py --derive-site-projection organism:philosophy`, even after a lawful whole-body remount. Normal builds validate read-only; only explicit regeneration writes the admitted projection after owner acceptance. Shared manifest/path/structural/publication checks remain inherited host obligations.
 
-Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's self-relative recursive UI grid. Its current fields are `header` at the top, `viewfocus` at the centre, `compass` at `zz`, and `Description` at first-split `y`. All prose — root mission/position or an inspected locus body — currently lives in `Description`, whose local renderer sizes and scrolls it from that field's bounds. That is the present carrier choice, not a shared grid-capacity law: Display owns address-derived orientation, Philosophy owns functional extent and internal flow, and carrier variants are admissible when concrete pressure earns them.
+Philosophy's prose travels inside the same derived projection (`expression`, keyed by address) and is placed through Display's self-relative recursive UI grid. Its current fields are `header` at the top, `viewfocus` at the centre, `compass` at `zz`, and `Description` spanning `wy / yw / yy` along the left quarter below the header. All prose — root mission/position or an inspected locus body — currently lives in `Description`, whose local renderer sizes and scrolls it from that field's bounds. That is the present carrier choice, not a shared grid-capacity law: Display owns address-derived orientation, Philosophy owns functional extent and internal flow, and carrier variants are admissible when concrete pressure earns them.
 
 Philosophy lends the shared droplette its lockable tissue and nothing more: the `Description` field (a `field` target — the drop takes its exact rounded rectangle) and each mounted site-holon body in its field (a `body` target). Offers are renewed on every render and withdrawn on unmount; in the current implementation leaving Philosophy releases that owner's offer, while descent inside Philosophy keeps a lock on a body that is still present. Common liquid navigation continuity is owned by Display's current organism/navigation receptors and its retired source carrier `w/display/_waste/NUTRIENT__liquid-navigation-continuity__20261019.md`; this paragraph describes Philosophy's existing offer lifecycle.
 
@@ -136,3 +136,6 @@ Version1.7 contact-name visibility (2026-10-20): hovered/focused site names rema
 ## Sharp liquid contact — 2026-10-26
 
 Mounted-body offers lend their actual stable body identity through Display's existing drawBody capability for isolated sharp foreground. Description stays source-owned DOM text. Shared type supplies the light shadow; no new target identity, navigation or source topology is introduced.
+
+
+Version1.10 description placement (2026-10-28): Philipp’s supplied grid gives the existing Description field the contiguous `wy / yw / yy` span: left quarter width, beginning one quarter down and extending through the remaining three quarters of the carrier. The internal field and droplette target identifiers remain stable. Existing carrier-relative sizing and scrolling apply to root and inspected-locus prose; no new typography, source expression, navigation or global field law is introduced.

@@ -25,13 +25,14 @@
   },
   "home": {
     "changed_scope": [
-      "_stomach/NUTRIENT__shared-liquid-foreground-adapter__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__shared-liquid-foreground-adapter__20261026.md"
+      "ui-grid.json",
+      "RITUALS/organism/RITUAL.md",
+      "_waste/metabolized-20261028-NUTRIENT__description-grid-span__20261028.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — 1 previously consumed local intake carriers returned unchanged to local waste; only 0 concrete unfinished local carriers remain. Personal acceptance/promotion is not a metabolic condition."
+    "outcome": "COMPLETED — Philosophy description uses Philipp’s supplied wy/yw/yy span: a left-quarter column below the header across the remaining three-quarter carrier height. Existing root/locus content, typography, scrolling and stable droplette field contact remain."
   },
-  "observed_at_utc": "2026-10-28T11:21:22.873223Z",
+  "observed_at_utc": "2026-10-28T13:21:01.594166Z",
   "owner": "philosophy",
   "phenotype": {
     "w": {
@@ -47,21 +48,21 @@
       "noun": "Care"
     }
   },
-  "reflected_home_event": "philosophy-spent-intake-clearance-20261028",
+  "reflected_home_event": "philosophy-description-grid-placement-20261028",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "e93a78a8f1facc764d883972598ea91eca5351e2c03b00b9217ca77eab6dcab8"
+      "sha256": "ee73cbfbe27015dfaa92f88edcc1dfd542eea2f4fc29f90ec924b374ffaaafa8"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [],
-    "waste_direct_count": 14
+    "waste_direct_count": 15
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "2031a1a1c67290bffc2a8b8a8ff9357547c739e6"
+    "source_revision": "dc23ca2bf2ab2e90fca51871957f4a0ca45ab512"
   }
 }
