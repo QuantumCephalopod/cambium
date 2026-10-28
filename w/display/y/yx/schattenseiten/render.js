@@ -7,12 +7,12 @@ if(!RH)throw new Error('Display representation handoff physiology required');
 
 /* ============ the sheet: an 8×8 grid, each slot a leaf of the tetrahedron ============
  * Depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid of
- * squares. The sheet reads as the work does: row 1 (the forest, the seven that started everything) on top, then the
+ * squares. The sheet reads as the work does: an empty first display row, then source row 1 (the forest, the seven that started everything) and the
  * rows in order, each ONE line of eight slots left to right — seven shadows, and in the eighth the cluster the row was
- * cut from (free in row 1, which has none). The eighth line stays free. All slots are the same size: the seeds are
+ * cut from (free in row 1, which has none). The first display line stays free. All slots are the same size: the seeds are
  * conceptually the biggest, so the recursion's scale does not rank them. Nothing floats; each shadow rests in its leaf,
  * so that seen along the axis the whole is one flat picture and only turning it shows the tetrahedra. */
-let P=null,selected=null,panel=null,byId=new Map();
+let P=null,selected=null,selectedRow=null,panel=null,byId=new Map(),SIDE_BASE=null,VIEW='still';
 
 /* Display's own cell geometry: the four corners of a cell, and the cell toward one corner */
 const V0=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(v=>{const m=Math.hypot(...v);return v.map(x=>x/m)});
@@ -43,13 +43,14 @@ function fieldProjection(projection={}){
   const points=[],seen=[0,0,0,0,0,0,0,0],noun=new Map(),clustered=new Set();
   BODY.list=[];
   (projection.works||[]).forEach(w=>{
-    const r=w.row-1,cell=SHEET[r]?.[seen[r]++];if(!cell||seen[r]>7)return;
-    if(w.cluster_positive&&!clustered.has(r)){clustered.add(r);const c=SHEET[r][7];noun.set(c.path,'Cluster '+(r));BODY.list.push({kind:'cluster',row:r,src:w.cluster_positive,world:c.world,size:c.size})}
+    const r=w.row-1,displayRow=r+1,cell=SHEET[displayRow]?.[seen[r]++];if(!cell||seen[r]>7)return;
+    if(w.cluster_positive&&!clustered.has(r)){clustered.add(r);const c=SHEET[displayRow][7];noun.set(c.path,'Cluster '+(r));BODY.list.push({kind:'cluster',row:r,src:w.cluster_positive,world:c.world,size:c.size})}
     noun.set(cell.path,w.id);
-    const p=Object.freeze({id:'work:'+w.id,gene:cell.path[0],path:cell.path,kind:'work',label:w.id,meta:w.id,work:w});
+    const p=Object.freeze({id:'work:'+w.id,gene:cell.path[0],path:cell.path,kind:'work',anchor:'cell',label:w.id,meta:w.id,work:w});
     points.push(p);
     BODY.list.push({p,work:w,row:r,src:w.still,world:cell.world,size:cell.size});
   });
+  if(selected)selected=byId.get(selected.id)||null;
   // the tree is the sheet's own address space: a full depth-three split; only the named slots carry a noun
   const grow=(path,depth)=>{
     const n={noun:depth===3?(noun.get(path)||''):(depth===0?'Schattenseiten':''),children:{}};
@@ -193,10 +194,15 @@ function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=t
     gl.bindTexture(gl.TEXTURE_2D_ARRAY,texture);gl.activeTexture(active);gl.useProgram(program);gl.bindVertexArray(vao);gl.depthMask(depth);gl.colorMask(...color);gl.depthFunc(func);gl.clearDepth(clear);gl.blendFuncSeparate(...blend);for(const [k,on] of flags)on?gl.enable(k):gl.disable(k);
   }
 }
-function afterDraw(args){if(!ENTERED)return;entryGL=args.gl;ensureTier(64);ensureTier(512);drawSheet(args,true)}
+function afterDraw(args){if(!ENTERED)return;BODY.viewport=args.rect;entryGL=args.gl;ensureTier(64);ensureTier(512);drawSheet(args,true)}
 function preview(args){ensureTier(64);drawSheet(args,false)}
 /* Descent into one shadow: Display's continuous focus carries the camera until the body fills the view */
-function focus(){if(!selected)return null;const b=BODY.list.find(x=>x.work===selected);return b?{center:b.world,scale:1/(b.size*1.9)}:null}
+function focus(){
+ if(selected){const b=BODY.list.find(x=>x.work===selected);return b?{center:b.world,scale:1/(b.size*1.9)}:null}
+ if(!selectedRow)return null;const row=BODY.list.filter(b=>b.row===selectedRow-1);if(!row.length)return null;
+ const lo=[0,1,2].map(k=>Math.min(...row.map(b=>b.world[k]-b.size))),hi=[0,1,2].map(k=>Math.max(...row.map(b=>b.world[k]+b.size))),aspect=(BODY.viewport?.width||1)/(BODY.viewport?.height||1);
+ return {center:lo.map((v,k)=>(v+hi[k])/2),scale:2/(1.9*Math.max(...hi.map((v,k)=>v-lo[k])))*Math.max(1,Math.min(1.8,aspect*.8))};
+}
 shader.afterDraw=afterDraw;shader.focus=focus;shader.preload=()=>ensureTier(64);shader.preview=preview;Object.freeze(shader);
 
 /* ============ site-owned HUD: every kind of information has a fixed place at the edges ============ */
@@ -208,45 +214,102 @@ const T={
   de:{shadows:'Schatten',ranks:'Ränge',clusters:'Cluster',moving:'bewegt',rank:'Rang',row:'Reihe',forest:'aus dem Wald',from:n=>'aus Cluster '+n,
       cluster:'das Cluster, aus dem dieser Schatten geschnitten wurde',flat:'orthogonal',flatTip:'zurück in die Achse: alles flach'}
 };
+Object.assign(T.en,{intro:'49 shadow images. Selected shadows become pictures that cast the next shadows.',overview:'whole work',about:'About the work',rows:'Rows and perspectives',choose:'Choose a shadow in this row',documentation:'Work and documentation',work:'Shadow',clusterView:'Source cluster',motion:'Movement',positive:'Source cluster · positive',negative:'Source cluster · negative',path:'Path through the work',workWords:'Words of the work',unwritten:'The remaining work text is to be handwritten by the artist.',seven:'Seven selected shadows belong to this perspective.',rowOne:'The walk is the first rank: seven shadows from the forest.',rowTwo:'The first seven images return to an overhead projector. Three shuffles produce three perspectives, each with seven selected shadows.',rowThree:'The first four rows — 28 images — become the next set. Three further shuffles again yield three perspectives of seven shadows.',cluster:'This positive/negative pair documents the cluster from which this row’s seven shadows were selected.',motionCaption:'Recorded movement of this shadow',description:'gefallen, gefunden comprises 49 shadow images in three ranks. A set, one light and a chooser: seven shadows are selected, photographed and cropped. The images become the next set on an overhead projector. Three shuffles produce three new perspectives. The seven rows preserve that process: the forest walk, three perspectives of the first seven images, then three perspectives of the first 28. Choose a row, a shadow, its source cluster or its recorded movement.'});
+Object.assign(T.de,{intro:'49 Schattenbilder. Ausgewählte Schatten werden zu Bildern, die die nächsten Schatten werfen.',overview:'Gesamtwerk',about:'Über die Arbeit',rows:'Reihen und Perspektiven',choose:'Schatten dieser Reihe auswählen',documentation:'Werk und Dokumentation',work:'Schatten',clusterView:'Ausgangscluster',motion:'Bewegung',positive:'Ausgangscluster · Positiv',negative:'Ausgangscluster · Negativ',path:'Weg durch die Arbeit',workWords:'Worte der Arbeit',unwritten:'Der weitere Werktext soll vom Künstler handgeschrieben werden.',seven:'Sieben ausgewählte Schatten gehören zu dieser Perspektive.',rowOne:'Der Spaziergang ist der erste Rang: sieben Schatten aus dem Wald.',rowTwo:'Die ersten sieben Bilder kommen auf einen Overheadprojektor. Drei Neuanordnungen ergeben drei Perspektiven mit jeweils sieben ausgewählten Schatten.',rowThree:'Die ersten vier Reihen — 28 Bilder — werden zum nächsten Set. Drei weitere Neuanordnungen ergeben erneut drei Perspektiven mit je sieben Schatten.',cluster:'Dieses Positiv/Negativ-Paar dokumentiert das Cluster, aus dem die sieben Schatten dieser Reihe ausgewählt wurden.',motionCaption:'Aufgezeichnete Bewegung dieses Schattens',description:'gefallen, gefunden umfasst 49 Schattenbilder in drei Rängen. Ein Set, ein Licht und eine wählende Person: Sieben Schatten werden ausgewählt, fotografiert und zugeschnitten. Die Bilder werden auf einem Overheadprojektor zum nächsten Set. Drei Neuanordnungen ergeben drei neue Perspektiven. Die sieben Reihen bewahren diesen Ablauf: der Waldspaziergang, drei Perspektiven der ersten sieben Bilder und drei Perspektiven der ersten 28. Wähle eine Reihe, einen Schatten, sein Ausgangscluster oder seine aufgezeichnete Bewegung.'});
 const lang=()=>globalThis.SSSWorldView?.language==='de'?'de':'en';
 const tx=v=>v&&typeof v==='object'?(v[lang()]??v.en??v.de??''):(v??'');
 const stat=(v,l)=>{const m=el('span','ss-hud-stat');m.append(el('b','',String(v)),el('small','',l));return m};
 function block(label,right){const b=el('section','ss-hud-block'),h=el('div','ss-hud-label');h.append(el('span','',label));if(right)h.append(el('span','',right));b.append(h);return b}
+function button(label,act,active=false,cls='ss-action'){
+ const b=el('button',cls,label);b.type='button';b.setAttribute?.('aria-pressed',String(active));b.addEventListener('click',act);return b;
+}
+function rowTitle(row){return row===1?T[lang()].forest:T[lang()].from(row-1)}
+function selectRow(row){selected=null;selectedRow=row;VIEW='still';showWork(null);updateNavigation()}
+function selectWork(work){selected=work;selectedRow=work?.row||null;VIEW='still';showWork(work);updateNavigation()}
+function returnSheet(){selected=null;selectedRow=null;VIEW='still';showWork(null);updateNavigation()}
+function updateNavigation(){
+ if(!LAST)return;LAST.content.dataset??={};LAST.content.dataset.detail=String(!!selectedRow);for(const b of LAST.rowButtons||[])b.setAttribute?.('aria-pressed',String(Number(b.dataset?.row)===selectedRow));
+ LAST.breadcrumb?.replaceChildren(button(T[lang()].overview,returnSheet,!selectedRow));
+ if(selectedRow)LAST.breadcrumb?.append(button(rowTitle(selectedRow),()=>selectRow(selectedRow),!selected));
+ if(selected)LAST.breadcrumb?.append(el('span','ss-current',selected.id));
+ fitPanel();
+}
+function imageFigure(src,label,cls=''){
+ const url=mediaUrl(src);if(!url)return null;const figure=el('figure','ss-document '+cls),image=el('img');image.src=url;image.alt=label;image.decoding='async';figure.append(image,el('figcaption','',label));return figure;
+}
 function showWork(w){
-  if(!panel)return;panel.replaceChildren();panel.hidden=!w;if(!w)return;
-  const t=T[lang()],n=String(w.source||'').replace('cluster','');
-  const b=block(w.id,`${t.rank} ${w.rank} · ${t.row} ${w.row}`);b.append(el('p','ss-meta',w.source==='forest'?t.forest:t.from(n)));
-  if(w.cluster_positive){const f=el('figure','ss-cluster');for(const k of ['cluster_positive','cluster_negative']){const i=el('img');const url=mediaUrl(w[k]);if(!url)continue;i.src=url;i.alt='';i.decoding='async';f.append(i)}
-    f.append(el('figcaption','',t.cluster));b.append(f)}
-  if(w.animation&&mediaUrl(w.animation)){const i=el('img','ss-anim');i.src=mediaUrl(w.animation);i.alt='';i.decoding='async';b.append(i)}
-  panel.append(b);
+ if(!panel)return;panel.replaceChildren();panel.hidden=!w&&!selectedRow;if(panel.hidden)return;
+ const t=T[lang()],row=selectedRow||w.row,works=(P.works||[]).filter(x=>x.row===row),rank=works[0]?.rank;
+ const b=block(w?w.id:rowTitle(row),`${t.rank} ${w?.rank||rank} · ${t.row} ${row}`);
+ b.append(el('p','ss-meta',w?(w.source==='forest'?t.forest:t.from(row-1)):t.seven));
+ if(!w){
+  const choices=el('nav','ss-work-choices');choices.setAttribute?.('aria-label',t.choose);
+  for(const work of works)choices.append(button(work.id,()=>selectWork(work)));
+  b.append(choices,el('p','ss-description',row===1?t.rowOne:rank===2?t.rowTwo:t.rowThree));
+  const example=works.find(x=>x.cluster_positive);
+  if(example){const img=imageFigure(example.cluster_positive,t.positive);if(img)b.append(img)}
+ }else{
+  const tabs=el('nav','ss-view-choices');tabs.setAttribute?.('aria-label',t.documentation);
+  const views=[['still',t.work],...(w.cluster_positive?[['cluster',t.clusterView]]:[]),...(w.animation?[['animation',t.motion]]:[])];
+  for(const [mode,label]of views)tabs.append(button(label,()=>{VIEW=mode;showWork(w)},VIEW===mode));b.append(tabs);
+  if(VIEW==='cluster'){
+   b.append(el('p','ss-description',t.cluster));const pair=el('div','ss-cluster');for(const [src,label]of [[w.cluster_positive,t.positive],[w.cluster_negative,t.negative]]){const figure=imageFigure(src,label);if(figure)pair.append(figure)}b.append(pair);
+  }else{const figure=imageFigure(VIEW==='animation'?w.animation:w.still,VIEW==='animation'?t.motionCaption:t.work+' '+w.id);if(figure)b.append(figure)}
+  const peers=el('nav','ss-work-choices');peers.setAttribute?.('aria-label',t.choose);for(const peer of works)peers.append(button(peer.id,()=>selectWork(peer),peer.id===w.id));b.append(peers);
+ }
+ panel.append(b);fitPanel();
+}
+/* Candidate anchors are actual leaves of the existing UI lattice. Only this
+ * site's intrinsic panel extent is fitted around current shared occupancy. */
+function panelPlan(UI,state,carrier,occupied,rail,rem=16){
+ const variant=carrier.h>carrier.w?'portrait':'',base=UI.fieldInfo(state,'side',variant),depth=base.depth,gap=rem*.5,minW=Math.min(rem*10,carrier.w-gap*2),minH=Math.min(rem*7,carrier.h-gap*2);
+ const addresses=[...new Set(UI.leafSet(state).map(a=>a.slice(0,depth)))],blocks=[...occupied.map(x=>x.rect||x),...(rail?[rail]:[])];let best=null;
+ for(const cell of addresses){const at=UI.coord(cell),left=carrier.x+at.x/2**depth*carrier.w,top=carrier.y+at.y/2**depth*carrier.h;let width=Math.min(rem*24,carrier.x+carrier.w-left-gap),height=carrier.y+carrier.h-top-gap;
+  for(const b of blocks){if(b.right<=left||b.left>=left+width||b.bottom<=top||b.top>=top+height)continue;
+   if(b.top>top+gap)height=Math.min(height,b.top-top-gap);else if(b.left>left+gap)width=Math.min(width,b.left-left-gap);else{height=0;break}}
+  if(width<minW||height<minH)continue;const score=width*height/(1+Math.abs(at.x-base.minX)+Math.abs(at.y-base.minY));
+  if(!best||score>best.score)best={cell,left,top,width,height,variant,score};
+ }
+ return best;
+}
+function fitPanel(){
+ const last=LAST,ui=last?.ui,UI=globalThis.SSSUIGrid;if(!ui?.state||!UI||!panel||panel.hidden||last.host.hidden)return;
+ const host=last.host.getBoundingClientRect?.();if(!host)return;
+ if(panel.parentNode===last.rail)last.side.append(panel);last.side.hidden=false;last.rail.style.maxBlockSize='';
+ const rect=last.rail.getBoundingClientRect?.(),carrier={...ui.carrier,x:host.left+ui.carrier.x,y:host.top+ui.carrier.y},occupied=[...(globalThis.SSSDisplaySafeArea?.snapshot?.()?.occupied||last.safeArea?.occupied||[]),...[last.bottom?.getBoundingClientRect?.()].filter(b=>b&&b.width>0&&b.height>0)];
+ if(!SIDE_BASE)SIDE_BASE=JSON.parse(JSON.stringify(ui.state.fields.side));
+ const state={...ui.state,fields:{...ui.state.fields,side:SIDE_BASE}},rem=globalThis.SSSDisplayType?.rankPx?.(0)||16,plan=panelPlan(UI,state,carrier,occupied,rect,rem);
+ if(!plan){
+  /* On a short carrier the existing rail becomes one scrollable reading flow,
+   * rather than hiding the work controls when no separate lattice leaf fits. */
+  last.rail.append(panel);last.side.hidden=true;let bottom=carrier.y+carrier.h-rem*.5;
+  if(rect)for(const item of occupied){const b=item.rect||item;if(b.left<rect.right&&b.right>rect.left&&b.top>rect.top)bottom=Math.min(bottom,b.top-rem*.5)}
+  if(rect)last.rail.style.maxBlockSize=Math.max(rem,bottom-rect.top)+'px';return;
+ }
+ const field=JSON.parse(JSON.stringify(SIDE_BASE));if(plan.variant)field.variants={...field.variants,[plan.variant]:[plan.cell]};else field.cells=[plan.cell];ui.state.fields.side=field;ui.refresh();last.side.style.maxInlineSize=plan.width+'px';last.side.style.maxBlockSize=plan.height+'px';last.side.style.setProperty?.('--ss-panel-height',plan.height+'px');
 }
 let LAST=null;
-function render({host,content,projection,ui=null}={}){
-  if(!host||!content||!Array.isArray(projection?.works))return false;
-  LAST={host,content,projection};
-  P=projection;ENTERED=true;ensureTier(64);ensureTier(512);host.hidden=false;content.className='interlocutor-content schattenseiten-content';content.replaceChildren();
-  const t=T[lang()],works=projection.works,ranks=projection.ranks||[],clusters=new Set(works.map(w=>w.cluster_positive).filter(Boolean)).size;
-  // left — who this is and how it grew
-  const top=el('div','ss-hud-top');top.append(el('h1','',tx(projection.title)||'Schattenseiten'),el('span','ss-hud-series','Schattenseiten'));
-  for(const [v,l] of [[works.length,t.shadows],[ranks.length,t.ranks],[clusters,t.clusters],[works.filter(w=>w.animation).length,t.moving]])top.append(stat(v,l));
-  const rail=el('div','ss-hud-rail');rail.append(top);
-  if(projection.words?.[0])rail.append(el('p','ss-word',tx(projection.words[0])));
-  if(projection.operation)rail.append(el('p','ss-op',tx(projection.operation)));
-  if(ranks.length){const rb=block(t.rank);for(const r of ranks)rb.append(el('p','ss-rank',`${r.rank} · ${r.ids} · ${tx(r.input)}`));rail.append(rb)}
-  // right — the one shadow you are in
-  const side=el('div','ss-hud-side');panel=el('div','ss-panel');side.append(panel);
-  // bottom — the way back to the flat view, and the words
-  const bottom=el('div','ss-hud-bottom');
-  const flat=el('button','ss-hud-flat',t.flat);flat.type='button';flat.title=t.flatTip;
-  flat.addEventListener('click',()=>globalThis.SSSWorldView?.easeTo?.(shader.view.rest,900));bottom.append(flat);
-  if(projection.words?.[2])bottom.append(el('p','ss-word ss-way'+(projection.words[2].placeholder?' ss-placeholder':''),tx(projection.words[2])));
-  if(projection.words?.[1])bottom.append(el('p','ss-word ss-mirror',tx(projection.words[1])));
-  content.append(rail,side,bottom);if(ui){ui.bind(rail,'rail');ui.bind(side,'side');ui.bind(bottom,'bottom')}showWork(selected);return true;
+function render({host,content,projection,ui=null,safeArea=null}={}){
+ if(!host||!content||!Array.isArray(projection?.works))return false;
+ P=projection;ENTERED=true;ensureTier(64);ensureTier(512);host.hidden=false;content.className='interlocutor-content schattenseiten-content';content.replaceChildren();
+ const t=T[lang()],works=projection.works,ranks=projection.ranks||[],clusters=new Set(works.map(w=>w.cluster_positive).filter(Boolean)).size;
+ const rail=el('div','ss-hud-rail'),top=el('div','ss-hud-top');top.append(el('h1','',tx(projection.title)||'Schattenseiten'),el('span','ss-hud-series','Schattenseiten'));
+ for(const [v,l]of [[works.length,t.shadows],[ranks.length,t.ranks],[clusters,t.clusters]])top.append(stat(v,l));rail.append(top);
+ rail.append(el('p','ss-intro',t.intro));
+ const about=el('details','ss-about');about.append(el('summary','',t.about),el('p','ss-description',t.description));rail.append(about);
+ const navigation=el('nav','ss-rows');navigation.setAttribute?.('aria-label',t.rows);const rowButtons=[];
+ for(const row of [...new Set(works.map(w=>w.row))]){const sample=works.find(w=>w.row===row),b=button(`${t.rank} ${sample.rank} · ${rowTitle(row)}`,()=>selectRow(row),selectedRow===row);b.dataset??={};b.dataset.row=String(row);navigation.append(b);rowButtons.push(b)}rail.append(navigation);
+ const words=el('details','ss-author-words');words.append(el('summary','',t.workWords));for(const word of projection.words||[])words.append(el('p','ss-word'+(word?.placeholder?' ss-placeholder':''),word?.placeholder?t.unwritten:tx(word)));rail.append(words);
+ const side=el('div','ss-hud-side');panel=el('div','ss-panel');side.append(panel);
+ const bottom=el('div','ss-hud-bottom'),breadcrumb=el('nav','ss-breadcrumb');breadcrumb.setAttribute?.('aria-label',t.path);bottom.append(breadcrumb,button(t.flat,()=>globalThis.SSSWorldView?.easeTo?.(shader.view.rest,900),false,'ss-hud-flat'));
+ content.append(rail,side,bottom);LAST={host,content,projection,ui,safeArea,rail,side,bottom,breadcrumb,rowButtons};
+ if(ui){ui.bind(rail,'rail');ui.bind(side,'side');ui.bind(bottom,'bottom')}
+ showWork(selected);updateNavigation();return true;
 }
 addEventListener('sss:language',()=>{if(LAST&&LAST.content.isConnected)render(LAST)});
-function activateFieldPoint({point}={}){if(!ENTERED)return;selected=point?.work||null;showWork(selected)}
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;panel=null;LAST=null;ENTERED=false;MEDIA.get(512).setActive(false);if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
+addEventListener('sss:safe-area',fitPanel);addEventListener('resize',fitPanel);
+function activateFieldPoint({point}={}){if(!ENTERED)return;selectWork(point?.work||null)}
+function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();if(SIDE_BASE&&LAST?.ui){LAST.ui.state.fields.side=SIDE_BASE;LAST.ui.refresh()}selected=null;selectedRow=null;panel=null;LAST=null;SIDE_BASE=null;ENTERED=false;MEDIA.get(512).setActive(false);if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
 addEventListener('pagehide',resetMedia);
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
 })();
