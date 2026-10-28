@@ -14,7 +14,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
-  const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id,...(bounded?{extent:'bounded'}:{})},splits:[''],fields:{...(bounded?{compass:{cells:['z'],label:'compass'},viewfocus:{cells:['x'],label:'view'}}:{}),slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
+  const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id,...(bounded===true?{extent:'bounded'}:{})},splits:[''],fields:{...(bounded?{compass:{cells:['z'],label:'compass'},viewfocus:{cells:['x'],label:'view'},header:{cells:['w'],label:'header'},description:{cells:['y'],label:'description'}}:{}),slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
   const feedUrls=Object.fromEntries(Object.keys(feedKinds).map(id=>[id,'assets/0123456789abcdef/site-'+id.replace(':','-')+'-feed.json']));
   const previews=Object.fromEntries(ids.map(id=>[id,feedKinds[id]?{schema:'sss.display.feed-preview.v1',identity:id,root:anatomy('preview '+id)}:input[id]]));
   elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(previews)});
@@ -369,3 +369,6 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  const mini=f.elements.get('mini');f.emit('sss:safe-area');assert.equal(mini.style.left,'195px');assert.equal(mini.style.top,'422px');assert.equal(mini.style.width,'195px');assert.equal(mini.style.height,'422px');assert.equal(mini.dataset.gridBounded,'true');
  console.log('PASS — bounded arbitrary-owner grid enforces actual rectangles, unchanged addresses on resize, camera frame and shared compass bounds');
 }
+
+assert(boot(1,'',{}, {}, {},false,null,'template').runtime.ui.get(ids[0]).bounded,'the supplied role declaration depended on an extra flag');
+console.log('PASS — common role declarations bind actual extents without an extra user sizing flag');

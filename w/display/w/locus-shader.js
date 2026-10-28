@@ -330,10 +330,12 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }else if(follow){cam={from:{center:[...follow.c],scale:Math.exp(follow.l)},to:frameFor(container()),start:performance.now()};follow=null}
   }
   function target(){return follow?{center:follow.c,scale:Math.exp(follow.l)}:currentFrame()}
+  let viewCache=null;
   function viewBox(rect){
+    if(viewCache?.width===rect.width&&viewCache?.height===rect.height)return viewCache.box;
     const p=typeof presentation==='function'?presentation():null;
     if(!p||![p.x??p.left,p.y??p.top,p.width,p.height].every(Number.isFinite)||p.width<=0||p.height<=0)return {x:0,y:0,width:rect.width,height:rect.height,bounded:false};
-    const x=Math.max(0,Math.min(rect.width,p.x??p.left)),y=Math.max(0,Math.min(rect.height,p.y??p.top));return {x,y,width:Math.max(1,Math.min(p.width,rect.width-x)),height:Math.max(1,Math.min(p.height,rect.height-y)),bounded:true};
+    const x=Math.max(0,Math.min(rect.width,p.x??p.left)),y=Math.max(0,Math.min(rect.height,p.y??p.top)),box={x,y,width:Math.max(1,Math.min(p.width,rect.width-x)),height:Math.max(1,Math.min(p.height,rect.height-y)),bounded:true};viewCache={width:rect.width,height:rect.height,box};return box;
   }
   function worldClip(rect,d=1){if(!gl)return;const b=viewBox(rect);if(!b.bounded){gl.disable(gl.SCISSOR_TEST);return}gl.enable(gl.SCISSOR_TEST);gl.scissor(Math.floor(b.x*d),Math.floor((rect.height-b.y-b.height)*d),Math.ceil(b.width*d),Math.ceil(b.height*d));}
   function fieldProjectionMatrix(rect){
@@ -756,6 +758,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.bindVertexArray(plain?B.plainVAO:B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
   }
   function draw(ms){
+    viewCache=null;
     if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
     followStep(ms);refreshProjection(ms);refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(viewBox(r).width<560?1.42:1.75);

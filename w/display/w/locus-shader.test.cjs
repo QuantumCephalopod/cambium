@@ -413,3 +413,8 @@ console.log('PASS — independently lent target draw, carrier ownership and with
  }
  console.log('PASS — bounded viewfocus shares actual source projection/camera/pointer geometry on both carriers and backends');
 }
+
+{
+ let reads=0;const f=fixture({glass:false,order:[],presentation:()=>{reads++;return {x:100,y:200,width:600,height:400}}});reads=0;f.frame(0);const once=reads;for(let i=0;i<100;i++)f.api.projectAddressCenter('w');assert.equal(reads,once,'projection re-read DOM/layout per point');assert.equal(once,1);f.frame(16);assert.equal(reads,2,'a new frame did not refresh the presentation generation');
+ console.log('PASS — viewfocus is sampled once per frame, never once per body/point');
+}

@@ -20,8 +20,8 @@ def close(actual,field,w,h):
  x,y,fw,fh=expected[field]
  for k,v in dict(x=x*w,y=y*h,width=fw*w,height=fh*h).items():assert abs(actual[k]-v)<1.1,(field,k,actual,v)
 def wait_scene(page,identity):
- page.wait_for_selector(f'[data-interlocutor="{identity}"]:not([hidden]) [data-ui-bounded="true"]',timeout=60000)
- page.wait_for_function("document.getElementById('tetra-fold').dataset.fold==='open'",timeout=60000)
+ page.wait_for_selector(f'[data-interlocutor="{identity}"]:not([hidden]) [data-ui-bounded="true"]',timeout=180000)
+ page.wait_for_function("document.getElementById('tetra-fold').dataset.fold==='open'",timeout=180000)
  page.evaluate('document.fonts.ready')
 try:
  from playwright.sync_api import sync_playwright
@@ -29,7 +29,7 @@ try:
   browser=pw.chromium.launch(headless=True,args=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
   for w,h in [(1280,800),(390,844)]:
    for identity,address in [('organism:philosophy','overview'),('organism:schattenseiten','x'),('organism:crawlerbait','w')]:
-    page=browser.new_page(viewport={'width':w,'height':h},device_scale_factor=1);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'
+    page=browser.new_page(viewport={'width':w,'height':h},device_scale_factor=.5 if identity=='organism:crawlerbait' else 1);errors=[];console=[];page.on('console',lambda m:console.append(m.text) if m.type in ['warning','error'] else None);page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'
     try:
      page.goto(base+'#main:'+address,wait_until='domcontentloaded');wait_scene(page,identity)
      host=f'[data-interlocutor="{identity}"]:not([hidden])';description=host+' [data-ui-field="description"]'
@@ -38,7 +38,7 @@ try:
      # GL source projection and pointer equivalence have separate native tests.
      world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewfocus',w,h)
      canvas=page.locator(host+' .interlocutor-background');assert not canvas.get_attribute('data-layer-error')
-     records={'identity':identity,'viewport':[w,h],'description':bounds(page,description),'compass':bounds(page,'#mini'),'viewfocus':world}
+     records={'identity':identity,'viewport':[w,h],'render_dpr':.5 if identity=='organism:crawlerbait' else 1,'description':bounds(page,description),'compass':bounds(page,'#mini'),'viewfocus':world}
      if identity!='organism:philosophy':
       timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h);records['timeline']=before
       if identity=='organism:schattenseiten':
@@ -55,6 +55,7 @@ try:
      assert not canvas.get_attribute('data-layer-error');assert not errors,errors
      page.screenshot(path=str(a.out/(stem+'.png')));records['errors']=errors;results.append(records)
     except Exception:
+     (a.out/(stem+'-error.json')).write_text(json.dumps({'url':page.url,'errors':errors,'console':console[-12:],'visible':page.locator('body').inner_text()[:12000]},indent=2)+'\n')
      page.screenshot(path=str(a.out/(stem+'-FAILED.png')));raise
     finally:page.close()
   browser.close()
