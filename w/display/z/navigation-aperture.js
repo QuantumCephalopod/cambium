@@ -41,6 +41,7 @@ function measure(){
   // Keep disclosure in the existing control strip. The hint stays in flow;
   // a compact field hides only that redundant visual hint, never help access.
   if(bounded&&helpButton&&helpButton.parentNode!==mini&&mini.append)mini.append(helpButton);
+  if(!bounded&&helpButton&&helpBar&&helpButton.parentNode!==helpBar&&helpBar.append)helpBar.append(helpButton);
   const available=bounded?Math.max(0,pocket.clientHeight??((field?.height||0)-legalHeight-2.75*rem)):Math.max(0,innerHeight-top-legalHeight-6*rem);
   px('--compass-top',top);px('--compass-core-cap',available);
   px('--compass-guide-cap',available*.45);

@@ -54,8 +54,13 @@ try:
      mini=bounds(page,'#mini')
      if page.locator('#mini-pocket').get_attribute('aria-hidden')=='true':page.locator('#mini-trigger').click()
      assert bounds(page,'#mini')==mini
-     # Reach help by scrolling its own bounded surface; it cannot enlarge HUD.
+     # Persistent help is a real pointer target; opening and closing it cannot
+     # enlarge the HUD or leave the map permanently shrunken.
      page.locator('#mini-help-toggle').click();assert bounds(page,'#mini')==mini
+     page.wait_for_function("document.getElementById('mini-guide').hidden===false")
+     page.locator('#mini-help-toggle').click()
+     page.wait_for_function("(size)=>Math.abs(document.getElementById('navTwin').getBoundingClientRect().width-size)<1.1",arg=map_box['width'])
+     assert bounds(page,'#mini')==mini
      assert not canvas.get_attribute('data-layer-error');assert not errors,errors
      page.screenshot(path=str(a.out/(stem+'.png')));records['errors']=errors;results.append(records)
     except Exception:

@@ -243,7 +243,4 @@ A runtime module may expose `prepareFieldProjection(projection, {yieldControl, o
 Reuse is generation-local, bounded by reachable source objects and the existing resource handoff. Failure may retry with the same immutable acquired source. Late completion after cancellation is a reusable resource, never permission to resurrect an obsolete encounter. Whole-body relocation requires no internal host path or identity branch.
 
 
-Usability correction2026-10-28: measured outer rectangles alone did not establish an operable component. The compass keeps a square map, subtracts actual control/hint/footer chrome, and exposes help in the existing control strip. Default mode fits the tested narrow/wide carriers without a compass scroller; expanded long help may scroll inside its fixed box. This is new pressure after the earlier bounded-layout HOME, whose original evidence remains immutable.
-
-
 Usability correction2026-10-28: a measured outer rectangle does not prove an operable component. The compass keeps a square map and subtracts actual control/footer/hint chrome. Persistent help uses the existing control strip. Default tested narrow/wide carriers fit without a compass scroller; expanded long help may scroll inside the same fixed box. Earlier HOME/evidence remains immutable; this live counterexample is new pressure.
