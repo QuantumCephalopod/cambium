@@ -10,7 +10,7 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined,foreground=null}={}){
+function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined,foreground=null,presentation=null}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
   const calls=[],frames=[],queue=[],timers=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
@@ -37,10 +37,10 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   };
   gl.drawArrays=(mode,first,count)=>{
     const name=currentProgram.shaders.find(s=>s.source.includes('outColor')||s.source.includes('out vec4 o;'))?.source||'';
-    calls.push({type:'draw',mode,first,count,name,vao:currentVAO,depthWrite:values.depth,target:drawTarget,model:currentProgram.uniforms?.uModel,previewReady:currentProgram.uniforms?.uPreviewReady,foregroundReady:currentProgram.uniforms?.uForegroundReady,lensControl:currentProgram.uniforms?.uN,lensShape:currentProgram.uniforms?.uL2,mergeFlags:currentProgram.uniforms?.['uMerge[0]']});
+    calls.push({type:'draw',mode,first,count,name,scissor:enabled.has(gl.SCISSOR_TEST),vao:currentVAO,depthWrite:values.depth,target:drawTarget,model:currentProgram.uniforms?.uModel,proj:currentProgram.uniforms?.uProj,view:currentProgram.uniforms?.uView,previewReady:currentProgram.uniforms?.uPreviewReady,foregroundReady:currentProgram.uniforms?.uForegroundReady,lensControl:currentProgram.uniforms?.uN,lensShape:currentProgram.uniforms?.uL2,mergeFlags:currentProgram.uniforms?.['uMerge[0]']});
     if(values.depth&&enabled.has(gl.DEPTH_TEST))depths.set(drawTarget,(depths.get(drawTarget)||0)+count);
   };
-  for(const name of ['bufferSubData','drawArraysInstanced','vertexAttribDivisor','uniform3f','compileShader','linkProgram','enableVertexAttribArray','uniform1f','uniform1fv','uniform2f','uniform3fv','uniform4fv','uniform4f','viewport','clearColor','blendFunc','blendFuncSeparate','pixelStorei','bindTexture','texImage2D','texParameteri','texStorage2D','bindRenderbuffer','renderbufferStorage','renderbufferStorageMultisample','framebufferRenderbuffer','framebufferTexture2D','blitFramebuffer'])gl[name]=()=>{};
+  for(const name of ['bufferSubData','drawArraysInstanced','vertexAttribDivisor','uniform3f','compileShader','linkProgram','enableVertexAttribArray','uniform1f','uniform1fv','uniform2f','uniform3fv','uniform4fv','uniform4f','scissor','viewport','clearColor','blendFunc','blendFuncSeparate','pixelStorei','bindTexture','texImage2D','texParameteri','texStorage2D','bindRenderbuffer','renderbufferStorage','renderbufferStorageMultisample','framebufferRenderbuffer','framebufferTexture2D','blitFramebuffer'])gl[name]=()=>{};
   gl.uniform1i=(loc,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniform1fv=(loc,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
   gl.uniform4f=(loc,...value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
@@ -48,7 +48,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},attributes:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
   let inkPath=[];
   const ctx2d={beginPath(){inkPath=[]},moveTo(x,y){inkPath.push([x,y])},lineTo(x,y){inkPath.push([x,y])},fill(){calls.push({type:'fill2d',path:inkPath.map(p=>[...p]),style:this.fillStyle})}};
-  for(const name of ['setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};
+  for(const name of ['rect','clip','setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};
   ctx2d.translate=(x,y)=>calls.push({type:'point2d',x,y});
   const canvas=element();Object.assign(canvas,{width,height,getContext:type=>type==='2d'?ctx2d:webgl?gl:null,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   gl.canvas=canvas;
@@ -71,7 +71,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   if(composite)shader.composite=()=>[{width:16,height:16}];
   if(layer)shader.afterDraw=()=>{gl.depthMask(false);gl.colorMask(false,false,false,false);gl.enable(gl.SCISSOR_TEST);gl.clearDepth(0)};
   const projection={root:tree,points:pointSpecs||(points?[{id:'point',gene:'w',kind:'source'}]:[])};
-  const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,palette:fieldPalette,shader,inspectable,localScope:'fixture',bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
+  const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,palette:fieldPalette,shader,inspectable,localScope:'fixture',presentation,bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
   return {gl,canvas,api,world,shader,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index,accept=true){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});if(accept)api.approachBody(events.at(-1).detail.id)}};
 }
@@ -403,3 +403,20 @@ for(const [width,height] of [[390,844],[1280,800]]){
  ready=false;f.frame(50);assert.equal(f.frames.at(-1).find(c=>c.type==='draw'&&c.name.includes('uniform sampler2D uScene')).foregroundReady,0);
 }
 console.log('PASS — independently lent target draw, carrier ownership and withdrawal of sharp representation');
+
+{
+ const M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
+ for(const [width,height]of [[390,844],[1280,800]])for(const webgl of [false,true]){
+  const box={x:width*.05,y:height*.25,width:width*.4,height:height*.5},f=fixture({width,height,webgl,glass:false,order:[],presentation:()=>box});f.frame(0);
+  const p=f.api.projectAddressCenter(''),b=f.api.presentationRect();assert.equal(p.x,box.x+box.width/2);assert.equal(p.y,box.y+box.height/2);assert(b.bounded);
+  if(webgl){const draw=f.frames[0].find(c=>c.model&&c.proj),point=N.cellForPath('w').center,v=M(draw.proj,M(draw.view,M(draw.model,[...point,1]))),actual=f.api.projectAddressCenter('w');assert(Math.abs((v[0]/v[3]*.5+.5)*width-actual.x)<.001);assert(Math.abs((.5-v[1]/v[3]*.5)*height-actual.y)<.001)}
+ }
+ console.log('PASS — bounded viewfocus shares actual source projection/camera/pointer geometry on both carriers and backends');
+}
+
+{
+ let reads=0;const f=fixture({glass:false,order:[],presentation:()=>{reads++;return {x:100,y:200,width:600,height:400}}});reads=0;f.frame(0);const once=reads;for(let i=0;i<100;i++)f.api.projectAddressCenter('w');assert.equal(reads,once,'projection re-read DOM/layout per point');assert.equal(once,1);f.frame(16);assert.equal(reads,2,'a new frame did not refresh the presentation generation');
+ console.log('PASS — viewfocus is sampled once per frame, never once per body/point');
+}
+
+{const f=fixture({glass:false,points:true,order:[],presentation:()=>({x:100,y:200,width:600,height:400})});f.frame(0);assert(f.frames[0].filter(c=>c.type==='draw'&&c.mode===f.gl.POINTS).every(c=>c.scissor),'point depth clear disabled the declared clipping');console.log('PASS — point rendering restores bounded scissor after its unmasked depth clear');}

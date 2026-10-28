@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.18"
+version: "1.19"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -160,3 +160,10 @@ Version1.13 shared fold operation (2026-10-21): rank substitution permits one so
 [Shared Metabolism](https://drive.google.com/file/d/1l1uGIctId8j9GK3Z1jyyzoa9vz7gZul-/view) owns autonomous completion, spent-intake clearance and admission of later counterexamples as new nutrients. Cambium applies it to Git-carried bodies: preserve exact spent bytes in the same owner's `_waste`, rebind live references and append truthful owner HOME. Immutable older HOME/evidence retains its original bounded claims; a new return may supersede an invented pending-acceptance condition without pretending new browser/device evidence exists.
 
 Fork promotion remains a separate, owner-controlled repository permission boundary. It cannot keep an implemented/witnessed nutrient in `_stomach`. A concrete required delivery failure may have its own bounded operational intake; mere absence of a merge or personal visit is not unresolved digestion. Keep only genuinely unfinished functional obligations active. The enclosing checker refuses the previously recurring completed-intake/personal-gate status at each admitted local shell.
+
+
+## Bounded layout substrate witness — 2026-10-28
+
+The isolated `y/test-bounded-layout.py` integration witness serves only an already-built public artifact to a fresh Chromium test context. It measures actual DOM field bounds, declared camera rectangle, unchanged footer through selection/mode, and the complete compass through help. It retains screenshots and precise browser/backend limits. The bounded-layout staging lane installs its pinned test dependency and runs this witness without changing ordinary Tide publication cost or giving tests authority over site semantics. Native/lifecycle/source checks remain required; a screenshot is not source or device-performance authority. Actual layout ownership remains Display and the respective independently rooted child.
+
+The Crawlerbait browser-layout case uses the existing no-Worker capability fallback to read its same complete immutable public source, at half physical rendering resolution and unchanged CSS carrier dimensions. This bounds software-GPU/acknowledged-transfer test cost without fabricating data or changing the product. Worker transport has its separate native protocol/refusal witness; browser layout completion makes no full-source throughput or device-performance claim.

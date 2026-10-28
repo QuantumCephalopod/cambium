@@ -231,3 +231,12 @@ html[data-composition="split"][data-composition-axis="horizontal"] #mini::before
 #mini #legal-links{position:absolute;left:0;right:0;top:calc(100% + .5rem);bottom:auto;width:100%;z-index:4;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:0 .75rem;pointer-events:auto;font:600 var(--type-rn2)/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase}
 #mini #legal-links a{display:flex;align-items:center;min-height:1.5rem;max-width:100%;overflow-wrap:anywhere;color:rgba(238,242,237,.74);text-decoration:none;text-shadow:0 1px 4px var(--bg)}
 #mini #legal-links a:hover,#mini #legal-links a:focus-visible{color:rgba(255,255,255,.98);outline:none;text-decoration:underline;text-underline-offset:.28em}
+
+/* A declared compass rectangle is an actual containing box, including its legal
+ * links and trigger. Opening/help/scrolling never grows or relocates that box. */
+html #mini[data-grid-bounded="true"]{box-sizing:border-box;overflow:hidden;contain:layout paint;transition:none;padding:.25rem;--hud-edge:0px;--hud-t:max(0px,min(var(--compass-ideal,10rem),var(--compass-map-cap,10rem),calc(var(--compass-field-width) - 3.5rem)))}
+html #mini[data-grid-bounded="true"] #mini-pocket{inset:0 0 calc(var(--legal-footer-height,2rem) + 2.75rem);transform:none;clip-path:none;overflow:hidden}
+html #mini[data-grid-bounded="true"] #mini-core{max-height:100%;height:100%;min-height:0;box-sizing:border-box;padding:.25rem;overflow:auto}
+html #mini[data-grid-bounded="true"] #mini-trigger{bottom:var(--legal-footer-height,2rem);right:.25rem;top:auto;transform:none}
+html #mini[data-grid-bounded="true"] #legal-links{top:auto;bottom:0;left:.25rem;right:.25rem;width:auto;max-height:50%;overflow:auto;justify-content:flex-end}
+html #mini[data-grid-bounded="true"] #navTwin{max-width:100%;max-height:100%}

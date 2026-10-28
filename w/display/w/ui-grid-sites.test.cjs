@@ -32,3 +32,8 @@ for(const manifestPath of sites){
 }
 
 console.log('site UI grids: '+sites.length+' canonical v2 carriers PASS');
+
+const bounded=sites.map(p=>JSON.parse(fs.readFileSync(path.join(path.dirname(p),'ui-grid.json'),'utf8'))).filter(s=>['organism:philosophy','organism:crawlerbait','organism:schattenseiten'].includes(s.meta.name));
+assert.equal(bounded.length,3);
+for(const raw of bounded){const s=G.normalizeState(raw),box=id=>G.fieldInfo(s,id).bounds;assert.deepEqual(box('timeline'),{x:.25,y:.875,w:.5,h:.125});assert.deepEqual(box('compass'),{x:.75,y:.75,w:.25,h:.25});assert.deepEqual(box('description'),{x:0,y:.5,w:.25,h:.5});assert.deepEqual(box('viewfocus'),{x:.25,y:.25,w:.5,h:.5});}
+console.log('PASS — actual bounded owner declarations share the supplied non-overlapping description/viewfocus/compass and invariant footer rectangles');

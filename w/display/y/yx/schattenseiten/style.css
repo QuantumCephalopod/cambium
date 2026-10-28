@@ -71,3 +71,10 @@
 .ss-view-choices{margin-block:.35rem}
 .ss-breadcrumb{max-inline-size:100%}
 .ss-hud-bottom{inline-size:min(24rem,calc(100vw - 1.5rem))}
+
+/* Field bounds are supplied by the common grid, never inferred from contents. */
+.schattenseiten-content>.ss-hud-header{display:flex;align-items:flex-end;padding:.75rem;pointer-events:auto}
+.ss-hud-header .ss-hud-top{inline-size:100%;min-inline-size:0;max-inline-size:100%;box-sizing:border-box}
+.schattenseiten-content>.ss-hud-rail[data-ui-bounded]{padding:.75rem;pointer-events:auto;gap:.65rem}
+.schattenseiten-content>.ss-hud-bottom[data-ui-bounded]{padding:.75rem;align-content:flex-start;pointer-events:auto}
+.ss-hud-rail .ss-hud-side{position:static;inline-size:100%;max-inline-size:100%;max-block-size:none;padding:0;overflow:visible}

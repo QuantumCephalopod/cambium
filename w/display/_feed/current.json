@@ -25,34 +25,27 @@
   },
   "home": {
     "changed_scope": [
-      "_stomach/NUTRIENT__tetra-particle-black-goop-transition__20261027.md",
-      "_waste/metabolized-20261028-NUTRIENT__tetra-particle-black-goop-transition__20261027.md",
-      "_stomach/NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__sharp-softlocked-target-with-blurred-liquid-background__20261026.md",
-      "_stomach/NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__shared-spritesheet-text-shadow__20261026.md",
-      "_stomach/NUTRIENT__selection-is-not-visibility__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__selection-is-not-visibility__20261026.md",
-      "_stomach/NUTRIENT__liquid-visitor-regressions__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__liquid-visitor-regressions__20261026.md",
-      "_stomach/NUTRIENT__liquid-evidence-feed-envelope__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__liquid-evidence-feed-envelope__20261026.md",
-      "_stomach/NUTRIENT__goop-as-loading-progress__20261027.md",
-      "_waste/metabolized-20261028-NUTRIENT__goop-as-loading-progress__20261027.md",
-      "_stomach/NUTRIENT__explicit-locus-point-anchor__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__explicit-locus-point-anchor__20261026.md",
-      "_stomach/NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
-      "_waste/metabolized-20261028-NUTRIENT__continuous-liquid-with-sharp-reading-tissue__20261026.md",
-      "_stomach/NUTRIENT__chosen-relative-type-shadow__20261027.md",
-      "_waste/metabolized-20261028-NUTRIENT__chosen-relative-type-shadow__20261027.md",
       "RITUALS/organism/RITUAL.md",
       "RITUALS/site-holon/RITUAL.md",
-      "_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md"
+      "RITUALS/navigation/RITUAL.md",
+      "w/ui-grid.js",
+      "w/ui-grid-sites.test.cjs",
+      "w/ui-grid.test.cjs",
+      "w/locus-shader.js",
+      "w/locus-shader.test.cjs",
+      "w/display-label-ink.js",
+      "w/display-label-ink.test.cjs",
+      "x/display-runtime-v2.js",
+      "x/display-runtime-v2.test.cjs",
+      "z/navigation-aperture.js",
+      "z/navigation-aperture.css",
+      "_stomach/NUTRIENT__bounded-ui-grid__20261028.md",
+      "_waste/metabolized-20261028-NUTRIENT__bounded-ui-grid__20261028.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — 10 previously consumed local intake carriers returned unchanged to local waste; only 1 concrete unfinished local carriers remain. Personal acceptance/promotion is not a metabolic condition."
+    "outcome": "COMPLETED — declared rectangles constrain UI and complete compass, while source world/camera/pointer/glyph/point geometry shares viewfocus. Full-size liquid remains intact; source identity and navigation remain owned."
   },
-  "observed_at_utc": "2026-10-28T11:21:22.871538Z",
+  "observed_at_utc": "2026-10-28T20:21:51.001239Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -68,19 +61,19 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-spent-intake-clearance-20261028",
+  "reflected_home_event": "display-bounded-ui-grid-return-20261028",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "340be206ef0866660881b7dee07a93957cca9587d5781392b4a56b1a8f99265c"
+      "sha256": "85f936b1554cc79e9c25c469198a1a23cf41daab83f13132076f38d95ee8ffa8"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "51d8901a1435feb2b97e294f78fe10d78ee79ee9bfdde71584908b57d9aaef18"
+      "sha256": "ba2e5b09f62ee703ecf88260dfe32daff3e0af20ccf02d258d37dc1682c02482"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "bbbe7fe8c03b18a5bbced5053b0064040708925d5bb3717244e69c4edbb99859"
+      "sha256": "55a40c82f9655baee5cda49de41d7eb798a32487324931a125eb700fa951433b"
     }
   ],
   "shell": {
@@ -89,10 +82,10 @@
     "stomach_direct": [
       "NUTRIENT__language-glyphs-and-site-names__20261019.md"
     ],
-    "waste_direct_count": 115
+    "waste_direct_count": 116
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "2031a1a1c67290bffc2a8b8a8ff9357547c739e6"
+    "source_revision": "de1a2405c77fcdcd9a31fd4ed625b7e91fac1eaa"
   }
 }

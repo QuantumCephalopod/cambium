@@ -27,25 +27,26 @@ function surfaceRect(host){
   }
   return {left:0,top:0,right:innerWidth,bottom:innerHeight,width:innerWidth,height:innerHeight};
 }
-/* The screen lattice orients content; occupied regions do not subtract
- * field capacity. The top membrane supplies a shared starting line, while
- * right/bottom HUDs remain overlapping, independently layered surfaces. */
-function safeCarrier(host){
+/* Bounded declarations address the full surface, including their own header.
+ * Intrinsic carriers retain their measured top-origin relation. Occupied HUDs
+ * never silently rewrite either owner's declared address state. */
+function safeCarrier(host,bounded=false){
   const hr=surfaceRect(host),snap=Safe.snapshot?.()||{},ins=snap.insets||{};
-  const top=Math.max(0,Math.min(hr.height,(Number(ins.top)||0)-hr.top));
+  const top=bounded?0:Math.max(0,Math.min(hr.height,(Number(ins.top)||0)-hr.top));
   return {x:0,y:top,w:hr.width,h:Math.max(0,hr.height-top)};
 }
 function makeSiteUI(id,host,raw){
-  const state=UI.normalizeState(raw),bindings=new Map();
+  const state=UI.normalizeState(raw),bindings=new Map(),bounded=state.meta.extent==='bounded'||(state.meta.extent!=='intrinsic'&&['compass','description','header','viewfocus'].every(name=>state.fields[name]));
+  const carrier=()=>safeCarrier(host,bounded);
   function carrierVariant(carrier){return carrier.h>carrier.w?'portrait':''}
-  function field(name,carrier=safeCarrier(host)){
+  function field(name,carrier=safeCarrier(host,bounded)){
     const info=UI.fieldInfo(state,name,carrierVariant(carrier));
     return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds}),z:info.z,variant:info.variant||'default'});
   }
   function apply(el,name){
     if(!el)throw new TypeError('UI field element required');
-    const c=safeCarrier(host),info=field(name,c),b=info.bounds;
-    // Do not force grid-cell width/height or wipe identity-owned insets.
+    const c=carrier(),info=field(name,c),b=info.bounds;
+    // Intrinsic bindings retain owner extents; bounded bindings below own the box.
     // Stacking is deterministic within the site's isolated Display layer.
     const tie=Object.keys(state.fields).sort().indexOf(name);
     el.style.setProperty?.('--ui-field-x',(c.x+b.x*c.w)+'px');
@@ -56,7 +57,8 @@ function makeSiteUI(id,host,raw){
       top:(c.y+b.y*c.h)+'px',
       zIndex:String(4+info.z*64+tie)
     });
-    if(el.dataset){el.dataset.uiField=name;el.dataset.uiVariant=info.variant}
+    if(bounded)Object.assign(el.style,{right:'auto',bottom:'auto',width:b.w*c.w+'px',height:b.h*c.h+'px',inlineSize:b.w*c.w+'px',blockSize:b.h*c.h+'px',minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overscrollBehavior:'contain',contain:'layout paint'});
+    if(el.dataset){el.dataset.uiField=name;el.dataset.uiVariant=info.variant;if(bounded)el.dataset.uiBounded='true'}
     return el;
   }
   function bind(el,name){bindings.set(el,name);return apply(el,name)}
@@ -66,7 +68,8 @@ function makeSiteUI(id,host,raw){
       apply(el,name);
     }
   }
-  return Object.freeze({id,state,field,bind,refresh,get carrier(){return Object.freeze({...safeCarrier(host)})}});
+  function rect(name,global=false){const c=carrier(),b=field(name,c).bounds,hostRect=surfaceRect(host),x=c.x+b.x*c.w+(global?hostRect.left:0),y=c.y+b.y*c.h+(global?hostRect.top:0),width=b.w*c.w,height=b.h*c.h;return {x,y,left:x,top:y,right:x+width,bottom:y+height,width,height}}
+  return Object.freeze({id,state,field,rect,bind,refresh,bounded,get carrier(){return Object.freeze({...carrier()})}});
 }
 const registry=H.createRegistry(),specs=new Map(),surfaces=new Map(),uiById=new Map();
 for(const s of SPEC.interlocutors||[]){
@@ -136,7 +139,7 @@ function activateField(id){
   if(surface.fieldProjection===surface.previewFieldProjection && FEED_URLS[id]){
     surface.fieldProjection=surface.module.fieldProjection?surface.module.fieldProjection(surface.projection):surface.projection;
   }
-  const field=Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:surface.fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id)});
+  const field=Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:surface.fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id),presentation:()=>surface.ui.bounded&&surface.ui.state.fields.viewfocus?surface.ui.rect('viewfocus'):null});
   fieldById.set(id,field);return field;
 }
 // Existing small/inlined bodies keep their established eager behavior.
@@ -189,6 +192,16 @@ function structuralStack(ids,frames=[]){
 function resolveGlobal(path=''){return registry.resolve(GLOBAL_SCOPE,path,{width:innerWidth,height:innerHeight})}
 function snap(){return {globalScope:GLOBAL_SCOPE,activeIds:[...activeIds],activeAddress,stack:stack.map(x=>({...x,activeIds:[...x.activeIds]})),localView:W.view}}
 function composition(){const c=H.composeInterlocutors(activeIds.map(interlocutorId=>({interlocutorId})),{width:innerWidth,height:innerHeight});document.documentElement.dataset.composition=c.mode;document.documentElement.dataset.compositionAxis=c.axis||'';stage.dataset.composition=c.mode;stage.dataset.axis=c.axis||'';stage.style.setProperty('--interlocutor-columns',String(c.columns||1));return c}
+function syncMembraneGrid(){
+ const ui=activeIds.map(id=>uiById.get(id)).find(u=>u?.bounded&&u.state.fields.compass)||uiById.get(ROOT_IDS[0]);
+ const mini=document.getElementById('mini');if(!mini||!ui?.bounded||!ui.state.fields.compass)return;
+ const b=ui.field('compass').bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
+ const values={left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',transform:'none'};
+ for(const [k,v]of Object.entries(values))if(mini.style[k]!==v)mini.style[k]=v;
+ for(const [k,v]of [['--compass-field-height',r.height+'px'],['--compass-field-width',r.width+'px']])if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
+ const hb=ui.state.fields.header?ui.field('header').bounds:null,header=hb?{width:hb.w*innerWidth,height:hb.h*innerHeight}:null;
+ if(header)for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:header.height+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
+}
 function siteTitle(id){const root=surfaces.get(id)?.fieldProjection?.root;return root?.[W.language]||specs.get(id)?.title||root?.noun||id.replace(/^organism:/,'')}
 function globalTargets(){
   const loci=new Map();
@@ -222,7 +235,7 @@ function render(path=W.view,{retainPrior=false,requireReady=false}={}){
   if(retainPrior)for(const id of surfaces.keys())if(!activeIds.includes(id))resetSurface(id);
   for(const id of activeIds)if(!renderedIds.has(id))fieldById.get(id)?.arriveFrom(null);
   renderedIds=new Set(activeIds);
-  composition();Safe.refresh();for(const ui of uiById.values())ui.refresh();
+  composition();syncMembraneGrid();Safe.refresh();for(const ui of uiById.values())ui.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
   stateEl.textContent='WITNESS viewer · global '+GLOBAL_SCOPE+':'+(activeAddress||'overview')+' · local '+local+' · '+activeIds.join(' + ');
   document.documentElement.dataset.scope=GLOBAL_SCOPE;
@@ -253,7 +266,7 @@ function installEncounter(ids,address,nextStack,localView='',source='encounter-c
     }
     activeIds=prior.activeIds;activeAddress=prior.activeAddress;stack=prior.stack;renderedIds=priorRendered;syncGlobalNavigator();
     if(inspectCapable(activeIds)&&prior.localView)W.inspect(prior.localView,'refused-encounter');else W.clearInspection('refused-encounter');
-    composition();Safe.refresh();for(const ui of uiById.values())ui.refresh();stateEl.textContent=priorText;
+    composition();syncMembraneGrid();Safe.refresh();for(const ui of uiById.values())ui.refresh();stateEl.textContent=priorText;
     throw error;
   }finally{installingEncounter=false}
 }
@@ -322,7 +335,7 @@ addEventListener('sss:membrane-ascend',e=>{
   const origin={x:innerWidth/2,y:innerHeight/2};
   try{const result=fold.swap(back,{origin,from:activeAddress,to:'',onClosing:duration=>globalThis.SSSDisplayLens?.departFrom?.(origin,duration)});if(result&&typeof result.catch==='function')result.catch(feedWound)}catch(error){feedWound(error)}
 });
-addEventListener('sss:language',()=>{syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();for(const ui of uiById.values())ui.refresh()});
+addEventListener('sss:language',()=>{syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});
 home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{nextHandoff();setLocalView('','home')}});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});

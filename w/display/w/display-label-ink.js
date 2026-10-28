@@ -252,11 +252,11 @@
       if(!labelHost)return;
       if(original===null||original===undefined)labelHost.removeAttribute(ATTR);else labelHost.setAttribute(ATTR,original);
     }
-    function draw(canvasRect,bufferWidth,bufferHeight,additionalTarget=null,foreground=null){
+    function draw(canvasRect,bufferWidth,bufferHeight,additionalTarget=null,foreground=null,clip=null){
       const c=rect(canvasRect||{});
       if(disposed||!gl||!labelHost||!doc||!getStyle||c.width<=0||c.height<=0||!Number.isFinite(bufferWidth)||!Number.isFinite(bufferHeight)||bufferWidth<=0||bufferHeight<=0){reset();return false;}
       if(gl.isContextLost()){release(gl,gpu);gpu=null;atlas=null;reset();return false}
-      let saved=null;
+      let saved=null,oldScissor=null;
       try{
         const runs=collect(labelHost,doc,getStyle);
         if(!runs.length){reset();return false;}
@@ -277,6 +277,7 @@
         const vertices=quads(runs,atlas,c);
         gl.viewport(0,0,bufferWidth,bufferHeight);gl.colorMask(true,true,true,true);gl.depthMask(false);
         for(const cap of [gl.DEPTH_TEST,gl.CULL_FACE,gl.SCISSOR_TEST,gl.STENCIL_TEST,gl.RASTERIZER_DISCARD])gl.disable(cap);
+        if(clip){oldScissor=gl.getParameter(gl.SCISSOR_BOX);const sx=bufferWidth/c.width,sy=bufferHeight/c.height;gl.enable(gl.SCISSOR_TEST);gl.scissor(Math.floor(clip.x*sx),Math.floor((c.height-clip.y-clip.height)*sy),Math.ceil(clip.width*sx),Math.ceil(clip.height*sy));}
         gl.enable(gl.BLEND);gl.blendEquationSeparate(gl.FUNC_ADD,gl.FUNC_ADD);gl.blendFuncSeparate(gl.ONE,gl.ONE_MINUS_SRC_ALPHA,gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
         gl.useProgram(gpu.program);gl.uniform1i(gpu.uniform,0);gl.bindVertexArray(gpu.vao);gl.bindBuffer(gl.ARRAY_BUFFER,gpu.buffer);
         gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.DYNAMIC_DRAW);gl.drawArrays(gl.TRIANGLES,0,vertices.length/5);
@@ -290,7 +291,7 @@
         if(!releaseStyle)releaseStyle=acquireStyle(doc);
         if(labelHost.getAttribute(ATTR)!=='gpu')labelHost.setAttribute(ATTR,'gpu');return true;
       }catch(_){atlas=null;reset();return false}
-      finally{if(saved)restore(gl,saved)}
+      finally{if(oldScissor?.length===4)gl.scissor(...oldScissor);if(saved)restore(gl,saved)}
     }
     function dispose(){
       if(disposed)return;disposed=true;reset();release(gl,gpu);gpu=null;atlas=null;

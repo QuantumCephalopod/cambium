@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.60"
+version: "3.61"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -108,9 +108,9 @@ The global compass depicts contained site-body envelopes, not semantic address v
 
 The compass depicts neutral tetrahedral body envelopes rather than duplicating child shader/content. Names stay beside their actual projected bodies, scale from body extent with a small rem-relative ceiling, and yield under crowding instead of moving into rows. An active/hovered identity may lend one readable local caption. A mount-derived spatial tree coalesces subpixel occupied cells and omits offscreen branches. Wheel/key magnification and click-to-refine occupied coarse cells inspect that same space without reminting targets or changing encounter history; there is no fixed recursion-depth ceiling. A closed pocket does not repaint continuous drift; mounted destinations remain available through their existing accessible navigation controls. No empty descendant becomes a destination.
 
-The compass has one compact current-context/count header. Header, reserved map/rails, contextual hint and disclosed help share intrinsic flow; text is not placed by line offsets. Pointer/touch rail hints describe settling a speed, while keyboard hints describe hold/release. A persistent keyboard/touch-accessible control discloses complete map and rail guidance in the current Display language. Font readiness, observed text extents, wrapping and viewport changes bound the same measured cluster; short carriers retain scrollable help/control continuation. One whole recursive address remains available in the header's accessible text/title even when its visual ink is elided. The finite input hints share the maximum of their actual wrapped extents, so switching context changes visibility/accessibility without moving the contacted map or rail. Deliberate disclosure and actual font/language/viewport changes may resize the cluster. Guidance adds no site identity, local semantic mode or per-frame layout scan.
+The compass has one compact current-context/count header. Header, reserved map/rails, contextual hint and disclosed help share intrinsic flow; text is not placed by line offsets. Pointer/touch rail hints describe settling a speed, while keyboard hints describe hold/release. A persistent keyboard/touch-accessible control discloses complete map and rail guidance in the current Display language. Font readiness, observed text extents, wrapping and viewport changes bound the same measured cluster; short carriers retain scrollable help/control continuation. One whole recursive address remains available in the header's accessible text/title even when its visual ink is elided. The finite input hints share the maximum of their actual wrapped extents, so switching context changes visibility/accessibility without moving the contacted map or rail. Under a declared bounded compass, disclosure/font/language changes reflow or scroll inside its fixed containing box; intrinsic legacy carriers retain their earlier measured flow. Guidance adds no site identity, local semantic mode or per-frame layout scan.
 
-Display owns one legal slot directly below the bounded compass, outside its inert/hidden pocket. Existing legal site modules retain link wording, localization and destinations. Measured link height reserves the necessary viewport margin after wrapping, font readiness, language or resize; single and seam presentations carry the same slot. Exact footer occupancy is published through the common safe-area contract, and plain links opt out of glass. They remain pointer/keyboard reachable with the compass closed. Escape restores trigger focus before closing so focus cannot reopen the pocket.
+Display owns one legal slot below the compass controls, outside its inert/hidden pocket and inside the declared compass rectangle when bounded. Existing legal site modules retain link wording, localization and destinations. Measured link height reserves the necessary viewport margin after wrapping, font readiness, language or resize; single and seam presentations carry the same slot. Exact footer occupancy is published through the common safe-area contract, and plain links opt out of glass. They remain pointer/keyboard reachable with the compass closed. Escape restores trigger focus before closing so focus cannot reopen the pocket.
 
 ### One situated instrument — function arises in encounter
 
@@ -418,3 +418,10 @@ The same-origin `feed-acquisition.js` asset can acquire, decode and parse in a t
 ## Spent intake return — local application
 
 After bounded technical completion and durable owner HOME, move spent Display intake unchanged into Display `_waste` and refresh its derived feed. Source adapters close through their own owner HOME/waste, not a shared personal-acceptance queue. Concrete later clipping, unreadability, camera or performance failures enter as new nutrients. Preserve a named genuinely unfinished functional remainder; do not retain completed work for unspecified visitor approval.
+
+
+## Bounded presentation return — 2026-10-28
+
+The site-holon receptor owns the current bounded/intrinsic UI declaration. Shared camera projection and pointer projection consume the same optional viewfocus; actual source draws, world labels and fine points stay in that viewport. The containing geometry is lent to owner layers as full `rect` plus `viewRect`; a shader hook must not infer another frame. Full-resolution shared optical/composite buffers still span the Display surface. Mask/scissor/write-state clears and transparent foreground isolation remain inherited requirements.
+
+This supersedes only the former assumption that all declared field cells were mere orientation anchors. It changes no semantic vertex, source position, projection content, body identity, replay time or navigation address. Appropriate actual-carrier/unit/source-renderer and optional isolated-browser layout witnesses close this contract; a later concrete failure is a new nutrient, not a retroactive personal approval gate.

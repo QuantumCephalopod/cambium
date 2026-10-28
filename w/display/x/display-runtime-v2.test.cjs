@@ -6,7 +6,7 @@ const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'u
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
-function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null){
+function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null,bounded=false){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
   const heldFolds=[],approaches=[],foldLayer={dataset:{fold:'open'},hidden:true};let foldBusy=false;
@@ -14,13 +14,13 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
-  const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id},splits:[''],fields:{slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
+  const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id,...(bounded===true?{extent:'bounded'}:{})},splits:[''],fields:{...(bounded?{compass:{cells:['z'],label:'compass'},viewfocus:{cells:['x'],label:'view'},header:{cells:['w'],label:'header'},description:{cells:['y'],label:'description'}}:{}),slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
   const feedUrls=Object.fromEntries(Object.keys(feedKinds).map(id=>[id,'assets/0123456789abcdef/site-'+id.replace(':','-')+'-feed.json']));
   const previews=Object.fromEntries(ids.map(id=>[id,feedKinds[id]?{schema:'sss.display.feed-preview.v1',identity:id,root:anatomy('preview '+id)}:input[id]]));
   elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(previews)});
   elements.set('site-feed-locations',{textContent:JSON.stringify(feedUrls)});
   elements.set('site-ui-grids',{textContent:JSON.stringify(grids)});elements.set('display-dependencies',{textContent:'{}'});
-  for(const id of ['tetra-fold','root-home','site-state','interlocutor-stage'])elements.set(id,element());
+  for(const id of ['tetra-fold','root-home','site-state','interlocutor-stage',...(bounded?['mini']:[])])elements.set(id,element());
   const hosts=new Map(ids.map(id=>{const host=element(),canvas=element(),labelHost=element(),content=element();host.querySelector=selector=>({'.interlocutor-background':canvas,'.interlocutor-field-labels':labelHost,'.interlocutor-content':content})[selector];return [id,host]}));
   const Modules=new Map();
   for(const id of ids){
@@ -56,7 +56,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   }
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
-  return {Modules,runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
+  return {context,elements,Modules,runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
 }
 const f=boot(),runtime=f.runtime;
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
@@ -356,3 +356,19 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  refused.runtime.navigateGlobal('w');await drain();assert.equal(refused.runtime.state.activeAddress,'w');assert.equal(tries,2);assert.equal(refused.fetches.length,1);
  console.log('owner preparation progresses before install, cancellation preserves scene, ready reuse and refused preparation retry PASS');
 })().catch(e=>{console.error(e);process.exitCode=1});
+
+// Bounded declarations are actual boxes on the full presentation carrier.
+// An unrelated identity exercises resize, camera lending and shared compass.
+{
+ const f=boot(1,'',{top:170}, {}, {}, false,null,true),u=f.runtime.ui.get(ids[0]);
+ assert(u.bounded);assert.deepEqual({...u.carrier},{x:0,y:0,w:1000,h:800});
+ const n={style:{width:'36rem',height:'max-content',right:'12px',setProperty(k,v){this[k]=v}},dataset:{},isConnected:true};u.bind(n,'slot');
+ assert.equal(n.style.inlineSize,'500px');assert.equal(n.style.blockSize,'400px');assert.equal(n.style.right,'auto');assert.equal(n.style.overflow,'auto');assert.equal(n.style.contain,'layout paint');
+ assert.deepEqual({...f.options.get(ids[0]).presentation()},{x:500,y:0,left:500,top:0,right:1000,bottom:400,width:500,height:400});
+ const before=JSON.stringify(u.state);f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();assert.equal(n.style.inlineSize,'195px');assert.equal(n.style.blockSize,'422px');assert.equal(JSON.stringify(u.state),before);
+ const mini=f.elements.get('mini');f.emit('sss:safe-area');assert.equal(mini.style.left,'195px');assert.equal(mini.style.top,'422px');assert.equal(mini.style.width,'195px');assert.equal(mini.style.height,'422px');assert.equal(mini.dataset.gridBounded,'true');
+ console.log('PASS — bounded arbitrary-owner grid enforces actual rectangles, unchanged addresses on resize, camera frame and shared compass bounds');
+}
+
+assert(boot(1,'',{}, {}, {},false,null,'template').runtime.ui.get(ids[0]).bounded,'the supplied role declaration depended on an extra flag');
+console.log('PASS — common role declarations bind actual extents without an extra user sizing flag');

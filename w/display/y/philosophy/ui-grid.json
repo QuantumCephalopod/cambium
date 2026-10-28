@@ -1,7 +1,8 @@
 {
   "schema": "sss.display.ui-grid.v2",
   "meta": {
-    "name": "organism:philosophy"
+    "name": "organism:philosophy",
+    "extent": "bounded"
   },
   "splits": [
     "",
@@ -14,18 +15,14 @@
     "xw",
     "xx",
     "xz",
+    "yw",
+    "yy",
+    "yz",
     "zx",
+    "zy",
     "zz"
   ],
   "fields": {
-    "Description": {
-      "cells": [
-        "wy",
-        "yw",
-        "yy"
-      ],
-      "label": "description"
-    },
     "compass": {
       "cells": [
         "zzw",
@@ -34,6 +31,19 @@
         "zzz"
       ],
       "label": "compass"
+    },
+    "description": {
+      "cells": [
+        "yww",
+        "ywx",
+        "ywy",
+        "ywz",
+        "yyw",
+        "yyx",
+        "yyy",
+        "yyz"
+      ],
+      "label": "description"
     },
     "header": {
       "cells": [
@@ -55,6 +65,15 @@
         "xxz"
       ],
       "label": "header"
+    },
+    "timeline": {
+      "cells": [
+        "yzy",
+        "yzz",
+        "zyy",
+        "zyz"
+      ],
+      "label": "time"
     },
     "viewfocus": {
       "cells": [

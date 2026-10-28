@@ -17,7 +17,7 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
   if(bad64!==null)maps[64][works[0].still]=bad64;
   if(bad512!==null)for(const s of ['still/0.webp','animation/0.webp','cluster_negative/1.webp'])maps[512][s]=bad512;
   const held=[];let running=0,peak=0;const ctx={console,Map,Set,Math,Object,Array,Float32Array,URL,setTimeout:()=>0,clearTimeout(){},addEventListener(){},document:{createElement:node},SSSInterlocutorModules:modules,SSSRepresentationHandoff:RH,SSSWorldView:{language:'en'},createImageBitmap:async(_,o)=>({width:o.resizeWidth,height:o.resizeHeight,close(){}}),fetch(url){requests.push(url);running++;peak=Math.max(peak,running);const response={ok:!((highFail&&url.includes('/512/'))||(lowFail&&url.includes('/64/'))),status:503,blob:async()=>{running--;return {size:100}}};return ((holdHigh&&url.includes('/512/'))||(holdLow&&url.includes('/64/')))?new Promise(resolve=>held.push(()=>resolve(response))):Promise.resolve(response)}};
-  vm.createContext(ctx);vm.runInContext(source.replace(/\}\)\(\);\s*$/,`globalThis.law={SHEET,BODY,focus,panelPlan,fitPanel,layout:()=>LAST,selected:()=>({selected,selectedRow}),setView:mode=>VIEW=mode};})();`),ctx);const module=modules.get('organism:schattenseiten'),projection={fat:'https://fat.invalid/x/',works,ranks:[],words:[],media_variants:maps,media_revisions:{64:'low-v1',512:'high-v1'}};module.fieldProjection(projection);return {module,projection,requests,peak:()=>peak,held,law:ctx.law,scope:ctx};
+  vm.createContext(ctx);vm.runInContext(source.replace(/\}\)\(\);\s*$/,`globalThis.law={SHEET,BODY,focus,fitPanel,layout:()=>LAST,selected:()=>({selected,selectedRow}),setView:mode=>VIEW=mode};})();`),ctx);const module=modules.get('organism:schattenseiten'),projection={fat:'https://fat.invalid/x/',works,ranks:[],words:[],media_variants:maps,media_revisions:{64:'low-v1',512:'high-v1'}};module.fieldProjection(projection);return {module,projection,requests,peak:()=>peak,held,law:ctx.law,scope:ctx};
 }
 (async()=>{
   const f=fixture(),hostGL=fakeGL(),entryGL=fakeGL(),args=gl=>({gl,proj:new Float32Array(16),view:new Float32Array(16),model:new Float32Array(16),ms:1000,rect:{left:0,top:0,height:800},dpr:1,lens:{x:100,y:100,r:70}});
@@ -55,16 +55,17 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
  const row=nodes().find(n=>n.dataset.row==='3');assert(row);row.events.click();assert.equal(f.law.selected().selectedRow,3);assert.equal(f.law.selected().selected,null);assert(f.law.focus());
  press('14');assert.equal(f.law.selected().selected.id,'14');assert(f.law.focus().scale>1);press('whole work');assert.equal(f.law.focus(),null);
  const UI=require('../../../w/ui-grid.js'),grid=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json'))));
- for(const [w,h]of [[1280,800],[390,844]]){const carrier={x:0,y:120,w,h:h-120},compass={left:w-276,right:w-12,top:h-300,bottom:h-12},rail={left:0,right:Math.min(352,w-24),top:120,bottom:200};const plan=f.law.panelPlan(UI,grid,carrier,[compass],rail,16);assert(plan,'no available panel '+w);const box={left:plan.left,right:plan.left+plan.width,top:plan.top,bottom:plan.top+plan.height};for(const occupied of [compass,rail])assert(box.right<=occupied.left||box.left>=occupied.right||box.bottom<=occupied.top||box.top>=occupied.bottom);assert(box.bottom<=h&&box.right<=w);assert(UI.leafSet(grid).includes(plan.cell));}
- // The same source controls stay reachable when the short screen admits no
- // separate panel leaf. Use real UI occupancy, not a second positioning grid.
- const short=fixture();short.scope.SSSUIGrid=UI;const host2=node('host'),content2=node('content'),compass={left:44,right:308,top:268,bottom:556};host2.getBoundingClientRect=()=>({left:0,top:0,width:320,height:568});
- short.module.render({host:host2,content:content2,projection:short.projection,ui:{state:UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json')))),carrier:{x:0,y:120,w:320,h:448},bind(){},refresh(){}},safeArea:{occupied:[compass]}});
- const layout=short.law.layout();layout.rail.getBoundingClientRect=()=>({left:0,right:296,top:120,bottom:200});short.module.activateFieldPoint({point:{work:short.projection.works[7]}});
- assert(layout.side.hidden);assert(layout.rail.children.some(n=>n.className==='ss-panel'));assert.equal(layout.rail.style.maxBlockSize,'140px');const panel=layout.rail.children.find(n=>n.className==='ss-panel');assert(!panel.hidden);assert(panel.children[0].children.some(n=>n.className==='ss-view-choices'));
+ for(const [w,h]of [[1280,800],[390,844]]){
+  const bound=fixture(),state=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json')))),before=JSON.stringify(state),bindings=[];
+  const ui={bounded:true,state,carrier:{x:0,y:0,w,h},rect(name){const b=UI.fieldInfo(state,name).bounds;return {x:b.x*w,y:b.y*h,width:b.w*w,height:b.h*h}},bind(el,name){bindings.push({el,name})}};
+  bound.module.render({host:node('host'),content:node('content'),projection:bound.projection,ui});assert.deepEqual(bindings.map(b=>b.name),['header','description','timeline']);
+  const timeline=UI.fieldInfo(state,'timeline').bounds,description=UI.fieldInfo(state,'description').bounds,view=UI.fieldInfo(state,'viewfocus').bounds;assert.deepEqual(description,{x:0,y:.5,w:.25,h:.5});assert.deepEqual(timeline,{x:.25,y:.875,w:.5,h:.125});assert.deepEqual(view,{x:.25,y:.25,w:.5,h:.5});
+  for(const work of bound.projection.works)bound.module.activateFieldPoint({point:{work}});bound.law.fitPanel();assert.equal(JSON.stringify(state),before,'selection relocated a declared field');
+  assert.equal(bound.law.layout().side.parentNode,bound.law.layout().rail,'documentation escaped its description scroller');
+ }
  // Source-authored German words stay source-exact even in the English interface;
  // explanatory copy does not impersonate the artist's unhandwritten work text.
  const actual=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json')));assert.equal(actual.words[0],'du gefällst mir.');assert.equal(actual.words[1],'mir gefällst du.');
  f.module.render({host,content,projection:{...f.projection,words:actual.words}});assert(nodes().some(n=>n.textContent==='du gefällst mir.'));assert(nodes().some(n=>n.textContent==='mir gefällst du.'));assert(nodes().some(n=>n.textContent==='The remaining work text is to be handwritten by the artist.'));
- console.log('Schattenseiten empty first row,49 identities/55 source slots, work-led row/work/return controls and actual lattice/compass coexistence PASS');
+ console.log('Schattenseiten empty first row,49 identities/55 source slots, work-led row/work/return controls and bounded declaration / stable timeline / description containment PASS');
 })().catch(e=>{console.error(e);process.exitCode=1});

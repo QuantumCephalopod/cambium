@@ -182,7 +182,7 @@ def main():
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
     check('swingback' not in world.lower(),'automatic Philosophy swingback returned')
     check("document.getElementById('site-registry')" in runtime and "document.getElementById('site-projections')" in runtime and "document.getElementById('site-ui-grids')" in runtime,'runtime is not fed by tree-derived registry/projections/UI grids')
-    check('function safeCarrier(host)' in runtime and 'function makeSiteUI(id,host,raw)' in runtime and 'ui:s.ui' in runtime and 'ui.refresh()' in runtime,'generic safe-carrier UI-grid projection missing from runtime')
+    check('function safeCarrier(host,bounded=false)' in runtime and 'function makeSiteUI(id,host,raw)' in runtime and 'ui:s.ui' in runtime and 'ui.refresh()' in runtime,'generic safe-carrier UI-grid projection missing from runtime')
     check(all(name not in runtime for name in expected_sites),'central runtime still names specimen identities')
     check(all(name not in safe for name in expected_sites),'safe-area contract still names specimen identities')
     check('SSSDisplaySafeArea' in runtime and 'safeArea:Safe.snapshot()' in runtime,'site modules do not receive the Display safe-area contract')

@@ -103,7 +103,7 @@ function fieldPointRecords(structure,projection){
   }
   return out;
 }
-function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope,environment=null,bodies=null}){
+function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope,environment=null,bodies=null,presentation=null}){
   if(!element||!canvas||!projection?.root)throw new Error('interlocutor field surface incomplete: '+id);
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
@@ -226,6 +226,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:bodyId,origin}}));
   }
   function hitBody(x,y,rect){
+    if(!insidePresentation(x,y,rect))return '';
     let best=null;
     for(const B of BODIES.values()){
       if(!B.active)continue;const pts=N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),rect));
@@ -330,7 +331,22 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     }else if(follow){cam={from:{center:[...follow.c],scale:Math.exp(follow.l)},to:frameFor(container()),start:performance.now()};follow=null}
   }
   function target(){return follow?{center:follow.c,scale:Math.exp(follow.l)}:currentFrame()}
-  function project(point,rect){const t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(rect.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=(rect.height/2)/Math.tan(Math.PI/6.6);return {x:rect.width/2+q[0]*scale*f/z,y:rect.height/2-q[1]*scale*f/z,z:q[2],front:z>0}}
+  let viewCache=null;
+  function viewBox(rect){
+    if(viewCache?.width===rect.width&&viewCache?.height===rect.height)return viewCache.box;
+    const p=typeof presentation==='function'?presentation():null;
+    if(!p||![p.x??p.left,p.y??p.top,p.width,p.height].every(Number.isFinite)||p.width<=0||p.height<=0)return {x:0,y:0,width:rect.width,height:rect.height,bounded:false};
+    const x=Math.max(0,Math.min(rect.width,p.x??p.left)),y=Math.max(0,Math.min(rect.height,p.y??p.top)),box={x,y,width:Math.max(1,Math.min(p.width,rect.width-x)),height:Math.max(1,Math.min(p.height,rect.height-y)),bounded:true};viewCache={width:rect.width,height:rect.height,box};return box;
+  }
+  function insidePresentation(x,y,rect){const b=viewBox(rect);return !b.bounded||(x>=b.x&&x<=b.x+b.width&&y>=b.y&&y<=b.y+b.height)}
+  function worldClip(rect,d=1){if(!gl)return;const b=viewBox(rect);if(!b.bounded){gl.disable(gl.SCISSOR_TEST);return}gl.enable(gl.SCISSOR_TEST);gl.scissor(Math.floor(b.x*d),Math.floor((rect.height-b.y-b.height)*d),Math.ceil(b.width*d),Math.ceil(b.height*d));}
+  function fieldProjectionMatrix(rect){
+    const b=viewBox(rect),span=b.bounded?Math.min(b.width,b.height):b.height,stretch=b.height/Math.max(1,span),half=3.2*Math.tan(Math.PI/6.6)*stretch;
+    const P=ORTHO?orthographic(half,b.width/b.height,.1,20):perspective(2*Math.atan(Math.tan(Math.PI/6.6)*stretch),b.width/b.height,.1,20);
+    if(!b.bounded)return P;const sx=b.width/rect.width,sy=b.height/rect.height,tx=(2*b.x+b.width)/rect.width-1,ty=1-(2*b.y+b.height)/rect.height;
+    for(let c=0;c<4;c++){P[c*4]=sx*P[c*4]+tx*P[c*4+3];P[c*4+1]=sy*P[c*4+1]+ty*P[c*4+3]}return P;
+  }
+  function project(point,rect){const b=viewBox(rect),t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(b.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=((b.bounded?Math.min(b.width,b.height):b.height)/2)/Math.tan(Math.PI/6.6);return {x:b.x+b.width/2+q[0]*scale*f/z,y:b.y+b.height/2-q[1]*scale*f/z,z:q[2],front:z>0};}
   function pointInTriangle(x,y,a,b,c){
     const area=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
     const p={x,y},s1=area(a,b,p),s2=area(b,c,p),s3=area(c,a,p);
@@ -338,6 +354,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return !(hasNeg&&hasPos);
   }
   function hitFace(x,y,rect){
+    if(!insidePresentation(x,y,rect))return '';
     let best=null;
     for(const a of structure.addresses){
       const pts=a.tet.map(p=>project(p,rect));
@@ -352,6 +369,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   /* Selection is local: only the current container's children can be entered. */
   function hitChild(x,y,rect){
+    if(!insidePresentation(x,y,rect))return '';
     const c=container();let best=null;
     for(const a of structure.addresses){
       if(a.path.length!==c.length+1||!a.path.startsWith(c))continue;
@@ -372,6 +390,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return {id:bodyId,x:c.x,y:c.y,z:c.z,r:ext,width:r.width,height:r.height};
   }
   function hitPoint(x,y,rect){
+    if(!insidePresentation(x,y,rect))return null;
     let best=null;
     for(const rec of visible){
       const p=project(rec.world,rect),radius=rec.spec.kind==='holon'?14:10,d=Math.hypot(x-p.x,y-p.y);
@@ -544,7 +563,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   function drawLabelInk(r,w,h,additionalTarget=null,foreground=null){
     const Ink=globalThis.SSSDisplayLabelInk;if(!Ink||!labelHost)return;
     if(!labelInk)labelInk=Ink.create(gl,labelHost);
-    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget,foreground)?'1':'0';
+    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget,foreground,viewBox(r).bounded?viewBox(r):null)?'1':'0';
   }
   addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview();disposeForeground()});
   function disposePreview(){if(!PREVIEW)return;gl.deleteFramebuffer(PREVIEW.fb);gl.deleteRenderbuffer(PREVIEW.depth);gl.deleteTexture(PREVIEW.tex);PREVIEW=null}
@@ -588,7 +607,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
           if(placeholder&&(typeof B.draw==='function'||typeof B.preview!=='function'))drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,false,true);
           else{
             const previewModel=model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k));
-            if(B.preview({gl,proj,view,model:previewModel,ms,rect:r,dpr:d,lens:null})===false&&PLAIN)drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,true);
+            if(B.preview({gl,proj,view,model:previewModel,ms,rect:r,viewRect:viewBox(r),dpr:d,lens:null})===false&&PLAIN)drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,true);
           }
         }catch(err){canvas.dataset.previewError=String(err?.message||err);if(PLAIN)drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,true)}
       }
@@ -616,10 +635,10 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       gl.bindFramebuffer=function(kind,value){return bind.call(gl,kind,value===null?FOREGROUND.fb:value)};
       // Straight-alpha owner draws need coverage alpha in a transparent target.
       gl.blendFunc=function(src,dst){if(src===gl.SRC_ALPHA&&dst===gl.ONE_MINUS_SRC_ALPHA)gl.blendFuncSeparate(src,dst,gl.ONE,dst);else blend.call(gl,src,dst)};
-      const result=globalThis.SSSDisplayLens?.foreground?.(g.snap.lens.lock.id,{fieldId:id,gl,proj,view,model:model(W.orientation,base*t.scale,t.center),ms,width:w,height:h,dpr:d,rect:r,drawBody:bodyId=>{
+      worldClip(r,d);const result=globalThis.SSSDisplayLens?.foreground?.(g.snap.lens.lock.id,{fieldId:id,gl,proj,view,model:model(W.orientation,base*t.scale,t.center),ms,width:w,height:h,dpr:d,rect:r,drawBody:bodyId=>{
         const B=fb.find(b=>b.id===bodyId);if(!B)return false;g.targetBody=bodyId;drawBodyGL(B,proj,view,t,base,ms,r,d,w,h);return true;
       }});
-      if(Array.isArray(result)){drawComposite(result.filter(c=>c?.width>0&&c?.height>0),w,h);ready=true}else ready=result===true;
+      if(Array.isArray(result)){gl.disable(gl.SCISSOR_TEST);drawComposite(result.filter(c=>c?.width>0&&c?.height>0),w,h);ready=true}else ready=result===true;
     }catch(error){canvas.dataset.foregroundError=String(error?.message||error)}
     finally{gl.blendFunc=blend;gl.bindFramebuffer=bind;gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.bindRenderbuffer(gl.RENDERBUFFER,rb);gl.activeTexture(active);gl.bindTexture(gl.TEXTURE_2D,texture);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.depthMask(false);gl.disable(gl.SCISSOR_TEST)}
     return ready;
@@ -694,9 +713,9 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   function prepareClear(){
     gl.disable(gl.SCISSOR_TEST);gl.colorMask(true,true,true,true);gl.depthMask(true);gl.clearDepth(1);
   }
-  function drawPointsGL(proj,view,mdl,d){
+  function drawPointsGL(proj,view,mdl,d,rect){
     if(!PG)return;
-    prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);
+    prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);worldClip(rect,d);
     gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.enable(gl.DEPTH_TEST);gl.depthMask(true);
     gl.useProgram(PG.p);gl.uniformMatrix4fv(PG.U.proj,false,proj);gl.uniformMatrix4fv(PG.U.view,false,view);gl.uniformMatrix4fv(PG.U.model,false,mdl);gl.uniform1f(PG.U.pointScale,d);gl.uniform3fv(PG.pal,new Float32Array(colors.flat()));gl.bindVertexArray(PG.vao);gl.drawArrays(gl.POINTS,0,PG.count);
   }
@@ -731,9 +750,9 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     const bm=model(W.orientation,base*t.scale,t.center.map((v,j)=>v-B.pos[j]));
     if(!plain&&typeof B.draw==='function'){
       const target=gl.getParameter(gl.FRAMEBUFFER_BINDING);let drawn=false;
-      try{drawn=B.draw({gl,proj,view,drawPlaceholder:PLAIN?()=>drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,true):null,model:model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k)),projection:B.projection,ms,rect:r,dpr:d,orientation:W.orientation})!==false}
+      try{drawn=B.draw({gl,proj,view,drawPlaceholder:PLAIN?()=>drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,true):null,model:model(W.orientation,base*t.scale*B.place.k,t.center.map((v,j)=>(v-B.pos[j])/B.place.k)),projection:B.projection,ms,rect:r,viewRect:viewBox(r),dpr:d,orientation:W.orientation})!==false}
       catch(err){canvas.dataset.bodyError=String(err?.message||err)}
-      finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.disable(gl.SCISSOR_TEST)}
+      finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);worldClip(r,d)}
       if(drawn)return true;
       if(inputOnly){drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,true);return false;}
       if(bs.blend){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}else gl.disable(gl.BLEND);
@@ -744,10 +763,12 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.bindVertexArray(plain?B.plainVAO:B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
   }
   function draw(ms){
+    viewCache=null;
     if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
-    followStep(ms);refreshProjection(ms);refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(r.width<560?1.42:1.75);
-    const proj=ORTHO?orthographic(3.2*Math.tan(Math.PI/6.6),w/h,.1,20):perspective(Math.PI/3.3,w/h,.1,20),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
+    followStep(ms);refreshProjection(ms);refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(viewBox(r).width<560?1.42:1.75);
+    const proj=fieldProjectionMatrix(r),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
+    const box=viewBox(r);if(labelHost?.style)labelHost.style.clipPath=box.bounded?`inset(${box.y}px ${r.width-box.x-box.width}px ${r.height-box.y-box.height}px ${box.x}px)`:'none';
     updateLabels(r);
     const fb=floatingBodies();
     for(const B of fb)B.pos=driftAt(B.drift,ms);
@@ -770,7 +791,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         gl.drawArrays(gl.TRIANGLES,0,3);prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);
         canvas.dataset.hostView=hv.e.hostId;canvas.dataset.hostPath=hv.e.path;
       }else{delete canvas.dataset.hostView;delete canvas.dataset.hostPath}
-      applyState();gl.useProgram(GL.p);
+      worldClip(r,d);applyState();gl.useProgram(GL.p);
       gl.uniformMatrix4fv(GL.U.proj,false,proj);gl.uniformMatrix4fv(GL.U.view,false,view);gl.uniformMatrix4fv(GL.U.model,false,mdl);
       gl.uniform1f(GL.U.time,ms*.001);gl.uniform1f(GL.U.focus,focus);if(GL.U.resolution)gl.uniform2f(GL.U.resolution,w,h);gl.uniform3fv(GL.pal,new Float32Array(colors.flat()));
       if(typeof shader.beforeDraw==='function')shader.beforeDraw({gl,program:GL.p,ms,focus,width:w,height:h,orientation:W.orientation});
@@ -785,21 +806,22 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
        * field's Descent frame (same camera, orientation and container), beneath the
        * point layer. Meaning stays in the site; Display only lends the frame. */
       if(typeof shader.afterDraw==='function'){
-        try{shader.afterDraw({gl,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation})}
+        try{shader.afterDraw({gl,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation,rect:r,viewRect:viewBox(r)})}
         catch(err){if(!canvas.dataset.layerError)console.warn('site layer failed for '+id,err);canvas.dataset.layerError=String(err?.message||err)}
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);
       }
-      drawPointsGL(proj,view,mdl,d);
+      worldClip(r,d);drawPointsGL(proj,view,mdl,d,r);gl.disable(gl.SCISSOR_TEST);
       {const comp=glass?compositeSources():null;if(comp?.length)drawComposite(comp,w,h);const on=comp?.length?'1':'0';if(canvas.dataset.composite!==on)canvas.dataset.composite=on}
       if(glass){if(!placeholder)previewReady=drawPreview(glass,fb,r,d,w,h,proj,view,t,base,ms);const sharp=drawForeground(glass,fb,r,d,w,h,proj,view,t,base,ms);drawLabelInk(r,w,h,previewReady?PREVIEW.fb:null,sharp&&glass.targetBody?{framebuffer:FOREGROUND.fb,element:bodyLabels.get(glass.targetBody)}:null);glassEnd(glass,w,h,previewReady,sharp)}else resetLabelInk();
     }else if(ctx){
       resetLabelInk();
       const clear=Array.isArray(shader.clear)&&shader.clear.length>=3?shader.clear:[.014,.019,.027,1],alpha=Number(shader.fallbackAlpha??.12);
       ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle=`rgb(${clear.slice(0,3).map(v=>Math.round(clamp(v)*255)).join(',')})`;ctx.fillRect(0,0,r.width,r.height);
+      ctx.save();if(box.bounded){ctx.beginPath();ctx.rect(box.x,box.y,box.width,box.height);ctx.clip()}
       if(alpha>0)for(const cell of cells){const pts=cell.tet.map(p=>project(p,r)),c=colors[geneIndex[cell.path[0]]??0];for(const f of faceIx){ctx.beginPath();ctx.moveTo(pts[f[0]].x,pts[f[0]].y);ctx.lineTo(pts[f[1]].x,pts[f[1]].y);ctx.lineTo(pts[f[2]].x,pts[f[2]].y);ctx.closePath();ctx.fillStyle=`rgba(${c.map(v=>Math.round(v*255)).join(',')},${alpha})`;ctx.fill();ctx.strokeStyle='rgba(241,239,233,.08)';ctx.stroke()}}
       drawBodies2D(fb,r);
-      if(typeof shader.afterDraw==='function'){try{shader.afterDraw({gl:null,context2D:ctx,canvas,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation})}catch(err){canvas.dataset.layerError=String(err?.message||err)}}
-      drawPoints2D(r);
+      if(typeof shader.afterDraw==='function'){try{shader.afterDraw({gl:null,context2D:ctx,canvas,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation,rect:r,viewRect:viewBox(r)})}catch(err){canvas.dataset.layerError=String(err?.message||err)}}
+      drawPoints2D(r);ctx.restore();
     }
     requestAnimationFrame(draw)
   }
@@ -832,7 +854,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
   }
   requestAnimationFrame(draw);
-  api=Object.freeze({
+  api=Object.freeze({presentationRect:()=>viewBox(canvas.getBoundingClientRect()),
     id,shaderId:shader.id,element,canvas,get projection(){return projection},palette,inspectable,draggable,interactive:inspectable,localScope,
     selectPoint,projectAddressCenter,projectBody,get container(){return container()},approachBody(bodyId){const B=BODIES.get(bodyId);if(!B?.active)return false;cam={from:currentFrame(),to:{center:[...B.pos],scale:1/B.place.k},start:performance.now()};return true},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},

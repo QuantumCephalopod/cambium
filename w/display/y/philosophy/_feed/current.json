@@ -25,14 +25,16 @@
   },
   "home": {
     "changed_scope": [
-      "ui-grid.json",
       "RITUALS/organism/RITUAL.md",
-      "_waste/metabolized-20261028-NUTRIENT__description-grid-span__20261028.md"
+      "render.js",
+      "ui-grid.json",
+      "_stomach/NUTRIENT__bounded-presentation-layout__20261028.md",
+      "_waste/metabolized-20261028-NUTRIENT__bounded-presentation-layout__20261028.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — Philosophy description uses Philipp’s supplied wy/yw/yy span: a left-quarter column below the header across the remaining three-quarter carrier height. Existing root/locus content, typography, scrolling and stable droplette field contact remain."
+    "outcome": "COMPLETED — supplied lower-left description and common header/compass/viewfocus are actual containing rectangles. Root/locus prose, semantic anatomy, contact identity and continuation remain intact."
   },
-  "observed_at_utc": "2026-10-28T13:21:01.594166Z",
+  "observed_at_utc": "2026-10-28T20:21:51.002464Z",
   "owner": "philosophy",
   "phenotype": {
     "w": {
@@ -48,21 +50,21 @@
       "noun": "Care"
     }
   },
-  "reflected_home_event": "philosophy-description-grid-placement-20261028",
+  "reflected_home_event": "philosophy-bounded-presentation-return-20261028",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "ee73cbfbe27015dfaa92f88edcc1dfd542eea2f4fc29f90ec924b374ffaaafa8"
+      "sha256": "e68cf1910280a3c68aa7331158a34cee9c083c0baeec96666dc882b72756cc7d"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [],
-    "waste_direct_count": 15
+    "waste_direct_count": 16
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "dc23ca2bf2ab2e90fca51871957f4a0ca45ab512"
+    "source_revision": "de1a2405c77fcdcd9a31fd4ed625b7e91fac1eaa"
   }
 }

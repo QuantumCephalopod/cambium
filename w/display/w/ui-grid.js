@@ -170,9 +170,10 @@
     const raw=clone(input||emptyState());
     const schema=raw.schema||SCHEMA;
     if(schema!==SCHEMA&&schema!==LEGACY_SCHEMA)throw new Error('unsupported UI-grid schema '+schema);
+    if(raw.meta?.extent!==undefined&&!['bounded','intrinsic'].includes(raw.meta.extent))throw new Error('unknown UI extent '+raw.meta.extent);
     const s={
       schema:SCHEMA,
-      meta:{name:String(raw.meta?.name||'layout')},
+      meta:{name:String(raw.meta?.name||'layout'),...(raw.meta?.extent?{extent:raw.meta.extent}:{})},
       splits:canonicalCells(Array.isArray(raw.splits)?raw.splits:[]),
       fields:{},
       elements:{}

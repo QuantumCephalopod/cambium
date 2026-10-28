@@ -147,14 +147,14 @@ void main(){vec4 b=uB[gl_InstanceID];vec3 l=V[S[gl_VertexID]];
   gl_Position=uProj*uView*w;}`;
 const FS=`#version 300 es
 precision highp float;precision highp sampler2DArray;
-uniform sampler2DArray uImg;uniform int uHot;uniform float uDim;uniform float uReady[64];uniform vec4 uClip;
+uniform sampler2DArray uImg;uniform int uHot;uniform vec2 uRow;uniform float uDim;uniform float uReady[64];uniform vec4 uClip;
 in vec2 vUV;in vec3 vW;flat in int vI;out vec4 o;
 void main(){if(uClip.w>.5&&distance(gl_FragCoord.xy,uClip.xy)>uClip.z)discard;float r=uReady[vI];if(r<.004)discard;
   vec3 c=texture(uImg,vec3(vUV,float(vI))).rgb;
   vec3 n=normalize(cross(dFdx(vW),dFdy(vW)));
   c*=mix(.62,1.,clamp(abs(n.z)*1.7320508,0.,1.));
   float a=r;
-  if(vI!=uHot)a*=1.-.88*uDim;
+  if((uHot>=0&&vI!=uHot)||(uHot<0&&uRow.x>=0.&&(float(vI)<uRow.x||float(vI)>uRow.y)))a*=1.-.88*uDim;
   o=vec4(c,a);}`;
 function prog(gl,vs,fs){const p=gl.createProgram();for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const h=gl.createShader(t);gl.shaderSource(h,s);gl.compileShader(h);
   if(!gl.getShaderParameter(h,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(h));gl.attachShader(p,h)}gl.linkProgram(p);return p}
@@ -171,20 +171,20 @@ function tier(gl,size){
   if(changed&&size===512){gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.generateMipmap(gl.TEXTURE_2D_ARRAY)}
   return {record,L};
 }
-function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=true},high=false){
+function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=true,viewRect=null},high=false){
   if(!gl||!BODY.list.length)return;
   const active=gl.getParameter(gl.ACTIVE_TEXTURE),program=gl.getParameter(gl.CURRENT_PROGRAM),vao=gl.getParameter(gl.VERTEX_ARRAY_BINDING),depth=gl.getParameter(gl.DEPTH_WRITEMASK),color=gl.getParameter(gl.COLOR_WRITEMASK),func=gl.getParameter(gl.DEPTH_FUNC),clear=gl.getParameter(gl.DEPTH_CLEAR_VALUE);
   const flags=[gl.DEPTH_TEST,gl.BLEND,gl.SCISSOR_TEST].map(k=>[k,gl.isEnabled(k)]),blend=[gl.BLEND_SRC_RGB,gl.BLEND_DST_RGB,gl.BLEND_SRC_ALPHA,gl.BLEND_DST_ALPHA].map(k=>gl.getParameter(k));
   gl.activeTexture(gl.TEXTURE0);const texture=gl.getParameter(gl.TEXTURE_BINDING_2D_ARRAY);
   try{
     const B=new Float32Array(64*4);BODY.list.forEach((b,i)=>B.set([...b.world,b.size],i*4));
-    const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));if(high){BODY.last=ms;BODY.dim+=((selected?1:0)-BODY.dim)*(1-Math.exp(-dt*4))}
-    gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);if(clearDepth){gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT)}gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));if(high){BODY.last=ms;BODY.dim+=((selected||selectedRow?1:0)-BODY.dim)*(1-Math.exp(-dt*4))}
+    gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);if(clearDepth){gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT)}if(viewRect?.bounded&&rect){gl.enable(gl.SCISSOR_TEST);gl.scissor(Math.floor(viewRect.x*dpr),Math.floor((rect.height-viewRect.y-viewRect.height)*dpr),Math.ceil(viewRect.width*dpr),Math.ceil(viewRect.height*dpr))}gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
     for(const size of (high?[64,512]:[64])){
       const {record,L}=tier(gl,size);gl.useProgram(record.p);gl.bindVertexArray(record.vao);
       gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uProj'),false,proj);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uView'),false,view);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uModel'),false,model);
       gl.uniform4fv(gl.getUniformLocation(record.p,'uB'),B);gl.uniform1fv(gl.getUniformLocation(record.p,'uReady'),L.ready);
-      gl.uniform1i(gl.getUniformLocation(record.p,'uHot'),high&&selected?BODY.list.findIndex(b=>b.work===selected):-1);gl.uniform1f(gl.getUniformLocation(record.p,'uDim'),high?BODY.dim:0);
+      gl.uniform1i(gl.getUniformLocation(record.p,'uHot'),high&&selected?BODY.list.findIndex(b=>b.work===selected):-1);const rowIndices=high&&selectedRow?BODY.list.flatMap((b,i)=>b.row===selectedRow-1?[i]:[]):[];gl.uniform2f(gl.getUniformLocation(record.p,'uRow'),rowIndices.length?Math.min(...rowIndices):-1,rowIndices.length?Math.max(...rowIndices):-1);gl.uniform1f(gl.getUniformLocation(record.p,'uDim'),high?BODY.dim:0);
       gl.uniform4f(gl.getUniformLocation(record.p,'uClip'),lens?(lens.x-rect.left)*dpr:0,lens?(rect.height-(lens.y-rect.top))*dpr:0,lens?lens.r*dpr:0,lens?1:0);
       gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.uniform1i(gl.getUniformLocation(record.p,'uImg'),0);
       gl.colorMask(false,false,false,false);gl.depthFunc(size===64?gl.LESS:gl.LEQUAL);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,6,BODY.list.length);
@@ -194,7 +194,7 @@ function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=t
     gl.bindTexture(gl.TEXTURE_2D_ARRAY,texture);gl.activeTexture(active);gl.useProgram(program);gl.bindVertexArray(vao);gl.depthMask(depth);gl.colorMask(...color);gl.depthFunc(func);gl.clearDepth(clear);gl.blendFuncSeparate(...blend);for(const [k,on] of flags)on?gl.enable(k):gl.disable(k);
   }
 }
-function afterDraw(args){if(!ENTERED)return;BODY.viewport=args.rect;entryGL=args.gl;ensureTier(64);ensureTier(512);drawSheet(args,true)}
+function afterDraw(args){if(!ENTERED)return;BODY.viewport=args.viewRect||args.rect;entryGL=args.gl;ensureTier(64);ensureTier(512);drawSheet(args,true)}
 function preview(args){ensureTier(64);drawSheet(args,false)}
 /* Descent into one shadow: Display's continuous focus carries the camera until the body fills the view */
 function focus(){
@@ -259,34 +259,11 @@ function showWork(w){
  }
  panel.append(b);fitPanel();
 }
-/* Candidate anchors are actual leaves of the existing UI lattice. Only this
- * site's intrinsic panel extent is fitted around current shared occupancy. */
-function panelPlan(UI,state,carrier,occupied,rail,rem=16){
- const variant=carrier.h>carrier.w?'portrait':'',base=UI.fieldInfo(state,'side',variant),depth=base.depth,gap=rem*.5,minW=Math.min(rem*10,carrier.w-gap*2),minH=Math.min(rem*7,carrier.h-gap*2);
- const addresses=[...new Set(UI.leafSet(state).map(a=>a.slice(0,depth)))],blocks=[...occupied.map(x=>x.rect||x),...(rail?[rail]:[])];let best=null;
- for(const cell of addresses){const at=UI.coord(cell),left=carrier.x+at.x/2**depth*carrier.w,top=carrier.y+at.y/2**depth*carrier.h;let width=Math.min(rem*24,carrier.x+carrier.w-left-gap),height=carrier.y+carrier.h-top-gap;
-  for(const b of blocks){if(b.right<=left||b.left>=left+width||b.bottom<=top||b.top>=top+height)continue;
-   if(b.top>top+gap)height=Math.min(height,b.top-top-gap);else if(b.left>left+gap)width=Math.min(width,b.left-left-gap);else{height=0;break}}
-  if(width<minW||height<minH)continue;const score=width*height/(1+Math.abs(at.x-base.minX)+Math.abs(at.y-base.minY));
-  if(!best||score>best.score)best={cell,left,top,width,height,variant,score};
- }
- return best;
-}
+/* The common grid fixes the containing rectangle; image size and reading
+ * flow stay owner-local inside that rectangle. Selection never moves cells. */
 function fitPanel(){
- const last=LAST,ui=last?.ui,UI=globalThis.SSSUIGrid;if(!ui?.state||!UI||!panel||panel.hidden||last.host.hidden)return;
- const host=last.host.getBoundingClientRect?.();if(!host)return;
- if(panel.parentNode===last.rail)last.side.append(panel);last.side.hidden=false;last.rail.style.maxBlockSize='';
- const rect=last.rail.getBoundingClientRect?.(),carrier={...ui.carrier,x:host.left+ui.carrier.x,y:host.top+ui.carrier.y},occupied=[...(globalThis.SSSDisplaySafeArea?.snapshot?.()?.occupied||last.safeArea?.occupied||[]),...[last.bottom?.getBoundingClientRect?.()].filter(b=>b&&b.width>0&&b.height>0)];
- if(!SIDE_BASE)SIDE_BASE=JSON.parse(JSON.stringify(ui.state.fields.side));
- const state={...ui.state,fields:{...ui.state.fields,side:SIDE_BASE}},rem=globalThis.SSSDisplayType?.rankPx?.(0)||16,plan=panelPlan(UI,state,carrier,occupied,rect,rem);
- if(!plan){
-  /* On a short carrier the existing rail becomes one scrollable reading flow,
-   * rather than hiding the work controls when no separate lattice leaf fits. */
-  last.rail.append(panel);last.side.hidden=true;let bottom=carrier.y+carrier.h-rem*.5;
-  if(rect)for(const item of occupied){const b=item.rect||item;if(b.left<rect.right&&b.right>rect.left&&b.top>rect.top)bottom=Math.min(bottom,b.top-rem*.5)}
-  if(rect)last.rail.style.maxBlockSize=Math.max(rem,bottom-rect.top)+'px';return;
- }
- const field=JSON.parse(JSON.stringify(SIDE_BASE));if(plan.variant)field.variants={...field.variants,[plan.variant]:[plan.cell]};else field.cells=[plan.cell];ui.state.fields.side=field;ui.refresh();last.side.style.maxInlineSize=plan.width+'px';last.side.style.maxBlockSize=plan.height+'px';last.side.style.setProperty?.('--ss-panel-height',plan.height+'px');
+ const last=LAST,ui=last?.ui;if(!ui?.bounded||!last.side||!ui.rect)return;
+ const h=ui.rect('description').height,value=h+'px';if(last.side.style.getPropertyValue?.('--ss-panel-height')!==value)last.side.style.setProperty?.('--ss-panel-height',value);
 }
 let LAST=null;
 function render({host,content,projection,ui=null,safeArea=null}={}){
@@ -294,7 +271,7 @@ function render({host,content,projection,ui=null,safeArea=null}={}){
  P=projection;ENTERED=true;ensureTier(64);ensureTier(512);host.hidden=false;content.className='interlocutor-content schattenseiten-content';content.replaceChildren();
  const t=T[lang()],works=projection.works,ranks=projection.ranks||[],clusters=new Set(works.map(w=>w.cluster_positive).filter(Boolean)).size;
  const rail=el('div','ss-hud-rail'),top=el('div','ss-hud-top');top.append(el('h1','',tx(projection.title)||'Schattenseiten'),el('span','ss-hud-series','Schattenseiten'));
- for(const [v,l]of [[works.length,t.shadows],[ranks.length,t.ranks],[clusters,t.clusters]])top.append(stat(v,l));rail.append(top);
+ for(const [v,l]of [[works.length,t.shadows],[ranks.length,t.ranks],[clusters,t.clusters]])top.append(stat(v,l));const header=el('div','ss-hud-header');header.append(top);
  rail.append(el('p','ss-intro',t.intro));
  const about=el('details','ss-about');about.append(el('summary','',t.about),el('p','ss-description',t.description));rail.append(about);
  const navigation=el('nav','ss-rows');navigation.setAttribute?.('aria-label',t.rows);const rowButtons=[];
@@ -302,14 +279,14 @@ function render({host,content,projection,ui=null,safeArea=null}={}){
  const words=el('details','ss-author-words');words.append(el('summary','',t.workWords));for(const word of projection.words||[])words.append(el('p','ss-word'+(word?.placeholder?' ss-placeholder':''),word?.placeholder?t.unwritten:tx(word)));rail.append(words);
  const side=el('div','ss-hud-side');panel=el('div','ss-panel');side.append(panel);
  const bottom=el('div','ss-hud-bottom'),breadcrumb=el('nav','ss-breadcrumb');breadcrumb.setAttribute?.('aria-label',t.path);bottom.append(breadcrumb,button(t.flat,()=>globalThis.SSSWorldView?.easeTo?.(shader.view.rest,900),false,'ss-hud-flat'));
- content.append(rail,side,bottom);LAST={host,content,projection,ui,safeArea,rail,side,bottom,breadcrumb,rowButtons};
- if(ui){ui.bind(rail,'rail');ui.bind(side,'side');ui.bind(bottom,'bottom')}
+ rail.append(side);content.append(header,rail,bottom);LAST={host,content,projection,ui,safeArea,rail,side,bottom,breadcrumb,rowButtons};
+ if(ui){ui.bind(header,'header');ui.bind(rail,'description');ui.bind(bottom,'timeline')}
  showWork(selected);updateNavigation();return true;
 }
 addEventListener('sss:language',()=>{if(LAST&&LAST.content.isConnected)render(LAST)});
 addEventListener('sss:safe-area',fitPanel);addEventListener('resize',fitPanel);
 function activateFieldPoint({point}={}){if(!ENTERED)return;selectWork(point?.work||null)}
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();if(SIDE_BASE&&LAST?.ui){LAST.ui.state.fields.side=SIDE_BASE;LAST.ui.refresh()}selected=null;selectedRow=null;panel=null;LAST=null;SIDE_BASE=null;ENTERED=false;MEDIA.get(512).setActive(false);if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
+function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;selectedRow=null;panel=null;LAST=null;SIDE_BASE=null;ENTERED=false;MEDIA.get(512).setActive(false);if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
 addEventListener('pagehide',resetMedia);
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
 })();

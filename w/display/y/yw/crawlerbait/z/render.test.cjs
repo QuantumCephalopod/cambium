@@ -243,7 +243,7 @@ try {
   global.SSSWorldView={language};moduleRef.fieldProjection(projection);
   const host=new Element('section'),content=new Element('div'),bound=[];
   assert(moduleRef.render({host,content,projection,ui:{bind:(el,name)=>bound.push(name)}}));
-  assert.deepStrictEqual(bound,['rail','bottom'],'selected context created a competing overlay');
+  assert.deepStrictEqual(bound,['header','description','timeline'],'selected context created a competing overlay');
   assert.equal(content.querySelector('h1').textContent,'Crawlerbait');
   const scrub=content.querySelector('.crawlerbait-scrub');scrub.value='400';scrub.listeners.input();
   const before=moduleRef.shader.snapshot({container:''}),modes=content.querySelector('.crawlerbait-modes').children;
@@ -260,14 +260,14 @@ try {
 console.log('PASS · actual DE/EN controls preserve historical clock and geography, one current rail and disclosed provenance');
 
 const UI=require('../../../../w/ui-grid.js'),layout=JSON.parse(fs.readFileSync(path.join(__dirname,'../ui-grid.json')));
-for(const [w,h] of [[390,844],[1280,800]])for(const open of [false,true]){
- const carrier={x:0,y:50,w,h:h-50},occupied=open?[{rect:{left:w-344,right:w,top:h-474,bottom:h}}]:[{rect:{left:w-40,right:w,top:h-44,bottom:h}}];
- const state=UI.normalizeState(layout),plan=law.hudPlacement(UI,state,carrier,occupied,44,136);assert(plan);
- assert(UI.spanInfo(state,plan.cells).ok);assert(plan.top>=carrier.y&&plan.left+plan.width<=w);
- for(const {rect:r} of occupied)assert(plan.top+44<=r.top||plan.top>=r.bottom||plan.left+plan.width<=r.left||plan.left>=r.right,'time controls intersect actual compass occupancy');
- if(w===390&&open)assert(plan.top<carrier.y+carrier.h/2,'open portrait compass did not earn an earlier canonical row');
+for(const [w,h] of [[390,844],[1280,800]]){
+ const state=UI.normalizeState(layout);
+ assert.equal(state.meta.extent,'bounded');const time=UI.fieldInfo(state,'timeline').bounds;
+ assert.deepStrictEqual(time,{x:.25,y:.875,w:.5,h:.125});
+ const view=UI.fieldInfo(state,'viewfocus').bounds,description=UI.fieldInfo(state,'description').bounds,compass=UI.fieldInfo(state,'compass').bounds;
+ assert.equal(description.x+description.w,view.x);assert(time.x+time.w<=compass.x);assert(view.y+view.h<=time.y);
 }
-console.log('PASS · canonical time rows and intrinsic widths avoid open/closed compass rectangles on both carriers');
+console.log('PASS · one immutable timeline geometry shared by Crawlerbait/Schattenseiten, disjoint from viewfocus/description/compass');
 
 const clipped=law.triangleRows([{x:0,y:-1e9},{x:1e9,y:1e9},{x:-1e9,y:1e9}],16,5,{top:0,bottom:844});assert(clipped.length<=53,'near-camera narrative enumerated offscreen rows');
 // A large visible place in a sibling must retain its actual form, rather than

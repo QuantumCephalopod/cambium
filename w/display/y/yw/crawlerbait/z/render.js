@@ -486,8 +486,8 @@ function typeBodies(now,pxOf){
   }
   return out;
 }
-function paintGoo({gl,proj,view,model,width,height,dpr,clip=null},diagnostic=true){
-  const region=(w,h)=>{if(!clip)return;const l=Math.max(0,Math.floor(clip[0]*w)-2),b=Math.max(0,Math.floor(clip[1]*h)-2),r=Math.min(w,Math.ceil(clip[2]*w)+2),t=Math.min(h,Math.ceil(clip[3]*h)+2);gl.enable(gl.SCISSOR_TEST);gl.scissor(l,b,Math.max(0,r-l),Math.max(0,t-b));};
+function paintGoo({gl,proj,view,model,width,height,dpr,clip=null,exact=false},diagnostic=true){
+  const region=(w,h)=>{if(!clip)return;const pad=exact?0:2,l=Math.max(0,Math.floor(clip[0]*w)-pad),b=Math.max(0,Math.floor(clip[1]*h)-pad),r=Math.min(w,Math.ceil(clip[2]*w)+pad),t=Math.min(h,Math.ceil(clip[3]*h)+pad);gl.enable(gl.SCISSOR_TEST);gl.scissor(l,b,Math.max(0,r-l),Math.max(0,t-b));};
   const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5];
   const Lr=layerFor(gl);if(Lr.off)return false;
   sizeTarget(Lr,width,height);
@@ -512,7 +512,7 @@ function paintGoo({gl,proj,view,model,width,height,dpr,clip=null},diagnostic=tru
   gl.canvas.dataset.gooLayer=`${SIM.alive.size} alive · ${SIM.resolved} bodies · ${SIM.colonies} colonies · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;}
   return true;
 }
-function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container}){
+function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container,viewRect=null,rect=null}){
   if(!SIM.life&&lastProjection){SIM.life=buildLife(lastProjection,growth);resetTo(0)}
   if(!SIM.life)return;
   SIM.container=typeof container==='string'?container:'';
@@ -527,7 +527,7 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   updateInk(screen,ms,width,height,dpr||1,canvas);
   if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
   if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
-  paintGoo({gl,proj,view,model,width,height,dpr});
+  const clip=viewRect?.bounded&&rect?[viewRect.x/rect.width,1-(viewRect.y+viewRect.height)/rect.height,(viewRect.x+viewRect.width)/rect.width,1-viewRect.y/rect.height]:null;paintGoo({gl,proj,view,model,width,height,dpr,clip,exact:!!clip});
   camFollow(ms);
   if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
     const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.cell===''?'body':'colony'} · fade ${CAM.o.fade.toFixed(2)}`}
@@ -623,7 +623,7 @@ function hudPlacement(UI,state,carrier,occupied,height,minWidth){
   return null;
 }
 function fitHud(){
-  const ui=INK.ui,UI=globalThis.SSSUIGrid,parent=INK.canvas?.parentNode;if(!ui?.state||!UI||!parent)return;
+  const ui=INK.ui,UI=globalThis.SSSUIGrid,parent=INK.canvas?.parentNode;if(!ui?.state||!UI||!parent||ui.bounded)return;
   const bottom=parent.querySelector('.crawlerbait-hud-bottom'),rail=parent.querySelector('.crawlerbait-hud-rail');if(!bottom||!rail)return;
   if(!INK.layout)INK.layout={base:JSON.parse(JSON.stringify(ui.state.fields.bottom))};
   const state={...ui.state,fields:{...ui.state.fields,bottom:INK.layout.base}},height=Math.max(bottom.getBoundingClientRect().height,typePx(0)*2.5);
@@ -640,6 +640,7 @@ function focusTarget(targetId,frame){
   return [c];
 }
 function updateInk(screen,ms,w,h,d,fieldCanvas){
+  const view=INK.ui?.bounded?INK.ui.rect('viewfocus'):null,within=p=>p?.front&&(!view||(p.x>=view.x&&p.x<=view.x+view.width&&p.y>=view.y&&p.y<=view.y+view.height));
   const c=INK.canvas;if(!c)return;INK.ms=ms;if(c.width!==w||c.height!==h){c.width=w;c.height=h}
   c.style.visibility=fieldCanvas?.dataset.composite==='1'?'hidden':'visible';
   const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w/d,h/d);
@@ -657,10 +658,10 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
     if(old){Object.assign(old,{point,text,color,narrative});return}
     INK.offers.set(id,{point,text,color,narrative});L?.offer?.(id,{kind:'body',foreground:frame=>focusTarget(id,frame),point:()=>{const p=INK.offers.get(id)?.point;return p?{x:rect.left+p.x,y:rect.top+p.y,r:Math.max(9,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext?targetFrame(t):null}});
   }
-  if(MODE==='beings')for(const k of GENES){const p=screen(colonyGeom(k).cen);offerWords('crawlerbait:type:'+k,p.front?p:null,`${KIND[k].name}. ${word(KIND_DE[k],KIND[k].does)}. ${SIM.typeCounts?.[k]||0} ${word('Besucher an dieser Stelle des Verlaufs','visitors at this point in the record')}.`,KIND[k].ink)}
+  if(MODE==='beings')for(const k of GENES){const p=screen(colonyGeom(k).cen);offerWords('crawlerbait:type:'+k,within(p)?p:null,`${KIND[k].name}. ${word(KIND_DE[k],KIND[k].does)}. ${SIM.typeCounts?.[k]||0} ${word('Besucher an dieser Stelle des Verlaufs','visitors at this point in the record')}.`,KIND[k].ink)}
   // Narrative identity survives a grazing angle: only its world projection can disappear.
   const tet=cellIn(V0,SIM.container),faces=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]],holes=faces.map(f=>f.map((i,j)=>screen(mid(tet[i],tet[f[(j+1)%3]]))));
-  const safe=INK.ui?.carrier||{x:0,y:0,w:rect.width,h:rect.height};
+  const safe=view?{x:view.x,y:view.y,w:view.width,h:view.height}:INK.ui?.carrier||{x:0,y:0,w:rect.width,h:rect.height};
   const rowSets=holes.filter(tri=>tri.every(p=>p.front)).map(tri=>freeRows(triangleRows(tri,typePx(-1)*1.4,5,{top:safe.y,bottom:safe.y+safe.h}).map(r=>{const x=Math.max(r.x,safe.x+10),right=Math.min(r.x+r.w,safe.x+safe.w-10);return {...r,x,w:right-x}}).filter(r=>r.y>=safe.y+10&&r.y+typePx(-1)*1.4<safe.y+safe.h-54&&r.w>Math.max(96,typePx(-1)*10))));
   rowSets.sort((a,b)=>b.reduce((n,r)=>n+r.w,0)-a.reduce((n,r)=>n+r.w,0));
   const rows=rowSets[0]||[];
@@ -884,7 +885,7 @@ function render({host,content,projection,ui=null,dependency=null}={}){
   // the HUD is locked to the screen's borders so the centre stays free:
   // left — who the reef is and who lives in it; right — the one being you ride with and the bait you chose; bottom-left — time
   const rail=el('div','crawlerbait-hud-rail');
-  rail.append(top);
+  content.append(top);if(ui)ui.bind(top,'header');
   const modes=el('div','crawlerbait-modes');for(const [mode,label]of [['reef',word('Riff','Reef')],['beings',word('Beings','Beings')]]){const button=el('button','crawlerbait-play',label);button.type='button';button.setAttribute('aria-pressed',String(MODE===mode));button.addEventListener('click',()=>{MODE=mode;camSet(false);if(life)life.camBox.hidden=mode!=='reef';if(inspectorHost)inspectorHost.hidden=mode!=='reef';for(const b of modes.children)b.setAttribute('aria-pressed',String(b===button));});modes.append(button)}rail.append(modes);
   storyLine(rail);
   const life=Array.isArray(projection.encounters)&&projection.encounters.length?lifeParts(projection):null;
@@ -894,8 +895,8 @@ function render({host,content,projection,ui=null,dependency=null}={}){
   inspectorHost=el('section','crawlerbait-inspector');inspectorHost.hidden=MODE!=='reef';
   side.append(inspectorHost);
 
-  rail.append(side);content.append(rail);if(ui)ui.bind(rail,'rail')
-  if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom);if(ui)ui.bind(bottom,'bottom')}
+  rail.append(side);content.append(rail);if(ui)ui.bind(rail,'description')
+  if(life){const bottom=el('div','crawlerbait-hud-bottom');bottom.append(life.bar);content.append(bottom);if(ui)ui.bind(bottom,'timeline')}
   const selected=selectedAddress?routes.find(r=>r.path===selectedAddress):null;
   renderInspector(selected||null);
   return true;
