@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.9"
+version: "1.10"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -24,15 +24,17 @@ Earlier local continuity lacks a recovered local HOME ledger; this remains a pro
 
 ## Body
 
-The work is titled **gefallen, gefunden** (the organ's folder is Schattenseiten). The current body is an 8×8 sheet: depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid. The current carrier places source row 1 (the forest, the seven that started everything) at the top, followed by source rows in order, and leaves the eighth display row empty. Each source row is one line of eight slots: seven shadows and, in the eighth, the cluster the row was cut from (free in source row 1). All slots are the same size. Nothing floats: each shadow rests in its leaf. The site declares a rest view (`shader.view`): along the shadow axis, in parallel projection, the whole is one flat picture, and turning it shows the tetrahedra. An `orthogonal` control returns to it. Selecting a shadow is Descent into it (`focus()`); the others recede. The side panel shows the cluster (positive and negative) it was cut from, and its animation.
+The work is titled **gefallen, gefunden** (the organ's folder is Schattenseiten). The current body is an 8×8 sheet: depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid. The first display row is empty, providing headroom below the upper liquid membrane. Source rows 1–7 follow in their original order in display rows 2–8; this presentation offset never rewrites source row, rank, cluster or work identity. Each source row is one line of eight slots: seven shadows and, in the eighth, the cluster the row was cut from (free in source row 1). All slots are the same size. Nothing floats: each shadow rests in its leaf. The site declares a rest view (`shader.view`): along the shadow axis, in parallel projection, the whole is one flat picture, and turning it shows the tetrahedra. An `orthogonal` control returns to it. Local focus follows the actual work: whole sheet → one source row/perspective → one shadow, with a breadcrumb back to row or whole work. Each row exposes its seven admitted shadows; this does not substitute generic Sierpinski rank for the work’s own stages. A selected work first shows its still; explicit controls expose its admitted positive/negative source cluster and recorded movement where declared. The orthogonal control changes orientation, not the chosen work.
 
-That current placement is superseded as a target by `_stomach/NUTRIENT__first-row-headroom__20261019.md`: the first display row is to remain empty while source order and identities are preserved. The implementation is still OPEN; no source genealogy is rewritten by that presentation decision. Work-led navigation and fuller documentation are separately admitted in `_stomach/NUTRIENT__work-led-navigation-and-documentation__20261019.md` and must be earned from the actual work rather than treating the current Sierpinski traversal as its explanation.
+The three 2026-10-19 presentation nutrients are completed and retained source-exact in local `_waste/`. Their owner-local HOME records the actual source, controls, geometry, media and narrow/wide technical witnesses. Subsequent concrete failures enter as new nutrients; no personal acceptance or downstream merge is a metabolic stage.
 
 Seen from the overview, the body uses the same occupied-slot sheet and declared64 draw as its preview/entered low representation through Display's neutral body frame. Its own cells preserve the actual source slot geometry in Canvas2D. The host draw does not clear the host's depth; remount retires only its context resources, and entry alone earns512.
 
 ## Words
 
-The two source-authored German sentences stay German in every language; their source wording remains Philipp's. Current visitor copy still contains marked placeholder tissue. `_stomach/NUTRIENT__work-description__20261019.md` admits a source-grounded curatorial description that makes the work intelligible to a new visitor; it does not invent artist statements or require Philipp to handwrite interface prose before agent-owned work can proceed. Descriptions and interface follow the witness's language (organ sentences arrive as `{de,en}` where they are descriptions), with Display's spelling transduction applied to rendered text.
+The two source-authored German sentences stay German in every language, byte-for-byte as admitted: “du gefällst mir.” and “mir gefällst du.” They are shown separately as words of the work. The remaining handwritten work text is explicitly still the artist’s unwritten text, not a placeholder for a missing interface description.
+
+The bilingual visitor description is source-grounded curatorial/interface tissue: 49 images, three ranks, seven source rows, one set/light/chooser, photographed/cropped selections and three shuffles per later rank. The forest walk, the first seven images and the first 28 images retain their actual relationships. Title **gefallen, gefunden** and stable site name **Schattenseiten** remain distinct. No new artist statement or unpublished documentation is invented. Descriptions and interface follow the witness’s language and Display’s spelling/shadow material.
 
 ## Boundaries
 
@@ -63,3 +65,6 @@ The selected-work sidebar also bounds its own inline/scroll extent from Display'
 Version1.8 current-law reconciliation (2026-10-19): retired continuity and earned media acceptance replace stale open-carrier/gate wording. Current sheet behavior is distinguished from the accepted first-row, description and work-led presentation targets in local intake. Original work words, media, source genealogy and runtime remain unchanged by this receptor correction.
 
 Version1.9 partial host fallback (2026-10-20): the host draw invokes the optional shared `drawPlaceholder()` in its current input before painting ready declared64 slots. Thus missing/slow/failed slots keep plain presence while ready opaque source tiles replace it, alongside transparent owner bodies that need no cover. Entered draws, source nearest sampling, media declarations, tier queues and actual works remain unchanged.
+
+
+Version1.10 work-led return (2026-10-28): the empty top display row preserves all49 works and55 occupied slots; source rows and identities remain unchanged. Source-grounded description and row/work/cluster/movement/return controls replace the unimplemented presentation targets above. Selected documentation uses only declared media and fits its intrinsic scroll extent around actual shared occupancy at existing UI-lattice anchors; when a short carrier cannot fit a separate panel, the existing rail carries one bounded scrollable reading flow. Actual source-pixel GLES at390×844 and1280×800, native control/geometry/refusal/cache/lifetime checks and the complete artifact check retain their precise technical scope. These checks do not claim browser decoder/CSS rasterization or physical-device FPS. Source projection and media tier law remain unchanged.

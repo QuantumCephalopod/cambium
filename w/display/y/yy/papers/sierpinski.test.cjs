@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source,field=null){
   const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require('../../../z/navigation-physiology.js'),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -203,3 +203,27 @@ console.log('Papers live endpoint material, facing/size gates and two actual ran
 {const glyphs=Array.from({length:4000},(_,i)=>({ch:String(i)})),edge={glyphs,unravel:0,weave:0};
 assert(api.foldedEdgeGlyphs(edge,80,1).length<=80);assert.equal(edge.glyphs.length,4000);
 edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening restores every authored glyph; the source words never change');}
+
+/* Bounded overview snack: actual public Source/Holon identities acquire and
+ * follow the shared lock, without entering inquiry or changing chamber state. */
+{
+ const a=load(),Lens=require('../../../z/display-lens.js'),projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),root=a.fieldProjection(projection).root,built=a.buildRecords(projection,root),identities=a.identityIndex(projection),parents=a.parentIndex(projection),chosen=[built.records.find(r=>identities.get(r.id).kind==='source'),built.records.find(r=>identities.get(r.id).kind==='holon')];
+ assert(chosen.every(Boolean));
+ for(const [width,height]of [[390,844],[1280,800]]){
+  const box={left:30,top:20,width,height,right:30+width,bottom:20+height},s={mounted:true,host:{hidden:false},records:chosen,recordById:new Map(chosen.map(r=>[r.id,r])),identities,parents,renderer:{V0},current:null,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},orgSim:{bodies:new Map(chosen.map((r,i)=>[r.id,{p:[(i?1:-1)*.05,0,0]}]))}};
+  a.setState(s);a.setLensAPI(Lens);const before=JSON.stringify(projection);a.syncOverviewLens(box,1000);
+  const targets=Lens.resolveTargets();assert.equal(targets.length,2);assert(targets.every(t=>t.kind==='body'));
+  const sourceTarget=targets.find(t=>t.id.endsWith(encodeURIComponent(chosen[0].id))),home={id:'home',kind:'hud',layer:'hud',cx:width/2,cy:height-30,hx:60,hy:30},view={w:width+60,h:height+40},drop=Lens.create(home,view);
+  for(const rec of chosen){
+   const target=Lens.resolveTargets().find(t=>t.id.endsWith(encodeURIComponent(rec.id)));Lens.lockTo(drop,target);
+   for(let frame=0;frame<120;frame++){s.orgSim.bodies.get(rec.id).p[0]+=.0003;a.syncOverviewLens(box,1000+frame*16);Lens.step(drop,home,1/60,view,null,Lens.resolveTargets(target.id).find(t=>t.id===target.id));}
+   assert.equal(drop.lock.id,target.id);assert.equal(s.current,null);assert.equal(s.chamberPath,'');assert.equal(JSON.stringify(projection),before);
+   const now=Lens.resolveTargets(target.id).find(t=>t.id===target.id);assert.notEqual(now.cx,target.cx);assert(Math.abs(drop.x-now.cx)<20,'drop did not follow '+rec.id);
+  }
+  s.orgSim.bodies.get(chosen[0].id).p[0]=100;a.syncOverviewLens(box,4000);assert(Lens.resolveTargets(sourceTarget.id).find(t=>t.id===sourceTarget.id).pending,'projection loss withdrew a live identity');
+  s.records=[chosen[1]];a.syncOverviewLens(box,4200);assert(!Lens.resolveTargets().some(t=>t.id===sourceTarget.id),'source removal retained an offer');
+  s.current={id:chosen[1].id};a.syncOverviewLens(box,4400);assert.equal(Lens.resolveTargets().length,0,'entered inquiry retained overview offers');
+  s.current=null;s.records=chosen;a.syncOverviewLens(box,4500);a.withdrawOverviewLens();assert.equal(Lens.resolveTargets().length,0);
+ }
+ console.log('Papers overview actual Source/Holon offers, moving shared softlock, pending projection, lifetime and unchanged navigation/source PASS');
+}

@@ -5,7 +5,7 @@
 .schattenseiten-content{
   --ink:#ecebe6;--dim:#9a9a94;--faint:#4d4d49;--paper:#0b1412;--edge:clamp(.9rem,2.2vw,1.6rem);
   position:absolute;inset:0;pointer-events:none;color:var(--ink);
-  font-family:var(--mono);text-shadow:0 0 6px var(--paper),0 0 14px var(--paper);
+  font-family:var(--mono);text-shadow:var(--display-text-shadow);
 }
 .schattenseiten-content button,.schattenseiten-content input,.schattenseiten-content a{pointer-events:auto}
 .ss-hud-rail{
@@ -50,3 +50,24 @@
 
 /* The site bounds its own sidebar from the actual orientation anchor. */
 .ss-hud-side{max-inline-size:calc(100% - var(--ui-field-x,0px) - .75rem);max-block-size:calc(100dvh - var(--ui-field-y,0px) - .75rem);min-inline-size:0;overflow-wrap:anywhere}
+
+/* Work, process and authored words have distinct readable peripheral places. */
+.ss-intro,.ss-description{margin:0;font:var(--type-rn1)/1.5 var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.ss-about,.ss-author-words{pointer-events:auto;font-size:var(--type-rn1);line-height:1.5}
+.ss-about summary,.ss-author-words summary{cursor:pointer;color:var(--dim);padding-block:.25rem}
+.ss-author-words .ss-word{margin-block:.5rem}
+.ss-rows,.ss-work-choices,.ss-view-choices,.ss-breadcrumb{display:flex;flex-wrap:wrap;gap:.35rem .65rem;pointer-events:auto}
+.ss-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem}
+.ss-action{appearance:none;border:0;border-bottom:1px solid var(--faint);background:none;padding:.3rem 0;font:var(--type-rn1)/1.35 var(--mono);text-align:left;color:var(--dim);cursor:pointer;min-inline-size:0;overflow-wrap:anywhere}
+.ss-action[aria-pressed="true"],.ss-action:hover,.ss-action:focus-visible{color:var(--ink);border-color:var(--ink)}
+.ss-action:focus-visible,summary:focus-visible{outline:1px solid currentColor;outline-offset:3px}
+.ss-current{font-size:var(--type-rn1);padding-block:.3rem}
+.ss-hud-rail{inline-size:min(22rem,calc(100vw - 1.5rem));gap:.65rem}
+.schattenseiten-content[data-detail="true"] .ss-intro,.schattenseiten-content[data-detail="true"] .ss-rows,.schattenseiten-content[data-detail="true"] .ss-about,.schattenseiten-content[data-detail="true"] .ss-author-words{display:none}
+.ss-hud-side{pointer-events:auto;overscroll-behavior:contain;padding-inline-end:.35rem;scrollbar-width:thin}
+.ss-document{margin:0;min-inline-size:0;display:grid;gap:.35rem}
+.ss-document img{display:block;inline-size:100%;max-block-size:min(44dvh,calc(var(--ss-panel-height,100dvh)*.62));object-fit:contain;object-position:center;background:rgba(255,255,255,.03)}
+.ss-document figcaption{font-size:var(--type-rn2);line-height:1.4;color:var(--dim)}
+.ss-view-choices{margin-block:.35rem}
+.ss-breadcrumb{max-inline-size:100%}
+.ss-hud-bottom{inline-size:min(24rem,calc(100vw - 1.5rem))}

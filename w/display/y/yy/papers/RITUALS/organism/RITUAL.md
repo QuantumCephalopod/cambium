@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.12"
+version: "3.13"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -540,3 +540,12 @@ The enlarged glyph sprites retain a 32MiB/4000-entry ceiling. Shared font readin
 ## Current intake boundary — 2026-10-28
 
 The source-owned sharp foreground adapter has completed bounded technical witnesses/HOME and is spent local intake. The three 2026-10-19 interaction targets named above remain genuinely unimplemented, and source-runtime projection freshness remains its separate unresolved source-owned operation. Their actual functional remainder, not a personal sign-off requirement, keeps them in `_stomach`. Later failures of completed work enter as new nutrients.
+
+
+## Bounded overview contact — 2026-10-28
+
+Sources and Holons in the Papers overview offer their actual moving projected bodies to Display’s existing droplet softlock. The stable offer is identity-owned; projection loss leaves a pending live identity, while source removal, inquiry entry and unmount withdraw the corresponding offer. Contact follows the same source positions, chamber transform, orientation and camera as the visible body. No second navigation frame or new source coordinates are introduced.
+
+The sharp foreground redraws only the contacted organism’s actual source geometry and visibility embers in the existing isolated shared pass. Its actual admitted ID/title opens through the existing Pretext reading and transparent sharp-page path, with complete wording and continuation. This redraw does not advance simulation, enter inquiry, change chamber/selection or mutate public source/genealogy. Other organisms remain background. Resolution/blur/glass and lock/release physics remain Display-owned.
+
+This completes only the newly bounded overview Source/Holon softlock intake, returned source-exact to local waste after native movement/resolver/lifetime and actual-font/source-renderer GLES witnesses at390×844 and1280×800. It does not close the three broader 2026-10-19 approach/locked-Descent/topology/tutorial targets or source-runtime projection freshness. Later concrete failures are new nutrients; publication/merge is not a personal completion gate.

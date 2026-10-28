@@ -6,9 +6,11 @@ here=Path(__file__).resolve();spec=importlib.util.spec_from_file_location('field
 results=[]
 for w,h in [(390,844),(1280,800)]:
  data=json.loads(subprocess.check_output(['node',str(here.with_name('lens-source.gles-capture.cjs')),str(w),str(h)],text=True));images,programs=g.replay(data['commands'],w,h,min_depth_clears=0)
- assert len(data['audits'])==85 and len(data['source_bodies'])==5 and programs==2
+ assert len(data['audits'])==87 and len(data['source_bodies'])==5 and programs==4
  samples=[]
  for (pixels,_),frame in zip(images,data['frames']):
+  if frame.get('mesh'):
+   ink=sum(pixels[i+3]>0 for i in range(0,len(pixels),4));assert ink>0;samples.append({'kind':frame['kind'],'target':frame['target'],'actual_mesh_pixels':ink});continue
   f=frame['frame'];points=[(i//4%w,h-1-i//4//w)for i in range(0,len(pixels),4)if pixels[i+3]>20];assert len(points)>100
   assert all(f['left']-1<=x<=f['left']+f['width']+1 and f['top']-1<=y<=f['top']+f['height']+1 for x,y in points)
   samples.append({'kind':frame['kind'],'ink_pixels':len(points),'inside_readable_frame':True})
