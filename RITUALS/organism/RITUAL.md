@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.19"
+version: "1.20"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -167,3 +167,6 @@ Fork promotion remains a separate, owner-controlled repository permission bounda
 The isolated `y/test-bounded-layout.py` integration witness serves only an already-built public artifact to a fresh Chromium test context. It measures actual DOM field bounds, declared camera rectangle, unchanged footer through selection/mode, and the complete compass through help. It retains screenshots and precise browser/backend limits. The bounded-layout staging lane installs its pinned test dependency and runs this witness without changing ordinary Tide publication cost or giving tests authority over site semantics. Native/lifecycle/source checks remain required; a screenshot is not source or device-performance authority. Actual layout ownership remains Display and the respective independently rooted child.
 
 The Crawlerbait browser-layout case uses the existing no-Worker capability fallback to read its same complete immutable public source, at half physical rendering resolution and unchanged CSS carrier dimensions. This bounds software-GPU/acknowledged-transfer test cost without fabricating data or changing the product. Worker transport has its separate native protocol/refusal witness; browser layout completion makes no full-source throughput or device-performance claim.
+
+
+The usability follow-up strengthens rendered tests with square map geometry and default no-scroll fit rather than only outer rectangles. Its Crawlerbait browser case uses normal Worker acquisition and the actual Canvas2D capability path at DPR1; source GLSL keeps separate native/software-GLES evidence. No Worker override is used in this follow-up. Earlier staging evidence retains its original declared scope. The actual live inspection lacked WebGL; absent glass/source GPU paint there is not classified as a new layout regression.

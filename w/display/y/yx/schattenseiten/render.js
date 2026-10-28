@@ -179,7 +179,7 @@ function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=t
   try{
     const B=new Float32Array(64*4);BODY.list.forEach((b,i)=>B.set([...b.world,b.size],i*4));
     const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));if(high){BODY.last=ms;BODY.dim+=((selected||selectedRow?1:0)-BODY.dim)*(1-Math.exp(-dt*4))}
-    gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);if(clearDepth){gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT)}if(viewRect?.bounded&&rect){gl.enable(gl.SCISSOR_TEST);gl.scissor(Math.floor(viewRect.x*dpr),Math.floor((rect.height-viewRect.y-viewRect.height)*dpr),Math.ceil(viewRect.width*dpr),Math.ceil(viewRect.height*dpr))}gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);if(clearDepth){gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT)}gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
     for(const size of (high?[64,512]:[64])){
       const {record,L}=tier(gl,size);gl.useProgram(record.p);gl.bindVertexArray(record.vao);
       gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uProj'),false,proj);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uView'),false,view);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uModel'),false,model);

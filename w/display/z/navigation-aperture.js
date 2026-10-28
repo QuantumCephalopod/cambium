@@ -6,7 +6,7 @@ const pocket=document.getElementById('mini-pocket');
 if(!mini||!trigger||!pocket) throw new Error('global navigation aperture surface missing');
 const legal=document.getElementById('legal-links');
 const core=document.getElementById('mini-core'),map=document.getElementById('navTwin');
-const helpButton=document.getElementById('mini-help-toggle'),guide=document.getElementById('mini-guide');
+const helpButton=document.getElementById('mini-help-toggle'),helpBar=document.getElementById('mini-help-bar'),guide=document.getElementById('mini-guide');
 const hints=Object.fromEntries(['map','mapKeys','axis','keys'].map(key=>[key,document.getElementById('mini-hint-'+key)]));
 const mapHelp=document.getElementById('mini-map-help'),axisHelp=document.getElementById('mini-axis-help');
 const COPY={
@@ -26,7 +26,7 @@ for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[d
   el.addEventListener('focus',()=>{focusContext=key;renderHint()});
   el.addEventListener('blur',()=>{focusContext=null;renderHint()});
 }
-function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));measure()}
+function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));if(next&&pocket.getAttribute?.('aria-hidden')==='true')open('help');measure()}
 helpButton?.addEventListener('click',()=>setHelp(guide.hidden));
 
 function px(name,value){const v=Math.ceil(value)+'px';if(mini.style.getPropertyValue(name)!==v)mini.style.setProperty(name,v)}
@@ -37,11 +37,16 @@ function measure(){
   // Layout extents do not inherit the pocket's opening transform. No frame polling.
   const top=globalThis.SSSDisplaySafeArea?.snapshot().insets.top||0;
   const rem=globalThis.SSSDisplayType?.rootRemPx?.()||16;
-  const bounded=mini.dataset.gridBounded==='true',field=mini.getBoundingClientRect?.(),available=bounded?Math.max(0,(field?.height||0)-legalHeight-3*rem):Math.max(0,innerHeight-top-legalHeight-6*rem);
+  const bounded=mini.dataset.gridBounded==='true',field=mini.getBoundingClientRect?.();
+  // Keep disclosure in the existing control strip. The hint stays in flow;
+  // a compact field hides only that redundant visual hint, never help access.
+  if(bounded&&helpButton&&helpButton.parentNode!==mini&&mini.append)mini.append(helpButton);
+  if(!bounded&&helpButton&&helpBar&&helpButton.parentNode!==helpBar&&helpBar.append)helpBar.append(helpButton);
+  const available=bounded?Math.max(0,pocket.clientHeight??((field?.height||0)-legalHeight-2.75*rem)):Math.max(0,innerHeight-top-legalHeight-6*rem);
   px('--compass-top',top);px('--compass-core-cap',available);
   px('--compass-guide-cap',available*.45);
   const chrome=core.scrollHeight-map.offsetHeight;
-  px('--compass-map-cap',bounded?Math.max(24,Math.min(available*.7,(field?.width||0)-3.5*rem)):Math.max(24,available-chrome));
+  px('--compass-map-cap',bounded?Math.floor(Math.max(24,Math.min(available-chrome,(field?.width||0)-2.5*rem))):Math.max(24,available-chrome));
   px('--compass-core-height',core.offsetHeight);
   core.dataset.scroll=String(core.scrollHeight>core.clientHeight+1);
 }

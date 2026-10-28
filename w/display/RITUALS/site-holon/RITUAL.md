@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.30"
+version: "3.31"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -99,7 +99,7 @@ Every site-holon owns its canonical recursive UI-field state. A declaration of t
 
 A bounded binding fixes both origin and border-box extent, contains paint, and provides scroll continuation. Local typography, source wording, material and internal flow stay owner-owned. CSS or selection must not silently enlarge, relocate or replace declared rectangles. A carrier variant is explicit address state; it is not permission for runtime selection to move the footer. Existing intrinsically sized/orientation-only carriers retain their earlier relation; explicit `meta.extent: intrinsic` records that alternative and survives normalization. An invalid extent is refused.
 
-The optional `viewfocus` is a neutral camera presentation rectangle, not source anatomy. The same camera/projection maps actual world geometry, pointer/hit positions and owner layers into it on both backends. World positions, source membership, genealogy, selection and simulation remain native. Full-size liquid/composite targets remain Display-owned; clipping source geometry must not crop the common glass. Sites receive both the full `rect` and the actual `viewRect` in their layer frame. Shared DOM HUD fields are distinct from world-projected labels and bodies.
+The optional `viewfocus` is a neutral camera framing rectangle, not an exclusive world viewport or source admission boundary. The same camera/projection frames the subject and maps pointer/hit positions on both backends. Visible receding/sibling world context remains available outside that focus rectangle through the actual full-camera frustum. World positions, source membership, genealogy, selection and simulation remain native. Full-size liquid/composite targets remain Display-owned. A focus declaration does not silently install a scissor, mask world labels or withdraw a visible contact. Explicit source-owned lens/readable-input clipping remains its distinct operation. Sites receive both the full `rect` and the actual `viewRect` in their layer frame. Shared DOM HUD fields are distinct from world-projected labels and bodies.
 
 The global compass, including its trigger, legal links, map, rails and help, fits the active declared compass rectangle in the viewport; the overview declaration is fallback when a child supplies no compass field. Internal scrolling/readability cannot grow that rectangle. Global surfaces remain Display-owned. Owner-local timeline/footer controls consume their declared field; the current Crawlerbait and Schattenseiten carriers share the exact `yzy / yzz / zyy / zyz` footprint. The enclosing carrier witness checks that invariant without making either child import its sibling’s anatomy.
 
@@ -241,3 +241,6 @@ The optional body frame may include ellipse:true to lend measured ellipse axes. 
 A runtime module may expose `prepareFieldProjection(projection, {yieldControl, onProgress})`. It prepares its own opaque source generation before crossing without mounting, mutating the visible encounter, deciding global addresses or acquiring another owner's source. `onProgress(0..1)` acknowledges completed owner work; Display maps it to the existing loading flow and awaits completion before sealing. `yieldControl()` lends an opportunity for input/animation between source-local portions. The optional hook does not make a synchronous source algorithm nonblocking automatically. `fieldProjection` installs the completed generation only at the covered acceptance boundary. Unopted owners keep their existing projection behavior.
 
 Reuse is generation-local, bounded by reachable source objects and the existing resource handoff. Failure may retry with the same immutable acquired source. Late completion after cancellation is a reusable resource, never permission to resurrect an obsolete encounter. Whole-body relocation requires no internal host path or identity branch.
+
+
+Usability correction2026-10-28: a measured outer rectangle does not prove an operable component. The compass keeps a square map and subtracts actual control/footer/hint chrome. Persistent help uses the existing control strip. Default tested narrow/wide carriers fit without a compass scroller; expanded long help may scroll inside the same fixed box. Earlier HOME/evidence remains immutable; this live counterexample is new pressure.
