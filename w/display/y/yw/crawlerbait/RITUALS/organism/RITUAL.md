@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.17"
+version: "5.18"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -315,4 +315,10 @@ Apply shared Metabolism through Cambium/Display: the recorded bounded technical 
 
 ## Bounded presentation — 2026-10-28
 
-The supplied v2 fields are actual containing rectangles. The owner header, description/control rail and timeline bind to them; camera/geometry/pointer projection uses the neutral shared viewfocus. The fixed `yzy / yzz / zyy / zyz` timeline footprint is the same as Schattenseiten’s and is not dynamically relocated by compass occupancy, replay, selection or mode. Local internal scrolling keeps controls/provenance readable. This supersedes the previous intrinsic time-row relocation for this bounded carrier. Goo’s offscreen stages and final source print use the same exact clipping rectangle at their own target resolutions. Actual source replay, clock, rate, source positions, paths, Being identities, cameras and droplet contact keep their owners and meaning. This presentation pressure does not close any separate source-acquisition operation.
+The supplied v2 fields are actual containing rectangles. The owner header, description/control rail and timeline bind to them; camera/geometry/pointer projection uses the neutral shared viewfocus. The fixed `yzy / yzz / zyy / zyz` timeline footprint is the same as Schattenseiten’s and is not dynamically relocated by compass occupancy, replay, selection or mode. Local internal scrolling keeps controls/provenance readable. This supersedes the previous intrinsic time-row relocation for this bounded carrier. The focus rectangle is camera framing, not a hard mask on Goo’s offscreen stages/final source print; visible world context remains available outside it. Source-owned sharp lens-input clipping remains its separate operation. Actual source replay, clock, rate, source positions, paths, Being identities, cameras and droplet contact keep their owners and meaning. This presentation pressure does not close any separate source-acquisition operation.
+
+
+Version5.18 context correction2026-10-28: visible Being/type contact uses actual front projection, not membership in the framing rectangle. Camera/source framing, source replay/time/identity and fixed UI fields remain unchanged. Whole-world clipping introduced with the prior layout is superseded; earlier evidence/Home remains immutable.
+
+
+Version5.18 context correction2026-10-28: Being/type contact follows actual visible front projection rather than membership in the focus rectangle. Source replay, time, positions and identity remain unchanged, as do fixed UI fields. Earlier exact HOME/evidence is retained.

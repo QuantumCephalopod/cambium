@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.61"
+version: "3.62"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -422,6 +422,12 @@ After bounded technical completion and durable owner HOME, move spent Display in
 
 ## Bounded presentation return — 2026-10-28
 
-The site-holon receptor owns the current bounded/intrinsic UI declaration. Shared camera projection and pointer projection consume the same optional viewfocus; actual source draws, world labels and fine points stay in that viewport. The containing geometry is lent to owner layers as full `rect` plus `viewRect`; a shader hook must not infer another frame. Full-resolution shared optical/composite buffers still span the Display surface. Mask/scissor/write-state clears and transparent foreground isolation remain inherited requirements.
+The site-holon receptor owns the current bounded/intrinsic UI declaration. Shared camera projection and pointer projection consume the same optional viewfocus framing; actual source draws, world labels and fine points retain visible full-camera context outside that focus rectangle. The containing geometry is lent to owner layers as full `rect` plus `viewRect`; a shader hook must not infer another frame. Full-resolution shared optical/composite buffers still span the Display surface. Mask/scissor/write-state clears and transparent foreground isolation remain inherited requirements.
 
 This supersedes only the former assumption that all declared field cells were mere orientation anchors. It changes no semantic vertex, source position, projection content, body identity, replay time or navigation address. Appropriate actual-carrier/unit/source-renderer and optional isolated-browser layout witnesses close this contract; a later concrete failure is a new nutrient, not a retroactive personal approval gate.
+
+
+The live usability counterexample supersedes the earlier automatic world-scissor interpretation. Declared UI boxes remain binding, while camera framing does not erase receding source geometry or disable its visible contacts. The navigator’s actual map aspect, default scroll extent, help access and normal browser transport join outer-rectangle checks; a passing outer-box assertion alone is not component acceptance.
+
+
+Usability correction2026-10-28: bounded UI boxes stay binding, while viewfocus is camera framing rather than a rectangular world mask. Source siblings and visible contacts are not erased by that rectangle. Component acceptance checks square map geometry, ordinary fit/scroll and help access, beyond outer-box coordinates.

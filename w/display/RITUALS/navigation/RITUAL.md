@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.25"
+version: "3.26"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -215,3 +215,9 @@ The existing four target-origin facets are trajectory regions for a shared insta
 ## Declared compass and camera presentation — 2026-10-28
 
 The current site-holon receptor owns bounded UI rectangles. A declared global compass rectangle constrains the complete navigator and its legal slot, through open/closed state, help, language and resize. Internal map magnification/rotation remains the same instrument; content scrolls rather than enlarging or moving that rectangle. Its global viewport mapping remains shared even in a composed encounter. Source bodies retain native world geometry while the optional viewfocus supplies their common camera/pointer presentation rectangle; no address or traversal is fabricated by this framing.
+
+
+Usability return2026-10-28: the map itself preserves its square projection inside the declared compass. Its size is available pocket height minus actual chrome, bounded by the real inner width. Persistent help uses the existing trigger/legal control strip; opening help from the closed state opens its disclosure correctly. Viewfocus frames camera attention without cutting world context or source hit testing to that rectangle.
+
+
+Usability return2026-10-28: the navigator map preserves its square projection. Map capacity is pocket height minus measured chrome, bounded by actual inner width. Help moves to the existing trigger/legal control strip and opens its disclosure from the closed state. Framing does not mask visible world context or source hit testing.

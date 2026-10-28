@@ -527,7 +527,7 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   updateInk(screen,ms,width,height,dpr||1,canvas);
   if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
   if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
-  const clip=viewRect?.bounded&&rect?[viewRect.x/rect.width,1-(viewRect.y+viewRect.height)/rect.height,(viewRect.x+viewRect.width)/rect.width,1-viewRect.y/rect.height]:null;paintGoo({gl,proj,view,model,width,height,dpr,clip,exact:!!clip});
+  paintGoo({gl,proj,view,model,width,height,dpr});
   camFollow(ms);
   if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
     const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.cell===''?'body':'colony'} · fade ${CAM.o.fade.toFixed(2)}`}
@@ -640,7 +640,7 @@ function focusTarget(targetId,frame){
   return [c];
 }
 function updateInk(screen,ms,w,h,d,fieldCanvas){
-  const view=INK.ui?.bounded?INK.ui.rect('viewfocus'):null,within=p=>p?.front&&(!view||(p.x>=view.x&&p.x<=view.x+view.width&&p.y>=view.y&&p.y<=view.y+view.height));
+  const view=INK.ui?.bounded?INK.ui.rect('viewfocus'):null,within=p=>p?.front;
   const c=INK.canvas;if(!c)return;INK.ms=ms;if(c.width!==w||c.height!==h){c.width=w;c.height=h}
   c.style.visibility=fieldCanvas?.dataset.composite==='1'?'hidden':'visible';
   const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w/d,h/d);

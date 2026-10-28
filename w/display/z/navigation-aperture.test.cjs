@@ -49,3 +49,14 @@ for(const composition of ['single','split','grid']){
  context.SSSNavigationAperture.close();assert.equal(guide.hidden,true);assert.equal(button.attrs['aria-expanded'],'false');assert.equal(els['mini-pocket'].inert,true);assert.equal(els['legal-links'].inert,false);
 }
 console.log('PASS — contextual mouse/touch/keyboard hints, accessible persistent help, live DE/EN copy and measured font/wrapping/viewport room in single/split/grid');
+// A containing compass box must fit its square instrument, not stretch it or
+// spend the whole height on the map before accounting for real controls.
+{
+ const events=new Map(),listeners=new Map();const node=()=>({dataset:{},attrs:{},style:{getPropertyValue(k){return this[k]||''},setProperty(k,v){this[k]=v}},addEventListener(k,f){this.events??={};this.events[k]=f},setAttribute(k,v){this.attrs[k]=v},getAttribute(k){return this.attrs[k]},contains(){return false}});
+ const mini=node(),core=node(),map=node(),pocket=node(),legal=node(),trigger=node(),help=node(),guide=node();mini.dataset.gridBounded='true';mini.getBoundingClientRect=()=>({width:320,height:200});mini.append=n=>{n.parentNode=mini};help.parentNode=core;pocket.clientHeight=132;core.scrollHeight=200;core.clientHeight=132;core.offsetHeight=132;map.offsetHeight=120;legal.offsetHeight=24;guide.hidden=true;
+ const elements=new Map([['mini',mini],['mini-core',core],['navTwin',map],['mini-pocket',pocket],['legal-links',legal],['mini-trigger',trigger],['mini-help-toggle',help],['mini-guide',guide]]);
+ const ctx={MutationObserver:class{constructor(){}observe(){}},document:{getElementById:id=>elements.get(id),documentElement:{dataset:{composition:'single'},lang:'en'}},innerHeight:800,addEventListener(k,f){listeners.set(k,f)},setTimeout:()=>1,clearTimeout(){}};
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'navigation-aperture.js'),'utf8'),ctx);
+ assert.equal(mini.style['--compass-map-cap'],'52px');assert.equal(help.parentNode,mini);ctx.SSSNavigationAperture.close();help.events.click();assert.equal(pocket.attrs['aria-hidden'],'false');assert.equal(guide.hidden,false);
+ console.log('PASS — bounded compass subtracts measured chrome, preserves map budget and opens persistent help from the closed state');
+}

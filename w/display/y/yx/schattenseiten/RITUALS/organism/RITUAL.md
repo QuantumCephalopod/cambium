@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.11"
+version: "1.12"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -71,3 +71,9 @@ Version1.10 work-led return (2026-10-28): the empty top display row preserves al
 
 
 Version1.11 bounded work/documentation (2026-10-28): the live overlap/cropping counterexample is new pressure after the completed presentation act. Header, lower-left description and centre-bottom timeline now consume the exact supplied containing rectangles. Documentation, row/work controls and admitted media flow inside the description scroller; they no longer choose another leaf or escape into the work. Breadcrumb/orthogonal controls keep the same timeline footprint as Crawlerbait through selection and resize. The actual sheet and its source-owned continuous focus use shared viewfocus projection; row selection visibly recedes other source rows and work selection retains its own body. All49 works/55 occupied slots, empty first display row, source row/rank/cluster identity, original words and strict64/entered512 media/lifetime remain unchanged. Earlier source-exact HOME/evidence remains immutable; its native rectangle-only witness did not certify the later live composition.
+
+
+Version1.12 focus-context correction2026-10-28: the focus rectangle frames the selected subject without hard-masking the rest of the sheet. Receding source rows/work remain visible in the actual camera field; documentation still occupies its own bounded description and the timeline stays fixed. The original49 works/55 slots, projection, media declarations, selected-row shading and source positions remain unchanged. This new concrete usability counterexample has its own intake/return and does not rewrite earlier HOME.
+
+
+Version1.12 focus-context correction2026-10-28: retain selected-work framing without scissoring the rest of the source sheet. Receding context remains visible in the actual camera field. Documentation remains in its own bounded description and the footer remains fixed.49 works/55 slots, source positions, row/rank/cluster identity, emphasis, media and source wording are unchanged. The live usability counterexample has its own intake/return; older HOME is not rewritten.

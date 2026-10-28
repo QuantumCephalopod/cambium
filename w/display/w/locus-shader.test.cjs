@@ -419,4 +419,4 @@ console.log('PASS — independently lent target draw, carrier ownership and with
  console.log('PASS — viewfocus is sampled once per frame, never once per body/point');
 }
 
-{const f=fixture({glass:false,points:true,order:[],presentation:()=>({x:100,y:200,width:600,height:400})});f.frame(0);assert(f.frames[0].filter(c=>c.type==='draw'&&c.mode===f.gl.POINTS).every(c=>c.scissor),'point depth clear disabled the declared clipping');console.log('PASS — point rendering restores bounded scissor after its unmasked depth clear');}
+{const f=fixture({glass:false,points:true,order:[],presentation:()=>({x:100,y:200,width:600,height:400})});f.frame(0);assert(f.frames[0].filter(c=>c.type==='draw'&&c.mode===f.gl.POINTS).every(c=>!c.scissor),'focus framing erased visible context with a scissor');console.log('PASS — focus framing keeps visible point context; depth clears remain unmasked');}

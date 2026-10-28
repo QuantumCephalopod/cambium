@@ -27,14 +27,11 @@ try:
  from playwright.sync_api import sync_playwright
  with sync_playwright()as pw:
   browser=pw.chromium.launch(headless=True,args=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+  fallback=pw.chromium.launch(headless=True,args=['--disable-webgl'])
   for w,h in [(1280,800),(390,844)]:
    for identity,address in [('organism:philosophy','overview'),('organism:schattenseiten','x'),('organism:crawlerbait','w')]:
-    page=browser.new_page(viewport={'width':w,'height':h},device_scale_factor=.5 if identity=='organism:crawlerbait' else 1);errors=[];console=[];page.on('console',lambda m:console.append(m.text) if m.type in ['warning','error'] else None);page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'
+    page=(fallback if identity=='organism:crawlerbait' else browser).new_page(viewport={'width':w,'height':h},device_scale_factor=1);errors=[];console=[];page.on('console',lambda m:console.append(m.text) if m.type in ['warning','error'] else None);page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'
     try:
-     # CSS acceptance does not depend on high-volume acknowledged Worker
-     # transfer in software GL. Exercise its documented absent-capability
-     # fallback with the same complete immutable public JSON, never a stub.
-     if identity=='organism:crawlerbait':page.add_init_script("Object.defineProperty(window,'Worker',{value:undefined,configurable:true})")
      page.goto(base+'#main:'+address,wait_until='domcontentloaded');wait_scene(page,identity)
      host=f'[data-interlocutor="{identity}"]:not([hidden])';description=host+' [data-ui-field="description"]'
      close(bounds(page,description),'description',w,h);close(bounds(page,'#mini'),'compass',w,h)
@@ -42,7 +39,7 @@ try:
      # GL source projection and pointer equivalence have separate native tests.
      world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewfocus',w,h)
      canvas=page.locator(host+' .interlocutor-background');assert not canvas.get_attribute('data-layer-error')
-     records={'identity':identity,'viewport':[w,h],'render_dpr':.5 if identity=='organism:crawlerbait' else 1,'feed_transport':'documented no-Worker fallback, exact complete source' if identity=='organism:crawlerbait' else 'normal','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewfocus':world}
+     records={'identity':identity,'viewport':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if identity=='organism:crawlerbait' else 'software WebGL','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewfocus':world}
      if identity!='organism:philosophy':
       timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h);records['timeline']=before
       if identity=='organism:schattenseiten':
@@ -51,6 +48,9 @@ try:
       else:
        page.locator(host+' .crawlerbait-modes button').nth(1).click()
       assert bounds(page,timeline)==before,'selection/mode moved the declared footer';close(bounds(page,description),'description',w,h)
+     page.wait_for_function("(()=>{const m=document.getElementById('navTwin').getBoundingClientRect(),c=document.getElementById('mini-core');return Math.abs(m.width-m.height)<1.1&&c.scrollHeight<=c.clientHeight+1})()",timeout=10000)
+     map_box=bounds(page,'#navTwin');assert abs(map_box['width']-map_box['height'])<1.1,('distorted map',map_box)
+     records['square_map']=map_box
      mini=bounds(page,'#mini')
      if page.locator('#mini-pocket').get_attribute('aria-hidden')=='true':page.locator('#mini-trigger').click()
      assert bounds(page,'#mini')==mini
@@ -62,7 +62,7 @@ try:
      (a.out/(stem+'-error.json')).write_text(json.dumps({'url':page.url,'errors':errors,'console':console[-12:],'visible':page.locator('body').inner_text()[:12000]},indent=2)+'\n')
      page.screenshot(path=str(a.out/(stem+'-FAILED.png')));raise
     finally:page.close()
-  browser.close()
+  browser.close();fallback.close()
 finally:
  server.shutdown();server.server_close();(a.out/'layout.json').write_text(json.dumps({'cases':results,'scope':__doc__},indent=2)+'\n')
 print(json.dumps({'status':'PASS','actual_browser_cases':len(results),'viewports':[[1280,800],[390,844]],'immutable_footer':True,'bound_compass_including_help':True}))
