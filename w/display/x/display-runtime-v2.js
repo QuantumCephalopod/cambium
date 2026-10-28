@@ -36,7 +36,7 @@ function safeCarrier(host,bounded=false){
   return {x:0,y:top,w:hr.width,h:Math.max(0,hr.height-top)};
 }
 function makeSiteUI(id,host,raw){
-  const state=UI.normalizeState(raw),bindings=new Map(),bounded=state.meta.extent==='bounded'||(state.meta.extent!=='intrinsic'&&['compass','description','header','viewfocus'].every(name=>state.fields[name]));
+  const state=UI.normalizeState(raw),bindings=new Map(),bounded=state.meta.extent==='bounded'||(state.meta.extent!=='intrinsic'&&['compass','description','header','viewport'].every(name=>state.fields[name]));
   const carrier=()=>safeCarrier(host,bounded);
   function carrierVariant(carrier){return carrier.h>carrier.w?'portrait':''}
   function field(name,carrier=safeCarrier(host,bounded)){
@@ -139,7 +139,7 @@ function activateField(id){
   if(surface.fieldProjection===surface.previewFieldProjection && FEED_URLS[id]){
     surface.fieldProjection=surface.module.fieldProjection?surface.module.fieldProjection(surface.projection):surface.projection;
   }
-  const field=Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:surface.fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id),presentation:()=>surface.ui.bounded&&surface.ui.state.fields.viewfocus?surface.ui.rect('viewfocus'):null});
+  const field=Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:surface.fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id),presentation:()=>surface.ui.bounded&&surface.ui.state.fields.viewport?surface.ui.rect('viewport'):null});
   fieldById.set(id,field);return field;
 }
 // Existing small/inlined bodies keep their established eager behavior.

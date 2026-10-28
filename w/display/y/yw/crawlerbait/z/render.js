@@ -640,7 +640,7 @@ function focusTarget(targetId,frame){
   return [c];
 }
 function updateInk(screen,ms,w,h,d,fieldCanvas){
-  const view=INK.ui?.bounded?INK.ui.rect('viewfocus'):null,within=p=>p?.front;
+  const view=INK.ui?.bounded?INK.ui.rect('viewport'):null,within=p=>p?.front;
   const c=INK.canvas;if(!c)return;INK.ms=ms;if(c.width!==w||c.height!==h){c.width=w;c.height=h}
   c.style.visibility=fieldCanvas?.dataset.composite==='1'?'hidden':'visible';
   const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w/d,h/d);

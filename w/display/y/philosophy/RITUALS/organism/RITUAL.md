@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.11"
+version: "1.12"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -61,7 +61,7 @@ Root-level expression configuration lives in `encounter.json`; leaf expression t
 
 Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Care owns this truth check through `z/projection.py`, declared by the local `site.json` build hook. It derives only from this body's own INDEX, constitution, encounter and locus content, and refuses disagreement, empty expression, invalid encounter and unsupported deeper source rank. Its independent positive/refusal evidence lives at `z/projection.test.py`; the common witness path invokes it without learning Philosophy's schema. Regenerate from the repository with `python3 y/build.py --derive-site-projection organism:philosophy`, even after a lawful whole-body remount. Normal builds validate read-only; only explicit regeneration writes the admitted projection after owner acceptance. Shared manifest/path/structural/publication checks remain inherited host obligations.
 
-Philosophy’s prose travels inside its own derived projection. Its current bounded v2 carrier uses the supplied header, compass, viewfocus, description and timeline fields. `description` occupies the left quarter of the lower half; root and inspected-locus prose keep their original words/type and scroll inside that fixed rectangle. The common field applies the actual extent and uses the same declared viewfocus for world camera/pointer projection. The droplette target remains `organism:philosophy|Description` despite the local binding’s lowercase field name. Source semantic anatomy and navigation are unchanged.
+Philosophy’s prose travels inside its own derived projection. Its current bounded v2 carrier uses the supplied header, compass, viewport, description and timeline fields. `description` occupies the left quarter from one-quarter viewport height to the bottom; root and inspected-locus prose keep their original words/type and scroll inside that fixed rectangle. The common field applies the actual extent and uses the same declared viewport for world camera/pointer projection. The droplette target remains `organism:philosophy|Description` despite the local binding’s lowercase field name. Source semantic anatomy and navigation are unchanged.
 
 Philosophy lends the shared droplette its lockable tissue and nothing more: the `Description` field (a `field` target — the drop takes its exact rounded rectangle) and each mounted site-holon body in its field (a `body` target). Offers are renewed on every render and withdrawn on unmount; in the current implementation leaving Philosophy releases that owner's offer, while descent inside Philosophy keeps a lock on a body that is still present. Common liquid navigation continuity is owned by Display's current organism/navigation receptors and its retired source carrier `w/display/_waste/NUTRIENT__liquid-navigation-continuity__20261019.md`; this paragraph describes Philosophy's existing offer lifecycle.
 
@@ -142,3 +142,6 @@ Version1.10 description placement (2026-10-28): Philipp’s supplied grid gives 
 
 
 Version1.11 bounded placement (2026-10-28): the new supplied description span supersedes1.10’s earlier placement as new admitted pressure. Its completed HOME and exact original evidence remain immutable. Shared containing-box/camera law is inherited; owner prose and stable contact stay local.
+
+
+Layout return2026-10-29: The supplied common ui-grid.json is the exact owner layout. Viewport replaces viewfocus as the active camera role; the description extends upward according to that declaration. Prose, droplette identity and anatomy remain unchanged.
