@@ -25,27 +25,21 @@
   },
   "home": {
     "changed_scope": [
-      "RITUALS/organism/RITUAL.md",
-      "RITUALS/site-holon/RITUAL.md",
-      "RITUALS/navigation/RITUAL.md",
-      "w/ui-grid.js",
-      "w/ui-grid-sites.test.cjs",
-      "w/ui-grid.test.cjs",
-      "w/locus-shader.js",
-      "w/locus-shader.test.cjs",
-      "w/display-label-ink.js",
-      "w/display-label-ink.test.cjs",
-      "x/display-runtime-v2.js",
-      "x/display-runtime-v2.test.cjs",
-      "z/navigation-aperture.js",
-      "z/navigation-aperture.css",
-      "_stomach/NUTRIENT__bounded-ui-grid__20261028.md",
-      "_waste/metabolized-20261028-NUTRIENT__bounded-ui-grid__20261028.md"
+      "w/display/RITUALS/navigation/RITUAL.md",
+      "w/display/RITUALS/organism/RITUAL.md",
+      "w/display/RITUALS/site-holon/RITUAL.md",
+      "w/display/_stomach/NUTRIENT__layout-usability-counterexample__20261028.md",
+      "w/display/w/locus-shader.js",
+      "w/display/w/locus-shader.test.cjs",
+      "w/display/z/navigation-aperture.css",
+      "w/display/z/navigation-aperture.js",
+      "w/display/z/navigation-aperture.test.cjs",
+      "w/display/_waste/metabolized-20261028-NUTRIENT__layout-usability-counterexample__20261028.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — declared rectangles constrain UI and complete compass, while source world/camera/pointer/glyph/point geometry shares viewfocus. Full-size liquid remains intact; source identity and navigation remain owned."
+    "outcome": "COMPLETED — supplied UI geometry retained; camera focus no longer removes visible world context or matching input. Compass keeps square map, subtracts measured chrome, and exposes operable persistent help within its field."
   },
-  "observed_at_utc": "2026-10-28T20:21:51.001239Z",
+  "observed_at_utc": "2026-10-28T21:32:15.148587Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -61,19 +55,19 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-bounded-ui-grid-return-20261028",
+  "reflected_home_event": "display-layout-usability-return-20261028",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "85f936b1554cc79e9c25c469198a1a23cf41daab83f13132076f38d95ee8ffa8"
+      "sha256": "5289ce2e26872b058c6e6463da0f650e451f98ed0d3e5bc4480765336c75e933"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "ba2e5b09f62ee703ecf88260dfe32daff3e0af20ccf02d258d37dc1682c02482"
+      "sha256": "32089a391049abed0acbb72e37c07239858da89db48e58d462f2b381084e6ccf"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "55a40c82f9655baee5cda49de41d7eb798a32487324931a125eb700fa951433b"
+      "sha256": "57c458ec1e0e7cbe7045413235e11fa967c57ce6e41f31e99919f3e1ec6d2bbd"
     }
   ],
   "shell": {
@@ -82,10 +76,10 @@
     "stomach_direct": [
       "NUTRIENT__language-glyphs-and-site-names__20261019.md"
     ],
-    "waste_direct_count": 116
+    "waste_direct_count": 117
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "de1a2405c77fcdcd9a31fd4ed625b7e91fac1eaa"
+    "source_revision": "1359a790a27fa804382859443d9eb3b7448628ad"
   }
 }
