@@ -1,0 +1,22 @@
+name: isolated first-entry witness
+on:
+  push:
+    branches: ['staging/first-entry-proof-*']
+permissions:
+  contents: read
+jobs:
+  first-entry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - run: python3 -m pip install playwright==1.56.0
+      - run: python3 -m playwright install --with-deps chromium
+      - run: python3 y/site-public.py --artifact _site
+      - run: python3 y/test-first-entry.py --artifact _site --out _first-entry-witness
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: first-entry-witness
+          path: _first-entry-witness
+          if-no-files-found: warn
