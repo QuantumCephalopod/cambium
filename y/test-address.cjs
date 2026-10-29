@@ -16,24 +16,28 @@ cp.execFileSync('node',[path.join(root,'w','display','x','site-holon.test.cjs')]
 const site=process.env.SITE_DIR?path.resolve(root,process.env.SITE_DIR):path.join(root,'_site');
 const html=fs.readFileSync(path.join(site,'index.html'),'utf8');
 const projMatch=html.match(/<script id="site-projections" type="application\/json">(.*?)<\/script>/s);ok(projMatch,'embedded site projection map missing');
-const projections=JSON.parse(projMatch[1]);const projection=projections['organism:philosophy'];ok(projection,'Philosophy projection missing from tree-derived site map');
-eq(projection.source.organism,'philosophy');
-eq(Object.keys(projection.root.children).sort(),['w','x','y','z']);
-eq(['w','x','z','y'].map(g=>projection.root.children[g].noun),['Inquiry','Continuity','Care','Becoming']);
+const projections=JSON.parse(projMatch[1]);
 const regMatch=html.match(/<script id="site-registry" type="application\/json">(.*?)<\/script>/s);ok(regMatch,'embedded tree-derived site registry missing');
-const registry=JSON.parse(regMatch[1]);eq(registry.source,'w/display/y tree');eq(new Set(registry.mounts.map(m=>m.address)),new Set(['','w','x','y','z','xz']));
-const mountById=Object.fromEntries(registry.mounts.map(m=>[m.interlocutor,m.address]));
-eq(mountById,{'organism:philosophy':'','organism:crawlerbait':'w','organism:papers':'y','organism:schattenseiten':'x','organism:datenschutz':'z','organism:impressum':'xz'});
+const registry=JSON.parse(regMatch[1]);eq(registry.source,'w/display/y tree');
+const identities=registry.mounts.map(m=>m.interlocutor),addresses=registry.mounts.map(m=>m.address);
+eq(new Set(identities).size,identities.length,'one mount per identity');
+eq(new Set(addresses).size,addresses.length,'one identity per raw address');
+eq(addresses.filter(a=>a==='').length,1,'one admitted overview');
+for(const m of registry.mounts){A.validate(m.address);eq(m.scope,'main');ok(projections[m.interlocutor],'mounted owner projection missing');}
+eq(new Set(Object.keys(projections)),new Set(identities),'projection map follows current mounts');
 const N=require(path.join(root,'w','display','z','navigation-physiology.js'));
-let structure=N.collectStructure(projection.root);
-eq(structure.leaves.map(x=>x.path).sort(),['w','x','y','z']);
-ok(structure.leaves.every(x=>x.center.length===3&&x.center.every(Number.isFinite)),'all realized leaf centroids must be finite');
-
-const clone=JSON.parse(JSON.stringify(projection.root));
+for(const projection of Object.values(projections))if(projection.root){
+  const realized=N.collectStructure(projection.root);
+  ok(realized.leaves.every(x=>x.center.length===3&&x.center.every(Number.isFinite)),'all realized leaf centroids must be finite');
+}
+// Geometry law is independent of the source semantics or current overview owner.
 const atom=noun=>({noun,de:noun,en:noun,gene:'CREATE',one:{de:noun,en:noun},children:{}});
+const clone={...atom('fixture'),children:Object.fromEntries(['w','x','z','y'].map(g=>[g,atom(g)]))};
+let structure=N.collectStructure(clone);
+eq(structure.leaves.map(x=>x.path).sort(),['w','x','y','z']);
 clone.children.w.children={w:atom('ww'),x:atom('wx'),z:atom('wz'),y:atom('wy')};
 structure=N.collectStructure(clone);
 eq(structure.leaves.map(x=>x.path).sort(),['ww','wx','wy','wz','x','y','z']);
 ok(!structure.leaves.some(x=>['xx','yy','zz'].includes(x.path)),'unrealized sibling rank must not be fabricated');
 
-console.log(JSON.stringify({status:'pass',assertions:checks,public_root:'organism:philosophy',tree_registry:true,realized_only:true,site_holon:true},null,2));
+console.log(JSON.stringify({status:'pass',assertions:checks,public_sites:identities.length,tree_registry:true,realized_only:true,site_holon:true},null,2));

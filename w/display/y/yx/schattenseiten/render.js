@@ -15,11 +15,9 @@ if(!RH)throw new Error('Display representation handoff physiology required');
 let P=null,selected=null,selectedRow=null,panel=null,byId=new Map(),SIDE_BASE=null,VIEW='still';
 
 /* Display's own cell geometry: the four corners of a cell, and the cell toward one corner */
-const V0=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(v=>{const m=Math.hypot(...v);return v.map(x=>x/m)});
-const GI={w:0,x:1,z:2,y:3},GENES=['w','x','z','y'];
-const mid=(a,b)=>a.map((v,i)=>(v+b[i])/2);
-const childOf=(t,g)=>t.map((q,j)=>j===GI[g]?q:mid(t[GI[g]],q));
-const cellFor=p=>{let t=V0;for(const g of p)t=childOf(t,g);return t};
+const geometry=globalThis.SSSDisplayNavigation;
+if(!geometry?.cellTet)throw new Error('Display cell geometry required');
+const {V0,GENES,cellTet:cellFor}=geometry;
 
 /* the sheet as geometry: G[line][column], read top to bottom, left to right */
 const SHEET=(()=>{

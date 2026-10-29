@@ -3,7 +3,6 @@
 from pathlib import Path
 import argparse
 import importlib.util
-import shutil
 
 ROOT = Path(__file__).resolve().parent.parent
 BUILD_PATH = ROOT / "y" / "build.py"
@@ -26,15 +25,15 @@ def site_public_files(sites=None):
         # learning the child's semantic name or gene.
         projection_parent = Path(site["projection"]).parent
         root = site["site_dir"] / projection_parent / "public"
-        if not root.exists():
+        if not root.exists() and not root.is_symlink():
             continue
         if not root.is_dir() or root.is_symlink():
             raise ValueError(f'{root.relative_to(ROOT)}/public must be a real directory')
         for source in sorted(root.rglob("*")):
-            if source.is_dir():
-                continue
             if source.is_symlink():
                 raise ValueError(f'{source.relative_to(ROOT)}: symlink is not a lawful public carrier')
+            if source.is_dir():
+                continue
             resolved = source.resolve()
             try:
                 resolved.relative_to(root.resolve())
@@ -61,17 +60,7 @@ def artifact_files():
 
 
 def write_artifact(target: Path):
-    target = target.resolve()
-    if target in (ROOT.resolve(), build.DISPLAY.resolve()):
-        raise ValueError("artifact target must be outside living anatomy")
-    if target.exists():
-        shutil.rmtree(target) if target.is_dir() else target.unlink()
-    files = artifact_files()
-    for rel, data in files.items():
-        path = target / rel
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(data)
-    return files
+    return build.artifact.replace(target, ROOT, artifact_files)
 
 
 def verify_artifact(target: Path):
@@ -90,7 +79,7 @@ def verify_artifact(target: Path):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--artifact", type=Path, default=ROOT / "_site")
+    ap.add_argument("--artifact", type=Path, default=ROOT / "_site", help="disposable _site directory or an explicit directory outside the repository")
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args()
     target = args.artifact if args.artifact.is_absolute() else ROOT / args.artifact

@@ -18,6 +18,7 @@ from pathlib import Path
 import hashlib
 import hmac
 import importlib.util
+import os
 import re
 
 PATH_DOMAIN = "crawlerbait:path:v1"
@@ -37,8 +38,7 @@ OBSERVATION_DERIVED_PUBLIC_PREFIXES = (
 )
 
 HERE = Path(__file__).resolve().parent
-REPO_ROOT = HERE.parents[5]
-SITE_PUBLIC_PATH = REPO_ROOT / "y" / "site-public.py"
+
 
 
 def canonical_path(value) -> str:
@@ -48,6 +48,10 @@ def canonical_path(value) -> str:
 @lru_cache(maxsize=1)
 def offered_public_paths() -> frozenset[str]:
     """Exact source-owned public artifact paths, including directory index aliases."""
+    supplied = os.environ.get("CRAWLERBAIT_SITE_PUBLIC")
+    if not supplied:
+        raise RuntimeError("legacy exact-offer evidence requires explicit CRAWLERBAIT_SITE_PUBLIC capability")
+    SITE_PUBLIC_PATH = Path(supplied).resolve()
     spec = importlib.util.spec_from_file_location(
         "crawlerbait_display_site_public",
         SITE_PUBLIC_PATH,

@@ -103,6 +103,7 @@ const GLOBAL_PROJECTION=rootSurface.fieldProjection;
 if(!rootSurface.projection||!GLOBAL_PROJECTION?.root) throw new Error('overview interlocutor must expose its full public root; an outer preview cannot replace site-space authority');
 const activity=H.createActivityBus(registry),fold=F.createFold(document.getElementById('tetra-fold'));
 const home=document.getElementById('root-home'),stateEl=document.getElementById('site-state'),stage=document.getElementById('interlocutor-stage');
+let pendingEncounter=null;
 const fieldById=new Map();
 /* A site floats inside the container the witness came through: the encounter it
  * was entered from on the walked stack, else the overview interlocutor that
@@ -203,6 +204,12 @@ function syncMembraneGrid(){
  if(header)for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:header.height+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
 }
 function siteTitle(id){const root=surfaces.get(id)?.fieldProjection?.root;return root?.[W.language]||specs.get(id)?.title||root?.noun||id.replace(/^organism:/,'')}
+function handoffStatus(){
+  if(!pendingEncounter){delete stateEl.dataset.handoffPhase;return}
+  const {phase,ids}=pendingEncounter,de=W.language==='de';
+  stateEl.dataset.handoffPhase=phase;
+  stateEl.textContent=(phase==='opening'?(de?'ÖFFNEN':'OPENING'):(de?'LADEN':'LOADING'))+' · '+ids.map(siteTitle).join(' + ')+' · '+(de?'ESC: ZURÜCK':'ESC: RETURN');
+}
 function globalTargets(){
   const loci=new Map();
   for(const id of specs.keys()){
@@ -238,6 +245,7 @@ function render(path=W.view,{retainPrior=false,requireReady=false}={}){
   composition();syncMembraneGrid();Safe.refresh();for(const ui of uiById.values())ui.refresh();
   const local=(inspectCapable()?(path||'overview'):'root');
   stateEl.textContent='WITNESS viewer · global '+GLOBAL_SCOPE+':'+(activeAddress||'overview')+' · local '+local+' · '+activeIds.join(' + ');
+  handoffStatus();
   document.documentElement.dataset.scope=GLOBAL_SCOPE;
 }
 /* Background inspection is local. Global encounter changes happen only through explicit global target events. */
@@ -280,13 +288,21 @@ function enter(r,path,push=true,parents=[]){
   return true;
 }
 let handoffIntent=0,cancelHandoff=null;
-function nextHandoff(){cancelHandoff?.();cancelHandoff=null;return ++handoffIntent}
+function nextHandoff(){cancelHandoff?.();cancelHandoff=null;pendingEncounter=null;handoffStatus();return ++handoffIntent}
+function cancelPendingEncounter(){
+  if(!fold.busy||!cancelHandoff)return false;
+  nextHandoff();
+  for(const id of activeIds)fieldById.get(id)?.arriveFrom(null);
+  render(W.view);
+  return true;
+}
 function feedWound(error){
   console.warn('Display representation handoff refused; prior encounter preserved',error);
   // A refused target returns the still-active approached field to its walked
   // container as well as preserving the prior identity and visit boundary.
   for(const id of activeIds)fieldById.get(id)?.arriveFrom(null);
   stateEl.dataset.feedWound=String(error?.message||error);
+  pendingEncounter=null;handoffStatus();
   stateEl.textContent=(error?.code==='RENDER_UNAVAILABLE'?'ENCOUNTER UNAVAILABLE':'FEED UNAVAILABLE')+' · RETRY THE ENCOUNTER';
   writeHistory('replace');
 }
@@ -304,12 +320,12 @@ function navigateGlobal(path,push=true,origin=null,parents=[],contact=null){
   const acquired=acquireTarget(ids);
   // Acquisition and owner preparation drive a moving, deliberately incomplete
   // fill. Failure/cancellation reverse it over the still-live prior encounter.
-  const ready=acquired?Promise.race([acquired.then(()=>({ok:true}),error=>({ok:false,error})),new Promise(resolve=>{cancelHandoff=()=>resolve({cancelled:true})})]):null;
+  const ready=acquired?Promise.race([acquired.then(()=>{if(token===handoffIntent&&pendingEncounter){pendingEncounter.phase='opening';handoffStatus()}return {ok:true}},error=>({ok:false,error})),new Promise(resolve=>{cancelHandoff=()=>resolve({cancelled:true})})]):null;
   context.readiness=ready;context.progress=()=>ids.reduce((sum,id)=>sum+(feedProgress.get(id)||0),0)/Math.max(1,ids.length);
-  const commit=()=>token===handoffIntent?enter(r,path,push,parents):false;
+  const commit=()=>{if(token!==handoffIntent)return false;pendingEncounter=null;handoffStatus();return enter(r,path,push,parents)};
   const swap=()=>fold.swap(()=>ready?ready.then(result=>{if(result.cancelled)return false;if(!result.ok)throw result.error;return commit()}):commit(),context);
   const launch=()=>{try{const result=swap();if(result&&typeof result.catch==='function')result.catch(error=>{if(token===handoffIntent)feedWound(error)})}catch(error){if(token===handoffIntent)feedWound(error)}};
-  if(acquired)stateEl.textContent='ACQUIRING PUBLIC FEED · '+path;
+  if(acquired){pendingEncounter={ids,phase:'loading'};handoffStatus()}
   launch();
   return true;
 }
@@ -336,8 +352,8 @@ addEventListener('sss:membrane-ascend',e=>{
   try{const result=fold.swap(back,{origin,from:activeAddress,to:'',onClosing:duration=>globalThis.SSSDisplayLens?.departFrom?.(origin,duration)});if(result&&typeof result.catch==='function')result.catch(feedWound)}catch(error){feedWound(error)}
 });
 addEventListener('sss:language',()=>{syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});
-home.addEventListener('click',e=>{e.preventDefault();if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{nextHandoff();setLocalView('','home')}});
-addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(stack.length)leave();else home.click()}});
+home.addEventListener('click',e=>{e.preventDefault();if(cancelPendingEncounter())return;if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{nextHandoff();setLocalView('','home')}});
+addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(cancelPendingEncounter())return;if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});
 function receiveActivity(event){return activity.receive(event)}
 addEventListener('sss:activity',e=>{if(e.detail)receiveActivity(e.detail)});

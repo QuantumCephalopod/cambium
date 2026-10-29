@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -128,6 +129,8 @@ def _refusal_cases(body, common, validate_body):
 
 def witness(body, common, operations):
     body = Path(body)
+    assert not re.search(r'font(?:-size)?\s*:[^;}]*?(?:\d+(?:\.\d+)?(?:px|rem)|clamp\()', (body / 'y/tide.py').read_text()), 'Crawlerbait static secretion contains an arbitrary font size'
+    assert json.loads((body / 'site.json').read_text())['manifestation'].get('background_drag', True) is True, 'Crawlerbait background drag is not true'
     data = json.loads((body / 'z/projection.json').read_text(encoding='utf-8'))
     operations['validate'](data, body, common)
     for key, value in (('source', 'foreign'), ('routes', {}), ('crawlers', {}), ('encounters', {})):
@@ -158,3 +161,33 @@ def witness(body, common, operations):
     report['local_suites'] = local_suites
     print('Crawlerbait owner witness: ' + json.dumps(report, sort_keys=True))
     return report
+
+
+def integration(body, capabilities):
+    for route in ('crawlerbait/index.html', 'crawlerbait/state.json'):
+        assert route in capabilities['public_files'], 'Crawlerbait machine-facing static hub missing'
+        assert (capabilities['artifact'] / route).is_file(), 'Crawlerbait static reef was not secreted into artifact'
+    commands = [
+        [sys.executable, str(body / 'y/path_privacy.py')],
+        [sys.executable, str(body / 'y/migrate_path_privacy.py'), '--self-test'],
+        ['node', str(body / 'z/render.test.cjs'), str(capabilities['recursive_fold']),
+         str(capabilities['navigation']), str(capabilities['ui_grid'])],
+    ]
+    grid_test = """const assert=require('node:assert/strict'),fs=require('node:fs'),G=require(process.argv[1]);
+const manifest=JSON.parse(fs.readFileSync(process.argv[2]+'/site.json'));
+const raw=JSON.parse(fs.readFileSync(process.argv[2]+'/'+manifest.ui_grid));
+const s=G.normalizeState(raw),box=id=>G.fieldInfo(s,id).bounds;
+assert.deepEqual(box('timeline'),{x:.25,y:.875,w:.5,h:.125});
+assert.deepEqual(box('compass'),{x:.75,y:.5,w:.25,h:.5});
+assert.deepEqual(box('description'),{x:0,y:.25,w:.25,h:.75});
+assert.deepEqual(box('viewport'),{x:.25,y:.25,w:.625,h:.625});
+assert.equal(s.fields.viewport.cells.length,25);
+assert.deepEqual(s.fields.viewport.cells.filter(c=>s.fields.compass.cells.includes(c)),['zxw','zxy','zzw']);"""
+    commands.append(['node', '-e', grid_test, str(capabilities['ui_grid']), str(body)])
+    for command in commands:
+        result = subprocess.run(command, cwd=body,
+                                env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1',
+                                     'CRAWLERBAIT_SITE_PUBLIC': str(capabilities['site_public'])},
+                                capture_output=True, text=True)
+        if result.returncode:
+            raise AssertionError(result.stderr or result.stdout or 'Crawlerbait integration witness failed')

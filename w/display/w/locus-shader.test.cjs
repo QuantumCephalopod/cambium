@@ -333,10 +333,10 @@ console.log('PASS — unrelated owner uses shared folds and pointer Descent on n
 // The real first adopter uses the same capability. Source comparisons stay in
 // this independent witness; the actual field receives only the owner's frontier.
 {
- const modules=new Map(),context={SSSInterlocutorModules:modules,SSSRecursiveFold:Q,performance};
- const body=path.join(__dirname,'../y/yw/crawlerbait/z');
- vm.runInNewContext(fs.readFileSync(path.join(body,'render.js'),'utf8'),context);
- const owner=modules.get('organism:crawlerbait'),source=JSON.parse(fs.readFileSync(path.join(body,'projection.json'),'utf8'));
+ const modules=new Map(),context={SSSInterlocutorModules:modules,SSSRecursiveFold:Q,SSSDisplayNavigation:N,performance};
+ const site=require('./site-witness.cjs').discoverSites().get('organism:crawlerbait');
+ vm.runInNewContext(fs.readFileSync(site.file('renderer'),'utf8'),context);
+ const owner=modules.get(site.manifest.id),source=JSON.parse(fs.readFileSync(site.file('projection'),'utf8'));
  const law=owner._law,G=law.buildGrowth(source.routes),current=G.routesAt(law.buildLife(source).t0);
  for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
    const initial=owner.fieldProjection(source),snapshot=owner.shader.snapshot;

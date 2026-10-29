@@ -4,13 +4,16 @@ from pathlib import Path
 from hashlib import sha256
 import argparse
 import html
+import importlib.util
 import json
 import re
-import shutil
 from types import MappingProxyType
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
+_artifact_spec = importlib.util.spec_from_file_location('cambium_artifact', HERE / 'artifact.py')
+artifact = importlib.util.module_from_spec(_artifact_spec)
+_artifact_spec.loader.exec_module(artifact)
 DISPLAY = ROOT / 'w' / 'display'
 SITE_ROOT = DISPLAY / 'y'
 GENES = 'wxzy'
@@ -61,7 +64,11 @@ def load_yaml(path):
 
 
 def validate_index(index):
-    def walk(node, path=''):
+    if set(index) != set(GENES):
+        raise ValueError('root INDEX.yaml must contain exactly the realized w/x/z/y phenotype')
+    pending = [(index[g], g) for g in reversed(GENES)]
+    while pending:
+        node, path = pending.pop()
         if not isinstance(node, dict):
             raise ValueError(f'{path or "root"} phenotype must be a mapping')
         keys = set(node)
@@ -74,28 +81,23 @@ def validate_index(index):
         children = [g for g in GENES if g in node]
         if children and len(children) != 4:
             raise ValueError(f'{path or "root"} has an incomplete realized CCCC split')
-        for g in children:
-            walk(node[g], path + g)
-    if set(index) != set(GENES):
-        raise ValueError('root INDEX.yaml must contain exactly the realized w/x/z/y phenotype')
-    for g in GENES:
-        walk(index[g], g)
+        pending.extend((node[g], path + g) for g in reversed(children))
 
 
 def display_loci():
     """Yield current realized Display semantic loci without crossing organism membranes."""
     index=load_yaml(DISPLAY/'INDEX.yaml'); validate_index(index)
     rows=[]
-    def walk(node,address,folder):
+    pending=[(index[g],g,DISPLAY/g) for g in reversed(GENES)]
+    while pending:
+        node,address,folder=pending.pop()
         if not folder.is_dir():
             raise ValueError(f'Display phenotype locus {address} is missing at {folder.relative_to(ROOT)}')
         rows.append({'address':address,'folder':folder,'node':node})
         children=[g for g in GENES if g in node]
-        for gene in children:
+        for gene in reversed(children):
             child_address=address+gene
-            walk(node[gene],child_address,folder/child_address)
-    for gene in GENES:
-        walk(index[gene],gene,DISPLAY/gene)
+            pending.append((node[gene],child_address,folder/child_address))
     return rows
 
 
@@ -293,6 +295,20 @@ def witness_site_build(site):
     if not callable(module.get('witness')):
         raise ValueError(f"{site['id']}: owner build evidence must expose witness")
     module['witness'](site['site_dir'], _build_common(), MappingProxyType(operations))
+    return True
+
+
+def witness_site_integration(site, capabilities):
+    """Run optional owner-declared evidence against explicitly lent host resources."""
+    if not site.get('build', {}).get('witness'):
+        return False
+    module = _load_build_member(site, site['build']['witness'])
+    integration = module.get('integration')
+    if integration is None:
+        return False
+    if not callable(integration):
+        raise ValueError(f"{site['id']}: owner integration evidence is not callable")
+    module['integration'](site['site_dir'], MappingProxyType(dict(capabilities)))
     return True
 
 
@@ -633,15 +649,7 @@ def artifact_files(sites=None):
 
 
 def write_artifact(target):
-    target = target.resolve()
-    if target in (ROOT.resolve(), DISPLAY.resolve()):
-        raise ValueError('artifact target must be outside living anatomy')
-    if target.exists():
-        shutil.rmtree(target) if target.is_dir() else target.unlink()
-    files = artifact_files()
-    for rel, data in files.items():
-        path = target/rel; path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(data)
-    return files
+    return artifact.replace(target, ROOT, artifact_files)
 
 
 def verify_artifact(target):
@@ -659,7 +667,7 @@ def verify_artifact(target):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--artifact', type=Path, default=ROOT/'_site')
+    ap.add_argument('--artifact', type=Path, default=ROOT/'_site', help='disposable _site directory or an explicit directory outside the repository')
     ap.add_argument('--check', action='store_true')
     derivation = ap.add_mutually_exclusive_group()
     derivation.add_argument('--derive-site-projection', metavar='IDENTITY', help='derive the declared projection through its source owner')

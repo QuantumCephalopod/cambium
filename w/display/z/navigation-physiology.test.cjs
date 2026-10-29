@@ -4,6 +4,25 @@ const assert = require('node:assert/strict');
 const A = require('../../../z/address.js');
 const N = require('./navigation-physiology.js');
 
+// Child/cell geometry is the neutral capability lent to local presentations.
+// Pin the former split arithmetic, including a non-root parent frame.
+{
+  const previousChild=(t,i)=>t.map((p,j)=>i===j?p:p.map((v,k)=>(t[i][k]+v)/2));
+  const previousCell=(path,parent)=>{let t=parent;for(const g of path)t=previousChild(t,N.GENES.indexOf(g));return t};
+  const parents=[N.V0,N.V0.map(p=>p.map((v,k)=>v*.375+[2,-3,.7][k]))];
+  const paths=['','w','x','z','y','wxzy','yyxzwy','w'.repeat(12001)];
+  for(const parent of parents){
+    const saved=JSON.stringify(parent);
+    for(const [i,g] of N.GENES.entries())assert.deepEqual(N.childTet(parent,g),previousChild(parent,i));
+    assert.deepEqual(N.splitTet(parent),N.GENES.map(g=>N.childTet(parent,g)));
+    for(const path of paths)assert.deepEqual(N.cellTet(path,parent),previousCell(path,parent));
+    assert.equal(JSON.stringify(parent),saved,'cell geometry mutated its parent frame');
+  }
+  for(const path of paths.slice(0,-1))assert.deepEqual(N.cellTet(path),N.cellForPath(path).tet);
+  const independent=N.cellTet('');independent[0][0]=3;assert.notEqual(N.V0[0][0],3,'borrowed root cell is mutable shared state');
+  assert.throws(()=>N.cellTet('wx?'));assert.throws(()=>N.childTet(N.V0,'?'));
+}
+
 const atom = noun => ({noun,children:{}});
 const root = {noun:'root',children:{w:atom('Form'),x:atom('Continuity'),z:atom('Care'),y:atom('Inquiry')}};
 let s = N.collectStructure(root);

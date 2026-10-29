@@ -2,7 +2,9 @@
 'use strict';
 const typeInk=(ctx,...args)=>{if(globalThis.SSSDisplayType?.fillText)return globalThis.SSSDisplayType.fillText(ctx,...args);ctx.fillText(...args)};
 const id='organism:crawlerbait';
-const GENES=Object.freeze(['w','x','z','y']);
+const geometry=globalThis.SSSDisplayNavigation;
+if(!geometry?.cellTet||!geometry.childTet)throw new Error('Display cell geometry required');
+const GENES=geometry.GENES;
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 let inspectorHost=null,selectedAddress='',crawlerById=new Map(),lastProjection=null;
 let growth=null,fieldCache=null,fieldRevision=-1,baitFold=null;
@@ -88,17 +90,23 @@ void main(){
 };
 
 /* ============ Sierpinski address geometry: points are vertices, paths walk edges ============ */
-const GI={w:0,x:1,z:2,y:3};
-const V0=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(v=>{const m=Math.hypot(...v);return v.map(n=>n/m)});
+const GI=Object.fromEntries(GENES.map((gene,i)=>[gene,i]));
+const V0=geometry.V0;
 const mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2];
-const child=(t,i)=>t.map((p,j)=>i===j?p:mid(t[i],p));
-const cellIn=(t,s)=>{for(const g of s)t=child(t,GI[g]);return t};
+const child=(t,i)=>geometry.childTet(t,GENES[i]);
+const cellIn=(t,s)=>geometry.cellTet(s,t);
 const pointCache=new Map();
 function pointOf(s){let p=pointCache.get(s);if(!p){p=cellIn(V0,s)[GI[s[s.length-1]]];pointCache.set(s,p)}return p}
 /* from the point addressed by s inside tet t, walk edges to corner k of t */
-function toCorner(s,t,k){const a=GI[s[0]],rest=s.slice(1);
-  if(!rest.length)return a===k?[t[a]]:[t[a],t[k]];
-  const sub=toCorner(rest,child(t,a),k);if(a!==k)sub.push(t[k]);return sub}
+function toCorner(s,t,k){
+  const pending=[];
+  for(let i=0;i<s.length-1;i++){
+    const a=GI[s[i]];if(a!==k)pending.push(t[k]);t=child(t,a);
+  }
+  const a=GI[s[s.length-1]],points=a===k?[t[a]]:[t[a],t[k]];
+  for(let i=pending.length-1;i>=0;i--)points.push(pending[i]);
+  return points;
+}
 function route(sa,sb){
   if(sa===sb)return [pointOf(sa)];
   let p=0;while(p<sa.length&&p<sb.length&&sa[p]===sb[p])p++;
