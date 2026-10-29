@@ -1,0 +1,25 @@
+{
+  "kind": "HOME",
+  "event_id": "crawlerbait-selfsimilarity-audit-intake-20261029",
+  "home_at_utc": "2026-10-29T15:31:23.305207Z",
+  "organism": "crawlerbait",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "AUDIT_INTAKE_ADMITTED — bounded findings remain unresolved; no implementation or semantic body change.",
+  "changed_scope": [
+    "_stomach/NUTRIENT__edge-walker-stack__20261029.md",
+    "_stomach/NUTRIENT__opaque-first-entry__20261029.md"
+  ],
+  "delivery_state": "STAGING_OUTCOME_DURABLE_CANONICAL_PROMOTION_SEPARATE",
+  "context": {
+    "baseline": "3920a0e670eb54102391a2e3da566abd34ff01cb",
+    "evidence": {
+      "owner": "cambium",
+      "event_id": "cambium-selfsimilarity-audit-20261029",
+      "path": "_root/cambium-selfsimilarity-audit-20261029.json",
+      "sha256": "cc384f33dd5b135aa7bcaeeaa06e19663cda0f9c71c217f77d49cd7935ec740a",
+      "consumed_claim": "Source-exact audit evidence for the owner-local nutrients listed in changed_scope. Shared audit evidence stays at its actual root audit owner; child interpretation and repair remain local."
+    },
+    "independent_outcome": "Local intake accepted for future challenge; no proof of repair, no change to site geometry/source meaning/runtime.",
+    "uplink": "This audit already jointly addresses the root and Display relation. No semantic dependency changed; no separate propagation inferred from storage alone."
+  }
+}
