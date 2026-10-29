@@ -25,14 +25,14 @@
   },
   "home": {
     "changed_scope": [
-      "Admit 1 source-faithful owner observations as independently digestible OPEN nutrients with dependencies and closure witnesses.",
-      "Separate current implementation, accepted presentation targets and historical witness limits; intake capture does not implement or close the new UX."
+      "source-owned implementation and witnesses",
+      "source-exact local spent intake"
     ],
-    "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS/INTAKE_DURABLE — 1 new nutrients OPEN; current-law reconciliation recorded; UX implementation pending."
+    "delivery_state": "STAGING_HOME_DURABLE_FEED_SEPARATE",
+    "outcome": "PASS — bounded owner work implemented and witnessed; explicitly named remainder remains unresolved."
   },
-  "observed_at_utc": "2026-10-19T16:40:20.303506Z",
-  "owner": "organism:impressum",
+  "observed_at_utc": "2026-10-29T16:12:21.665233Z",
+  "owner": "impressum",
   "phenotype": {
     "w": {
       "noun": "Identity"
@@ -47,11 +47,11 @@
       "noun": "Contact"
     }
   },
-  "reflected_home_event": "impressum-ux-intake-and-ritual-reconciliation-20261019T163850Z",
+  "reflected_home_event": "impressum-selfsimilarity-digestion-20261029",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "9a21acec8e4db319360d542f3c40f7fce92e40eefac79c5fc6769dcba0b66580"
+      "sha256": "204717a62edea65e7f4e404ba0b64562ddf117e37ee809e599469cf88b097da5"
     }
   ],
   "shell": {
@@ -60,10 +60,10 @@
     "stomach_direct": [
       "NUTRIENT__orthogonal-tetrahedral-text__20261019.md"
     ],
-    "waste_direct_count": 5
+    "waste_direct_count": 6
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "4a778df26193eb7ff4577430a4d6db9e7ff51f30"
+    "source_revision": "1ae190c299715f00fbdfcbc9de0ca41880538d3b"
   }
 }

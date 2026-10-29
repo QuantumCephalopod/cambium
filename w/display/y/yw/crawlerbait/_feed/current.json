@@ -25,13 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "_stomach/NUTRIENT__edge-walker-stack__20261029.md",
-      "_stomach/NUTRIENT__opaque-first-entry__20261029.md"
+      "source-owned implementation and witnesses",
+      "source-exact local spent intake"
     ],
-    "delivery_state": "STAGING_OUTCOME_DURABLE_CANONICAL_PROMOTION_SEPARATE",
-    "outcome": "AUDIT_INTAKE_ADMITTED — bounded findings remain unresolved; no implementation or semantic body change."
+    "delivery_state": "STAGING_HOME_DURABLE_FEED_SEPARATE",
+    "outcome": "PASS — bounded owner work implemented and witnessed; explicitly named remainder remains unresolved."
   },
-  "observed_at_utc": "2026-10-29T15:32:01.246296Z",
+  "observed_at_utc": "2026-10-29T16:12:21.663839Z",
   "owner": "crawlerbait",
   "phenotype": {
     "w": {
@@ -47,24 +47,23 @@
       "noun": "Membrane"
     }
   },
-  "reflected_home_event": "crawlerbait-selfsimilarity-audit-intake-20261029",
+  "reflected_home_event": "crawlerbait-selfsimilarity-digestion-20261029",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "ae6f02290579d95449e78e4200eb11a971755eafbe8ce5d1f1d3dbdca955b039"
+      "sha256": "413066588db18f684490dd0419168d6db825e4f5965fe7e69c5401cada341115"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
-      "NUTRIENT__edge-walker-stack__20261029.md",
       "NUTRIENT__opaque-first-entry__20261029.md"
     ],
-    "waste_direct_count": 35
+    "waste_direct_count": 37
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "12364c73ec03b22763ef07aff8ed00fcc254c389"
+    "source_revision": "1ae190c299715f00fbdfcbc9de0ca41880538d3b"
   }
 }
