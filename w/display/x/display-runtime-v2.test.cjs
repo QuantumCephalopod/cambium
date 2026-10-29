@@ -367,10 +367,12 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
   assert.equal(f.runtime.state.activeAddress,'w');assert.equal(f.runtime.state.stack.length,1);
   const prior=JSON.stringify(f.runtime.state),visits=f.history.length,arrivalCount=f.arrivals.length;
   f.runtime.navigateGlobal('wx');await new Promise(r=>setTimeout(r,60));
+  assert.equal(f.runtime.pendingEncounter,true,'shared Escape priority cannot see the pending encounter');
   assert.equal(f.stateEl.dataset.handoffPhase,'loading');assert.match(f.stateEl.textContent,/LOADING.*ESC: RETURN/);
   assert.equal(f.runtime.state.activeAddress,'w');assert.equal(f.foldLayer.dataset.waiting,'true');
   if(gesture==='home')f.home.click({preventDefault(){}});else f.key({key:'Escape',preventDefault(){}});
   await settle(f);assert.equal(JSON.stringify(f.runtime.state),prior,'cancellation changed the prior encounter/container/stack');
+  assert.equal(f.runtime.pendingEncounter,false,'cancelled resource acquisition still claimed Escape');
   assert.equal(f.history.length,visits,'cancellation wrote a visit');assert.equal(f.stateEl.dataset.handoffPhase,undefined);
   assert.equal(f.foldLayer.dataset.waiting,undefined);assert(f.arrivals.length>arrivalCount,'cancelled approach did not return to its prior container');
   f.held.shift()();for(let i=0;i<40;i++)await Promise.resolve();

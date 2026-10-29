@@ -117,13 +117,22 @@ try:
     else: assert all(s['animation']=='fold-wait' for s in samples) and max(s['alpha'] for s in samples)-min(s['alpha'] for s in samples)>.005,samples
     page.screenshot(path=str(a.out/(case+'.png')))
     if gesture=='home':page.locator('#root-home').click()
-    else:page.keyboard.press('Escape')
-    scene(page,'organism:datenschutz');assert snapshot(page)==prior,'cancellation changed prior encounter/history'
+    else:
+     assert page.locator('#mini').get_attribute('data-aperture')=='open','Escape priority must be witnessed with the navigator open'
+     page.keyboard.press('Escape')
+    # Cancellation has its own bound: it must not wait for the server's delayed
+    # body or accidentally let an earlier compass handler consume Escape.
+    page.wait_for_function('document.getElementById("tetra-fold").dataset.fold==="open"',timeout=10000)
+    assert snapshot(page)==prior,'cancellation changed prior encounter/history'
     assert page.locator('#site-state').get_attribute('data-handoff-phase') is None
     assert not gates[case].is_set(),'cancellation waited for body'
     gates[case].set();page.wait_for_function('__entry.marks.some(m=>m.name==="prepare_end")',timeout=180000)
     page.wait_for_timeout(200);assert snapshot(page)==prior,'late readiness committed cancelled successor'
     results.append(dict(case=case,viewport=[width,height],reduced_motion=reduced,samples=samples,cancelled_before_body=True,late_source_retained_prior=True,transport=report(page)))
+   except Exception:
+    failure=page.evaluate('()=>({state:SSSDisplayRuntime.state,pending:SSSDisplayRuntime.pendingEncounter,fold:{...document.getElementById("tetra-fold").dataset},aperture:{...document.getElementById("mini").dataset},status:document.getElementById("site-state").textContent,entry:window.__entry})')
+    (a.out/(case+'-FAILED.json')).write_text(json.dumps(failure,indent=2)+'\n')
+    page.screenshot(path=str(a.out/(case+'-FAILED.png')));raise
    finally:gates[case].set();context.close()
   context=browser.new_context(viewport={'width':1280,'height':800},device_scale_factor=1,reduced_motion='reduce')
   context.add_init_script('('+INIT+')({refuse:true})');page=context.new_page()

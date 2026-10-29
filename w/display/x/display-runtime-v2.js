@@ -289,8 +289,9 @@ function enter(r,path,push=true,parents=[]){
 }
 let handoffIntent=0,cancelHandoff=null;
 function nextHandoff(){cancelHandoff?.();cancelHandoff=null;pendingEncounter=null;handoffStatus();return ++handoffIntent}
+function hasPendingEncounter(){return Boolean(pendingEncounter&&fold.busy&&cancelHandoff)}
 function cancelPendingEncounter(){
-  if(!fold.busy||!cancelHandoff)return false;
+  if(!hasPendingEncounter())return false;
   nextHandoff();
   for(const id of activeIds)fieldById.get(id)?.arriveFrom(null);
   render(W.view);
@@ -380,5 +381,5 @@ Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlob
 /* Arriving at #scope:address enters that encounter directly; overview stays beneath it, so ascent and Escape return there. */
 if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)navigateGlobal(arrival,'replace')}
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
-globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingFeeds(){return detailHandoff.pending()},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
+globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingEncounter(){return hasPendingEncounter()},get pendingFeeds(){return detailHandoff.pending()},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();
