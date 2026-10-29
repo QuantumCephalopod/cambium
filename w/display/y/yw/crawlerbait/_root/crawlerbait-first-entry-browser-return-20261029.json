@@ -1,0 +1,37 @@
+{
+  "kind": "HOME",
+  "event_id": "crawlerbait-first-entry-browser-return-20261029",
+  "home_at_utc": "2026-10-29T16:30:09.587598Z",
+  "organism": "crawlerbait",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "PASS — actual browser first-entry, pending cancellation and refusal/retry bounded witnesses completed.",
+  "changed_scope": [
+    "shared pending-encounter cancellation and fallback presentation",
+    "_waste/NUTRIENT__opaque-first-entry__20261029.md"
+  ],
+  "delivery_state": "STAGING_HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "implementation": "QuantumCephalopod/cambium@6ee6a943d3c444845c2f154867559b6841125fa6",
+    "browser_witness": {
+      "run": "https://github.com/QuantumCephalopod/cambium/actions/runs/40911850089",
+      "proof_commit": "c4150889f9e6cf21a874d0e9032a38916bb66862",
+      "proof_difference": "Only an independent CI workflow was added to the implementation commit; application source is identical.",
+      "artifact_id": 12914131878,
+      "artifact_sha256": "ea7d49824a5af4b823b86c6ad37f24a402252b293b93fc799dbdbd6120aef04a",
+      "cases": 6,
+      "source_bytes": 21243091,
+      "routes": 15002,
+      "encounters": 49325,
+      "backend": "Chromium Canvas2D; software runner; no physical device FPS claim",
+      "cases_scope": "wide/narrow complete source; delayed source Home/Escape cancellation with late readiness; reduced motion; renderer refusal and retry."
+    },
+    "previous_counterexample": "Prior CI run 40908300511 witnessed narrow Escape consumed by the open navigator. Shared pending encounter now receives Escape first. The historical minute-long live wait was not causally reproduced; no network or device speedup is claimed.",
+    "source_exact_spent_intakes": [
+      {
+        "path": "_waste/NUTRIENT__opaque-first-entry__20261029.md",
+        "sha256": "0fc4edc6f2283a4f86ecd45a533cf7d34f3754bd420acabaacc632b618422ef8"
+      }
+    ],
+    "backpropagation": "Only the Display-local pending encounter and optical fallback law changed; Crawlerbait retains its source acquisition and local meaning."
+  }
+}
