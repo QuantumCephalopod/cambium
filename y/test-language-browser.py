@@ -44,9 +44,18 @@ def check(page, language, identity):
     if identity in ('organism:datenschutz', 'organism:impressum'):
         assert page.locator(f'[data-interlocutor="{identity}"] article h1').inner_text() == expected[identity]
     if identity == 'organism:crawlerbait':
-        assert page.locator('[data-interlocutor="organism:crawlerbait"] h1').inner_text() == 'Crawlerbait'
-    assert page.locator('#legal-link-privacy').inner_text() == expected['organism:datenschutz']
-    assert page.locator('#legal-link-impressum').inner_text() == expected['organism:impressum']
+        heading = page.locator('[data-interlocutor="organism:crawlerbait"] h1')
+        assert heading.text_content() == 'Crawlerbait'
+        assert heading.inner_text() == 'CRAWLERBAIT', heading.inner_text()
+    for selector, owner, route in [('#legal-link-privacy', 'organism:datenschutz', 'privacy'),
+                                   ('#legal-link-impressum', 'organism:impressum', 'impressum')]:
+        link = page.locator(selector)
+        # Footer casing is a visual CSS treatment; preserve and verify both
+        # the actual name and the uppercase visitor-facing rendering.
+        assert link.text_content() == expected[owner], (language, owner, link.text_content())
+        assert link.inner_text() == expected[owner].upper(), (language, owner, link.inner_text())
+        assert link.get_attribute('hreflang') == language
+        assert link.get_attribute('href') == f'/{route}/' + ('en/' if language == 'en' else '')
     return targets
 
 results = []

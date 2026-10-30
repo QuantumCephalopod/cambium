@@ -22,6 +22,8 @@
 .papers-physiology{position:absolute;left:4%;bottom:auto;width:max-content;height:auto;z-index:7;pointer-events:none}
 .papers-physiology[data-visible="false"]{display:none}
 .papers-physiology button,.papers-origin-door{appearance:none;border:0;border-bottom:1px solid rgba(196,238,215,.3);background:none;padding:6px;color:rgba(226,244,235,.72);font:var(--type-rn2)/1.3 var(--mono);letter-spacing:.08em;cursor:pointer;pointer-events:auto}
+.papers-physiology button{min-height:44px;padding:10px 14px;border:1px solid rgba(196,238,215,.65);border-radius:8px;background:rgba(8,29,20,.84);color:rgba(237,255,244,.96);font-size:var(--type-rn1);box-shadow:0 0 18px rgba(106,221,165,.16)}
+.papers-physiology button:hover:not(:disabled),.papers-physiology button:focus-visible{border-color:rgba(226,255,236,.98);background:rgba(26,69,46,.96);outline:2px solid rgba(196,238,215,.55);outline-offset:3px}
 .papers-physiology button:disabled{opacity:.35;cursor:default}
 .papers-origin-door{position:absolute;z-index:7;transform:translate(-50%,-50%)}
 .papers-origin-door[hidden]{display:none}

@@ -195,6 +195,11 @@ for(let repeat=0;repeat<2;repeat++){
  assert.equal(ts.tutorial,null);assert.equal(ts.current,null);assert.equal(ts.chamberPath,'x');assert.equal(field.container,'x');
 }
 assert.notEqual(...visited);assert.equal(JSON.stringify(shadow),before,'teaching must not mutate source-owned semantic truth');
+const metSpecimen=eligible.find(rec=>shadow.inquiry.bodies[rec.id]?.metabolites?.some(m=>m&&(m.title||m.compression||m.text)));assert(metSpecimen);
+assert(tour.startTutorial(0));ts.tutorial.specimen=metSpecimen.id;tour.tutorialStep(5600);tour.ensureBeing(identities.get(metSpecimen.id),390);ts.transition=1;
+ts.tutorial.step=3;ts.tutorial.at=0;tour.tutorialStep(5600);
+const met=shadow.inquiry.bodies[metSpecimen.id].metabolites.find(m=>m&&(m.title||m.compression||m.text));
+assert.equal(ts.inner.key,metSpecimen.id+'·'+(typeof met.id==='string'&&met.id.trim()?met.id.trim():'M1'),'tutorial selects the actual metabolight identity');tour.stopTutorial();
 const saved=ts.records;ts.records=[];assert.deepEqual(clone(tour.tutorialCandidates()),[]);assert.equal(tour.startTutorial(),false);ts.records=saved;
 console.log('Papers live endpoint material, facing/size gates and two actual rank-4 recursive tutorial/return witnesses PASS',JSON.stringify({eligible:eligible.length,visited}));
 
