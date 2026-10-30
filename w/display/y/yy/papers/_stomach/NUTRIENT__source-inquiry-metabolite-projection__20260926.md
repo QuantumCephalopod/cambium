@@ -82,3 +82,21 @@ Current source Sheet Pulse/Body contact reports HOME `papers-chaperone-20261014T
 The concrete remaining operation is to save that current source-owned mirror into its existing bound Apps Script project, then run bounded `backfillInquiryProjection()` (which first refreshes Body under the same HOME and acknowledges each bounded delta) until current source coverage is exhausted, followed by `syncLiveNerve()` where necessary. Witness current HOME, source candidates and canonical artifact dialects, the acknowledged Worker/R2 revision, materializer output, static artifact/Pages publication, and actual Source metabolights before closure. `reprojectInquiry()` is an explicit recovery action, not the default refresh. Never publish private Drive IDs, raw acquisitions, credentials or script properties.
 
 The connected Drive/Sheets tools can read the source mirror and Sheet but cannot save or execute the bound Apps Script project. The independently required editor contact reached Google’s ordinary sign-in form in this browser. That authenticated runtime access is the remaining blocker; no physical-phone or personal visual-signoff obligation is introduced. This nutrient stays OPEN.
+
+
+## Re-entry — 2026-10-30: source projection counterexample
+
+A read-only re-entry found the source-owned Inquiry sheet and the repository public shadow each carrying 121 Source bodies and 88 Holon bodies. Both report 58 COMPLETE and 63 PARTIAL Sources; 39 Source bodies carry no metabolite rows. The current source INDEX names 121 distinct Source IDs. These counts describe the surfaces read, not a proof that every source artifact or downstream deployment is current. The Pulse freshness/contract text still describes an older nH-only projection and marks the bound runtime deployment OPEN; the Inquiry rows themselves include Sources.
+
+Twelve PARTIAL Source bodies in the current Inquiry sheet explicitly carry a COMPACT METABOLITE BODY gap but zero metabolite rows. For two such public identities, S.F6mG and S.8xgV, the current canonical source artifact was re-read and the unchanged `organismMetabolites_` function from the current maintained raw source mirror was executed locally against its text. It returned four compact items for each. Their current Inquiry and repository-shadow bodies both contain zero. This is evidence that these observed projections have not carried available compact items; it does not prove which runtime, refresh or transport step caused the gap. Compact items remain PARTIAL, and unexamined items are not invented.
+
+The raw mirror and bound Apps Script are different carriers. No bound-runtime source, execution, Worker acknowledgement, materialization or browser delivery was newly witnessed here. The available Drive connector cannot read, save or execute the bound Apps Script; replacing source rows by hand would not witness the source-owned pipeline. Reacquire the bound executable and reconcile it with the current mirror under the Papers circulation receptor, then perform bounded source-owned backfill and the existing downstream witnesses. This nutrient remains OPEN.
+
+Owner-local read witness: `_root/papers-source-projection-reentry-20261030.json`.
+
+
+## Bounded runtime-access re-entry — 2026-10-30, later UI digestion
+
+The four live shared-root-field rituals and current Papers circulation receptor were reacquired. A bounded read of the live Pulse surface reports HOME `papers-spent-circulation-wound-retire-20261020T2153Z`, `DELTA_ONLY · FULL_REBASE_RECOVERY · DEPLOYMENT_OPEN` and `REVISION_GATED · AFFECTED_IDS_ONLY · SOURCE_MIRROR_CURRENT · BOUND_RUNTIME_DEPLOYMENT_OPEN`. Its older nH-only diagnostic text still does not establish current executable deployment. The earlier Inquiry census and two compact-item counterexamples above were not re-measured in this bounded read.
+
+The connected Drive/Sheets capabilities still do not expose the bound executable. Opening the existing source Sheet for the independently required editor contact reached Google's ordinary sign-in form. No bound code was read, saved or run; no source rows, Script Properties or public projection were changed, and no new Worker acknowledgement, materializer revision or live Source-metabolight delivery was witnessed. Authenticated bound-editor access remains the concrete blocker. Public UI completion does not close this nutrient.

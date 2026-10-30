@@ -94,9 +94,10 @@ trigger.addEventListener('click',e=>{e.preventDefault();setPinned(!pinned)});
 addEventListener('keydown',e=>{
   keyboard=true;renderHint();
   if(e.key!=='Escape'||mini.dataset.aperture!=='open')return;
-  // The advertised return during a pending encounter belongs to that
-  // transaction. Do not consume it in this earlier capture listener.
-  if(globalThis.SSSDisplayRuntime?.pendingEncounter)return;
+  // A pending encounter or an active site's local return has priority when
+  // the navigator itself does not own keyboard focus.
+  const runtime=globalThis.SSSDisplayRuntime;
+  if(runtime?.pendingEncounter||(!mini.contains(document.activeElement)&&runtime?.hasLocalEscape))return;
   e.preventDefault();e.stopImmediatePropagation();pinned=false;mini.dataset.pinned='false';trigger.focus({preventScroll:true});close('escape');
 },true);
 

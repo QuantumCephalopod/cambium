@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.13"
+version: "3.14"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -449,9 +449,15 @@ The underlying QUESTION / PREPARE / METABOLIZE / GROW pump law remains Papers-ow
 
 Pinned Pretext remains neutral layout/ink requested by stable identity `@chenglou/pretext` through Display. Papers owns the meaning, timing and actual encounter; no reusable dependency learns Papers semantics.
 
-### Accepted liquid encounter targets — current intake
+### Identity-bound liquid encounter
 
-The 2026-10-19 targets extend this existing body rather than replacing its source contract: `_stomach/NUTRIENT__body-approach-and-locked-descent__20261019.md` owns specimen approach and joint locked passage; `_stomach/NUTRIENT__locked-topology-reading__20261019.md` owns stable investigation with part-dependent liquid accommodation; `_stomach/NUTRIENT__guided-droplette-and-entry-affordance__20261019.md` owns use of that same instrument during the actual-specimen explanation and its visible entry affordance. These are accepted OPEN targets. The present selected-part offers, click-based explanation and offer withdrawal do not yet implement them. Shared neutral mechanics remain Display-owned; source facts, body geometry and inquiry meaning remain Papers-owned.
+The 2026-10-19 approach, locked-topology reading and guided-droplette targets extend this existing body rather than replacing its source contract. Their bounded completion and source-exact waste return are recorded in `_root/papers-liquid-encounter-return-20261030.json`. Shared neutral mechanics remain Display-owned; source facts, body geometry and inquiry meaning remain Papers-owned. Source-runtime projection freshness stays separately OPEN in `_stomach/NUTRIENT__source-inquiry-metabolite-projection__20260926.md`.
+
+The contacted overview body approaches in its own display projection without zooming the surrounding field camera. Its identity survives overlapping neighbours, truthful chamber passage, inquiry entry, selected authored tissue and local ascent. The same drop accommodates vertex, edge, face, whole and metabolite wording without replacing its body lock. Complete admitted text retains the existing font ranks and continuation; occupied-space reflow preserves the current page and explicit Home/End intent, while another authored reading starts at its own first page. The whole and Source-origin doors choose free points on the actual projected boundary; the reading page uses free space inside the current carrier after measured occupied chrome, including the visible Source-origin control, is excluded. The origin control does not repel its own next boundary placement. A fully covered carrier earns no readable page. These are local placement constraints, not new source geometry or semantic depth.
+
+A guided encounter borrows Display's existing drop, follows an actual rank-4 body and its source genealogy, and returns the visitor's prior contact or yields to the visitor's take. Timed narration waits until the current actual reading has settled. The HOME names the actual narrow/wide manual primitive, overlap, passage, interruption and complete-lineage browser witnesses and their Canvas2D limit; native production-shader/font witnesses do not imply physical-device timing or a completed WebGL browser run.
+
+Papers offers Display a local Escape capability while mounted and holding a tutorial, selected body or chamber. One action leaves selected tissue, then the actual body, then the walked chamber; at Papers' root the enclosing membrane resumes ownership. A closing body does not restart its transition on repeated Escape. The same offered body lock remains intact through the local return. Display's competing-listener counterexample was separately returned in `../../../../../_root/display-local-escape-priority-return-20261030.json`; navigator focus and pending acquisition retain their own priority.
 
 ## Closure / acceptance
 
@@ -482,7 +488,7 @@ A public Papers mutation closes when:
 
 **Papers is a tetrahedral public inquiry field. Every living `S.*` and `nH` is the same canonical tetrahedral geometric species; rank changes genealogy, not morphology, and point packing is only encounter/LOD. Selection materializes already-earned source-owned structure in-place: `S.*` opens its internal source-body `4V / 6E / 4F / 1T` and metabolites when admitted, while `nH` opens its four-parent relational body and recursive ancestry. Provenance exits outward from the Source organism without replacing it. Display supplies shared tetrahedral geometry and orientation; Papers owns the inquiry membrane, genealogy emphasis and local phenomenology. Transport may evolve without turning the viewer into the actuator or the projection into authority.**
 
-Versioned notes below preserve their original witness scopes. The later3.3/3.4 bounded completion and current Display acceptance law supersede earlier open implementation/device flags; those notes are not additional current nutrients. Source-runtime freshness remains the separately admitted source-owned dependency.
+Versioned notes below preserve their original witness scopes. Current closure sections and their named HOMEs supersede historical open implementation/device flags, including the3.5 interaction targets; those notes are not additional current nutrients. Source-runtime freshness remains the separately admitted source-owned dependency.
 
 Version 1.3 luminous recursive-scale correction (2026-09-19): Papers now anchors local visual scale to `S.*` as the minimum Papers-organism quantum. Rank `nH` is rendered at `2^n` linear S-scale so complete ancestry contains `4^n` S quanta without rescaling S itself. Holon center voids carry recursive metabolight; nested Holons retain smaller lights and visible Sources carry faint quantum embers. V1 baseline luminosity is rank-driven, while already-admitted public wisdom may boost it; missing wisdom tissue remains projection absence rather than evidence of no metabolites.
 
@@ -539,9 +545,9 @@ Cached glyph sprites reserve the shared shadow material's actual blur/spread pad
 
 The enlarged glyph sprites retain a 32MiB/4000-entry ceiling. Shared font readiness changes the paint generation so fallback-font shadows cannot survive the actual SpriteSheet load.
 
-## Current intake boundary — 2026-10-28
+## Current intake boundary — 2026-10-30
 
-The source-owned sharp foreground adapter has completed bounded technical witnesses/HOME and is spent local intake. The three 2026-10-19 interaction targets named above remain genuinely unimplemented, and source-runtime projection freshness remains its separate unresolved source-owned operation. Their actual functional remainder, not a personal sign-off requirement, keeps them in `_stomach`. Later failures of completed work enter as new nutrients.
+The sharp foreground adapter and the three 2026-10-19 interaction targets have completed their bounded local implementation/witness/HOME returns. The encountered overlap, field-flood, occupied-door and visible-reading regressions are returned with the latter act. Source-runtime projection freshness remains a separate unresolved source-owned operation; local UI completion does not execute the bound Apps Script or advance its downstream public revision. Later concrete failures of completed work enter as new nutrients.
 
 
 ## Bounded overview contact — 2026-10-28
@@ -550,4 +556,4 @@ Sources and Holons in the Papers overview offer their actual moving projected bo
 
 The sharp foreground redraws only the contacted organism’s actual source geometry and visibility embers in the existing isolated shared pass. Its actual admitted ID/title opens through the existing Pretext reading and transparent sharp-page path, with complete wording and continuation. This redraw does not advance simulation, enter inquiry, change chamber/selection or mutate public source/genealogy. Other organisms remain background. Resolution/blur/glass and lock/release physics remain Display-owned.
 
-This completes only the newly bounded overview Source/Holon softlock intake, returned source-exact to local waste after native movement/resolver/lifetime and actual-font/source-renderer GLES witnesses at390×844 and1280×800. It does not close the three broader 2026-10-19 approach/locked-Descent/topology/tutorial targets or source-runtime projection freshness. Later concrete failures are new nutrients; publication/merge is not a personal completion gate.
+The 2026-10-28 return completed only the then-new bounded overview Source/Holon softlock intake, with native movement/resolver/lifetime and actual-font/source-renderer GLES witnesses at390×844 and1280×800. Its historical HOME keeps that scope. The later liquid-encounter HOME above owns the broader approach/locked-Descent/topology/tutorial completion. Source-runtime projection freshness remains separate. Later concrete failures are new nutrients; publication/merge is not a personal completion gate.

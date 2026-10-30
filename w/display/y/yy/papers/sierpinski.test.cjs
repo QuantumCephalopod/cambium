@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source,field=null){
   const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={paperReadingChrome,paperReadingRegion,foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,hitGlobal,enterOverviewTarget,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,createFlatRenderer,clipCameraPlane,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,overviewBodyProjection,updateOverviewApproach,currentDisplayScale,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -166,6 +166,16 @@ module.exports={load,referenceDrift,referenceFlow,referenceCollect,near};
   assert.equal(state.lensReader.hidden,false);assert.ok(state.tissueLetters.length>0);
   assert.equal(state.tissueLetters.map(g=>g.ch).join(''),page.lines.slice(0,page.rows).map(l=>l.text).join('').replace(/ /g,''),'the current page becomes actual bare letter bodies in the existing tissue plane');
   assert.ok(state.tissueLetters.every(g=>g.fat===0),'the contacted fine representation is readable rather than inflated tissue');
+  reading.paperLensPage(Infinity);state.readingChrome=[{x:0,y:60,w:480,h:220}];
+  let flowed=reading.paperLensReading(target);assert.equal(flowed.page,flowed.pages-1,'End survives a newly occupied part of the same carrier');
+  assert.equal(flowed.lines.map(l=>l.text).join(''),sourceText,'occupied-space reflow retains every authored character');
+  reading.paperLensPage(-Infinity);state.readingChrome=[];
+  flowed=reading.paperLensReading(target);assert.equal(flowed.page,0,'Home survives the carrier becoming free again');
+  reading.paperLensPage(1);state.readingChrome=[{x:0,y:60,w:480,h:180}];
+  flowed=reading.paperLensReading(target);assert.equal(flowed.page,1,'ordinary continuation does not reset to the first page during reflow');
+  reading.paperLensPage(Infinity);const different=reading.paperLensReading({...target,text:'Another authored part.'});
+  assert.equal(different.page,0,'a different authored reading never inherits the previous End intent');
+  state.readingChrome=[];reading.paperLensReading(target);
   G.P[0].x+=20;G.P[1].x+=20;reading.syncPaperLens(B,G);assert.equal(Lens.resolveTargets(target.id).find(t=>t.id===target.id).cx,box.left+170,'offered identity follows the moving body');
   G.front.wxz=false;reading.syncPaperLens(B,G);assert.equal(Lens.resolveTargets().length,2,'a vanished face withdraws');
   state.current=null;assert.equal(Lens.resolveTargets().length,0);reading.withdrawPaperLens();assert.equal(Lens.resolveTargets().length,0);
@@ -195,6 +205,11 @@ for(let repeat=0;repeat<2;repeat++){
  assert.equal(ts.tutorial,null);assert.equal(ts.current,null);assert.equal(ts.chamberPath,'x');assert.equal(field.container,'x');
 }
 assert.notEqual(...visited);assert.equal(JSON.stringify(shadow),before,'teaching must not mutate source-owned semantic truth');
+const metSpecimen=eligible.find(rec=>shadow.inquiry.bodies[rec.id]?.metabolites?.some(m=>m&&(m.title||m.compression||m.text)));assert(metSpecimen);
+assert(tour.startTutorial(0));ts.tutorial.specimen=metSpecimen.id;tour.tutorialStep(5600);tour.ensureBeing(identities.get(metSpecimen.id),390);ts.transition=1;
+ts.tutorial.step=4;ts.tutorial.at=0;tour.tutorialStep(5600);
+const met=shadow.inquiry.bodies[metSpecimen.id].metabolites.find(m=>m&&(m.title||m.compression||m.text));
+assert.equal(ts.inner.key,metSpecimen.id+'·'+(typeof met.id==='string'&&met.id.trim()?met.id.trim():'M1'),'tutorial selects the actual metabolight identity');tour.stopTutorial();
 const saved=ts.records;ts.records=[];assert.deepEqual(clone(tour.tutorialCandidates()),[]);assert.equal(tour.startTutorial(),false);ts.records=saved;
 console.log('Papers live endpoint material, facing/size gates and two actual rank-4 recursive tutorial/return witnesses PASS',JSON.stringify({eligible:eligible.length,visited}));
 
@@ -227,3 +242,134 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
  }
  console.log('Papers overview actual Source/Holon offers, moving shared softlock, pending projection, lifetime and unchanged navigation/source PASS');
 }
+
+/* The same contacted identity survives entry; part changes never mint a new body. */
+{
+ const a=load(),Lens=require(process.argv[3]),projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),built=a.buildRecords(projection,a.fieldProjection(projection).root),identities=a.identityIndex(projection),parents=a.parentIndex(projection);
+ const chosen=[built.records.find(r=>identities.get(r.id).kind==='source'),built.records.find(r=>identities.get(r.id).kind==='holon')];
+ for(const [width,height] of [[390,844],[1280,800]])for(const rec of chosen){
+  const box={left:10,top:20,width,height,right:10+width,bottom:20+height},label={textContent:'',classList:{add(){},remove(){}}},ctx={measureText:()=>({width:7})};
+  const s={mounted:true,host:{hidden:false},canvas:{getBoundingClientRect:()=>box,dataset:{}},textCanvas:{getBoundingClientRect:()=>box,getContext:()=>ctx},label,records:[rec],recordById:new Map([[rec.id,rec]]),identities,parents,renderer:{V0},current:null,chamberPath:rec.locus,chamberFocus:{center:[0,0,0],scale:1},orgSim:{bodies:new Map([[rec.id,{p:[0,0,0]}]])}};
+  const home={id:'home',kind:'hud',layer:'hud',cx:width/2,cy:height-30,hx:60,hy:30},view={w:width+20,h:height+40},drop=Lens.create(home,view);
+  const bridge={...Lens,snapshot:()=>({lens:{...Lens.geometry(drop,null),lock:drop.lock}})};a.setState(s);a.setLensAPI(bridge);a.syncOverviewLens(box,1000);
+  const target=Lens.resolveTargets().find(t=>t.id.endsWith(encodeURIComponent(rec.id)));assert(target);Lens.lockTo(drop,target);
+  const original=a.overviewBodyProjection(rec,box,1000),truth=JSON.stringify(rec);a.updateOverviewApproach(1000);for(let i=1;i<=90;i++)a.updateOverviewApproach(1000+i*16);
+  const approached=a.overviewBodyProjection(rec,box,2440);assert(approached.scale>original.scale,'contacted body grows perceptually into the drop');assert.deepEqual(clone(approached.center),clone(original.center));assert.equal(a.shader.focus(),null,'overview approach does not zoom the enclosing field');assert.equal(JSON.stringify(rec),truth,'source body and its physical state remain unchanged');
+  assert(a.openGlobal(rec.id,width,2440));assert.equal(s.current.entryScale,approached.scale,'entry begins with the same drawn body extent');
+  const entryDepth=s.current.entryDepth,entryRatio=s.current.entryScale/entryDepth;assert(Math.abs(a.currentDisplayScale(a.cameraZ())-s.current.entryScale)<1e-9);
+  for(const t of [0,.25,.5,.75,1])for(const cam of [.014,.05,.5,3.2]){s.transition=t;const depth=Math.max(1e-6,cam);const projected=a.currentDisplayScale(cam)/depth;assert(projected<=Math.max(entryRatio,s.current.scale/depth)+1e-9,'independent transition clocks cannot balloon the body projection');}
+  s.transition=0;a.syncOverviewLens(box,2450);assert.equal(s.lensBodyId,target.id);assert(Lens.resolveTargets().some(t=>t.id===target.id));
+  for(let frame=0;frame<10;frame++)Lens.step(drop,home,1/60,view,null,Lens.resolveTargets(target.id).find(t=>t.id===target.id));
+  assert.equal(drop.lock.id,target.id,'entry retained same body lock');
+  s.inner={kind:'edge',key:'wx'};s.lensParts=new Map([['part',{id:'part',kind:'edge',key:'wx',text:'authored edge',point:{x:90,y:120}}]]);
+  const part=a.liveOverviewLensPart(target.id);assert.equal(part.id,target.id);assert.equal(part.text,'authored edge');assert.equal(part.point.x,90);
+  s.lensParts.clear();assert.equal(a.liveOverviewLensPart(target.id),null,'unavailable selected tissue is pending, not replaced with invented text');
+  assert(Lens.resolveTargets(target.id).find(t=>t.id===target.id).pending);
+  s.current=null;s.inner=null;a.syncOverviewLens(box,2000);assert(Lens.resolveTargets().some(t=>t.id===target.id));a.withdrawOverviewLens();
+ }
+ console.log('Papers actual Source/Holon projected approach, entry identity, tissue selection and pending contact PASS');
+}
+
+/* A slow drop must settle on the real reading before the next tour step. */
+{
+ const a=load(),lease={},target='organism:papers|overview|S.wait',rect={left:0,top:0,width:390,height:844,right:390,bottom:844};
+ const ctx={measureText:t=>({width:[...t].length*7})};let drop={x:195,y:350,hx:20,hy:20,r:20,round:1,lock:{id:target,kind:'body'}};
+ const state={mounted:true,host:{hidden:false,getBoundingClientRect:()=>rect},canvas:{getBoundingClientRect:()=>rect},textCanvas:{getBoundingClientRect:()=>rect,getContext:()=>ctx},ui:{carrier:{x:0,y:60,w:390,h:700}},wisdomPrepared:new Map(),current:{id:'S.wait',entryWorld:[0,0,0],cameraFrom:3.2,cameraTo:1},lensBodyId:target,lensBodyOrganism:'S.wait',inner:null,transition:1,identities:new Map([['S.wait',{id:'S.wait',kind:'source',title:'Real'}]]),inquiryBodies:{'S.wait':{}},being:{verts:[{i:0,text:'authored'}]},renderer:{V0},localQ:[1,0,0,0],tutorial:{lease,step:0,at:0,copy:'',readyAt:0}};
+ a.setState(state);a.setLensAPI({playbackActive:t=>t===lease});a.setLens(()=>drop);a.setPretext({prepareWithSegments:t=>({chars:[...t]}),layoutNextLineRange:(p,c,w)=>c.segmentIndex>=p.chars.length?null:{start:c.segmentIndex,end:{segmentIndex:Math.min(p.chars.length,c.segmentIndex+Math.max(1,Math.floor(w/7))),graphemeIndex:0}},materializeLineRange:(p,r)=>({text:p.chars.slice(r.start,r.end.segmentIndex).join(''),width:(r.end.segmentIndex-r.start)*7})});
+ a.tutorialStep(12000);assert.equal(state.tutorial.step,0,'elapsed time cannot skip an unsettled drop');
+ const reading=a.paperLensReading(a.liveOverviewLensPart(target));drop={...drop,hx:reading.width/2,hy:reading.height/2,round:0};a.tutorialStep(15000);assert.equal(state.tutorial.step,0,'the reading interval starts on readiness');
+ a.tutorialStep(18000);assert.equal(state.tutorial.step,0);a.tutorialStep(25000);assert.equal(state.tutorial.step,1,'advance after actual contact and the reading interval');
+ console.log('Papers guided reading waits for the same actual lens to settle PASS');
+}
+{
+ const a=load(),target='organism:papers|overview|S.prior',reader={hidden:false},s={mounted:true,host:{hidden:false},current:null,lensReader:reader,lensReading:{id:target},overviewContacts:new Map([[target,{id:target,kind:'overview',text:'actual'}]])};
+ a.setState(s);a.setLensAPI({withdraw(){},snapshot:()=>({lens:{lock:null}})});a.withdrawPaperLens();
+ assert.equal(reader.hidden,true,'an unlocked return cannot leave stale accessible reading on the overview');assert.equal(s.lensReading,null);
+ console.log('Papers unlocked return clears stale reading PASS');
+}
+
+/* One Escape resolves one truthful local level and preserves the physical lock. */
+{
+ const field={path:'x',get container(){return this.path},descendTo(path){this.path=path;return true},ascend(){this.path=this.path.slice(0,-1);return true}};
+ const a=load(source,field),lock={id:'organism:papers|overview|S.actual',kind:'body'},lens={snapshot:()=>({lens:{lock}})};
+ const s={mounted:true,host:{hidden:false},canvas:{dataset:{}},label:{classList:{remove(){}}},current:{id:'S.actual'},inner:{kind:'edge',key:'wx'},stack:[],transition:1,closing:false,chamberPath:'x',backgroundPassage:1};
+ a.setState(s);a.setLensAPI(lens);assert(a.canEscape());assert(a.escape());assert.equal(s.inner,null,'first return closes selected tissue');assert(s.current);assert.equal(lock.id,'organism:papers|overview|S.actual');
+ assert(a.escape());assert(s.closing,'second return closes the current body');const started=s.transitionStart;assert(a.escape());assert.equal(s.transitionStart,started,'repeated Escape cannot restart an in-flight close');
+ a.updateTransition(started+1000);assert.equal(s.current,null);assert.equal(lock.id,'organism:papers|overview|S.actual');
+ assert(a.escape());assert.equal(s.chamberPath,'');assert.equal(field.container,'');assert.equal(a.canEscape(),false,'local root yields enclosing return');
+ s.mounted=false;assert.equal(a.escape(),false,'inactive owner cannot consume input');
+ console.log('Papers Escape returns tissue, body and chamber one level at a time with stable lock PASS');
+}
+
+/* Contact outranks an overlapping neighbour only while the real body is projected. */
+for(const [width,height] of [[390,844],[1280,800]]){
+ const field={path:'',get container(){return this.path},descendTo(p){if(!p.startsWith(this.path))return false;this.path=p;return true},ascend(){this.path=this.path.slice(0,-1);return true}};
+ const a=load(source,field),projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),built=a.buildRecords(projection,a.fieldProjection(projection).root),identities=a.identityIndex(projection),parents=a.parentIndex(projection),body=built.records.find(r=>r.locus.length===1&&identities.get(r.id).kind==='source'),other=built.records.find(r=>r.id!==body.id);
+ const rect={left:0,top:0,width,height,right:width,bottom:height},target='organism:papers|overview|'+encodeURIComponent(body.id),lock={id:target,kind:'body'},point={x:width/2,y:height/2,r:10},drop={x:point.x,y:point.y,hx:50,hy:50,r:50,round:1,lock};
+ const s={mounted:true,host:{hidden:false},canvas:{dataset:{},getBoundingClientRect:()=>rect},textCanvas:{getBoundingClientRect:()=>rect},label:{classList:{add(){},remove(){}}},structure:built.structure,records:[other,body],recordById:new Map([[other.id,other],[body.id,body]]),identities,parents,renderer:{V0},current:null,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},orgSim:{bodies:new Map([[other.id,{p:[0,0,0]}],[body.id,{p:[0,0,0]}]])},overviewContacts:new Map([[target,{id:target,kind:'overview',key:body.id,point,rect}]])};
+ a.setState(s);a.setLens(()=>drop);a.setLensAPI({snapshot:()=>({lens:drop})});
+ assert.equal(a.hitGlobal(point.x,point.y,width,height,1),body.id,'locked real contact beats an overlapping earlier neighbour');
+ assert.equal(a.hitGlobal(0,0,width,height,1),'','outside the drop cannot select a body');
+ s.overviewContacts.get(target).point=null;assert.equal(a.hitGlobal(point.x,point.y,width,height,1),'','an unprojected offered body remains pending, never selects its neighbour');
+ s.overviewContacts.get(target).point=point;s.recordById.delete(body.id);assert.equal(a.hitGlobal(point.x,point.y,width,height,1),'','a removed identity cannot be selected');s.recordById.set(body.id,body);
+ const found=a.hitGlobal(point.x,point.y,width,height,1);assert(a.enterOverviewTarget(found,width,100));assert.equal(s.chamberPath,body.locus);assert.equal(s.current,null,'root follows the real chamber before entering');assert.equal(lock.id,target);
+ assert(a.enterOverviewTarget(a.hitGlobal(point.x,point.y,width,height,101),width,101));assert.equal(s.current.id,body.id);assert.equal(s.lensBodyId,target,'chamber entry preserves the same source identity');
+ s.transition=1;s.inner={kind:'edge',key:'wx'};s.lensParts=new Map([['edge',{id:'edge',kind:'edge',key:'wx',text:'actual tissue',point}]]);
+ assert.equal(a.livePaperLensPart(target).text,'actual tissue');assert.equal(s.current.id,body.id);assert.equal(lock.id,target,'inquiry selection retains contacted body identity');
+ s.current=null;s.chamberPath='';field.path='';a.setLens(()=>null);assert.equal(a.hitGlobal(point.x,point.y,width,height,102),other.id,'without a lock ordinary projected geometry is unchanged');
+ console.log('Papers projected contact beats overlap; root/chamber/inquiry identity, outside and pending refusal PASS',width,height);
+}
+
+/* Canvas2D honors the same near plane as the real shared camera. */
+{
+ const a=load(),clip=(p,closed=true)=>clone(a.clipCameraPlane(p,3.2,.1,closed));
+ assert.deepEqual(clip([[0,0,3.2],[1,0,3.3],[0,1,4]]),[],'fully behind near plane is not drawn');
+ const tri=clip([[0,0,2.9],[1,0,3.3],[0,1,3.3]]);assert.equal(tri.length,3);assert(tri.every(p=>3.2-p[2]>=.1-1e-12));assert(tri.some(p=>Math.abs(p[2]-3.1)<1e-12));
+ const line=clip([[0,0,2.9],[1,0,3.3]],false);assert.equal(line.length,2);assert(Math.abs(line[1][2]-3.1)<1e-12);assert.deepEqual(clip([[0,0,3.2],[1,0,3.3]],false),[]);
+ const events=[],ctx={save(){},restore(){},setTransform(){},beginPath(){},moveTo(x,y){events.push(['move',x,y])},lineTo(x,y){events.push(['line',x,y])},closePath(){},fill(){events.push(['fill'])},stroke(){},arc(){}};
+ const canvas={width:800,height:600,clientWidth:800,clientHeight:600,getContext:()=>ctx,getBoundingClientRect:()=>({width:800,height:600})};a.setState({sharedFrame:{scale:1}});const renderer=a.createFlatRenderer(canvas);
+ renderer.draw([{center:[0,0,5],scale:.1,color:[1,1,1,1]}],[1,0,0,0],[0,0,0],null,null);assert.equal(events.length,0,'behind-camera tetrahedron paints no faces or edges');
+ renderer.draw([{center:[0,0,3.08],scale:.2,color:[1,1,1,1]}],[1,0,0,0],[0,0,0],null,null);assert(events.length&&events.every(e=>e.slice(1).every(Number.isFinite)),'crossing geometry clips to finite actual near-plane projection');
+ console.log('Papers Canvas2D camera-near clipping of actual faces, edges and behind-camera geometry PASS');
+}
+
+/* A real compass can cover the former preferred 1T/ORIGIN boundary point.
+ * Occupying that point must expose a different free boundary, not a hidden
+ * clickable label or a detached screen-space replacement. */
+for(const width of [390,1280]){
+ const a=load(),rect={width,height:844},points=[{x:30,y:180},{x:width-30,y:320},{x:width*.45,y:720},{x:width*.52,y:450}],before=JSON.stringify(points);
+ for(const side of [1,-1]){
+  const old=a.bodyDoorPoint(points,rect,side);assert(old,'an unobstructed real boundary exists');
+  const occupied={x:old.x-25,y:old.y-25,w:50,h:50},next=a.bodyDoorPoint(points,rect,side,[occupied]);
+  assert(next,'another actual boundary remains reachable');
+  assert(next.x+12<=occupied.x||next.x-12>=occupied.x+occupied.w||next.y+12<=occupied.y||next.y-12>=occupied.y+occupied.h,'door glyph/contact must clear measured chrome');
+  assert.notDeepEqual(clone(next),clone(old),'the covered point is not reused');
+  assert.equal(a.bodyDoorPoint(points,rect,side,[{x:0,y:0,w:width,h:844}]),null,'no visible boundary means no fabricated door');
+ }
+ assert.equal(JSON.stringify(points),before,'door placement cannot move source geometry');
+}
+console.log('Papers actual boundary doors avoid occupied chrome, retain geometry and refuse a fully covered carrier PASS');
+
+{
+ const a=load(),bounds={x:0,y:0,w:390,h:844},chrome=[{x:0,y:0,w:390,h:180},{x:290,y:390,w:100,h:250},{x:0,y:650,w:390,h:70}],copy=JSON.stringify(chrome);
+ assert.deepEqual(clone(a.paperReadingRegion(bounds,[])),bounds,'an unoccupied carrier retains its exact extent');
+ const r=a.paperReadingRegion(bounds,chrome);
+ assert.deepEqual(clone(r),{x:0,y:180,w:290,h:470},'actual narrow reading uses the full free column beside the compass');
+ for(const b of chrome)assert(!(r.x<b.x+b.w&&r.x+r.w>b.x&&r.y<b.y+b.h&&r.y+r.h>b.y),'no reading rectangle may intersect occupied chrome');
+ const blocked=a.paperReadingRegion(bounds,[bounds]);assert.equal(blocked.w*blocked.h,0,'fully occupied carrier does not fabricate reading space');
+ const changed=a.paperReadingRegion(bounds,[...chrome,{x:0,y:180,w:290,h:470}]);assert(changed.w*changed.h<r.w*r.h,'newly occupied space invalidates the former extent');
+ assert.equal(JSON.stringify(chrome),copy,'layout cannot move shared or owner chrome');
+}
+console.log('Papers free reading rectangles preserve carrier/chrome geometry and refuse a fully occupied carrier PASS');
+
+{
+ const a=load(),base=[{x:0,y:0,w:390,h:180}],rect={left:17,top:23},box={left:147,top:283,width:80,height:24},door={hidden:false,getBoundingClientRect:()=>box};
+ a.setState({originButton:door});const chrome=a.paperReadingChrome(rect,base);
+ assert.equal(chrome.length,2);assert.deepEqual(clone(chrome[1]),{x:122,y:252,w:96,h:40});
+ assert.equal(a.paperReadingChrome(rect,base),chrome,'stable actual door geometry reuses its allocation');
+ box.left+=10;assert.notEqual(a.paperReadingChrome(rect,base),chrome,'moving door invalidates only the reading extent');
+ assert.equal(base.length,1,'the boundary-placement chrome never contains the origin door itself');
+ door.hidden=true;assert.equal(a.paperReadingChrome(rect,base),base,'a hidden door does not consume reading space');
+ a.setState({});assert.equal(a.paperReadingChrome(rect,base),base,'non-Source reading retains the exact existing occupied extents');
+}
+console.log('Papers visible origin door reserves reading space without repelling its own boundary placement PASS');

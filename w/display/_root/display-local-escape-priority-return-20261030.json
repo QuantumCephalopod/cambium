@@ -1,0 +1,25 @@
+{
+  "kind": "HOME",
+  "event_id": "display-local-escape-priority-return-20261030",
+  "home_at_utc": "2026-10-30T13:52:36.104007+00:00",
+  "organism": "display",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "METABOLIZED — an active owner can resolve its local Escape before Display crosses the enclosing membrane, with pending acquisition and navigator focus retaining their own priority.",
+  "changed_scope": [
+    "owner-neutral Escape coordination",
+    "byte-preserved owner-local intake return"
+  ],
+  "delivery_state": "STAGING_HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "native_witness": "Display runtime and navigator tests exercise actual capture then bubble ordering, pending-encounter cancellation before the local owner, unrelated active and inactive owners, refusal and host fallback. Papers native tests cover tissue, body and walked-chamber returns, retained body identity and repeated Escape during closing. All three native suites passed locally on 2026-10-30.",
+    "browser_witness": "GitHub Actions run 41059531193 passed on staging commit 4a23954d (same tree as local b1c68cbb3): actual Source and Holon manual entry and body return with open navigator and unchanged lock at 1280×800 and 390×844, plus a separately focused navigator Escape in the guided case at both sizes.",
+    "limits": [
+      "The CI browser used Chromium with WebGL disabled. It tests the tissue Escape only when the selected manual case actually has an inner path, and does not assert a separate manual chamber-to-root Escape. The full tissue/body/chamber sequence is supported by the native witness.",
+      "This return closes only the Display local-Escape-priority intake. The Papers nutrients and the Source overlap, mobile rendering, WebGL and performance questions remain open."
+    ],
+    "source": "Native tests and the green staging CI run 41059531193 on 2026-10-30.",
+    "source_exact_spent_intakes": [
+      "w/display/_stomach/NUTRIENT__local-escape-priority__20261030.md"
+    ]
+  }
+}

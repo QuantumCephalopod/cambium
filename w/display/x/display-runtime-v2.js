@@ -337,6 +337,10 @@ function leave(push=true){
   try{installEncounter(prev.activeIds,prev.activeAddress||'',stack.slice(0,-1),prev.localView,'return');writeHistory(push);return true}
   catch(error){feedWound(error);return false}
 }
+/* A live site can own a finer return than its enclosing membrane. The runtime
+ * asks the active site first and never infers its inner navigation state. */
+function canLocalEscape(){return [...activeIds].reverse().some(id=>surfaces.get(id)?.module?.canEscape?.()===true)}
+function escapeLocal(){for(const id of [...activeIds].reverse()){const m=surfaces.get(id)?.module;if(m?.canEscape?.()===true&&m.escape?.()===true)return true}return false}
 addEventListener('sss:view',e=>{if(installingEncounter||e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'')});
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
 /* Ascent past a site's own root continues through the membrane: the same
@@ -354,7 +358,7 @@ addEventListener('sss:membrane-ascend',e=>{
 });
 addEventListener('sss:language',()=>{syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});
 home.addEventListener('click',e=>{e.preventDefault();if(cancelPendingEncounter())return;if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{nextHandoff();setLocalView('','home')}});
-addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(cancelPendingEncounter())return;if(stack.length)leave();else home.click()}});
+addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(cancelPendingEncounter())return;if(escapeLocal())return;if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});
 function receiveActivity(event){return activity.receive(event)}
 addEventListener('sss:activity',e=>{if(e.detail)receiveActivity(e.detail)});
@@ -381,5 +385,5 @@ Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlob
 /* Arriving at #scope:address enters that encounter directly; overview stays beneath it, so ascent and Escape return there. */
 if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)navigateGlobal(arrival,'replace')}
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
-globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingEncounter(){return hasPendingEncounter()},get pendingFeeds(){return detailHandoff.pending()},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
+globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingEncounter(){return hasPendingEncounter()},get hasLocalEscape(){return canLocalEscape()},get pendingFeeds(){return detailHandoff.pending()},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();

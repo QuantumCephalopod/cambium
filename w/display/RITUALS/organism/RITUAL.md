@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.63"
+version: "3.64"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -122,6 +122,10 @@ Current encounters make **Form, Continuity, Care and Inquiry** intelligible as s
 
 A contact may require more than optical enlargement. In Papers, the source-pressure example is: the same droplette approaches an actual vertex, edge or face; an identity-bound *soft-lock* may settle first, and **the droplette's own body**, not an independently exploded text element or screen overlay, may accommodate that topology and the site's authored readable tissue. A relation-driven deformation is distinct from a globally prescribed circle/capsule/triangle template. Readability must preserve full source wording; finite viewport limits and overflow/continuation require their own truthful implementation witness. The established pass-through click, hold-to-take, continuous focus, Descent/ascent, site-owned `_feed` availability/fallback, reduced-transparency and release laws remain constraints.
 
+The same Display-owned drop may be temporarily borrowed by a guided encounter. A borrower can contact only currently offered, projected identities, and the visitor's deliberate take cancels the loan rather than being overwritten. Completion or interruption returns the saved physical relation; a previous lock can resume only while its original owner still offers that identity. A missing projection remains pending under the existing offer law; a withdrawn identity is not fabricated. This neutral control knows neither Papers nor any site's semantics.
+
+Escape preserves the same owner boundaries as navigation. An encounter in flight is cancelled first. When focus is not inside the navigator, the active site may consume one finer local return through its optional `canEscape()` / `escape()` capability before the host crosses its membrane; an inactive or refusing site cannot consume it. Navigator-focused Escape remains the navigator's own action. The host does not interpret a site's local stack, selected tissue or identity.
+
 The situated-function relation is assimilated. The generic offer channel and Philosophy/Papers consumers now have native witnesses for identity-following contact, measured readable frames and source-owned wording/continuation. The completed source-owned lens contract is witnessed with actual admitted wording, the real SpriteSheet face, pinned Pretext, production tissue shaders and actual glyph input through the shared glass on software GLES at narrow/wide carriers. Browser rasterization and hardware-specific timing retain their actual limits; no default personal/device approval remains. A new CCCC split, different source authority, extra overlay, per-site duplicate droplette or menu of Form/Continuity/Care/Inquiry modes is not earned by these encounters.
 
 ### Continuous liquid contact
@@ -140,7 +144,7 @@ Free flesh has one bounded viscous shape mode: motion, reservoir tension and cur
 
 A short smooth contact joins actual surfaces; no drawn capsule or cursor lobe manufactures a parallel-sided tube or extra free-drop area. The physical reservoir link ends beyond the deformed support radius plus a quarter-radius capillary gap (capped at24 scaled pixels), rather than continuing as an invisible long spring after visual pinch-off. The existing nearest-edge capture/return and exclusive kind/layer ownership remain. The shape mode is bounded by `log(1.28)` strain, existing fixed substeps and frame-time cap. Reduced motion settles it directly. It adds no render pass, texture, content scan or growing particle population; the rectangle budget remains eight.
 
-The deployed continuity baseline was exercised in the real cloud browser: mounted entry, pointer pull, keyboard take/pull/Escape and focus-loss cleanup. That browser exposes Canvas2D, so no browser liquid-optics witness is fabricated. Actual production shaders on software GLES supply the coalescence, separation, rotated-area and protected-reading witnesses at narrow/wide carriers; physical-driver timing remains unmeasured. Source-local Papers approach/transport and crawlercam meaning stay in their own intake.
+The deployed continuity baseline was exercised in the real cloud browser: mounted entry, pointer pull, keyboard take/pull/Escape and focus-loss cleanup. That browser exposes Canvas2D, so no browser liquid-optics witness is fabricated. Actual production shaders on software GLES supply the coalescence, separation, rotated-area and protected-reading witnesses at narrow/wide carriers; physical-driver timing remains unmeasured. Source-local approach/transport, crawlercam meaning and their current lifecycle stay with the respective site.
 
 ### Mounted anatomy and frame work
 
@@ -367,13 +371,13 @@ Interactive floating-body labels are native buttons. Their shared host must rema
 
 Site proper names are language-invariant: **Philosophy, Crawlerbait, Schattenseiten and Papers** remain the same names in DE and EN. Among the current site-holons, only the legal titles are localized. Other authored concepts, questions, prose and interface wording may be translated without renaming organism identities, mounts, addresses or anatomy. Mono v3 now supports German umlauts, ending the face-dependent ae/oe/ue requirement. Preserve authored umlauts and existing authored ASCII spelling; do not reverse-transliterate source-owned wording or identifiers. Unsupported sharp-s retains the bounded ss/SS presentation fold.
 
-The current target/floating-body title path still derives the site's field-root `de` / `en` label, with its manifest title and stable identity as fallbacks. Crawlerbait's proper-name path is implemented in its seven-nutrient HOME. Remaining global/local proper-name and DE/EN presentation paths stay explicitly scoped in `_stomach/NUTRIENT__language-glyphs-and-site-names__20261019.md`; Mono v3 closes the former font-dependent spelling limitation. A language-only update must not remint GPU bodies. Navigator targets carry the derived titles to consumers.
+The target/floating-body title path derives the site's field-root `de` / `en` label, with its manifest title and stable identity as fallbacks. Source-owned names preserve Philosophy, Crawlerbait, Schattenseiten and Papers in both languages; the two legal bodies supply their own localized titles. Mono v3 carries the supplied umlauts while the sharp-s fold stays presentation-local. A language-only update must not remint GPU bodies. Navigator targets carry the derived titles to consumers.
 
 The chosen German/English expression travels in the ordinary `lang` URL query, including history restoration and return from standalone public apertures. No cookie or browser storage is introduced. An unsupported/missing language retains the existing English default.
 
 ## Structural containment and visit continuity
 
-Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The shared liquid/lock continuity is owned by **Continuous liquid contact**; site-owned body approach and crawlercam availability remain in their own intake.
+Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The shared liquid/lock continuity is owned by **Continuous liquid contact**; site-owned body approach, crawlercam availability and their current lifecycle remain with the respective site.
 
 ## Readable liquid interior — earned shared geometry
 
