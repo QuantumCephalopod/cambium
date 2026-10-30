@@ -57,8 +57,8 @@ def manual_case(page,kind,width):
  for _ in range(5):
   page.wait_for_timeout(1200);g=lens(page);assert g and (g.get('lock') or {}).get('id')==target,'body lock lost before entry'
   if page.locator('.papers-sierpinski-stage').get_attribute('data-current-rank') is not None:break
-  contact=page.evaluate('(id)=>SSSDisplayLens.resolveTargets(id).find(t=>t.id===id&&!t.pending)',target)
-  assert contact,'actual body projection is not ready for entry'
+  contact=page.wait_for_function('''id=>{const lock=SSSDisplayLens.snapshot()?.lens?.lock;if(lock?.id!==id)throw new Error('body lock changed while its projection was pending');if(document.querySelector('.papers-sierpinski-stage')?.dataset.currentRank!==undefined)return {entered:true};return SSSDisplayLens.resolveTargets(id).find(t=>t.id===id&&!t.pending)||false}''',arg=target,timeout=30000).json_value()
+  if contact.get('entered'):break
   page.mouse.click(contact['cx'],contact['cy']);page.wait_for_timeout(600)
  page.wait_for_function('document.querySelector(".papers-wisdom-stage")?.dataset.wisdomId',timeout=30000)
  entered=page.locator('.papers-wisdom-stage').get_attribute('data-wisdom-id');assert entered==body,(kind,body,entered)

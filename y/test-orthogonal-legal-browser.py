@@ -75,6 +75,23 @@ try:
                             assert cx-radius>=-1 and cx+radius<=width+1 and cy-radius>=-1 and cy+radius<=height+1, (stem,'text geometry clipped',geometry,radius)
                             font_px=max(28,min(100,math.ceil(16*1024/(span*.49*1.4))))*2*radius/1024
                             assert font_px>=14, (stem,'projected type too small',font_px)
+                            # Read the actual global top glass and attached drop;
+                            # geometric viewport fit by itself does not keep fluid
+                            # refraction away from the first text line.
+                            liquid=page.evaluate("""() => ({
+                              top: SSSDisplayGlass.collect().filter(e => String(e.role||'').split(' ').includes('top')).map(e => e.rect),
+                              drop: SSSDisplayLens.snapshot()
+                            })""")
+                            text_top=cy-radius+(2*radius)*(62/1024)
+                            text_left=cx-radius+(2*radius)*(62/1024)
+                            text_right=cx+radius-(2*radius)*(62/1024)
+                            header_bottom=max([r['top']+r['height'] for r in liquid['top']] or [0])
+                            snap=liquid['drop']
+                            if snap and snap.get('home') and 'top' in str(snap['home'].get('role','')).split():
+                                lens=snap['lens']
+                                if lens['x']+lens['hx']>=text_left and lens['x']-lens['hx']<=text_right:
+                                    header_bottom=max(header_bottom,lens['y']+lens['hy']+lens.get('smooth',0))
+                            assert text_top>=header_bottom+6, (stem,'text intersects top liquid',text_top,header_bottom,liquid)
                             total = int(jump.get_attribute('max'))
                             assert total >= 1
                             assert article.locator('.orthogonal-text-accessible').text_content().strip()

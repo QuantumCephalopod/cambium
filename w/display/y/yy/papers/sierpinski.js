@@ -1391,8 +1391,9 @@ function openGlobal(id,width,now=performance.now()){
   const overviewWidth=Number(width)||state?.canvas?.getBoundingClientRect().width||innerWidth;
   const entryScale=overviewBodyProjection(rec,{width:overviewWidth,height:state.canvas.getBoundingClientRect().height},now).scale;
   const scale=rootBodyScaleFor(rec,overviewWidth);
+  const sourceLocal=[...overviewCenterFor(rec,overviewWidth,now)],entryDepth=Math.max(1e-6,cameraZ()-qRot(overviewOrientation(),sourceLocal)[2]);
   state.stack=[];
-  state.current={id,scale,entryScale,sourceLocal:[...overviewCenterFor(rec,overviewWidth,now)],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
+  state.current={id,scale,entryScale,entryDepth,sourceLocal,entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
   state.localQ=[...overviewOrientation()];state.transition=0;state.closing=false;state.transitionStart=now;setBackgroundPassage(1,now);setLabel(id);return true;
 }
 function descend(child,now=performance.now()){
@@ -1424,6 +1425,14 @@ function currentTranslation(){
   const start=state.current.globalSource?qRot(overviewOrientation(),state.current.sourceLocal):state.current.entryWorld;
   return mix3(start,[0,0,0],state.transition);
 }
+function currentDisplayScale(cam){
+  const c=state.current;if(!c)return 0;if(!c.globalSource||!c.entryDepth)return c.scale;
+  // Keep the entered projection matched to its current camera depth, then
+  // converge to the owner's real scale. Two independent clocks must not make
+  // the very same body balloon over the whole viewport mid-transition.
+  const depth=Math.max(1e-6,cam-currentTranslation()[2]),matched=c.entryScale*depth/c.entryDepth;
+  return mix(matched,c.scale,state.transition);
+}
 
 function draw(now,frame){
   if(!state?.mounted||!frame)return;
@@ -1444,7 +1453,7 @@ function draw(now,frame){
   state.renderer.drawLights(population.lights,overviewQ,[0,0,0],proj,view,now*.001,d,OVERVIEW_LIGHT_GAIN);
   let metaboliteCount=0,organismEmberCount=0,metabolights=[],translate=[0,0,0];
   if(state.current){
-    const displayScale=state.current.globalSource?mix(state.current.entryScale??state.current.scale,state.current.scale,state.transition):state.current.scale;
+    const displayScale=currentDisplayScale(cam);
     const tree=[],embers=[];collectBody(state.current.id,[0,0,0],displayScale,cam,rect.height,tree,embers);for(const x of tree)x.color[3]*=.3+.7*state.transition;
     const structuralEmbers=embers.filter(x=>x.id!==state.current.id);for(const x of structuralEmbers)x.color[3]*=.18+.42*state.transition;
     translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
