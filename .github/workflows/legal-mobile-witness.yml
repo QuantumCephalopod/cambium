@@ -1,0 +1,21 @@
+name: legal mobile witness
+on:
+  push:
+    branches: ['witness/legal-mobile-20261030']
+permissions:
+  contents: read
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: python3 -m pip install playwright==1.56.0
+      - run: python3 -m playwright install --with-deps chromium
+      - run: python3 y/site-public.py --artifact _site
+      - run: python3 y/test-orthogonal-legal-browser.py --artifact _site --out _legal-witness --width 390 --backend webgl2
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legal-mobile-witness
+          path: _legal-witness
+          if-no-files-found: warn
