@@ -14,6 +14,8 @@ import threading
 parser = argparse.ArgumentParser()
 parser.add_argument('--artifact', required=True, type=Path)
 parser.add_argument('--out', required=True, type=Path)
+parser.add_argument('--backend', choices=['webgl2', 'canvas2d'])
+parser.add_argument('--width', type=int, choices=[390, 1280])
 args = parser.parse_args()
 args.out.mkdir(parents=True, exist_ok=True)
 class Quiet(SimpleHTTPRequestHandler):
@@ -26,8 +28,10 @@ try:
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         for backend, flags in [('webgl2', ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']), ('canvas2d', ['--disable-webgl'])]:
+            if args.backend and backend != args.backend: continue
             browser = pw.chromium.launch(headless=True, args=flags)
             for width, height in [(390, 844), (1280, 800)]:
+                if args.width and width != args.width: continue
                 for name, address, route, mail in [('datenschutz', 'z', 'privacy', 'privacy@sss.saarland'), ('impressum', 'xz', 'impressum', 'contact@sss.saarland')]:
                     for language in ('de', 'en'):
                         page = browser.new_page(viewport={'width':width, 'height':height}, device_scale_factor=1)
@@ -70,28 +74,35 @@ try:
                             import math
                             span=min(geometry['width'],geometry['height'])
                             base_scale=1.42 if geometry['width']<560 else 1.75
-                            radius=span/2/math.tan(math.pi/6.6)/3.2*base_scale*1.4/math.sqrt(3)
+                            radius=span/2/math.tan(math.pi/6.6)/3.2*base_scale*1.28/math.sqrt(3)
                             cx=geometry['x']+geometry['width']/2;cy=geometry['y']+geometry['height']/2
                             assert cx-radius>=-1 and cx+radius<=width+1 and cy-radius>=-1 and cy+radius<=height+1, (stem,'text geometry clipped',geometry,radius)
-                            font_px=max(28,min(100,math.ceil(16*1024/(span*.49*1.4))))*2*radius/1024
+                            font_px=max(28,min(100,math.ceil(16*1024/(span*.49*1.28))))*2*radius/1024
                             assert font_px>=14, (stem,'projected type too small',font_px)
-                            # Read the actual global top glass and attached drop;
-                            # geometric viewport fit by itself does not keep fluid
-                            # refraction away from the first text line.
+                            # Compare the complete text-bearing rectangle with
+                            # every actual glass HUD region and the visible drop.
+                            # DOM reachability misses refraction over text.
                             liquid=page.evaluate("""() => ({
-                              top: SSSDisplayGlass.collect().filter(e => String(e.role||'').split(' ').includes('top')).map(e => e.rect),
+                              surfaces: SSSDisplayGlass.collect().map(e => ({id:e.id, role:e.role, rect:e.rect})),
                               drop: SSSDisplayLens.snapshot()
                             })""")
-                            text_top=cy-radius+(2*radius)*(62/1024)
-                            text_left=cx-radius+(2*radius)*(62/1024)
-                            text_right=cx+radius-(2*radius)*(62/1024)
-                            header_bottom=max([r['top']+r['height'] for r in liquid['top']] or [0])
+                            inset=(2*radius)*(62/1024)
+                            text_box={'left':cx-radius+inset,'right':cx+radius-inset,
+                                      'top':cy-radius+inset,'bottom':cy+radius-inset}
+                            def intersects(r):
+                                gap=6
+                                return (text_box['left'] < r['left']+r['width']+gap and
+                                        text_box['right'] > r['left']-gap and
+                                        text_box['top'] < r['top']+r['height']+gap and
+                                        text_box['bottom'] > r['top']-gap)
+                            for surface in liquid['surfaces']:
+                                assert not intersects(surface['rect']), (stem,'text intersects glass',text_box,surface)
                             snap=liquid['drop']
-                            if snap and snap.get('home') and 'top' in str(snap['home'].get('role','')).split():
-                                lens=snap['lens']
-                                if lens['x']+lens['hx']>=text_left and lens['x']-lens['hx']<=text_right:
-                                    header_bottom=max(header_bottom,lens['y']+lens['hy']+lens.get('smooth',0))
-                            assert text_top>=header_bottom+6, (stem,'text intersects top liquid',text_top,header_bottom,liquid)
+                            if snap:
+                                lens=snap['lens'];smooth=lens.get('smooth',0)
+                                drop={'left':lens['x']-lens['hx']-smooth,'top':lens['y']-lens['hy']-smooth,
+                                      'width':2*(lens['hx']+smooth),'height':2*(lens['hy']+smooth)}
+                                assert not intersects(drop), (stem,'text intersects drop',text_box,drop)
                             total = int(jump.get_attribute('max'))
                             assert total >= 1
                             assert article.locator('.orthogonal-text-accessible').text_content().strip()
