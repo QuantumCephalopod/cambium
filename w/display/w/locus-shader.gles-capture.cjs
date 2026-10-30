@@ -63,9 +63,7 @@ if(SPECIMEN&&SPECIMEN!=='ordinary'){
 }
 if(SPECIMEN==='ordinary'){
  const ordinaryModules=new Map(),node={append(){},setAttribute(){}};
- // These are floating-body shader cases, not a mounted legal text-surface
- // witness. Supply an inert surface to retain that exact bounded scope.
- const ctx={console,performance:{now:()=>0},SSSDisplayNavigation:require('../z/navigation-physiology.js'),SSSDisplayType:{rankPx:r=>16*2**(r/2)},SSSOrthogonalText:{create:()=>({draw(){},mount(){},unmount(){}})},SSSInterlocutorModules:ordinaryModules,document:{getElementById:()=>node,querySelectorAll:()=>[]},addEventListener(){}};
+ const ctx={console,performance:{now:()=>0},SSSDisplayNavigation:require('../z/navigation-physiology.js'),SSSDisplayType:{rankPx:r=>16*2**(r/2)},SSSInterlocutorModules:ordinaryModules,document:{getElementById:()=>node,querySelectorAll:()=>[]},addEventListener(){}};
  for(const id of ['organism:crawlerbait','organism:datenschutz','organism:impressum'])require('node:vm').runInNewContext(require('node:fs').readFileSync(SITE_WITNESSES.get(id).file('renderer'),'utf8'),ctx);
  for(const [key,id] of [['a','crawlerbait'],['d','datenschutz'],['e','impressum']]){const module=ordinaryModules.get('organism:'+id);f.bodies[key].shader=module.shader;const site=SITE_WITNESSES.get('organism:'+id),data=JSON.parse(require('node:fs').readFileSync(site.file(site.manifest.feed_preview?'feed_preview':'projection')));f.bodies[key].root=id==='crawlerbait'?data.root:module.fieldProjection(data).root;}
  f.order.splice(0,f.order.length,'a','d','e');

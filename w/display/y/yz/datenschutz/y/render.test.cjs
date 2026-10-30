@@ -6,7 +6,7 @@ const privacy=Boolean(projection.controller),route=privacy?'privacy':'impressum'
 const nodes=[],events=new Map(),world={language:'en'};
 function node(tag){const n={tag,children:[],attrs:{},append(...xs){this.children.push(...xs)},replaceChildren(...xs){this.children=xs},setAttribute(k,v){this.attrs[k]=v}};nodes.push(n);return n}
 const document={body:node('body'),getElementById:id=>nodes.find(n=>n.id===id),createElement:node};
-const context={document,SSSWorldView:world,SSSOrthogonalText:{create:()=>({mount(){},unmount(){},draw(){}})},addEventListener(k,fn){const list=events.get(k)||[];list.push(fn);events.set(k,list)}};
+const context={document,SSSWorldView:world,addEventListener(k,fn){const list=events.get(k)||[];list.push(fn);events.set(k,list)}};
 vm.runInNewContext(fs.readFileSync(path.join(body,manifest.renderer),'utf8'),context);
 const renderer=context.SSSInterlocutorModules.get(id);assert.equal(renderer.id,id);
 const host=node('host'),content=node('content');
@@ -22,7 +22,7 @@ for(const language of ['en','de','en']){
  assert(article.children.some(n=>n.tag==='a'&&n.href===href),'mounted full notice follows language');
  assert(article.children.some(n=>n.tag==='a'&&n.href==='mailto:'+projection.contact.email));
  assert.equal(renderer.fieldProjection(projection).root[language],projection.title[language]);
- assert.equal(renderer.shader.view.projection,'orthographic');assert.deepEqual(Array.from(renderer.shader.view.rest),[1,0,0,0]);
+ if(!privacy)assert.equal(article.children.find(n=>n.tag==='address').textContent,(projection.operator.address_locales?.[language]||projection.operator.address).join('\n'));
 }
 renderer.unmount({host,content});assert(host.hidden);assert.equal(content.children.length,0);
 const read=lang=>fs.readFileSync(path.join(body,path.dirname(manifest.projection),'public',route,lang==='en'?'en/index.html':'index.html'),'utf8');

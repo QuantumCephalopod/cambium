@@ -1,7 +1,6 @@
 (() => {
 'use strict';
 const id='organism:impressum';
-const surface=globalThis.SSSOrthogonalText.create();
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 (function exposeLegalLink(){
   let nav=document.getElementById('legal-links');
@@ -14,9 +13,6 @@ const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModu
 })();
 const shader=Object.freeze({
   id:'shader:organism:impressum',
-  view:Object.freeze({rest:Object.freeze([1,0,0,0]),projection:'orthographic'}),
-  afterDraw:surface.draw,
-  focus:surface.focus,
   clear:[0.012,0.016,0.014,1],
   fallbackAlpha:.12,
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
@@ -38,21 +34,27 @@ const fieldProjection=projection=>Object.freeze({
   root:Object.freeze({noun:'Impressum',...projection.title,children:Object.freeze({})}),
   points:Object.freeze([])
 });
+let last=null;
 function tr(v,lang){return v&&typeof v==='object'?(v[lang]||v.de||v.en||''):(v||'')}
 function render({host,content,projection,language='de',ui=null}={}){
   if(!host||!content||!projection?.operator)return false;
+  last={host,content,projection,language};
   host.hidden=false;
   content.className='interlocutor-content impressum-content';
   content.replaceChildren();
   const article=document.createElement('article');article.lang=language;
+  const kicker=document.createElement('p'); kicker.className='impressum-kicker'; kicker.textContent='organism:impressum';
   const h=document.createElement('h1'); h.textContent=tr(projection.title,language)||'Impressum';
-  const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=language==='de'?'E-Mail':'Email';mail.setAttribute('aria-label',projection.contact.email);
+  const name=document.createElement('p'); name.className='impressum-operator'; name.textContent=projection.operator.name;
+  const address=document.createElement('address'); address.textContent=(projection.operator.address_locales?.[language]||projection.operator.address||[]).join('\n');
+  const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=projection.contact.email;
+  const gate=document.createElement('p'); gate.className='impressum-gate';
+  gate.textContent=projection.contact.status==='live'?'':(language==='de'?'Kontakt-Route wird vor Veröffentlichung gewitnessed.':'Contact route is witnessed before publication.');
   const notice=document.createElement('a');notice.href=language==='de'?'/impressum/':'/impressum/en/';notice.textContent=language==='de'?'Vollständiges Impressum':'Full legal notice';
-  article.append(h,mail,notice);
-  surface.mount({url:notice.href,language,controls:article});
+  article.append(kicker,h,name,address,mail,notice,gate);
   content.append(article);if(ui)ui.bind(article,'article');
   return true;
 }
-function unmount({host,content}={}){surface.unmount();if(host)host.hidden=true;if(content)content.replaceChildren()}
+function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();last=null}
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection}));
 })();
