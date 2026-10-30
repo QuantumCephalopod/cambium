@@ -25,6 +25,8 @@ def witness(body, common, operations):
     projection = body / manifest['projection']
     data = json.loads(projection.read_text(encoding='utf-8'))
     assert data['source']['organism'] == 'philosophy'
+    assert data['expression']['']['de']['title'] == 'Philosophy'
+    assert data['expression']['']['en']['title'] == 'Philosophy'
     assert {gene: node['noun'] for gene, node in data['root']['children'].items()} == {'w': 'Inquiry', 'x': 'Continuity', 'z': 'Care', 'y': 'Becoming'}
     renderer = (body / manifest['renderer']).read_text(encoding='utf-8')
     assert 'philosophy-global-site' in renderer and 'requestGlobalTarget' in renderer

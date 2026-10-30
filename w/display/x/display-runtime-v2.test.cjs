@@ -112,6 +112,19 @@ once();assert.ok(f.swaps.length>=5);assert.ok(f.history.length>=5);assert.ok(f.u
 for(const [id,source] of f.sources)assert.equal(JSON.stringify(source),JSON.stringify(f.input[id]),'projection does not replace/mutate source');
 const next=boot(2);
 for(const id of ids.slice(0,3)){assert.equal(next.calls.get(id),1);assert.equal(next.projected.get(id).version,2);assert.notStrictEqual(next.projected.get(id),f.projected.get(id),'new source/re-entry resolves afresh')}
+// History carries raw paths and stable identities, not serialized locus keys.
+// Rebuild a registry at the changed y/z representative and replay a saved visit.
+{
+ const r=boot();r.runtime.remount(ids[1],'main','zy');r.runtime.remount(ids[2],'main','yz');
+ assert.deepEqual(new Set(r.runtime.resolveGlobal('yz').interlocutors.map(x=>x.interlocutorId)),new Set([ids[1],ids[2]]));
+ assert.equal(r.runtime.resolveGlobal('zy').locus,'junction:yz');
+ r.runtime.navigateGlobal('zy');const previous=JSON.parse(JSON.stringify(r.history.at(-1).state));
+ assert.equal(previous.activeAddress,'zy');assert.ok(!JSON.stringify(previous).includes('junction:'));
+ r.runtime.navigateGlobal('');r.pop(previous,'#main:zy');
+ assert.equal(r.runtime.state.activeAddress,'zy');assert.deepEqual(new Set(r.runtime.state.activeIds),new Set([ids[1],ids[2]]));
+ r.hand('#main:yz');assert.equal(r.runtime.state.activeAddress,'yz');
+ assert.deepEqual(new Set(r.runtime.state.activeIds),new Set([ids[1],ids[2]]));
+}
 /* The address hash is an input: arrival, a hand-made change, an unknown address and a foreign anchor. */
 const arrive=boot(1,'#main:w');
 assert.equal(arrive.runtime.state.activeAddress,'w','arrival at #main:w enters w');

@@ -123,6 +123,10 @@ jobs:
         if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')
         run: python3 y/test-first-entry.py --artifact _site --out _layout-witness/first-entry
 
+      - name: Witness language and site names
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-digestion-')
+        run: python3 y/test-language-browser.py --artifact _site --out _layout-witness/language
+
       - name: Retain bounded layout screenshots
         if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')
         uses: actions/upload-artifact@v4

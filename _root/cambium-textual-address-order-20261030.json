@@ -1,0 +1,33 @@
+{
+  "kind": "HOME",
+  "event_id": "cambium-textual-address-order-20261030",
+  "home_at_utc": "2026-10-30T11:30:09.889338Z",
+  "organism": "cambium",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "PASS — textual address ordering now follows w,x,y,z without changing the fixed geometric basis or quotient partition.",
+  "changed_scope": [
+    "z/address.js",
+    "y/test-address.cjs",
+    "w/display/x/display-runtime-v2.test.cjs",
+    "_waste/NUTRIENT__textual-address-order__20261020.md"
+  ],
+  "delivery_state": "STAGING_HOME_DURABLE_FEED_SEPARATE",
+  "context": {
+    "baseline": "self-similar-systems/cambium@59aaadd4c19e9cd80940f27ec8d00556ace980fd",
+    "implementation": {"path": "z/address.js", "sha256": "b6d599014ff595aeaae46ae2bb9a666820b9515bd30638e7648364e35468919b"},
+    "distinction": "Text comparison and witness representatives use w,x,y,z; the barycentric vertex basis remains w,x,z,y. A y/z representative changes from junction:zy to junction:yz, without changing the represented locus.",
+    "compatibility": "The live site registry is rebuilt from raw mount addresses. Browser history saves raw paths, stacks and stable IDs, not serialized locus keys. No current in-scope persisted registry or application-data use of a literal junction key was found; immutable historical evidence retains the earlier representative. External consumers of literal representative strings are not covered by this repository witness.",
+    "witness": [
+      "SITE_DIR=<isolated built artifact> node y/test-address.cjs: 12335 checks; exhaustive old/new quotient partitions and independent exact barycentric coordinates across all words through rank 6; deep existing case",
+      "node w/display/x/display-runtime-v2.test.cjs: equivalent y/z registry mounts, raw saved history restoration, hand-entered reversed path, and existing runtime cases PASS",
+      "node w/display/x/site-holon.test.cjs PASS",
+      "python3 y/site-public.py --artifact <isolated artifact> PASS, 15264 files"
+    ],
+    "source_exact_spent_intake": {
+      "path": "_waste/NUTRIENT__textual-address-order__20261020.md",
+      "sha256": "bd28a0d06140756e821898ebc13108902dd2d346fca0ff6f19a3959adc167a29"
+    },
+    "backpropagation": "Existing root receptor already declares this distinction; no additional receptor law is earned.",
+    "limits": "Native/fixture and build witnesses only; no new physical-device or production-browser witness is claimed."
+  }
+}
