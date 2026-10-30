@@ -333,3 +333,35 @@ for(const v of [{w:390,h:844},{w:1280,h:800}]){
 {
  const id='unrelated:elliptical-reading',s=L.create(null,{w:800,h:600});L.offer(id,{kind:'body',point:()=>({x:400,y:300,r:8}),frame:()=>({left:280,top:250,width:240,height:100,ellipse:true})});const t=L.resolveTargets(id).find(t=>t.id===id);L.lockTo(s,t);for(let i=0;i<300;i++)L.step(s,[],1/120,{w:800,h:600},null,t);const g=L.geometry(s,null);assert.equal(g.round,1);assert(Math.abs(g.hx-120)<.1&&Math.abs(g.hy-50)<.1);assert(!L.contains(s,s.x+110,s.y+45),'ellipse corners are outside the drop');assert(L.contains(s,s.x+100,s.y),'actual ellipse remains interactive');L.withdraw(id);
 }
+
+/* Guided motion borrows the real shared drop and returns the saved relation.
+ * An actual visitor take invalidates the lease and cannot be overwritten. */
+{
+ const before=controller.snapshot().lens;
+ controller.offer('actual:guide',{kind:'body',point:()=>({x:480,y:360,r:10})});
+ const lease=controller.beginPlayback();assert(lease);assert.equal(controller.beginPlayback(),null);
+ assert.equal(controller.contactPlayback(lease,'missing:body'),false,'a guide cannot create a target');
+ assert(controller.contactPlayback(lease,'actual:guide'));
+ for(let i=0;i<180;i++)tick();assert.equal(controller.snapshot().lens.lock.id,'actual:guide');
+ assert(controller.endPlayback(lease));for(let i=0;i<60;i++)tick();
+ const after=controller.snapshot().lens;assert.equal(after.lock?.id||null,before.lock?.id||null);assert.equal(after.homeId,before.homeId);assert.equal(after.docked,before.docked);assert(Math.abs(after.x-before.x)<.01&&Math.abs(after.y-before.y)<.01,'return recovers the actual prior carrier position');
+ const other=controller.beginPlayback();assert(other);assert(controller.contactPlayback(other,'actual:guide'));for(let i=0;i<30;i++)tick();hold();assert(controller.snapshot().lens.held);assert.equal(controller.endPlayback(other),false,'a visitor take invalidates the tour');win.fire('pointerup');
+ hold();assert.equal(controller.beginPlayback(),null,'a held drop is owned by the visitor');win.fire('pointerup');
+ controller.withdraw('actual:guide');
+ console.log('Shared lens guided contact, witnessed return and visitor-take priority PASS');
+}
+{
+ let oldRect={left:0,top:0,width:1100,height:700};controller.offer('before:field',{kind:'field',rect:()=>oldRect});
+ drop.fire('keydown',{key:'Enter'});drop.fire('keydown',{key:'Enter'});assert.equal(controller.snapshot().lens.lock.id,'before:field');
+ controller.offer('actual:guide',{kind:'body',point:()=>({x:480,y:360,r:10})});const lease=controller.beginPlayback();assert(lease);assert(controller.contactPlayback(lease,'actual:guide'));
+ oldRect=null;assert(controller.endPlayback(lease));for(let i=0;i<30;i++)tick();assert.equal(controller.snapshot().lens.lock.id,'before:field','an offered prior identity remains pending without a projection');
+ oldRect={left:0,top:0,width:1100,height:700};tick();assert.equal(controller.snapshot().lens.lock.id,'before:field');
+ controller.withdraw('before:field');controller.withdraw('actual:guide');tick();
+ console.log('Guided return preserves an offered prior identity across projection loss PASS');
+}
+{
+ controller.offer('before:field',{kind:'field',rect:()=>({left:0,top:0,width:1100,height:700})});drop.fire('keydown',{key:'Enter'});drop.fire('keydown',{key:'Enter'});
+ controller.offer('actual:guide',{kind:'body',point:()=>({x:480,y:360,r:10})});const lease=controller.beginPlayback();assert(controller.contactPlayback(lease,'actual:guide'));controller.withdraw('before:field');assert(controller.endPlayback(lease));
+ for(let i=0;i<60;i++)tick();assert.equal(controller.snapshot().lens.lock,null,'a genuinely withdrawn identity is never invented on return');controller.withdraw('actual:guide');
+ console.log('Guided return refuses a withdrawn identity PASS');
+}

@@ -112,6 +112,19 @@ once();assert.ok(f.swaps.length>=5);assert.ok(f.history.length>=5);assert.ok(f.u
 for(const [id,source] of f.sources)assert.equal(JSON.stringify(source),JSON.stringify(f.input[id]),'projection does not replace/mutate source');
 const next=boot(2);
 for(const id of ids.slice(0,3)){assert.equal(next.calls.get(id),1);assert.equal(next.projected.get(id).version,2);assert.notStrictEqual(next.projected.get(id),f.projected.get(id),'new source/re-entry resolves afresh')}
+// History carries raw paths and stable identities, not serialized locus keys.
+// Rebuild a registry at the changed y/z representative and replay a saved visit.
+{
+ const r=boot();r.runtime.remount(ids[1],'main','zy');r.runtime.remount(ids[2],'main','yz');
+ assert.deepEqual(new Set(r.runtime.resolveGlobal('yz').interlocutors.map(x=>x.interlocutorId)),new Set([ids[1],ids[2]]));
+ assert.equal(r.runtime.resolveGlobal('zy').locus,'junction:yz');
+ r.runtime.navigateGlobal('zy');const previous=JSON.parse(JSON.stringify(r.history.at(-1).state));
+ assert.equal(previous.activeAddress,'zy');assert.ok(!JSON.stringify(previous).includes('junction:'));
+ r.runtime.navigateGlobal('');r.pop(previous,'#main:zy');
+ assert.equal(r.runtime.state.activeAddress,'zy');assert.deepEqual(new Set(r.runtime.state.activeIds),new Set([ids[1],ids[2]]));
+ r.hand('#main:yz');assert.equal(r.runtime.state.activeAddress,'yz');
+ assert.deepEqual(new Set(r.runtime.state.activeIds),new Set([ids[1],ids[2]]));
+}
 /* The address hash is an input: arrival, a hand-made change, an unknown address and a foreign anchor. */
 const arrive=boot(1,'#main:w');
 assert.equal(arrive.runtime.state.activeAddress,'w','arrival at #main:w enters w');
@@ -149,6 +162,36 @@ for(const address of ['w','y']){
   assert.equal(rootArrivals().length,beforeEscape+1,'Escape return reveals a cached camera without reframing');
   cycle.runtime.navigateGlobal(address);cycle.emit('sss:membrane-ascend',{id:address==='w'?ids[1]:ids[3]});
   const explicit=rootArrivals().at(-1);assert(explicit.place?.k>0,'explicit membrane zoom-out lost its place');assert.equal(explicit.bodyId,address==='w'?ids[1]:ids[3]);
+}
+/* Local Escape belongs to the active owner before crossing its host membrane.
+ * Use two unrelated owners and verify inactive/refusing owners cannot consume it. */
+{
+ const f=boot(),counts={branch:0,plain:0,nested:0};let branchOpen=true,plainOpen=true;
+ Object.assign(f.Modules.get(ids[1]),{canEscape:()=>branchOpen,escape:()=>{counts.branch++;branchOpen=false;return true}});
+ Object.assign(f.Modules.get(ids[2]),{canEscape:()=>true,escape:()=>{counts.nested++;return true}});
+ Object.assign(f.Modules.get(ids[3]),{canEscape:()=>plainOpen,escape:()=>{counts.plain++;plainOpen=false;return true}});
+ f.runtime.navigateGlobal('w');assert.equal(f.runtime.hasLocalEscape,true);const before=JSON.stringify(f.runtime.state),history=f.history.length;
+ f.key({key:'Escape',preventDefault(){}});assert.equal(counts.branch,1);assert.equal(counts.nested,0);assert.equal(counts.plain,0);
+ assert.equal(JSON.stringify(f.runtime.state),before,'local return cannot cross the host membrane');assert.equal(f.history.length,history);
+ assert.equal(f.runtime.hasLocalEscape,false);f.key({key:'Escape',preventDefault(){}});assert.equal(f.runtime.state.activeAddress,'');
+ f.runtime.navigateGlobal('y');assert(f.runtime.hasLocalEscape);f.key({key:'Escape',preventDefault(){}});assert.equal(counts.plain,1);assert.equal(counts.nested,0);assert.equal(f.runtime.state.activeAddress,'y');
+ f.key({key:'Escape',preventDefault(){}});assert.equal(f.runtime.state.activeAddress,'');
+ const g=boot();g.Modules.get(ids[1]).canEscape=()=>true;g.Modules.get(ids[1]).escape=()=>false;g.runtime.navigateGlobal('w');g.key({key:'Escape',preventDefault(){}});assert.equal(g.runtime.state.activeAddress,'','a refusing owner cannot strand global return');
+ console.log('PASS — active owner local Escape, independent owner substitution and enclosing fallback');
+}
+/* Run the real aperture capture before the real runtime bubble with one event,
+ * including its stop-immediate boundary. Only the active site's return wins. */
+{
+ const f=boot(),listeners=new Map(),mk=()=>({dataset:{},style:{getPropertyValue(){return ''},setProperty(){}},events:{},setAttribute(){},addEventListener(k,fn){this.events[k]=fn},contains(n){return n===this},focus(){}});
+ const mini=mk(),trigger=mk(),pocket=mk(),nodes=new Map([['mini',mini],['mini-trigger',trigger],['mini-pocket',pocket]]);
+ const nav={MutationObserver:class{observe(){}},SSSDisplayRuntime:f.runtime,document:{getElementById:id=>nodes.get(id),documentElement:{dataset:{},lang:'en'},activeElement:null},addEventListener(k,fn){listeners.set(k,fn)},setTimeout(){return 1},clearTimeout(){}};
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../z/navigation-aperture.js'),'utf8'),nav);nav.SSSNavigationAperture.open();
+ let local=true,handled=0,inactive=0;Object.assign(f.Modules.get(ids[1]),{canEscape:()=>local,escape:()=>{handled++;local=false;return true}});Object.assign(f.Modules.get(ids[2]),{canEscape:()=>true,escape:()=>{inactive++;return true}});
+ f.runtime.navigateGlobal('w');const send=()=>{let stopped=false,prevented=false;const e={key:'Escape',preventDefault(){prevented=true},stopImmediatePropagation(){stopped=true}};listeners.get('keydown')(e);if(!stopped)f.key(e);return {stopped,prevented}};
+ const first=send();assert(!first.stopped&&first.prevented);assert.equal(handled,1);assert.equal(inactive,0);assert.equal(f.runtime.state.activeAddress,'w');assert.equal(mini.dataset.aperture,'open');
+ const second=send();assert(second.stopped&&second.prevented);assert.equal(mini.dataset.aperture,'closed');assert.equal(f.runtime.state.activeAddress,'w');
+ const third=send();assert(!third.stopped&&third.prevented);assert.equal(f.runtime.state.activeAddress,'');
+ console.log('PASS — real navigator capture then runtime bubble preserve local, navigator and host Escape order');
 }
 /* Global visits do not become walked parents. Actual body descent retains its
  * own container, and the browser's history can independently restore a visit. */
@@ -365,6 +408,7 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
   const f=boot(1,'',{}, {[ids[2]]:'hold'}, {},'real');
   f.emit('sss:enter-body',{from:ids[0],id:ids[1],origin:{x:120,y:140}});await settle(f);
   assert.equal(f.runtime.state.activeAddress,'w');assert.equal(f.runtime.state.stack.length,1);
+  let localEscapes=0;f.Modules.get(ids[1]).canEscape=()=>true;f.Modules.get(ids[1]).escape=()=>{localEscapes++;return true};
   const prior=JSON.stringify(f.runtime.state),visits=f.history.length,arrivalCount=f.arrivals.length;
   f.runtime.navigateGlobal('wx');await new Promise(r=>setTimeout(r,60));
   assert.equal(f.runtime.pendingEncounter,true,'shared Escape priority cannot see the pending encounter');
@@ -372,7 +416,7 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
   assert.equal(f.runtime.state.activeAddress,'w');assert.equal(f.foldLayer.dataset.waiting,'true');
   if(gesture==='home')f.home.click({preventDefault(){}});else f.key({key:'Escape',preventDefault(){}});
   await settle(f);assert.equal(JSON.stringify(f.runtime.state),prior,'cancellation changed the prior encounter/container/stack');
-  assert.equal(f.runtime.pendingEncounter,false,'cancelled resource acquisition still claimed Escape');
+  assert.equal(f.runtime.pendingEncounter,false,'cancelled resource acquisition still claimed Escape');assert.equal(localEscapes,0,'pending successor must cancel before local owner return');
   assert.equal(f.history.length,visits,'cancellation wrote a visit');assert.equal(f.stateEl.dataset.handoffPhase,undefined);
   assert.equal(f.foldLayer.dataset.waiting,undefined);assert(f.arrivals.length>arrivalCount,'cancelled approach did not return to its prior container');
   f.held.shift()();for(let i=0;i<40;i++)await Promise.resolve();

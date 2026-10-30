@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.27"
+version: "3.28"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -168,9 +168,9 @@ Current reading/contact rectangles, the optical hull outside them and protected 
 
 The same physical droplette is an **instrument of encounter**. Display owns the common upper liquid body, movement, reservoir coupling, glass optics, continuity and neutral contact aperture. The currently contacted organism owns the locally afforded function and truthful source presentation. It may operate as an instrument of **Form, Continuity, Care or Inquiry** through the actual encountered relation. Those purpose words are neither host-field cell names nor a hardwired address-to-function dispatch rule. The located body/relationship, not the mere raw address, earns the response; a site may refuse it. One instrument retains identity through all such encounters.
 
-For an eligible local object, the relation is free glass → site-offered candidate → optional soft-lock to **body identity**, not stale screen pixels → owner-offered readable accommodation → release to free glass. The identity offer and measured readable-frame path are already realized below and in the organism receptor. In Papers the relevant local topology includes actual vertices, edges, faces and authored whole/metabolite tissue. Richer body approach, persistent transport and topology-shaped reading remain separately admitted targets, not claims that the current contact frame already performs them. The droplette changes its own liquid boundary, not a floating panel or universally prescribed simplex-shaped container.
+For an eligible local object, the relation is free glass → site-offered candidate → optional soft-lock to **body identity**, not stale screen pixels → owner-offered readable accommodation → release to free glass. The identity offer and measured readable-frame path are already realized below and in the organism receptor. Actual topology, body approach, persistent transport and authored reading remain site-owned and require their own implementation and witnesses. Their current completion is recorded by that site's receptor and HOME. The droplette changes its own liquid boundary, not a floating panel or universally prescribed simplex-shaped container.
 
-No target means current free-lens behavior remains. Locking alone is neither global navigation nor a second Descent. Existing pointer pass-through/hold ownership, reduced-transparency fallback, reservoir kind/layer, compositing and per-site authority remain constraints. The shared soft-lock/preview and liquid continuity carriers are completed; organism-specific approach/reading stays in the contacted site's own intake.
+No target means current free-lens behavior remains. Locking alone is neither global navigation nor a second Descent. Existing pointer pass-through/hold ownership, reduced-transparency fallback, reservoir kind/layer, compositing and per-site authority remain constraints. The shared soft-lock/preview and liquid continuity carriers are completed; organism-specific approach/reading and its lifecycle stay with the contacted site.
 
 ### Soft-lock — earned mechanics (2026-10-14)
 

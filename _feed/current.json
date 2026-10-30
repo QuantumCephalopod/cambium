@@ -25,12 +25,15 @@
   },
   "home": {
     "changed_scope": [
-      "_waste/NUTRIENT__full-artifact-replacement-residue__20261029.md"
+      "z/address.js",
+      "y/test-address.cjs",
+      "w/display/x/display-runtime-v2.test.cjs",
+      "_waste/NUTRIENT__textual-address-order__20261020.md"
     ],
-    "delivery_state": "STAGING_HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS — bounded isolated sequential full-generation replacement witness; original overlapping observation not causally explained."
+    "delivery_state": "STAGING_HOME_DURABLE_FEED_SEPARATE",
+    "outcome": "PASS — textual address ordering now follows w,x,y,z without changing the fixed geometric basis or quotient partition."
   },
-  "observed_at_utc": "2026-10-29T16:14:15.879134Z",
+  "observed_at_utc": "2026-10-30T11:30:18.895250Z",
   "owner": "cambium",
   "phenotype": {
     "w": {
@@ -46,7 +49,7 @@
       "noun": "orientation"
     }
   },
-  "reflected_home_event": "cambium-full-artifact-repeat-witness-20261029",
+  "reflected_home_event": "cambium-textual-address-order-20261030",
   "rituals": [
     {
       "path": "RITUALS/catabolism/RITUAL.md",
@@ -60,13 +63,11 @@
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [
-      "NUTRIENT__textual-address-order__20261020.md"
-    ],
-    "waste_direct_count": 26
+    "stomach_direct": [],
+    "waste_direct_count": 27
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "9428509eace974da75357fd09ee8ab6ad3ae5ee9"
+    "source_revision": "HEAD"
   }
 }

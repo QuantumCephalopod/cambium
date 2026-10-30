@@ -291,6 +291,25 @@ function overviewWorldPoint(point,width){const focus=inquiryFrameFocus();return 
 function overviewCenterFor(entity,width,now=performance.now()){return overviewWorldPoint(overviewDriftPoint(entity,now),width)}
 function overviewBodyScaleFor(entity,width){return bodyScaleFor(entity)*overviewTransformScale(width)}
 function rootBodyScaleFor(entity,width){return bodyScaleFor(entity)*rootFieldScale(width)}
+/* Only the contacted body's projection approaches the lens. Its source scale,
+ * drifting physical center, and the enclosing field camera remain unchanged. */
+function updateOverviewApproach(now){
+  if(!state||state.current)return;
+  const L=globalThis.SSSDisplayLens?.snapshot?.()?.lens,part=L?.lock?.kind==='body'?state.overviewContacts?.get(L.lock.id):null,rec=part&&state.recordById?.get(part.key);
+  let a=state.overviewApproach;if(rec&&(!a||a.id!==rec.id))a=state.overviewApproach={id:rec.id,amount:0,last:now};
+  if(!a)return;
+  const dt=Math.min(.05,Math.max(0,(now-a.last)/1000));a.last=now;
+  a.amount=mix(a.amount,rec?.id===a.id?1:0,1-Math.exp(-5*dt));
+  if(rec?.id===a.id)a.diameter=2*Math.max(L.hx||L.r||0,L.hy||L.r||0);
+  if(!rec&&a.amount<.001)state.overviewApproach=null;
+}
+function overviewBodyProjection(rec,rect,now=performance.now()){
+  const center=overviewCenterFor(rec,rect.width,now),base=overviewBodyScaleFor(rec,rect.width),a=state?.overviewApproach;
+  if(!a||a.id!==rec.id||!(rect.height>0&&a.diameter>0))return {center,scale:base};
+  const depth=cameraZ()-qRot(overviewOrientation(),center)[2];if(!(depth>0))return {center,scale:base};
+  const wanted=a.diameter*depth*Math.tan(FOV/2)/rect.height;
+  return {center,scale:mix(base,Math.max(base,wanted),a.amount)};
+}
 function cameraForScale(scale){return Math.max(MIN_MACRO_Z,scale/MACRO_FILL)}
 function setBackgroundPassage(target,now=performance.now()){
   if(!state)return;
@@ -515,15 +534,23 @@ void main(){
 
 /* Same admitted tetrahedra and lights when a browser cannot provide WebGL.
  * This is a projection of the same instances, never a screenshot or dummy body. */
+function clipCameraPlane(points,cam,near,closed=true){
+  if(!points.length)return [];
+  const inside=p=>cam-p[2]>=near,cut=(a,b)=>{const da=cam-a[2]-near,db=cam-b[2]-near,t=da/(da-db);return a.map((v,i)=>v+(b[i]-v)*t)};
+  if(!closed){const [a,b]=points,ia=inside(a),ib=inside(b);return ia&&ib?[a,b]:ia?[a,cut(a,b)]:ib?[cut(a,b),b]:[]}
+  const out=[];for(let i=0;i<points.length;i++){const a=points[i],b=points[(i+1)%points.length],ia=inside(a),ib=inside(b);if(ia)out.push(a);if(ia!==ib)out.push(cut(a,b))}return out;
+}
 function createFlatRenderer(canvas){
   const ctx=canvas.getContext('2d'),V0=N.V0.map(v=>[...v]);if(!ctx)return null;
-  const point=(p,q,t)=>projectWorldPoint(add(qRot(q,p),t),cameraZ(),canvas.clientWidth||canvas.width,canvas.clientHeight||canvas.height);
+  const world=(p,q,t)=>add(qRot(q,p),t),point=(p,cam)=>projectWorldPoint(p,cam,canvas.clientWidth||canvas.width,canvas.clientHeight||canvas.height);
   return {gl:null,V0,draw(instances,q,t,_p,_v,{faces=true}={}){ctx.save();const r=canvas.getBoundingClientRect();ctx.setTransform(canvas.width/r.width,0,0,canvas.height/r.height,0,0);
-    for(const item of instances){const P=V0.map(v=>point(add(item.center,mul(v,item.scale)),q,t)),c=item.color;ctx.strokeStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]})`;ctx.fillStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]*.12})`;
-      if(faces)for(const f of FACE){ctx.beginPath();ctx.moveTo(P[f[0]].x,P[f[0]].y);for(const i of f.slice(1))ctx.lineTo(P[i].x,P[i].y);ctx.closePath();ctx.fill()}
-      ctx.beginPath();for(const [a,b] of EDGE){ctx.moveTo(P[a].x,P[a].y);ctx.lineTo(P[b].x,P[b].y)}ctx.stroke()}
+    const cam=cameraZ(),near=.1/(state.sharedFrame?.scale||1);
+    for(const item of instances){const P=V0.map(v=>world(add(item.center,mul(v,item.scale)),q,t)),c=item.color;ctx.strokeStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]})`;ctx.fillStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]*.12})`;
+      if(faces)for(const f of FACE){const poly=clipCameraPlane(f.map(i=>P[i]),cam,near).map(p=>point(p,cam));if(poly.length<3)continue;ctx.beginPath();ctx.moveTo(poly[0].x,poly[0].y);for(const p of poly.slice(1))ctx.lineTo(p.x,p.y);ctx.closePath();ctx.fill()}
+      ctx.beginPath();for(const [a,b] of EDGE){const line=clipCameraPlane([P[a],P[b]],cam,near,false).map(p=>point(p,cam));if(line.length===2){ctx.moveTo(line[0].x,line[0].y);ctx.lineTo(line[1].x,line[1].y)}}ctx.stroke()}
     ctx.restore()},drawLights(lights,q,t,_p,_v,time,_d,gain=1){ctx.save();const r=canvas.getBoundingClientRect();ctx.setTransform(canvas.width/r.width,0,0,canvas.height/r.height,0,0);
-    for(const l of lights){const p=point(l.center,q,t),radius=Math.max(.5,l.size*.25*(.94+.06*Math.sin(time*1.25+l.phase)));ctx.fillStyle=`rgba(${l.color.slice(0,3).map(x=>Math.round(x*255))},${l.color[3]*gain})`;ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill()}ctx.restore()},dispose(){}};
+    const cam=cameraZ(),near=.1/(state.sharedFrame?.scale||1);
+    for(const l of lights){const w=world(l.center,q,t);if(cam-w[2]<near)continue;const p=point(w,cam),radius=Math.max(.5,l.size*.25*(.94+.06*Math.sin(time*1.25+l.phase)));ctx.fillStyle=`rgba(${l.color.slice(0,3).map(x=>Math.round(x*255))},${l.color[3]*gain})`;ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill()}ctx.restore()},dispose(){}};
 }
 function makeStage(host){
   const canvas=host.querySelector('.interlocutor-background');
@@ -569,26 +596,38 @@ function tutorialCandidates(){
 function startTutorial(now=performance.now()){
   if(state.current)return false;const eligible=tutorialCandidates().filter(x=>x.id!==state.lastSpecimen),pool=eligible.length?eligible:tutorialCandidates();
   if(!pool.length)return false;
+  const L=globalThis.SSSDisplayLens,lease=L?.beginPlayback?.()||null;if(L&&!lease)return false;
   const specimen=pool[Math.floor(Math.random()*pool.length)];state.lastSpecimen=specimen.id;
-  state.tutorial={specimen:specimen.id,returnPath:Fields?.get(id)?.container||state.chamberPath,step:-1,at:now,copy:'',readyAt:0};
+  state.tutorial={specimen:specimen.id,returnPath:Fields?.get(id)?.container??state.chamberPath,step:-1,at:now,copy:'',readyAt:0,lease,pendingTarget:lease?id+'|overview|'+encodeURIComponent(specimen.id):null};
   setChamber(specimen.locus,now);state.tutorialButton.textContent='RETURN TO MY VIEW';return true;
 }
 function stopTutorial(){
   const tour=state?.tutorial;if(!tour)return;
   state.tutorial=null;state.current=null;state.stack=[];state.inner=null;state.being=null;state.beingTargetQ=null;state.transition=0;state.closing=false;state.backgroundPassage=0;state.backgroundPassageFrom=null;state.backgroundPassageTo=null;state.label.classList.remove('show');withdrawPaperLens();
   setChamber(tour.returnPath);state.tutorialButton.textContent='HOW PAPERS LIVES';
+  // Reoffer real overview identities before returning the borrowed drop.
+  if(tour.lease)syncOverviewLens(state.canvas.getBoundingClientRect(),performance.now());
+  if(tour.lease)globalThis.SSSDisplayLens?.endPlayback?.(tour.lease);
 }
 function tutorialStep(now){
   const tour=state.tutorial;if(!tour)return;
+  if(tour.lease){const L=globalThis.SSSDisplayLens;if(!L?.playbackActive?.(tour.lease)){stopTutorial();return}if(tour.pendingTarget){if(!L.contactPlayback(tour.lease,tour.pendingTarget))return;tour.pendingTarget=null;tour.at=now;}}
+  if(tour.lease&&tour.step>=0&&state.current){
+    const rect=state.textCanvas.getBoundingClientRect(),drop=lensLocal(rect),part=drop?.lock&&livePaperLensPart(drop.lock.id),reading=part&&paperLensReading(part);
+    // A slow device must actually settle on the contacted tissue before the
+    // visitor's reading interval starts. Do not advance by wall time alone.
+    if(state.transition<.98||!drop||!part||!paperLensReady(drop,reading)){tour.at=now;return}
+  }
   const hold=state.identities.get(state.current?.id)?.kind==='source'?11200:5600;
   if(now-tour.at<hold)return;tour.at=now;tour.readyAt=now+1800;tour.step++;
   const entity=state.identities.get(state.current?.id),body=entity?inquiryBody(entity.id):null;
   switch(tour.step){
     case 0:openGlobal(tour.specimen,state.canvas.getBoundingClientRect().width,now);tour.copy=tour.specimen+' · one actual rank-4 Holon. Its body is twice the scale of each rank-3 parent; its four vertices are those parents.';break;
-    case 1:{const edge=state.being?.edges[0];if(edge){lockInner({kind:'edge',key:edge.key});tour.copy='6E · this edge is an authored relation between two actual parents. '+(body?.edges?.find(e=>e.id===edge.key)?.title||'')}break;}
-    case 2:{const face=state.being?.faces[0];if(face){lockInner({kind:'face',key:face.key});tour.copy='4F · this face relates three parents. '+(body?.faces?.find(f=>f.id===face.key)?.title||'')}break;}
-    case 3:lockInner({kind:'whole',key:'wxyz'});tour.copy='1T · a rank and four peers are drawn. Birth requires six edges, four faces and this irreducible whole. Every parent stays alive.';break;
-    case 4:{const met=body?.metabolites?.[0];lockInner(met?{kind:'met',key:met.id}:null);tour.copy=met?'The lights inside are the surviving metabolites. '+(met.title||''):'This projection contains no surviving metabolite. The center stays empty.';break;}
+    case 1:{const vert=state.being?.verts[0];if(vert){lockInner({kind:'vert',key:vert.i});tour.copy='4V · this vertex is one actual parent, carrying its own authored distinction.'}break;}
+    case 2:{const edge=state.being?.edges[0];if(edge){lockInner({kind:'edge',key:edge.key});tour.copy='6E · this edge is an authored relation between two actual parents. '+(body?.edges?.find(e=>e.id===edge.key)?.title||'')}break;}
+    case 3:{const face=state.being?.faces[0];if(face){lockInner({kind:'face',key:face.key});tour.copy='4F · this face relates three parents. '+(body?.faces?.find(f=>f.id===face.key)?.title||'')}break;}
+    case 4:lockInner({kind:'whole',key:'wxyz'});tour.copy='1T · a rank and four peers are drawn. Birth requires six edges, four faces and this irreducible whole. Every parent stays alive.';break;
+    case 5:{const met=inquiryMetabolites(entity)[0],metId=typeof met?.id==='string'&&met.id.trim()?met.id.trim():'M1';lockInner(met?{kind:'met',key:entity.id+'·'+metId}:null);tour.copy=met?'The lights inside are the surviving metabolites. '+(met.title||''):'This projection contains no surviving metabolite. The center stays empty.';break;}
     default:{if(entity?.kind==='source'){stopTutorial();return;}
       const child=childBodies(state.current).find(c=>inquiryBody(c.id));if(!child){stopTutorial();return;}descend(child.id,now);
       const next=state.identities.get(child.id);tour.copy=next?.kind==='source'?child.id+' · one Source, the same tetrahedral species. '+(inquiryBody(child.id)?.state==='COMPLETE'?'Its four vertices partition one outside work.':'Its partition text is PARTIAL here; the gaps remain explicit.')+' ORIGIN reaches its authors and original work.':child.id+' · '+next?.rank+'. The same body grammar recurs: its four vertices are its own actual parents. The larger Holon and every parent remain alive.';
@@ -598,8 +637,9 @@ function tutorialStep(now){
 function drawOverviewPhysiology(now){
   const box=state.physiology;if(!box)return;
   const eligible=tutorialCandidates(),tour=state.tutorial,visible=Boolean(tour)||!state.current;
-  setData(box,'visible',visible?'true':'false');box.setAttribute('aria-hidden',visible?'false':'true');state.tutorialButton.disabled=!tour&&!eligible.length;
-  state.tutorialButton.title=eligible.length?'Visit an actual current rank-4 Holon':'No complete current rank-4 specimen is projected';
+  const lens=globalThis.SSSDisplayLens,drop=lens?.snapshot?.()?.lens,available=!lens||!!drop&&!drop.held;
+  setData(box,'visible',visible?'true':'false');box.setAttribute('aria-hidden',visible?'false':'true');state.tutorialButton.disabled=!tour&&(!eligible.length||!available);
+  state.tutorialButton.title=!eligible.length?'No complete current rank-4 specimen is projected':!available?'Release or enable the glass drop to begin':'Visit an actual current rank-4 Holon';
   if(!tour){delete state.textCanvas.dataset.tutorialCommentaryBounds;return;}
   box.dataset.specimen=tour.specimen;box.dataset.step=String(tour.step);
   if(!tour.copy||now<tour.readyAt||state.transition<.98)return;
@@ -840,10 +880,12 @@ function beingDescribe(p){
 }
 /* An edge's authored material fits its live projected endpoints. Full words
  * are always retained by the lens; foreshortening never stretches the body. */
-function bodyDoorPoint(points,rect,side=1){
+function bodyDoorPoint(points,rect,side=1,occupied=[]){
   const center={x:points.reduce((s,p)=>s+p.x,0)/4,y:points.reduce((s,p)=>s+p.y,0)/4},ordered=[...points].sort((a,b)=>Math.atan2(a.y-center.y,a.x-center.x)-Math.atan2(b.y-center.y,b.x-center.x)),candidates=[];
   for(let i=0;i<ordered.length;i++){const a=ordered[i],b=ordered[(i+1)%ordered.length];for(const t of [.3,.5,.7]){let x=mix(a.x,b.x,t),y=mix(a.y,b.y,t),dx=x-center.x,dy=y-center.y,len=Math.hypot(dx,dy)||1;x+=dx/len*BEING_LH*1.2;y+=dy/len*BEING_LH*1.2;if(x>BEING_LH&&x<rect.width-BEING_LH&&y>80&&y<rect.height-BEING_LH*2)candidates.push({x,y});}}
-  return candidates.sort((a,b)=>side*(b.x-a.x))[0]||null;
+  // This is a door on the actual projected boundary, not a HUD overlay.
+  // Keep its glyph/contact clear of the same measured chrome as body ink.
+  return candidates.filter(p=>!occupied.some(b=>p.x+BEING_LH>b.x&&p.x-BEING_LH<b.x+b.w&&p.y+BEING_LH>b.y&&p.y-BEING_LH<b.y+b.h)).sort((a,b)=>side*(b.x-a.x))[0]||null;
 }
 function foldedEdgeGlyphs(edge,length,dpr=1){
   if(edge.unravel>=.02||edge.weave>=.02)return edge.glyphs;
@@ -882,34 +924,53 @@ function paperLensParts(B,G){
   for(const m of G.mets)put('met',m.id,metaboliteWisdomText(m.light.metabolite),m);
   return parts;
 }
-function liveOverviewLensPart(target){return state?.mounted&&!state.host?.hidden&&!state.current?state.overviewContacts?.get(target)||null:null}
+function liveOverviewLensPart(target){
+  if(!state?.mounted||state.host?.hidden)return null;
+  if(!state.current)return state.overviewContacts?.get(target)||null;
+  // The contacted organism remains the lens identity across overview and inquiry.
+  // Selected tissue supplies a finer reading without creating a new lock.
+  if(target!==state.lensBodyId||state.current.id!==state.lensBodyOrganism)return null;
+  const selected=state.inner&&[...(state.lensParts?.values()||[])].find(p=>p.kind===state.inner.kind&&String(p.key)===String(state.inner.key));
+  if(selected)return {...selected,id:target,rect:state.textCanvas.getBoundingClientRect()};
+  if(state.inner)return null; // A temporarily occluded or unprojected part stays pending, not invented.
+  const rect=state.textCanvas.getBoundingClientRect(),point=projectWorldPoint(currentTranslation(),cameraZ(),rect.width,rect.height);
+  if(!Number.isFinite(point.x)||!Number.isFinite(point.y))return null;
+  const entity=state.identities.get(state.current.id),text=state.current.id+' · '+String(entity?.title||state.current.id).trim();
+  return {id:target,key:state.current.id,kind:'body',text,point,rect};
+}
 function livePaperLensPart(target){return liveOverviewLensPart(target)||(state?.mounted&&!state.host?.hidden&&state.current&&state.transition>=.82?state.lensParts?.get(target)||null:null)}
 const overviewLensOffers=new Set();
+function ensureOverviewLensOffer(target){
+ const L=globalThis.SSSDisplayLens;if(!L?.offer||overviewLensOffers.has(target))return;
+ L.offer(target,{kind:'body',point:()=>{const part=liveOverviewLensPart(target);return part?.point?{x:part.rect.left+part.point.x,y:part.rect.top+part.point.y,r:part.point.r}:null},frame:()=>{const part=liveOverviewLensPart(target);if(!part?.point)return null;const reading=paperLensReading(part);return reading?.ready?reading.frame:null},foreground:frame=>paperForeground(target,frame)});overviewLensOffers.add(target);
+}
 function withdrawOverviewLens(){for(const target of overviewLensOffers)globalThis.SSSDisplayLens?.withdraw(target);overviewLensOffers.clear();if(state){state.overviewContacts=null;state.overviewRender=null}}
 function syncOverviewLens(rect,now){
  const L=globalThis.SSSDisplayLens;if(!L?.offer)return;
- if(!state?.mounted||state.host?.hidden||state.current){withdrawOverviewLens();return}
+ if(!state?.mounted||state.host?.hidden){withdrawOverviewLens();return}
+ if(state.current){
+  for(const target of overviewLensOffers)if(target!==state.lensBodyId){L.withdraw(target);overviewLensOffers.delete(target)}
+  return;
+ }
  const q=overviewOrientation(),contacts=new Map();
  for(const rec of state.records){
-  const target=id+'|overview|'+encodeURIComponent(rec.id),center=overviewCenterFor(rec,rect.width,now),point=projectPoint(center,q,cameraZ(),rect.width,rect.height),rotated=qRot(q,center),r=clamp(projectedPixels(overviewBodyScaleFor(rec,rect.width),cameraZ()-rotated[2],rect.height)*.55,10,48);
+  const target=id+'|overview|'+encodeURIComponent(rec.id),{center,scale}=overviewBodyProjection(rec,rect,now),point=projectPoint(center,q,cameraZ(),rect.width,rect.height),rotated=qRot(q,center),r=clamp(projectedPixels(scale,cameraZ()-rotated[2],rect.height)*.55,10,48);
   const present=Number.isFinite(point.x)&&Number.isFinite(point.y)&&cameraZ()>rotated[2]&&point.x+r>=0&&point.x-r<=rect.width&&point.y+r>=0&&point.y-r<=rect.height;
   const entity=state.identities.get(rec.id),text=rec.id+' · '+String(entity?.title||rec.title||'').trim();
   contacts.set(target,{id:target,key:rec.id,kind:'overview',text,point:present?{x:point.x,y:point.y,r}:null,rect});
  }
  state.overviewContacts=contacts;
  for(const target of overviewLensOffers)if(!contacts.has(target)){L.withdraw(target);overviewLensOffers.delete(target)}
- for(const target of contacts.keys())if(!overviewLensOffers.has(target)){
-  L.offer(target,{kind:'body',point:()=>{const part=liveOverviewLensPart(target);return part?.point?{x:part.rect.left+part.point.x,y:part.rect.top+part.point.y,r:part.point.r}:null},frame:()=>{const part=liveOverviewLensPart(target);if(!part?.point)return null;const reading=paperLensReading(part);return reading?.ready?reading.frame:null},foreground:frame=>paperForeground(target,frame)});overviewLensOffers.add(target);
- }
+ for(const target of contacts.keys())ensureOverviewLensOffer(target);
 }
 function drawOverviewForeground(part,frame){
  const f=state.overviewRender,rec=state.recordById?.get(part.key);
  if(!f||!rec||!frame.gl||state.renderer?.gl!==frame.gl)return false;
- const center=overviewCenterFor(rec,f.rect.width,f.ms),scale=overviewBodyScaleFor(rec,f.rect.width),leaves=[],lights=[];
+ const {center,scale}=overviewBodyProjection(rec,f.rect,f.ms),leaves=[],lights=[];
  collectVisibleBody(rec.id,center,scale,f.rect.width,f.rect.height,f.cam,f.q,leaves,lights);
  state.renderer.draw(leaves,f.q,[0,0,0],f.proj,f.view,{faces:true});state.renderer.drawLights(lights,f.q,[0,0,0],f.proj,f.view,f.ms*.001,f.dpr,OVERVIEW_LIGHT_GAIN);return true;
 }
-function withdrawPaperLens(){const L=globalThis.SSSDisplayLens;for(const target of paperLensOffers)L?.withdraw(target);paperLensOffers.clear();if(state){state.lensParts=null;if(!liveOverviewLensPart(state.lensReading?.id)){state.lensReading=null;if(state.lensReader)state.lensReader.hidden=true}}}
+function withdrawPaperLens(){const L=globalThis.SSSDisplayLens;for(const target of paperLensOffers)L?.withdraw(target);paperLensOffers.clear();if(state){state.lensParts=null;const readingId=state.lensReading?.id,lockedId=L?.snapshot?.()?.lens?.lock?.id;if(!readingId||lockedId!==readingId||!liveOverviewLensPart(readingId)){state.lensReading=null;if(state.lensReader)state.lensReader.hidden=true}}}
 function syncPaperLens(B,G){
   const L=globalThis.SSSDisplayLens;if(!L?.offer)return;
   state.lensParts=paperLensParts(B,G);
@@ -928,20 +989,47 @@ function paperLensLines(target,text,font,width){
     lines.push(pretextModule.materializeLineRange(prepared,range));cursor=range.end;
   }
 }
+/* The containing carrier is not a promise that every pixel is free. Enumerate
+ * exact obstacle boundaries, then retain the largest unobstructed rectangle.
+ * This changes only reading layout/continuation, never the owner's body. */
+function paperReadingRegion(bounds,occupied){
+  const intersects=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
+  const obstacles=occupied.filter(b=>b.w>0&&b.h>0&&intersects(bounds,b));
+  const xs=[...new Set([bounds.x,bounds.x+bounds.w,...obstacles.flatMap(b=>[Math.max(bounds.x,b.x),Math.min(bounds.x+bounds.w,b.x+b.w)])])].sort((a,b)=>a-b);
+  const ys=[...new Set([bounds.y,bounds.y+bounds.h,...obstacles.flatMap(b=>[Math.max(bounds.y,b.y),Math.min(bounds.y+bounds.h,b.y+b.h)])])].sort((a,b)=>a-b);
+  let best={x:bounds.x,y:bounds.y,w:0,h:0};
+  for(let i=0;i<xs.length;i++)for(let j=i+1;j<xs.length;j++)for(let k=0;k<ys.length;k++)for(let l=k+1;l<ys.length;l++){
+    const r={x:xs[i],y:ys[k],w:xs[j]-xs[i],h:ys[l]-ys[k]};
+    if(r.w*r.h<=best.w*best.h||obstacles.some(b=>intersects(r,b)))continue;best=r;
+  }
+  return best;
+}
+function paperReadingChrome(rect,base){
+  // The origin door occupies reading space, but must not repel its own next
+  // boundary placement. Keep this measured extent separate from inkChrome.
+  const door=state.originButton,r=door&&!door.hidden?door.getBoundingClientRect?.():null;
+  if(!r||r.width<2||r.height<2)return base;
+  const box={x:r.left-rect.left-INK_PAD,y:r.top-rect.top-INK_PAD,w:r.width+2*INK_PAD,h:r.height+2*INK_PAD},key=[box.x,box.y,box.w,box.h].join(','),old=state.readingDoorChrome;
+  if(old?.base===base&&old.key===key)return old.list;
+  return (state.readingDoorChrome={base,key,list:[...base,box]}).list;
+}
 function paperLensReading(part){
   const rect=state.textCanvas.getBoundingClientRect(),hostRect=state.host?.getBoundingClientRect?.()||rect,local=state.ui?.carrier,carrier=local?{x:hostRect.left+local.x,y:hostRect.top+local.y,w:local.w,h:local.h}:{x:rect.left,y:rect.top,w:rect.width,h:rect.height},pad=typePx(0),lh=wisdomLineHeight(rect.width),font=wisdomFont(rect.width);
-  const availableW=Math.max(1,Math.min(rect.right??rect.left+rect.width,carrier.x+carrier.w)-Math.max(rect.left,carrier.x)-2*pad),availableH=Math.max(1,Math.min(rect.bottom??rect.top+rect.height,carrier.y+carrier.h)-Math.max(rect.top,carrier.y)-2*pad);
+  const bounds={x:Math.max(rect.left,carrier.x)-rect.left,y:Math.max(rect.top,carrier.y)-rect.top,w:Math.max(0,Math.min(rect.right??rect.left+rect.width,carrier.x+carrier.w)-Math.max(rect.left,carrier.x)),h:Math.max(0,Math.min(rect.bottom??rect.top+rect.height,carrier.y+carrier.h)-Math.max(rect.top,carrier.y))},chrome=state.readingChrome||[];
+  const regionKey=[bounds.x,bounds.y,bounds.w,bounds.h].join(',');
+  if(state.readingRegion?.key!==regionKey||state.readingRegion.chrome!==chrome)state.readingRegion={key:regionKey,chrome,box:paperReadingRegion(bounds,chrome)};
+  const region=state.readingRegion.box,availableW=Math.max(1,region.w-2*pad),availableH=Math.max(1,region.h-2*pad);
   const ctx=state.textCanvas.getContext('2d');ctx.font=font;const folded=globalThis.SSSDisplayType?.fold?.(part.text)??part.text,advance=ctx.measureText(folded).width;
   const width=Math.min(availableW,Math.max(Math.min(160,availableW),Math.sqrt(Math.max(1,advance)*lh*2)+2*pad)),innerW=Math.max(1,width-2*pad),rows=Math.floor((availableH-2*pad-lh)/lh);
-  const key=part.id+'\0'+part.text+'\0'+font+'\0'+innerW+'\0'+rows;
+  const contentKey=part.id+'\0'+part.text+'\0'+font,key=contentKey+'\0'+innerW+'\0'+rows;
   let reading=state.lensReading;
-  if(reading?.key!==key){const lines=rows>0&&innerW>=ctx.measureText('W').width?paperLensLines(part.id,part.text,font,innerW):null;reading=state.lensReading={key,id:part.id,page:0,lines:lines||[],ready:!!lines?.length,rows:Math.max(1,rows),font,lh,pad,width,height:Math.min(availableH,(Math.min(lines?.length||1,Math.max(1,rows))+1)*lh+2*pad),glyphPages:new Map()}}
-  reading.pages=Math.max(1,Math.ceil(reading.lines.length/reading.rows));reading.page=Math.min(reading.page,reading.pages-1);
-  const leftMin=Math.max(rect.left,carrier.x)+pad,topMin=Math.max(rect.top,carrier.y)+pad;
+  if(reading?.key!==key){const same=reading?.contentKey===contentKey,lines=rows>0&&innerW>=ctx.measureText('W').width?paperLensLines(part.id,part.text,font,innerW):null;reading=state.lensReading={key,contentKey,id:part.id,page:same?reading.page:0,anchorEnd:same&&reading.anchorEnd,lines:lines||[],ready:!!lines?.length,rows:Math.max(1,rows),font,lh,pad,width,height:Math.min(availableH,(Math.min(lines?.length||1,Math.max(1,rows))+1)*lh+2*pad),glyphPages:new Map()}}
+  reading.pages=Math.max(1,Math.ceil(reading.lines.length/reading.rows));reading.page=reading.anchorEnd?reading.pages-1:Math.min(reading.page,reading.pages-1);
+  const leftMin=rect.left+region.x+pad,topMin=rect.top+region.y+pad;
   const left=Math.max(leftMin,Math.min(leftMin+availableW-reading.width,rect.left+part.point.x-reading.width/2)),top=Math.max(topMin,Math.min(topMin+availableH-reading.height,rect.top+part.point.y-reading.height/2));
   reading.frame={left,top,width:reading.width,height:reading.height,r:Math.min(pad,reading.width/2,reading.height/2)};return reading;
 }
-function paperLensPage(delta){const r=state?.lensReading;if(!r?.ready)return false;const next=Math.max(0,Math.min(r.pages-1,r.page+delta));if(next===r.page)return false;r.page=next;return true}
+function paperLensPage(delta){const r=state?.lensReading;if(!r?.ready)return false;r.anchorEnd=delta===Infinity;const next=Math.max(0,Math.min(r.pages-1,r.page+delta));if(next===r.page)return false;r.page=next;return true}
 function paperLensReady(L,r){return r?.ready&&L?.round===0&&Math.abs(2*L.hx-r.width)<2&&Math.abs(2*L.hy-r.height)<2}
 function paperLensReader(part,r){const reader=state.lensReader;if(!reader)return;reader.hidden=false;if(reader.dataset.target!==part.id||reader.querySelector('p').textContent!==part.text){reader.dataset.target=part.id;reader.querySelector('p').textContent=part.text}reader.querySelector('small').textContent=(r.page+1)+' / '+r.pages}
 function paperLensClip(ctx,L,rect,outside=false){ctx.beginPath();if(outside)ctx.rect(0,0,rect.width,rect.height);if(L.round===0)ctx.roundRect(L.x-L.hx,L.y-L.hy,2*L.hx,2*L.hy,Math.min(L.corner||0,L.hx,L.hy));else ctx.arc(L.x,L.y,L.r,0,Math.PI*2);ctx.clip(outside?'evenodd':'nonzero')}
@@ -1067,10 +1155,11 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   const P=V.map(v=>proj(mul(v,sc))),front={};for(const f of B.faces)front[f.key]=qRot(state.localQ,V[f.miss])[2]<0;
   const font=wisdomFont(rect.width),metGeo=[];
   for(const light of lights){const p=proj(light.center);metGeo.push({id:light.id,x:p.x,y:p.y,light})}
-  const whole=B.volume?bodyDoorPoint(P,rect):null;
+  const chrome=inkChrome(rect),whole=B.volume?bodyDoorPoint(P,rect,1,chrome):null;
   state.beingGeo={P,front,mets:metGeo,whole,doors:B.verts.map(v=>v.door)};
   if(whole){ctx.font=BEING_FONT;ctx.fillStyle=`rgba(223,243,234,${alpha*.6})`;typeInk(ctx,'1T',whole.x-BEING_LH*.5,whole.y);}
-  if(state.originButton){state.originButton.hidden=entity.kind!=='source';const origin=bodyDoorPoint(P,rect,-1);if(origin){state.originButton.style.left=origin.x+'px';state.originButton.style.top=origin.y+'px';}else state.originButton.hidden=true;}
+  if(state.originButton){state.originButton.hidden=entity.kind!=='source';const origin=bodyDoorPoint(P,rect,-1,chrome);if(origin){state.originButton.style.left=origin.x+'px';state.originButton.style.top=origin.y+'px';}else state.originButton.hidden=true;}
+  state.readingChrome=paperReadingChrome(rect,chrome);
   syncPaperLens(B,state.beingGeo);
   const contact=LZ?.lock?.kind==='body'?livePaperLensPart(LZ.lock.id):null,layout=contact?paperLensReading(contact):null,reading=paperLensReady(LZ,layout)?contact:null;
   if(contact)paperLensReader(contact,layout);else{state.lensReading=null;if(state.lensReader)state.lensReader.hidden=true}
@@ -1274,7 +1363,7 @@ function populationBodies(width,height,bodyFade=1,lightFade=bodyFade,now=perform
   const leaves=[],lights=[],cull=Boolean(state.current)||inquiryFrameFocus().scale!==1||Boolean(state.sharedFrame?.scale!==undefined&&state.sharedFrame.scale!==1),q=overviewOrientation();let considered=0;
   for(const rec of state.records){
     if(rec.id===state.current?.id)continue;
-    const center=overviewCenterFor(rec,width,now),scale=overviewBodyScaleFor(rec,width);
+    const {center,scale}=overviewBodyProjection(rec,{width,height},now);
     if(cull&&!populationInView(center,scale,width,height,cameraZ,q))continue;
     considered++;
     if(state.sharedFrame)collectVisibleBody(rec.id,center,scale,width,height,cameraZ,q,leaves,lights);
@@ -1335,18 +1424,25 @@ function ascendChamber(now=performance.now()){if(!state?.chamberPath)return fals
 function setLabel(id){const d=state.identities.get(id);state.label.textContent=`${id} · ${d?.title||id}`;state.label.classList.add('show')}
 function openGlobal(id,width,now=performance.now()){
   const rec=state.recordById.get(id);if(!rec)return false;
+  const locked=globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id,bodyTarget='organism:papers|overview|'+encodeURIComponent(id);
+  state.lensBodyId=locked===bodyTarget?bodyTarget:null;state.lensBodyOrganism=state.lensBodyId?id:null;
   const overviewWidth=Number(width)||state?.canvas?.getBoundingClientRect().width||innerWidth;
+  const entryScale=overviewBodyProjection(rec,{width:overviewWidth,height:state.canvas.getBoundingClientRect().height},now).scale;
   const scale=rootBodyScaleFor(rec,overviewWidth);
+  const sourceLocal=[...overviewCenterFor(rec,overviewWidth,now)],entryDepth=Math.max(1e-6,cameraZ()-qRot(overviewOrientation(),sourceLocal)[2]);
   state.stack=[];
-  state.current={id,scale,sourceLocal:[...overviewCenterFor(rec,overviewWidth,now)],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
+  state.current={id,scale,entryScale,entryDepth,sourceLocal,entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
   state.localQ=[...overviewOrientation()];state.transition=0;state.closing=false;state.transitionStart=now;setBackgroundPassage(1,now);setLabel(id);return true;
 }
 function descend(child,now=performance.now()){
   if(!state.current)return false;const hit=childBodies(state.current).find(x=>x.id===child);if(!hit)return false;
+  const tour=state.tutorial;state.lensBodyId=null;state.lensBodyOrganism=null; // A parent body is not its child.
   state.stack.push({id:state.current.id,scale:state.current.scale,camera:state.current.cameraTo});
   const entryWorld=add(currentTranslation(),qRot(state.localQ,hit.center));
   state.current={id:child,scale:hit.scale,sourceLocal:null,entryWorld,cameraFrom:cameraZ(),cameraTo:cameraForScale(hit.scale),globalSource:false};
-  state.transition=0;state.closing=false;state.transitionStart=now;setLabel(child);return true;
+  state.transition=0;state.closing=false;state.transitionStart=now;state.inner=null;
+  if(tour?.lease){const target=id+'|overview|'+encodeURIComponent(child);state.lensBodyId=target;state.lensBodyOrganism=child;ensureOverviewLensOffer(target);tour.pendingTarget=target;}
+  setLabel(child);return true;
 }
 function ascend(now=performance.now()){
   if(!state.current||!state.stack.length)return false;
@@ -1367,14 +1463,23 @@ function currentTranslation(){
   const start=state.current.globalSource?qRot(overviewOrientation(),state.current.sourceLocal):state.current.entryWorld;
   return mix3(start,[0,0,0],state.transition);
 }
+function currentDisplayScale(cam){
+  const c=state.current;if(!c)return 0;if(!c.globalSource||!c.entryDepth)return c.scale;
+  // Keep the entered projection matched to its current camera depth, then
+  // converge to the owner's real scale. Two independent clocks must not make
+  // the very same body balloon over the whole viewport mid-transition.
+  const depth=Math.max(1e-6,cam-currentTranslation()[2]),matched=c.entryScale*depth/c.entryDepth;
+  return mix(matched,c.scale,state.transition);
+}
 
 function draw(now,frame){
   if(!state?.mounted||!frame)return;
   state.sharedFrame=frame.frame;state.chamberPath=frame.container;state.chamberFocus=frame.frame;
   if(!state.renderer||state.renderer.gl!==frame.gl){state.renderer?.dispose();state.renderer=frame.gl?createRenderer(state.canvas,frame.gl):createFlatRenderer(state.canvas);}
   if(!state.renderer)return;
-  tutorialStep(now);updateTransition(now);updateBackgroundPassage(now);driftOrganisms(now);if(state.current&&state.beingTargetQ&&!state.pointer?.moved)state.localQ=beingSlerp(state.localQ,state.beingTargetQ,.075);
+  tutorialStep(now);updateTransition(now);updateBackgroundPassage(now);driftOrganisms(now);updateOverviewApproach(now);if(state.current&&state.beingTargetQ&&!state.pointer?.moved)state.localQ=beingSlerp(state.localQ,state.beingTargetQ,.075);
   const rect=state.canvas.getBoundingClientRect(),d=frame.dpr,cam=cameraZ(),overviewQ=overviewOrientation(),passage=backgroundPassage();
+  state.readingChrome=inkChrome(rect);
   const proj=frame.proj,view=new Float32Array(frame.view);for(let col=0;col<3;col++)for(let row=0;row<4;row++)view[col*4+row]*=frame.frame.scale;
   /* Papers is an independent body floating inside Philosophy Inquiry-space.
    * A fixed local rest basis keeps the four truthful root chambers legible while
@@ -1387,10 +1492,11 @@ function draw(now,frame){
   state.renderer.drawLights(population.lights,overviewQ,[0,0,0],proj,view,now*.001,d,OVERVIEW_LIGHT_GAIN);
   let metaboliteCount=0,organismEmberCount=0,metabolights=[],translate=[0,0,0];
   if(state.current){
-    const tree=[],embers=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,embers);for(const x of tree)x.color[3]*=.3+.7*state.transition;
+    const displayScale=currentDisplayScale(cam);
+    const tree=[],embers=[];collectBody(state.current.id,[0,0,0],displayScale,cam,rect.height,tree,embers);for(const x of tree)x.color[3]*=.3+.7*state.transition;
     const structuralEmbers=embers.filter(x=>x.id!==state.current.id);for(const x of structuralEmbers)x.color[3]*=.18+.42*state.transition;
     translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
-    state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,state.being?.14:.82]}],state.localQ,translate,proj,view,{faces:false});
+    state.renderer.draw([{center:[0,0,0],scale:displayScale,color:[.88,1,.92,state.being?.14:.82]}],state.localQ,translate,proj,view,{faces:false});
     state.renderer.drawLights(structuralEmbers,state.localQ,translate,proj,view,now*.001,d,INQUIRY_EMBER_GAIN);
     const entity=state.identities.get(state.current.id);metabolights=metaboliteRepel(entity.id,metaboliteField(entity,state.current,cam,rect.height,now),state.current.scale*METABOLITE_FIELD_SCALE,now);const recede=state.beingRecede||0,metOpen=state.inner?.kind==='met'||state.beingPeek?.kind==='met';for(const x of metabolights)x.color[3]*=state.transition*(metOpen?1:1-.85*recede);
     state.renderer.drawLights(metabolights,state.localQ,translate,proj,view,now*.001,d,METABOLITE_LIGHT_GAIN);
@@ -1410,7 +1516,21 @@ function draw(now,frame){
 let lensAccess=null;
 function lensLocal(rect){const L=lensAccess?.();if(!L||!rect)return null;return {...L,x:L.x-(rect.left||0),y:L.y-(rect.top||0)}}
 function inLens(L,x,y,pad=0){if(!L)return true;if(L.round===0&&Number.isFinite(L.hx)&&Number.isFinite(L.hy)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+pad}return Math.hypot(x-L.x,y-L.y)<=L.r+pad}
-function hitGlobal(x,y,width,height,now=performance.now()){if(!inLens(lensLocal(state.canvas.getBoundingClientRect()),x,y))return '';let best=null;const q=overviewOrientation();for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width,now),q,cameraZ(),width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),cameraZ(),height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
+function hitGlobal(x,y,width,height,now=performance.now()){
+  const L=lensLocal(state.canvas.getBoundingClientRect());if(!inLens(L,x,y))return '';
+  // The drop's contact owns the meaning of a click inside it. An overlapping
+  // neighbour may not steal that contact, and pending geometry is never hit.
+  const contact=L?.lock?.kind==='body'?liveOverviewLensPart(L.lock.id):null;
+  if(contact?.kind==='overview'&&contact.point&&state.recordById?.has(contact.key))return contact.key;
+  if(L?.lock?.id?.startsWith(id+'|overview|'))return '';
+  let best=null;const q=overviewOrientation();for(const rec of state.records){const {center,scale}=overviewBodyProjection(rec,{width,height},now),p=projectPoint(center,q,cameraZ(),width,height),px=projectedPixels(scale,cameraZ(),height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||'';
+}
+function enterOverviewTarget(target,width,now=performance.now()){
+  const rec=target?state.recordById.get(target):null,here=state.chamberPath||'';
+  if(rec&&rec.locus===here)return openGlobal(target,width,now);
+  if(rec&&rec.locus.startsWith(here))return setChamber(rec.locus.slice(0,here.length+1),now);
+  return false;
+}
 function hitChild(x,y,width,height){
   if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
   /* projectPoint rotates its input before perspective. Pull the world translation
@@ -1435,18 +1555,24 @@ function attachInput(){
     const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-      if(state.current){const piece=beingHit(x,y);if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
-      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now),rec=target?state.recordById.get(target):null,here=state.chamberPath||'';
+      if(state.current){const piece=beingHit(x,y),bodyLocked=state.lensBodyId&&globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id===state.lensBodyId;if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door)&&(!bodyLocked||beingSame(piece,state.inner)))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
+      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now),here=state.chamberPath||'';
         /* Descent: only the current container's content can be entered; touching content that
          * lives deeper descends into the next container on its way first. */
-        if(rec&&rec.locus===here)openGlobal(target,r.width,now);
-        else if(rec&&rec.locus.startsWith(here))setChamber(rec.locus.slice(0,here.length+1),now);
-        else{const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now);else dispatchEvent(new CustomEvent('sss:membrane-ascend',{detail:{id,source:'ascent:papers'}}))}}
+        if(!enterOverviewTarget(target,r.width,now)){const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now);else dispatchEvent(new CustomEvent('sss:membrane-ascend',{detail:{id,source:'ascent:papers'}}))}}
     }
     e.preventDefault();
   };
   on('pointerup',end);on('pointerleave',()=>{state.hover=null});on('pointercancel',end);
-  addEventListener('keydown',e=>{if(e.key!=='Escape'||!state)return;if(state.tutorial){stopTutorial();e.preventDefault();return;}if(state.current){e.preventDefault();if(state.inner)lockInner(null);else closeOrAscend()}else if(state.chamberPath){e.preventDefault();ascendChamber()}});
+}
+
+function canEscape(){return !!state?.mounted&&!state.host?.hidden&&!!(state.tutorial||state.current||state.chamberPath)}
+function escape(){
+  if(!canEscape())return false;
+  if(state.tutorial)stopTutorial();
+  else if(state.current){if(!state.closing){if(state.inner)lockInner(null);else closeOrAscend()}}
+  else ascendChamber();
+  return true;
 }
 
 function initialize(host,projection,backgroundDrag=true,dependency=null){
@@ -1470,5 +1596,5 @@ function render({host,content,projection,backgroundDrag=true,dependency=null,len
 function unmount({host,content}={}){if(state?.tutorial)stopTutorial();withdrawOverviewLens();withdrawPaperLens();if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.originButton.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
 function activateFieldPoint(){}
 
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,canEscape,escape}));
 })();

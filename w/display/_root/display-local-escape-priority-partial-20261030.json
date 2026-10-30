@@ -1,0 +1,26 @@
+{
+  "kind": "HOME",
+  "event_id": "display-local-escape-priority-partial-20261030",
+  "home_at_utc": "2026-10-30T12:22:38.232804Z",
+  "organism": "display",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "PARTIAL — a generic active-owner local Escape capability now precedes host ascent; pending encounter cancellation and navigator focus retain their own priorities.",
+  "changed_scope": [
+    "x/display-runtime-v2.js",
+    "x/display-runtime-v2.test.cjs",
+    "z/navigation-aperture.js",
+    "z/navigation-aperture.test.cjs",
+    "RITUALS/organism/RITUAL.md"
+  ],
+  "delivery_state": "STAGING_HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "source": "GitHub Actions run 41052193221 job 124050733640 and an actual desktop reproduction of navigator/global Escape precedence.",
+    "native_witness": [
+      "Real aperture capture followed by real runtime bubble: active local owner, two unrelated owners, inactive/refusing owners and host fallback PASS.",
+      "Pending encounter cancellation keeps precedence over an active owner PASS.",
+      "Explicitly focused navigator keeps its own Escape PASS."
+    ],
+    "remaining": "Display local-escape intake and the three Papers interaction nutrients stay open until real Source/Holon narrow/wide browser witnesses pass.",
+    "source_exact_spent_intakes": []
+  }
+}

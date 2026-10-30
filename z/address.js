@@ -10,7 +10,10 @@
   'use strict';
   const GENES = Object.freeze(['w', 'x', 'z', 'y']);
   const STUDY = Object.freeze({ w: 'a', x: 'b', z: 'c', y: 'd' });
-  const ORDER = new Map(GENES.map((g, i) => [g, i]));
+  // Coordinates retain the established vertex basis; textual serialization
+  // follows the separately declared raw-address order.
+  const GEOMETRY_ORDER = new Map(GENES.map((g, i) => [g, i]));
+  const TEXT_ORDER = new Map(['w', 'x', 'y', 'z'].map((g, i) => [g, i]));
 
   function validate(word) {
     if (typeof word !== 'string' || !/^[wxzy]*$/.test(word)) {
@@ -27,7 +30,7 @@
   }
   function compare(a, b) {
     for (let i = 0; i < Math.min(a.length, b.length); i++) {
-      const delta = ORDER.get(a[i]) - ORDER.get(b[i]);
+      const delta = TEXT_ORDER.get(a[i]) - TEXT_ORDER.get(b[i]);
       if (delta) return delta;
     }
     return a.length - b.length;
@@ -70,9 +73,9 @@
     const p = validate(word);
     if (!p) throw new RangeError('the overview has no vertex coordinate');
     let numerator = [0n, 0n, 0n, 0n], denominator = 1n;
-    numerator[ORDER.get(p.at(-1))] = 1n;
+    numerator[GEOMETRY_ORDER.get(p.at(-1))] = 1n;
     for (let i = p.length - 2; i >= 0; i--) {
-      numerator[ORDER.get(p[i])] += denominator;
+      numerator[GEOMETRY_ORDER.get(p[i])] += denominator;
       denominator *= 2n;
     }
     while (denominator > 1n && numerator.every(v => v % 2n === 0n)) {
