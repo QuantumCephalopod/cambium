@@ -455,6 +455,8 @@ The 2026-10-19 targets extend this existing body rather than replacing its sourc
 
 The current bounded implementation follows an actual contacted overview body with the shared camera, retains its identity across inquiry entry and lends selected authored tissue through that same contact. A guided encounter borrows Display's existing drop, follows an actual rank-4 body and its source genealogy, and returns the visitor's prior contact or yields to the visitor's take. Timed narration waits until the current actual reading has settled. Desktop browser return, source traversal, gated vertex/edge reading and native controls have bounded witnesses; narrow real-browser interaction and the complete manual body/return journey still need their own witness. No intake is retired on the strength of this partial return.
 
+Papers offers Display a local Escape capability while mounted and holding a tutorial, selected body or chamber. One action leaves selected tissue, then the actual body, then the walked chamber; at Papers' root the enclosing membrane resumes ownership. A closing body does not restart its transition on repeated Escape. The same offered body lock remains intact through the local return. The staging-browser counterexample that exposed the competing navigator and host listeners remains an open Display intake until narrow/wide browser evidence closes.
+
 ## Closure / acceptance
 
 A public Papers mutation closes when:

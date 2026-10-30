@@ -16,6 +16,7 @@ const shader=Object.freeze({
   id:'shader:organism:impressum',
   view:Object.freeze({rest:Object.freeze([1,0,0,0]),projection:'orthographic'}),
   afterDraw:surface.draw,
+  focus:surface.focus,
   clear:[0.012,0.016,0.014,1],
   fallbackAlpha:.12,
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
@@ -45,7 +46,7 @@ function render({host,content,projection,language='de',ui=null}={}){
   content.replaceChildren();
   const article=document.createElement('article');article.lang=language;
   const h=document.createElement('h1'); h.textContent=tr(projection.title,language)||'Impressum';
-  const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=projection.contact.email;
+  const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=language==='de'?'E-Mail':'Email';mail.setAttribute('aria-label',projection.contact.email);
   const notice=document.createElement('a');notice.href=language==='de'?'/impressum/':'/impressum/en/';notice.textContent=language==='de'?'Vollständiges Impressum':'Full legal notice';
   article.append(h,mail,notice);
   surface.mount({url:notice.href,language,controls:article});

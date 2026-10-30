@@ -16,6 +16,7 @@ const shader=Object.freeze({
   id:'shader:organism:datenschutz',
   view:Object.freeze({rest:Object.freeze([1,0,0,0]),projection:'orthographic'}),
   afterDraw:surface.draw,
+  focus:surface.focus,
   clear:[0.009,0.013,0.018,1],
   fallbackAlpha:.12,
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
@@ -42,7 +43,7 @@ function render({host,content,projection,language='de',ui=null}={}){
   host.hidden=false; content.className='interlocutor-content datenschutz-content'; content.replaceChildren();
   const article=document.createElement('article');article.lang=language;
   const h=document.createElement('h1'); h.textContent=projection.title?.[language]||projection.title?.en||'Privacy policy';
-  const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=projection.contact.email;
+  const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=language==='de'?'E-Mail':'Email';mail.setAttribute('aria-label',projection.contact.email);
   const notice=document.createElement('a'); notice.href=language==='de'?'/privacy/':'/privacy/en/'; notice.textContent=language==='de'?'Datenschutzerklärung':'Full privacy policy';
   article.append(h,mail,notice);surface.mount({url:notice.href,language,controls:article}); content.append(article); if(ui)ui.bind(article,'article'); return true;
 }

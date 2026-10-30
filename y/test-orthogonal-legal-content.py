@@ -40,17 +40,18 @@ JS = r'''const fs=require('fs'),A=require('./w/display/w/orthogonal-text.js');
 const input=JSON.parse(fs.readFileSync(0,'utf8'));
 function node(n){
   const children=n.nodes.filter(x=>typeof x==='object').map(node);
-  const m={tagName:n.tag,children,getAttribute(k){return n.attrs[k]||null},
+  const m={tagName:n.tag,children,classList:{contains(k){return (n.attrs.class||'').split(/\s+/).includes(k)}},getAttribute(k){return n.attrs[k]||null},
     querySelectorAll(tag){return children.flatMap(c=>[...(c.tagName===tag.toUpperCase()?[c]:[]),...c.querySelectorAll(tag)])}};
   let ix=0;m.textContent=n.nodes.map(x=>typeof x==='string'?x:children[ix++].textContent).join('');return m;
 }
 const body=node(input.body),blocks=A.sourceBlocks({body},input.base);
 const pages=A.paginate(blocks,s=>Array.from(s).length,20,3);
 const compact=s=>s.replace(/\s/gu,'');
-const source=compact(body.textContent),extracted=compact(blocks.map(b=>b.text).join(''));
-const output=compact(pages.flatMap(p=>p.lines).join(''));
+const content=body.children.filter(e=>e.tagName!=='NAV'&&!e.classList.contains('home'));
+const source=compact(content.map(e=>e.textContent).join('')),extracted=compact(blocks.map(b=>b.text).join(''));
+const output=compact(pages.flatMap(p=>p.plainLines).join(''));
 if(source!==extracted||extracted!==output)throw Error('lost or reordered source text');
-const sourceLinks=body.querySelectorAll('a').map(a=>new URL(a.getAttribute('href'),input.base).href);
+const sourceLinks=content.flatMap(e=>[...(e.tagName==='A'?[e]:[]),...e.querySelectorAll('a')]).map(a=>new URL(a.getAttribute('href'),input.base).href);
 const pageLinks=pages.flatMap(p=>p.links.map(l=>l.href));
 for(const href of sourceLinks)if(!pageLinks.includes(href))throw Error('lost link '+href);
 if(!pages.every(p=>p.lines.length<=3&&p.lines.every(l=>Array.from(l).length<=20)))throw Error('page does not fit');

@@ -53,11 +53,21 @@ def manual_case(page,kind,width):
  for _ in range(5):
   page.wait_for_timeout(1200);g=lens(page);assert g and (g.get('lock') or {}).get('id')==target,'body lock lost before entry'
   if page.locator('.papers-sierpinski-stage').get_attribute('data-current-rank') is not None:break
-  page.mouse.click(g['x'],g['y']);page.wait_for_timeout(600)
+  contact=page.evaluate('(id)=>SSSDisplayLens.resolveTargets(id).find(t=>t.id===id&&!t.pending)',target)
+  assert contact,'actual body projection is not ready for entry'
+  page.mouse.click(contact['cx'],contact['cy']);page.wait_for_timeout(600)
  page.wait_for_function('document.querySelector(".papers-wisdom-stage")?.dataset.wisdomId',timeout=30000)
  entered=page.locator('.papers-wisdom-stage').get_attribute('data-wisdom-id');assert entered==body,(kind,body,entered)
  assert (lens(page).get('lock') or {}).get('id')==target
  page.screenshot(path=str(a.out/f'{kind}-{width}-entered.png'))
+ assert page.locator('#mini').get_attribute('data-aperture')=='open','witness local Escape with the navigator actually open'
+ assert not page.evaluate('()=>document.getElementById("mini").contains(document.activeElement)'),'navigator focus owns its own Escape'
+ part=page.locator('.papers-wisdom-stage').get_attribute('data-inner-path') or ''
+ if part:
+  page.keyboard.press('Escape')
+  page.wait_for_function('!document.querySelector(".papers-wisdom-stage")?.dataset.innerPath',timeout=30000)
+  assert page.locator('.papers-sierpinski-stage').get_attribute('data-current-rank') is not None,'returning from tissue left its body'
+  assert (lens(page).get('lock') or {}).get('id')==target,'returning from tissue lost its body lock'
  page.keyboard.press('Escape');page.wait_for_function('!document.querySelector(".papers-sierpinski-stage")?.dataset.currentRank',timeout=30000)
  assert (lens(page).get('lock') or {}).get('id')==target,'body lock lost on return'
  return {'kind':kind,'viewport':width,'body':body,'same_lock_on_entry_and_return':True}

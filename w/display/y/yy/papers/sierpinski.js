@@ -1491,7 +1491,15 @@ function attachInput(){
     e.preventDefault();
   };
   on('pointerup',end);on('pointerleave',()=>{state.hover=null});on('pointercancel',end);
-  addEventListener('keydown',e=>{if(e.key!=='Escape'||!state)return;if(state.tutorial){stopTutorial();e.preventDefault();return;}if(state.current){e.preventDefault();if(state.inner)lockInner(null);else closeOrAscend()}else if(state.chamberPath){e.preventDefault();ascendChamber()}});
+}
+
+function canEscape(){return !!state?.mounted&&!state.host?.hidden&&!!(state.tutorial||state.current||state.chamberPath)}
+function escape(){
+  if(!canEscape())return false;
+  if(state.tutorial)stopTutorial();
+  else if(state.current){if(!state.closing){if(state.inner)lockInner(null);else closeOrAscend()}}
+  else ascendChamber();
+  return true;
 }
 
 function initialize(host,projection,backgroundDrag=true,dependency=null){
@@ -1515,5 +1523,5 @@ function render({host,content,projection,backgroundDrag=true,dependency=null,len
 function unmount({host,content}={}){if(state?.tutorial)stopTutorial();withdrawOverviewLens();withdrawPaperLens();if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.originButton.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
 function activateFieldPoint(){}
 
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,canEscape,escape}));
 })();

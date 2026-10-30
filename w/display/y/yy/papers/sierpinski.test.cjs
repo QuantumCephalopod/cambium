@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source,field=null){
   const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -272,4 +272,17 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
  a.setState(s);a.setLensAPI({withdraw(){},snapshot:()=>({lens:{lock:null}})});a.withdrawPaperLens();
  assert.equal(reader.hidden,true,'an unlocked return cannot leave stale accessible reading on the overview');assert.equal(s.lensReading,null);
  console.log('Papers unlocked return clears stale reading PASS');
+}
+
+/* One Escape resolves one truthful local level and preserves the physical lock. */
+{
+ const field={path:'x',get container(){return this.path},descendTo(path){this.path=path;return true},ascend(){this.path=this.path.slice(0,-1);return true}};
+ const a=load(source,field),lock={id:'organism:papers|overview|S.actual',kind:'body'},lens={snapshot:()=>({lens:{lock}})};
+ const s={mounted:true,host:{hidden:false},canvas:{dataset:{}},label:{classList:{remove(){}}},current:{id:'S.actual'},inner:{kind:'edge',key:'wx'},stack:[],transition:1,closing:false,chamberPath:'x',backgroundPassage:1};
+ a.setState(s);a.setLensAPI(lens);assert(a.canEscape());assert(a.escape());assert.equal(s.inner,null,'first return closes selected tissue');assert(s.current);assert.equal(lock.id,'organism:papers|overview|S.actual');
+ assert(a.escape());assert(s.closing,'second return closes the current body');const started=s.transitionStart;assert(a.escape());assert.equal(s.transitionStart,started,'repeated Escape cannot restart an in-flight close');
+ a.updateTransition(started+1000);assert.equal(s.current,null);assert.equal(lock.id,'organism:papers|overview|S.actual');
+ assert(a.escape());assert.equal(s.chamberPath,'');assert.equal(field.container,'');assert.equal(a.canEscape(),false,'local root yields enclosing return');
+ s.mounted=false;assert.equal(a.escape(),false,'inactive owner cannot consume input');
+ console.log('Papers Escape returns tissue, body and chamber one level at a time with stable lock PASS');
 }
