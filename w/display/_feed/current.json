@@ -25,19 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "w/display/RITUALS/navigation/RITUAL.md",
-      "w/display/RITUALS/organism/RITUAL.md",
-      "w/display/RITUALS/site-holon/RITUAL.md",
-      "w/display/w/ui-grid-sites.test.cjs",
-      "w/display/x/display-runtime-v2.js",
-      "w/display/x/display-runtime-v2.test.cjs",
-      "w/display/_stomach/NUTRIENT__viewport-layout__20261029.md",
-      "w/display/_waste/metabolized-20261029-NUTRIENT__viewport-layout__20261029.md"
+      "shared pending-encounter cancellation and fallback presentation",
+      "RITUALS/organism/RITUAL.md"
     ],
-    "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — canonical viewport role drives actual camera/pointer presentation; exact supplied layout and intentional overlap are retained without world clipping."
+    "delivery_state": "STAGING_HOME_DURABLE_FEED_ASYNC",
+    "outcome": "PASS — actual browser first-entry, pending cancellation and refusal/retry bounded witnesses completed."
   },
-  "observed_at_utc": "2026-10-28T23:50:05.663902Z",
+  "observed_at_utc": "2026-10-29T16:30:31.510996Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -53,7 +47,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-viewport-layout-return-20261029",
+  "reflected_home_event": "display-first-entry-browser-return-20261029",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -61,11 +55,11 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "e1315c8d2fad08d41e3842669cb360301d9823c2e7961aaeb74ed8ea86c98018"
+      "sha256": "69996e24acfb305c50566175843ec930625cae849865c8f8f0846f5bf40eb9e0"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "7f526749a78e6cc19ad28a083c25d44913b80746279bc146807f7ebf1652bbb7"
+      "sha256": "13535ab5dadc72f62d6307bb0685347c0d5ba81ac5d02a3474ec936266bb59dd"
     }
   ],
   "shell": {
@@ -74,10 +68,10 @@
     "stomach_direct": [
       "NUTRIENT__language-glyphs-and-site-names__20261019.md"
     ],
-    "waste_direct_count": 118
+    "waste_direct_count": 119
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "8da54be7720bee8a47225955b5c15c6e10130ac6"
+    "source_revision": "686ca1069f0c4821a465d6051246450cae03f572"
   }
 }

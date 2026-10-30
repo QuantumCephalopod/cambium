@@ -38,6 +38,8 @@ Current public carrier members are site-local projection, admitted inquiry tissu
 
 The local `site.json` declares `validate-projection.py` and its separate `validate-projection.test.py` witness. This public carrier owns acceptance of its `papers/_feed` source token, complete realized root phenotype/groups and the admitted `id`/`title` group boundary. The enclosing build invokes that predicate and its independent refusal cases through the generic hook; it carries no Papers identity dispatch or Papers schema. These source-only members move with the whole body. There is deliberately no `derive` operation here: this predicate cannot fabricate or refresh Drive research truth. Normal validation does not rewrite the projection.
 
+The same owner witness now retains the existing renderer, UI-grid and genealogy-repair predicates formerly held by the enclosing checker. Its optional integration callback consumes explicitly lent navigation/lens and GLES capabilities and checks the enclosing artifact's single-document boundary. These are source and integration evidence with their original scope; moving the body changes neither its content nor its test inputs into guessed host paths.
+
 Current frozen snapshots are legitimate bounded observations. A later event-driven live projection may replace or refresh the frozen carrier through the already-earned static shadow relation, but transport must remain outside organism meaning. Visitor reads must remain static/cacheable presentation reads; a browser refresh must not actuate the authenticated Drive→Worker write path.
 
 The intended live transport relation is therefore:

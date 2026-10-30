@@ -1,7 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const source=fs.readFileSync(path.join(__dirname,'render.js'),'utf8');
-const RH=require('../../../x/representation-handoff.js');
+if(!process.argv[2]||!process.argv[3]||!process.argv[4])throw Error('pass shared representation-handoff, navigation and ui-grid modules as witness arguments');
+const RH=require(path.resolve(process.argv[2])),N=require(path.resolve(process.argv[3])),UI=require(path.resolve(process.argv[4]));
 function node(tag){return {tag,className:'',children:[],dataset:{},attrs:{},events:{},style:{setProperty(){}},setAttribute(k,v){this.attrs[k]=v},append(...children){for(const child of children){if(child.parentNode)child.parentNode.children=child.parentNode.children.filter(x=>x!==child);child.parentNode=this;this.children.push(child)}},replaceChildren(...children){this.children=children},addEventListener(k,fn){this.events[k]=fn}}}
 function fakeGL(){
   const owner={},alloc=[],uploads=[],deleted=[],enabled=new Set();let texture=null;
@@ -16,7 +17,7 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
   const sources=new Set(works.flatMap(w=>[w.still,w.cluster_positive,w.cluster_negative,w.animation].filter(Boolean))),maps=Object.fromEntries([64,512].map(size=>[size,Object.fromEntries([...sources].map(s=>[s,'sizes/'+size+'/'+s]))]));if(missing)delete maps[64][works[0].still];
   if(bad64!==null)maps[64][works[0].still]=bad64;
   if(bad512!==null)for(const s of ['still/0.webp','animation/0.webp','cluster_negative/1.webp'])maps[512][s]=bad512;
-  const held=[];let running=0,peak=0;const ctx={console,Map,Set,Math,Object,Array,Float32Array,URL,setTimeout:()=>0,clearTimeout(){},addEventListener(){},document:{createElement:node},SSSInterlocutorModules:modules,SSSRepresentationHandoff:RH,SSSWorldView:{language:'en'},createImageBitmap:async(_,o)=>({width:o.resizeWidth,height:o.resizeHeight,close(){}}),fetch(url){requests.push(url);running++;peak=Math.max(peak,running);const response={ok:!((highFail&&url.includes('/512/'))||(lowFail&&url.includes('/64/'))),status:503,blob:async()=>{running--;return {size:100}}};return ((holdHigh&&url.includes('/512/'))||(holdLow&&url.includes('/64/')))?new Promise(resolve=>held.push(()=>resolve(response))):Promise.resolve(response)}};
+  const held=[];let running=0,peak=0;const ctx={console,Map,Set,Math,Object,Array,Float32Array,URL,setTimeout:()=>0,clearTimeout(){},addEventListener(){},document:{createElement:node},SSSInterlocutorModules:modules,SSSRepresentationHandoff:RH,SSSDisplayNavigation:N,SSSWorldView:{language:'en'},createImageBitmap:async(_,o)=>({width:o.resizeWidth,height:o.resizeHeight,close(){}}),fetch(url){requests.push(url);running++;peak=Math.max(peak,running);const response={ok:!((highFail&&url.includes('/512/'))||(lowFail&&url.includes('/64/'))),status:503,blob:async()=>{running--;return {size:100}}};return ((holdHigh&&url.includes('/512/'))||(holdLow&&url.includes('/64/')))?new Promise(resolve=>held.push(()=>resolve(response))):Promise.resolve(response)}};
   vm.createContext(ctx);vm.runInContext(source.replace(/\}\)\(\);\s*$/,`globalThis.law={SHEET,BODY,focus,fitPanel,layout:()=>LAST,selected:()=>({selected,selectedRow}),setView:mode=>VIEW=mode};})();`),ctx);const module=modules.get('organism:schattenseiten'),projection={fat:'https://fat.invalid/x/',works,ranks:[],words:[],media_variants:maps,media_revisions:{64:'low-v1',512:'high-v1'}};module.fieldProjection(projection);return {module,projection,requests,peak:()=>peak,held,law:ctx.law,scope:ctx};
 }
 (async()=>{
@@ -46,6 +47,17 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
 
 (async()=>{
  const f=fixture(),field=f.module.fieldProjection(f.projection),byPath=new Map(f.law.SHEET.flat().map((c,i)=>[c.path,{row:Math.floor(i/8),cell:c}]));
+ // Retain the previous local sheet ordering and every exact corner-derived
+ // coordinate while its recursive tetrahedra now come from Display.
+ const genes=['w','x','z','y'],base=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(v=>{const m=Math.hypot(...v);return v.map(x=>x/m)}),leaves=[];
+ for(const a of genes)for(const b of genes)for(const c of genes){
+  const path=a+b+c;let t=base;
+  for(const gene of path){const i=genes.indexOf(gene);t=t.map((p,j)=>i===j?p:p.map((v,k)=>(t[i][k]+v)/2))}
+  const world=[0,1,2].map(k=>t.reduce((s,v)=>s+v[k],0)/4),edge=Math.hypot(...[0,1,2].map(k=>t[0][k]-t[1][k]));
+  leaves.push({path,world,size:edge/(2*Math.SQRT2)*.94});
+ }
+ leaves.sort((p,q)=>q.world[1]-p.world[1]);const expected=[];for(let row=0;row<8;row++)expected.push(leaves.slice(row*8,row*8+8).sort((p,q)=>p.world[0]-q.world[0]));
+ assert.deepEqual(JSON.parse(JSON.stringify(f.law.SHEET)),expected,'shared geometry changed a local sheet coordinate, size or row/column order');
  assert.equal(field.points.length,49);assert.equal(f.law.BODY.list.length,55);
  for(const point of field.points){const c=byPath.get(point.path);assert.equal(c.row,point.work.row);assert.equal(point.anchor,'cell');assert.equal(point.work.id,point.id.slice(5));}
  assert(!f.law.BODY.list.some(b=>f.law.SHEET[0].some(c=>c.world===b.world)),'first display row is not empty');
@@ -54,7 +66,7 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
  assert(nodes().some(n=>n.textContent?.includes('49 shadow images')));
  const row=nodes().find(n=>n.dataset.row==='3');assert(row);row.events.click();assert.equal(f.law.selected().selectedRow,3);assert.equal(f.law.selected().selected,null);assert(f.law.focus());
  press('14');assert.equal(f.law.selected().selected.id,'14');assert(f.law.focus().scale>1);press('whole work');assert.equal(f.law.focus(),null);
- const UI=require('../../../w/ui-grid.js'),grid=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json'))));
+ const grid=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json'))));
  for(const [w,h]of [[1280,800],[390,844]]){
   const bound=fixture(),state=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json')))),before=JSON.stringify(state),bindings=[];
   const ui={bounded:true,state,carrier:{x:0,y:0,w,h},rect(name){const b=UI.fieldInfo(state,name).bounds;return {x:b.x*w,y:b.y*h,width:b.w*w,height:b.h*h}},bind(el,name){bindings.push({el,name})}};

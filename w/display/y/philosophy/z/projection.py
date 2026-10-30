@@ -46,7 +46,7 @@ def derive(site_dir, common):
             'one': {'de': expressions['de']['question'], 'en': expressions['en']['question']},
             'children': {},
         }
-    encounter = json.loads((site_dir/'encounter.json').read_text(encoding='utf-8'))
+    encounter = json.loads((site_dir/'x/encounter.json').read_text(encoding='utf-8'))
     languages = encounter['available_languages']
     expression = {'': {l: {k: encounter['expressions'][l][k] for k in ('title', 'mission', 'position')} for l in languages}}
     for gene in GENES:
@@ -67,7 +67,7 @@ def derive(site_dir, common):
                 if not texts or any(not isinstance(t, str) or not t.strip() for t in texts):
                     raise ValueError(f'{site_dir.name} expression {address or "ε"}/{l}/{k} is empty')
     return {
-        'source': {'organism': site['id'].split(':', 1)[1], 'derived_from': ['INDEX.yaml', '_cambium.yaml', 'encounter.json', 'w/x/z/y content.json']},
+        'source': {'organism': site['id'].split(':', 1)[1], 'derived_from': ['INDEX.yaml', '_cambium.yaml', 'x/encounter.json', 'w/x/z/y content.json']},
         'root': {'noun': site['title'], 'children': children},
         'constitution': constitution,
         'expression': expression,
@@ -80,5 +80,5 @@ def validate(data, site_dir, common):
     for gene in GENES:
         _validate_display_node(expected['root']['children'][gene], gene, GENES)
     if data != expected:
-        raise ValueError(f'{site_dir.name}/projection.json is not derived from its own body; regenerate through --derive-site-projection with its stable identity')
+        raise ValueError(f'{site_dir.name} declared projection is not derived from its own body; regenerate through --derive-site-projection with its stable identity')
     return data

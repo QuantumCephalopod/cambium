@@ -357,6 +357,30 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  console.log('owner preparation progresses before install, cancellation preserves scene, ready reuse and refused preparation retry PASS');
 })().catch(e=>{console.error(e);process.exitCode=1});
 
+(async()=>{
+ // A pending successor is cancellable from any already-entered encounter.
+ // Home used to be refused by the busy fold; Escape used to pop the old visit.
+ const settle=async f=>{for(let i=0;i<100&&f.fold.busy;i++)await new Promise(r=>setTimeout(r,5));assert(!f.fold.busy)};
+ for(const gesture of ['home','escape']){
+  const f=boot(1,'',{}, {[ids[2]]:'hold'}, {},'real');
+  f.emit('sss:enter-body',{from:ids[0],id:ids[1],origin:{x:120,y:140}});await settle(f);
+  assert.equal(f.runtime.state.activeAddress,'w');assert.equal(f.runtime.state.stack.length,1);
+  const prior=JSON.stringify(f.runtime.state),visits=f.history.length,arrivalCount=f.arrivals.length;
+  f.runtime.navigateGlobal('wx');await new Promise(r=>setTimeout(r,60));
+  assert.equal(f.runtime.pendingEncounter,true,'shared Escape priority cannot see the pending encounter');
+  assert.equal(f.stateEl.dataset.handoffPhase,'loading');assert.match(f.stateEl.textContent,/LOADING.*ESC: RETURN/);
+  assert.equal(f.runtime.state.activeAddress,'w');assert.equal(f.foldLayer.dataset.waiting,'true');
+  if(gesture==='home')f.home.click({preventDefault(){}});else f.key({key:'Escape',preventDefault(){}});
+  await settle(f);assert.equal(JSON.stringify(f.runtime.state),prior,'cancellation changed the prior encounter/container/stack');
+  assert.equal(f.runtime.pendingEncounter,false,'cancelled resource acquisition still claimed Escape');
+  assert.equal(f.history.length,visits,'cancellation wrote a visit');assert.equal(f.stateEl.dataset.handoffPhase,undefined);
+  assert.equal(f.foldLayer.dataset.waiting,undefined);assert(f.arrivals.length>arrivalCount,'cancelled approach did not return to its prior container');
+  f.held.shift()();for(let i=0;i<40;i++)await Promise.resolve();
+  assert.equal(JSON.stringify(f.runtime.state),prior,'late readiness resurrected the cancelled successor');assert.equal(f.history.length,visits);
+ }
+ console.log('pending Home/Escape from entered body preserve prior encounter, stack/history and camera return; late source cannot commit PASS');
+})().catch(e=>{console.error(e);process.exitCode=1});
+
 // Bounded declarations are actual boxes on the full presentation carrier.
 // An unrelated identity exercises resize, camera lending and shared compass.
 {

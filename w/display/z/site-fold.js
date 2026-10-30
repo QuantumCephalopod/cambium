@@ -52,7 +52,8 @@
         context.onClosing?.(duration);
         if(context.readiness){
           const state={progress:0,done:false,error:null,cancelled:false};
-          Promise.resolve(context.readiness).then(result=>{state.cancelled=!!result?.cancelled;if(result?.ok===false)state.error=result.error;state.done=true},error=>{state.error=error});
+          layer.dataset.waiting='true';
+          Promise.resolve(context.readiness).then(result=>{delete layer.dataset.waiting;state.cancelled=!!result?.cancelled;if(result?.ok===false)state.error=result.error;state.done=true},error=>{delete layer.dataset.waiting;state.error=error});
           const snapshot=()=>({...state,progress:context.progress?.()||0});
           let accepted;
           if(particles?.fill&&!reduced)accepted=await particles.fill(snapshot,duration);
@@ -76,6 +77,7 @@
         if(particles&&!reduced)await particles.animate(0,duration);
         throw error;
       }finally{
+        delete layer.dataset.waiting;
         particles?.stop();particles?.paint(0);
         layer.dataset.fold='open';
         layer.hidden=true;

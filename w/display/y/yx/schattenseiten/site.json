@@ -18,5 +18,9 @@
   "projection": "projection.json",
   "renderer": "render.js",
   "style": "style.css",
-  "ui_grid": "ui-grid.json"
+  "ui_grid": "ui-grid.json",
+  "build": {
+    "module": "validate-projection.py",
+    "witness": "validate-projection.test.py"
+  }
 }

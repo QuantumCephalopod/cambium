@@ -93,6 +93,30 @@ def validate(data, body, common):
         self.assertFalse(build.witness_site_build(next(s for s in sites if s['address'] == '')))
         self.assertEqual(digest(self.population), before)
 
+    def test_optional_integration_borrows_only_explicit_capabilities(self):
+        site = self.record()
+        self.assertFalse(build.witness_site_integration(site, {'marker': 7}))
+        self.assertFalse(build.witness_site_integration(next(s for s in build.discover_sites() if s['address'] == ''), {}))
+        witness = self.site / 'owned.test.py'
+        witness.write_text(witness.read_text() + """
+def integration(body, capabilities):
+    assert capabilities['marker'] == 7
+    assert (body / 'source.json').is_file()
+    try:
+        capabilities['marker'] = 9
+    except TypeError:
+        return
+    raise AssertionError('capabilities are mutable')
+""")
+        before = digest(self.population)
+        self.assertTrue(build.witness_site_integration(site, {'marker': 7}))
+        self.assertEqual(digest(self.population), before)
+        with self.assertRaises(AssertionError):
+            build.witness_site_integration(site, {'marker': 8})
+        witness.write_text('integration = False\n')
+        with self.assertRaisesRegex(ValueError, 'not callable'):
+            build.witness_site_integration(site, {})
+
     def test_owner_refusal_is_not_bypassed(self):
         (self.site / 'projection.json').write_text('{"owned": 8}')
         with self.assertRaisesRegex(ValueError, 'owner-specific drift'):
@@ -289,7 +313,7 @@ def validate(data, body, common):
         from unittest.mock import patch
         public = self.publication_fixture()
         # Both actual CLI paths: an independent check still reacquires and rejects drift.
-        for module, target in ((build, self.root / 'base'), (public, self.root / 'combined')):
+        for module, target in ((build, self.root / '_site'), (public, self.root / '_site')):
             with patch.object(module, 'artifact_files', wraps=module.artifact_files) as calls:
                 with patch.object(sys, 'argv', ['build', '--artifact', str(target)]):
                     module.main()

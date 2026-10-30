@@ -15,4 +15,10 @@ html[data-site-entered="true"] #locus-stage{opacity:.68}
 html[data-inverse="true"] #tetra-fold{filter:invert(1)}
 .fold-particles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #tetra-fold[data-particle-backend="opacity-fallback"]::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--fold-fallback-alpha)}
-@media(prefers-reduced-motion:reduce){body,.inverse-control span,#locus-stage,#tetra-fold{transition-duration:.04s!important}}
+/* Activity is distinct from completed work: the fallback breathes within its
+ * actual partial cover and never fills merely because time passes. */
+#tetra-fold[data-waiting="true"][data-particle-backend="opacity-fallback"]::after{animation:fold-wait 1.4s ease-in-out infinite}
+@keyframes fold-wait{0%,100%{opacity:var(--fold-fallback-alpha)}50%{opacity:calc(var(--fold-fallback-alpha)*.72)}}
+#display-membrane-status:has(#site-state[data-handoff-phase]){z-index:101}
+#site-state[data-handoff-phase]{color:#f1efe9}
+@media(prefers-reduced-motion:reduce){body,.inverse-control span,#locus-stage,#tetra-fold{transition-duration:.04s!important}#tetra-fold[data-waiting="true"][data-particle-backend="opacity-fallback"]::after{animation:none}}

@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),modules=new Map(),N=require('../../../z/navigation-physiology.js');
+const {gl,commands}=require(process.argv[5]).createTransport(),modules=new Map(),N=require(process.argv[4]);
 const ctx={console,performance,Float32Array,SSSInterlocutorModules:modules,SSSDisplayNavigation:N,SSSDisplayType:{rankPx:()=>12},SSSWorldView:{orientation:[1,0,0,0]},document:{}};
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8'),ctx);
 const projection=JSON.parse(fs.readFileSync(path.join(__dirname,'_feed/display-preview.json'))),shader=modules.get('organism:papers').shader;

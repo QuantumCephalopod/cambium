@@ -24,7 +24,19 @@
   const mul = (a,s) => a.map(x => x * s);
   const mid = (a,b) => mul(add(a,b), .5);
   const centroid = t => t.reduce((s,p) => add(s,p), [0,0,0]).map(v => v / 4);
-  const splitTet = t => GENES.map((_,i) => t.map((p,j) => i === j ? p : mid(t[i],p)));
+  function childTet(tet, gene) {
+    const i = GENES.indexOf(gene);
+    if (i < 0) throw new Error('Unknown tetrahedral gene: ' + gene);
+    return tet.map((p,j) => i === j ? p : mid(tet[i],p));
+  }
+  const splitTet = t => GENES.map(g => childTet(t,g));
+  // A raw recursive cell in any lent parent frame; no owner layout or route.
+  function cellTet(path, parent=V0) {
+    A.validate(path);
+    let tet=parent.map(v=>[...v]);
+    for (const gene of path) tet=childTet(tet,gene);
+    return tet;
+  }
   const hasFullSplit = node => !!node && !!node.children && GENES.every(g => node.children[g]);
   const addressIndexes = new WeakMap();
 
@@ -68,9 +80,7 @@
   }
 
   function cellForPath(path) {
-    A.validate(path);
-    let tet=V0.map(v=>[...v]);
-    for(const g of path) tet=splitTet(tet)[GENES.indexOf(g)];
+    const tet=cellTet(path);
     return {path,tet,center:centroid(tet),point:semanticPoint(path),locus:path?A.key(path):'overview'};
   }
 
@@ -155,5 +165,5 @@
     });
   }
 
-  return Object.freeze({GENES,V0,hasFullSplit,splitTet,centroid,semanticPoint,cellForPath,collectStructure,addressRecord,bodyPlacement,bodyDrift,bodyPosition,sampleTet,focusTarget,velocity,axisValue,createState});
+  return Object.freeze({GENES,V0,hasFullSplit,childTet,splitTet,cellTet,centroid,semanticPoint,cellForPath,collectStructure,addressRecord,bodyPlacement,bodyDrift,bodyPosition,sampleTet,focusTarget,velocity,axisValue,createState});
 });

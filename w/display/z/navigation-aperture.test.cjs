@@ -15,7 +15,16 @@ for(const composition of ['single','split','grid']){
  height=24;listeners.get('resize')();assert.equal(mini.style['--legal-footer-height'],'24px');
  context.SSSNavigationAperture.close();assert.equal(pocket.inert,true);assert.equal(pocket.attrs['aria-hidden'],'true');assert.equal(legal.inert,false,'legal links remain reachable when compass closes');
  trigger.focus();assert.equal(pocket.inert,false);context.SSSNavigationAperture.unpin();mini.events.focusout({relatedTarget:legal});assert.equal(timer,null,'footer focus belongs to the same cluster');
- context.SSSNavigationAperture.open();trigger.focused=false;listeners.get('keydown')({key:'Escape',preventDefault(){},stopImmediatePropagation(){}});assert.equal(pocket.inert,true);assert(trigger.focused,'Escape returns focus without reopening the pocket');
+ context.SSSNavigationAperture.open();trigger.focused=false;
+ let pending=true,stopped=false,prevented=false,bubbled=0;
+ context.SSSDisplayRuntime={get pendingEncounter(){return pending}};
+ const escape={key:'Escape',preventDefault(){prevented=true},stopImmediatePropagation(){stopped=true}};
+ listeners.get('keydown')(escape);
+ if(!stopped){bubbled++;pending=false} // The runtime's later handler cancels.
+ assert.equal(bubbled,1,'capture swallowed pending-encounter cancellation');assert.equal(prevented,false);
+ assert.equal(pocket.inert,false,'pending Escape changed the compass instead');assert.equal(trigger.focused,false);
+ listeners.get('keydown')(escape);assert.equal(stopped,true);assert.equal(prevented,true);
+ assert.equal(pocket.inert,true);assert(trigger.focused,'ordinary Escape returns focus without reopening the pocket');
 }
 const html=fs.readFileSync(path.join(__dirname,'../w/template.html'),'utf8');
 assert.match(html,/<\/div>\s*<nav id="legal-links"[^>]*data-display-occupancy="right bottom"[^>]*><\/nav>\s*<\/aside>/,'one shared legal slot sits after the closed pocket and before the compass boundary');

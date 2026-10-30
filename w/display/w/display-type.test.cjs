@@ -20,27 +20,20 @@ for(let r=-4;r<=4;r++){
 const htmlBody=(css.match(/html,body\{([^}]*)\}/)||[])[1]||'';
 assert.ok(!/font-size\s*:/.test(htmlBody),'Display must not force browser/user root font size');
 const displayRoot=path.join(__dirname,'..');
+const owners=require('./site-witness.cjs').discoverSites();
 const rankedCss=[
-  'w/root-view.css','w/interlocutors.css','z/site-runtime.css','z/navigation-aperture.css',
-  'y/philosophy/style.css','y/yw/crawlerbait/z/style.css','y/yx/schattenseiten/style.css',
-  'y/yy/papers/sierpinski.css','y/yz/datenschutz/style.css','y/yxz/impressum/style.css',
-  'y/yz/datenschutz/public/privacy/index.html','y/yxz/impressum/public/impressum/index.html',
-  'y/yw/crawlerbait/y/tide.py'
+  ...['w/root-view.css','w/interlocutors.css','z/site-runtime.css','z/navigation-aperture.css'].map(file=>path.join(displayRoot,file)),
+  ...[...owners.values()].map(owner=>owner.file('style'))
 ];
 const arbitrary=/font(?:-size)?\s*:[^;}]*?(?:\d+(?:\.\d+)?(?:px|rem)|clamp\()/i;
 for(const rel of rankedCss){
-  const source=fs.readFileSync(path.join(displayRoot,rel),'utf8');
+  const source=fs.readFileSync(rel,'utf8');
   assert.ok(!arbitrary.test(source),rel+' contains a font size outside the shared rank lattice');
 }
-for(const rel of ['z/world-view.js','y/yy/papers/sierpinski.js']){
+for(const rel of ['z/world-view.js']){
   const source=fs.readFileSync(path.join(displayRoot,rel),'utf8');
   assert.ok(!/["'`][^"'\n`]*\d+(?:\.\d+)?px\b/.test(source),rel+' contains a literal Canvas/Pretext pixel font');
 }
-const philosophy=fs.readFileSync(path.join(displayRoot,'y/philosophy/style.css'),'utf8');
-const origin=Number((philosophy.match(/--philosophy-type-r0:([\d.]+)rem/)||[])[1]);
-const below=Number((philosophy.match(/--philosophy-type-rn1:([\d.]+)rem/)||[])[1]);
-assert.ok(Math.abs(origin-.875)<1e-12,'Philosophy narrow origin must preserve PR #164 compactness');
-assert.ok(Math.abs(origin/below-Math.SQRT2)<1e-12,'Philosophy narrow ranks must remain on the shared half-octave lattice');
 assert.strictEqual(T.fold('Du gefällst mir. Mir gefällst du.'),'Du gefällst mir. Mir gefällst du.');
 assert.strictEqual(T.fold('ÄÖÜ äöü Grüße GROẞ'),'ÄÖÜ äöü Grüsse GROSS');
 assert.strictEqual(T.fold('A\u0308O\u0308U\u0308 a\u0308o\u0308u\u0308'),'ÄÖÜ äöü','decomposed umlauts must reach the supplied precomposed glyphs');

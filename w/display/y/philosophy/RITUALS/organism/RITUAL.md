@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.12"
+version: "1.13"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -55,11 +55,11 @@ Semantic identity is independent of language.
 - current expressions are German and English;
 - future languages or nonhuman communicative modalities may be added only when a truthful transduction exists. Absence remains absence rather than fabricated translation.
 
-Root-level expression configuration lives in `encounter.json`; leaf expression tissue lives at `w/x/z/y/content.json`.
+The overview expression configuration lives in `x/encounter.json`; leaf expression tissue lives at `w/x/z/y/content.json`. Continuity carries the same authored whole across its public encounters.
 
 ## projection
 
-Philosophy presents only itself. `projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Care owns this truth check through `z/projection.py`, declared by the local `site.json` build hook. It derives only from this body's own INDEX, constitution, encounter and locus content, and refuses disagreement, empty expression, invalid encounter and unsupported deeper source rank. Its independent positive/refusal evidence lives at `z/projection.test.py`; the common witness path invokes it without learning Philosophy's schema. Regenerate from the repository with `python3 y/build.py --derive-site-projection organism:philosophy`, even after a lawful whole-body remount. Normal builds validate read-only; only explicit regeneration writes the admitted projection after owner acceptance. Shared manifest/path/structural/publication checks remain inherited host obligations.
+Philosophy presents only itself. `z/projection.json` is a derived surface of Philosophy's own body — `INDEX.yaml` nouns, `_cambium.yaml` closure and each locus's `content.json` concept/question — never a copy of another organism's phenotype. Because Philosophy is the overview interlocutor, this projection also names Display's global field; that is a consequence of placement, not authority over Display. Care owns this truth check through `z/projection.py`, declared by the local `site.json` build hook. It derives only from this body's own INDEX, constitution, encounter and locus content, and refuses disagreement, empty expression, invalid encounter and unsupported deeper source rank. Its independent positive/refusal evidence lives at `z/projection.test.py`; the common witness path invokes it without learning Philosophy's schema. Regenerate from the repository with `python3 y/build.py --derive-site-projection organism:philosophy`, even after a lawful whole-body remount. Normal builds validate read-only; only explicit regeneration writes the admitted projection after owner acceptance. Shared manifest/path/structural/publication checks remain inherited host obligations.
 
 Philosophy’s prose travels inside its own derived projection. Its current bounded v2 carrier uses the supplied header, compass, viewport, description and timeline fields. `description` occupies the left quarter from one-quarter viewport height to the bottom; root and inspected-locus prose keep their original words/type and scroll inside that fixed rectangle. The common field applies the actual extent and uses the same declared viewport for world camera/pointer projection. The droplette target remains `organism:philosophy|Description` despite the local binding’s lowercase field name. Source semantic anatomy and navigation are unchanged.
 
@@ -145,3 +145,9 @@ Version1.11 bounded placement (2026-10-28): the new supplied description span su
 
 
 Layout return2026-10-29: The supplied common ui-grid.json is the exact owner layout. Viewport replaces viewfocus as the active camera role; the description extends upward according to that declaration. Prose, droplette identity and anatomy remain unchanged.
+
+## Realized carrier custody
+
+The existing Inquiry/Continuity/Care/Becoming split owns all active carriers; no additional rank is created. Inquiry carries the forms through which questioning becomes perceptible: `w/render.js`, `w/style.css`, `w/ui-grid.json` and its encounter witness. Continuity carries `x/encounter.json`, preserving the whole's authored bilingual position. Care carries the derived `z/projection.json`, its existing derivation and independent acceptance/refusal witness, constraining that public surface to this body's own truth. Becoming continues to carry its live `y/content.json`; the other children retain their content as well. These placements follow the existing 4V relation, including Inquiry–Continuity revision and Inquiry–Care bounded expression; they do not turn software file types into new semantic axes.
+
+The root retains the canonical shell, receptors, constitution and the `site.json` membrane. The membrane names body-relative carriers; it does not become a fifth implementation locus. Owner evidence follows those declared paths and checks the shared UI measurement at the integration boundary. Public meaning, renderer/style/grid bytes and authored copy survive this redistribution; projection provenance follows the moved encounter source.

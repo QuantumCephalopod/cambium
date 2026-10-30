@@ -14,10 +14,10 @@
   "manifestation": {
     "background_inspect": true
   },
-  "projection": "projection.json",
-  "renderer": "render.js",
-  "style": "style.css",
-  "ui_grid": "ui-grid.json",
+  "projection": "z/projection.json",
+  "renderer": "w/render.js",
+  "style": "w/style.css",
+  "ui_grid": "w/ui-grid.json",
   "build": {
     "module": "z/projection.py",
     "witness": "z/projection.test.py"

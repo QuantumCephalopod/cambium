@@ -25,17 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "w/display/y/yw/crawlerbait/RITUALS/organism/RITUAL.md",
-      "w/display/y/yw/crawlerbait/ui-grid.json",
-      "w/display/y/yw/crawlerbait/z/render.js",
-      "w/display/y/yw/crawlerbait/z/render.test.cjs",
-      "w/display/y/yw/crawlerbait/_stomach/NUTRIENT__viewport-layout__20261029.md",
-      "w/display/y/yw/crawlerbait/_waste/metabolized-20261029-NUTRIENT__viewport-layout__20261029.md"
+      "shared pending-encounter cancellation and fallback presentation",
+      "_waste/NUTRIENT__opaque-first-entry__20261029.md"
     ],
-    "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — exact supplied layout and viewport narrative frame installed; source replay/clock/identity and fixed timeline remain unchanged."
+    "delivery_state": "STAGING_HOME_DURABLE_FEED_ASYNC",
+    "outcome": "PASS — actual browser first-entry, pending cancellation and refusal/retry bounded witnesses completed."
   },
-  "observed_at_utc": "2026-10-28T23:50:05.665909Z",
+  "observed_at_utc": "2026-10-29T16:30:31.513119Z",
   "owner": "crawlerbait",
   "phenotype": {
     "w": {
@@ -51,21 +47,21 @@
       "noun": "Membrane"
     }
   },
-  "reflected_home_event": "crawlerbait-viewport-layout-return-20261029",
+  "reflected_home_event": "crawlerbait-first-entry-browser-return-20261029",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "ae6f02290579d95449e78e4200eb11a971755eafbe8ce5d1f1d3dbdca955b039"
+      "sha256": "413066588db18f684490dd0419168d6db825e4f5965fe7e69c5401cada341115"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [],
-    "waste_direct_count": 35
+    "waste_direct_count": 38
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "8da54be7720bee8a47225955b5c15c6e10130ac6"
+    "source_revision": "686ca1069f0c4821a465d6051246450cae03f572"
   }
 }

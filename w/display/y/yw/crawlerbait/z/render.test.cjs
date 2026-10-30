@@ -4,8 +4,10 @@ const fs=require('fs');
 const path=require('path');
 
 // The enclosing witness lends a capability, so whole-body relocation needs no host path edit.
-if(!process.argv[2])throw new Error('pass the shared recursive-fold module as the witness argument');
+if(!process.argv[2]||!process.argv[3]||!process.argv[4])throw new Error('pass shared recursive-fold, navigation and ui-grid modules as witness arguments');
 globalThis.SSSRecursiveFold=require(path.resolve(process.argv[2]));
+const N=globalThis.SSSDisplayNavigation=require(path.resolve(process.argv[3]));
+const UI=require(path.resolve(process.argv[4]));
 globalThis.SSSInterlocutorModules=new Map();
 require('./render.js');
 
@@ -50,6 +52,33 @@ console.log(`PASS · ${projection.routes.length} baits remain exact behind the b
 // beings: every being keeps its derived kind, walks only Sierpinski edges between its own recorded baits, and the goo stays inside its splat budget
 const law=moduleRef._law;
 assert(law&&typeof law.buildLife==='function','crawlerbait life law missing');
+// Pin the old edge walk independently of the borrowed cell implementation.
+// This bounded recursive oracle describes source order, not the deep executor.
+{
+ const genes=['w','x','z','y'],base=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]].map(v=>v.map(x=>x/Math.sqrt(3)));
+ const mid=(a,b)=>a.map((x,i)=>(x+b[i])/2),child=(t,i)=>t.map((p,j)=>i===j?p:mid(t[i],p));
+ const cell=(t,s)=>{for(const g of s)t=child(t,genes.indexOf(g));return t};
+ const point=s=>cell(base,s)[genes.indexOf(s.at(-1))];
+ function corner(s,t,k){const a=genes.indexOf(s[0]),rest=s.slice(1);if(!rest.length)return a===k?[t[a]]:[t[a],t[k]];const sub=corner(rest,child(t,a),k);if(a!==k)sub.push(t[k]);return sub}
+ function oldRoute(sa,sb){if(sa===sb)return [point(sa)];let p=0;while(p<sa.length&&p<sb.length&&sa[p]===sb[p])p++;
+  const u=sa.slice(0,p),C=cell(base,u),ra=sa.slice(p),rb=sb.slice(p);
+  if(!ra.length)return corner(rb,C,genes.indexOf(u.at(-1))).reverse();if(!rb.length)return corner(ra,C,genes.indexOf(u.at(-1)));
+  const a=genes.indexOf(ra[0]),b=genes.indexOf(rb[0]),m=mid(C[a],C[b]);
+  const pa=ra.length===1?[C[a],m]:corner(ra.slice(1),child(C,a),b),pb=(rb.length===1?[C[b],m]:corner(rb.slice(1),child(C,b),a)).reverse();return pa.concat(pb.slice(1));
+ }
+ const addresses=[...genes];let rank=[...genes];for(let depth=2;depth<=3;depth++){rank=rank.flatMap(p=>genes.map(g=>p+g));addresses.push(...rank)}
+ for(const a of addresses)for(const b of addresses)assert.deepStrictEqual(law.route(a,b),oldRoute(a,b),`edge sequence changed: ${a} → ${b}`);
+ for(const record of projection.routes)assert.deepStrictEqual(law.pointOf(record.address),point(record.address),'shared cell geometry changed an actual source coordinate');
+ for(const [a,b] of [['wxzyw','wxz'],['xzywx','xzyyzz'],['z'.repeat(24)+'xy','z'.repeat(24)+'ww']]){
+  assert.deepStrictEqual(law.route(a,b),oldRoute(a,b));assert.deepStrictEqual(law.route(b,a),oldRoute(b,a));
+ }
+ const deep='w'.repeat(12000)+'x',forward=law.route(deep,'z'),backward=law.route('z',deep);
+ assert.equal(forward.length,12002,'deep genealogy lost an edge step');
+ assert.deepStrictEqual(backward,[...forward].reverse(),'reverse deep traversal changed its ordered edge sequence');
+ assert.deepStrictEqual(forward[0],law.pointOf(deep));assert.deepStrictEqual(forward.at(-1),law.pointOf('z'));
+ assert(forward.every(p=>p.every(Number.isFinite)),'deep executor produced a non-finite coordinate');
+ console.log('PASS · exact shared source coordinates, 7056 old forward/reverse sequences and actual 12001-rank edge executor');
+}
 const life=law.buildLife(projection);
 assert(life&&life.sessions.length>0,'no being walks: projection encounters did not become sessions');
 const kinds={w:0,x:0,z:0,y:0};for(const c of projection.crawlers)kinds[c.kind]++;
@@ -180,7 +209,6 @@ console.log(JSON.stringify({foldWork:scaling}));
 // The contact relation uses the existing Display cell/content dimensions, not a
 // fixed follow rank or a camera-dependent body exponent. Public source facts
 // and collision addresses are the independent input to each replay witness.
-const N=require('../../../../z/navigation-physiology.js');
 for(const at of [start,start+(end-start)*.3,end]){
  const current=reference.routesAt(at);
  for(const bait of current){
@@ -259,7 +287,7 @@ try {
 } finally {global.document=originalDocument;global.SSSWorldView=originalWorld;global.setTimeout=originalSetTimeout;global.clearTimeout=originalClearTimeout}
 console.log('PASS · actual DE/EN controls preserve historical clock and geography, one current rail and disclosed provenance');
 
-const UI=require('../../../../w/ui-grid.js'),layout=JSON.parse(fs.readFileSync(path.join(__dirname,'../ui-grid.json')));
+const layout=JSON.parse(fs.readFileSync(path.join(__dirname,'../ui-grid.json')));
 for(const [w,h] of [[390,844],[1280,800]]){
  const state=UI.normalizeState(layout);
  assert.equal(state.meta.name,'site-holon-layout');const time=UI.fieldInfo(state,'timeline').bounds;
@@ -285,7 +313,7 @@ console.log('PASS · a visible fine sibling survives foreground selection; offsc
 
 (async()=>{
  const vm=require('vm'),source=fs.readFileSync(path.join(__dirname,'render.js'),'utf8');
- function fresh(){const scope={SSSRecursiveFold:globalThis.SSSRecursiveFold,performance,SSSInterlocutorModules:new Map()};vm.runInNewContext(source,scope);return scope.SSSInterlocutorModules.get('organism:crawlerbait')}
+ function fresh(){const scope={SSSRecursiveFold:globalThis.SSSRecursiveFold,SSSDisplayNavigation:N,performance,SSSInterlocutorModules:new Map()};vm.runInNewContext(source,scope);return scope.SSSInterlocutorModules.get('organism:crawlerbait')}
  const sync=fresh(),asyncOwner=fresh();const field=sync.fieldProjection(projection);sync.shader.focus({ms:0});const before=JSON.stringify(sync.shader.snapshot({container:''}));
  let yields=0;const progress=[];const prepared=await asyncOwner.prepareFieldProjection(projection,{yieldControl:async()=>{yields++;assert.equal(asyncOwner.shader.snapshot(),null,'preparation mutated the current source')},onProgress:p=>progress.push(p)});
  assert(yields>=2);assert.deepEqual(progress,[1/3,2/3,1]);assert.equal(asyncOwner.shader.snapshot(),null,'prepared source installed before acceptance');

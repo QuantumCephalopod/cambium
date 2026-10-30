@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source,field=null){
-  const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require('../../../z/navigation-physiology.js'),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
+  const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
   vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
@@ -36,7 +36,7 @@ for(const now of [0,1,6400,42000,1e7])assert.deepEqual(clone(api.flowPoint(entit
 entity.motionB=[-.3,.5,.9];assert.deepEqual(clone(api.flowPoint(entity,5000)),referenceFlow(entity,5000));
 function referenceHold(body,tet){const [a,b,c,d]=tet,sub=(a,b)=>a.map((v,i)=>v-b[i]),det3=(a,b,c)=>a[0]*(b[1]*c[2]-b[2]*c[1])-a[1]*(b[0]*c[2]-b[2]*c[0])+a[2]*(b[0]*c[1]-b[1]*c[0]),e1=sub(a,d),e2=sub(b,d),e3=sub(c,d),r=sub(body.p,d),det=det3(e1,e2,e3);if(Math.abs(det)<1e-12)return false;
   let l=[det3(r,e2,e3)/det,det3(e1,r,e3)/det,det3(e1,e2,r)/det];l.push(1-l[0]-l[1]-l[2]);if(l.every(x=>x>=0))return false;l=l.map(x=>Math.max(0,x));const s=l.reduce((u,v)=>u+v,0)||1;body.p=[0,1,2].map(k=>(l[0]*a[k]+l[1]*b[k]+l[2]*c[k]+l[3]*d[k])/s);return true;}
-for(const tet of [require('../../../z/navigation-physiology.js').V0,[[0,0,0],[0,0,0],[0,0,0],[0,0,0]],[[1,0,0],[0,1,0],[0,0,1],[-1,-1,-1]]])for(const p of [[0,0,0],[1,1,1],[.2,-.3,4],[-4,0,0],tet[0]]){const a={p:[...p]},b=clone(a);assert.equal(api.holdInTet(a,tet),referenceHold(b,tet));assert.deepEqual(a,b);}
+for(const tet of [require(process.argv[2]).V0,[[0,0,0],[0,0,0],[0,0,0],[0,0,0]],[[1,0,0],[0,1,0],[0,0,1],[-1,-1,-1]]])for(const p of [[0,0,0],[1,1,1],[.2,-.3,4],[-4,0,0],tet[0]]){const a={p:[...p]},b=clone(a);assert.equal(api.holdInTet(a,tet),referenceHold(b,tet));assert.deepEqual(a,b);}
 console.log('Papers scalar physics/flow exact-reference checks PASS');
 function referenceCollect(a,s,id,center,scale,camera,height,leaves,lights,depth=0){
   const ps=s.parents.get(id)||[],px=(scale/camera)*(height/2)/Math.tan((Math.PI/3.3)/2)*2,entity=s.identities.get(id),pal={w:[.34,.78,.64],x:[.42,.82,.88],z:[.78,.78,.60],y:[.52,.93,.48]}[entity?.gene||'x'];
@@ -48,7 +48,7 @@ function near(a,b){
   if(typeof a==='number'){assert.ok(Math.abs(a-b)<=2e-13*Math.max(1,Math.abs(b)),`${a} != ${b}`);return}
   if(a&&typeof a==='object'){assert.deepEqual(Object.keys(a),Object.keys(b));for(const k of Object.keys(a))near(a[k],b[k]);return}assert.equal(a,b);
 }
-const V0=require('../../../z/navigation-physiology.js').V0,identities=new Map(),parents=new Map();
+const V0=require(process.argv[2]).V0,identities=new Map(),parents=new Map();
 for(let rank=0;rank<=8;rank++)for(let i=0;i<4;i++){const id=rank?`${rank}H.${i}`:`S.${i}`;identities.set(id,{id,rank:rank?`${rank}H`:'S',gene:['w','x','z','y'][i]});if(rank)parents.set(id,Array.from({length:4},(_,j)=>rank===1?`S.${j}`:`${rank-1}H.${j}`))}
 let s={identities,parents,inquiryBodies:{},renderer:{V0}};api.setState(s);
 for(const rank of [0,1,4,6,8])for(const height of [390,720])for(const px of [6.999999,7,7.000001,13.999999,14,28,224]){
@@ -132,7 +132,7 @@ module.exports={load,referenceDrift,referenceFlow,referenceCollect,near};
 /* Papers is the second consumer: actual authored parts, complete range paging,
  * host-relative placement and lock lifecycle without a Descent mutation. */
 {
-  const reading=load(),Lens=require('../../../z/display-lens.js'),box={left:120,top:40,width:480,height:600,right:600,bottom:640};
+  const reading=load(),Lens=require(process.argv[3]),box={left:120,top:40,width:480,height:600,right:600,bottom:640};
   const ctx={font:'',measureText:t=>({width:Array.from(t).length*7})};
   const state={mounted:true,host:{hidden:false,getBoundingClientRect:()=>box},current:{id:'S.authored'},transition:1,inner:null,stack:['parent'],localQ:[1,0,0,0],
     ui:{carrier:{x:0,y:60,w:480,h:540}},textCanvas:{dataset:{},getBoundingClientRect:()=>box,getContext:()=>ctx},wisdomPrepared:new Map()};
@@ -207,7 +207,7 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
 /* Bounded overview snack: actual public Source/Holon identities acquire and
  * follow the shared lock, without entering inquiry or changing chamber state. */
 {
- const a=load(),Lens=require('../../../z/display-lens.js'),projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),root=a.fieldProjection(projection).root,built=a.buildRecords(projection,root),identities=a.identityIndex(projection),parents=a.parentIndex(projection),chosen=[built.records.find(r=>identities.get(r.id).kind==='source'),built.records.find(r=>identities.get(r.id).kind==='holon')];
+ const a=load(),Lens=require(process.argv[3]),projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),root=a.fieldProjection(projection).root,built=a.buildRecords(projection,root),identities=a.identityIndex(projection),parents=a.parentIndex(projection),chosen=[built.records.find(r=>identities.get(r.id).kind==='source'),built.records.find(r=>identities.get(r.id).kind==='holon')];
  assert(chosen.every(Boolean));
  for(const [width,height]of [[390,844],[1280,800]]){
   const box={left:30,top:20,width,height,right:30+width,bottom:20+height},s={mounted:true,host:{hidden:false},records:chosen,recordById:new Map(chosen.map(r=>[r.id,r])),identities,parents,renderer:{V0},current:null,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},orgSim:{bodies:new Map(chosen.map((r,i)=>[r.id,{p:[(i?1:-1)*.05,0,0]}]))}};

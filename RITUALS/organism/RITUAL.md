@@ -97,6 +97,8 @@ Host continuity/orientation/renewal remain host interfaces across the Display bo
 
 `_site/` is ephemeral secreted Pages artifact, never anatomy and never `_feed`.
 
+The two publication writers share one artifact-carriage operation. The only admitted output inside the repository is its disposable `_site`; an explicit external target must be disjoint from repository ancestry and must not resolve through a source alias. Acquire and stage the full candidate before replacing a previous artifact; restore the previous generation if ordinary installation fails. Site-owned public apertures refuse file, directory and broken symlinks before traversal. These are publication safeguards, not semantic ownership of the carried bodies; concurrent writers and crash-durable transactions are not implied by this witness.
+
 The base Display membrane remains generated from Population anatomy. Site-holons may additionally carry an optional identity-owned `public/` subtree when locally earned. The generic `y/site-public.py` wrapper combines those static bytes with the base membrane while refusing path escape, symlinks, reserved Display namespaces and cross-site collisions. The wrapper transports bytes only; it never interprets site-local route meaning.
 
 Mechanical witness path for the complete current public artifact is:

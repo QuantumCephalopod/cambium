@@ -3,12 +3,15 @@
  * Only DOM/network/GL transport is supplied here; GLES executes the captured work. */
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const [cache,mode='low',w='390',h='844']=process.argv.slice(2),manifest=JSON.parse(fs.readFileSync(path.join(cache,'manifest.json'))),byURL=new Map(manifest.records.map(r=>[r.url,r]));
+const [handoff,navigation,transport]=process.argv.slice(6);
+if(!handoff||!navigation||!transport)throw Error('pass shared handoff, navigation and GLES transport modules after cache/mode/width/height');
+const RH=require(path.resolve(handoff)),N=require(path.resolve(navigation));
 const projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),requests=[],modules=new Map();
-const {gl,commands:captured}=require('../../../w/gles-transport.cjs').createTransport();
+const {gl,commands:captured}=require(path.resolve(transport)).createTransport();
 const commands=captured;
 
 function node(tag){return{tag,children:[],append(...xs){this.children.push(...xs)},replaceChildren(...xs){this.children=xs},addEventListener(){}}}
-let running=0,peak=0;const ctx={console,Map,Set,Math,Object,Array,Float32Array,URL,setTimeout:()=>0,clearTimeout(){},addEventListener(){},document:{createElement:node},SSSInterlocutorModules:modules,SSSRepresentationHandoff:require('../../../x/representation-handoff.js'),SSSWorldView:{language:'en'},fetch:async url=>{requests.push(url);running++;peak=Math.max(peak,running);const record=byURL.get(url);if(!record)throw Error('unadmitted media '+url);const fail=mode==='failed'&&record.tier===512&&record.source===projection.works[0].still;return{ok:!fail,status:fail?503:200,blob:async()=>{running--;return record}}},createImageBitmap:async(record,options)=>({width:options.resizeWidth,height:options.resizeHeight,dataFile:record.rgba,close(){}})};
+let running=0,peak=0;const ctx={console,Map,Set,Math,Object,Array,Float32Array,URL,setTimeout:()=>0,clearTimeout(){},addEventListener(){},document:{createElement:node},SSSInterlocutorModules:modules,SSSRepresentationHandoff:RH,SSSDisplayNavigation:N,SSSWorldView:{language:'en'},fetch:async url=>{requests.push(url);running++;peak=Math.max(peak,running);const record=byURL.get(url);if(!record)throw Error('unadmitted media '+url);const fail=mode==='failed'&&record.tier===512&&record.source===projection.works[0].still;return{ok:!fail,status:fail?503:200,blob:async()=>{running--;return record}}},createImageBitmap:async(record,options)=>({width:options.resizeWidth,height:options.resizeHeight,dataFile:record.rgba,close(){}})};
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'render.js'),'utf8'),ctx);const site=modules.get('organism:schattenseiten');site.fieldProjection(projection);
 const flush=async()=>{for(let i=0;i<600;i++)await Promise.resolve()};
 (async()=>{
