@@ -475,6 +475,7 @@ def template_asset_sources(sites=None):
         'ui-grid.js': DISPLAY/'w'/'ui-grid.js',
         'display-type.js': DISPLAY/'w'/'display-type.js',
         'display-text-tissue.js': DISPLAY/'w'/'display-text-tissue.js',
+        'orthogonal-text.js': DISPLAY/'w'/'orthogonal-text.js',
         'representation-handoff.js': DISPLAY/'x'/'representation-handoff.js',
         'feed-acquisition.js': DISPLAY/'x'/'feed-acquisition.js',
         'recursive-fold.js': DISPLAY/'x'/'recursive-fold.js',

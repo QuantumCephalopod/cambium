@@ -25,13 +25,14 @@
   },
   "home": {
     "changed_scope": [
-      "shared pending-encounter cancellation and fallback presentation",
+      "z/display-lens.js",
+      "z/display-lens.test.cjs",
       "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "STAGING_HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS — actual browser first-entry, pending cancellation and refusal/retry bounded witnesses completed."
+    "outcome": "PARTIAL — a guided encounter can borrow the existing drop, contact actual offered targets, return its saved physical relation and yield to a deliberate visitor take. The mechanism preserves owner withdrawal/pending-projection distinction. The Papers interaction nutrients remain open."
   },
-  "observed_at_utc": "2026-10-29T16:30:31.510996Z",
+  "observed_at_utc": "2026-10-30T11:58:24.718251Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -47,7 +48,7 @@
       "noun": "Orientation"
     }
   },
-  "reflected_home_event": "display-first-entry-browser-return-20261029",
+  "reflected_home_event": "display-guided-drop-loan-20261030",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -55,7 +56,7 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "69996e24acfb305c50566175843ec930625cae849865c8f8f0846f5bf40eb9e0"
+      "sha256": "f76726582d022ff85cd4a964ae970b89be8939573ef56dce012ba1dc6a329b04"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
@@ -65,13 +66,11 @@
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [
-      "NUTRIENT__language-glyphs-and-site-names__20261019.md"
-    ],
-    "waste_direct_count": 119
+    "stomach_direct": [],
+    "waste_direct_count": 120
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "686ca1069f0c4821a465d6051246450cae03f572"
+    "source_revision": "HEAD"
   }
 }

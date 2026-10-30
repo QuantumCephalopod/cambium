@@ -1,6 +1,7 @@
 (() => {
 'use strict';
 const id='organism:datenschutz';
+const surface=globalThis.SSSOrthogonalText.create();
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 (function exposeLegalLink(){
   let nav=document.getElementById('legal-links');
@@ -13,6 +14,8 @@ const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModu
 })();
 const shader=Object.freeze({
   id:'shader:organism:datenschutz',
+  view:Object.freeze({rest:Object.freeze([1,0,0,0]),projection:'orthographic'}),
+  afterDraw:surface.draw,
   clear:[0.009,0.013,0.018,1],
   fallbackAlpha:.12,
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
@@ -38,17 +41,11 @@ function render({host,content,projection,language='de',ui=null}={}){
   if(!host||!content||!projection?.controller)return false;
   host.hidden=false; content.className='interlocutor-content datenschutz-content'; content.replaceChildren();
   const article=document.createElement('article');article.lang=language;
-  const kicker=document.createElement('p'); kicker.className='datenschutz-kicker'; kicker.textContent='organism:datenschutz';
   const h=document.createElement('h1'); h.textContent=projection.title?.[language]||projection.title?.en||'Privacy policy';
-  const p=document.createElement('p');
-  const live=projection.contact?.status==='live';
-  p.textContent=live
-    ?(language==='de'?'Die Datenschutzerklärung ist veröffentlicht.':'The privacy notice is published.')
-    :(language==='de'?'Die öffentliche Datenschutzerklärung wird nach dem end-to-end Kontakt-Witness freigegeben.':'The public privacy notice is released after the end-to-end contact witness.');
   const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=projection.contact.email;
   const notice=document.createElement('a'); notice.href=language==='de'?'/privacy/':'/privacy/en/'; notice.textContent=language==='de'?'Datenschutzerklärung':'Full privacy policy';
-  article.append(kicker,h,p,mail,notice); content.append(article); if(ui)ui.bind(article,'article'); return true;
+  article.append(h,mail,notice);surface.mount({url:notice.href,language,controls:article}); content.append(article); if(ui)ui.bind(article,'article'); return true;
 }
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren()}
+function unmount({host,content}={}){surface.unmount();if(host)host.hidden=true;if(content)content.replaceChildren()}
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection}));
 })();

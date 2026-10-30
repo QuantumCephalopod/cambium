@@ -1,7 +1,8 @@
 {
   "schema": "sss.display.ui-grid.v2",
   "meta": {
-    "name": "organism:impressum"
+    "name": "organism:impressum",
+    "extent": "bounded"
   },
   "splits": [
     "",
@@ -14,16 +15,38 @@
     "article": {
       "cells": [
         "wy",
+        "yw",
+        "yy"
+      ],
+      "label": "legal article",
+      "z": 1,
+      "variants": {
+        "portrait": [
+          "yy",
+          "yz"
+        ]
+      }
+    },
+    "viewport": {
+      "cells": [
+        "ww",
+        "wx",
+        "wy",
         "wz",
+        "xw",
+        "xx",
         "xy",
         "xz",
         "yw",
         "yx",
+        "yy",
+        "yz",
         "zw",
-        "zx"
+        "zx",
+        "zy",
+        "zz"
       ],
-      "label": "legal article",
-      "z": 1
+      "label": "tetrahedral notice surface"
     }
   },
   "elements": {}

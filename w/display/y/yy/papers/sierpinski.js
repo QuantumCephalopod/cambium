@@ -58,7 +58,15 @@ const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 const shader=Object.freeze({
   id:'shader:organism:papers',
   composite:()=>state?.mounted?[state.textCanvas,...(state.tissueLive?[state.tissueCanvas]:[])]:null,
-  focus:()=>state?.mounted&&state.current&&!state.closing?{center:[0,0,0],scale:FAR_Z/state.current.cameraTo,stiffness:6}:null,
+  focus:()=>{
+    if(!state?.mounted)return null;
+    if(state.current)return !state.closing?{center:[0,0,0],scale:FAR_Z/state.current.cameraTo,stiffness:6}:null;
+    const L=globalThis.SSSDisplayLens?.snapshot?.()?.lens,part=L?.lock?.kind==='body'?state.overviewContacts?.get(L.lock.id):null,rec=part&&state.recordById?.get(part.key),rect=rec&&state.canvas.getBoundingClientRect();
+    if(!rec||!rect?.height)return null;
+    const diameter=2*Math.max(L.hx||L.r||0,L.hy||L.r||0),base=projectedPixels(rootBodyScaleFor(rec,rect.width),FAR_Z,rect.height);
+    if(!(diameter>0&&base>0))return null;
+    return {center:[...overviewDriftPoint(rec)],scale:Math.max(chamberFocus().scale,diameter/base),id:rec.id,attached:true,stiffness:3};
+  },
   afterDraw:frame=>draw(frame.ms,frame),
   clear:[0,0,0,0],
   fallbackAlpha:0,
@@ -569,26 +577,38 @@ function tutorialCandidates(){
 function startTutorial(now=performance.now()){
   if(state.current)return false;const eligible=tutorialCandidates().filter(x=>x.id!==state.lastSpecimen),pool=eligible.length?eligible:tutorialCandidates();
   if(!pool.length)return false;
+  const L=globalThis.SSSDisplayLens,lease=L?.beginPlayback?.()||null;if(L&&!lease)return false;
   const specimen=pool[Math.floor(Math.random()*pool.length)];state.lastSpecimen=specimen.id;
-  state.tutorial={specimen:specimen.id,returnPath:Fields?.get(id)?.container||state.chamberPath,step:-1,at:now,copy:'',readyAt:0};
+  state.tutorial={specimen:specimen.id,returnPath:Fields?.get(id)?.container??state.chamberPath,step:-1,at:now,copy:'',readyAt:0,lease,pendingTarget:lease?id+'|overview|'+encodeURIComponent(specimen.id):null};
   setChamber(specimen.locus,now);state.tutorialButton.textContent='RETURN TO MY VIEW';return true;
 }
 function stopTutorial(){
   const tour=state?.tutorial;if(!tour)return;
   state.tutorial=null;state.current=null;state.stack=[];state.inner=null;state.being=null;state.beingTargetQ=null;state.transition=0;state.closing=false;state.backgroundPassage=0;state.backgroundPassageFrom=null;state.backgroundPassageTo=null;state.label.classList.remove('show');withdrawPaperLens();
   setChamber(tour.returnPath);state.tutorialButton.textContent='HOW PAPERS LIVES';
+  // Reoffer real overview identities before returning the borrowed drop.
+  if(tour.lease)syncOverviewLens(state.canvas.getBoundingClientRect(),performance.now());
+  if(tour.lease)globalThis.SSSDisplayLens?.endPlayback?.(tour.lease);
 }
 function tutorialStep(now){
   const tour=state.tutorial;if(!tour)return;
+  if(tour.lease){const L=globalThis.SSSDisplayLens;if(!L?.playbackActive?.(tour.lease)){stopTutorial();return}if(tour.pendingTarget){if(!L.contactPlayback(tour.lease,tour.pendingTarget))return;tour.pendingTarget=null;tour.at=now;}}
+  if(tour.lease&&tour.step>=0&&state.current){
+    const rect=state.textCanvas.getBoundingClientRect(),drop=lensLocal(rect),part=drop?.lock&&livePaperLensPart(drop.lock.id),reading=part&&paperLensReading(part);
+    // A slow device must actually settle on the contacted tissue before the
+    // visitor's reading interval starts. Do not advance by wall time alone.
+    if(state.transition<.98||!drop||!part||!paperLensReady(drop,reading)){tour.at=now;return}
+  }
   const hold=state.identities.get(state.current?.id)?.kind==='source'?11200:5600;
   if(now-tour.at<hold)return;tour.at=now;tour.readyAt=now+1800;tour.step++;
   const entity=state.identities.get(state.current?.id),body=entity?inquiryBody(entity.id):null;
   switch(tour.step){
     case 0:openGlobal(tour.specimen,state.canvas.getBoundingClientRect().width,now);tour.copy=tour.specimen+' · one actual rank-4 Holon. Its body is twice the scale of each rank-3 parent; its four vertices are those parents.';break;
-    case 1:{const edge=state.being?.edges[0];if(edge){lockInner({kind:'edge',key:edge.key});tour.copy='6E · this edge is an authored relation between two actual parents. '+(body?.edges?.find(e=>e.id===edge.key)?.title||'')}break;}
-    case 2:{const face=state.being?.faces[0];if(face){lockInner({kind:'face',key:face.key});tour.copy='4F · this face relates three parents. '+(body?.faces?.find(f=>f.id===face.key)?.title||'')}break;}
-    case 3:lockInner({kind:'whole',key:'wxyz'});tour.copy='1T · a rank and four peers are drawn. Birth requires six edges, four faces and this irreducible whole. Every parent stays alive.';break;
-    case 4:{const met=inquiryMetabolites(entity)[0],metId=typeof met?.id==='string'&&met.id.trim()?met.id.trim():'M1';lockInner(met?{kind:'met',key:entity.id+'·'+metId}:null);tour.copy=met?'The lights inside are the surviving metabolites. '+(met.title||''):'This projection contains no surviving metabolite. The center stays empty.';break;}
+    case 1:{const vert=state.being?.verts[0];if(vert){lockInner({kind:'vert',key:vert.i});tour.copy='4V · this vertex is one actual parent, carrying its own authored distinction.'}break;}
+    case 2:{const edge=state.being?.edges[0];if(edge){lockInner({kind:'edge',key:edge.key});tour.copy='6E · this edge is an authored relation between two actual parents. '+(body?.edges?.find(e=>e.id===edge.key)?.title||'')}break;}
+    case 3:{const face=state.being?.faces[0];if(face){lockInner({kind:'face',key:face.key});tour.copy='4F · this face relates three parents. '+(body?.faces?.find(f=>f.id===face.key)?.title||'')}break;}
+    case 4:lockInner({kind:'whole',key:'wxyz'});tour.copy='1T · a rank and four peers are drawn. Birth requires six edges, four faces and this irreducible whole. Every parent stays alive.';break;
+    case 5:{const met=inquiryMetabolites(entity)[0],metId=typeof met?.id==='string'&&met.id.trim()?met.id.trim():'M1';lockInner(met?{kind:'met',key:entity.id+'·'+metId}:null);tour.copy=met?'The lights inside are the surviving metabolites. '+(met.title||''):'This projection contains no surviving metabolite. The center stays empty.';break;}
     default:{if(entity?.kind==='source'){stopTutorial();return;}
       const child=childBodies(state.current).find(c=>inquiryBody(c.id));if(!child){stopTutorial();return;}descend(child.id,now);
       const next=state.identities.get(child.id);tour.copy=next?.kind==='source'?child.id+' · one Source, the same tetrahedral species. '+(inquiryBody(child.id)?.state==='COMPLETE'?'Its four vertices partition one outside work.':'Its partition text is PARTIAL here; the gaps remain explicit.')+' ORIGIN reaches its authors and original work.':child.id+' · '+next?.rank+'. The same body grammar recurs: its four vertices are its own actual parents. The larger Holon and every parent remain alive.';
@@ -598,8 +618,9 @@ function tutorialStep(now){
 function drawOverviewPhysiology(now){
   const box=state.physiology;if(!box)return;
   const eligible=tutorialCandidates(),tour=state.tutorial,visible=Boolean(tour)||!state.current;
-  setData(box,'visible',visible?'true':'false');box.setAttribute('aria-hidden',visible?'false':'true');state.tutorialButton.disabled=!tour&&!eligible.length;
-  state.tutorialButton.title=eligible.length?'Visit an actual current rank-4 Holon':'No complete current rank-4 specimen is projected';
+  const lens=globalThis.SSSDisplayLens,drop=lens?.snapshot?.()?.lens,available=!lens||!!drop&&!drop.held;
+  setData(box,'visible',visible?'true':'false');box.setAttribute('aria-hidden',visible?'false':'true');state.tutorialButton.disabled=!tour&&(!eligible.length||!available);
+  state.tutorialButton.title=!eligible.length?'No complete current rank-4 specimen is projected':!available?'Release or enable the glass drop to begin':'Visit an actual current rank-4 Holon';
   if(!tour){delete state.textCanvas.dataset.tutorialCommentaryBounds;return;}
   box.dataset.specimen=tour.specimen;box.dataset.step=String(tour.step);
   if(!tour.copy||now<tour.readyAt||state.transition<.98)return;
@@ -882,13 +903,34 @@ function paperLensParts(B,G){
   for(const m of G.mets)put('met',m.id,metaboliteWisdomText(m.light.metabolite),m);
   return parts;
 }
-function liveOverviewLensPart(target){return state?.mounted&&!state.host?.hidden&&!state.current?state.overviewContacts?.get(target)||null:null}
+function liveOverviewLensPart(target){
+  if(!state?.mounted||state.host?.hidden)return null;
+  if(!state.current)return state.overviewContacts?.get(target)||null;
+  // The contacted organism remains the lens identity across overview and inquiry.
+  // Selected tissue supplies a finer reading without creating a new lock.
+  if(target!==state.lensBodyId||state.current.id!==state.lensBodyOrganism)return null;
+  const selected=state.inner&&[...(state.lensParts?.values()||[])].find(p=>p.kind===state.inner.kind&&String(p.key)===String(state.inner.key));
+  if(selected)return {...selected,id:target,rect:state.textCanvas.getBoundingClientRect()};
+  if(state.inner)return null; // A temporarily occluded or unprojected part stays pending, not invented.
+  const rect=state.textCanvas.getBoundingClientRect(),point=projectWorldPoint(currentTranslation(),cameraZ(),rect.width,rect.height);
+  if(!Number.isFinite(point.x)||!Number.isFinite(point.y))return null;
+  const entity=state.identities.get(state.current.id),text=state.current.id+' · '+String(entity?.title||state.current.id).trim();
+  return {id:target,key:state.current.id,kind:'body',text,point,rect};
+}
 function livePaperLensPart(target){return liveOverviewLensPart(target)||(state?.mounted&&!state.host?.hidden&&state.current&&state.transition>=.82?state.lensParts?.get(target)||null:null)}
 const overviewLensOffers=new Set();
+function ensureOverviewLensOffer(target){
+ const L=globalThis.SSSDisplayLens;if(!L?.offer||overviewLensOffers.has(target))return;
+ L.offer(target,{kind:'body',point:()=>{const part=liveOverviewLensPart(target);return part?.point?{x:part.rect.left+part.point.x,y:part.rect.top+part.point.y,r:part.point.r}:null},frame:()=>{const part=liveOverviewLensPart(target);if(!part?.point)return null;const reading=paperLensReading(part);return reading?.ready?reading.frame:null},foreground:frame=>paperForeground(target,frame)});overviewLensOffers.add(target);
+}
 function withdrawOverviewLens(){for(const target of overviewLensOffers)globalThis.SSSDisplayLens?.withdraw(target);overviewLensOffers.clear();if(state){state.overviewContacts=null;state.overviewRender=null}}
 function syncOverviewLens(rect,now){
  const L=globalThis.SSSDisplayLens;if(!L?.offer)return;
- if(!state?.mounted||state.host?.hidden||state.current){withdrawOverviewLens();return}
+ if(!state?.mounted||state.host?.hidden){withdrawOverviewLens();return}
+ if(state.current){
+  for(const target of overviewLensOffers)if(target!==state.lensBodyId){L.withdraw(target);overviewLensOffers.delete(target)}
+  return;
+ }
  const q=overviewOrientation(),contacts=new Map();
  for(const rec of state.records){
   const target=id+'|overview|'+encodeURIComponent(rec.id),center=overviewCenterFor(rec,rect.width,now),point=projectPoint(center,q,cameraZ(),rect.width,rect.height),rotated=qRot(q,center),r=clamp(projectedPixels(overviewBodyScaleFor(rec,rect.width),cameraZ()-rotated[2],rect.height)*.55,10,48);
@@ -898,9 +940,7 @@ function syncOverviewLens(rect,now){
  }
  state.overviewContacts=contacts;
  for(const target of overviewLensOffers)if(!contacts.has(target)){L.withdraw(target);overviewLensOffers.delete(target)}
- for(const target of contacts.keys())if(!overviewLensOffers.has(target)){
-  L.offer(target,{kind:'body',point:()=>{const part=liveOverviewLensPart(target);return part?.point?{x:part.rect.left+part.point.x,y:part.rect.top+part.point.y,r:part.point.r}:null},frame:()=>{const part=liveOverviewLensPart(target);if(!part?.point)return null;const reading=paperLensReading(part);return reading?.ready?reading.frame:null},foreground:frame=>paperForeground(target,frame)});overviewLensOffers.add(target);
- }
+ for(const target of contacts.keys())ensureOverviewLensOffer(target);
 }
 function drawOverviewForeground(part,frame){
  const f=state.overviewRender,rec=state.recordById?.get(part.key);
@@ -909,7 +949,7 @@ function drawOverviewForeground(part,frame){
  collectVisibleBody(rec.id,center,scale,f.rect.width,f.rect.height,f.cam,f.q,leaves,lights);
  state.renderer.draw(leaves,f.q,[0,0,0],f.proj,f.view,{faces:true});state.renderer.drawLights(lights,f.q,[0,0,0],f.proj,f.view,f.ms*.001,f.dpr,OVERVIEW_LIGHT_GAIN);return true;
 }
-function withdrawPaperLens(){const L=globalThis.SSSDisplayLens;for(const target of paperLensOffers)L?.withdraw(target);paperLensOffers.clear();if(state){state.lensParts=null;if(!liveOverviewLensPart(state.lensReading?.id)){state.lensReading=null;if(state.lensReader)state.lensReader.hidden=true}}}
+function withdrawPaperLens(){const L=globalThis.SSSDisplayLens;for(const target of paperLensOffers)L?.withdraw(target);paperLensOffers.clear();if(state){state.lensParts=null;const readingId=state.lensReading?.id,lockedId=L?.snapshot?.()?.lens?.lock?.id;if(!readingId||lockedId!==readingId||!liveOverviewLensPart(readingId)){state.lensReading=null;if(state.lensReader)state.lensReader.hidden=true}}}
 function syncPaperLens(B,G){
   const L=globalThis.SSSDisplayLens;if(!L?.offer)return;
   state.lensParts=paperLensParts(B,G);
@@ -1335,6 +1375,8 @@ function ascendChamber(now=performance.now()){if(!state?.chamberPath)return fals
 function setLabel(id){const d=state.identities.get(id);state.label.textContent=`${id} · ${d?.title||id}`;state.label.classList.add('show')}
 function openGlobal(id,width,now=performance.now()){
   const rec=state.recordById.get(id);if(!rec)return false;
+  const locked=globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id,bodyTarget='organism:papers|overview|'+encodeURIComponent(id);
+  state.lensBodyId=locked===bodyTarget?bodyTarget:null;state.lensBodyOrganism=state.lensBodyId?id:null;
   const overviewWidth=Number(width)||state?.canvas?.getBoundingClientRect().width||innerWidth;
   const scale=rootBodyScaleFor(rec,overviewWidth);
   state.stack=[];
@@ -1343,10 +1385,13 @@ function openGlobal(id,width,now=performance.now()){
 }
 function descend(child,now=performance.now()){
   if(!state.current)return false;const hit=childBodies(state.current).find(x=>x.id===child);if(!hit)return false;
+  const tour=state.tutorial;state.lensBodyId=null;state.lensBodyOrganism=null; // A parent body is not its child.
   state.stack.push({id:state.current.id,scale:state.current.scale,camera:state.current.cameraTo});
   const entryWorld=add(currentTranslation(),qRot(state.localQ,hit.center));
   state.current={id:child,scale:hit.scale,sourceLocal:null,entryWorld,cameraFrom:cameraZ(),cameraTo:cameraForScale(hit.scale),globalSource:false};
-  state.transition=0;state.closing=false;state.transitionStart=now;setLabel(child);return true;
+  state.transition=0;state.closing=false;state.transitionStart=now;state.inner=null;
+  if(tour?.lease){const target=id+'|overview|'+encodeURIComponent(child);state.lensBodyId=target;state.lensBodyOrganism=child;ensureOverviewLensOffer(target);tour.pendingTarget=target;}
+  setLabel(child);return true;
 }
 function ascend(now=performance.now()){
   if(!state.current||!state.stack.length)return false;
@@ -1435,7 +1480,7 @@ function attachInput(){
     const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-      if(state.current){const piece=beingHit(x,y);if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
+      if(state.current){const piece=beingHit(x,y),bodyLocked=state.lensBodyId&&globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id===state.lensBodyId;if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door)&&(!bodyLocked||beingSame(piece,state.inner)))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
       else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now),rec=target?state.recordById.get(target):null,here=state.chamberPath||'';
         /* Descent: only the current container's content can be entered; touching content that
          * lives deeper descends into the next container on its way first. */

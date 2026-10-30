@@ -211,7 +211,29 @@
   }
 
   let state=null,el=null,started=false,last=0,homeNow=null,visible=false,cursor={active:false,x:0,y:0},pores=[];
+  let playback=null,restoreFlow=null;
   const offers=new Map();
+  /* A guided encounter borrows the one shared drop. A visitor's deliberate
+   * take always wins over the borrower and cancels any queued restoration. */
+  function interruptPlayback(){playback=null;restoreFlow=null}
+  function beginPlayback(){
+    if(!state||!visible||state.held||playback||restoreFlow)return null;
+    const token=Object.freeze({}),saved={...state,lock:state.lock?{...state.lock}:null,departure:state.departure?{...state.departure}:null};
+    playback={token,saved};return token;
+  }
+  function playbackActive(token){return !!playback&&playback.token===token}
+  function contactPlayback(token,id){
+    if(!playback||playback.token!==token||!state||!visible||state.held)return false;
+    const target=resolveTargets(id).find(t=>t.id===id&&!t.pending);
+    if(!target)return false;
+    pending=null;cursor.active=false;lockTo(state,target);paintPhase();return true;
+  }
+  function endPlayback(token){
+    if(!playback||playback.token!==token||!state||state.held)return false;
+    const saved=playback.saved;playback=null;pending=null;cursor.active=false;unlock(state);
+    state.attached=state.docked=false;state.homeId=null;
+    state.departure={x:saved.x,y:saved.y,left:.38,duration:.38};restoreFlow={saved};return true;
+  }
   /* A site lends identity-bound targets; Display never learns what they mean. spec.kind 'field' gives rect(),
    * 'body' gives point() (+ optional r). A missing projection cannot acquire a new lock;
    * a contacted offer retains its identity until withdraw(), including across same-frame renewal. */
@@ -267,6 +289,7 @@
   }
   function activate(){
     const p=pending;pending=null;if(!p||!state)return;
+    interruptPlayback();
     if(p.pore){if(!state.docked||!pullFrom(state,p.pore.h,p.x,p.y,p.id))return}else grab(state,p.x,p.y,p.id);
     cursor={active:true,x:p.x,y:p.y};paintPhase();
   }
@@ -320,6 +343,8 @@
     if(state){
       const target=state.lock?resolveTargets().find(t=>t.id===state.lock.id)||null:null;
       if(off){pending=null;release(state,state.pid);unlock(state);cursor.active=false}else step(state,hs,dt,{w:root.innerWidth,h:root.innerHeight},cursor,target,!!root.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+      if(off){interruptPlayback()}
+      else if(restoreFlow&&!state.departure){const saved=restoreFlow.saved;restoreFlow=null;if(saved.lock&&!offers.has(saved.lock.id)){saved.lock=null;saved.attached=saved.docked=false;saved.homeId=null}Object.assign(state,saved);}
       homeNow=state.attached?hs.find(h=>h.id===state.homeId&&compatible(state,h))||null:null;visible=!off;
       if(el){const g=geometry(state,hs);el.style.display=visible?'block':'none';
         el.style.left=(state.x-g.hx)+'px';el.style.top=(state.y-g.hy)+'px';el.style.width=(g.hx*2)+'px';el.style.height=(g.hy*2)+'px';el.style.borderRadius=g.round?'50%':g.corner+'px';
@@ -348,7 +373,7 @@
       if(e.repeat&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopPropagation();return}
       const a={ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-12],ArrowDown:[0,12]}[e.key];
       if(e.key==='Enter'||e.key===' '){
-        if(!state.held){pending=null;cursor.active=false;grab(state,state.x,state.y,'keyboard')}
+        if(!state.held){interruptPlayback();pending=null;cursor.active=false;grab(state,state.x,state.y,'keyboard')}
         else if(state.pid==='keyboard'){release(state,'keyboard');const t=candidateAt(state,resolveTargets());if(t)lockTo(state,t)}
         else return;
       }else if(e.key==='Escape'&&state.pid==='keyboard')release(state,'keyboard');
@@ -357,5 +382,5 @@
     });
     root.requestAnimationFrame(loop);
   }
-  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,depart,departFrom,offer,withdraw,foreground,resolveTargets});
+  return Object.freeze({K,create,step,geometry,grab,move,release,contains,snapshot,start,scaleOf,dockPoint,edgePoint,compatible,pullFrom,candidateAt,lockTo,unlock,depart,departFrom,offer,withdraw,foreground,resolveTargets,beginPlayback,playbackActive,contactPlayback,endPlayback});
 });

@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source,field=null){
   const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -197,7 +197,7 @@ for(let repeat=0;repeat<2;repeat++){
 assert.notEqual(...visited);assert.equal(JSON.stringify(shadow),before,'teaching must not mutate source-owned semantic truth');
 const metSpecimen=eligible.find(rec=>shadow.inquiry.bodies[rec.id]?.metabolites?.some(m=>m&&(m.title||m.compression||m.text)));assert(metSpecimen);
 assert(tour.startTutorial(0));ts.tutorial.specimen=metSpecimen.id;tour.tutorialStep(5600);tour.ensureBeing(identities.get(metSpecimen.id),390);ts.transition=1;
-ts.tutorial.step=3;ts.tutorial.at=0;tour.tutorialStep(5600);
+ts.tutorial.step=4;ts.tutorial.at=0;tour.tutorialStep(5600);
 const met=shadow.inquiry.bodies[metSpecimen.id].metabolites.find(m=>m&&(m.title||m.compression||m.text));
 assert.equal(ts.inner.key,metSpecimen.id+'·'+(typeof met.id==='string'&&met.id.trim()?met.id.trim():'M1'),'tutorial selects the actual metabolight identity');tour.stopTutorial();
 const saved=ts.records;ts.records=[];assert.deepEqual(clone(tour.tutorialCandidates()),[]);assert.equal(tour.startTutorial(),false);ts.records=saved;
@@ -231,4 +231,45 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
   s.current=null;s.records=chosen;a.syncOverviewLens(box,4500);a.withdrawOverviewLens();assert.equal(Lens.resolveTargets().length,0);
  }
  console.log('Papers overview actual Source/Holon offers, moving shared softlock, pending projection, lifetime and unchanged navigation/source PASS');
+}
+
+/* The same contacted identity survives entry; part changes never mint a new body. */
+{
+ const a=load(),Lens=require(process.argv[3]),projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),built=a.buildRecords(projection,a.fieldProjection(projection).root),identities=a.identityIndex(projection),parents=a.parentIndex(projection);
+ const chosen=[built.records.find(r=>identities.get(r.id).kind==='source'),built.records.find(r=>identities.get(r.id).kind==='holon')];
+ for(const [width,height] of [[390,844],[1280,800]])for(const rec of chosen){
+  const box={left:10,top:20,width,height,right:10+width,bottom:20+height},label={textContent:'',classList:{add(){},remove(){}}},ctx={measureText:()=>({width:7})};
+  const s={mounted:true,host:{hidden:false},canvas:{getBoundingClientRect:()=>box,dataset:{}},textCanvas:{getBoundingClientRect:()=>box,getContext:()=>ctx},label,records:[rec],recordById:new Map([[rec.id,rec]]),identities,parents,renderer:{V0},current:null,chamberPath:rec.locus,chamberFocus:{center:[0,0,0],scale:1},orgSim:{bodies:new Map([[rec.id,{p:[0,0,0]}]])}};
+  const home={id:'home',kind:'hud',layer:'hud',cx:width/2,cy:height-30,hx:60,hy:30},view={w:width+20,h:height+40},drop=Lens.create(home,view);
+  const bridge={...Lens,snapshot:()=>({lens:{...Lens.geometry(drop,null),lock:drop.lock}})};a.setState(s);a.setLensAPI(bridge);a.syncOverviewLens(box,1000);
+  const target=Lens.resolveTargets().find(t=>t.id.endsWith(encodeURIComponent(rec.id)));assert(target);Lens.lockTo(drop,target);
+  const focus=a.shader.focus();assert(focus&&focus.attached&&focus.id===rec.id&&focus.scale>0,'focus follows the actual contacted identity');
+  assert(a.openGlobal(rec.id,width,1100));a.syncOverviewLens(box,1110);assert.equal(s.lensBodyId,target.id);assert(Lens.resolveTargets().some(t=>t.id===target.id));
+  for(let frame=0;frame<10;frame++)Lens.step(drop,home,1/60,view,null,Lens.resolveTargets(target.id).find(t=>t.id===target.id));
+  assert.equal(drop.lock.id,target.id,'entry retained same body lock');
+  s.inner={kind:'edge',key:'wx'};s.lensParts=new Map([['part',{id:'part',kind:'edge',key:'wx',text:'authored edge',point:{x:90,y:120}}]]);
+  const part=a.liveOverviewLensPart(target.id);assert.equal(part.id,target.id);assert.equal(part.text,'authored edge');assert.equal(part.point.x,90);
+  s.lensParts.clear();assert.equal(a.liveOverviewLensPart(target.id),null,'unavailable selected tissue is pending, not replaced with invented text');
+  assert(Lens.resolveTargets(target.id).find(t=>t.id===target.id).pending);
+  s.current=null;s.inner=null;a.syncOverviewLens(box,2000);assert(Lens.resolveTargets().some(t=>t.id===target.id));a.withdrawOverviewLens();
+ }
+ console.log('Papers actual Source/Holon body-lock focus, entry identity, tissue selection and pending contact PASS');
+}
+
+/* A slow drop must settle on the real reading before the next tour step. */
+{
+ const a=load(),lease={},target='organism:papers|overview|S.wait',rect={left:0,top:0,width:390,height:844,right:390,bottom:844};
+ const ctx={measureText:t=>({width:[...t].length*7})};let drop={x:195,y:350,hx:20,hy:20,r:20,round:1,lock:{id:target,kind:'body'}};
+ const state={mounted:true,host:{hidden:false,getBoundingClientRect:()=>rect},canvas:{getBoundingClientRect:()=>rect},textCanvas:{getBoundingClientRect:()=>rect,getContext:()=>ctx},ui:{carrier:{x:0,y:60,w:390,h:700}},wisdomPrepared:new Map(),current:{id:'S.wait',entryWorld:[0,0,0],cameraFrom:3.2,cameraTo:1},lensBodyId:target,lensBodyOrganism:'S.wait',inner:null,transition:1,identities:new Map([['S.wait',{id:'S.wait',kind:'source',title:'Real'}]]),inquiryBodies:{'S.wait':{}},being:{verts:[{i:0,text:'authored'}]},renderer:{V0},localQ:[1,0,0,0],tutorial:{lease,step:0,at:0,copy:'',readyAt:0}};
+ a.setState(state);a.setLensAPI({playbackActive:t=>t===lease});a.setLens(()=>drop);a.setPretext({prepareWithSegments:t=>({chars:[...t]}),layoutNextLineRange:(p,c,w)=>c.segmentIndex>=p.chars.length?null:{start:c.segmentIndex,end:{segmentIndex:Math.min(p.chars.length,c.segmentIndex+Math.max(1,Math.floor(w/7))),graphemeIndex:0}},materializeLineRange:(p,r)=>({text:p.chars.slice(r.start,r.end.segmentIndex).join(''),width:(r.end.segmentIndex-r.start)*7})});
+ a.tutorialStep(12000);assert.equal(state.tutorial.step,0,'elapsed time cannot skip an unsettled drop');
+ const reading=a.paperLensReading(a.liveOverviewLensPart(target));drop={...drop,hx:reading.width/2,hy:reading.height/2,round:0};a.tutorialStep(15000);assert.equal(state.tutorial.step,0,'the reading interval starts on readiness');
+ a.tutorialStep(18000);assert.equal(state.tutorial.step,0);a.tutorialStep(25000);assert.equal(state.tutorial.step,1,'advance after actual contact and the reading interval');
+ console.log('Papers guided reading waits for the same actual lens to settle PASS');
+}
+{
+ const a=load(),target='organism:papers|overview|S.prior',reader={hidden:false},s={mounted:true,host:{hidden:false},current:null,lensReader:reader,lensReading:{id:target},overviewContacts:new Map([[target,{id:target,kind:'overview',text:'actual'}]])};
+ a.setState(s);a.setLensAPI({withdraw(){},snapshot:()=>({lens:{lock:null}})});a.withdrawPaperLens();
+ assert.equal(reader.hidden,true,'an unlocked return cannot leave stale accessible reading on the overview');assert.equal(s.lensReading,null);
+ console.log('Papers unlocked return clears stale reading PASS');
 }

@@ -119,6 +119,14 @@ jobs:
         if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-digestion-')
         run: python3 y/test-language-browser.py --artifact _site --out _layout-witness/language
 
+      - name: Witness orthogonal legal text
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-digestion-')
+        run: python3 y/test-orthogonal-legal-browser.py --artifact _site --out _layout-witness/legal
+
+      - name: Witness Papers shared drop encounters
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-digestion-')
+        run: python3 y/test-papers-encounter.py --artifact _site --out _layout-witness/papers-encounter
+
       - name: Witness actual bounded browser layout
         if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')
         run: python3 y/test-bounded-layout.py --artifact _site --out _layout-witness
