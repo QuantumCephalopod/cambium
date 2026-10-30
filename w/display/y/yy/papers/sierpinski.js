@@ -534,15 +534,23 @@ void main(){
 
 /* Same admitted tetrahedra and lights when a browser cannot provide WebGL.
  * This is a projection of the same instances, never a screenshot or dummy body. */
+function clipCameraPlane(points,cam,near,closed=true){
+  if(!points.length)return [];
+  const inside=p=>cam-p[2]>=near,cut=(a,b)=>{const da=cam-a[2]-near,db=cam-b[2]-near,t=da/(da-db);return a.map((v,i)=>v+(b[i]-v)*t)};
+  if(!closed){const [a,b]=points,ia=inside(a),ib=inside(b);return ia&&ib?[a,b]:ia?[a,cut(a,b)]:ib?[cut(a,b),b]:[]}
+  const out=[];for(let i=0;i<points.length;i++){const a=points[i],b=points[(i+1)%points.length],ia=inside(a),ib=inside(b);if(ia)out.push(a);if(ia!==ib)out.push(cut(a,b))}return out;
+}
 function createFlatRenderer(canvas){
   const ctx=canvas.getContext('2d'),V0=N.V0.map(v=>[...v]);if(!ctx)return null;
-  const point=(p,q,t)=>projectWorldPoint(add(qRot(q,p),t),cameraZ(),canvas.clientWidth||canvas.width,canvas.clientHeight||canvas.height);
+  const world=(p,q,t)=>add(qRot(q,p),t),point=(p,cam)=>projectWorldPoint(p,cam,canvas.clientWidth||canvas.width,canvas.clientHeight||canvas.height);
   return {gl:null,V0,draw(instances,q,t,_p,_v,{faces=true}={}){ctx.save();const r=canvas.getBoundingClientRect();ctx.setTransform(canvas.width/r.width,0,0,canvas.height/r.height,0,0);
-    for(const item of instances){const P=V0.map(v=>point(add(item.center,mul(v,item.scale)),q,t)),c=item.color;ctx.strokeStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]})`;ctx.fillStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]*.12})`;
-      if(faces)for(const f of FACE){ctx.beginPath();ctx.moveTo(P[f[0]].x,P[f[0]].y);for(const i of f.slice(1))ctx.lineTo(P[i].x,P[i].y);ctx.closePath();ctx.fill()}
-      ctx.beginPath();for(const [a,b] of EDGE){ctx.moveTo(P[a].x,P[a].y);ctx.lineTo(P[b].x,P[b].y)}ctx.stroke()}
+    const cam=cameraZ(),near=.1/(state.sharedFrame?.scale||1);
+    for(const item of instances){const P=V0.map(v=>world(add(item.center,mul(v,item.scale)),q,t)),c=item.color;ctx.strokeStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]})`;ctx.fillStyle=`rgba(${c.slice(0,3).map(x=>Math.round(x*255))},${c[3]*.12})`;
+      if(faces)for(const f of FACE){const poly=clipCameraPlane(f.map(i=>P[i]),cam,near).map(p=>point(p,cam));if(poly.length<3)continue;ctx.beginPath();ctx.moveTo(poly[0].x,poly[0].y);for(const p of poly.slice(1))ctx.lineTo(p.x,p.y);ctx.closePath();ctx.fill()}
+      ctx.beginPath();for(const [a,b] of EDGE){const line=clipCameraPlane([P[a],P[b]],cam,near,false).map(p=>point(p,cam));if(line.length===2){ctx.moveTo(line[0].x,line[0].y);ctx.lineTo(line[1].x,line[1].y)}}ctx.stroke()}
     ctx.restore()},drawLights(lights,q,t,_p,_v,time,_d,gain=1){ctx.save();const r=canvas.getBoundingClientRect();ctx.setTransform(canvas.width/r.width,0,0,canvas.height/r.height,0,0);
-    for(const l of lights){const p=point(l.center,q,t),radius=Math.max(.5,l.size*.25*(.94+.06*Math.sin(time*1.25+l.phase)));ctx.fillStyle=`rgba(${l.color.slice(0,3).map(x=>Math.round(x*255))},${l.color[3]*gain})`;ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill()}ctx.restore()},dispose(){}};
+    const cam=cameraZ(),near=.1/(state.sharedFrame?.scale||1);
+    for(const l of lights){const w=world(l.center,q,t);if(cam-w[2]<near)continue;const p=point(w,cam),radius=Math.max(.5,l.size*.25*(.94+.06*Math.sin(time*1.25+l.phase)));ctx.fillStyle=`rgba(${l.color.slice(0,3).map(x=>Math.round(x*255))},${l.color[3]*gain})`;ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill()}ctx.restore()},dispose(){}};
 }
 function makeStage(host){
   const canvas=host.querySelector('.interlocutor-background');
@@ -1477,7 +1485,21 @@ function draw(now,frame){
 let lensAccess=null;
 function lensLocal(rect){const L=lensAccess?.();if(!L||!rect)return null;return {...L,x:L.x-(rect.left||0),y:L.y-(rect.top||0)}}
 function inLens(L,x,y,pad=0){if(!L)return true;if(L.round===0&&Number.isFinite(L.hx)&&Number.isFinite(L.hy)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+pad}return Math.hypot(x-L.x,y-L.y)<=L.r+pad}
-function hitGlobal(x,y,width,height,now=performance.now()){if(!inLens(lensLocal(state.canvas.getBoundingClientRect()),x,y))return '';let best=null;const q=overviewOrientation();for(const rec of state.records){const {center,scale}=overviewBodyProjection(rec,{width,height},now),p=projectPoint(center,q,cameraZ(),width,height),px=projectedPixels(scale,cameraZ(),height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
+function hitGlobal(x,y,width,height,now=performance.now()){
+  const L=lensLocal(state.canvas.getBoundingClientRect());if(!inLens(L,x,y))return '';
+  // The drop's contact owns the meaning of a click inside it. An overlapping
+  // neighbour may not steal that contact, and pending geometry is never hit.
+  const contact=L?.lock?.kind==='body'?liveOverviewLensPart(L.lock.id):null;
+  if(contact?.kind==='overview'&&contact.point&&state.recordById?.has(contact.key))return contact.key;
+  if(L?.lock?.id?.startsWith(id+'|overview|'))return '';
+  let best=null;const q=overviewOrientation();for(const rec of state.records){const {center,scale}=overviewBodyProjection(rec,{width,height},now),p=projectPoint(center,q,cameraZ(),width,height),px=projectedPixels(scale,cameraZ(),height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||'';
+}
+function enterOverviewTarget(target,width,now=performance.now()){
+  const rec=target?state.recordById.get(target):null,here=state.chamberPath||'';
+  if(rec&&rec.locus===here)return openGlobal(target,width,now);
+  if(rec&&rec.locus.startsWith(here))return setChamber(rec.locus.slice(0,here.length+1),now);
+  return false;
+}
 function hitChild(x,y,width,height){
   if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
   /* projectPoint rotates its input before perspective. Pull the world translation
@@ -1503,12 +1525,10 @@ function attachInput(){
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
       if(state.current){const piece=beingHit(x,y),bodyLocked=state.lensBodyId&&globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id===state.lensBodyId;if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door)&&(!bodyLocked||beingSame(piece,state.inner)))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
-      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now),rec=target?state.recordById.get(target):null,here=state.chamberPath||'';
+      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now),here=state.chamberPath||'';
         /* Descent: only the current container's content can be entered; touching content that
          * lives deeper descends into the next container on its way first. */
-        if(rec&&rec.locus===here)openGlobal(target,r.width,now);
-        else if(rec&&rec.locus.startsWith(here))setChamber(rec.locus.slice(0,here.length+1),now);
-        else{const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now);else dispatchEvent(new CustomEvent('sss:membrane-ascend',{detail:{id,source:'ascent:papers'}}))}}
+        if(!enterOverviewTarget(target,r.width,now)){const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now);else dispatchEvent(new CustomEvent('sss:membrane-ascend',{detail:{id,source:'ascent:papers'}}))}}
     }
     e.preventDefault();
   };

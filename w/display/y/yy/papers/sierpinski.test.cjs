@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source,field=null){
   const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,overviewBodyProjection,updateOverviewApproach,currentDisplayScale,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,hitGlobal,enterOverviewTarget,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,createFlatRenderer,clipCameraPlane,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,overviewBodyProjection,updateOverviewApproach,currentDisplayScale,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -289,4 +289,36 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
  assert(a.escape());assert.equal(s.chamberPath,'');assert.equal(field.container,'');assert.equal(a.canEscape(),false,'local root yields enclosing return');
  s.mounted=false;assert.equal(a.escape(),false,'inactive owner cannot consume input');
  console.log('Papers Escape returns tissue, body and chamber one level at a time with stable lock PASS');
+}
+
+/* Contact outranks an overlapping neighbour only while the real body is projected. */
+for(const [width,height] of [[390,844],[1280,800]]){
+ const field={path:'',get container(){return this.path},descendTo(p){if(!p.startsWith(this.path))return false;this.path=p;return true},ascend(){this.path=this.path.slice(0,-1);return true}};
+ const a=load(source,field),projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),built=a.buildRecords(projection,a.fieldProjection(projection).root),identities=a.identityIndex(projection),parents=a.parentIndex(projection),body=built.records.find(r=>r.locus.length===1&&identities.get(r.id).kind==='source'),other=built.records.find(r=>r.id!==body.id);
+ const rect={left:0,top:0,width,height,right:width,bottom:height},target='organism:papers|overview|'+encodeURIComponent(body.id),lock={id:target,kind:'body'},point={x:width/2,y:height/2,r:10},drop={x:point.x,y:point.y,hx:50,hy:50,r:50,round:1,lock};
+ const s={mounted:true,host:{hidden:false},canvas:{dataset:{},getBoundingClientRect:()=>rect},textCanvas:{getBoundingClientRect:()=>rect},label:{classList:{add(){},remove(){}}},structure:built.structure,records:[other,body],recordById:new Map([[other.id,other],[body.id,body]]),identities,parents,renderer:{V0},current:null,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},orgSim:{bodies:new Map([[other.id,{p:[0,0,0]}],[body.id,{p:[0,0,0]}]])},overviewContacts:new Map([[target,{id:target,kind:'overview',key:body.id,point,rect}]])};
+ a.setState(s);a.setLens(()=>drop);a.setLensAPI({snapshot:()=>({lens:drop})});
+ assert.equal(a.hitGlobal(point.x,point.y,width,height,1),body.id,'locked real contact beats an overlapping earlier neighbour');
+ assert.equal(a.hitGlobal(0,0,width,height,1),'','outside the drop cannot select a body');
+ s.overviewContacts.get(target).point=null;assert.equal(a.hitGlobal(point.x,point.y,width,height,1),'','an unprojected offered body remains pending, never selects its neighbour');
+ s.overviewContacts.get(target).point=point;s.recordById.delete(body.id);assert.equal(a.hitGlobal(point.x,point.y,width,height,1),'','a removed identity cannot be selected');s.recordById.set(body.id,body);
+ const found=a.hitGlobal(point.x,point.y,width,height,1);assert(a.enterOverviewTarget(found,width,100));assert.equal(s.chamberPath,body.locus);assert.equal(s.current,null,'root follows the real chamber before entering');assert.equal(lock.id,target);
+ assert(a.enterOverviewTarget(a.hitGlobal(point.x,point.y,width,height,101),width,101));assert.equal(s.current.id,body.id);assert.equal(s.lensBodyId,target,'chamber entry preserves the same source identity');
+ s.transition=1;s.inner={kind:'edge',key:'wx'};s.lensParts=new Map([['edge',{id:'edge',kind:'edge',key:'wx',text:'actual tissue',point}]]);
+ assert.equal(a.livePaperLensPart(target).text,'actual tissue');assert.equal(s.current.id,body.id);assert.equal(lock.id,target,'inquiry selection retains contacted body identity');
+ s.current=null;s.chamberPath='';field.path='';a.setLens(()=>null);assert.equal(a.hitGlobal(point.x,point.y,width,height,102),other.id,'without a lock ordinary projected geometry is unchanged');
+ console.log('Papers projected contact beats overlap; root/chamber/inquiry identity, outside and pending refusal PASS',width,height);
+}
+
+/* Canvas2D honors the same near plane as the real shared camera. */
+{
+ const a=load(),clip=(p,closed=true)=>clone(a.clipCameraPlane(p,3.2,.1,closed));
+ assert.deepEqual(clip([[0,0,3.2],[1,0,3.3],[0,1,4]]),[],'fully behind near plane is not drawn');
+ const tri=clip([[0,0,2.9],[1,0,3.3],[0,1,3.3]]);assert.equal(tri.length,3);assert(tri.every(p=>3.2-p[2]>=.1-1e-12));assert(tri.some(p=>Math.abs(p[2]-3.1)<1e-12));
+ const line=clip([[0,0,2.9],[1,0,3.3]],false);assert.equal(line.length,2);assert(Math.abs(line[1][2]-3.1)<1e-12);assert.deepEqual(clip([[0,0,3.2],[1,0,3.3]],false),[]);
+ const events=[],ctx={save(){},restore(){},setTransform(){},beginPath(){},moveTo(x,y){events.push(['move',x,y])},lineTo(x,y){events.push(['line',x,y])},closePath(){},fill(){events.push(['fill'])},stroke(){},arc(){}};
+ const canvas={width:800,height:600,clientWidth:800,clientHeight:600,getContext:()=>ctx,getBoundingClientRect:()=>({width:800,height:600})};a.setState({sharedFrame:{scale:1}});const renderer=a.createFlatRenderer(canvas);
+ renderer.draw([{center:[0,0,5],scale:.1,color:[1,1,1,1]}],[1,0,0,0],[0,0,0],null,null);assert.equal(events.length,0,'behind-camera tetrahedron paints no faces or edges');
+ renderer.draw([{center:[0,0,3.08],scale:.2,color:[1,1,1,1]}],[1,0,0,0],[0,0,0],null,null);assert(events.length&&events.every(e=>e.slice(1).every(Number.isFinite)),'crossing geometry clips to finite actual near-plane projection');
+ console.log('Papers Canvas2D camera-near clipping of actual faces, edges and behind-camera geometry PASS');
 }
