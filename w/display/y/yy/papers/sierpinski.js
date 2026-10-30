@@ -58,15 +58,7 @@ const EDGE=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 const shader=Object.freeze({
   id:'shader:organism:papers',
   composite:()=>state?.mounted?[state.textCanvas,...(state.tissueLive?[state.tissueCanvas]:[])]:null,
-  focus:()=>{
-    if(!state?.mounted)return null;
-    if(state.current)return !state.closing?{center:[0,0,0],scale:FAR_Z/state.current.cameraTo,stiffness:6}:null;
-    const L=globalThis.SSSDisplayLens?.snapshot?.()?.lens,part=L?.lock?.kind==='body'?state.overviewContacts?.get(L.lock.id):null,rec=part&&state.recordById?.get(part.key),rect=rec&&state.canvas.getBoundingClientRect();
-    if(!rec||!rect?.height)return null;
-    const diameter=2*Math.max(L.hx||L.r||0,L.hy||L.r||0),base=projectedPixels(rootBodyScaleFor(rec,rect.width),FAR_Z,rect.height);
-    if(!(diameter>0&&base>0))return null;
-    return {center:[...overviewDriftPoint(rec)],scale:Math.max(chamberFocus().scale,diameter/base),id:rec.id,attached:true,stiffness:3};
-  },
+  focus:()=>state?.mounted&&state.current&&!state.closing?{center:[0,0,0],scale:FAR_Z/state.current.cameraTo,stiffness:6}:null,
   afterDraw:frame=>draw(frame.ms,frame),
   clear:[0,0,0,0],
   fallbackAlpha:0,
@@ -299,6 +291,25 @@ function overviewWorldPoint(point,width){const focus=inquiryFrameFocus();return 
 function overviewCenterFor(entity,width,now=performance.now()){return overviewWorldPoint(overviewDriftPoint(entity,now),width)}
 function overviewBodyScaleFor(entity,width){return bodyScaleFor(entity)*overviewTransformScale(width)}
 function rootBodyScaleFor(entity,width){return bodyScaleFor(entity)*rootFieldScale(width)}
+/* Only the contacted body's projection approaches the lens. Its source scale,
+ * drifting physical center, and the enclosing field camera remain unchanged. */
+function updateOverviewApproach(now){
+  if(!state||state.current)return;
+  const L=globalThis.SSSDisplayLens?.snapshot?.()?.lens,part=L?.lock?.kind==='body'?state.overviewContacts?.get(L.lock.id):null,rec=part&&state.recordById?.get(part.key);
+  let a=state.overviewApproach;if(rec&&(!a||a.id!==rec.id))a=state.overviewApproach={id:rec.id,amount:0,last:now};
+  if(!a)return;
+  const dt=Math.min(.05,Math.max(0,(now-a.last)/1000));a.last=now;
+  a.amount=mix(a.amount,rec?.id===a.id?1:0,1-Math.exp(-5*dt));
+  if(rec?.id===a.id)a.diameter=2*Math.max(L.hx||L.r||0,L.hy||L.r||0);
+  if(!rec&&a.amount<.001)state.overviewApproach=null;
+}
+function overviewBodyProjection(rec,rect,now=performance.now()){
+  const center=overviewCenterFor(rec,rect.width,now),base=overviewBodyScaleFor(rec,rect.width),a=state?.overviewApproach;
+  if(!a||a.id!==rec.id||!(rect.height>0&&a.diameter>0))return {center,scale:base};
+  const depth=cameraZ()-qRot(overviewOrientation(),center)[2];if(!(depth>0))return {center,scale:base};
+  const wanted=a.diameter*depth*Math.tan(FOV/2)/rect.height;
+  return {center,scale:mix(base,Math.max(base,wanted),a.amount)};
+}
 function cameraForScale(scale){return Math.max(MIN_MACRO_Z,scale/MACRO_FILL)}
 function setBackgroundPassage(target,now=performance.now()){
   if(!state)return;
@@ -933,7 +944,7 @@ function syncOverviewLens(rect,now){
  }
  const q=overviewOrientation(),contacts=new Map();
  for(const rec of state.records){
-  const target=id+'|overview|'+encodeURIComponent(rec.id),center=overviewCenterFor(rec,rect.width,now),point=projectPoint(center,q,cameraZ(),rect.width,rect.height),rotated=qRot(q,center),r=clamp(projectedPixels(overviewBodyScaleFor(rec,rect.width),cameraZ()-rotated[2],rect.height)*.55,10,48);
+  const target=id+'|overview|'+encodeURIComponent(rec.id),{center,scale}=overviewBodyProjection(rec,rect,now),point=projectPoint(center,q,cameraZ(),rect.width,rect.height),rotated=qRot(q,center),r=clamp(projectedPixels(scale,cameraZ()-rotated[2],rect.height)*.55,10,48);
   const present=Number.isFinite(point.x)&&Number.isFinite(point.y)&&cameraZ()>rotated[2]&&point.x+r>=0&&point.x-r<=rect.width&&point.y+r>=0&&point.y-r<=rect.height;
   const entity=state.identities.get(rec.id),text=rec.id+' · '+String(entity?.title||rec.title||'').trim();
   contacts.set(target,{id:target,key:rec.id,kind:'overview',text,point:present?{x:point.x,y:point.y,r}:null,rect});
@@ -945,7 +956,7 @@ function syncOverviewLens(rect,now){
 function drawOverviewForeground(part,frame){
  const f=state.overviewRender,rec=state.recordById?.get(part.key);
  if(!f||!rec||!frame.gl||state.renderer?.gl!==frame.gl)return false;
- const center=overviewCenterFor(rec,f.rect.width,f.ms),scale=overviewBodyScaleFor(rec,f.rect.width),leaves=[],lights=[];
+ const {center,scale}=overviewBodyProjection(rec,f.rect,f.ms),leaves=[],lights=[];
  collectVisibleBody(rec.id,center,scale,f.rect.width,f.rect.height,f.cam,f.q,leaves,lights);
  state.renderer.draw(leaves,f.q,[0,0,0],f.proj,f.view,{faces:true});state.renderer.drawLights(lights,f.q,[0,0,0],f.proj,f.view,f.ms*.001,f.dpr,OVERVIEW_LIGHT_GAIN);return true;
 }
@@ -1314,7 +1325,7 @@ function populationBodies(width,height,bodyFade=1,lightFade=bodyFade,now=perform
   const leaves=[],lights=[],cull=Boolean(state.current)||inquiryFrameFocus().scale!==1||Boolean(state.sharedFrame?.scale!==undefined&&state.sharedFrame.scale!==1),q=overviewOrientation();let considered=0;
   for(const rec of state.records){
     if(rec.id===state.current?.id)continue;
-    const center=overviewCenterFor(rec,width,now),scale=overviewBodyScaleFor(rec,width);
+    const {center,scale}=overviewBodyProjection(rec,{width,height},now);
     if(cull&&!populationInView(center,scale,width,height,cameraZ,q))continue;
     considered++;
     if(state.sharedFrame)collectVisibleBody(rec.id,center,scale,width,height,cameraZ,q,leaves,lights);
@@ -1378,9 +1389,10 @@ function openGlobal(id,width,now=performance.now()){
   const locked=globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id,bodyTarget='organism:papers|overview|'+encodeURIComponent(id);
   state.lensBodyId=locked===bodyTarget?bodyTarget:null;state.lensBodyOrganism=state.lensBodyId?id:null;
   const overviewWidth=Number(width)||state?.canvas?.getBoundingClientRect().width||innerWidth;
+  const entryScale=overviewBodyProjection(rec,{width:overviewWidth,height:state.canvas.getBoundingClientRect().height},now).scale;
   const scale=rootBodyScaleFor(rec,overviewWidth);
   state.stack=[];
-  state.current={id,scale,sourceLocal:[...overviewCenterFor(rec,overviewWidth,now)],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
+  state.current={id,scale,entryScale,sourceLocal:[...overviewCenterFor(rec,overviewWidth,now)],entryWorld:null,cameraFrom:FAR_Z,cameraTo:cameraForScale(scale),globalSource:true};
   state.localQ=[...overviewOrientation()];state.transition=0;state.closing=false;state.transitionStart=now;setBackgroundPassage(1,now);setLabel(id);return true;
 }
 function descend(child,now=performance.now()){
@@ -1418,7 +1430,7 @@ function draw(now,frame){
   state.sharedFrame=frame.frame;state.chamberPath=frame.container;state.chamberFocus=frame.frame;
   if(!state.renderer||state.renderer.gl!==frame.gl){state.renderer?.dispose();state.renderer=frame.gl?createRenderer(state.canvas,frame.gl):createFlatRenderer(state.canvas);}
   if(!state.renderer)return;
-  tutorialStep(now);updateTransition(now);updateBackgroundPassage(now);driftOrganisms(now);if(state.current&&state.beingTargetQ&&!state.pointer?.moved)state.localQ=beingSlerp(state.localQ,state.beingTargetQ,.075);
+  tutorialStep(now);updateTransition(now);updateBackgroundPassage(now);driftOrganisms(now);updateOverviewApproach(now);if(state.current&&state.beingTargetQ&&!state.pointer?.moved)state.localQ=beingSlerp(state.localQ,state.beingTargetQ,.075);
   const rect=state.canvas.getBoundingClientRect(),d=frame.dpr,cam=cameraZ(),overviewQ=overviewOrientation(),passage=backgroundPassage();
   const proj=frame.proj,view=new Float32Array(frame.view);for(let col=0;col<3;col++)for(let row=0;row<4;row++)view[col*4+row]*=frame.frame.scale;
   /* Papers is an independent body floating inside Philosophy Inquiry-space.
@@ -1432,10 +1444,11 @@ function draw(now,frame){
   state.renderer.drawLights(population.lights,overviewQ,[0,0,0],proj,view,now*.001,d,OVERVIEW_LIGHT_GAIN);
   let metaboliteCount=0,organismEmberCount=0,metabolights=[],translate=[0,0,0];
   if(state.current){
-    const tree=[],embers=[];collectBody(state.current.id,[0,0,0],state.current.scale,cam,rect.height,tree,embers);for(const x of tree)x.color[3]*=.3+.7*state.transition;
+    const displayScale=state.current.globalSource?mix(state.current.entryScale??state.current.scale,state.current.scale,state.transition):state.current.scale;
+    const tree=[],embers=[];collectBody(state.current.id,[0,0,0],displayScale,cam,rect.height,tree,embers);for(const x of tree)x.color[3]*=.3+.7*state.transition;
     const structuralEmbers=embers.filter(x=>x.id!==state.current.id);for(const x of structuralEmbers)x.color[3]*=.18+.42*state.transition;
     translate=currentTranslation();state.renderer.draw(tree,state.localQ,translate,proj,view,{faces:true});
-    state.renderer.draw([{center:[0,0,0],scale:state.current.scale,color:[.88,1,.92,state.being?.14:.82]}],state.localQ,translate,proj,view,{faces:false});
+    state.renderer.draw([{center:[0,0,0],scale:displayScale,color:[.88,1,.92,state.being?.14:.82]}],state.localQ,translate,proj,view,{faces:false});
     state.renderer.drawLights(structuralEmbers,state.localQ,translate,proj,view,now*.001,d,INQUIRY_EMBER_GAIN);
     const entity=state.identities.get(state.current.id);metabolights=metaboliteRepel(entity.id,metaboliteField(entity,state.current,cam,rect.height,now),state.current.scale*METABOLITE_FIELD_SCALE,now);const recede=state.beingRecede||0,metOpen=state.inner?.kind==='met'||state.beingPeek?.kind==='met';for(const x of metabolights)x.color[3]*=state.transition*(metOpen?1:1-.85*recede);
     state.renderer.drawLights(metabolights,state.localQ,translate,proj,view,now*.001,d,METABOLITE_LIGHT_GAIN);
@@ -1455,7 +1468,7 @@ function draw(now,frame){
 let lensAccess=null;
 function lensLocal(rect){const L=lensAccess?.();if(!L||!rect)return null;return {...L,x:L.x-(rect.left||0),y:L.y-(rect.top||0)}}
 function inLens(L,x,y,pad=0){if(!L)return true;if(L.round===0&&Number.isFinite(L.hx)&&Number.isFinite(L.hy)){const r=Math.min(L.corner||0,L.hx,L.hy),dx=Math.max(0,Math.abs(x-L.x)-L.hx+r),dy=Math.max(0,Math.abs(y-L.y)-L.hy+r);return Math.hypot(dx,dy)<=r+pad}return Math.hypot(x-L.x,y-L.y)<=L.r+pad}
-function hitGlobal(x,y,width,height,now=performance.now()){if(!inLens(lensLocal(state.canvas.getBoundingClientRect()),x,y))return '';let best=null;const q=overviewOrientation();for(const rec of state.records){const p=projectPoint(overviewCenterFor(rec,width,now),q,cameraZ(),width,height),px=projectedPixels(overviewBodyScaleFor(rec,width),cameraZ(),height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
+function hitGlobal(x,y,width,height,now=performance.now()){if(!inLens(lensLocal(state.canvas.getBoundingClientRect()),x,y))return '';let best=null;const q=overviewOrientation();for(const rec of state.records){const {center,scale}=overviewBodyProjection(rec,{width,height},now),p=projectPoint(center,q,cameraZ(),width,height),px=projectedPixels(scale,cameraZ(),height),radius=clamp(px*.55,10,48),dist=Math.hypot(x-p.x,y-p.y);if(dist<radius&&(!best||dist<best.dist))best={id:rec.id,dist}}return best?.id||''}
 function hitChild(x,y,width,height){
   if(!state.current||state.transition<.82)return '';const cam=cameraZ(),translate=currentTranslation(),inv=[state.localQ[0],-state.localQ[1],-state.localQ[2],-state.localQ[3]];let best=null;
   /* projectPoint rotates its input before perspective. Pull the world translation

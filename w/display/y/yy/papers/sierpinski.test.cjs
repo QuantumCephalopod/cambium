@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
 function load(text=source,field=null){
   const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,overviewBodyProjection,updateOverviewApproach,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -243,8 +243,9 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
   const home={id:'home',kind:'hud',layer:'hud',cx:width/2,cy:height-30,hx:60,hy:30},view={w:width+20,h:height+40},drop=Lens.create(home,view);
   const bridge={...Lens,snapshot:()=>({lens:{...Lens.geometry(drop,null),lock:drop.lock}})};a.setState(s);a.setLensAPI(bridge);a.syncOverviewLens(box,1000);
   const target=Lens.resolveTargets().find(t=>t.id.endsWith(encodeURIComponent(rec.id)));assert(target);Lens.lockTo(drop,target);
-  const focus=a.shader.focus();assert(focus&&focus.attached&&focus.id===rec.id&&focus.scale>0,'focus follows the actual contacted identity');
-  assert(a.openGlobal(rec.id,width,1100));a.syncOverviewLens(box,1110);assert.equal(s.lensBodyId,target.id);assert(Lens.resolveTargets().some(t=>t.id===target.id));
+  const original=a.overviewBodyProjection(rec,box,1000),truth=JSON.stringify(rec);a.updateOverviewApproach(1000);for(let i=1;i<=90;i++)a.updateOverviewApproach(1000+i*16);
+  const approached=a.overviewBodyProjection(rec,box,2440);assert(approached.scale>original.scale,'contacted body grows perceptually into the drop');assert.deepEqual(clone(approached.center),clone(original.center));assert.equal(a.shader.focus(),null,'overview approach does not zoom the enclosing field');assert.equal(JSON.stringify(rec),truth,'source body and its physical state remain unchanged');
+  assert(a.openGlobal(rec.id,width,2440));assert.equal(s.current.entryScale,approached.scale,'entry begins with the same drawn body extent');a.syncOverviewLens(box,2450);assert.equal(s.lensBodyId,target.id);assert(Lens.resolveTargets().some(t=>t.id===target.id));
   for(let frame=0;frame<10;frame++)Lens.step(drop,home,1/60,view,null,Lens.resolveTargets(target.id).find(t=>t.id===target.id));
   assert.equal(drop.lock.id,target.id,'entry retained same body lock');
   s.inner={kind:'edge',key:'wx'};s.lensParts=new Map([['part',{id:'part',kind:'edge',key:'wx',text:'authored edge',point:{x:90,y:120}}]]);
@@ -253,7 +254,7 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
   assert(Lens.resolveTargets(target.id).find(t=>t.id===target.id).pending);
   s.current=null;s.inner=null;a.syncOverviewLens(box,2000);assert(Lens.resolveTargets().some(t=>t.id===target.id));a.withdrawOverviewLens();
  }
- console.log('Papers actual Source/Holon body-lock focus, entry identity, tissue selection and pending contact PASS');
+ console.log('Papers actual Source/Holon projected approach, entry identity, tissue selection and pending contact PASS');
 }
 
 /* A slow drop must settle on the real reading before the next tour step. */

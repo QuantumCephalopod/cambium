@@ -47,7 +47,11 @@ def contacted_body(page,kind):
    return target
  raise AssertionError(f'no actual {kind} acquired by the visitor drop')
 def manual_case(page,kind,width):
+ field=page.locator('.papers-sierpinski-stage');before=float(field.get_attribute('data-chamber-scale'))
  target=contacted_body(page,kind);body=page.evaluate('(x)=>decodeURIComponent(x.split("|").at(-1))',target)
+ page.wait_for_timeout(1000);after=float(field.get_attribute('data-chamber-scale'))
+ assert abs(after-before)<.05,(kind,'contact zoomed the surrounding field',before,after)
+ page.screenshot(path=str(a.out/f'{kind}-{width}-approach.png'))
  # A chamber is entered first when the body's actual locus is below overview.
  # Every click targets the moving live drop/body; no navigation state is set.
  for _ in range(5):
@@ -81,6 +85,11 @@ def guided_case(page,width):
  assert evidence['wisdom']['lensReading'].endswith(encode(evidence['tour']['specimen']))
  assert evidence['lens']['lock']['kind']=='body'
  page.screenshot(path=str(a.out/f'guided-{width}.png'))
+ assert page.locator('#mini').get_attribute('data-aperture')=='open'
+ page.locator('#mini-trigger').focus();page.keyboard.press('Escape')
+ assert page.locator('#mini').get_attribute('data-aperture')=='closed','focused navigator did not receive its own Escape'
+ assert page.get_by_role('button',name='RETURN TO MY VIEW',exact=True).is_visible(),'navigator Escape interrupted the site-local guide'
+ assert (lens(page).get('lock') or {}).get('kind')=='body','navigator Escape lost the active body lock'
  page.get_by_role('button',name='RETURN TO MY VIEW',exact=True).click()
  page.wait_for_function('!document.querySelector(".papers-sierpinski-stage")?.dataset.currentRank',timeout=30000)
  page.wait_for_function('''old=>{const l=SSSDisplayLens.snapshot()?.lens;return l&&l.docked===old.docked&&l.homeId===old.homeId&&Math.hypot(l.x-old.x,l.y-old.y)<2}''',arg=prior,timeout=15000)
