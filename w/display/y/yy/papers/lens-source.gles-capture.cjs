@@ -3,9 +3,9 @@
  * a browser: Skia measures the real face; pinned Pretext and production tissue run. */
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),{pathToFileURL}=require('node:url');
 const {createCanvas,GlobalFonts}=require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'@napi-rs/canvas'));
-assert(GlobalFonts.registerFromPath(path.join(__dirname,'../../../w/spritesheet/SpriteSheet-Mono.ttf'),'SpriteSheet Mono'));
+assert(GlobalFonts.registerFromPath(path.join(__dirname,'../../../w/wx/spritesheet/SpriteSheet-Mono.ttf'),'SpriteSheet Mono'));
 global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};global.document={createElement:()=>createCanvas(1,1)};
-const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),Type=require('../../../w/display-type.js'),Tissue=require('../../../w/display-text-tissue.js'),N=require('../../../z/zw/navigation-physiology.js');
+const {gl,commands}=require('../../../w/wy/gles-transport.cjs').createTransport(),Type=require('../../../w/wx/display-type.js'),Tissue=require('../../../w/ww/display-text-tissue.js'),N=require('../../../z/zw/navigation-physiology.js');
 const [width=390,height=844]=process.argv.slice(2).map(Number),box={left:0,top:0,width,height,right:width,bottom:height},canvas=createCanvas(width,height);canvas.dataset={};canvas.getBoundingClientRect=()=>box;
 const projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),bodies=Object.fromEntries(fs.readdirSync(path.join(__dirname,'inquiry')).filter(x=>x.endsWith('.json')).map(f=>[f.slice(0,-5),JSON.parse(fs.readFileSync(path.join(__dirname,'inquiry',f)))]));
 const context={console,performance,Map,Set,Intl,Float32Array,document:{createElement:()=>createCanvas(1,1)},SSSDisplayType:Type,SSSDisplayNavigation:N,SSSWorldView:{orientation:[1,0,0,0]},SSSInterlocutorModules:new Map()};
@@ -13,7 +13,7 @@ const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8').replac
 const paragraph={textContent:''},small={textContent:''},state={mounted:true,host:{hidden:false,getBoundingClientRect:()=>box},transition:1,ui:{carrier:{x:0,y:60,w:width,h:height-60}},textCanvas:canvas,wisdomPrepared:new Map(),inquiryBodies:bodies,identities:api.identityIndex(projection),parents:api.parentIndex(projection),renderer:{V0:N.V0},lensReader:{dataset:{},querySelector:k=>k==='p'?paragraph:small},tissueLetters:[]};api.setState(state);
 const tissue=Tissue.create({getContext:()=>gl}),audits=[],frames=[],kinds=new Set();
 (async()=>{
- api.setPretext(await import(pathToFileURL(path.join(__dirname,'../../../w/pretext/layout.js')).href));
+ api.setPretext(await import(pathToFileURL(path.join(__dirname,'../../../w/wx/pretext/layout.js')).href));
  for(const [id,body]of Object.entries(bodies)){
   state.current={id};const entity={id,kind:'holon'},B=api.ensureBeing(entity,width),G={P:[{x:width*.2,y:height*.3},{x:width*.8,y:height*.3},{x:width*.5,y:height*.7},{x:width*.5,y:height*.5}],front:Object.fromEntries(B.faces.map(f=>[f.key,true])),mets:(body.metabolites||[]).map(m=>({id:m.id,x:width/2,y:height/2,light:{metabolite:m}}))};
   for(const part of api.paperLensParts(B,G).values()){

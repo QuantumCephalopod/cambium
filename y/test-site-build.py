@@ -213,9 +213,9 @@ def integration(body, capabilities):
     def publication_fixture(self):
         """Use the production template and real owner hook with small local assets."""
         from unittest.mock import patch
-        template = self.saved[1] / 'w' / 'template.html'
-        target = build.DISPLAY / 'w' / 'template.html'
-        target.parent.mkdir(exist_ok=True)
+        template = self.saved[1] / 'w'/'wz'/'template.html'
+        target = build.DISPLAY / 'w'/'wz'/'template.html'
+        target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(template.read_bytes())
         dependencies = patch.object(build, 'display_dependencies', return_value={})
         dependencies.start(); self.addCleanup(dependencies.stop)

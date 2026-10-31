@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.66"
+version: "3.67"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -31,6 +31,17 @@ Display has differentiated into one complete local tetrahedral 4V:
 - `y · Population` — actual page-organisms physically admitted into global site-space.
 
 `INDEX.yaml` carries these four atomic nouns and `_cambium.yaml` closes their `4V/6E/4F/1T` relation. The `w/x/z/y` directories carry all active functional tissue. After differentiation the Display root contains only canonical shell/receptors/constitution plus those four child addresses; there is no shared fifth functional layer.
+
+## Embodiment's current finer anatomy
+
+`w · Embodiment` has differentiated within Display's existing address space:
+`ww · Material` generates bodily coverage and glyph tissue; `wx · Type` carries
+source-faithful letterforms, words, ink and the visible sign; `wz · Layout` governs
+containing surfaces and canonical UI geometry; `wy · Field` actualizes the shared
+interactive local world and its context-owned resources. Display's `INDEX.yaml`
+and `w/_cambium.yaml` carry current phenotype and closure. No independent root is
+introduced. Companion witnesses follow their tissue; shared witness capabilities
+retain one actual owner and explicit current dependencies.
 
 ## Orientation's current finer anatomy
 
@@ -200,11 +211,11 @@ Display realizes the shared Cambium distinction:
 
 Consumers bind to stable identity/capability, never to the current semantic address or repository path. `y/build.py` reacquires current Display `INDEX.yaml`, traverses only realized Display loci, inspects direct occupants there, and derives a public dependency projection. Traversal does not recursively crawl arbitrary folders and does not cross site-holon/independent-organism membranes. Runtime hands each site renderer one neutral `dependency(identity, member)` resolver; site-local code never needs to know whether the foreign body currently lives at `w`, a later descendant, or another lawfully regrown Display locus.
 
-Current first realization: the intact `@chenglou/pretext` 0.0.9 body lives directly in unsplit `w · Embodiment`. Its native `VERSION.json` is the current identity witness. This does **not** split Embodiment and does not make Pretext a Display semantic vertex. If Embodiment later differentiates under real pressure, Cambium may move the same foreign identity to whichever earned child then accounts for it; the derived dependency projection changes while consumers remain unchanged.
+Current custody: the intact `@chenglou/pretext` 0.0.9 body inhabits `wx · Type` inside differentiated Embodiment. Its native `VERSION.json` remains the identity witness. The whole body follows its earned host locus without changing its interior or becoming a Display semantic vertex; derived dependency resolution preserves consumers across that custody change.
 
 ### Type is body
 
-Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 3.0.1), an intact body at unsplit `w · Embodiment` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v3 build is the main type for both Display font tokens, with 1200 units per em; every glyph sits centred in one fixed 1200-unit cell, and fixed width is part of the face's identity. The supplied alphabet includes A–Z, lowercase aliases, digits 0–9, Ä/Ö/Ü with lowercase aliases, and spaces. Supported umlauts retain their spelling; decomposed umlauts normalize to the supplied composed glyphs. Unsupported sharp-s still becomes ss/SS through `w/display-type.js`; punctuation uses ordinary per-glyph family fallback. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
+Display speaks in one main face: Philipp's **SpriteSheet** (`@sss/spritesheet` package 3.0.1), an intact body at `wx · Type` beside Pretext, resolved by its `VERSION.json` identity like any hosted body. Its supplied Mono v3 build is the main type for both Display font tokens, with 1200 units per em; every glyph sits centred in one fixed 1200-unit cell, and fixed width is part of the face's identity. The supplied alphabet includes A–Z, lowercase aliases, digits 0–9, Ä/Ö/Ü with lowercase aliases, and spaces. Supported umlauts retain their spelling; decomposed umlauts normalize to the supplied composed glyphs. Unsupported sharp-s still becomes ss/SS through `w/wx/display-type.js`; punctuation uses ordinary per-glyph family fallback. A subtree keeps its own spelling with `data-type-fold="off"`. The existing Regular build remains unchanged at 1.0.1. Site-holons inherit the face unless their own style says otherwise.
 
 Entry-copy scale belongs to the site's actual mounted content class, not an obsolete carrier selector. The overview introduction remains secondary to the field, with bounded responsive type and a width tied to its real panel. Mono v3 supplies zero in the same fixed cell as its other glyphs, so `ch` now measures that supplied cell rather than a fallback zero. Typography does not alter semantic labels, camera, body geometry or navigation.
 
@@ -218,7 +229,7 @@ Two adjacent rank steps recover one exact octave. The browser/user owns `1rem`; 
 
 The same relation is carried across rendering substrates:
 - CSS exposes the shared ranks as `--type-rn4 … --type-rp4`;
-- `w/display-type.js` exposes the same mathematical rank factor and derives Canvas/Pretext pixels from the **computed** root `rem`;
+- `w/wx/display-type.js` exposes the same mathematical rank factor and derives Canvas/Pretext pixels from the **computed** root `rem`;
 - DOM, Canvas and Pretext consumers choose ranks from that one relation rather than maintaining a parallel pixel scale;
 - standalone public apertures realize the same relation locally and are not forced to import Display-internal CSS.
 
@@ -226,11 +237,11 @@ Site-holons retain local typographic sovereignty: they choose which ranks they u
 
 A non-lattice size is admissible only when concrete local functional pressure requires that exact exception; convenience or inherited arbitrary pixels do not create a second size ontology.
 
-Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
+Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/ww/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
 
 ### Authored text on the common body
 
-`w/tetra-text.js` is a neutral text material earned by two independent consumers. It borrows canonical vertices and the existing orthographic camera/matrices; its UVs project the caller's complete authored blocks onto the four actual faces. Pinned Pretext and the computed rank-zero SpriteSheet face retain the whole source in continuous line ranges. Only the current reading window is rasterized at the actual carrier density. Idle frames and orientation changes reuse that raster and upload; context-local textures, VAOs and programs retire with the material. Canvas2D projects and clips the same face triangles; it does not claim WebGL execution.
+`w/wx/tetra-text.js` is a neutral text material earned by two independent consumers. It borrows canonical vertices and the existing orthographic camera/matrices; its UVs project the caller's complete authored blocks onto the four actual faces. Pinned Pretext and the computed rank-zero SpriteSheet face retain the whole source in continuous line ranges. Only the current reading window is rasterized at the actual carrier density. Idle frames and orientation changes reuse that raster and upload; context-local textures, VAOs and programs retire with the material. Canvas2D projects and clips the same face triangles; it does not claim WebGL execution.
 
 Meaning, source extraction, languages, links, sections, controls and native scroll input remain caller-owned. The material lends complete lines, measured section offsets, a continuous offset and the maximum reading extent, including room to bring the last section to the top. Exact occupied rectangles may bound reading ink without changing the body's geometry or creating a second camera. No source identity, route, factual schema or document wording belongs here. Test evidence distinguishes source equality, usable browser interaction and actual shader/font pixels.
 
@@ -249,7 +260,7 @@ Display projects site-holon screen-space UI through one normalized recursive fou
 - this law governs **screen-space presentation placement**. World/body geometry remains in its native frame: tetrahedral canvases, chamber/body labels, mounted-site markers, beings and other geometry whose position is derived from organism/world coordinates are not reminted as UI-grid addresses;
 - global Display-owned cross-site membrane surfaces remain Display tissue rather than being assigned to an arbitrary site's local grid.
 
-First witness: `w/ui-grid.js` owns the pure address/state physiology (`sss.display.ui-grid.v2`), while `w/ui-grid-lab.html` and the supplied direct-manipulation specimen are specimen-agnostic actuators/evidence. The lab is not a site-holon or semantic split. `site.json` v2 carries the site's own `ui_grid` member; the generic runtime hands renderers a neutral field binder and never names current specimens or their local field IDs.
+First witness: `w/wz/ui-grid.js` owns the pure address/state physiology (`sss.display.ui-grid.v2`), while `w/wz/ui-grid-lab.html` and the supplied direct-manipulation specimen are specimen-agnostic actuators/evidence. The lab is not a site-holon or semantic split. `site.json` v2 carries the site's own `ui_grid` member; the generic runtime hands renderers a neutral field binder and never names current specimens or their local field IDs.
 
 ### Acknowledged live circulation — delta recurs before snapshot
 

@@ -7,7 +7,7 @@ browser/device FPS. EGL replays the actual production shaders and source font.
 """
 import importlib.util,json,subprocess
 from pathlib import Path
-here=Path(__file__).resolve();spec=importlib.util.spec_from_file_location('gles',here.parents[3]/'w'/'locus-shader.gles.test.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+here=Path(__file__).resolve();spec=importlib.util.spec_from_file_location('gles',here.parents[3]/'w'/'wy'/'locus-shader.gles.test.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 results=[]
 for w,h in [(390,844),(1280,800)]:
  data=json.loads(subprocess.check_output(['node',str(here.with_name('field-frame.gles-capture.cjs')),str(w),str(h)],text=True))

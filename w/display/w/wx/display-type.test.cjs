@@ -11,7 +11,7 @@ for(let r=-8;r<=8;r++)assert.ok(Math.abs(T.rankFactor(r+2)/T.rankFactor(r)-2)<1e
 const mock={documentElement:{},defaultView:{getComputedStyle:()=>({fontSize:'20px'})}};
 assert.strictEqual(T.rootRemPx(mock),20,'browser/user root rem must remain the live root');
 assert.ok(Math.abs(T.rankPx(-1,mock)-20/Math.SQRT2)<1e-12);
-const css=fs.readFileSync(path.join(__dirname,'root-view.css'),'utf8');
+const css=fs.readFileSync(path.join(__dirname,'../wz/root-view.css'),'utf8');
 for(let r=-4;r<=4;r++){
   const m=css.match(new RegExp(T.rankVar(r)+':([\\d.]+)rem'));
   assert.ok(m,`missing CSS rank ${r}`);
@@ -19,10 +19,10 @@ for(let r=-4;r<=4;r++){
 }
 const htmlBody=(css.match(/html,body\{([^}]*)\}/)||[])[1]||'';
 assert.ok(!/font-size\s*:/.test(htmlBody),'Display must not force browser/user root font size');
-const displayRoot=path.join(__dirname,'..');
-const owners=require('./site-witness.cjs').discoverSites();
+const displayRoot=path.join(__dirname,'../..');
+const owners=require('../wy/site-witness.cjs').discoverSites();
 const rankedCss=[
-  ...['w/root-view.css','w/interlocutors.css','z/zy/site-runtime.css','z/zz/navigation-aperture.css'].map(file=>path.join(displayRoot,file)),
+  ...['w/wz/root-view.css','w/wz/interlocutors.css','z/zy/site-runtime.css','z/zz/navigation-aperture.css'].map(file=>path.join(displayRoot,file)),
   ...[...owners.values()].map(owner=>owner.file('style'))
 ];
 const arbitrary=/font(?:-size)?\s*:[^;}]*?(?:\d+(?:\.\d+)?(?:px|rem)|clamp\()/i;
