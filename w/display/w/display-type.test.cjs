@@ -22,7 +22,7 @@ assert.ok(!/font-size\s*:/.test(htmlBody),'Display must not force browser/user r
 const displayRoot=path.join(__dirname,'..');
 const owners=require('./site-witness.cjs').discoverSites();
 const rankedCss=[
-  ...['w/root-view.css','w/interlocutors.css','z/site-runtime.css','z/navigation-aperture.css'].map(file=>path.join(displayRoot,file)),
+  ...['w/root-view.css','w/interlocutors.css','z/zy/site-runtime.css','z/zz/navigation-aperture.css'].map(file=>path.join(displayRoot,file)),
   ...[...owners.values()].map(owner=>owner.file('style'))
 ];
 const arbitrary=/font(?:-size)?\s*:[^;}]*?(?:\d+(?:\.\d+)?(?:px|rem)|clamp\()/i;
@@ -30,7 +30,7 @@ for(const rel of rankedCss){
   const source=fs.readFileSync(rel,'utf8');
   assert.ok(!arbitrary.test(source),rel+' contains a font size outside the shared rank lattice');
 }
-for(const rel of ['z/world-view.js']){
+for(const rel of ['z/zx/world-view.js']){
   const source=fs.readFileSync(path.join(displayRoot,rel),'utf8');
   assert.ok(!/["'`][^"'\n`]*\d+(?:\.\d+)?px\b/.test(source),rel+' contains a literal Canvas/Pretext pixel font');
 }

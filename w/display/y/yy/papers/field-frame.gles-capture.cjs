@@ -7,7 +7,7 @@ global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};
 GlobalFonts.registerFromPath(path.join(__dirname,'../../../w/spritesheet/SpriteSheet-Mono.ttf'),'SpriteSheet Mono');
 global.document={createElement:()=>createCanvas(1,1)};
 const tissueTransport=require('../../../w/gles-transport.cjs').createTransport(),Tissue=require('../../../w/display-text-tissue.js');
-const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),N=require('../../../z/navigation-physiology.js'),Type=require('../../../w/display-type.js'),W={orientation:[1,0,0,0]};
+const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),N=require('../../../z/zw/navigation-physiology.js'),Type=require('../../../w/display-type.js'),W={orientation:[1,0,0,0]};
 const [width=390,height=844]=process.argv.slice(2).map(Number),rect={left:0,top:0,width,height,right:width,bottom:height},textCanvas=createCanvas(width,height);textCanvas.dataset={};textCanvas.getBoundingClientRect=()=>rect;
 const canvas={width,height,dataset:{},style:{},getBoundingClientRect:()=>rect,getContext:()=>gl},label={classList:{add(){},remove(){}},textContent:''};
 const source=fs.readFileSync(process.env.PAPERS_SOURCE||path.join(__dirname,'sierpinski.js'),'utf8'),legacy=!source.includes('afterDraw:frame=>draw(frame.ms,frame)'),context={console,performance,Float32Array,Map,Set,Intl,devicePixelRatio:1,requestAnimationFrame:()=>0,document:{createElement:()=>createCanvas(1,1),querySelectorAll:()=>[]},SSSDisplayLens:{offer(){},withdraw(){}},SSSDisplayNavigation:N,SSSDisplayType:Type,SSSWorldView:W};

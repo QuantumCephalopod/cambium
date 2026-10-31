@@ -50,6 +50,21 @@ def load_module(path,name):
 def load_build(): return load_module(ROOT/'y/build.py','compose')
 def load_public(): return load_module(ROOT/'y/site-public.py','site_public')
 
+def check_display_differentiations(build):
+    """Each realized inner split carries closure and no fifth functional bucket."""
+    shell={'RITUALS','_cambium.yaml','_feed','_root','_stomach','_waste'}
+    for locus in build.display_loci():
+        address,folder,node=locus['address'],locus['folder'],locus['node']
+        if not any(g in node for g in build.GENES):
+            check(not (folder/'_cambium.yaml').exists(),f'{address}: unrepresented split constitution')
+            continue
+        constitution=folder/'_cambium.yaml'
+        check(constitution.is_file(),f'{address}: realized split lacks local constitution')
+        build.validate_cambium(build.load_yaml(constitution),str(constitution))
+        children={address+g for g in build.GENES}
+        check({p.name for p in folder.iterdir()} <= shell|children,
+              f'{address}: differentiated locus retains a fifth functional bucket')
+
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--artifact',type=Path,default=ROOT/'_site'); args=ap.parse_args()
     artifact=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
@@ -63,6 +78,7 @@ def main():
     check(not (ROOT/'w'/'interface.md').exists(),'ad-hoc w/interface.md membrane file returned')
     for gene in 'wxzy': check((DISPLAY/gene).is_dir() and not (DISPLAY/gene/'ROLE.md').exists(),f'Display vertex {gene} is missing or still marker-only')
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
+    check_display_differentiations(build)
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
     for owner in (ROOT,DISPLAY,*(site['site_dir'] for site in sites)):check_current_intakes(owner)
@@ -138,7 +154,7 @@ def main():
     bundle_files={q.relative_to(bundle_dir).as_posix() for q in bundle_dir.rglob('*') if q.is_file()}
     check(bundle_files==set(assets),'bundle file set diverges from tree-derived asset contract')
 
-    nav=(DISPLAY/'z'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text()
+    nav=(DISPLAY/'z'/'zw'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'zx'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'zz'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'zy'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'zy'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'zz'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'zz'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not recursive split-tet centroid')
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
@@ -160,13 +176,13 @@ def main():
     check("N.addressRecord(structure,raw.path)" in fields,'field points cannot inhabit exact recursive address cells')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'exact settle-to-lock behavior missing')
     check('knobShape' in world and "dataset.morph" in world and 'KNOB_SWELL' in world,'axis knob does not show the settle')
-    glass=(DISPLAY/'z'/'display-glass.js').read_text(); template=(DISPLAY/'w'/'template.html').read_text()
+    glass=(DISPLAY/'z'/'zz'/'display-glass.js').read_text(); template=(DISPLAY/'w'/'template.html').read_text()
     check('data-display-occupancy' in glass and 'data-display-glass' in glass and 'assets/display-glass.js' in template,'occupied HUD surfaces are not declared glass')
-    lens=(DISPLAY/'z'/'display-lens.js').read_text()
+    lens=(DISPLAY/'z'/'zz'/'display-lens.js').read_text()
     check('breakAt' in lens and 'assets/display-lens.js' in template and 'uHome' in fields and 'dots(' in fields,'goo lens or halftone missing')
     check('glassBegin' in fields and 'glassEnd' in fields and 'renderbufferStorageMultisample' in fields and 'cmul' in fields,'field does not refract occupied surfaces')
     check('context.origin' in fold and '--fold-x' in fold and '--fold-y' in fold,'transition is not anchored to chosen target')
-    particles=(DISPLAY/'z'/'site-fold-particles.js').read_text()
+    particles=(DISPLAY/'z'/'zy'/'site-fold-particles.js').read_text()
     check('assets/site-fold-particles.js' in template and 'assets/goo-material.js' in template and 'SSSSiteFoldParticles' in fold and 'uTracks[4]' in particles and 'drawArraysInstanced' in particles,'target-origin tetrahedral particle closure missing')
     check("data-aperture=\"closed\"" in actual and "dataset.aperture='open'" in aperture,'global navigator is not aperture-owned')
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
@@ -182,10 +198,10 @@ def main():
     check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
 
-    js_sources=['w/tetra-text.js','w/ui-grid.js','z/world-view.js','z/navigation-physiology.js','x/site-holon.js','z/site-fold.js','z/site-fold-particles.js','w/goo-material.js','x/display-runtime-v2.js','x/representation-handoff.js','x/feed-acquisition.js','x/recursive-fold.js','w/locus-shader.js','w/display-label-ink.js','z/navigation-aperture.js','z/display-safe-area.js','z/display-glass.js','z/display-lens.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
+    js_sources=['w/tetra-text.js','w/ui-grid.js','z/zx/world-view.js','z/zw/navigation-physiology.js','x/site-holon.js','z/zy/site-fold.js','z/zy/site-fold-particles.js','w/goo-material.js','x/display-runtime-v2.js','x/representation-handoff.js','x/feed-acquisition.js','x/recursive-fold.js','w/locus-shader.js','w/display-label-ink.js','z/zz/navigation-aperture.js','z/zz/display-safe-area.js','z/zz/display-glass.js','z/zz/display-lens.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
     for source in js_sources:
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'JS syntax failure {source}')
-    for test in ('w/tetra-text.test.cjs','z/world-view.test.cjs','z/navigation-aperture.test.cjs','z/navigation-physiology.test.cjs','x/site-holon.test.cjs','x/display-runtime-v2.test.cjs','x/representation-handoff.test.cjs','x/feed-acquisition.test.cjs','x/recursive-fold.test.cjs','z/site-fold.test.cjs','z/site-fold-particles.test.cjs','z/display-safe-area.test.cjs','z/display-glass.test.cjs','z/display-lens.test.cjs','w/display-type.test.cjs','w/ui-grid.test.cjs','w/ui-grid-sites.test.cjs','w/display-label-ink.test.cjs','w/locus-shader.test.cjs'):
+    for test in ('w/tetra-text.test.cjs','z/zx/world-view.test.cjs','z/zz/navigation-aperture.test.cjs','z/zw/navigation-physiology.test.cjs','x/site-holon.test.cjs','x/display-runtime-v2.test.cjs','x/representation-handoff.test.cjs','x/feed-acquisition.test.cjs','x/recursive-fold.test.cjs','z/zy/site-fold.test.cjs','z/zy/site-fold-particles.test.cjs','z/zz/display-safe-area.test.cjs','z/zz/display-glass.test.cjs','z/zz/display-lens.test.cjs','w/display-type.test.cjs','w/ui-grid.test.cjs','w/ui-grid-sites.test.cjs','w/display-label-ink.test.cjs','w/locus-shader.test.cjs'):
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     if ctypes.util.find_library('EGL'):
         result=subprocess.run(['python3',str(DISPLAY/'w/locus-shader.gles.test.py')],capture_output=True,text=True)
@@ -200,10 +216,10 @@ def main():
     # is invoked separately with the enclosing artifact and neutral capabilities.
     capabilities={
         'artifact': artifact, 'public_files': public_files,
-        'navigation': DISPLAY/'z/navigation-physiology.js',
+        'navigation': DISPLAY/'z/zw/navigation-physiology.js',
         'recursive_fold': DISPLAY/'x/recursive-fold.js',
         'representation_handoff': DISPLAY/'x/representation-handoff.js',
-        'ui_grid': DISPLAY/'w/ui-grid.js', 'lens': DISPLAY/'z/display-lens.js',
+        'ui_grid': DISPLAY/'w/ui-grid.js', 'lens': DISPLAY/'z/zz/display-lens.js',
         'field_gles': DISPLAY/'w/locus-shader.gles.test.py',
         'gles_transport': DISPLAY/'w/gles-transport.cjs',
         'site_public': ROOT/'y/site-public.py',
@@ -212,7 +228,7 @@ def main():
     for site in sites:
         if build.witness_site_integration(site, capabilities):
             check(True, f'{site["id"]}: declared integration evidence passed')
-    for test in ('test-phenotype-depth.py', 'test-artifact.py'):
+    for test in ('test-phenotype-depth.py', 'test-display-differentiation.py', 'test-artifact.py'):
         result=subprocess.run(['python3',str(ROOT/'y'/test)],capture_output=True,text=True)
         check(result.returncode==0,result.stderr or f'root witness failed: {test}')
 

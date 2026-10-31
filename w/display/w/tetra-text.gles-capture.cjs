@@ -2,7 +2,7 @@
 /* Actual SpriteSheet + pinned Pretext + production tetrahedral material. */
 const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),assert=require('node:assert/strict'),{pathToFileURL}=require('node:url'),{createCanvas,GlobalFonts}=require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'@napi-rs/canvas'));
 assert(GlobalFonts.registerFromPath(path.join(__dirname,'spritesheet/SpriteSheet-Mono.ttf'),'SpriteSheet Mono'));
-global.document={createElement:()=>createCanvas(1,1)};global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};global.SSSDisplayNavigation=require('../z/navigation-physiology.js');global.SSSDisplayType=require('./display-type.js');const T=require('./tetra-text.js'),[width=390,height=844]=process.argv.slice(2).map(Number),directory=fs.mkdtempSync(path.join(os.tmpdir(),'tetra-text-pixels-'));
+global.document={createElement:()=>createCanvas(1,1)};global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};global.SSSDisplayNavigation=require('../z/zw/navigation-physiology.js');global.SSSDisplayType=require('./display-type.js');const T=require('./tetra-text.js'),[width=390,height=844]=process.argv.slice(2).map(Number),directory=fs.mkdtempSync(path.join(os.tmpdir(),'tetra-text-pixels-'));
 const transport=require('./gles-transport.cjs').createTransport(),{commands}=transport;let uploads=0;
 const gl=new Proxy(transport.gl,{get(t,key){if(key==='texImage2D')return(...args)=>{const c=args[5],file=path.join(directory,(uploads++)+'.rgba');fs.writeFileSync(file,c.getContext('2d').getImageData(0,0,c.width,c.height).data);return t.texImage2D(...args.slice(0,5),{width:c.width,height:c.height,dataFile:file})};return t[key]}});
 (async()=>{

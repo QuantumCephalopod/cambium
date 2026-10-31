@@ -64,7 +64,7 @@ jobs:
           python3 y/site-public.py --artifact _site
           python3 y/check.py --artifact _site
           SITE_DIR=_site node y/test-address.cjs
-          node w/display/z/site-fold.test.cjs
+          node w/display/z/zy/site-fold.test.cjs
           python3 y/site-public.py --artifact _site --check
           python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
           python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
@@ -129,7 +129,7 @@ jobs:
           python3 y/site-public.py --artifact _site
           python3 y/check.py --artifact _site
           SITE_DIR=_site node y/test-address.cjs
-          node w/display/z/site-fold.test.cjs
+          node w/display/z/zy/site-fold.test.cjs
           python3 y/site-public.py --artifact _site --check
           python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
           python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test

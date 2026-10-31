@@ -409,7 +409,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   function updateLabels(bounds){if(!labelHost||element.hidden)return;const r=bounds||canvas.getBoundingClientRect();for(const n of geneLabels){const a=N.addressRecord(structure,n.dataset.gene);if(!a){n.hidden=true;continue}const p=project(a.point,r);n.hidden=false;n.style.left=p.x+'px';n.style.top=p.y+'px';n.style.opacity=p.z<-.12?'.32':'.82'}}
   function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.5),w=Math.max(1,Math.floor(r.width*d)),h=Math.max(1,Math.floor(r.height*d));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}return {r,d,w,h}}
-  /* GLASS — every occupied HUD surface (see z/display-glass.js) refracts this field.
+  /* GLASS — every occupied HUD surface (see z/zz/display-glass.js) refracts this field.
    * While at least one surface touches this canvas the field is drawn into a multisampled
    * target (the screen's own antialiasing is kept), resolved to a texture, and one more pass
    * draws that texture to the screen, displacing the lookup inside each surface's rounded

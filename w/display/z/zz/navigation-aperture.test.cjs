@@ -27,7 +27,7 @@ for(const composition of ['single','split','grid']){
  context.document.activeElement=legal;listeners.get('keydown')(escape);assert.equal(stopped,true);assert.equal(prevented,true);
  assert.equal(pocket.inert,true);assert(trigger.focused,'ordinary Escape returns focus without reopening the pocket');
 }
-const html=fs.readFileSync(path.join(__dirname,'../w/template.html'),'utf8');
+const html=fs.readFileSync(path.join(__dirname,'../../w/template.html'),'utf8');
 assert.match(html,/<\/div>\s*<nav id="legal-links"[^>]*data-display-occupancy="right bottom"[^>]*><\/nav>\s*<\/aside>/,'one shared legal slot sits after the closed pocket and before the compass boundary');
 console.log('PASS — measured legal slot, DE/EN wrapping/resize, open/closed keyboard access and single/split/grid aperture ownership');
 

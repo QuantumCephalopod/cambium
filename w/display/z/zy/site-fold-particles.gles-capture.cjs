@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict');
-const {gl,commands}=require('../w/gles-transport.cjs').createTransport(),G=require('../w/goo-material.js');
+const {gl,commands}=require('../../w/gles-transport.cjs').createTransport(),G=require('../../w/goo-material.js');
 const [width=1280,height=800]=process.argv.slice(2).map(Number),canvas={width:1,height:1,className:'',setAttribute(){},getContext:()=>gl,addEventListener(){},remove(){}};
 gl.FRAMEBUFFER_COMPLETE=36053;gl.checkFramebufferStatus=()=>gl.FRAMEBUFFER_COMPLETE;
 const layer={dataset:{},style:{setProperty(){}},ownerDocument:{createElement:()=>canvas},appendChild(){}};let clock=0;const context={SSSGooMaterial:G,Float32Array,performance:{now:()=>clock},document:layer.ownerDocument};

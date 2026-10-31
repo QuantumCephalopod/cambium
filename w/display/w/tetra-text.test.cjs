@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),path=require('node:path'),{pathToFile
 const drawing=()=>({setTransform(){},fillRect(){},save(){},restore(){},beginPath(){},rect(){},clip(){},fillText(){},measureText:s=>({width:s.length*8})});
 global.OffscreenCanvas=class{constructor(w,h){this.width=w;this.height=h;this.context=drawing()}getContext(){return this.context}};
 global.document={createElement:()=>new OffscreenCanvas(1,1)};
-const Type={rankPx:()=>16,fontEpoch:()=>0,fold:s=>s.replace(/ß/g,'ss'),fillText:(c,...args)=>c.fillText(...args)},N=require('../z/navigation-physiology.js'),T=require('./tetra-text.js');
+const Type={rankPx:()=>16,fontEpoch:()=>0,fold:s=>s.replace(/ß/g,'ss'),fillText:(c,...args)=>c.fillText(...args)},N=require('../z/zw/navigation-physiology.js'),T=require('./tetra-text.js');
 (async()=>{
  const pretext=await import(pathToFileURL(path.join(__dirname,'pretext/layout.js')));
  const blocks=[{tag:'h1',text:'An arbitrary authored source',links:[]},{tag:'p',text:'Ümlaut, sharp ß and a long continuous source. '.repeat(250),links:[]},{tag:'h2',text:'Final section',links:[]},{tag:'p',text:'The complete final sentence remains reachable.',links:[]}],m=T.create({blocks,pretext,vertices:N.V0,type:Type});

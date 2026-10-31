@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('assert/strict'),fs=require('fs'),vm=require('vm');
-const P=require('./site-fold-particles.js'),G=require('../w/goo-material.js');
+const P=require('./site-fold-particles.js'),G=require('../../w/goo-material.js');
 assert.equal(P.MESH.length,36);assert.equal(new Set(Array.from({length:12},(_,i)=>Array.from(P.MESH.subarray(i*3,i*3+3)).join(','))).size,4);
 for(const [w,h]of [[320,640],[1280,800],[3840,2160]]){const a=P.layout(w,h,{x:w*.37,y:h*.42}),b=P.layout(w,h,{x:w*.37,y:h*.42});assert(a.count<=2048);assert.deepEqual(a.data,b.data);assert.equal(new Set(Array.from({length:a.count},(_,i)=>a.data[i*6+4])).size,4);assert.equal(a.data.length,a.count*6);}
 for(let i=0;i<=100;i++){assert(P.ease(i/100)>=0&&P.ease(i/100)<=1);if(i)assert(P.ease(i/100)>=P.ease((i-1)/100));}assert(Math.abs(P.ease(.5)-.5)<.001);

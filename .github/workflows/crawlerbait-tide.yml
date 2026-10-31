@@ -54,7 +54,7 @@ jobs:
             python3 y/site-public.py --artifact _site
             python3 y/check.py --artifact _site
             SITE_DIR=_site node y/test-address.cjs
-            node w/display/z/site-fold.test.cjs
+            node w/display/z/zy/site-fold.test.cjs
             python3 y/site-public.py --artifact _site --check
             git config user.name "crawlerbait tide"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -84,7 +84,7 @@ jobs:
             python3 y/site-public.py --artifact _site
             python3 y/check.py --artifact _site
             SITE_DIR=_site node y/test-address.cjs
-            node w/display/z/site-fold.test.cjs
+            node w/display/z/zy/site-fold.test.cjs
             python3 y/site-public.py --artifact _site --check
             git config user.name "crawlerbait tide"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -143,7 +143,7 @@ jobs:
           python3 y/site-public.py --artifact _site
           python3 y/check.py --artifact _site
           SITE_DIR=_site node y/test-address.cjs
-          node w/display/z/site-fold.test.cjs
+          node w/display/z/zy/site-fold.test.cjs
           python3 y/site-public.py --artifact _site --check
 
       - name: Persist downstream Crawlerbait only when bytes changed
