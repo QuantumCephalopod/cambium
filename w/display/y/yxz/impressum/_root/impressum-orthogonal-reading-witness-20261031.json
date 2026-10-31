@@ -1,0 +1,368 @@
+{
+  "kind": "WITNESS",
+  "event_id": "impressum-orthogonal-reading-witness-20261031",
+  "observed_at_utc": "2026-10-31T11:28:59.329200+00:00",
+  "source_revision": "81d4de0948e5fb004267ae46ee5326910a2c2836",
+  "public_bundle": "310dcc419fbf0727",
+  "source_sha256": {
+    "w/render.js": "a08af7d23322bd1e3540b82dfb60aa3bbbd94749e089040ec2186f7c24c5b68c",
+    "w/style.css": "c46d5663d7b18ee18aa83f3389b4449bf89783d6247af1071f854aa7c93bd1b5",
+    "w/ui-grid.json": "174bcd54d25dc4295271182273b64f895fbcdb195a2b360ee55ad74ba802fe87",
+    "y/projection.py": "e8618d4fbf3a560833c292bdfb4b4fe6b89aef78415c1fedefa54ed532e2286d",
+    "y/projection.json": "b6bddad9a0190822dc36d4b07a2e1f70cd97cdf53b72e6488ad760840f81cfb1",
+    "y/render.test.cjs": "c39971cd4fe6eb224b13dfea731d07fd308100043869a01cfa270a926c8128af",
+    "y/orthogonal.browser.cjs": "ae28e7516fabfc28de78e1c0a1da683d9217126e745279e17a7069c030e0ae39"
+  },
+  "approved_static_sha256": {
+    "y/public/impressum/index.html": "baef064ce7ea952644bb5ea272f715f51abcce61054de685beb9ad582ecb9fae",
+    "y/public/impressum/en/index.html": "d72b9ef6fc02745362dae90881a30a80d840b684cc9c25c6490e6940bbdea4b6"
+  },
+  "approved_static_byte_identity": "PASS — source and actual public artifact retain both owner notice languages byte for byte",
+  "neutral_material": {
+    "path": "w/display/_root/display-authored-text-witness-20261031.json",
+    "event_id": "display-authored-text-witness-20261031",
+    "sha256": "9074f8338cf32affe0bb3e1f5c4ab544950df7fe83e1f7149e59e2b3e1dc4ec2"
+  },
+  "browser": {
+    "canvas": {
+      "status": "PASS",
+      "owner": "organism:impressum",
+      "cases": [
+        {
+          "language": "de",
+          "carrier": [
+            390,
+            844
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            16.96875,
+            243.96875,
+            356.03125,
+            356.03125
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            390,
+            844
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            16.96875,
+            243.96875,
+            356.03125,
+            356.03125
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "de",
+          "carrier": [
+            1280,
+            800
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            456.953125,
+            216.953125,
+            366.0625,
+            366.0625
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            1280,
+            800
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            456.953125,
+            216.953125,
+            366.0625,
+            366.0625
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        }
+      ],
+      "scope": "Built artifact in real Chromium; local request transport, actual font and Canvas2D. No physical-device FPS or deployed-visitor claim.",
+      "screenshots": [
+        {
+          "name": "impressum-de-1280-end.png",
+          "sha256": "0de2067920079e9acaf3f565a7f61b148f9f015a57df7bad66fe1cfb8c1367e2"
+        },
+        {
+          "name": "impressum-de-1280-start.png",
+          "sha256": "75a4a72e07c3a1a1f31dea25ba557f1ced5e61f076d469a007e9ed7c8077b6d6"
+        },
+        {
+          "name": "impressum-de-1280-turned.png",
+          "sha256": "59c5298c9e89612ee6130c2e8557bb1925cfc7861b9d00dcdd9e2ce0a2d441b1"
+        },
+        {
+          "name": "impressum-de-390-end.png",
+          "sha256": "37d1039a3cd4f10817b94a14fdb7863694ba1bb9f66a4094617f2a9df8578492"
+        },
+        {
+          "name": "impressum-de-390-start.png",
+          "sha256": "2e53992194bdf8699b2e39b4a6956f486cc2bc964bab235ac3daa6f5d0c27df7"
+        },
+        {
+          "name": "impressum-de-390-turned.png",
+          "sha256": "af2ed61a38ca988e0448764c047d1d360ef03c691d3ba5f3d35ed7720fa40b3b"
+        },
+        {
+          "name": "impressum-en-1280-end.png",
+          "sha256": "afcb4dfb35158b95766efe581e9cdec9fd5e02fcca1be55b6570317b49680cd4"
+        },
+        {
+          "name": "impressum-en-1280-start.png",
+          "sha256": "21682cfd3e49d9f3700ac1e68a0362f530b8f17b51b4f12107b4a78ae97a4a29"
+        },
+        {
+          "name": "impressum-en-1280-turned.png",
+          "sha256": "18ff06bfea8f8ff4002823e098681b11bca5a204942e764d3410b92b954e2b7c"
+        },
+        {
+          "name": "impressum-en-390-end.png",
+          "sha256": "0ff52abe8ab21e1e3c36db8582689e620c32798bf55bef7688505124bbd80cf4"
+        },
+        {
+          "name": "impressum-en-390-start.png",
+          "sha256": "5205755da6136487a5ec540778e15d2a24651c84f226a13078b6ae70e67d4fcd"
+        },
+        {
+          "name": "impressum-en-390-turned.png",
+          "sha256": "c381c1fef029f19581a938860f46ad58c99d1a8916789207195dc90add23092f"
+        }
+      ]
+    },
+    "webgl": {
+      "status": "PASS",
+      "owner": "organism:impressum",
+      "cases": [
+        {
+          "language": "de",
+          "carrier": [
+            390,
+            844
+          ],
+          "layout_complete": true,
+          "line_count": 15,
+          "texture_size": [
+            358,
+            358
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            16.515625,
+            243.515625,
+            356.953125,
+            356.953125
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            390,
+            844
+          ],
+          "layout_complete": true,
+          "line_count": 15,
+          "texture_size": [
+            358,
+            358
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            16.828125,
+            243.828125,
+            356.328125,
+            356.328125
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "de",
+          "carrier": [
+            1280,
+            800
+          ],
+          "layout_complete": true,
+          "line_count": 15,
+          "texture_size": [
+            368,
+            368
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            456.328125,
+            216.328125,
+            367.328125,
+            367.328125
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            1280,
+            800
+          ],
+          "layout_complete": true,
+          "line_count": 15,
+          "texture_size": [
+            368,
+            368
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            456.515625,
+            216.515625,
+            366.9375,
+            366.9375
+          ],
+          "extent": 408,
+          "sections": 4,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        }
+      ],
+      "scope": "Built artifact in real Chromium; local request transport, actual font and WebGL2. No physical-device FPS or deployed-visitor claim.",
+      "screenshots": [
+        {
+          "name": "impressum-de-1280-end.png",
+          "sha256": "6e5b1af125f572baf8a8449c7d09791e61117153642a3200b85f88e3c4b2a1f7"
+        },
+        {
+          "name": "impressum-de-1280-start.png",
+          "sha256": "49645ba85174d3aff25f980d5aaa2950ade2c168dfa0cfcc8695a20030d1ef00"
+        },
+        {
+          "name": "impressum-de-1280-turned.png",
+          "sha256": "b253c07213aba44e9a00985e740d29eccb0c22efa80e06a967579adc74aeb2ce"
+        },
+        {
+          "name": "impressum-de-390-end.png",
+          "sha256": "3f3efea2fc45626de0315d4dc1bf00c492a6291903ee507101fc8cb3e289992e"
+        },
+        {
+          "name": "impressum-de-390-start.png",
+          "sha256": "f647945cd3be3d0db410b3e4409422671305090434123b8ba5976e3e0a977963"
+        },
+        {
+          "name": "impressum-de-390-turned.png",
+          "sha256": "92c811b4e2860757eb62d761d7d0a792e368a923aee09970854b773f8b6035a0"
+        },
+        {
+          "name": "impressum-en-1280-end.png",
+          "sha256": "2fc278af9c526de31afc2d2102829268f936d9983c61799d0d7eb76cd8bec68d"
+        },
+        {
+          "name": "impressum-en-1280-start.png",
+          "sha256": "de5f75e7a91a3c5ed7a16b6c37ce3cd4eb8ce6faeb19c1daa2de8b7b76abf015"
+        },
+        {
+          "name": "impressum-en-1280-turned.png",
+          "sha256": "f385d083aead163debb47fe9f9956916575fe57c35f7139df7ae579c7dba1c15"
+        },
+        {
+          "name": "impressum-en-390-end.png",
+          "sha256": "316fdd8881dc728a83059ca55f18625dcf9794568a348b46b94e4395ee621261"
+        },
+        {
+          "name": "impressum-en-390-start.png",
+          "sha256": "7b7fcec1b08c9a87358cc729430ce1dd2cac84e7d08a1dd46d917a873a6a8787"
+        },
+        {
+          "name": "impressum-en-390-turned.png",
+          "sha256": "9ce3e8a29481872334acdea8610772b3c3d6804d70c48b9acb8084308c720d06"
+        }
+      ]
+    }
+  },
+  "visual_review": {
+    "status": "PASS",
+    "scope": "Narrow/wide body pixels inspected: rank-zero source text, intact operator name, directly reachable ordinary full-text/contact links, independent section/position controls and actual folded tetrahedral material when turned. Exact screenshot hashes above identify the local frames; staging CI reruns and uploads these owner scripts."
+  },
+  "prior_counterexample": "The former paged candidate remains rolled back historically. This continuous native flow, source sections and always exposed practical apertures resolve the source scope without reinstating that engine.",
+  "limits": "Presentation of the unchanged approved wording. Existing legal/provider/mail-delivery evidence is not re-certified. Local browser/Skia/software-GPU evidence is not a deployed-visitor or physical-device witness."
+}

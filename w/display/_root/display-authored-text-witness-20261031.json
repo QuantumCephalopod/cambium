@@ -1,0 +1,135 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-authored-text-witness-20261031",
+  "observed_at_utc": "2026-10-31T11:28:59.329200+00:00",
+  "source_revision": "81d4de0948e5fb004267ae46ee5326910a2c2836",
+  "source_tree": "6ac537a817207c0e1864237bc325b9b9f438447e",
+  "public_bundle": "310dcc419fbf0727",
+  "source_sha256": {
+    "w/tetra-text.js": "d0f088702cc65ef178b6db60613cc1fb898226a082de805f002544407047095f",
+    "w/display-type.js": "d260eb99dbb61d3c549f73b08fb6f26d4134bee178da9ecf59dcb50b7692285c",
+    "w/pretext/layout.js": "4b773aaa002d4294068bdc907ca82d1a437fa1a01b78eec17e93ff8808ac6090",
+    "w/spritesheet/SpriteSheet-Mono.ttf": "ee5ff3747cc127f8b63e3fc1f82cd443fa42592d20695c537f9f04dc8bbb7810",
+    "z/navigation-physiology.js": "ff9007af3e1fbae96bcf23be2eaad546687c0780f5b00c62e0438897d7db0b48",
+    "w/locus-shader.js": "33d08134146c447d5be677b05f44f5d9bbdb78a19f39eebab6821e15fe68ac8e",
+    "x/display-runtime-v2.js": "80e5ee12e27ae99b6df290359776882e08b58d172a8d9040e4078d1d9cf93fc2"
+  },
+  "repository_check": {
+    "status": "pass",
+    "checks": 191,
+    "display_4V": {
+      "w": "Embodiment",
+      "x": "Continuity",
+      "z": "Orientation",
+      "y": "Population"
+    },
+    "population": "w/display/y tree is canonical mount truth",
+    "sites": {
+      "organism:philosophy": "ε",
+      "organism:crawlerbait": "w",
+      "organism:schattenseiten": "x",
+      "organism:papers": "y",
+      "organism:datenschutz": "z",
+      "organism:impressum": "xz"
+    },
+    "runtime": "generic identity modules; no specimen names in central runtime",
+    "relocation": "real Papers and Crawlerbait bodies move to 128-symbol addresses and new carrier names with zero internal edits",
+    "owner_build": "declared source/refusal suites retain ownership; external integration evidence remains independent",
+    "bundle": "310dcc419fbf0727",
+    "artifact": "single Display index + identity-owned static site apertures"
+  },
+  "neutral_unit": {
+    "command": "node w/display/w/tetra-text.test.cjs",
+    "status": "PASS",
+    "scope": "Arbitrary complete source, canonical geometry, occupied bounds, continuous reading, idle upload reuse, borrowed context restoration and retirement"
+  },
+  "native_font_and_shader": {
+    "status": "PASS",
+    "backend": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "cases": [
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "programs": 1,
+        "uploads": 2,
+        "texture_size": [
+          358,
+          358
+        ],
+        "rotation_changed_pixels": 127613,
+        "end_changed_pixels": 97212,
+        "cases": [
+          {
+            "case": "start",
+            "gles_ink_pixels": 10337,
+            "canvas2d_ink_pixels": 10337
+          },
+          {
+            "case": "idle",
+            "gles_ink_pixels": 10337,
+            "canvas2d_ink_pixels": 10337
+          },
+          {
+            "case": "turned",
+            "gles_ink_pixels": 8253,
+            "canvas2d_ink_pixels": 8281
+          },
+          {
+            "case": "end",
+            "gles_ink_pixels": 2532,
+            "canvas2d_ink_pixels": 2532
+          }
+        ]
+      },
+      {
+        "carrier": [
+          1280,
+          800
+        ],
+        "programs": 1,
+        "uploads": 2,
+        "texture_size": [
+          768,
+          768
+        ],
+        "rotation_changed_pixels": 603082,
+        "end_changed_pixels": 406584,
+        "cases": [
+          {
+            "case": "start",
+            "gles_ink_pixels": 44465,
+            "canvas2d_ink_pixels": 44465
+          },
+          {
+            "case": "idle",
+            "gles_ink_pixels": 44465,
+            "canvas2d_ink_pixels": 44465
+          },
+          {
+            "case": "turned",
+            "gles_ink_pixels": 40769,
+            "canvas2d_ink_pixels": 40840
+          },
+          {
+            "case": "end",
+            "gles_ink_pixels": 2532,
+            "canvas2d_ink_pixels": 2532
+          }
+        ]
+      }
+    ],
+    "scope": "Actual neutral material, canonical geometry, SpriteSheet Mono TTF and pinned Pretext on Skia/Canvas2D plus software GLES; idle upload reuse and resource retirement. No browser, deployed visitor, physical driver or device FPS claim."
+  },
+  "preparation": {
+    "command": "node w/display/x/display-runtime-v2.test.cjs",
+    "status": "PASS",
+    "scope": "Identity dependency resolver before inline prepared-owner field allocation; readiness, reuse, failure and cancellation retain existing handover"
+  },
+  "consumer_witnesses": [
+    "w/display/y/yxz/impressum/_root/impressum-orthogonal-reading-witness-20261031.json",
+    "w/display/y/yz/datenschutz/_root/datenschutz-orthogonal-reading-witness-20261031.json"
+  ],
+  "limits": "Local immutable built artifact, Chromium and software GPU; no physical-device FPS or deployed-visitor assertion. Full source belongs to the consumer, not this neutral mechanism."
+}
