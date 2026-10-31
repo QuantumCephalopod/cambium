@@ -6,7 +6,7 @@ const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'u
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
-function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null,bounded=false){
+function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null,bounded=false,preparations={}){
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
   const heldFolds=[],approaches=[],foldLayer={dataset:{fold:'open'},hidden:true};let foldBusy=false;
@@ -30,6 +30,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
       calls.set(id,(calls.get(id)||0)+1);sources.set(id,source);
       const result={root:{...anatomy('projected '+id),en:'English '+id,de:'Deutsch '+id},version:source.version};projected.set(id,result);return result;
     };
+    if(preparations[id])module.prepareFieldProjection=preparations[id];
     Modules.set(id,module);
   }
   const emit=(name,detail)=>{for(const fn of events.get(name)||[])fn({detail})};
@@ -440,3 +441,11 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
 
 assert(boot(1,'',{}, {}, {},false,null,'template').runtime.ui.get(ids[0]).bounded,'the supplied role declaration depended on an extra flag');
 console.log('PASS — common role declarations bind actual extents without an extra user sizing flag');
+
+(async()=>{
+ const id=ids[1];let calls=0;const prepare=async(_source,{dependency})=>{calls++;assert.equal(dependency,f.runtime.dependency)};
+ const f=boot(1,'',{}, {},{},false,null,false,{[id]:prepare});assert(!f.runtime.fields.has(id),'inline prepared owner allocated a field before dependency readiness');
+ f.runtime.navigateGlobal('w');for(let i=0;i<60;i++)await Promise.resolve();assert.equal(f.runtime.state.activeAddress,'w');assert.equal(calls,1);assert(f.runtime.fields.has(id));
+ f.runtime.navigateGlobal('');for(let i=0;i<60;i++)await Promise.resolve();f.runtime.navigateGlobal('w');for(let i=0;i<60;i++)await Promise.resolve();assert.equal(calls,1,'same ready preparation is reused');
+ console.log('PASS — identity dependency preparation before inline arbitrary-owner field allocation and entry, cached on revisit');
+})().catch(e=>{console.error(e);process.exitCode=1});

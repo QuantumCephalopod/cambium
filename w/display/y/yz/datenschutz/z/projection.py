@@ -1,7 +1,67 @@
 """Rights publishes the factual source and reachable remedy of this notice."""
 import html
+import html.parser
 import json
 from pathlib import Path
+
+
+PUBLIC_MEMBER = 'z/public/privacy'
+
+class NoticeText(html.parser.HTMLParser):
+    """Derive material from this owner's approved aperture, never reauthor it."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.started = False
+        self.done = False
+        self.block = None
+        self.link = None
+        self.blocks = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == 'nav' and 'legal-nav' in attrs.get('class', '').split():
+            self.done = True
+        if self.done:
+            return
+        if tag == 'h1':
+            self.started = True
+        if not self.started:
+            return
+        if tag in {'h1', 'h2', 'h3', 'p', 'address', 'li'}:
+            self.block = {'tag': tag, 'raw': '', 'links': []}
+        if self.block is not None:
+            if tag == 'br':
+                self.block['raw'] += '\n'
+            if tag == 'a':
+                self.link = {'href': attrs['href'], 'raw': ''}
+
+    def handle_data(self, text):
+        if self.block is not None and not self.done:
+            self.block['raw'] += text
+            if self.link is not None:
+                self.link['raw'] += text
+
+    def handle_endtag(self, tag):
+        if self.done or self.block is None:
+            return
+        if tag == 'a' and self.link is not None:
+            self.block['links'].append({'text': ' '.join(self.link['raw'].split()), 'href': self.link['href']})
+            self.link = None
+        if tag == self.block['tag']:
+            self.blocks.append({'tag': tag, 'text': ' '.join(self.block['raw'].split()), 'links': self.block['links']})
+            self.block = None
+
+
+def notice_material(body):
+    public = body / PUBLIC_MEMBER
+    notices = {}
+    for language, member in (('de', 'index.html'), ('en', 'en/index.html')):
+        parser = NoticeText()
+        parser.feed((public / member).read_text(encoding='utf-8'))
+        if not parser.done or not parser.blocks or parser.blocks[0]['tag'] != 'h1':
+            raise ValueError('incomplete approved notice aperture')
+        notices[language] = parser.blocks
+    return notices
 
 
 def derive(body, common):
@@ -10,6 +70,7 @@ def derive(body, common):
     provenance, publication = read('x/provenance.json'), read('z/publication.json')
     return {
         'version': publication['version'],
+        'notices': notice_material(body),
         'title': read('w/title.json'),
         'publication': publication['publication'],
         'controller': provenance['controller'],

@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.64"
+version: "3.65"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -215,6 +215,12 @@ Site-holons retain local typographic sovereignty: they choose which ranks they u
 A non-lattice size is admissible only when concrete local functional pressure requires that exact exception; convenience or inherited arbitrary pixels do not create a second size ontology.
 
 Text in Display is body, not label. Where text becomes tissue, **each letter is its own body**: its own outline inflates by its own fat, and letters close enough fuse like metaballs into one mass. No second layer (goo, blur field, shared fat buffer) is laid over or under the text. A press makes text readable by deflating the letters under it to their bare glyphs **where they stand**; position never moves, so what is aimed at holds still, and the squeezed volume swells the letters around the press. Tissue is monochrome. The physiology lives at `w/display-text-tissue.js`: a caller hands it letters (character, place, angle, size, own fat, weight) and presses; each letter is a distance field of its own outline, inflated by its own fat, fused to its neighbours through an exponential smooth union, deflated to its bare glyph under a press. The caller owns the canvas and the meaning. Papers is its first consumer.
+
+### Authored text on the common body
+
+`w/tetra-text.js` is a neutral text material earned by two independent consumers. It borrows canonical vertices and the existing orthographic camera/matrices; its UVs project the caller's complete authored blocks onto the four actual faces. Pinned Pretext and the computed rank-zero SpriteSheet face retain the whole source in continuous line ranges. Only the current reading window is rasterized at the actual carrier density. Idle frames and orientation changes reuse that raster and upload; context-local textures, VAOs and programs retire with the material. Canvas2D projects and clips the same face triangles; it does not claim WebGL execution.
+
+Meaning, source extraction, languages, links, sections, controls and native scroll input remain caller-owned. The material lends complete lines, measured section offsets, a continuous offset and the maximum reading extent, including room to bring the last section to the top. Exact occupied rectangles may bound reading ink without changing the body's geometry or creating a second camera. No source identity, route, factual schema or document wording belongs here. Test evidence distinguishes source equality, usable browser interaction and actual shader/font pixels.
 
 ### Canonical recursive UI field
 

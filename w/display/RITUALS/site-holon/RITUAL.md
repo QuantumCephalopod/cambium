@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.33"
+version: "3.34"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -240,7 +240,7 @@ The optional body frame may include ellipse:true to lend measured ellipse axes. 
 
 ## Optional cooperative source preparation — 2026-10-27
 
-A runtime module may expose `prepareFieldProjection(projection, {yieldControl, onProgress})`. It prepares its own opaque source generation before crossing without mounting, mutating the visible encounter, deciding global addresses or acquiring another owner's source. `onProgress(0..1)` acknowledges completed owner work; Display maps it to the existing loading flow and awaits completion before sealing. `yieldControl()` lends an opportunity for input/animation between source-local portions. The optional hook does not make a synchronous source algorithm nonblocking automatically. `fieldProjection` installs the completed generation only at the covered acceptance boundary. Unopted owners keep their existing projection behavior.
+A runtime module may expose `prepareFieldProjection(projection, {dependency, yieldControl, onProgress})`. The same identity-resolved `dependency(identity, member)` resolver used by render is available here; assets need no guessed host path. An inline source with this hook also waits before allocating its field. It prepares its own opaque source generation before crossing without mounting, mutating the visible encounter, deciding global addresses or acquiring another owner's source. `onProgress(0..1)` acknowledges completed owner work; Display maps it to the existing loading flow and awaits completion before sealing. `yieldControl()` lends an opportunity for input/animation between source-local portions. The optional hook does not make a synchronous source algorithm nonblocking automatically. `fieldProjection` installs the completed generation only at the covered acceptance boundary. Unopted owners keep their existing projection behavior.
 
 Reuse is generation-local, bounded by reachable source objects and the existing resource handoff. Failure may retry with the same immutable acquired source. Late completion after cancellation is a reusable resource, never permission to resurrect an obsolete encounter. Whole-body relocation requires no internal host path or identity branch.
 

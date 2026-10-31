@@ -1,6 +1,6 @@
 (() => {
 'use strict';
-const id='organism:impressum';
+const id='organism:impressum',Surface=globalThis.SSSTetraText;
 const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModules=new Map());
 (function exposeLegalLink(){
   let nav=document.getElementById('legal-links');
@@ -11,12 +11,30 @@ const modules=globalThis.SSSInterlocutorModules||(globalThis.SSSInterlocutorModu
   function localise(){const de=globalThis.SSSWorldView?.language==='de',a=document.getElementById('legal-link-impressum');a.href=de?'/impressum/':'/impressum/en/';a.textContent=de?'Impressum':'Legal notice';a.hreflang=de?'de':'en'}
   localise();addEventListener('sss:language',localise);
 })();
-const shader=Object.freeze({
-  id:'shader:organism:impressum',
-  clear:[0.012,0.016,0.014,1],
-  fallbackAlpha:.12,
-  state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
-  fragment:`#version 300 es
+
+let state=null,pretext=null;
+const fieldProjection=projection=>Object.freeze({root:Object.freeze({noun:'impressum',...projection.title,children:Object.freeze({})}),points:Object.freeze([])});
+async function prepareFieldProjection(projection,{dependency}={}){pretext=await Surface.prepare(dependency)}
+const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
+function syncReading(){
+ if(!state)return;const s=state,m=s.material;s.spacer.style.height=(s.scroller.clientHeight+m.maxScroll)+'px';s.scroller.scrollTop=m.offset;s.range.max=String(m.maxScroll);s.range.value=String(m.offset);
+ const current=[...m.sections].reverse().find(part=>part.y<=m.offset+1)||m.sections[0];if(current)s.sections.value=String(current.index);
+ s.scroller.dataset.offset=String(Math.round(m.offset));s.scroller.dataset.extent=String(Math.round(m.maxScroll));
+}
+function afterDraw(args){
+ if(!state)return;const s=state,{rect,viewRect:v,model,proj,frame,dpr}=args,pad=SSSDisplayType.rankPx(0),size=Math.max(1,Math.min(v.width,v.height)-2*pad),extent=Math.max(...SSSDisplayNavigation.V0.map(p=>Math.abs(p[0]))),scale=Math.hypot(model[0],model[1],model[2]);
+ const projected=2*extent*scale*Math.abs(proj[0])*rect.width/2;s.fit=frame.scale*size/Math.max(1e-6,projected);
+ const bx=v.x+(v.width-size)/2,by=v.y+(v.height-size)/2,base={x:bx+pad,y:by+pad,w:Math.max(1,size-2*pad),h:Math.max(1,size-2*pad)};
+ const occupied=(globalThis.SSSDisplaySafeArea?.snapshot()?.occupied||[]).map(o=>({x:o.rect.left-rect.left-pad,y:o.rect.top-rect.top-pad,w:o.rect.width+2*pad,h:o.rect.height+2*pad}));
+ const free=Surface.freeRectangle(base,occupied),region={x:free.x-bx,y:free.y-by,w:free.w,h:free.h};
+ const changed=s.material.layout({size,region,dpr});
+ const points=s.material.draw(args),hull=Surface.hull(points),left=Math.min(...hull.map(p=>p.x)),top=Math.min(...hull.map(p=>p.y)),width=Math.max(...hull.map(p=>p.x))-left,height=Math.max(...hull.map(p=>p.y))-top;
+ const geometry=[left,top,width,height,...hull.flatMap(p=>[p.x,p.y])].map(x=>x.toFixed(2)).join(',');
+ if(geometry!==s.geometry){s.geometry=geometry;Object.assign(s.scroller.style,{left:left+'px',top:top+'px',width:width+'px',height:height+'px',clipPath:'polygon('+hull.map(p=>(p.x-left)+'px '+(p.y-top)+'px').join(',')+')'})}
+ if(changed||s.height!==s.scroller.clientHeight){s.height=s.scroller.clientHeight;syncReading()}
+}
+const shader=Object.freeze({id:'shader:organism:impressum',clear:[.012,.018,.015,1],fallbackAlpha:.12,view:Object.freeze({rest:[1,0,0,0],projection:'orthographic'}),state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
+ fragment:`#version 300 es
 precision highp float;
 in vec3 vN; in vec3 vW; in float vRegion;
 uniform float uFocus; uniform vec3 uPalette[4];
@@ -28,33 +46,29 @@ void main(){
   vec3 c=mix(vec3(.02,.025,.022),uPalette[ri],.22+.16*edge);
   float a=(uFocus<-.5||abs(vRegion-uFocus)<.2)?.20:.09;
   outColor=vec4(c,a+.08*edge);
-}`
-});
-const fieldProjection=projection=>Object.freeze({
-  root:Object.freeze({noun:'Impressum',...projection.title,children:Object.freeze({})}),
-  points:Object.freeze([])
-});
-let last=null;
-function tr(v,lang){return v&&typeof v==='object'?(v[lang]||v.de||v.en||''):(v||'')}
-function render({host,content,projection,language='de',ui=null}={}){
-  if(!host||!content||!projection?.operator)return false;
-  last={host,content,projection,language};
-  host.hidden=false;
-  content.className='interlocutor-content impressum-content';
-  content.replaceChildren();
-  const article=document.createElement('article');article.lang=language;
-  const kicker=document.createElement('p'); kicker.className='impressum-kicker'; kicker.textContent='organism:impressum';
-  const h=document.createElement('h1'); h.textContent=tr(projection.title,language)||'Impressum';
-  const name=document.createElement('p'); name.className='impressum-operator'; name.textContent=projection.operator.name;
-  const address=document.createElement('address'); address.textContent=(projection.operator.address_locales?.[language]||projection.operator.address||[]).join('\n');
-  const mail=document.createElement('a'); mail.href='mailto:'+projection.contact.email; mail.textContent=projection.contact.email;
-  const gate=document.createElement('p'); gate.className='impressum-gate';
-  gate.textContent=projection.contact.status==='live'?'':(language==='de'?'Kontakt-Route wird vor Veröffentlichung gewitnessed.':'Contact route is witnessed before publication.');
-  const notice=document.createElement('a');notice.href=language==='de'?'/impressum/':'/impressum/en/';notice.textContent=language==='de'?'Vollständiges Impressum':'Full legal notice';
-  article.append(kicker,h,name,address,mail,notice,gate);
-  content.append(article);if(ui)ui.bind(article,'article');
-  return true;
+}`,
+ afterDraw,focus:()=>state?{center:[0,0,0],scale:state.fit}:null});
+function semanticText(blocks,language){
+ const article=el('article','impressum-source');article.lang=language;article.setAttribute('data-type-fold','off');let list=null;
+ for(const block of blocks){const p=el(block.tag);let cursor=0;for(const link of block.links){const at=block.text.indexOf(link.text,cursor);if(at<0)throw new Error('Source link missing from approved block');p.append(document.createTextNode(block.text.slice(cursor,at)));const a=el('a','',link.text);a.href=link.href;a.tabIndex=-1;p.append(a);cursor=at+link.text.length}p.append(document.createTextNode(block.text.slice(cursor)));if(block.tag==='li'){if(!list){list=el('ul');article.append(list)}list.append(p)}else{list=null;article.append(p)}}return article;
 }
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();last=null}
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection}));
+function render({host,content,projection,language='de',ui}={}){
+ if(!host||!content||!projection?.notices?.[language]||!pretext)return false;
+ if(state)state.material.release();host.hidden=false;content.className='interlocutor-content impressum-content';content.replaceChildren();
+ const blocks=projection.notices[language],de=language==='de',heading=el('div','impressum-heading');heading.lang=language;
+ const title=el('h1','',projection.title[language]),links=el('div','impressum-apertures'),full=el('a','',de?'Fließtext ↗':'Full text ↗'),contact=el('a','',de?'Kontakt ↗':'Contact ↗');
+ full.href=de?'/impressum/':'/impressum/en/';contact.href='mailto:'+projection.contact.email;links.append(full,contact);heading.append(title,links);
+ const controls=el('div','impressum-controls'),sections=el('select','impressum-sections');sections.setAttribute('aria-label',de?'Abschnitt':'Section');
+ blocks.forEach((b,i)=>{if(b.tag==='h1'||b.tag==='h2'){const option=el('option','',b.text);option.value=String(i);sections.append(option)}});
+ const transport=el('div','impressum-transport'),range=el('input','impressum-position');range.type='range';range.min='0';range.max='0';range.step='1';range.value='0';range.setAttribute('aria-label',de?'Leseposition':'Reading position');
+ const reset=el('button','impressum-orthogonal','⊥');reset.type='button';reset.title=de?'Orthogonale Leseansicht':'Orthographic reading view';reset.setAttribute('aria-label',reset.title);reset.addEventListener('click',()=>SSSWorldView.easeTo([1,0,0,0]));transport.append(range,reset);controls.append(sections,transport);
+ const scroller=el('div','impressum-scroll'),spacer=el('div');scroller.tabIndex=0;scroller.setAttribute('role','region');scroller.setAttribute('aria-label',de?'Text auf dem Tetraeder — scrollen; Abschnitte unten':'Text on the tetrahedron — scroll; sections below');spacer.setAttribute('aria-hidden','true');scroller.append(spacer);
+ state={host,language,material:Surface.create({blocks,pretext}),scroller,spacer,range,sections,fit:1};
+ scroller.addEventListener('scroll',()=>{if(!state||state.scroller!==scroller)return;state.material.scroll(scroller.scrollTop);syncReading()},{passive:true});
+ sections.addEventListener('change',()=>{const part=state.material.sections.find(p=>p.index===Number(sections.value));if(part){state.material.scroll(part.y);syncReading()}});
+ range.addEventListener('input',()=>{state.material.scroll(range.value);syncReading()});
+ content.append(heading,controls,scroller,semanticText(blocks,language));ui.bind(heading,'description');ui.bind(controls,'controls');return true;
+}
+function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();state?.material.release();state=null}
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,prepareFieldProjection}));
 })();
