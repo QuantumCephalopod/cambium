@@ -474,6 +474,7 @@ def template_asset_sources(sites=None):
         'display-label-ink.js': DISPLAY/'w'/'display-label-ink.js',
         'ui-grid.js': DISPLAY/'w'/'ui-grid.js',
         'display-type.js': DISPLAY/'w'/'display-type.js',
+        'tetra-text.js': DISPLAY/'w'/'tetra-text.js',
         'display-text-tissue.js': DISPLAY/'w'/'display-text-tissue.js',
         'representation-handoff.js': DISPLAY/'x'/'representation-handoff.js',
         'feed-acquisition.js': DISPLAY/'x'/'feed-acquisition.js',

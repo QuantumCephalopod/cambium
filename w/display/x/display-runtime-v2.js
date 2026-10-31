@@ -143,9 +143,10 @@ function activateField(id){
   const field=Fields.create({id,element:surface.host,canvas:surface.canvas,labelHost:surface.labelHost,projection:surface.fieldProjection,palette:spec.shader?.palette,inspectable:Boolean(spec.manifestation?.background_inspect),draggable:spec.manifestation?.background_drag!==false,localScope:spec.local_scope,environment:()=>hostEnvironment(id),bodies:()=>floatingBodies(id),presentation:()=>surface.ui.bounded&&surface.ui.state.fields.viewport?surface.ui.rect('viewport'):null});
   fieldById.set(id,field);return field;
 }
-// Existing small/inlined bodies keep their established eager behavior.
+// Unprepared small/inlined bodies keep their established eager behavior.
+// An owner with preparation waits for its identity dependencies before field allocation.
 // Feed-opted children remain real mounted identities without GPU initialization.
-for(const [id,s] of surfaces)if(s.projection)activateField(id);
+for(const [id,s] of surfaces)if(s.projection&&typeof s.module.prepareFieldProjection!=='function')activateField(id);
 const detailHandoff=RH.create({limit:2}),preparationHandoff=RH.create({limit:2}),feedProgress=new Map();
 const yieldPreparation=()=>new Promise(resolve=>setTimeout(resolve,0));
 function acquireDetail(id){
@@ -163,7 +164,7 @@ function acquireTarget(ids){
     if(!acquired&&(fieldById.has(id)||typeof s.module.prepareFieldProjection!=='function')){feedProgress.set(id,1);return null}
     const record=preparationHandoff.request(id,()=>Promise.resolve(acquired).then(async()=>{
       if(typeof s.module.prepareFieldProjection==='function'&&!fieldById.has(id)){
-        await s.module.prepareFieldProjection(s.projection,{yieldControl:yieldPreparation,onProgress:value=>feedProgress.set(id,.6+.4*Math.max(0,Math.min(1,value)))});
+        await s.module.prepareFieldProjection(s.projection,{dependency,yieldControl:yieldPreparation,onProgress:value=>feedProgress.set(id,.6+.4*Math.max(0,Math.min(1,value)))});
       }
       feedProgress.set(id,1);
     }),{retryFailed:true});

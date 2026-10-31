@@ -1,0 +1,368 @@
+{
+  "kind": "WITNESS",
+  "event_id": "datenschutz-orthogonal-reading-witness-20261031",
+  "observed_at_utc": "2026-10-31T11:28:59.329200+00:00",
+  "source_revision": "81d4de0948e5fb004267ae46ee5326910a2c2836",
+  "public_bundle": "310dcc419fbf0727",
+  "source_sha256": {
+    "w/render.js": "701ad1b0c0ff0f72ef0c51c14df806947de5947e665e64cf05f31d4165c63d9b",
+    "w/style.css": "245c96c3377c40e34a271fe1edd4a31c8bcaef2bf3bb65af2dee13c71312e23f",
+    "w/ui-grid.json": "0ae6ae149165ee35f70923489c1e3128b00d8ddd9feb75088aa4612a549c361c",
+    "z/projection.py": "96e16771d53d3b1121eed63ea01005132e72518da548d1b94c71fbefe31238f3",
+    "z/projection.json": "51a1409e0cd84738c47aae76546af87e3b041e498304f4bc122a53b3c788ad80",
+    "y/render.test.cjs": "203fe310daa21bf94881f103c34a613e6a3fd4726de23d15d979ba4433c009a9",
+    "y/orthogonal.browser.cjs": "ae28e7516fabfc28de78e1c0a1da683d9217126e745279e17a7069c030e0ae39"
+  },
+  "approved_static_sha256": {
+    "z/public/privacy/index.html": "9dba15c7cbabb5fffaa93006c0f320449e4b3cd759fe477bb4a00f3912d36d41",
+    "z/public/privacy/en/index.html": "cb1bd5762dc8afad3d06425beca28c803c13eb39e67be01413242d2681aeb93b"
+  },
+  "approved_static_byte_identity": "PASS — source and actual public artifact retain both owner notice languages byte for byte",
+  "neutral_material": {
+    "path": "w/display/_root/display-authored-text-witness-20261031.json",
+    "event_id": "display-authored-text-witness-20261031",
+    "sha256": "9074f8338cf32affe0bb3e1f5c4ab544950df7fe83e1f7149e59e2b3e1dc4ec2"
+  },
+  "browser": {
+    "canvas": {
+      "status": "PASS",
+      "owner": "organism:datenschutz",
+      "cases": [
+        {
+          "language": "de",
+          "carrier": [
+            390,
+            844
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            16.96875,
+            243.96875,
+            356.03125,
+            356.03125
+          ],
+          "extent": 22762,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            390,
+            844
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            16.96875,
+            243.96875,
+            356.03125,
+            356.03125
+          ],
+          "extent": 20410,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "de",
+          "carrier": [
+            1280,
+            800
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            456.953125,
+            216.953125,
+            366.0625,
+            366.0625
+          ],
+          "extent": 21792,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            1280,
+            800
+          ],
+          "renderer": "canvas2d",
+          "position": [
+            456.953125,
+            216.953125,
+            366.0625,
+            366.0625
+          ],
+          "extent": 19536,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        }
+      ],
+      "scope": "Built artifact in real Chromium; local request transport, actual font and Canvas2D. No physical-device FPS or deployed-visitor claim.",
+      "screenshots": [
+        {
+          "name": "datenschutz-de-1280-end.png",
+          "sha256": "e7de2446c72f17a76d9728d4b1b2e14e60c7e02cc2db493dc282923242ae85b7"
+        },
+        {
+          "name": "datenschutz-de-1280-start.png",
+          "sha256": "3d222f9ce1e4057eb57c57b4babc3948a1a5f8c5b4efd5125ad776b63188b47e"
+        },
+        {
+          "name": "datenschutz-de-1280-turned.png",
+          "sha256": "ee66316ab098e29820d67697952bfa7685acd39a84dd9a7b6fc3388b1d6a7b63"
+        },
+        {
+          "name": "datenschutz-de-390-end.png",
+          "sha256": "41d04b597621c79f6dd871ac03fc7c8c08c1758fb7e3d8903a49517cdc8d3f95"
+        },
+        {
+          "name": "datenschutz-de-390-start.png",
+          "sha256": "61f951c1b50f20bbecca5147216e23499a4e18875dc31b08e20ba8ebe02e3376"
+        },
+        {
+          "name": "datenschutz-de-390-turned.png",
+          "sha256": "5eaeb70e94f7779beb3e978484a030201b2271f0a4f8db73d9221f423f89ff03"
+        },
+        {
+          "name": "datenschutz-en-1280-end.png",
+          "sha256": "1c0bd8fca08eab70fa1ecdfe0059545b3b947c9de9dcb197d2e8c8ae5352ee8b"
+        },
+        {
+          "name": "datenschutz-en-1280-start.png",
+          "sha256": "69fc4967987153c04c7e906bfe7eec3c1b34a904243c19be70f681174d665461"
+        },
+        {
+          "name": "datenschutz-en-1280-turned.png",
+          "sha256": "225b7f927e39a55dfc43c0420b167798209ed51ea38259920999ff5d5ec1d7c8"
+        },
+        {
+          "name": "datenschutz-en-390-end.png",
+          "sha256": "6772ab2e84039758e2738e61adb018e0e0146f1def08589d15d3b5ee53e5c169"
+        },
+        {
+          "name": "datenschutz-en-390-start.png",
+          "sha256": "efe76d354a498a2946faa4e7c60ce028e47950f32847c4c1d207263fc456410e"
+        },
+        {
+          "name": "datenschutz-en-390-turned.png",
+          "sha256": "19812897b534a05f38829e4dc2793da6cb23275feb9fea64e65d40c10eac3ef7"
+        }
+      ]
+    },
+    "webgl": {
+      "status": "PASS",
+      "owner": "organism:datenschutz",
+      "cases": [
+        {
+          "language": "de",
+          "carrier": [
+            390,
+            844
+          ],
+          "layout_complete": true,
+          "line_count": 868,
+          "texture_size": [
+            358,
+            358
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            16.734375,
+            243.734375,
+            356.5,
+            356.5
+          ],
+          "extent": 22762,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            390,
+            844
+          ],
+          "layout_complete": true,
+          "line_count": 770,
+          "texture_size": [
+            358,
+            358
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            16.796875,
+            243.796875,
+            356.390625,
+            356.390625
+          ],
+          "extent": 20410,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "de",
+          "carrier": [
+            1280,
+            800
+          ],
+          "layout_complete": true,
+          "line_count": 828,
+          "texture_size": [
+            368,
+            368
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            456.40625,
+            216.40625,
+            367.15625,
+            367.15625
+          ],
+          "extent": 21792,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        },
+        {
+          "language": "en",
+          "carrier": [
+            1280,
+            800
+          ],
+          "layout_complete": true,
+          "line_count": 734,
+          "texture_size": [
+            368,
+            368
+          ],
+          "gl_error": 0,
+          "renderer": "webgl2",
+          "position": [
+            456.8125,
+            216.8125,
+            366.359375,
+            366.359375
+          ],
+          "extent": 19536,
+          "sections": 16,
+          "ready": true,
+          "full_source_dom_equal": true,
+          "static_source_dom_equal": true,
+          "native_wheel_touch_keyboard": true,
+          "all_sections": true,
+          "end": true,
+          "rotation_reset_return": true,
+          "mounted_language_and_plain_link_navigation": true
+        }
+      ],
+      "scope": "Built artifact in real Chromium; local request transport, actual font and WebGL2. No physical-device FPS or deployed-visitor claim.",
+      "screenshots": [
+        {
+          "name": "datenschutz-de-1280-end.png",
+          "sha256": "912efea75dd36a2e74a5bcc0a20598147753fac2905c6f2a13693a368d38900a"
+        },
+        {
+          "name": "datenschutz-de-1280-start.png",
+          "sha256": "bb702f32834d843b3c3d9ed4fdeb32f6f09cbf12c0c3080af88dd062dca3844e"
+        },
+        {
+          "name": "datenschutz-de-1280-turned.png",
+          "sha256": "3d69b98da76888837ddecfff354c266c5b9f0210d86c367a06d814f4a76743b0"
+        },
+        {
+          "name": "datenschutz-de-390-end.png",
+          "sha256": "cbbd114222f94429dac60eb434a8d110ca9778935bb3d0d3212415572ef933c8"
+        },
+        {
+          "name": "datenschutz-de-390-start.png",
+          "sha256": "044da3f505da0d52bcc449ac81205433a677669109d361a48e1afd83bbc92ed1"
+        },
+        {
+          "name": "datenschutz-de-390-turned.png",
+          "sha256": "8d70ff090093e4c7a2e3be81dc226f0cec8cd805e8fb710b71678f632ae01feb"
+        },
+        {
+          "name": "datenschutz-en-1280-end.png",
+          "sha256": "74222add383d18f7a72e72f262efe066133c6d1ab470d0604fbde2c3834c1e8b"
+        },
+        {
+          "name": "datenschutz-en-1280-start.png",
+          "sha256": "e95ba5c59019c568fd002f298418647b684a1a1a430698ede5d6f50e975ab9e5"
+        },
+        {
+          "name": "datenschutz-en-1280-turned.png",
+          "sha256": "3ea528f06917245f882ea6a79864cf2eee9e67735170379d6cd9e2bf467b2f6f"
+        },
+        {
+          "name": "datenschutz-en-390-end.png",
+          "sha256": "2aff8dfc8cfe49bd4b486902547aba21ffe4d61e47e6b2c5793398e4636bd78c"
+        },
+        {
+          "name": "datenschutz-en-390-start.png",
+          "sha256": "9ce22c5476a067746b06a5e4259bd3198fb68873b0dc6207812d34b1a1593666"
+        },
+        {
+          "name": "datenschutz-en-390-turned.png",
+          "sha256": "1b97c4039c8f1536b45ed98eb8613ac46ae13aa369da8353d4704c623c722c27"
+        }
+      ]
+    }
+  },
+  "visual_review": {
+    "status": "PASS",
+    "scope": "Narrow/wide body pixels inspected: rank-zero source text, intact operator name, directly reachable ordinary full-text/contact links, independent section/position controls and actual folded tetrahedral material when turned. Exact screenshot hashes above identify the local frames; staging CI reruns and uploads these owner scripts."
+  },
+  "prior_counterexample": "The former paged candidate remains rolled back historically. This continuous native flow, source sections and always exposed practical apertures resolve the source scope without reinstating that engine.",
+  "limits": "Presentation of the unchanged approved wording. Existing legal/provider/mail-delivery evidence is not re-certified. Local browser/Skia/software-GPU evidence is not a deployed-visitor or physical-device witness."
+}
