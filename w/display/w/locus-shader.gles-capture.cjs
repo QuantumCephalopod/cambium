@@ -34,7 +34,7 @@ const lens={x:WIDTH/2,y:HEIGHT/2,r:80,hx:80,hy:80,ax:0,ay:0,smooth:16,round:1,ma
 if(GLYPH_FRAME){const r=GLYPH_FRAME;Object.assign(lens,{x:r.left+r.width/2,y:r.top+r.height/2,hx:r.width/2,hy:r.height/2,r:Math.min(r.width,r.height)/2,round:0,corner:r.r||0})}
 if(READ_LOCK){lens.lock={kind:READ_LOCK,id:'measured:reading'};lens.focus=READ_LOCK==='field'?1:0;}
 if(RETURN_PROTECTION!==null){lens.lock=null;lens.protect=RETURN_PROTECTION;lens.mag=(1-RETURN_PROTECTION)*(1-1/1.13);}
-let entries=READ_SURFACE?[require('../z/display-glass.js').readingFrame(READ_SURFACE)]:null;
+let entries=READ_SURFACE?[require('../z/zz/display-glass.js').readingFrame(READ_SURFACE)]:null;
 let lensHome=null,glassParams=null;
 if(COALESCENCE){
  const x=WIDTH*.55,top=(COALESCENCE==='separated'||COALESCENCE==='proof')?64:145;
@@ -57,13 +57,13 @@ if(REVEAL_SURFACE){
 }
 const f=fixture({foreground:FOREGROUND_IMAGE?()=>[{width:WIDTH,height:HEIGHT,dataFile:FOREGROUND_IMAGE}]:null,width:WIDTH,height:HEIGHT,webgl:true,fieldShader:SPECIMEN?PHILOSOPHY_SHADER:null,fieldPalette:SPECIMEN?PHILOSOPHY_PALETTE:undefined,glass:REVEAL_SURFACE!=='dry',bodyPlaceholder:!NATIVE_REFERENCE&&(REVEAL_SURFACE||SPECIMEN)?PHILOSOPHY_PLAIN:false,preview:!!PREVIEW,composite:!!GLYPH_IMAGE,lens:REVEAL_SURFACE&&['top','compass'].includes(REVEAL_SURFACE)?false:READ_SURFACE&&!READ_LOCK?null:lens,glassEntries:entries,glassReference:READ_REFERENCE,glassParams,lensHome});
 if(SPECIMEN&&SPECIMEN!=='ordinary'){
- const paperSite=SITE_WITNESSES.get('organism:papers'),papersModules=new Map();require('node:vm').runInNewContext(require('node:fs').readFileSync(paperSite.file('renderer'),'utf8'),{console,performance:{now:()=>0},SSSDisplayNavigation:require('../z/navigation-physiology.js'),SSSDisplayType:{rankPx:r=>16*2**(r/2)},SSSInterlocutorModules:papersModules,document:{}});
+ const paperSite=SITE_WITNESSES.get('organism:papers'),papersModules=new Map();require('node:vm').runInNewContext(require('node:fs').readFileSync(paperSite.file('renderer'),'utf8'),{console,performance:{now:()=>0},SSSDisplayNavigation:require('../z/zw/navigation-physiology.js'),SSSDisplayType:{rankPx:r=>16*2**(r/2)},SSSInterlocutorModules:papersModules,document:{}});
  const projection=JSON.parse(require('node:fs').readFileSync(paperSite.file('feed_preview')));
  f.bodies.b.shader=papersModules.get('organism:papers').shader;f.bodies.b.root=projection.root;f.bodies.b.projection=projection;f.order.splice(0,f.order.length,'b');
 }
 if(SPECIMEN==='ordinary'){
  const ordinaryModules=new Map(),node={append(){},setAttribute(){}};
- const ctx={console,performance:{now:()=>0},SSSDisplayNavigation:require('../z/navigation-physiology.js'),SSSDisplayType:{rankPx:r=>16*2**(r/2)},SSSInterlocutorModules:ordinaryModules,document:{getElementById:()=>node,querySelectorAll:()=>[]},addEventListener(){}};
+ const ctx={console,performance:{now:()=>0},SSSDisplayNavigation:require('../z/zw/navigation-physiology.js'),SSSDisplayType:{rankPx:r=>16*2**(r/2)},SSSInterlocutorModules:ordinaryModules,document:{getElementById:()=>node,querySelectorAll:()=>[]},addEventListener(){}};
  for(const id of ['organism:crawlerbait','organism:datenschutz','organism:impressum'])require('node:vm').runInNewContext(require('node:fs').readFileSync(SITE_WITNESSES.get(id).file('renderer'),'utf8'),ctx);
  for(const [key,id] of [['a','crawlerbait'],['d','datenschutz'],['e','impressum']]){const module=ordinaryModules.get('organism:'+id);f.bodies[key].shader=module.shader;const site=SITE_WITNESSES.get('organism:'+id),data=JSON.parse(require('node:fs').readFileSync(site.file(site.manifest.feed_preview?'feed_preview':'projection')));f.bodies[key].root=id==='crawlerbait'?data.root:module.fieldProjection(data).root;}
  f.order.splice(0,f.order.length,'a','d','e');

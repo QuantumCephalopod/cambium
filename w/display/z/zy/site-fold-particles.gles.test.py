@@ -2,9 +2,9 @@
 """Actual instanced tetrahedra and shared black Goo/Ink on software GLES."""
 import json,sys,subprocess
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parent.parent/'w'))
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'w'))
 import importlib.util
-p=Path(__file__).resolve().parent.parent/'w/locus-shader.gles.test.py';spec=importlib.util.spec_from_file_location('g',p);g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+p=Path(__file__).resolve().parents[2]/'w/locus-shader.gles.test.py';spec=importlib.util.spec_from_file_location('g',p);g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 cases=[]
 for w,h in [(1280,800),(390,844)]:
  d=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('site-fold-particles.gles-capture.cjs')),str(w),str(h)],text=True));images,n=g.replay(d['commands'],d['width'],d['height'],min_depth_clears=0)

@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const H=require('./site-holon.js'),N=require('../z/navigation-physiology.js'),UI=require('../w/ui-grid.js'),RH=require('./representation-handoff.js');
+const H=require('./site-holon.js'),N=require('../z/zw/navigation-physiology.js'),UI=require('../w/ui-grid.js'),RH=require('./representation-handoff.js');
 const runtimeSource=fs.readFileSync(process.env.RUNTIME_SOURCE||path.join(__dirname,'display-runtime-v2.js'),'utf8');
 const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'utf8');
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
@@ -10,7 +10,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
   const heldFolds=[],approaches=[],foldLayer={dataset:{fold:'open'},hidden:true};let foldBusy=false;
-  const fold=holdFold==='real'?require('../z/site-fold.js').createFold(foldLayer,{reduced:true}):{get busy(){return foldBusy},swap(fn,details){swaps.push(details);details.onClosing?.(380);if(!holdFold)return fn();foldBusy=true;return new Promise((resolve,reject)=>heldFolds.push(()=>{try{resolve(fn())}catch(error){reject(error)}finally{foldBusy=false}}))}};
+  const fold=holdFold==='real'?require('../z/zy/site-fold.js').createFold(foldLayer,{reduced:true}):{get busy(){return foldBusy},swap(fn,details){swaps.push(details);details.onClosing?.(380);if(!holdFold)return fn();foldBusy=true;return new Promise((resolve,reject)=>heldFolds.push(()=>{try{resolve(fn())}catch(error){reject(error)}finally{foldBusy=false}}))}};
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
@@ -186,7 +186,7 @@ for(const address of ['w','y']){
  const f=boot(),listeners=new Map(),mk=()=>({dataset:{},style:{getPropertyValue(){return ''},setProperty(){}},events:{},setAttribute(){},addEventListener(k,fn){this.events[k]=fn},contains(n){return n===this},focus(){}});
  const mini=mk(),trigger=mk(),pocket=mk(),nodes=new Map([['mini',mini],['mini-trigger',trigger],['mini-pocket',pocket]]);
  const nav={MutationObserver:class{observe(){}},SSSDisplayRuntime:f.runtime,document:{getElementById:id=>nodes.get(id),documentElement:{dataset:{},lang:'en'},activeElement:null},addEventListener(k,fn){listeners.set(k,fn)},setTimeout(){return 1},clearTimeout(){}};
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../z/navigation-aperture.js'),'utf8'),nav);nav.SSSNavigationAperture.open();
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../z/zz/navigation-aperture.js'),'utf8'),nav);nav.SSSNavigationAperture.open();
  let local=true,handled=0,inactive=0;Object.assign(f.Modules.get(ids[1]),{canEscape:()=>local,escape:()=>{handled++;local=false;return true}});Object.assign(f.Modules.get(ids[2]),{canEscape:()=>true,escape:()=>{inactive++;return true}});
  f.runtime.navigateGlobal('w');const send=()=>{let stopped=false,prevented=false;const e={key:'Escape',preventDefault(){prevented=true},stopImmediatePropagation(){stopped=true}};listeners.get('keydown')(e);if(!stopped)f.key(e);return {stopped,prevented}};
  const first=send();assert(!first.stopped&&first.prevented);assert.equal(handled,1);assert.equal(inactive,0);assert.equal(f.runtime.state.activeAddress,'w');assert.equal(mini.dataset.aperture,'open');
@@ -341,7 +341,7 @@ feedHandoffWitness().then(()=>console.log('display runtime: orientation-only car
 /* The real runtime withdraws/reoffers a continuing owner during local repaint.
  * The lens samples that accepted identity, while a genuine visit change ends it. */
 {
- const lens=require('../z/display-lens.js'),v={w:1000,h:800},f=boot(1,'',{}, {},{},false,lens),s=lens.create(null,v),id=ids[0]+'|tissue';
+ const lens=require('../z/zz/display-lens.js'),v={w:1000,h:800},f=boot(1,'',{}, {},{},false,lens),s=lens.create(null,v),id=ids[0]+'|tissue';
  const sample=()=>lens.resolveTargets(s.lock?.id).find(t=>t.id===id),advance=()=>{for(let i=0;i<240;i++)lens.step(s,[],1/120,v,null,sample())};
  lens.lockTo(s,sample());advance();
  f.W.inspect('w');advance();assert.equal(s.lock.id,id);assert(Math.abs(s.x-260)<.01,'descent uses the accepted renderer geometry');
@@ -359,7 +359,7 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
 /* The receiving owner sees the actual capillary axes and orientation, while
  * the legacy radius remains a conservative inscribed contact. */
 {
- const L=require('../z/display-lens.js'),s=L.create(null,{w:1000,h:800});s.strain=.2;s.angle=.6;
+ const L=require('../z/zz/display-lens.js'),s=L.create(null,{w:1000,h:800});s.strain=.2;s.angle=.6;
  const g=L.geometry(s,null),f=boot(1,'',{}, {},{},false,{...L,snapshot:()=>({lens:g})}),got=f.renders.at(-1).lens();
  assert.equal(got.angle,g.angle);assert.equal(got.hx,g.hx);assert.equal(got.hy,g.hy);assert.equal(got.r,Math.min(g.hx,g.hy));
  for(const owner of ids)L.withdraw(owner+'|tissue');

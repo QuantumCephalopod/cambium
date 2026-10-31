@@ -50,7 +50,7 @@ The physical `w/display/y/` population anatomy is mount truth. Each site-holon r
 python3 y/build.py --artifact _site
 python3 y/check.py --artifact _site
 SITE_DIR=_site node y/test-address.cjs
-node w/display/z/site-fold.test.cjs
+node w/display/z/zy/site-fold.test.cjs
 python3 y/build.py --artifact _site --check
 ```
 

@@ -27,7 +27,7 @@ const F=require('./site-fold.js');
 /* The actual fold and actual particle driver share one deterministic frame
  * clock. This witnesses the complete visible-wait -> closure -> transaction. */
 (async()=>{
- const fs=require('fs'),vm=require('vm'),G=require('../w/goo-material.js');let now=0,id=0;const frames=new Map();
+ const fs=require('fs'),vm=require('vm'),G=require('../../w/goo-material.js');let now=0,id=0;const frames=new Map();
  const canvas={setAttribute(){},getContext:()=>null,addEventListener(){},remove(){}},layer={dataset:{},hidden:true,style:{setProperty(){}},appendChild(){},ownerDocument:{createElement:()=>canvas}};
  const c={SSSGooMaterial:G,Float32Array,innerWidth:800,innerHeight:600,performance:{now:()=>now},requestAnimationFrame:f=>{frames.set(++id,f);return id},cancelAnimationFrame:i=>frames.delete(i)};
  vm.runInNewContext(fs.readFileSync(require.resolve('./site-fold-particles.js'),'utf8'),c);vm.runInNewContext(fs.readFileSync(require.resolve('./site-fold.js'),'utf8'),c);

@@ -1,6 +1,6 @@
 /* The existing four face tracks carry repeated instances of ONE tetrahedron.
  * Shared Crawlerbait density/ink material prints their union as plain black. */
-(function(root,factory){const G=typeof module==='object'&&module.exports?require('../w/goo-material.js'):root.SSSGooMaterial;const api=factory(root,G);if(typeof module==='object'&&module.exports)module.exports=api;else root.SSSSiteFoldParticles=api;})(typeof globalThis==='object'?globalThis:this,function(root,G){
+(function(root,factory){const G=typeof module==='object'&&module.exports?require('../../w/goo-material.js'):root.SSSGooMaterial;const api=factory(root,G);if(typeof module==='object'&&module.exports)module.exports=api;else root.SSSSiteFoldParticles=api;})(typeof globalThis==='object'?globalThis:this,function(root,G){
 'use strict';
 const LIMIT=2048,MAX_SIDE=1024;
 const V=[[-1,-1,1],[1,-1,-1],[-1,1,-1],[1,1,1]],F=[[0,1,2],[0,3,1],[0,2,3],[1,3,2]];

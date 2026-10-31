@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.65"
+version: "3.66"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -31,6 +31,18 @@ Display has differentiated into one complete local tetrahedral 4V:
 - `y · Population` — actual page-organisms physically admitted into global site-space.
 
 `INDEX.yaml` carries these four atomic nouns and `_cambium.yaml` closes their `4V/6E/4F/1T` relation. The `w/x/z/y` directories carry all active functional tissue. After differentiation the Display root contains only canonical shell/receptors/constitution plus those four child addresses; there is no shared fifth functional layer.
+
+## Orientation's current finer anatomy
+
+`z · Orientation` has differentiated within Display's existing address space:
+`zw · Frame` constructs realized address/cell/body geometry; `zx · Bearing`
+carries the shared oriented world and compass; `zz · Focus` governs perceptual
+and contact access; `zy · Passage` actualizes prepared membrane crossings.
+Display's `INDEX.yaml` and `z/_cambium.yaml` carry the current phenotype and
+closure. These are Display descendants, not a new independently rooted organ.
+Existing public capability/asset identities remain stable while their source
+custody follows these realized loci. Companion witnesses travel with their
+owning tissue; cross-child couplings remain explicit dependencies.
 
 ## Population is the site-space membrane
 

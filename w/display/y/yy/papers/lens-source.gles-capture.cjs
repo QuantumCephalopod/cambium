@@ -5,7 +5,7 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),asse
 const {createCanvas,GlobalFonts}=require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'@napi-rs/canvas'));
 assert(GlobalFonts.registerFromPath(path.join(__dirname,'../../../w/spritesheet/SpriteSheet-Mono.ttf'),'SpriteSheet Mono'));
 global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};global.document={createElement:()=>createCanvas(1,1)};
-const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),Type=require('../../../w/display-type.js'),Tissue=require('../../../w/display-text-tissue.js'),N=require('../../../z/navigation-physiology.js');
+const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),Type=require('../../../w/display-type.js'),Tissue=require('../../../w/display-text-tissue.js'),N=require('../../../z/zw/navigation-physiology.js');
 const [width=390,height=844]=process.argv.slice(2).map(Number),box={left:0,top:0,width,height,right:width,bottom:height},canvas=createCanvas(width,height);canvas.dataset={};canvas.getBoundingClientRect=()=>box;
 const projection=JSON.parse(fs.readFileSync(path.join(__dirname,'projection.json'))),bodies=Object.fromEntries(fs.readdirSync(path.join(__dirname,'inquiry')).filter(x=>x.endsWith('.json')).map(f=>[f.slice(0,-5),JSON.parse(fs.readFileSync(path.join(__dirname,'inquiry',f)))]));
 const context={console,performance,Map,Set,Intl,Float32Array,document:{createElement:()=>createCanvas(1,1)},SSSDisplayType:Type,SSSDisplayNavigation:N,SSSWorldView:{orientation:[1,0,0,0]},SSSInterlocutorModules:new Map()};
@@ -37,7 +37,7 @@ const tissue=Tissue.create({getContext:()=>gl}),audits=[],frames=[],kinds=new Se
  // the selected organism's own source renderer, not a substitute marker.
  const built=api.buildRecords(projection,api.fieldProjection(projection).root),chosen=[built.records.find(r=>state.identities.get(r.id).kind==='source'),built.records.find(r=>state.identities.get(r.id).kind==='holon')];
  state.current=null;state.chamberPath='';state.chamberFocus={center:[0,0,0],scale:1};state.records=chosen;state.recordById=new Map(chosen.map(r=>[r.id,r]));state.orgSim={t:1000,bodies:new Map(chosen.map((r,i)=>[r.id,{p:[(i?1:-1)*.05,0,0],v:[0,0,0]}]))};
- context.SSSDisplayLens=require('../../../z/display-lens.js');api.syncOverviewLens(box,1000);state.renderer=api.createRenderer(canvas,gl);
+ context.SSSDisplayLens=require('../../../z/zz/display-lens.js');api.syncOverviewLens(box,1000);state.renderer=api.createRenderer(canvas,gl);
  const cam=api.cameraZ();state.overviewRender={rect:box,proj:api.perspective(Math.PI/3.3,width/height,.1,20),view:api.lookAt([0,0,cam],[0,0,0],[0,1,0]),q:api.overviewOrientation(),cam,ms:1000,dpr:1};
  const before=JSON.stringify({source:projection,sim:state.orgSim,current:state.current,chamber:state.chamberPath});
  for(const part of state.overviewContacts.values()){

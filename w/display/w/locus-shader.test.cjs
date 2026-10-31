@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
-const N=require('../z/navigation-physiology.js');
+const N=require('../z/zw/navigation-physiology.js');
 const SOURCE=process.env.LOCUS_SOURCE||path.join(__dirname,'locus-shader.js');
 const source=fs.readFileSync(SOURCE,'utf8');
 const atom=noun=>({noun,children:{}}),root={noun:'field',children:{w:atom('w'),x:atom('x'),z:atom('z'),y:atom('y')}};
@@ -54,7 +54,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.canvas=canvas;
   const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
   const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
-  if(glass){const G=require('../z/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:preview||lens?0:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
+  if(glass){const G=require('../z/zz/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:preview||lens?0:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
   if(lens!==false&&(preview||lens))context.SSSDisplayLens={foreground:(_id,frame)=>foreground?foreground(frame):null,snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:typeof lensHome==='function'?lensHome():lensHome})};
   context.SSSDisplayLabelInk={create:()=>({draw:(_r,_w,_h,additionalTarget)=>{calls.push({type:'labelInk',target:drawTarget,additionalTarget});return true},reset(){},dispose(){}})};
   vm.createContext(context);vm.runInContext(source,context,{filename:SOURCE});
@@ -257,7 +257,7 @@ console.log('Transparent fallback suppresses duplicate base geometry while prese
  * The same offered identity follows descent, ascent, membrane approach and
  * restoration on WebGL and Canvas2D, at both actual carrier sizes. */
 for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [true,false]){
- const L=require('../z/display-lens.js'),v={w:width,h:height},f=fixture({width,height,webgl,inspectable:true}),id='neutral:camera-body',s=L.create(null,v);
+ const L=require('../z/zz/display-lens.js'),v={w:width,h:height},f=fixture({width,height,webgl,inspectable:true}),id='neutral:camera-body',s=L.create(null,v);
  L.offer(id,{kind:'body',point:()=>f.api.projectBody('body:b')});f.frame(0);L.lockTo(s,L.resolveTargets(id).find(t=>t.id===id));
  let ms=0,travel=0,last=null;
  function frames(count){for(let i=0;i<count;i++){

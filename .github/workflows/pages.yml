@@ -103,7 +103,7 @@ jobs:
 
       - name: Witness tetrahedral closure
         if: steps.publication.outputs.publish == 'true'
-        run: node w/display/z/site-fold.test.cjs
+        run: node w/display/z/zy/site-fold.test.cjs
 
       - name: Verify membrane bytes
         if: steps.publication.outputs.publish == 'true'

@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
-const N=require('./navigation-physiology.js');
+const N=require('../zw/navigation-physiology.js');
 function boot(search='',{width=1280,height=800,reduced=false}={}){
   const texts=[],events=[],buttons=[],listeners=new Map(),elements=new Map(),state={activeIds:['independent:one']};
   let clock=0,nextTimer=0;const timers=new Map(),frames=new Map();
@@ -30,7 +30,7 @@ const orientation=JSON.stringify(f.W.orientation),view=f.W.view;
 assert.equal(f.document.documentElement.dataset.inverse,'false');
 const inverse=f.elements.get('inverse-mode');inverse.checked=true;inverse.change();
 assert.equal(f.document.documentElement.dataset.inverse,'true','the existing inverse control must have a global material consequence');
-const inverseSheets=['../w/root-view.css','site-runtime.css'].map(file=>fs.readFileSync(path.join(__dirname,file),'utf8')).join('\n');
+const inverseSheets=['../../w/root-view.css','../zy/site-runtime.css'].map(file=>fs.readFileSync(path.join(__dirname,file),'utf8')).join('\n');
 const blackCover='html[data-inverse="true"] #tetra-fold{filter:invert(1)}';assert(inverseSheets.includes(blackCover),'the specifically black transition must compensate global inversion');
 assert.equal((inverseSheets.replace(blackCover,'').match(/filter\s*:\s*invert\(1\)/g)||[]).length,1,'site contents still have exactly one global inverse; only the black transition is exempt');
 inverse.checked=false;inverse.change();assert.equal(f.document.documentElement.dataset.inverse,'false');

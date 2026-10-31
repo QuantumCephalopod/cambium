@@ -1,0 +1,401 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-orientation-differentiation-witness-20261031",
+  "observed_at_utc": "2026-10-31T13:29:32.308592+00:00",
+  "source_revision": "910fa7a41b45d6a6834c5a416cc9873d305a50ba",
+  "source_tree": "07453d0d564bb92d56b2151022585a2b84c4d5e6",
+  "baseline_revision": "5fcb3f4b20f5c0639b6c58dc9a29517fedb85895",
+  "source_sha256": {
+    ".github/workflows/crawlerbait-publish-history-remediation.yml": "57a567ab9994aba43978eb46456d55f0d52034bedf300e6aca0972bf686ed0b3",
+    ".github/workflows/crawlerbait-tide.yml": "2c709a606ac7218747e7a74d16436ce540682294a22499a2cdcb3a6974fbd211",
+    ".github/workflows/pages.yml": "4a9f427f0d354f374adea5da19b2fae50e0afbad968002b45b16474b688e206b",
+    "README.md": "71834e6106f80f0c0a5b769b3b28efaf7ff3cb6da725802550b6750f68c48048",
+    "w/display/INDEX.yaml": "41b2ce1e9e3145ec1e22306f2e85604a31520b04048cd3a3605f5bcb7c9603c7",
+    "w/display/RITUALS/navigation/RITUAL.md": "c87a3d857594bcc639df7d20815da87ccd179fd0607fac87e16a84b8eac0ff05",
+    "w/display/RITUALS/organism/RITUAL.md": "ddbbc87e86bd2b29b7fe1e96be774ae0d26365b634f8d57f3fb6609370121dc1",
+    "w/display/w/display-type.test.cjs": "8fde5e849ab2a805a635096a7e55e534809e35cb54b65196765b58d0d334ad81",
+    "w/display/w/locus-shader.gles-capture.cjs": "0a54f1a557913d2bfe15ced9e9f2486513eb8180d5cfbc86ab5eb764b2b1dda8",
+    "w/display/w/locus-shader.js": "4b76a07a0cc3743e2fe2b3e664f231034f7872cc634cb90e9c27e494a6cdf493",
+    "w/display/w/locus-shader.test.cjs": "f9dfe5c73f0135028fe4266b702d878895d5f477240d8e04a988b7ccf6129c68",
+    "w/display/w/tetra-text.gles-capture.cjs": "6a6b5420da02033d8917d70a5794ea505d3177f81340515b8b323edc04c65d76",
+    "w/display/w/tetra-text.test.cjs": "11f5d444411cdb868343ee38bde3c907fdb1acd80aef406d6ced3605997c96a6",
+    "w/display/x/display-runtime-v2.test.cjs": "e80e51ac8fa2fbd26b72759922c60f01a78ab867d5da7872a1b6686e27f51412",
+    "w/display/x/site-holon.test.cjs": "293ff6faa587aad0981819440b44eee0ac37dbde4d5bfaec71ba9a08cda86a9f",
+    "w/display/y/yw/crawlerbait/z/meal.gles-capture.cjs": "e0d1ba07bc70006925343e8da31c3be92da8ae6fb6ea8518b406713951f6740e",
+    "w/display/y/yy/papers/field-frame.gles-capture.cjs": "ad9a4334d8cd52a3559b4d136b0737138a094666a334ad400975183606c8229e",
+    "w/display/y/yy/papers/lens-source.gles-capture.cjs": "a222183f23adda7fe5908f8fc398d0b18dbafb2d9ecde6d4fc01f481e3a5d6b1",
+    "w/display/z/_cambium.yaml": "70223a976d38edd3248d427473800ea425b65310cb419b20d0ddc133a3015e64",
+    "w/display/z/zw/navigation-physiology.js": "fdafe622105cbced4e85cc81aa5e303d25a6b5f0fbecffff02ee68fa71a37354",
+    "w/display/z/zw/navigation-physiology.test.cjs": "ba61543765cc7a27778b7a312e7b0de129af7b99d6578f454e11dcd6a7277860",
+    "w/display/z/zx/world-view.js": "95f36c33f04a9ff69bb1208bd13abcce4099ada9129e496c8200fa56a0e011b3",
+    "w/display/z/zx/world-view.test.cjs": "eaa6b4154eac712b20de77e274f7b0c5eeb3d8a220485ff9d90e1a32a1c8f977",
+    "w/display/z/zy/site-fold-particles.gles-capture.cjs": "708d31d0c1878502fe8175ac2ef9f08a8a4936405358ba9b8e376a56893ab781",
+    "w/display/z/zy/site-fold-particles.gles.test.py": "af3b6b99c98d5635242f9f52aedf6fd9e57e590abc887db66c0121e1ec28c4be",
+    "w/display/z/zy/site-fold-particles.js": "bbef137b43479ceb12527987a4267b7619cefb8ec086fa50abef2b949725cbfb",
+    "w/display/z/zy/site-fold-particles.test.cjs": "79fab2d820026875c865190b03cb111c99f5046abe89de0480760fc051b08c44",
+    "w/display/z/zy/site-fold.js": "e66f52d5dc6a36b4f6470dceb8baa2779cdf39e38841ba968ee305442fad58f0",
+    "w/display/z/zy/site-fold.test.cjs": "aa6aeb2824a8f85d082404dfc448082f0dcd11eca734213aee1c6fda72f906b0",
+    "w/display/z/zy/site-runtime.css": "68e2588c7f9d9482aeb9bd803e9359008da22565878e5517157cb0fc82c10ded",
+    "w/display/z/zz/display-glass.js": "764d1e73c34d14670e7b1a1043bc8897a02cc23b88ab2c6fff01043ad254c39d",
+    "w/display/z/zz/display-glass.test.cjs": "b913e510cccad61867b9f2afd4ce5d4b06139f7bf0352be43f05f7bbc8c64458",
+    "w/display/z/zz/display-lens.js": "a29ede8ec874808eac175e7e9e0e04f35af76cfa7e47c3dbc79a8d75037f3381",
+    "w/display/z/zz/display-lens.test.cjs": "a0f667a1db92db827403f1807d9bd35b63765df62021b4812e61d6a1e96faf6c",
+    "w/display/z/zz/display-safe-area.css": "9b1196f20a9ca39fdb08ee3817fe2b3c77daf799e997356d71d88dd9c7c79e24",
+    "w/display/z/zz/display-safe-area.js": "e83232bf38036d044be8af9d1517c22761eb68d92f73afe41835defde1c06c11",
+    "w/display/z/zz/display-safe-area.test.cjs": "63b3c61ee0ed7067fd804ca2f8ef6c815f8a989e20580f80b13eea17c51da061",
+    "w/display/z/zz/navigation-aperture.css": "9dbfefefdcaf6f234c07be34e3fbb556bf635807004dd744c1b48bbf16b6a8ff",
+    "w/display/z/zz/navigation-aperture.js": "715389eee1d2052db427e7920bbc1f40ebf9a23d52770deed4cbd3a9f9afd43b",
+    "w/display/z/zz/navigation-aperture.test.cjs": "e4369cbb7349e74f81e8551f7d40f0c4245e0cae85eec19e8ee1aa0cdec803b2",
+    "y/build.py": "7d0d60c0b061f26bb48a1eaacdbce26f61e010e6621551007761dc8449f5aeec",
+    "y/check.py": "a7463e7f1d3b0101a23dd6a6fcf82eb53c9a3c71013ed7a56a3a0823ad62a2cd",
+    "y/readme.py": "20eee85bf82807ff99f50bc99e5cba22e49f782f1e4af60933d39709c12377f9",
+    "y/test-address.cjs": "af43bafa511c47471f60e67dd2e6318863bad3479249ffa350e799e0c98399c7",
+    "y/test-display-differentiation.py": "4a1fbff380ed08f928f482a25468664da77d30fba3735c4ceddca8b7865aa387"
+  },
+  "anatomy": {
+    "locus": "z",
+    "whole": "Orientation",
+    "children": {
+      "zw": "Frame",
+      "zx": "Bearing",
+      "zz": "Focus",
+      "zy": "Passage"
+    },
+    "redistributed_files": 21,
+    "coarse_functional_residue": false,
+    "new_independent_root": false
+  },
+  "repository_check": {
+    "command": "python3 y/check.py --artifact /tmp/orientation-after",
+    "result": {
+      "status": "pass",
+      "checks": 199,
+      "display_4V": {
+        "w": "Embodiment",
+        "x": "Continuity",
+        "z": "Orientation",
+        "y": "Population"
+      },
+      "population": "w/display/y tree is canonical mount truth",
+      "sites": {
+        "organism:philosophy": "ε",
+        "organism:crawlerbait": "w",
+        "organism:schattenseiten": "x",
+        "organism:papers": "y",
+        "organism:datenschutz": "z",
+        "organism:impressum": "xz"
+      },
+      "runtime": "generic identity modules; no specimen names in central runtime",
+      "relocation": "real Papers and Crawlerbait bodies move to 128-symbol addresses and new carrier names with zero internal edits",
+      "owner_build": "declared source/refusal suites retain ownership; external integration evidence remains independent",
+      "bundle": "d9fbc856f187741e",
+      "artifact": "single Display index + identity-owned static site apertures"
+    },
+    "scope": "Executed complete current owner/native/integration suites, including real software GLES and long-address whole-body relocation. The five new structural counterexamples were additionally executed independently after their integration into the CI loop."
+  },
+  "structural_counterexamples": {
+    "command": "python3 y/test-display-differentiation.py",
+    "tests": 5,
+    "status": "PASS",
+    "claims": [
+      "complete split accepted",
+      "opaque foreign interior remains untouched",
+      "functional fifth bucket refused",
+      "missing local constitution refused",
+      "missing realized child refused",
+      "unrepresented constitution refused"
+    ]
+  },
+  "passage_gles": {
+    "status": "PASS",
+    "cases": [
+      {
+        "moving_wait_with_gap": true,
+        "css_carrier": [
+          1280,
+          800
+        ],
+        "render_carrier": [
+          640,
+          400
+        ],
+        "instances": 1276,
+        "tetrahedron_vertices": 12,
+        "opaque_coverage": [
+          0.0,
+          0.014125,
+          0.28709375,
+          0.97997265625,
+          1.0,
+          0.2790234375,
+          0.0,
+          0.64590234375,
+          0.64371875,
+          0.0
+        ],
+        "black_only": true,
+        "one_instance_upload": true,
+        "programs": 2
+      },
+      {
+        "moving_wait_with_gap": true,
+        "css_carrier": [
+          390,
+          844
+        ],
+        "render_carrier": [
+          195,
+          422
+        ],
+        "instances": 840,
+        "tetrahedron_vertices": 12,
+        "opaque_coverage": [
+          0.0,
+          0.009417912261514158,
+          0.2347308299914935,
+          0.9764977518532021,
+          1.0,
+          0.22737878235508568,
+          0.0,
+          0.5937416454004132,
+          0.5948474905820877,
+          0.0
+        ],
+        "black_only": true,
+        "one_instance_upload": true,
+        "programs": 2
+      }
+    ],
+    "scope": "Actual production shared density/ink and tetrahedral geometry on software GLES; not browser/device FPS."
+  },
+  "browser": {
+    "status": "PASS",
+    "cases": [
+      {
+        "viewport": [
+          1280,
+          800
+        ],
+        "cases": [
+          {
+            "owner": "impressum",
+            "renderer": "webgl2",
+            "compass": [
+              960,
+              400,
+              320,
+              400
+            ],
+            "declared": [
+              960,
+              400,
+              320,
+              400
+            ],
+            "map": [
+              1056,
+              423.19,
+              160,
+              160
+            ],
+            "targets": [
+              {
+                "path": ""
+              },
+              {
+                "path": "w"
+              },
+              {
+                "path": "x"
+              },
+              {
+                "path": "y"
+              },
+              {
+                "path": "z"
+              },
+              {
+                "path": "xz"
+              }
+            ],
+            "lens": true,
+            "source_characters": 214
+          },
+          {
+            "owner": "datenschutz",
+            "renderer": "webgl2",
+            "compass": [
+              960,
+              400,
+              320,
+              400
+            ],
+            "declared": [
+              960,
+              400,
+              320,
+              400
+            ],
+            "map": [
+              1056,
+              423.19,
+              160,
+              160
+            ],
+            "targets": [
+              {
+                "path": ""
+              },
+              {
+                "path": "w"
+              },
+              {
+                "path": "x"
+              },
+              {
+                "path": "y"
+              },
+              {
+                "path": "z"
+              },
+              {
+                "path": "xz"
+              }
+            ],
+            "lens": true,
+            "source_characters": 12467
+          }
+        ],
+        "source_and_layout_equal": true,
+        "native_compass_help_rotation_lens": true,
+        "actual_webgl2": true
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "cases": [
+          {
+            "owner": "impressum",
+            "renderer": "webgl2",
+            "compass": [
+              292.5,
+              422,
+              97.5,
+              422
+            ],
+            "declared": [
+              292.5,
+              422,
+              97.5,
+              422
+            ],
+            "map": [
+              328.75,
+              445.19,
+              57,
+              57
+            ],
+            "targets": [
+              {
+                "path": ""
+              },
+              {
+                "path": "w"
+              },
+              {
+                "path": "x"
+              },
+              {
+                "path": "y"
+              },
+              {
+                "path": "z"
+              },
+              {
+                "path": "xz"
+              }
+            ],
+            "lens": true,
+            "source_characters": 214
+          },
+          {
+            "owner": "datenschutz",
+            "renderer": "webgl2",
+            "compass": [
+              292.5,
+              422,
+              97.5,
+              422
+            ],
+            "declared": [
+              292.5,
+              422,
+              97.5,
+              422
+            ],
+            "map": [
+              328.75,
+              445.19,
+              57,
+              57
+            ],
+            "targets": [
+              {
+                "path": ""
+              },
+              {
+                "path": "w"
+              },
+              {
+                "path": "x"
+              },
+              {
+                "path": "y"
+              },
+              {
+                "path": "z"
+              },
+              {
+                "path": "xz"
+              }
+            ],
+            "lens": true,
+            "source_characters": 12467
+          }
+        ],
+        "source_and_layout_equal": true,
+        "native_compass_help_rotation_lens": true,
+        "actual_webgl2": true
+      }
+    ],
+    "scope": "Before/after immutable public artifacts in Chromium with SwiftShader; native hash arrival, compass/help, angular rail and lens keyboard control. No deployed-visitor or physical-device performance claim."
+  },
+  "public_artifact_comparison": {
+    "old_files": 15435,
+    "new_files": 15435,
+    "added": [],
+    "removed": [],
+    "changed": [
+      "assets/BUNDLE/locus-shader.js",
+      "assets/BUNDLE/navigation-physiology.js",
+      "assets/BUNDLE/site-fold-particles.js",
+      "index.html"
+    ]
+  },
+  "production_code_continuity": {
+    "status": "PASS",
+    "claim": "All 21 relocated production/witness carriers accounted for; production code changes only the required Node import paths. The shared field changes only a source-path comment. All other public bytes and members match the baseline after bundle-path normalization."
+  },
+  "active_reference_scan": {
+    "status": "PASS",
+    "old_path_references": 0,
+    "scope": "Current code, tests, workflows and receptors; immutable HOME and spent ancestry intentionally retain their original source paths."
+  },
+  "visual_review": {
+    "status": "PASS",
+    "scope": "Wide Privacy Policy and narrow Legal Notice rendered screenshots personally inspected; before/after source and compass bounds equal at both viewports. Native controls and actual WebGL2 used."
+  },
+  "limits": "Local immutable public artifacts in Chromium/SwiftShader and software GLES. No deployed visitor, physical device, browser-family universality or hardware FPS claim."
+}
