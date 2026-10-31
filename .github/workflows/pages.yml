@@ -140,7 +140,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Prepare authored text browser witness
-        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/legal-orthogonal-text-')
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/legal-orthogonal-text-') || startsWith(github.ref_name, 'staging/legal-compass-inheritance-'))
         run: |
           npm install --prefix /tmp/sss-legal-browser playwright@1.56.0
           /tmp/sss-legal-browser/node_modules/.bin/playwright install --with-deps chromium
@@ -155,8 +155,17 @@ jobs:
           node w/display/y/yxz/impressum/y/orthogonal.browser.cjs _site _legal-witness/webgl --webgl
           node w/display/y/yz/datenschutz/y/orthogonal.browser.cjs _site _legal-witness/webgl --webgl
 
+      - name: Witness legal compass inheritance and actual controls
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/legal-compass-inheritance-')
+        env:
+          PLAYWRIGHT_MODULE: /tmp/sss-legal-browser/node_modules/playwright
+        run: |
+          node w/display/y/yxz/impressum/y/compass.browser.cjs _site _legal-witness/compass
+          node w/display/y/yz/datenschutz/y/compass.browser.cjs _site _legal-witness/compass
+          node w/display/y/yz/datenschutz/y/compass.browser.cjs _site _legal-witness/compass-webgl --webgl
+
       - name: Retain authored body screenshots
-        if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/legal-orthogonal-text-')
+        if: always() && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/legal-orthogonal-text-') || startsWith(github.ref_name, 'staging/legal-compass-inheritance-'))
         uses: actions/upload-artifact@v4
         with:
           name: legal-orthogonal-witness
