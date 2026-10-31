@@ -1,7 +1,7 @@
 ---
 name: impressum
 description: "Public operator-identity site-holon for sss.saarland; publish only witnessed operator and contact facts."
-version: "1.5"
+version: "1.6"
 ---
 
 # IMPRESSUM — local receptor
@@ -30,6 +30,8 @@ The already-closed Identity/Address/Contact/Accountability split now carries its
 
 The mounted view carries every approved DE/EN heading, paragraph, address and list item as text material on Display's actual canonical tetrahedron in its shared orthographic view. y/projection.py derives the complete ordered blocks and inline references directly from the existing static apertures, without rewriting their bytes or facts. The renderer keeps source semantics and languages local; Display lends only neutral text layout/material and the existing geometry, orientation, type and identity dependencies.
 
-Reading uses continuous native scroll, direct source-section jumps and a continuous position control, with an orthographic reset through the shared world orientation. The transparent input region follows the projected body; outside it the existing field and compass retain rotation and return. Title, ordinary full-text aperture and contact remain directly reachable above the body. Reading controls and compass occupy measured canonical screen fields; they are not tetrahedral world geometry. The complete semantic article retains original spelling separately from the face's supported-glyph presentation.
+Reading uses continuous native scroll, direct source-section jumps and a continuous position control, with an orthographic reset through the shared world orientation. The transparent input region follows the projected body; outside it the existing field and compass retain rotation and return. Title, ordinary full-text aperture and contact remain directly reachable above the body. Reading controls occupy owner-declared bounded fields; Display's shared header and compass inherit the overview carrier without a local override. The local UI declares only its reading title/apertures, controls and camera frame; they are not tetrahedral world geometry. The complete semantic article retains original spelling separately from the face's supported-glyph presentation.
 
 The independent clean apertures remain at `/impressum/` and `/impressum/en/`, with their ordinary language/contact/reference links and byte identity. Closure requires complete source equality, real narrow/wide DE/EN interaction and readable pixels; neither a rectangle nor an automated PASS alone establishes usability. This presentation return changes no legal assessment, contact delivery or provider status.
+
+Compass return2026-10-31: the former quarter-height compass declaration collapsed the map behind its own chrome. Remove that declaration and the unused local global-header override. Compare the actual map, rails and footer to the inherited overview instrument, including enlarged type and the supplied wide/short proportions; an outer-box PASS alone does not witness an operable compass.

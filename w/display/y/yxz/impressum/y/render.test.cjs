@@ -2,6 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const body=path.dirname(__dirname),manifest=JSON.parse(fs.readFileSync(path.join(body,'site.json'))),projection=JSON.parse(fs.readFileSync(path.join(body,manifest.projection),'utf8'));
 const privacy=Boolean(projection.controller),route=privacy?'privacy':'impressum',name=privacy?'datenschutz':'impressum',id='organism:'+name;
+const grid=JSON.parse(fs.readFileSync(path.join(body,manifest.ui_grid),'utf8'));assert.equal(grid.meta.extent,'bounded');for(const role of ['compass','header'])assert(!(role in grid.fields),'global '+role+' inherits Display geometry');for(const role of ['description','controls','viewport'])assert(role in grid.fields);
 const nodes=[],events=new Map(),world={language:'en',easeTo:q=>assert.deepEqual(Array.from(q),[1,0,0,0])};let released=0,admitted=[];
 function node(tag){const n={tag,children:[],attrs:{},style:{},listeners:{},append(...xs){this.children.push(...xs)},replaceChildren(...xs){this.children=xs},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.listeners[k]=fn}};nodes.push(n);return n}
 const document={body:node('body'),getElementById:id=>nodes.find(n=>n.id===id),createElement:node,createTextNode:text=>({tag:'#text',textContent:text})};
