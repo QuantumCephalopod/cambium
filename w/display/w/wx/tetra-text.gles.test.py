@@ -2,7 +2,7 @@
 import importlib.util,json,subprocess,shutil
 from pathlib import Path
 from PIL import Image
-here=Path(__file__).resolve();spec=importlib.util.spec_from_file_location('gles',here.with_name('locus-shader.gles.test.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+here=Path(__file__).resolve();spec=importlib.util.spec_from_file_location('gles',here.parent/'../wy/locus-shader.gles.test.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 results=[]
 for w,h in [(390,844),(1280,800)]:
  data=json.loads(subprocess.check_output(['node',str(here.with_name('tetra-text.gles-capture.cjs')),str(w),str(h)],text=True))

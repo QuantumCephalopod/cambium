@@ -454,9 +454,9 @@ def _slug(site_id):
 def template_asset_sources(sites=None):
     """Template-linked Display assets plus identity-owned site tissue."""
     out = {
-        'root-view.css': DISPLAY/'w'/'root-view.css',
+        'root-view.css': DISPLAY/'w'/'wz'/'root-view.css',
         'site-runtime.css': DISPLAY/'z'/'zy'/'site-runtime.css',
-        'interlocutors.css': DISPLAY/'w'/'interlocutors.css',
+        'interlocutors.css': DISPLAY/'w'/'wz'/'interlocutors.css',
         'navigation-aperture.css': DISPLAY/'z'/'zz'/'navigation-aperture.css',
         'display-safe-area.css': DISPLAY/'z'/'zz'/'display-safe-area.css',
         'world-view.js': DISPLAY/'z'/'zx'/'world-view.js',
@@ -465,22 +465,22 @@ def template_asset_sources(sites=None):
         'site-holon.js': DISPLAY/'x'/'site-holon.js',
         'site-fold.js': DISPLAY/'z'/'zy'/'site-fold.js',
         'site-fold-particles.js': DISPLAY/'z'/'zy'/'site-fold-particles.js',
-        'goo-material.js': DISPLAY/'w'/'goo-material.js',
-        'locus-shader.js': DISPLAY/'w'/'locus-shader.js',
+        'goo-material.js': DISPLAY/'w'/'ww'/'goo-material.js',
+        'locus-shader.js': DISPLAY/'w'/'wy'/'locus-shader.js',
         'navigation-aperture.js': DISPLAY/'z'/'zz'/'navigation-aperture.js',
         'display-safe-area.js': DISPLAY/'z'/'zz'/'display-safe-area.js',
         'display-glass.js': DISPLAY/'z'/'zz'/'display-glass.js',
         'display-lens.js': DISPLAY/'z'/'zz'/'display-lens.js',
-        'display-label-ink.js': DISPLAY/'w'/'display-label-ink.js',
-        'ui-grid.js': DISPLAY/'w'/'ui-grid.js',
-        'display-type.js': DISPLAY/'w'/'display-type.js',
-        'tetra-text.js': DISPLAY/'w'/'tetra-text.js',
-        'display-text-tissue.js': DISPLAY/'w'/'display-text-tissue.js',
+        'display-label-ink.js': DISPLAY/'w'/'wx'/'display-label-ink.js',
+        'ui-grid.js': DISPLAY/'w'/'wz'/'ui-grid.js',
+        'display-type.js': DISPLAY/'w'/'wx'/'display-type.js',
+        'tetra-text.js': DISPLAY/'w'/'wx'/'tetra-text.js',
+        'display-text-tissue.js': DISPLAY/'w'/'ww'/'display-text-tissue.js',
         'representation-handoff.js': DISPLAY/'x'/'representation-handoff.js',
         'feed-acquisition.js': DISPLAY/'x'/'feed-acquisition.js',
         'recursive-fold.js': DISPLAY/'x'/'recursive-fold.js',
         'display-runtime-v2.js': DISPLAY/'x'/'display-runtime-v2.js',
-        'favicon.svg': DISPLAY/'w'/'favicon.svg',
+        'favicon.svg': DISPLAY/'w'/'wx'/'favicon.svg',
     }
     slugs = set()
     for site in (discover_sites() if sites is None else sites):
@@ -591,7 +591,7 @@ def render(sites=None, *, bundle=None, template_sources=None, dependencies=None)
     sites = discover_sites() if sites is None else sites
     dependencies = display_dependencies() if dependencies is None else dependencies
     template_sources = template_asset_sources(sites) if template_sources is None else template_sources
-    text = (DISPLAY/'w'/'template.html').read_text(encoding='utf-8')
+    text = (DISPLAY/'w'/'wz'/'template.html').read_text(encoding='utf-8')
     if bundle is None:
         bundle = _bundle_id(_asset_bytes(asset_sources(sites, dependencies, template_sources)))
     replacements = {

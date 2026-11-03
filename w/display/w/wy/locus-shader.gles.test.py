@@ -165,11 +165,11 @@ def readable_contract(width,height):
     results=[]
     with tempfile.TemporaryDirectory() as tmp:
         target=Path(tmp)/'target.rgba';image=Path(tmp)/'scene.rgba'
-        subprocess.check_call(['node',str(Path(__file__).with_name('liquid-reading-ink.cjs')),str(width),str(height),json.dumps(frame),str(target)])
-        fg=target.read_bytes();plain=Path(tmp)/'plain.rgba';subprocess.check_call(['node',str(Path(__file__).with_name('liquid-reading-ink.cjs')),str(width),str(height),json.dumps(frame),str(plain),'plain']);bare=plain.read_bytes()
+        subprocess.check_call(['node',str(Path(__file__).parent/'../wx/liquid-reading-ink.cjs'),str(width),str(height),json.dumps(frame),str(target)])
+        fg=target.read_bytes();plain=Path(tmp)/'plain.rgba';subprocess.check_call(['node',str(Path(__file__).parent/'../wx/liquid-reading-ink.cjs'),str(width),str(height),json.dumps(frame),str(plain),'plain']);bare=plain.read_bytes()
         shadow_pixels=sum(bare[i+3]==0 and fg[i+3]>0 for i in range(0,len(fg),4));assert shadow_pixels>100
         assert all(max(abs(fg[i+k]-bare[i+k]) for k in range(4))<=1 for i in range(0,len(fg),4) if bare[i+3]==255),'shadow changes solid glyph colour beyond one UNORM rounding unit'
-        inverse=Path(tmp)/'inverse.rgba';subprocess.check_call(['node',str(Path(__file__).with_name('liquid-reading-ink.cjs')),str(width),str(height),json.dumps(frame),str(inverse),'inverse']);light=inverse.read_bytes()
+        inverse=Path(tmp)/'inverse.rgba';subprocess.check_call(['node',str(Path(__file__).parent/'../wx/liquid-reading-ink.cjs'),str(width),str(height),json.dumps(frame),str(inverse),'inverse']);light=inverse.read_bytes()
         support=[i for i in range(0,len(light),4) if bare[i+3]==0 and light[i+3]>40]
         assert len(support)>100 and all(light[i+k]>=light[i+3]*.9 for i in support for k in range(3)), 'global inverse loses contrasting shadow'
         results.append({'kind':'type-shadow','additional_edge_support_pixels':shadow_pixels,'solid_glyph_colour_max_unorm_error':1,'inverse_dark_shadow_support_pixels':len(support)})

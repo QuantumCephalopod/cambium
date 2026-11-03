@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.29"
+version: "3.30"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -160,7 +160,7 @@ In a single encounter the global navigator is a HUD, not a plate:
 - one circular glass drop is stored as overfill on an eligible HUD edge; eligible reservoirs share its declared glass kind and layer. Any exposed edge can lend the drop, including the top HUD and compass. Its short curved capillary contact pinches off with separation; a nearby cursor never moves its centre: only its flesh deforms with reciprocal area-preserving axes. Once released without a soft-lock, the larger free drop is drawn toward the nearest live compatible reservoir boundary, even from beyond contact reach. It joins the liquid only when actual surfaces meet through short capillary contact, then returns into storage over seconds. Holding and owner-held locks take priority, reduced motion settles the return directly, and absence of compatible liquid leaves free glass. Its deformed footprint and docking equilibrium stay inside the screen;
 - the drop is a pure-physics module (`z/zz/display-lens.js`). It never blocks the pointer: hover passes through it and a direct click on it is replayed to whatever lies beneath; pressing on the drop and pulling takes it at once, or pulls it from a reservoir edge. The drop magnifies what it covers by 13%, the HUD glass keeps its own gentler bend. Only its owning pointer can move or release it; cancellation, capture loss, blur and glass removal end the grab. It is shown in single encounters and draws glass over the existing field;
 - occupied top HUD surfaces may declare a bounded `data-display-glass-overfill` below their controls, with a curved free edge; safe-area witnesses include that visible overfill;
-- actual field-label ink is derived from DOM text and computed styles into the scene before refraction (`w/display-label-ink.js`). DOM text remains the semantic and hit-target source. Its duplicate pixels are suppressed only after a successful GPU draw and restored for disabled glass, fallback and disposal.
+- actual field-label ink is derived from DOM text and computed styles into the scene before refraction (`w/wx/display-label-ink.js`). DOM text remains the semantic and hit-target source. Its duplicate pixels are suppressed only after a successful GPU draw and restored for disabled glass, fallback and disposal.
 
 ### Situated-function boundary — not a second gesture or a mode dial
 

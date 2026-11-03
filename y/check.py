@@ -154,7 +154,7 @@ def main():
     bundle_files={q.relative_to(bundle_dir).as_posix() for q in bundle_dir.rglob('*') if q.is_file()}
     check(bundle_files==set(assets),'bundle file set diverges from tree-derived asset contract')
 
-    nav=(DISPLAY/'z'/'zw'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'zx'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'zz'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'zy'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'zy'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'zz'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'zz'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'locus-shader.js').read_text()
+    nav=(DISPLAY/'z'/'zw'/'navigation-physiology.js').read_text(); world=(DISPLAY/'z'/'zx'/'world-view.js').read_text(); runtime=(DISPLAY/'x'/'display-runtime-v2.js').read_text(); safe=(DISPLAY/'z'/'zz'/'display-safe-area.js').read_text(); holon=(DISPLAY/'x'/'site-holon.js').read_text(); fold=(DISPLAY/'z'/'zy'/'site-fold.js').read_text(); site_css=(DISPLAY/'z'/'zy'/'site-runtime.css').read_text(); aperture=(DISPLAY/'z'/'zz'/'navigation-aperture.js').read_text(); aperture_css=(DISPLAY/'z'/'zz'/'navigation-aperture.css').read_text(); fields=(DISPLAY/'w'/'wy'/'locus-shader.js').read_text()
     check('semanticPoint' in nav and 'locus:A.key(path)' in nav,'semantic place is not exact recursive locus')
     check('center:[...record.center]' in nav,'camera focus is not recursive split-tet centroid')
     check('GLOBAL_TARGETS' in world and 'hitTarget' in world and 'sss:global-navigate' in world,'global minimap is not direct mounted-site navigation')
@@ -176,7 +176,7 @@ def main():
     check("N.addressRecord(structure,raw.path)" in fields,'field points cannot inhabit exact recursive address cells')
     check('AXIS_SETTLE_EPS' in world and "dataset.latched='true'" in world,'exact settle-to-lock behavior missing')
     check('knobShape' in world and "dataset.morph" in world and 'KNOB_SWELL' in world,'axis knob does not show the settle')
-    glass=(DISPLAY/'z'/'zz'/'display-glass.js').read_text(); template=(DISPLAY/'w'/'template.html').read_text()
+    glass=(DISPLAY/'z'/'zz'/'display-glass.js').read_text(); template=(DISPLAY/'w'/'wz'/'template.html').read_text()
     check('data-display-occupancy' in glass and 'data-display-glass' in glass and 'assets/display-glass.js' in template,'occupied HUD surfaces are not declared glass')
     lens=(DISPLAY/'z'/'zz'/'display-lens.js').read_text()
     check('breakAt' in lens and 'assets/display-lens.js' in template and 'uHome' in fields and 'dots(' in fields,'goo lens or halftone missing')
@@ -198,13 +198,13 @@ def main():
     check('id="commit"' not in actual,'obsolete global commit surface remains in generated artifact')
     check('hitFace' in fields and 'projectAddressCenter' in fields,'face-oriented address encounter geometry missing')
 
-    js_sources=['w/tetra-text.js','w/ui-grid.js','z/zx/world-view.js','z/zw/navigation-physiology.js','x/site-holon.js','z/zy/site-fold.js','z/zy/site-fold-particles.js','w/goo-material.js','x/display-runtime-v2.js','x/representation-handoff.js','x/feed-acquisition.js','x/recursive-fold.js','w/locus-shader.js','w/display-label-ink.js','z/zz/navigation-aperture.js','z/zz/display-safe-area.js','z/zz/display-glass.js','z/zz/display-lens.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
+    js_sources=['w/wx/tetra-text.js','w/wz/ui-grid.js','z/zx/world-view.js','z/zw/navigation-physiology.js','x/site-holon.js','z/zy/site-fold.js','z/zy/site-fold-particles.js','w/ww/goo-material.js','x/display-runtime-v2.js','x/representation-handoff.js','x/feed-acquisition.js','x/recursive-fold.js','w/wy/locus-shader.js','w/wx/display-label-ink.js','z/zz/navigation-aperture.js','z/zz/display-safe-area.js','z/zz/display-glass.js','z/zz/display-lens.js']+[s['renderer_path'].relative_to(DISPLAY).as_posix() for s in sites]
     for source in js_sources:
         result=subprocess.run(['node','--check',str(DISPLAY/source)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'JS syntax failure {source}')
-    for test in ('w/tetra-text.test.cjs','z/zx/world-view.test.cjs','z/zz/navigation-aperture.test.cjs','z/zw/navigation-physiology.test.cjs','x/site-holon.test.cjs','x/display-runtime-v2.test.cjs','x/representation-handoff.test.cjs','x/feed-acquisition.test.cjs','x/recursive-fold.test.cjs','z/zy/site-fold.test.cjs','z/zy/site-fold-particles.test.cjs','z/zz/display-safe-area.test.cjs','z/zz/display-glass.test.cjs','z/zz/display-lens.test.cjs','w/display-type.test.cjs','w/ui-grid.test.cjs','w/ui-grid-sites.test.cjs','w/display-label-ink.test.cjs','w/locus-shader.test.cjs'):
+    for test in ('w/wx/tetra-text.test.cjs','z/zx/world-view.test.cjs','z/zz/navigation-aperture.test.cjs','z/zw/navigation-physiology.test.cjs','x/site-holon.test.cjs','x/display-runtime-v2.test.cjs','x/representation-handoff.test.cjs','x/feed-acquisition.test.cjs','x/recursive-fold.test.cjs','z/zy/site-fold.test.cjs','z/zy/site-fold-particles.test.cjs','z/zz/display-safe-area.test.cjs','z/zz/display-glass.test.cjs','z/zz/display-lens.test.cjs','w/wx/display-type.test.cjs','w/wz/ui-grid.test.cjs','w/wz/ui-grid-sites.test.cjs','w/wx/display-label-ink.test.cjs','w/wy/locus-shader.test.cjs'):
         result=subprocess.run(['node',str(DISPLAY/test)],capture_output=True,text=True); check(result.returncode==0,result.stderr or f'test failed {test}')
     if ctypes.util.find_library('EGL'):
-        result=subprocess.run(['python3',str(DISPLAY/'w/locus-shader.gles.test.py')],capture_output=True,text=True)
+        result=subprocess.run(['python3',str(DISPLAY/'w/wy/locus-shader.gles.test.py')],capture_output=True,text=True)
         check(result.returncode==0,result.stderr or 'software GLES field/glass contract failed')
     else:
         print('Software GLES witness unavailable on this host; no real-shader execution claim.')
@@ -219,9 +219,9 @@ def main():
         'navigation': DISPLAY/'z/zw/navigation-physiology.js',
         'recursive_fold': DISPLAY/'x/recursive-fold.js',
         'representation_handoff': DISPLAY/'x/representation-handoff.js',
-        'ui_grid': DISPLAY/'w/ui-grid.js', 'lens': DISPLAY/'z/zz/display-lens.js',
-        'field_gles': DISPLAY/'w/locus-shader.gles.test.py',
-        'gles_transport': DISPLAY/'w/gles-transport.cjs',
+        'ui_grid': DISPLAY/'w/wz/ui-grid.js', 'lens': DISPLAY/'z/zz/display-lens.js',
+        'field_gles': DISPLAY/'w/wy/locus-shader.gles.test.py',
+        'gles_transport': DISPLAY/'w/wy/gles-transport.cjs',
         'site_public': ROOT/'y/site-public.py',
         'gles_available': bool(ctypes.util.find_library('EGL')),
     }

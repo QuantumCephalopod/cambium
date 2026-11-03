@@ -2,7 +2,7 @@
 """Actual Crawlerbait goo/ink, admitted public history, font and Pretext."""
 import importlib.util,json,subprocess,math
 from pathlib import Path
-here=Path(__file__).resolve();spec=importlib.util.spec_from_file_location('g',here.parents[4]/'w/locus-shader.gles.test.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+here=Path(__file__).resolve();spec=importlib.util.spec_from_file_location('g',here.parents[4]/'w/wy/locus-shader.gles.test.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 results=[]
 for w,h in [(390,844),(1280,800)]:
  d=json.loads(subprocess.check_output(['node',str(here.with_name('meal.gles-capture.cjs')),str(w),str(h)],text=True));images,n=g.replay(d['commands'],w,h,min_depth_clears=0)

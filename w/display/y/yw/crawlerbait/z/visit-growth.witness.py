@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 
 here = Path(__file__).resolve()
-spec = importlib.util.spec_from_file_location('gles', here.parents[4] / 'w/locus-shader.gles.test.py')
+spec = importlib.util.spec_from_file_location('gles', here.parents[4] / 'w/wy/locus-shader.gles.test.py')
 gles = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(gles)
 cases = []

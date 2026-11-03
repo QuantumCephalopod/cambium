@@ -2,6 +2,8 @@
 """Recursive splits require local closure, complete children and no fifth bucket."""
 from pathlib import Path
 import importlib.util
+import hashlib
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -64,6 +66,38 @@ class Differentiation(unittest.TestCase):
         (self.root/'x/_cambium.yaml').write_text('unearned')
         with self.assertRaisesRegex(AssertionError,'unrepresented split'):
             self.check()
+
+    def test_native_dependencies_survive_finer_custody_and_carrier_rename(self):
+        native=build.display_dependencies()
+        identities=['@chenglou/pretext','@sss/spritesheet']
+        selected={identity:native[identity] for identity in identities}
+        expected=build.dependency_projection('same-generation',selected)
+        def bytes_at(folder):
+            return {p.relative_to(folder).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+                    for p in folder.rglob('*') if p.is_file()}
+        originals={identity:bytes_at(dep['body']) for identity,dep in selected.items()}
+        for i,(identity,dep) in enumerate(selected.items()):
+            shutil.copytree(dep['body'],self.root/'w/ww'/('occupant-'+str(i)))
+        with patch.object(build,'DISPLAY',self.root),patch.object(build,'ROOT',self.root):
+            before=build.display_dependencies()
+            self.assertEqual(build.dependency_projection('same-generation',before),expected)
+            self.assertEqual({d['address'] for d in before.values()},{'ww'})
+            index=self.root/'INDEX.yaml'
+            source='  w:\n    noun: Source\n'
+            children=''.join('    '+g+':\n      noun: Child\n' for g in 'wxzy')
+            index.write_text(index.read_text().replace(source,source+children))
+            for gene in 'wxzy':
+                (self.root/'w/ww'/('ww'+gene)).mkdir()
+            shutil.copyfile(self.root/'w/_cambium.yaml',self.root/'w/ww/_cambium.yaml')
+            for i,identity in enumerate(identities):
+                (self.root/'w/ww'/('occupant-'+str(i))).rename(
+                    self.root/'w/ww/wwx'/('renamed-'+str(i)))
+            witness.check_display_differentiations(build)
+            after=build.display_dependencies()
+            self.assertEqual(set(after),set(identities))
+            self.assertEqual({d['address'] for d in after.values()},{'wwx'})
+            self.assertEqual(build.dependency_projection('same-generation',after),expected)
+            self.assertEqual({identity:bytes_at(dep['body']) for identity,dep in after.items()},originals)
 
 
 if __name__=='__main__':

@@ -1,8 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const H=require('./site-holon.js'),N=require('../z/zw/navigation-physiology.js'),UI=require('../w/ui-grid.js'),RH=require('./representation-handoff.js');
+const H=require('./site-holon.js'),N=require('../z/zw/navigation-physiology.js'),UI=require('../w/wz/ui-grid.js'),RH=require('./representation-handoff.js');
 const runtimeSource=fs.readFileSync(process.env.RUNTIME_SOURCE||path.join(__dirname,'display-runtime-v2.js'),'utf8');
-const fieldSource=fs.readFileSync(path.join(__dirname,'../w/locus-shader.js'),'utf8');
+const fieldSource=fs.readFileSync(path.join(__dirname,'../w/wy/locus-shader.js'),'utf8');
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});

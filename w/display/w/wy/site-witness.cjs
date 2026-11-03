@@ -2,7 +2,7 @@
 // Test transports acquire current owner declarations without fixing a mount or
 // treating a body's internals/lifecycle stores as another Population directory.
 const fs=require('node:fs'),path=require('node:path');
-function discoverSites(root=path.join(__dirname,'../y')){
+function discoverSites(root=path.join(__dirname,'../../y')){
   const sites=new Map(),pending=[root];
   while(pending.length){
     const directory=pending.pop(),manifestPath=path.join(directory,'site.json');

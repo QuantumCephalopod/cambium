@@ -4,10 +4,10 @@
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{pathToFileURL}=require('node:url'),assert=require('node:assert/strict');
 const {createCanvas,GlobalFonts}=require(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'@napi-rs/canvas'));
 global.OffscreenCanvas=class{constructor(w,h){return createCanvas(w,h)}};
-GlobalFonts.registerFromPath(path.join(__dirname,'../../../w/spritesheet/SpriteSheet-Mono.ttf'),'SpriteSheet Mono');
+GlobalFonts.registerFromPath(path.join(__dirname,'../../../w/wx/spritesheet/SpriteSheet-Mono.ttf'),'SpriteSheet Mono');
 global.document={createElement:()=>createCanvas(1,1)};
-const tissueTransport=require('../../../w/gles-transport.cjs').createTransport(),Tissue=require('../../../w/display-text-tissue.js');
-const {gl,commands}=require('../../../w/gles-transport.cjs').createTransport(),N=require('../../../z/zw/navigation-physiology.js'),Type=require('../../../w/display-type.js'),W={orientation:[1,0,0,0]};
+const tissueTransport=require('../../../w/wy/gles-transport.cjs').createTransport(),Tissue=require('../../../w/ww/display-text-tissue.js');
+const {gl,commands}=require('../../../w/wy/gles-transport.cjs').createTransport(),N=require('../../../z/zw/navigation-physiology.js'),Type=require('../../../w/wx/display-type.js'),W={orientation:[1,0,0,0]};
 const [width=390,height=844]=process.argv.slice(2).map(Number),rect={left:0,top:0,width,height,right:width,bottom:height},textCanvas=createCanvas(width,height);textCanvas.dataset={};textCanvas.getBoundingClientRect=()=>rect;
 const canvas={width,height,dataset:{},style:{},getBoundingClientRect:()=>rect,getContext:()=>gl},label={classList:{add(){},remove(){}},textContent:''};
 const source=fs.readFileSync(process.env.PAPERS_SOURCE||path.join(__dirname,'sierpinski.js'),'utf8'),legacy=!source.includes('afterDraw:frame=>draw(frame.ms,frame)'),context={console,performance,Float32Array,Map,Set,Intl,devicePixelRatio:1,requestAnimationFrame:()=>0,document:{createElement:()=>createCanvas(1,1),querySelectorAll:()=>[]},SSSDisplayLens:{offer(){},withdraw(){}},SSSDisplayNavigation:N,SSSDisplayType:Type,SSSWorldView:W};
@@ -18,7 +18,7 @@ const state={mounted:true,host:{hidden:false,querySelectorAll:()=>[]},canvas,tex
 if(legacy)state.renderer=api.createRenderer(canvas);
 api.setState(state);api.setLens(()=>({x:width/2,y:height/2,r:96,round:1,held:false,docked:false}));
 (async()=>{
- api.setPretext(await import(pathToFileURL(path.join(__dirname,'../../../w/pretext/layout.js')).href));
+ api.setPretext(await import(pathToFileURL(path.join(__dirname,'../../../w/wx/pretext/layout.js')).href));
  const cases=[],samples=[];let now=1000;
  for(const pick of [null,'4H.vPbh','S.CTLJ']){
   state.current=null;state.stack=[];state.transition=0;state.backgroundPassage=0;state.being=null;

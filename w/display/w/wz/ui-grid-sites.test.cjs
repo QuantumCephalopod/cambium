@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const G=require('./ui-grid.js');
 
-const sites=[...require('./site-witness.cjs').discoverSites().values()];
+const sites=[...require('../wy/site-witness.cjs').discoverSites().values()];
 assert.ok(sites.length,'no site-holons discovered');
 
 for(const site of sites){
