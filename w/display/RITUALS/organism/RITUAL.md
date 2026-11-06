@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.67"
+version: "3.68"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -410,7 +410,9 @@ Outside-click ascent follows actual body-host offers and local container descent
 
 ## Readable liquid interior — earned shared geometry
 
-A HUD surface's measured DOM rectangle and a locked lens's offered frame are reading geometry. The shared optical hull carries a half-root-rem perimeter outside that geometry; safe-area and reservoir acquisition use the actual expanded HUD hull. Existing top overfill remains part of the hull. The same rule applies to arbitrary HUDs and field/body locks without site-name branches.
+A HUD surface's measured DOM rectangle and a locked lens's offered frame are reading geometry. The shared optical hull carries a half-root-rem perimeter outside that geometry; safe-area and reservoir acquisition use the actual expanded HUD hull. Explicitly authored overfill remains part of a surface's hull; the shared header and feedback now use only the common perimeter, with no additional empty strip. Compatible top surfaces merge independently of whether they request overfill. The same rule applies to arbitrary HUDs and field/body locks without site-name branches.
+
+The shared header retains compact intrinsic flow. Encounter feedback begins at its measured reading bottom, remains above the loading cover and acquires no occupied height while empty. Safe-area refresh reuses the ordinary header measurement before acquiring feedback at its updated position. Bounded owner header boxes retain their canonical placement; owners reserve the actual shared top occupancy and provide internal continuation for content that cannot fit.
 
 The liquid keeps one continuous background optical field across its hull, including the top reading strip, overfill and capillary joins. Reading rectangles describe layout/containment; they no longer turn a whole rectangle of background into unbent glass. Refraction, dispersion and tint therefore continue behind sharp foreground tissue. Zero halftone ink still emits zero dots.
 

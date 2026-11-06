@@ -8,9 +8,9 @@ published; screen/device performance is not inferred from this witness.
 from pathlib import Path
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from functools import partial
-import argparse,json,threading
+import argparse,json,os,threading
 
-p=argparse.ArgumentParser();p.add_argument('--artifact',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args();a.out.mkdir(parents=True,exist_ok=True)
+p=argparse.ArgumentParser();p.add_argument('--artifact',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--canvas2d',action='store_true',help='Witness DOM layout using the supported Canvas2D field fallback');a=p.parse_args();a.out.mkdir(parents=True,exist_ok=True)
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/index.html';results=[]
@@ -23,14 +23,49 @@ def wait_scene(page,identity):
  page.wait_for_selector(f'[data-interlocutor="{identity}"]:not([hidden]) [data-ui-bounded="true"]',timeout=180000)
  page.wait_for_function("document.getElementById('tetra-fold').dataset.fold==='open'",timeout=180000)
  page.evaluate('document.fonts.ready')
+def header_content(page,host,identity,w,h):
+ outer=host+' [data-ui-field="header"]';close(bounds(page,outer),'header',w,h)
+ inner=outer+(' .crawlerbait-hud-top' if identity=='organism:crawlerbait' else ' .ss-hud-top')
+ reading=page.locator(inner)
+ metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header'));return {top:r.top,bottom:r.bottom,height:r.height,outerBottom:o.bottom,safeTop:SSSDisplaySafeArea.snapshot().insets.top,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,glassBottom:g.rect.bottom,inset:g.inset}}''')
+ assert metrics['top']>=metrics['safeTop']-.5,metrics
+ assert metrics['bottom']<=metrics['outerBottom']+.5,metrics
+ assert metrics['clientHeight']>=metrics['titleHeight']-.5,('no complete title line',metrics)
+ assert metrics['scrollWidth']<=metrics['clientWidth']+1,('horizontal header overflow',metrics)
+ assert metrics['glassBottom']<=metrics['headerBottom']+metrics['inset']+.5,('excess empty top hull',metrics)
+ reading.evaluate('(e)=>{e.scrollTop=e.scrollHeight}')
+ end=reading.evaluate('e=>({top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,last:e.lastElementChild.getBoundingClientRect().bottom,scrollTop:e.scrollTop})')
+ assert end['top']>=metrics['safeTop']-.5 and end['last']<=end['bottom']+1,('last header content unreachable',end)
+ reading.evaluate('(e)=>{e.scrollTop=0}')
+ # A real unavailable-encounter message must leave a complete reading line on
+ # short carriers, and clearing it must restore the same continuation surface.
+ page.evaluate("()=>{document.getElementById('site-state').textContent='ENCOUNTER UNAVAILABLE · RETRY THE ENCOUNTER';SSSDisplaySafeArea.refresh()}")
+ failure=reading.evaluate('e=>({height:e.clientHeight,top:e.getBoundingClientRect().top,safeTop:SSSDisplaySafeArea.snapshot().insets.top})')
+ assert failure['height']>=metrics['titleHeight']-.5 and failure['top']>=failure['safeTop']-.5,('failure feedback obscures header',failure,metrics)
+ page.evaluate("()=>{document.getElementById('site-state').textContent='';SSSDisplaySafeArea.refresh()}")
+ assert abs(reading.evaluate('e=>e.getBoundingClientRect().height')-metrics['height'])<.5,'feedback did not release occupied space'
+ metrics['failure_reading_height']=failure['height']
+ rail=page.locator(host+' [data-ui-field="description"]')
+ controls=rail.evaluate('''e=>{const r=e.getBoundingClientRect(),items=[...e.querySelectorAll('button')].filter(b=>b.getClientRects().length).map(b=>{const q=b.getBoundingClientRect();return {text:b.textContent,left:q.left,right:q.right,top:q.top,bottom:q.bottom}});return {left:r.left,right:r.right,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,items}}''')
+ assert controls['scrollWidth']<=controls['clientWidth']+1,('rail needs horizontal scroll',controls)
+ for button in controls['items']:
+  assert button['left']>=controls['left']-.5 and button['right']<=controls['right']+.5,('control outside rail',button,controls)
+ for i,a in enumerate(controls['items']):
+  for b in controls['items'][i+1:]:
+   assert min(a['right'],b['right'])-max(a['left'],b['left'])<=.5 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=.5,('overlapping controls',a,b)
+ return metrics
 try:
  from playwright.sync_api import sync_playwright
  with sync_playwright()as pw:
-  browser=pw.chromium.launch(headless=True,args=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
-  fallback=pw.chromium.launch(headless=True,args=['--disable-webgl'])
-  for w,h in [(1280,800),(390,844)]:
+  executable={'executable_path':os.environ['CHROMIUM_EXECUTABLE']} if os.environ.get('CHROMIUM_EXECUTABLE') else {}
+  browser=pw.chromium.launch(headless=True,args=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'],**executable)
+  fallback=pw.chromium.launch(headless=True,args=['--disable-webgl'],**executable)
+  viewports=[(1280,800),(390,844),(1275,596),(667,375),(320,568)]
+  for w,h in viewports:
    for identity,address in [('organism:philosophy','overview'),('organism:schattenseiten','x'),('organism:crawlerbait','w')]:
-    page=(fallback if identity=='organism:crawlerbait' else browser).new_page(viewport={'width':w,'height':h},device_scale_factor=1);errors=[];console=[];page.on('console',lambda m:console.append(m.text) if m.type in ['warning','error'] else None);page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'
+    if identity=='organism:philosophy' and (w,h) not in viewports[:2]:continue
+    use_fallback=a.canvas2d or identity=='organism:crawlerbait'
+    page=(fallback if use_fallback else browser).new_page(viewport={'width':w,'height':h},device_scale_factor=1);errors=[];console=[];page.on('console',lambda m:console.append(m.text) if m.type in ['warning','error'] else None);page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'
     try:
      page.goto(base+'#main:'+address,wait_until='domcontentloaded');wait_scene(page,identity)
      host=f'[data-interlocutor="{identity}"]:not([hidden])';description=host+' [data-ui-field="description"]'
@@ -39,8 +74,9 @@ try:
      # GL source projection and pointer equivalence have separate native tests.
      world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewport',w,h)
      canvas=page.locator(host+' .interlocutor-background');assert not canvas.get_attribute('data-layer-error')
-     records={'identity':identity,'viewport':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if identity=='organism:crawlerbait' else 'software WebGL','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewport':world}
+     records={'identity':identity,'carrier':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if use_fallback else 'software WebGL','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewport':world}
      if identity!='organism:philosophy':
+      records['header_content']=header_content(page,host,identity,w,h)
       timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h);records['timeline']=before
       if identity=='organism:schattenseiten':
        page.locator(host+' .ss-rows button').first.click();page.locator(host+' .ss-work-choices button').first.click();page.locator(host+' .ss-panel img').wait_for(state='visible')
@@ -70,4 +106,4 @@ try:
   browser.close();fallback.close()
 finally:
  server.shutdown();server.server_close();(a.out/'layout.json').write_text(json.dumps({'cases':results,'scope':__doc__},indent=2)+'\n')
-print(json.dumps({'status':'PASS','actual_browser_cases':len(results),'viewports':[[1280,800],[390,844]],'immutable_footer':True,'bound_compass_including_help':True}))
+print(json.dumps({'status':'PASS','actual_browser_cases':len(results),'viewports':viewports,'header_content_and_controls':True,'immutable_footer':True,'bound_compass_including_help':True}))

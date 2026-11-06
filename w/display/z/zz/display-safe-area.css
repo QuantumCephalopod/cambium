@@ -5,7 +5,7 @@
  * copying pixel offsets or learning current specimen identities. The mounted
  * live region has no occupied height while there is nothing to announce.
  */
-#display-membrane-status{position:fixed;z-index:16;left:28px;right:28px;top:56px;pointer-events:none;min-width:0}
+#display-membrane-status{position:fixed;z-index:16;left:28px;right:28px;top:var(--display-header-bottom,calc(1.5rem + 30px));pointer-events:none;min-width:0}
 #display-membrane-status #site-state{overflow-wrap:anywhere}
 
 /* Generic opt-in anchors for any autonomous site-holon. They are contract
@@ -17,5 +17,5 @@
 [data-display-safe-anchor="bottom-right"]{bottom:var(--display-safe-bottom)!important;right:var(--display-safe-right)!important}
 
 @media(max-width:760px){
-  #display-membrane-status{left:18px;right:18px;top:47px}
+  #display-membrane-status{left:18px;right:18px}
 }

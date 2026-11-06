@@ -84,3 +84,43 @@ for(const name of ['document','innerWidth','innerHeight','SSSDisplayGlass'])dele
   assert.deepStrictEqual(immediate.counts(),{reads:1,writes:4,events:1});
 }
 console.log('display safe-area contract pass');
+
+// Header acquisition precedes feedback placement in this same refresh. This
+// remains true before observers start, after font/viewport changes and without
+// ResizeObserver. Every occupied element is measured only once.
+{
+  const fs=require('node:fs'),vm=require('node:vm'),Glass=require('./display-glass.js');
+  const source=fs.readFileSync(require.resolve('./display-safe-area.js'),'utf8');
+  let headerHeight=54,statusHeight=0,rem=16,width=800;
+  const values={},writes={},reads={header:0,status:0};
+  const rootStyle={getPropertyValue:key=>values[key]||'',setProperty(key,value){values[key]=value;writes[key]=(writes[key]||0)+1}};
+  const root={style:rootStyle,dataset:{}};
+  const header={id:'display-header',getAttribute:key=>key==='data-display-occupancy'?'top':null,
+    getBoundingClientRect(){reads.header++;return {left:0,top:0,width,height:headerHeight}}};
+  const status={id:'display-membrane-status',getAttribute:header.getAttribute,
+    getBoundingClientRect(){reads.status++;return {left:18,top:parseFloat(values['--display-header-bottom']||0),width:width-36,height:statusHeight}}};
+  const context={document:{documentElement:root,querySelectorAll:()=>[status,header]},
+    innerWidth:width,innerHeight:600,
+    getComputedStyle:()=>({display:'block',visibility:'visible',opacity:'1'}),
+    SSSDisplayGlass:{surfaceRect:(el,r)=>Glass.surfaceRect(el,r,rem/2)}};
+  vm.runInNewContext(source,context);
+  const acquire=()=>{
+    reads.header=reads.status=0;
+    const next=context.SSSDisplaySafeArea.refresh();
+    assert.deepEqual(reads,{header:1,status:1});
+    assert.equal(values['--display-header-bottom'],headerHeight+'px');
+    return next;
+  };
+  assert.equal(acquire().insets.top,70);
+  assert.equal(writes['--display-header-bottom'],1);
+  statusHeight=14;
+  assert.equal(acquire().insets.top,84,'new feedback must already use the current measured header bottom');
+  assert.equal(writes['--display-header-bottom'],1,'unchanged header does not dirty styles again');
+  headerHeight=78;rem=24;
+  assert.equal(acquire().insets.top,112,'font growth updates feedback before its measurement');
+  width=390;context.innerWidth=390;headerHeight=66;statusHeight=28;
+  assert.equal(acquire().insets.top,114,'narrow wrapped feedback has actual occupied extent');
+  statusHeight=0;
+  const empty=acquire();assert.equal(empty.occupied.length,1);assert.equal(empty.insets.top,86);
+}
+console.log('same-refresh measured header/status placement and empty feedback pass');

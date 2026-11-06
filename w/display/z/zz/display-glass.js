@@ -126,8 +126,8 @@
     }
     const merged=[];
     for(const e of out){
-      const top=e.overfill>0&&e.role.split(/\s+/).includes('top');
-      const sibling=top&&merged.find(v=>v.overfill>0&&v.role.split(/\s+/).includes('top')&&v.kind===e.kind&&v.layer===e.layer);
+      const top=e.role.split(/\s+/).includes('top');
+      const sibling=top&&merged.find(v=>v.role.split(/\s+/).includes('top')&&v.kind===e.kind&&v.layer===e.layer);
       if(!sibling){merged.push(e);continue}
       const a=sibling.rect,b=e.rect,left=Math.min(a.left,b.left),topY=Math.min(a.top,b.top),right=Math.max(a.right,b.right),bottom=Math.max(a.bottom,b.bottom);
       sibling.rect=box({left,top:topY,width:right-left,height:bottom-topY});sibling.ids.push(...e.ids);
