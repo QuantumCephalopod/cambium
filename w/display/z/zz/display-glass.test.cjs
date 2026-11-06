@@ -88,6 +88,23 @@ assert.notStrictEqual(first[0],first[1]);
 assert.deepStrictEqual(G.collect({querySelectorAll:()=>anonymous},style).map(e=>e.id),first);
 console.log('glass top overfill and stable UI/layer identity witness: PASS');
 
+/* The actual compact membrane carriers have no empty overfill strip. Real
+ * feedback still joins the same top reservoir; an empty status has no hull. */
+{
+ const fs=require('node:fs'),path=require('node:path');
+ const template=fs.readFileSync(path.join(__dirname,'../../w/wz/template.html'),'utf8');
+ const attrs=id=>Object.fromEntries([...template.match(new RegExp('<[^>]+id="'+id+'"[^>]*>'))[0].matchAll(/([\w-]+)="([^"]*)"/g)].map(m=>[m[1],m[2]]));
+ const header=el(attrs('display-header'),{left:0,top:0,width:800,height:54});
+ const feedback=height=>el(attrs('display-membrane-status'),{left:28,top:54,width:744,height});
+ const idle=G.collect({querySelectorAll:()=>[header,feedback(0)]},style);
+ assert.equal(idle.length,1);assert.equal(idle[0].rect.bottom,62);
+ const pending=G.collect({querySelectorAll:()=>[header,feedback(14)]},style);
+ assert.equal(pending.length,1);assert.equal(pending[0].rect.bottom,76);
+ assert.deepEqual(pending[0].ids,['display-header','display-membrane-status']);
+ assert.equal(pending[0].readRect.bottom,68,'feedback reading extent survives the shared hull');
+}
+console.log('compact header and real feedback share one measured top reservoir: PASS');
+
 /* Full measured content stays inside its optical hull at root-relative scales.
  * Protected rectangles keep original geometry, including merged top content. */
 for(const rem of [12,16,24,32]){

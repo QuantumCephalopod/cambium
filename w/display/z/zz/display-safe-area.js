@@ -53,7 +53,7 @@
     if(raw.width<.5||raw.height<.5)return null;
     const r=globalThis.SSSDisplayGlass?.surfaceRect?SSSDisplayGlass.surfaceRect(el,raw):raw;
     if(r.width<.5||r.height<.5)return null;
-    return {id:el.id||'',role:el.getAttribute('data-display-occupancy')||'',rect:r};
+    return {id:el.id||'',role:el.getAttribute('data-display-occupancy')||'',rect:r,readRect:rect(raw)};
   }
   function apply(next){
     if(typeof document!=='object')return next;
@@ -67,7 +67,16 @@
   }
   function refresh(){
     if(typeof document!=='object')return state;
-    const entries=[...document.querySelectorAll('[data-display-occupancy]')].map(visibleEntry).filter(Boolean);
+    const elements=[...document.querySelectorAll('[data-display-occupancy]')];
+    // Place real feedback after the measured header before acquiring its own
+    // geometry. Reuse the ordinary header read; no additional layout scan or
+    // observer phase is needed, including the first/explicit refresh.
+    const header=elements.find(el=>el.id==='display-header'),headerEntry=header?visibleEntry(header):null;
+    if(header){
+      const style=document.documentElement.style,value=(headerEntry?.readRect.bottom||0)+'px';
+      if(style.getPropertyValue?.('--display-header-bottom')!==value)style.setProperty('--display-header-bottom',value);
+    }
+    const entries=elements.map(el=>el===header?headerEntry:visibleEntry(el)).filter(Boolean);
     state=apply(derive({width:innerWidth,height:innerHeight},entries));
     try{dispatchEvent(new CustomEvent('sss:safe-area',{detail:state}))}catch(_){}
     return state;
