@@ -60,6 +60,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   return {context,elements,Modules,runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
 }
 const f=boot(),runtime=f.runtime;
+assert.equal(f.stateEl.textContent,'','settled encounter has no technical status copy');
 const once=()=>{for(const id of ids.slice(0,3))assert.equal(f.calls.get(id),1,'one anatomy resolution per parsed source entry: '+id);assert.equal(f.calls.has('organism:plain'),false)};
 once();assert.strictEqual(f.W.projection,f.projected.get('organism:origin'));
 assert.equal(f.W.targets.find(t=>t.path==='w').titles['organism:branch'],'English organism:branch');
@@ -88,6 +89,7 @@ for(let frame=0;frame<30;frame++){
 }
 once();
 assert.equal(runtime.navigateGlobal('w'),true);assert.equal(runtime.state.activeAddress,'w');
+assert.equal(f.stateEl.textContent,'','successful navigation leaves the live region quiet');
 for(let frame=0;frame<30;frame++){
   const environment=f.options.get('organism:branch').environment();
   assert.equal(environment.hostId,'organism:origin');assert.equal(environment.path,'w');
@@ -102,6 +104,7 @@ for(let frame=0;frame<30;frame++){
 }
 assert.equal(f.collected.length,1,'mount prefixes do not create independently rooted host interiors');
 f.W.language='de';f.emit('sss:language');assert.equal(f.renders.at(-1).language,'de');
+assert.equal(f.stateEl.textContent,'','language changes do not restore diagnostic copy');
 assert.equal(f.W.targets.find(t=>t.path==='wx').titles['organism:nested'],'Deutsch organism:nested');
 runtime.receiveActivity({siteId:'organism:nested',kind:'fixture',projectionChanged:true});assert.equal(f.pulses.get('organism:nested'),1);assert.equal(f.renders.at(-1).activity.kind,'fixture');
 assert.equal(runtime.navigateGlobal('y'),true);assert.strictEqual(f.renders.at(-1).projection,plain,'no-projector site keeps the source object');
@@ -419,6 +422,7 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
   await settle(f);assert.equal(JSON.stringify(f.runtime.state),prior,'cancellation changed the prior encounter/container/stack');
   assert.equal(f.runtime.pendingEncounter,false,'cancelled resource acquisition still claimed Escape');assert.equal(localEscapes,0,'pending successor must cancel before local owner return');
   assert.equal(f.history.length,visits,'cancellation wrote a visit');assert.equal(f.stateEl.dataset.handoffPhase,undefined);
+  assert.equal(f.stateEl.textContent,'','cancelled handoff leaves no stale loading message');
   assert.equal(f.foldLayer.dataset.waiting,undefined);assert(f.arrivals.length>arrivalCount,'cancelled approach did not return to its prior container');
   f.held.shift()();for(let i=0;i<40;i++)await Promise.resolve();
   assert.equal(JSON.stringify(f.runtime.state),prior,'late readiness resurrected the cancelled successor');assert.equal(f.history.length,visits);

@@ -49,7 +49,9 @@
     if(!el||typeof el.getBoundingClientRect!=='function')return null;
     const cs=globalThis.getComputedStyle?getComputedStyle(el):null;
     if(cs&&(cs.display==='none'||cs.visibility==='hidden'||number(cs.opacity)<=.02))return null;
-    const raw=el.getBoundingClientRect(),r=globalThis.SSSDisplayGlass?.surfaceRect?SSSDisplayGlass.surfaceRect(el,raw):raw;
+    const raw=el.getBoundingClientRect();
+    if(raw.width<.5||raw.height<.5)return null;
+    const r=globalThis.SSSDisplayGlass?.surfaceRect?SSSDisplayGlass.surfaceRect(el,raw):raw;
     if(r.width<.5||r.height<.5)return null;
     return {id:el.id||'',role:el.getAttribute('data-display-occupancy')||'',rect:r};
   }

@@ -206,7 +206,7 @@ function syncMembraneGrid(){
 }
 function siteTitle(id){const root=surfaces.get(id)?.fieldProjection?.root;return root?.[W.language]||specs.get(id)?.title||root?.noun||id.replace(/^organism:/,'')}
 function handoffStatus(){
-  if(!pendingEncounter){delete stateEl.dataset.handoffPhase;return}
+  if(!pendingEncounter){delete stateEl.dataset.handoffPhase;stateEl.textContent='';return}
   const {phase,ids}=pendingEncounter,de=W.language==='de';
   stateEl.dataset.handoffPhase=phase;
   stateEl.textContent=(phase==='opening'?(de?'ÖFFNEN':'OPENING'):(de?'LADEN':'LOADING'))+' · '+ids.map(siteTitle).join(' + ')+' · '+(de?'ESC: ZURÜCK':'ESC: RETURN');
@@ -244,8 +244,6 @@ function render(path=W.view,{retainPrior=false,requireReady=false}={}){
   for(const id of activeIds)if(!renderedIds.has(id))fieldById.get(id)?.arriveFrom(null);
   renderedIds=new Set(activeIds);
   composition();syncMembraneGrid();Safe.refresh();for(const ui of uiById.values())ui.refresh();
-  const local=(inspectCapable()?(path||'overview'):'root');
-  stateEl.textContent='WITNESS viewer · global '+GLOBAL_SCOPE+':'+(activeAddress||'overview')+' · local '+local+' · '+activeIds.join(' + ');
   handoffStatus();
   document.documentElement.dataset.scope=GLOBAL_SCOPE;
 }

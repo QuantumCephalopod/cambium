@@ -7,7 +7,7 @@ function boot(search='',{width=1280,height=800,reduced=false}={}){
   const painted={faces:[],labels:[]};let shape=[],box=null;
   const ink=new Proxy({clearRect(){painted.faces=[];painted.labels=[]},beginPath(){shape=[]},moveTo(x,y){shape.push({x,y})},lineTo(x,y){shape.push({x,y})},fill(){painted.faces.push(shape.map(p=>({...p})))},fillRect(x,y,w,h){box={x,y,w,h}},measureText(text){return {width:text.length*parseFloat(this.font)}},fillText(text,x,y){texts.push(text);const font=parseFloat(this.font);painted.labels.push({text,x,y:y-font,w:this.measureText(text).width,h:font*1.4,font})}},{get:(o,k)=>o[k]||(()=>{})});
   function node(){return {dataset:{},children:[],style:{setProperty(k,v){this[k]=v}},attrs:{},setAttribute(k,v){this.attrs[k]=v},appendChild(n){this.children.push(n)},addEventListener(k,fn){this[k]=fn},querySelector(){return this.knob||(this.knob=node())},getBoundingClientRect:()=>({left:width-210,top:height-200,width:180,height:160}),setPointerCapture(){},hasPointerCapture:()=>true,releasePointerCapture(){}}}
-  for(const name of ['navTwin','route-mark','mini-state','axis-x','axis-y','inverse-mode'])elements.set(name,node());
+  for(const name of ['navTwin','mini-state','axis-x','axis-y','inverse-mode'])elements.set(name,node());
   const mapSize=width<520?118:width<760?138:160;
   Object.assign(elements.get('navTwin'),{width:300,height:300,getContext:()=>ink,getBoundingClientRect:()=>({left:width-mapSize-30,top:height-mapSize-100,width:mapSize,height:mapSize})});
   for(const lang of ['de','en']){const b=node();b.dataset.lang=lang;buttons.push(b)}

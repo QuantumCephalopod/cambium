@@ -20,7 +20,7 @@ let GLOBAL_TARGETS=[],activeGlobalAddress='',activeGlobalLocus='overview';
 let GLOBAL_BODIES=[],targetInk=[],hoverTarget=null;
 let mapZoom=1,mapOffset={x:0,y:0},bodyTree=null,clusterInk=[];
 const twin=document.getElementById('navTwin'),tc=twin.getContext('2d');
-const route=document.getElementById('route-mark'),miniState=document.getElementById('mini-state');
+const miniState=document.getElementById('mini-state');
 
 function miniProject(p){const scale=twin.width/2.9*mapZoom,q=qRot(orient,p);return {x:twin.width/2+mapOffset.x+q[0]*scale,y:twin.height/2+mapOffset.y-q[1]*scale,z:q[2]}}
 function targetActive(t){return t.locus===activeGlobalLocus || t.path===activeGlobalAddress}
@@ -105,7 +105,7 @@ function hitTarget(x,y){
   for(const b of bodies)for(const [i,j] of edgeIx){const a=b.corners[i],p=b.corners[j],dx=p.x-a.x,dy=p.y-a.y,t=Math.max(0,Math.min(1,((x-a.x)*dx+(y-a.y)*dy)/(dx*dx+dy*dy||1))),d=Math.hypot(x-a.x-t*dx,y-a.y-t*dy);if(d<=reach&&(!best||d<best.d))best={d,target:b.target}}
   return best?.target||targetInk.find(b=>b.root&&inside(b.corners))?.target||null;
 }
-function emitView(source){if(!nav)return;route.textContent='GLOBAL '+scopeId+':'+(activeGlobalAddress||'overview')+' · LOCAL VIEW '+(nav.view||'overview');miniState.textContent=(activeGlobalAddress||'overview')+' · '+GLOBAL_TARGETS.length+' sites';miniState.title=miniState.textContent;dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
+function emitView(source){if(!nav)return;miniState.textContent=(activeGlobalAddress||'overview')+' · '+GLOBAL_TARGETS.length+' sites';miniState.title=miniState.textContent;dispatchEvent(new CustomEvent('sss:view',{detail:{scopeId,path:nav.view||'',source}}))}
 function emitOrientation(source='global'){dispatchEvent(new CustomEvent('sss:orientation',{detail:{orientation:[...orient],source}}))}
 function inspect(path,source='philosophy-background'){if(!nav||!nav.inspect(path))return false;emitView(source);drawTwin();return true}
 function clearInspection(source='clear'){if(!nav)return;nav.clearInspection();emitView(source);drawTwin()}

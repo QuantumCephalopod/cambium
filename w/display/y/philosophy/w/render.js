@@ -119,10 +119,8 @@ function render({host,content,projection,path='',language='en',ui=null}={}){
       button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:encounter.interlocutor,origin:{x:e.clientX,y:e.clientY}}}))});copy.append(button);
     }
   }else{
-    copy.append(el('div','kicker','organism:philosophy'),el('h1',null,['w','x','z','y'].map(g=>projection.root.children?.[g]?.[language]||projection.root.children?.[g]?.noun||g).join(' · ')));
-    if(said.mission)copy.append(el('p','mission',said.mission));
+    copy.append(el('h1',null,['w','x','z','y'].map(g=>projection.root.children?.[g]?.[language]||projection.root.children?.[g]?.noun||g).join(' · ')));
     if(said.position)copy.append(el('p',null,said.position));
-    copy.append(el('p','hint',language==='de'?'Die Flächen fokussieren rekursive Adresszellen. Echte globale Site-Holons erscheinen an ihren tree-derived Adressen; ihre Marker wechseln direkt den Encounter.':'Faces focus recursive address cells. Actual global site-holons appear at their tree-derived addresses; their markers switch encounters directly.'));
   }
   content.append(copy);
   if(ui){describe={el:copy,ui};fitDescription();ui.bind(copy,'description')}

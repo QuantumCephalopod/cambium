@@ -48,7 +48,7 @@ def derive(site_dir, common):
         }
     encounter = json.loads((site_dir/'x/encounter.json').read_text(encoding='utf-8'))
     languages = encounter['available_languages']
-    expression = {'': {l: {k: encounter['expressions'][l][k] for k in ('title', 'mission', 'position')} for l in languages}}
+    expression = {'': {l: {k: encounter['expressions'][l][k] for k in ('title', 'position')} for l in languages}}
     for gene in GENES:
         content = json.loads((site_dir/gene/'content.json').read_text(encoding='utf-8'))
         expression[gene] = {l: {'body': content['expressions'][l]['body'], **({'encounters': content['expressions'][l]['encounters']} if content['expressions'][l].get('encounters') else {})} for l in languages}

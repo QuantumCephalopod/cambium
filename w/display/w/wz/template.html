@@ -22,9 +22,7 @@
   <div class="lang" role="group" aria-label="Display / Sprache / language"><label class="inverse-control" title="Invert global colors"><input id="inverse-mode" type="checkbox" aria-label="Invert global colors"><span aria-hidden="true">◐</span></label><span>·</span><button data-lang="de" aria-pressed="false">DE</button><span>/</span><button data-lang="en" aria-pressed="true">EN</button></div>
 </header>
 <div id="display-membrane-status" data-display-occupancy="top" data-display-glass-overfill="42" data-display-glass-layer="hud">
-  <div id="route-mark">GLOBAL main:overview</div>
-  <div id="status">persistent recursive display field</div>
-  <div id="site-state" aria-live="polite"></div>
+  <div id="site-state" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 
 <main id="interlocutor-stage" data-composition="single" aria-live="polite">

@@ -28,6 +28,7 @@ def witness(body, common, operations):
     assert data['source']['organism'] == 'philosophy'
     assert data['expression']['']['de']['title'] == 'Philosophy'
     assert data['expression']['']['en']['title'] == 'Philosophy'
+    assert all(set(expression) == {'title', 'position'} for expression in data['expression'][''].values())
     assert {gene: node['noun'] for gene, node in data['root']['children'].items()} == {'w': 'Inquiry', 'x': 'Continuity', 'z': 'Care', 'y': 'Becoming'}
     renderer = (body / manifest['renderer']).read_text(encoding='utf-8')
     assert 'philosophy-global-site' in renderer and 'requestGlobalTarget' in renderer
@@ -51,7 +52,7 @@ def witness(body, common, operations):
         ('z/content.json', lambda d: d['expressions']['en'].update(concept='')),
         ('y/content.json', lambda d: d['expressions']['en'].update(body=[])),
         ('w/content.json', lambda d: d['expressions']['en'].update(encounters=[{'interlocutor': '../escape', 'label': 'Invalid'}])),
-        ('x/encounter.json', lambda d: d['expressions']['en'].update(mission='')),
+        ('x/encounter.json', lambda d: d['expressions']['en'].update(position='')),
     )
     with tempfile.TemporaryDirectory(prefix='philosophy-projection-') as temporary:
         copied = Path(temporary) / 'body'

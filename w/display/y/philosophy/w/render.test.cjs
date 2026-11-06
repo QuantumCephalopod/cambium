@@ -12,6 +12,9 @@ const W={globalTargets:[{path:'y',interlocutorIds:['organism:papers']}]},context
 vm.runInNewContext(fs.readFileSync(path.join(body,manifest.renderer),'utf8'),context);const site=modules.get('organism:philosophy'),host=node('host'),content=node('content');
 assert(site.shader.bodyPlaceholder?.fragment.includes('void main'),'Philosophy owns the plain material used before liquid revelation');
 for(const language of ['de','en']){
+ site.render({host,content,projection,language});const introduction=content.children[0];
+ assert.deepEqual(introduction.children.map(n=>n.tag),['h1','p'],'root encounter contains its concepts and authored question without slogan or implementation prose');
+ assert.equal(introduction.children[1].textContent,projection.expression[''][language].position);
  site.render({host,content,projection,path:'w',language});const button=content.children[0].children.find(n=>n.tag==='button');assert(button);button.click({preventDefault(){},stopPropagation(){},clientX:60,clientY:80});
  assert.equal(events.at(-1).type,'sss:enter-body');assert.equal(events.at(-1).detail.id,'organism:papers');assert.equal(events.at(-1).detail.from,'organism:philosophy');assert.equal(W.globalTargets[0].path,'y');
 }

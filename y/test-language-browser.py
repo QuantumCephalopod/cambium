@@ -36,11 +36,18 @@ def check(page, language, identity):
     assert page.evaluate('document.documentElement.lang') == language
     assert page.locator(f'[data-lang="{language}"]').get_attribute('aria-pressed') == 'true'
     assert page.evaluate('() => new URL(location.href).searchParams.get("lang")') == language
+    assert page.locator('#route-mark, #status').count() == 0
+    page.wait_for_function('() => document.getElementById("site-state").textContent === ""')
+    assert page.locator('#site-state').get_attribute('aria-live') == 'polite'
+    assert page.locator('#display-membrane-status').evaluate('(el) => el.getBoundingClientRect().height') == 0
     if identity == 'organism:philosophy':
         page.wait_for_function('() => document.querySelectorAll("[data-interlocutor=\\"organism:philosophy\\"] .field-body-label").length >= 5')
         labels = page.locator('[data-interlocutor="organism:philosophy"] .field-body-label b').all_text_contents()
         assert sorted(labels) == sorted(value for key, value in expected.items() if key != identity), (language, labels)
-        assert page.locator('[data-interlocutor="organism:philosophy"] .mission').inner_text().startswith('Wir geben Fragen' if language == 'de' else 'We give questions')
+        introduction = page.locator('[data-interlocutor="organism:philosophy"] .philosophy-content > .root')
+        position = page.evaluate('(language) => JSON.parse(document.getElementById("site-projections").textContent)["organism:philosophy"].expression[""][language].position', language)
+        assert introduction.locator('p').all_text_contents() == [position]
+        assert introduction.locator('.mission, .hint, .kicker').count() == 0
     if identity in ('organism:datenschutz', 'organism:impressum'):
         assert page.locator(f'[data-interlocutor="{identity}"] article h1').inner_text() == expected[identity]
     if identity == 'organism:crawlerbait':
