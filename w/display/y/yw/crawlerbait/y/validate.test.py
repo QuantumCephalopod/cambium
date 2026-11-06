@@ -128,6 +128,7 @@ def _refusal_cases(body, common, validate_body):
 
 
 def witness(body, common, operations):
+    common['validate_anatomy'](body)
     body = Path(body)
     assert not re.search(r'font(?:-size)?\s*:[^;}]*?(?:\d+(?:\.\d+)?(?:px|rem)|clamp\()', (body / 'y/tide.py').read_text()), 'Crawlerbait static secretion contains an arbitrary font size'
     assert json.loads((body / 'site.json').read_text())['manifestation'].get('background_drag', True) is True, 'Crawlerbait background drag is not true'

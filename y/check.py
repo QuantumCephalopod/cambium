@@ -50,21 +50,6 @@ def load_module(path,name):
 def load_build(): return load_module(ROOT/'y/build.py','compose')
 def load_public(): return load_module(ROOT/'y/site-public.py','site_public')
 
-def check_display_differentiations(build):
-    """Each realized inner split carries closure and no fifth functional bucket."""
-    shell={'RITUALS','_cambium.yaml','_feed','_root','_stomach','_waste'}
-    for locus in build.display_loci():
-        address,folder,node=locus['address'],locus['folder'],locus['node']
-        if not any(g in node for g in build.GENES):
-            check(not (folder/'_cambium.yaml').exists(),f'{address}: unrepresented split constitution')
-            continue
-        constitution=folder/'_cambium.yaml'
-        check(constitution.is_file(),f'{address}: realized split lacks local constitution')
-        build.validate_cambium(build.load_yaml(constitution),str(constitution))
-        children={address+g for g in build.GENES}
-        check({p.name for p in folder.iterdir()} <= shell|children,
-              f'{address}: differentiated locus retains a fifth functional bucket')
-
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--artifact',type=Path,default=ROOT/'_site'); args=ap.parse_args()
     artifact=args.artifact if args.artifact.is_absolute() else ROOT/args.artifact
@@ -78,7 +63,8 @@ def main():
     check(not (ROOT/'w'/'interface.md').exists(),'ad-hoc w/interface.md membrane file returned')
     for gene in 'wxzy': check((DISPLAY/gene).is_dir() and not (DISPLAY/gene/'ROLE.md').exists(),f'Display vertex {gene} is missing or still marker-only')
     for ritual in ('organism','navigation','site-holon'): check((DISPLAY/'RITUALS'/ritual/'RITUAL.md').is_file(),f'missing {ritual} ritual')
-    check_display_differentiations(build)
+    build.validate_anatomy(ROOT)
+    build.validate_anatomy(DISPLAY)
 
     sites=build.discover_sites(); by_id={s['id']:s for s in sites}
     for owner in (ROOT,DISPLAY,*(site['site_dir'] for site in sites)):check_current_intakes(owner)

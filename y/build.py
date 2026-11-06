@@ -84,21 +84,25 @@ def validate_index(index):
         pending.extend((node[g], path + g) for g in reversed(children))
 
 
-def display_loci():
-    """Yield current realized Display semantic loci without crossing organism membranes."""
-    index=load_yaml(DISPLAY/'INDEX.yaml'); validate_index(index)
+def realized_loci(root):
+    """Read one owner's declared genealogy; opaque occupants are not descendants."""
+    index=load_yaml(root/'INDEX.yaml'); validate_index(index)
     rows=[]
-    pending=[(index[g],g,DISPLAY/g) for g in reversed(GENES)]
+    pending=[(index[g],g,root/g) for g in reversed(GENES)]
     while pending:
         node,address,folder=pending.pop()
         if not folder.is_dir():
-            raise ValueError(f'Display phenotype locus {address} is missing at {folder.relative_to(ROOT)}')
+            raise ValueError(f'{root}: phenotype locus {address} is missing at {folder.relative_to(root)}')
         rows.append({'address':address,'folder':folder,'node':node})
         children=[g for g in GENES if g in node]
         for gene in reversed(children):
             child_address=address+gene
             pending.append((node[gene],child_address,folder/child_address))
     return rows
+
+
+def display_loci():
+    return realized_loci(DISPLAY)
 
 
 def display_dependencies():
@@ -150,6 +154,34 @@ def validate_cambium(c, label='_cambium.yaml'):
             raise ValueError(f'{label} {rank} contains an empty closure')
     if not isinstance(c['1T'], str) or not c['1T'].strip():
         raise ValueError(f'{label} 1T is empty')
+
+
+def validate_anatomy(root):
+    """Witness earned CCCC structure, not rank necessity or owner-specific apertures.
+
+    Owners opt in through their existing witness. Only INDEX-declared descendants
+    belong to this genealogy; named independent roots and foreign interiors stay
+    opaque. Each owner still admits its own root shell and source apertures.
+    """
+    root=Path(root)
+    constitution=root/'_cambium.yaml'
+    if not constitution.is_file():
+        raise ValueError(f'{root}: realized root lacks local constitution')
+    validate_cambium(load_yaml(constitution),str(constitution))
+    shell={'RITUALS','_cambium.yaml',*LIFECYCLE_ROLES}
+    for locus in realized_loci(root):
+        address,folder,node=locus['address'],locus['folder'],locus['node']
+        constitution=folder/'_cambium.yaml'
+        if not any(g in node for g in GENES):
+            if constitution.exists():
+                raise ValueError(f'{root}:{address}: unrepresented split constitution')
+            continue
+        if not constitution.is_file():
+            raise ValueError(f'{root}:{address}: realized split lacks local constitution')
+        validate_cambium(load_yaml(constitution),str(constitution))
+        children={address+g for g in GENES}
+        if not {p.name for p in folder.iterdir()} <= shell|children:
+            raise ValueError(f'{root}:{address}: differentiated locus retains a fifth functional bucket')
 
 
 def _inside(site_dir, relative, *, must_exist=True):
@@ -254,7 +286,8 @@ def _build_common():
     """Only shared organism invariants cross into the source owner's build."""
     return MappingProxyType({'genes': GENES, 'apertures': APERTURES,
                              'load_yaml': load_yaml, 'validate_index': validate_index,
-                             'validate_cambium': validate_cambium})
+                             'validate_cambium': validate_cambium,
+                             'validate_anatomy': validate_anatomy})
 
 
 def _build_member_path(site, member):

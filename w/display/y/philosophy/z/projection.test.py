@@ -16,6 +16,7 @@ def _refuses(operation):
 
 
 def witness(body, common, operations):
+    common['validate_anatomy'](body)
     assert {p.name for p in body.iterdir()} == {
         'INDEX.yaml', '_cambium.yaml', 'site.json', 'RITUALS',
         '_root', '_feed', '_stomach', '_waste', *common['genes'],
