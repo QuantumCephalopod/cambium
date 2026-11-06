@@ -64,7 +64,7 @@ Open intake: `../_stomach/NUTRIENT__inactive-optical-target-lifetime__20261106.m
 
 ## Cold source acquisition
 
-Overview HTML is 91,209 bytes; all 27 eager scripts total 547,880 bytes. Crawlerbait contributes a 260-byte preview. Its complete bait publication directory is not an initial-page download.
+Overview HTML is 91,209 bytes; all 27 eagerly loaded repository-owned runtime scripts total 547,880 bytes. Crawlerbait contributes a 260-byte preview. Its complete bait publication directory is not an initial-page download.
 
 First entry acquires 16,342 Baits, 6,301 Beings and 57,436 encounters in 24,349,517 decoded bytes. Independent gzip gives 3,412,743 bytes, not an observed HTTP transfer size.
 
@@ -89,7 +89,7 @@ Open intake: `../y/yw/crawlerbait/_stomach/NUTRIENT__cold-acquisition-cost__2026
 
 ## Lower-priority observations
 
-- `UI.fieldInfo` reclones/revalidates normalized grids: 25,000 actual-grid queries yielded 25,000 JSON parses, roughly 0.05–0.06 ms/query here. Stable field-camera presentation already caches by dimensions, so this is mainly event/binding work.
+- `UI.fieldInfo` reclones/revalidates normalized grids: 25,000 actual-grid queries yielded 25,000 JSON parses, roughly 0.05–0.07 ms/query here. Stable field-camera presentation already caches by dimensions, so this is mainly event/binding work.
 - `display-label-ink.js:74–108` recollects text geometry; wrapped runs query per-character ranges. Atlas reuse saves glyph paint/upload, not collection. Font, text, opacity, wrapping and scroll prevent an unconditional permanent cache.
 - Schattenseiten's draw reoffers two media tiers across 55 slots: 110 cached lookups/frame. This does not imply repeated network requests; newly decoded upload readiness still changes.
 - Full-surface optical rendering contains intentional visible work. No reduction in resolution, antialiasing, motion or source population was made.
