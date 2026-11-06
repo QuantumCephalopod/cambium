@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.34"
+version: "3.35"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -56,7 +56,9 @@ Source-derived presentation and local organism ownership coexist. A site may car
 
 The v2 manifest may carry an optional `build` object with required `module` and optional `witness`, each a body-relative existing Python member. Absolute paths, body escapes (including symlinks), unknown fields and missing/non-callable operations are refused. Absence leaves the existing generic contract intact; it creates no implicit derivation obligation.
 
-The module exposes `validate(data, body, common)` and may expose `derive(body, common)`. It owns source semantics and may refuse by raising. `body` is the discovered local root, independent of carrier name or Population address. The read-only `common` mapping lends only inherited `genes`, `apertures`, `load_yaml`, `validate_index` and `validate_cambium`; it contains no host root, source identity registry or specimen schema. Owner code reads its own members and must not import a fixed enclosing repository location. Modules are reacquired from source without writing bytecode into the body.
+The module exposes `validate(data, body, common)` and may expose `derive(body, common)`. It owns source semantics and may refuse by raising. `body` is the discovered local root, independent of carrier name or Population address. The read-only `common` mapping lends only inherited `genes`, `apertures`, `load_yaml`, `validate_index`, `validate_cambium` and `validate_anatomy`; it contains no host root, source identity registry or specimen schema. Owner code reads its own members and must not import a fixed enclosing repository location. Modules are reacquired from source without writing bytecode into the body.
+
+An owner with earned CCCC anatomy may invoke `validate_anatomy(body)` through its declared witness. The predicate follows only that owner's INDEX genealogy, checking realized children, local constitutions and the absence of extra functional tissue at differentiated inner loci. Independent roots and foreign occupants remain opaque; source-specific root apertures remain locally governed. Formal structural acceptance does not establish semantic rank necessity, and an owner without internal CCCC anatomy gains no placeholder vertices or implicit opt-in.
 
 If declared, the separate witness member exposes `witness(body, common, operations)`, with a read-only mapping of the owner's available `validate`/`derive` functions. `y/check.py` invokes these positive/refusal witnesses generically. Their source-specific counterexamples remain in the body. An owner predicate alone does not replace independent evidence. The witness may additionally run owner-local full-source continuity checks and existing independent local suites. These need not be repeated by each ordinary projection discovery. Any evidence that consumes the enclosing artifact or an external shared capability retains its actual integration owner; the common hook does not pretend that dependency became local.
 

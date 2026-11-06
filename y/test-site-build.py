@@ -93,6 +93,26 @@ def validate(data, body, common):
         self.assertFalse(build.witness_site_build(next(s for s in sites if s['address'] == '')))
         self.assertEqual(digest(self.population), before)
 
+    def test_unknown_owner_borrows_anatomy_through_its_declared_witness(self):
+        (self.site/'INDEX.yaml').write_text(''.join(g+':\n  noun: Local\n' for g in build.GENES))
+        closure={'4V':list(build.GENES), '6E':['wx','wz','wy','xz','xy','zy'],
+                 '4F':['wxz','wxy','wzy','xzy']}
+        (self.site/'_cambium.yaml').write_text(''.join(rank+':\n'+''.join('  '+key+': "Local claim"\n' for key in keys)
+            for rank,keys in closure.items())+'1T: "Local whole"\n')
+        for gene in build.GENES:
+            (self.site/gene).mkdir()
+        witness=self.site/'owned.test.py'
+        witness.write_text(witness.read_text().replace('def witness(body, common, operations):\n',
+            'def witness(body, common, operations):\n    common["validate_anatomy"](body)\n'))
+        before=digest(self.population)
+        self.assertTrue(build.witness_site_build(self.record()))
+        self.assertEqual(digest(self.population),before)
+        (self.site/'z').rmdir()
+        # Projection discovery keeps its ordinary contract; the source owner's
+        # independent witness supplies structural acceptance without a registry.
+        with self.assertRaisesRegex(ValueError,'phenotype locus z is missing'):
+            build.witness_site_build(self.record())
+
     def test_optional_integration_borrows_only_explicit_capabilities(self):
         site = self.record()
         self.assertFalse(build.witness_site_integration(site, {'marker': 7}))
