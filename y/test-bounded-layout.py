@@ -2,8 +2,8 @@
 """Browser integration witness for the actual built bounded presentation fields.
 
 This test uses an isolated Chromium test process against the supplied static
-artifact, not the user's browser/session. Source pictures and actual GL run as
-published; screen/device performance is not inferred from this witness.
+artifact, not the user's browser/session. Published source pictures and the
+selected WebGL/Canvas2D renderer are used; device performance is not inferred.
 """
 from pathlib import Path
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
