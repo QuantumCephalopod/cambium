@@ -34,4 +34,53 @@ height=14;
 assert.strictEqual(S.refresh().occupied.length,1,'actual feedback lost its occupied region');
 assert.strictEqual(S.snapshot().insets.top,56+14+42+8+8);
 for(const name of ['document','innerWidth','innerHeight','SSSDisplayGlass'])delete global[name];
+
+// Observer bursts share one pending measurement. Delivery reads the latest
+// geometry; a later transition/resize still earns a fresh measurement.
+{
+  const fs=require('node:fs'),vm=require('node:vm');
+  const source=fs.readFileSync(require.resolve('./display-safe-area.js'),'utf8');
+  function observed(withRaf=true){
+    let height=50,reads=0,writes=0,events=0,serial=0;
+    const frames=[],observers={},listeners={};
+    const hud={id:'measured-hud',getAttribute:()=> 'top',
+      getBoundingClientRect(){reads++;return {left:0,top:0,width:800,height}},
+      addEventListener:(name,fn)=>listeners[name]=fn};
+    const context={document:{querySelectorAll:()=>[hud],getElementById:()=>null,
+      documentElement:{style:{setProperty(){writes++}},dataset:{}}},
+      innerWidth:800,innerHeight:600,
+      getComputedStyle:()=>({display:'block',visibility:'visible',opacity:'1'}),
+      dispatchEvent(){events++},CustomEvent:class{},
+      addEventListener:(name,fn)=>listeners[name]=fn,
+      ResizeObserver:class{constructor(fn){observers.resize=fn}observe(){}},
+      MutationObserver:class{constructor(fn){observers.mutation=fn}observe(){}}};
+    if(withRaf)context.requestAnimationFrame=fn=>{frames.push(fn);return ++serial};
+    vm.runInNewContext(source,context);context.SSSDisplaySafeArea.start();
+    const reset=()=>{reads=writes=events=0};reset();
+    return {api:context.SSSDisplaySafeArea,frames,observers,listeners,reset,
+      height:value=>{height=value},counts:()=>({reads,writes,events}),
+      frame:()=>frames.shift()?.(16.667)};
+  }
+  const measured=observed();
+  for(let i=0;i<10;i++){
+    measured.height(50+i);
+    (i%2?measured.observers.resize:measured.observers.mutation)();
+  }
+  assert.deepStrictEqual(measured.counts(),{reads:0,writes:0,events:0},'pending observer refresh must not measure synchronously');
+  assert.strictEqual(measured.frames.length,1,'one measurement per observer burst');
+  measured.frame();
+  assert.deepStrictEqual(measured.counts(),{reads:1,writes:4,events:1});
+  assert.strictEqual(measured.api.snapshot().insets.top,67,'delivery must read the latest geometry');
+  for(const name of ['transitionend','transitioncancel','resize']){
+    measured.reset();measured.height(91);measured.listeners[name]();measured.frame();
+    assert.strictEqual(measured.api.snapshot().insets.top,99);
+    assert.deepStrictEqual(measured.counts(),{reads:1,writes:4,events:1},name+' must reacquire after the previous frame');
+  }
+  measured.reset();measured.height(117);measured.api.refresh();
+  assert.strictEqual(measured.api.snapshot().insets.top,125,'explicit refresh remains immediate');
+  assert.strictEqual(measured.counts().events,1);
+  const immediate=observed(false);immediate.height(63);immediate.observers.mutation();
+  assert.strictEqual(immediate.api.snapshot().insets.top,71,'without animation frames the observer refresh remains immediate');
+  assert.deepStrictEqual(immediate.counts(),{reads:1,writes:4,events:1});
+}
 console.log('display safe-area contract pass');

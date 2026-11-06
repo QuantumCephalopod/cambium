@@ -1,0 +1,251 @@
+{
+  "scope": "Actual production field under existing native transport; allocation and invocation counts, not GPU time or browser measurements",
+  "cases": [
+    {
+      "mode": "dry",
+      "buffer": [
+        1920,
+        1200
+      ],
+      "allocations": [],
+      "active60": {
+        "viewport": 60,
+        "disable": 240,
+        "colorMask": 60,
+        "depthMask": 420,
+        "clearDepth": 60,
+        "clearColor": 60,
+        "clear": 60,
+        "enable": 720,
+        "blendFunc": 360,
+        "useProgram": 360,
+        "uniformMatrix4fv": 1080,
+        "uniform1f": 720,
+        "uniform2f": 360,
+        "uniform3fv": 360,
+        "bindVertexArray": 360,
+        "drawArrays": 360
+      },
+      "hidden60": {},
+      "hiddenDeletes": 0
+    },
+    {
+      "mode": "glass",
+      "buffer": [
+        1920,
+        1200
+      ],
+      "allocations": [
+        {
+          "kind": "renderbuffer",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 4
+        },
+        {
+          "kind": "renderbuffer",
+          "format": "DEPTH24",
+          "width": 1920,
+          "height": 1200,
+          "samples": 4
+        },
+        {
+          "kind": "texture",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        }
+      ],
+      "active60": {
+        "viewport": 120,
+        "disable": 360,
+        "colorMask": 60,
+        "depthMask": 420,
+        "clearDepth": 60,
+        "clearColor": 60,
+        "clear": 60,
+        "enable": 720,
+        "blendFunc": 360,
+        "useProgram": 420,
+        "uniformMatrix4fv": 1080,
+        "uniform1f": 720,
+        "uniform2f": 420,
+        "uniform3fv": 360,
+        "bindVertexArray": 420,
+        "drawArrays": 420,
+        "getParameter": 240,
+        "blitFramebuffer": 60,
+        "activeTexture": 480,
+        "bindTexture": 360,
+        "uniform1i": 360,
+        "uniform4fv": 120,
+        "uniform1fv": 60,
+        "uniform4f": 360
+      },
+      "hidden60": {},
+      "hiddenDeletes": 0
+    },
+    {
+      "mode": "preview",
+      "buffer": [
+        1920,
+        1200
+      ],
+      "allocations": [
+        {
+          "kind": "renderbuffer",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 4
+        },
+        {
+          "kind": "renderbuffer",
+          "format": "DEPTH24",
+          "width": 1920,
+          "height": 1200,
+          "samples": 4
+        },
+        {
+          "kind": "texture",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        },
+        {
+          "kind": "texture",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        },
+        {
+          "kind": "renderbuffer",
+          "format": "DEPTH24",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        }
+      ],
+      "active60": {
+        "viewport": 300,
+        "disable": 480,
+        "colorMask": 180,
+        "depthMask": 480,
+        "clearDepth": 120,
+        "clearColor": 120,
+        "clear": 120,
+        "enable": 720,
+        "blendFunc": 360,
+        "useProgram": 420,
+        "uniformMatrix4fv": 1080,
+        "uniform1f": 720,
+        "uniform2f": 420,
+        "uniform3fv": 360,
+        "bindVertexArray": 420,
+        "drawArrays": 420,
+        "getParameter": 420,
+        "blitFramebuffer": 120,
+        "bindRenderbuffer": 60,
+        "bindTexture": 420,
+        "activeTexture": 480,
+        "uniform1i": 360,
+        "uniform4fv": 120,
+        "uniform1fv": 60,
+        "uniform4f": 660
+      },
+      "hidden60": {},
+      "hiddenDeletes": 0
+    },
+    {
+      "mode": "contact",
+      "buffer": [
+        1920,
+        1200
+      ],
+      "allocations": [
+        {
+          "kind": "renderbuffer",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 4
+        },
+        {
+          "kind": "renderbuffer",
+          "format": "DEPTH24",
+          "width": 1920,
+          "height": 1200,
+          "samples": 4
+        },
+        {
+          "kind": "texture",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        },
+        {
+          "kind": "texture",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        },
+        {
+          "kind": "renderbuffer",
+          "format": "DEPTH24",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        },
+        {
+          "kind": "texture",
+          "format": "RGBA8",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        },
+        {
+          "kind": "renderbuffer",
+          "format": "DEPTH24",
+          "width": 1920,
+          "height": 1200,
+          "samples": 1
+        }
+      ],
+      "active60": {
+        "viewport": 420,
+        "disable": 660,
+        "colorMask": 300,
+        "depthMask": 600,
+        "clearDepth": 180,
+        "clearColor": 180,
+        "clear": 180,
+        "enable": 720,
+        "blendFunc": 360,
+        "useProgram": 420,
+        "uniformMatrix4fv": 1080,
+        "uniform1f": 720,
+        "uniform2f": 420,
+        "uniform3fv": 360,
+        "bindVertexArray": 420,
+        "drawArrays": 420,
+        "getParameter": 660,
+        "blitFramebuffer": 120,
+        "bindRenderbuffer": 120,
+        "bindTexture": 480,
+        "activeTexture": 540,
+        "uniform1i": 360,
+        "uniform4fv": 120,
+        "uniform1fv": 60,
+        "uniform4f": 660
+      },
+      "hidden60": {},
+      "hiddenDeletes": 0
+    }
+  ]
+}

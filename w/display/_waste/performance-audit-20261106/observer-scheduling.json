@@ -1,0 +1,172 @@
+{
+  "source_revision": "d84196fe4486ee1db5b84687ce3416409ee98984",
+  "scope": "Native production-module observer scheduling; four synthetic occupied surfaces. Counts are exact; no browser timing or observed production event frequency is claimed.",
+  "bursts": {
+    "1": {
+      "before": {
+        "before": {
+          "reads": 0,
+          "styles": 0,
+          "writes": 0,
+          "events": 0,
+          "queued": 1
+        },
+        "after": {
+          "reads": 4,
+          "styles": 4,
+          "writes": 4,
+          "events": 1,
+          "queued": 0
+        },
+        "top": 58
+      },
+      "after": {
+        "before": {
+          "reads": 0,
+          "styles": 0,
+          "writes": 0,
+          "events": 0,
+          "queued": 1
+        },
+        "after": {
+          "reads": 4,
+          "styles": 4,
+          "writes": 4,
+          "events": 1,
+          "queued": 0
+        },
+        "top": 58
+      }
+    },
+    "2": {
+      "before": {
+        "before": {
+          "reads": 4,
+          "styles": 4,
+          "writes": 4,
+          "events": 1,
+          "queued": 1
+        },
+        "after": {
+          "reads": 8,
+          "styles": 8,
+          "writes": 8,
+          "events": 2,
+          "queued": 0
+        },
+        "top": 59
+      },
+      "after": {
+        "before": {
+          "reads": 0,
+          "styles": 0,
+          "writes": 0,
+          "events": 0,
+          "queued": 1
+        },
+        "after": {
+          "reads": 4,
+          "styles": 4,
+          "writes": 4,
+          "events": 1,
+          "queued": 0
+        },
+        "top": 59
+      }
+    },
+    "10": {
+      "before": {
+        "before": {
+          "reads": 36,
+          "styles": 36,
+          "writes": 36,
+          "events": 9,
+          "queued": 1
+        },
+        "after": {
+          "reads": 40,
+          "styles": 40,
+          "writes": 40,
+          "events": 10,
+          "queued": 0
+        },
+        "top": 67
+      },
+      "after": {
+        "before": {
+          "reads": 0,
+          "styles": 0,
+          "writes": 0,
+          "events": 0,
+          "queued": 1
+        },
+        "after": {
+          "reads": 4,
+          "styles": 4,
+          "writes": 4,
+          "events": 1,
+          "queued": 0
+        },
+        "top": 67
+      }
+    },
+    "100": {
+      "before": {
+        "before": {
+          "reads": 396,
+          "styles": 396,
+          "writes": 396,
+          "events": 99,
+          "queued": 1
+        },
+        "after": {
+          "reads": 400,
+          "styles": 400,
+          "writes": 400,
+          "events": 100,
+          "queued": 0
+        },
+        "top": 157
+      },
+      "after": {
+        "before": {
+          "reads": 0,
+          "styles": 0,
+          "writes": 0,
+          "events": 0,
+          "queued": 1
+        },
+        "after": {
+          "reads": 4,
+          "styles": 4,
+          "writes": 4,
+          "events": 1,
+          "queued": 0
+        },
+        "top": 157
+      }
+    }
+  },
+  "obligations": [
+    {
+      "claim": "latest geometry at delivery",
+      "status": "PASS"
+    },
+    {
+      "claim": "separate later-frame reacquisition",
+      "status": "PASS"
+    },
+    {
+      "claim": "transition completion reacquisition",
+      "status": "PASS"
+    },
+    {
+      "claim": "public explicit refresh remains immediate",
+      "status": "PASS"
+    },
+    {
+      "claim": "absence of requestAnimationFrame remains immediate",
+      "status": "PASS"
+    }
+  ]
+}

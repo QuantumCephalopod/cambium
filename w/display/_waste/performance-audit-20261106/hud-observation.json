@@ -1,0 +1,29 @@
+{
+  "scope": "Actual production Glass + Lens modules under instrumented DOM/RAF transport; no browser layout timing",
+  "cases": [
+    {
+      "frames": 60,
+      "fields": 1,
+      "lateWithinSameFrame": false,
+      "scans": 120,
+      "styles": 480,
+      "rects": 360
+    },
+    {
+      "frames": 60,
+      "fields": 2,
+      "lateWithinSameFrame": false,
+      "scans": 120,
+      "styles": 480,
+      "rects": 360
+    },
+    {
+      "frames": 60,
+      "fields": 2,
+      "lateWithinSameFrame": true,
+      "scans": 180,
+      "styles": 720,
+      "rects": 540
+    }
+  ]
+}

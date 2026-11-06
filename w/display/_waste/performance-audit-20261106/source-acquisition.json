@@ -1,0 +1,55 @@
+{
+  "sourceBytes": 24349517,
+  "node": "v24.22.1",
+  "parseMs": [
+    114.19700600000002,
+    82.58653199999998,
+    85.651093,
+    76.64066700000006,
+    67.65152799999998
+  ],
+  "population": {
+    "routes": 16342,
+    "crawlers": 6301,
+    "encounters": 57436
+  },
+  "moduleEvaluationMs": 2.282766000000038,
+  "moduleFloat32Allocations": [
+    2520000,
+    2520000
+  ],
+  "preparation": {
+    "elapsedMs": 258.78072999999995,
+    "yieldCount": 47,
+    "maxSliceMs": 24.710575999999946,
+    "sortedSlicesMs": [
+      24.710575999999946,
+      6.539201999999932,
+      5.444735000000037,
+      5.105649999999969,
+      4.317146999999977,
+      4.307142999999996,
+      4.296105000000011,
+      4.134623000000033,
+      4.063454999999976,
+      4.059308999999985
+    ],
+    "heapDelta": 72209720
+  },
+  "installMs": 5.982083999999986,
+  "initialPoints": 16,
+  "sameGenerationPreparationMs": 0.005728999999973894,
+  "transport": {
+    "harness": "production sender/receiver through Node structuredClone and microtask ACK; excludes network/real Worker scheduling",
+    "elapsedMs": 490.7619800000001,
+    "batches": 2482,
+    "records": 112751,
+    "maxRecords": 64,
+    "cloneMs": 218.63650399999892,
+    "maxCloneMs": 9.534460999999965,
+    "receiverMs": 81.73626100000001,
+    "maxReceiverMs": 0.919524000000024,
+    "maxFlight": 1,
+    "terminated": 1
+  }
+}

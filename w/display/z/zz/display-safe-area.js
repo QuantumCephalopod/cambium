@@ -72,7 +72,7 @@
     try{dispatchEvent(new CustomEvent('sss:safe-area',{detail:state}))}catch(_){}
     return state;
   }
-  function schedule(){if(raf||typeof requestAnimationFrame!=='function')return refresh();raf=requestAnimationFrame(()=>{raf=0;refresh()})}
+  function schedule(){if(raf)return;if(typeof requestAnimationFrame!=='function')return refresh();raf=requestAnimationFrame(()=>{raf=0;refresh()})}
   function start(){
     if(started||typeof document!=='object')return state;
     started=true;
