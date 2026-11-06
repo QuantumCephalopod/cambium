@@ -19,4 +19,19 @@ assert.deepStrictEqual(s.insets,{top:67,right:0,bottom:0,left:0});
 
 s=S.derive({width:800,height:600},[],8);
 assert.deepStrictEqual(s.insets,{top:0,right:0,bottom:0,left:0});
+
+// An empty mounted live region must not acquire occupancy from its optical
+// perimeter/overfill. Real feedback still reserves that same measured surface.
+let height=0;
+const attrs={'data-display-occupancy':'top','data-display-glass-overfill':'42'};
+const status={id:'encounter-feedback',getAttribute:key=>attrs[key],getBoundingClientRect:()=>({left:28,top:56,width:744,height})};
+global.document={querySelectorAll:()=>[status],documentElement:{style:{setProperty(){}},dataset:{}}};
+global.innerWidth=800;global.innerHeight=600;
+global.SSSDisplayGlass=require('./display-glass.js');
+assert.strictEqual(S.refresh().occupied.length,0,'empty status reserved invisible glass');
+assert.strictEqual(S.snapshot().insets.top,0);
+height=14;
+assert.strictEqual(S.refresh().occupied.length,1,'actual feedback lost its occupied region');
+assert.strictEqual(S.snapshot().insets.top,56+14+42+8+8);
+for(const name of ['document','innerWidth','innerHeight','SSSDisplayGlass'])delete global[name];
 console.log('display safe-area contract pass');

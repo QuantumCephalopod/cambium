@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.13"
+version: "1.14"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -56,6 +56,8 @@ Semantic identity is independent of language.
 - future languages or nonhuman communicative modalities may be added only when a truthful transduction exists. Absence remains absence rather than fabricated translation.
 
 The overview expression configuration lives in `x/encounter.json`; leaf expression tissue lives at `w/x/z/y/content.json`. Continuity carries the same authored whole across its public encounters.
+
+Root expression carries `title` and `position`. The position states the existing research questions directly in DE/EN, alongside the four concepts in the front encounter. Public prose names its subjects and relations plainly; the introduction has no separate slogan, technical identity label or implementation narration.
 
 ## projection
 
