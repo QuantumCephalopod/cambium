@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""Actual browser witness for recursively addressed Display and site fields.
+
+The selected Canvas2D field path witnesses DOM bounds and interactions. It does
+not establish WebGL pixel parity or a physical device's frame rate.
+"""
+from pathlib import Path
+from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
+from functools import partial
+import argparse,json,os,threading
+
+p=argparse.ArgumentParser()
+p.add_argument('--artifact',type=Path,required=True)
+p.add_argument('--out',type=Path,required=True)
+a=p.parse_args();a.out.mkdir(parents=True,exist_ok=True)
+class Quiet(SimpleHTTPRequestHandler):
+ def log_message(self,*args):pass
+server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())))
+threading.Thread(target=server.serve_forever,daemon=True).start()
+base=f'http://127.0.0.1:{server.server_port}/index.html'
+sites=[('philosophy','overview'),('crawlerbait','w'),('schattenseiten','x'),('papers','y'),('datenschutz','z'),('impressum','xz')]
+cases=[]
+try:
+ from playwright.sync_api import sync_playwright
+ with sync_playwright() as pw:
+  kw={'executable_path':os.environ['CHROMIUM_EXECUTABLE']} if os.environ.get('CHROMIUM_EXECUTABLE') else {}
+  browser=pw.chromium.launch(headless=True,args=['--disable-webgl'],**kw)
+  for width,height in [(1280,800),(667,375),(390,844)]:
+   for site,address in sites:
+    page=browser.new_page(viewport={'width':width,'height':height},device_scale_factor=1,reduced_motion='reduce')
+    errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
+    try:
+     page.goto(base+'#main:'+address,wait_until='domcontentloaded')
+     identity='organism:'+site
+     page.wait_for_function('id=>window.SSSDisplayRuntime?.state.activeIds.includes(id)&&document.getElementById("tetra-fold").dataset.fold==="open"',arg=identity,timeout=180000)
+     page.evaluate('document.fonts.ready')
+     measured=page.evaluate('''id=>{
+      const state=SSSDisplayMembraneGrid.snapshot(),ui=SSSDisplayRuntime.ui.get(id);
+      const toBox=r=>({left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height});
+      const fields=[...document.querySelectorAll('[data-interlocutor]:not([hidden]) [data-ui-field]')].map(el=>({
+       name:el.dataset.uiField,bounded:el.dataset.uiBounded,actual:toBox(el.getBoundingClientRect()),expected:ui.rect(el.dataset.uiField,true)
+      }));
+      const controls=['mini-pocket','mini-trigger','mini-help-toggle','legal-links'].map(id=>{
+       const el=document.getElementById(id);return {id,field:el.getAttribute('data-display-ui-field'),actual:toBox(el.getBoundingClientRect()),expected:state[el.getAttribute('data-display-ui-field')]};
+      });
+      const glass=SSSDisplayGlass.collect().map(s=>({id:s.id,ids:s.ids,rect:s.rect}));
+      const topAddress=SSSUIGrid.fieldInfo(state.outer,'top').bounds;
+      const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.fieldInfo(state.inner,name).bounds]));
+      return {state:{top:state.top,compass:state.compass,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass};
+     }''',identity)
+     assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
+     assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
+     for f in measured['fields']:
+      for key in ['left','top','width','height']:assert abs(f['actual'][key]-f['expected'][key])<1.1,(site,f,key)
+     for control in measured['controls']:
+      q,r=control['actual'],control['expected']
+      assert r and q['left']>=r['left']-1 and q['top']>=r['top']-1 and q['right']<=r['right']+1 and q['bottom']<=r['bottom']+1,(site,control)
+     top=next(x for x in measured['glass'] if 'display-header' in x['ids'])
+     assert abs(top['rect']['bottom']-measured['state']['top']['bottom'])<.5,(site,top,measured['state']['top'])
+     assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5
+     compass=measured['state']['compass']
+     for name,b in measured['nested'].items():
+      q=next(c['expected'] for c in measured['controls'] if c['field']==name)
+      for key,value in [('left',compass['left']+b['x']*compass['width']),('top',compass['top']+b['y']*compass['height']),('width',b['w']*compass['width']),('height',b['h']*compass['height'])]:
+       assert abs(q[key]-value)<.5,(site,name,key,q,value)
+     for name in ['pocket','trigger']:
+      g=next(x for x in measured['glass'] if 'mini-'+name in x['ids'])
+      q=next(c['expected'] for c in measured['controls'] if c['field']==name)
+      assert all(abs(g['rect'][k]-q[k])<.5 for k in ['left','top','width','height']),(site,name,g,q)
+     feedback=page.evaluate('''()=>{
+      document.getElementById('site-state').textContent='ENCOUNTER UNAVAILABLE · RETRY THE ENCOUNTER';
+      SSSDisplaySafeArea.refresh();
+      const status=document.getElementById('display-membrane-status').getBoundingClientRect(),state=SSSDisplayMembraneGrid.snapshot();
+      const result={bottom:status.bottom,top:state.top,fit:state.fit,inset:SSSDisplayGlass.readInset()};
+      document.getElementById('site-state').textContent='';SSSDisplaySafeArea.refresh();
+      result.restored=SSSDisplayMembraneGrid.snapshot().outer.fields.top.cells;
+      return result;
+     }''')
+     assert feedback['fit']['top'] and feedback['bottom']+feedback['inset']<=feedback['top']['bottom']+.5,(site,feedback)
+     assert feedback['restored']==measured['state']['outer']['fields']['top']['cells'],(site,feedback)
+     measured['feedback']=feedback
+     page.locator('#mini-trigger').click();page.locator('#mini-trigger').click()
+     page.locator('#mini-help-toggle').click()
+     assert page.locator('#mini-guide').is_visible()
+     page.locator('#mini-help-toggle').click()
+     if site=='papers':
+      page.locator('.papers-physiology button').click(trial=True)
+      ink=page.locator('.papers-sierpinski-hud span').first.bounding_box()
+      assert ink['y']>=measured['state']['top']['bottom']-1,(site,ink,measured['state']['top'])
+     if site=='philosophy':
+      text=page.locator('[data-interlocutor="organism:philosophy"] [data-ui-field="description"]').evaluate('e=>({client:e.clientWidth,scroll:e.scrollWidth})')
+      assert text['scroll']<=text['client']+1,(site,text,'description requires horizontal scrolling')
+     if site in ('datenschutz','impressum'):
+      for link in page.locator('[data-ui-field="description"] a').all():link.click(trial=True)
+     assert not errors,(site,errors)
+     cases.append({'site':site,'viewport':[width,height],**measured,'errors':errors})
+     if site in ('papers','datenschutz') and width in (1280,390):page.screenshot(path=str(a.out/f'{site}-{width}.png'))
+    finally:page.close()
+  browser.close()
+finally:
+ server.shutdown();server.server_close()
+ (a.out/'membrane.json').write_text(json.dumps({'scope':__doc__,'cases':cases},indent=2)+'\n')
+print(json.dumps({'status':'PASS','cases':len(cases),'sites':[s for s,_ in sites]}))

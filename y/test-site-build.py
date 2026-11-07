@@ -93,6 +93,13 @@ def validate(data, body, common):
         self.assertFalse(build.witness_site_build(next(s for s in sites if s['address'] == '')))
         self.assertEqual(digest(self.population), before)
 
+    def test_site_cannot_opt_out_of_address_derived_field_extents(self):
+        path = self.site/'ui-grid.json'
+        grid = json.loads(path.read_text()); grid['meta'] = {'extent': 'intrinsic'}
+        path.write_text(json.dumps(grid))
+        with self.assertRaisesRegex(ValueError, 'require address-derived extents'):
+            self.record()
+
     def test_unknown_owner_borrows_anatomy_through_its_declared_witness(self):
         (self.site/'INDEX.yaml').write_text(''.join(g+':\n  noun: Local\n' for g in build.GENES))
         closure={'4V':list(build.GENES), '6E':['wx','wz','wy','xz','xy','zy'],
@@ -237,6 +244,8 @@ def integration(body, capabilities):
         target = build.DISPLAY / 'w'/'wz'/'template.html'
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(template.read_bytes())
+        for name in ('membrane-grid.json', 'navigator-grid.json'):
+            (target.parent/name).write_bytes((self.saved[1]/'w'/'wz'/name).read_bytes())
         dependencies = patch.object(build, 'display_dependencies', return_value={})
         dependencies.start(); self.addCleanup(dependencies.stop)
         for path in build.template_asset_sources().values():

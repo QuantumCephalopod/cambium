@@ -27,12 +27,14 @@ def header_content(page,host,identity,w,h):
  outer=host+' [data-ui-field="header"]';close(bounds(page,outer),'header',w,h)
  inner=outer+(' .crawlerbait-hud-top' if identity=='organism:crawlerbait' else ' .ss-hud-top')
  reading=page.locator(inner)
- metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header'));return {top:r.top,bottom:r.bottom,height:r.height,outerBottom:o.bottom,safeTop:SSSDisplaySafeArea.snapshot().insets.top,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,glassBottom:g.rect.bottom,inset:g.inset}}''')
+ metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot();return {top:r.top,bottom:r.bottom,height:r.height,outerBottom:o.bottom,safeTop:SSSDisplaySafeArea.snapshot().insets.top,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,glassBottom:g.rect.bottom,inset:g.inset,fieldBottom:f.top.bottom,topCells:f.outer.fields.top.cells}}''')
  assert metrics['top']>=metrics['safeTop']-.5,metrics
  assert metrics['bottom']<=metrics['outerBottom']+.5,metrics
  assert metrics['clientHeight']>=metrics['titleHeight']-.5,('no complete title line',metrics)
  assert metrics['scrollWidth']<=metrics['clientWidth']+1,('horizontal header overflow',metrics)
- assert metrics['glassBottom']<=metrics['headerBottom']+metrics['inset']+.5,('excess empty top hull',metrics)
+ assert abs(metrics['glassBottom']-metrics['fieldBottom'])<.5,('liquid edge departed from its realized field',metrics)
+ assert metrics['glassBottom']>=metrics['headerBottom']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
+ assert metrics['top']>=metrics['glassBottom']+metrics['inset']-.5,('site reading tissue touches liquid rim',metrics)
  reading.evaluate('(e)=>{e.scrollTop=e.scrollHeight}')
  end=reading.evaluate('e=>({top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,last:e.lastElementChild.getBoundingClientRect().bottom,scrollTop:e.scrollTop})')
  assert end['top']>=metrics['safeTop']-.5 and end['last']<=end['bottom']+1,('last header content unreachable',end)

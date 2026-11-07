@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.14"
+version: "3.15"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -324,6 +324,8 @@ The native relation is **truth → metabolight anchor → spatial layout → rea
 ## Phenomenology and design freedom
 
 Papers owns its local material language, recursive specimen rendering and interaction policy. Philosophy and other site-holons must not be changed merely to make Papers aesthetically convenient.
+
+The HUD, physiology control, selected label and source-inquiry overlay use their own existing recursive UI addresses as containing fields in full. Actual local ink and input remain inside those fields and retain their own readable extent; an empty part of a field is not automatically an ink obstacle. Reading accommodation also respects the shared addressed upper membrane. Projected chamber labels, organisms and contact geometry remain in their world frame.
 
 The global-to-macro transition should feel like entering a body rather than opening a page. Text is subordinate to the inquiry geometry. The permanent central void of the global Sierpiński body is a spatial affordance, not empty layout real estate for a template panel.
 

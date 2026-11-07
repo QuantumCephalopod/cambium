@@ -395,6 +395,8 @@ def discover_sites():
         ui_grid = json.loads(ui_grid_path.read_text(encoding='utf-8'))
         if not isinstance(ui_grid, dict) or ui_grid.get('schema') != UI_GRID_SCHEMA:
             raise ValueError(f'{site_dir.relative_to(ROOT)}: invalid canonical UI-grid carrier')
+        if ui_grid.get('meta', {}).get('extent') == 'intrinsic':
+            raise ValueError(f'{site_dir.relative_to(ROOT)}: Display UI fields require address-derived extents')
         projection = json.loads(projection_path.read_text(encoding='utf-8'))
         feed_preview = None
         if data.get('feed_preview'):
@@ -506,6 +508,7 @@ def template_asset_sources(sites=None):
         'display-lens.js': DISPLAY/'z'/'zz'/'display-lens.js',
         'display-label-ink.js': DISPLAY/'w'/'wx'/'display-label-ink.js',
         'ui-grid.js': DISPLAY/'w'/'wz'/'ui-grid.js',
+        'membrane-grid.js': DISPLAY/'w'/'wz'/'membrane-grid.js',
         'display-type.js': DISPLAY/'w'/'wx'/'display-type.js',
         'tetra-text.js': DISPLAY/'w'/'wx'/'tetra-text.js',
         'display-text-tissue.js': DISPLAY/'w'/'ww'/'display-text-tissue.js',
@@ -634,6 +637,10 @@ def render(sites=None, *, bundle=None, template_sources=None, dependencies=None)
         '/*__SITE_PROJECTIONS__*/': _enc(site_projections(sites)),
         '/*__SITE_FEED_URLS__*/': _enc(site_feed_urls(bundle, sites)),
         '/*__SITE_UI_GRIDS__*/': _enc(site_ui_grids(sites)),
+        '/*__DISPLAY_UI_GRIDS__*/': _enc({
+            'membrane': json.loads((DISPLAY/'w'/'wz'/'membrane-grid.json').read_text(encoding='utf-8')),
+            'navigator': json.loads((DISPLAY/'w'/'wz'/'navigator-grid.json').read_text(encoding='utf-8'))
+        }),
         '/*__DISPLAY_DEPENDENCIES__*/': _enc(dependency_projection(bundle, dependencies)),
         '/*__SITE_SCRIPTS__*/': _site_script_tags(sites),
     }

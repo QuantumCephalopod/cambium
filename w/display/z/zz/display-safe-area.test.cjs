@@ -27,7 +27,8 @@ const attrs={'data-display-occupancy':'top','data-display-glass-overfill':'42'};
 const status={id:'encounter-feedback',getAttribute:key=>attrs[key],getBoundingClientRect:()=>({left:28,top:56,width:744,height})};
 global.document={querySelectorAll:()=>[status],documentElement:{style:{setProperty(){}},dataset:{}}};
 global.innerWidth=800;global.innerHeight=600;
-global.SSSDisplayGlass=require('./display-glass.js');
+const fixtureGlass=require('./display-glass.js');
+global.SSSDisplayGlass={surfaceRect:(_el,r)=>fixtureGlass.readingFrame({...r,height:r.height+42},8).rect};
 assert.strictEqual(S.refresh().occupied.length,0,'empty status reserved invisible glass');
 assert.strictEqual(S.snapshot().insets.top,0);
 height=14;
@@ -102,7 +103,7 @@ console.log('display safe-area contract pass');
   const context={document:{documentElement:root,querySelectorAll:()=>[status,header]},
     innerWidth:width,innerHeight:600,
     getComputedStyle:()=>({display:'block',visibility:'visible',opacity:'1'}),
-    SSSDisplayGlass:{surfaceRect:(el,r)=>Glass.surfaceRect(el,r,rem/2)}};
+    SSSDisplayGlass:{surfaceRect:(_el,r)=>Glass.readingFrame(r,rem/2).rect}};
   vm.runInNewContext(source,context);
   const acquire=()=>{
     reads.header=reads.status=0;

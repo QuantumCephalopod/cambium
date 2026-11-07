@@ -1,0 +1,12 @@
+{
+  "schema": "sss.display.ui-grid.v2",
+  "meta": {"name": "display-navigator", "extent": "bounded"},
+  "splits": ["", "y", "z"],
+  "fields": {
+    "pocket": {"cells": ["w", "x"], "label": "navigation field"},
+    "help": {"cells": ["yw", "yx"], "label": "navigation help"},
+    "trigger": {"cells": ["zw", "zx"], "label": "navigation aperture"},
+    "legal": {"cells": ["yy", "yz", "zy", "zz"], "label": "legal apertures"}
+  },
+  "elements": {}
+}

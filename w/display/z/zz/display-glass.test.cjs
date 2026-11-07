@@ -52,6 +52,9 @@ assert.strictEqual(G.derive([{rect:{left:0,top:0,width:10,height:10}}],{left:0,t
 
 /* collect: occupied surfaces are glass unless they opt out; anything may opt in; hidden ones are not */
 const el=(attrs,rect,style={})=>({id:attrs.id||'',getAttribute:k=>attrs[k]??null,getBoundingClientRect:()=>({left:0,top:0,width:100,height:30,...rect}),style});
+// These synthetic rectangles isolate reservoir merging. Production supplies
+// realized field rectangles; their address projection has its own witness.
+globalThis.SSSDisplayMembraneGrid={surfaceRect:(_el,r)=>G.readingFrame(r,8).rect};
 const all=[
   el({id:'header','data-display-occupancy':'top'}),
   el({id:'optout','data-display-occupancy':'top','data-display-glass':'off'}),
@@ -71,22 +74,22 @@ assert.ok(G.PARAMS.dot>0&&G.PARAMS.halftone>=0&&G.PARAMS.halftone<=1);
 assert.strictEqual(G.PARAMS.tint.length,4);assert.ok(Object.isFrozen(G.PARAMS.tint));
 console.log('display glass contract witness: PASS');
 
-/* Top overfill moves the free edge below the type and becomes one same-layer reservoir. */
+/* Compatible addressed top surfaces become one same-layer reservoir. */
 const topEntries=[
-  el({id:'top-a','data-display-occupancy':'top','data-display-glass-overfill':'42'},{left:0,top:0,width:500,height:60}),
-  el({id:'top-b','data-display-occupancy':'top','data-display-glass-overfill':'42'},{left:0,top:60,width:500,height:20}),
+  el({id:'top-a','data-display-occupancy':'top'},{left:0,top:0,width:500,height:60}),
+  el({id:'top-b','data-display-occupancy':'top'},{left:0,top:60,width:500,height:62}),
 ];
 const topGlass=G.collect({querySelectorAll:()=>topEntries},style);
 assert.strictEqual(topGlass.length,1);
 assert.strictEqual(topGlass[0].rect.bottom,130);
 assert.deepStrictEqual(topGlass[0].ids,['top-a','top-b']);
-const otherLayer=el({id:'other-layer','data-display-occupancy':'top','data-display-glass-overfill':'42','data-display-glass-layer':'other'},{width:500,height:20});
+const otherLayer=el({id:'other-layer','data-display-occupancy':'top','data-display-glass-layer':'other'},{width:500,height:20});
 assert.strictEqual(G.collect({querySelectorAll:()=>[...topEntries,otherLayer]},style).length,2);
 const anonymous=[el({'data-display-glass':'on'}),el({'data-display-glass':'on'})];
 const first=G.collect({querySelectorAll:()=>anonymous},style).map(e=>e.id);
 assert.notStrictEqual(first[0],first[1]);
 assert.deepStrictEqual(G.collect({querySelectorAll:()=>anonymous},style).map(e=>e.id),first);
-console.log('glass top overfill and stable UI/layer identity witness: PASS');
+console.log('compatible top fields and stable UI/layer identity witness: PASS');
 
 /* The actual compact membrane carriers have no empty overfill strip. Real
  * feedback still joins the same top reservoir; an empty status has no hull. */
@@ -117,7 +120,7 @@ for(const rem of [12,16,24,32]){
  assert.deepEqual([...p.readData.slice(0,4)],[390,1628,390,60]);
  assert.equal(p.inset,inset);assert.equal(p.scale,2);
 }
-assert.deepEqual(topGlass[0].readRect,{left:0,top:0,width:500,height:80,right:500,bottom:80});
+assert.deepEqual(topGlass[0].readRect,{left:0,top:0,width:500,height:122,right:500,bottom:122});
 console.log('root-relative optical hull and unchanged reading rectangle witness: PASS');
 
 const nested=G.derive([
@@ -145,3 +148,4 @@ console.log('reduced-transparency keeps the ordinary source path: PASS');
  assert.deepEqual([...other.mergeData],[0,0,0,1,0,0,0,0]);
 }
 console.log('compatible phase membership and foreign-layer nesting witness: PASS');
+delete globalThis.SSSDisplayMembraneGrid;
