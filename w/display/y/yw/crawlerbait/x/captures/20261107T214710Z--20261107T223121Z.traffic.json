@@ -1,0 +1,240 @@
+{
+  "captured_at": "2026-11-07T22:41:21Z",
+  "functional_provider_fields": [
+    "datetime",
+    "clientIP",
+    "userAgent",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
+  "never_captured_fields": [
+    "clientRequestQuery"
+  ],
+  "phenotype_by_being": {
+    "5e799495316e57f07453e0e6": {
+      "genome": "e3822df730e381ff32d870076d9fcbe8c9817030b47e11ee4c6221ab48e6d7f6",
+      "samples": 1
+    },
+    "c901747272dc25187a7a1a0e": {
+      "genome": "fd1bbb84e82de65cc535c275cd876155e09424a31500501779656bdb4c7980e0",
+      "samples": 1
+    },
+    "e3b33e962fb48a3555f41374": {
+      "genome": "b9465f6f144582774ed3e72b38712675ec7bbf18eebd108bbd137c71dd4f5ecf",
+      "samples": 1
+    }
+  },
+  "phenotype_field_shards": [
+    [
+      "apiGatewayMatchedEndpoint",
+      "apiGatewayMatchedHost",
+      "cacheStatus",
+      "clientASNDescription",
+      "clientAsn",
+      "clientCountryName",
+      "clientDeviceType",
+      "clientRequestHTTPHost",
+      "clientRequestHTTPProtocol",
+      "clientRequestScheme",
+      "clientSSLProtocol",
+      "date",
+      "datetimeFifteenMinutes",
+      "datetimeFiveMinutes",
+      "datetimeHour",
+      "datetimeMinute",
+      "edgeResponseContentTypeMatched",
+      "edgeResponseContentTypeMatchedByWildcard",
+      "edgeResponseContentTypeName",
+      "firewallForAiAnyPiiCategory",
+      "firewallForAiCustomTopicCategoriesScoresMin",
+      "firewallForAiCustomTopicCategories_score",
+      "firewallForAiCustomTopicCategories_topicLabel",
+      "firewallForAiInjectionScore",
+      "firewallForAiPiiCategories",
+      "firewallForAiUnsafeTopicCategories",
+      "httpApplicationVersion",
+      "leakedCredentialCheckResult",
+      "originResponseDurationMs",
+      "originResponseHeaderReceiveDurationMs",
+      "originResponseStatus",
+      "originTcpHandshakeDurationMs",
+      "originTlsHandshakeDurationMs",
+      "payPerCrawlStatus",
+      "productMatches_product",
+      "productMatches_ruleIds",
+      "productMatches_rulesetId",
+      "productMatches_rulesetVersion",
+      "rayName",
+      "requestSource",
+      "rulesMetadata_metadataKey",
+      "rulesMetadata_metadataValue",
+      "rulesMetadata_ruleId",
+      "schemaValidationLearnedOutcome",
+      "schemaValidationLearnedViolations_errorClass",
+      "schemaValidationLearnedViolations_errorDetail",
+      "schemaValidationLearnedViolations_location",
+      "schemaValidationLearnedViolations_target",
+      "schemaValidationUploadedOutcome",
+      "schemaValidationUploadedViolations_errorClass",
+      "schemaValidationUploadedViolations_errorDetail",
+      "schemaValidationUploadedViolations_location",
+      "schemaValidationUploadedViolations_target",
+      "securityAction",
+      "securitySource",
+      "sessionIdHash",
+      "userAgentBrowser",
+      "userAgentOS",
+      "verifiedBotCategory",
+      "webAssetsLabelsManaged",
+      "webAssetsOperationId",
+      "zoneVersion"
+    ]
+  ],
+  "private_recognition_fields": [
+    "clientIP",
+    "userAgent"
+  ],
+  "provider_advertised_fields": [
+    "apiGatewayMatchedEndpoint",
+    "apiGatewayMatchedHost",
+    "cacheStatus",
+    "clientASNDescription",
+    "clientAsn",
+    "clientCountryName",
+    "clientDeviceType",
+    "clientIP",
+    "clientRequestHTTPHost",
+    "clientRequestHTTPMethodName",
+    "clientRequestHTTPProtocol",
+    "clientRequestPath",
+    "clientRequestQuery",
+    "clientRequestScheme",
+    "clientSSLProtocol",
+    "date",
+    "datetime",
+    "datetimeFifteenMinutes",
+    "datetimeFiveMinutes",
+    "datetimeHour",
+    "datetimeMinute",
+    "edgeResponseContentTypeMatched",
+    "edgeResponseContentTypeMatchedByWildcard",
+    "edgeResponseContentTypeName",
+    "edgeResponseStatus",
+    "firewallForAiAnyPiiCategory",
+    "firewallForAiCustomTopicCategoriesScoresMin",
+    "firewallForAiCustomTopicCategories_score",
+    "firewallForAiCustomTopicCategories_topicLabel",
+    "firewallForAiInjectionScore",
+    "firewallForAiPiiCategories",
+    "firewallForAiUnsafeTopicCategories",
+    "httpApplicationVersion",
+    "leakedCredentialCheckResult",
+    "originResponseDurationMs",
+    "originResponseHeaderReceiveDurationMs",
+    "originResponseStatus",
+    "originTcpHandshakeDurationMs",
+    "originTlsHandshakeDurationMs",
+    "payPerCrawlStatus",
+    "productMatches_product",
+    "productMatches_ruleIds",
+    "productMatches_rulesetId",
+    "productMatches_rulesetVersion",
+    "rayName",
+    "requestSource",
+    "rulesMetadata_metadataKey",
+    "rulesMetadata_metadataValue",
+    "rulesMetadata_ruleId",
+    "schemaValidationLearnedOutcome",
+    "schemaValidationLearnedViolations_errorClass",
+    "schemaValidationLearnedViolations_errorDetail",
+    "schemaValidationLearnedViolations_location",
+    "schemaValidationLearnedViolations_target",
+    "schemaValidationUploadedOutcome",
+    "schemaValidationUploadedViolations_errorClass",
+    "schemaValidationUploadedViolations_errorDetail",
+    "schemaValidationUploadedViolations_location",
+    "schemaValidationUploadedViolations_target",
+    "securityAction",
+    "securitySource",
+    "sessionIdHash",
+    "userAgent",
+    "userAgentBrowser",
+    "userAgentOS",
+    "verifiedBotCategory",
+    "webAssetsLabelsManaged",
+    "webAssetsOperationId",
+    "zoneVersion"
+  ],
+  "public_record_fields": [
+    "datetime",
+    "beingId",
+    "clientRequestPath",
+    "clientRequestHTTPMethodName",
+    "edgeResponseStatus"
+  ],
+  "publication_transform": {
+    "beingId": {
+      "exact_user_agent_persisted": false,
+      "key_epoch": "v1",
+      "key_fingerprint": "b353473d45ad5614",
+      "literal_client_ip_persisted": false,
+      "network_pseudonym_persisted": false,
+      "scheme": "sha256(HMAC-SHA256(clientIP) || exact userAgent)"
+    },
+    "clientRequestPath": {
+      "domain": "crawlerbait:path:v1",
+      "key_epoch": "v1",
+      "offered_public_paths_literal": true,
+      "offered_resolution": "crawlerbait-owned-public-surface-v1",
+      "raw_unoffered_path_persisted": false,
+      "scheme": "literal offered path else HMAC-SHA256 opaque Bait path"
+    },
+    "phenotype": {
+      "domain": "crawlerbait:phenotype:v1",
+      "raw_provider_values_persisted": false,
+      "scheme": "keyed irreversible field-interference"
+    }
+  },
+  "published_response": {
+    "data": {
+      "viewer": {
+        "zones": [
+          {
+            "records": [
+              {
+                "beingId": "5e799495316e57f07453e0e6",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/2567328ee21f2043599ffa53",
+                "datetime": "2026-11-07T22:27:13Z",
+                "edgeResponseStatus": 404
+              },
+              {
+                "beingId": "c901747272dc25187a7a1a0e",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/1c59a749625b9700fc36d048",
+                "datetime": "2026-11-07T21:53:48Z",
+                "edgeResponseStatus": 200
+              },
+              {
+                "beingId": "e3b33e962fb48a3555f41374",
+                "clientRequestHTTPMethodName": "GET",
+                "clientRequestPath": "/~/ecc06a945fc90ea6de0d89bb",
+                "datetime": "2026-11-07T22:03:33Z",
+                "edgeResponseStatus": 200
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "semantic_filters": [],
+  "source": "cloudflare:httpRequestsAdaptive",
+  "transport_filter": "datetime range only",
+  "version": 5,
+  "window": {
+    "end": "2026-11-07T22:31:21Z",
+    "start": "2026-11-07T21:47:10Z"
+  }
+}
