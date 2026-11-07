@@ -1,12 +1,14 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const H=require('./site-holon.js'),N=require('../z/zw/navigation-physiology.js'),UI=require('../w/wz/ui-grid.js'),RH=require('./representation-handoff.js');
+const Membrane=require('../w/wz/membrane-grid.js'),membraneState=require('../w/wz/membrane-grid.json'),navigatorState=require('../w/wz/navigator-grid.json');
 const runtimeSource=fs.readFileSync(process.env.RUNTIME_SOURCE||path.join(__dirname,'display-runtime-v2.js'),'utf8');
 const fieldSource=fs.readFileSync(path.join(__dirname,'../w/wy/locus-shader.js'),'utf8');
 const ids=['organism:origin','organism:branch','organism:nested','organism:plain'];
 const atom=noun=>({noun,children:{}});
 const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom('Y')}});
 function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null,bounded=false,preparations={}){
+  const membrane=Membrane.create(membraneState,navigatorState);
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
   const heldFolds=[],approaches=[],foldLayer={dataset:{fold:'open'},hidden:true};let foldBusy=false;
@@ -14,7 +16,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
-  const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id,...(bounded===true?{extent:'bounded'}:{})},splits:[''],fields:{...(bounded?{compass:{cells:['z'],label:'compass'},viewport:{cells:['x'],label:'view'},header:{cells:['w'],label:'header'},description:{cells:['y'],label:'description'}}:{}),slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
+  const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id,...(bounded===true?{extent:'bounded'}:bounded==='intrinsic'?{extent:'intrinsic'}:{})},splits:[''],fields:{...(bounded?{compass:{cells:['z'],label:'compass'},viewport:{cells:['x'],label:'view'},header:{cells:['w'],label:'header'},description:{cells:['y'],label:'description'}}:{}),slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
   const feedUrls=Object.fromEntries(Object.keys(feedKinds).map(id=>[id,'assets/0123456789abcdef/site-'+id.replace(':','-')+'-feed.json']));
   const previews=Object.fromEntries(ids.map(id=>[id,feedKinds[id]?{schema:'sss.display.feed-preview.v1',identity:id,root:anatomy('preview '+id)}:input[id]]));
   elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(previews)});
@@ -42,7 +44,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
     if(feedKinds[target]==='hold')return new Promise(resolve=>held.push(()=>resolve({ok:true,text:async()=>JSON.stringify(input[target])})));
     return Promise.resolve({ok:true,text:async()=>JSON.stringify(input[target])});
   }
-  const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSRepresentationHandoff:RH,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>fold},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
+  const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSDisplayMembraneGrid:membrane,SSSRepresentationHandoff:RH,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>fold},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
   vm.createContext(context);
   vm.runInContext(fs.readFileSync(path.join(__dirname,'feed-acquisition.js'),'utf8'),context);
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
@@ -69,17 +71,17 @@ assert.equal(f.options.get('organism:origin').bodies().find(b=>b.id==='organism:
 for(const id of ids.slice(0,3))assert.strictEqual(f.options.get(id).projection,f.projected.get(id));
 const slotBounds=runtime.ui.get(ids[0]).field('slot').bounds;assert.equal(slotBounds.x,0);assert.equal(slotBounds.y,0);assert.equal(slotBounds.w,.5);assert.equal(slotBounds.h,.5);
 assert.equal(runtime.ui.get(ids[0]).field('slot').z,2);
-/* A bottom-right HUD must not shrink the entire lattice or force field extent. */
+/* Occupied HUDs do not shift a site's address-derived containing field. */
 const orient=boot(1,'',{top:170,right:310,bottom:320,left:90});
 const ui=orient.runtime.ui.get(ids[0]);
-assert.deepEqual({...ui.carrier},{x:0,y:170,w:1000,h:630});
+assert.deepEqual({...ui.carrier},{x:0,y:0,w:1000,h:800});
 const node={style:{width:'36rem',height:'max-content',right:'12px',setProperty(k,v){this[k]=v}},dataset:{},isConnected:true};
 ui.bind(node,'slot');
-assert.equal(node.style.left,'0px');assert.equal(node.style.top,'170px');
-assert.equal(node.style.width,'36rem');assert.equal(node.style.height,'max-content');
-assert.equal(node.style.right,'12px');assert.equal(node.style.zIndex,'132');assert.equal(node.style['--ui-field-x'],node.style.left);assert.equal(node.style['--ui-field-y'],node.style.top);
+assert.equal(node.style.left,'0px');assert.equal(node.style.top,'0px');
+assert.equal(node.style.width,'500px');assert.equal(node.style.height,'400px');
+assert.equal(node.style.right,'auto');assert.equal(node.style.zIndex,'132');assert.equal(node.style['--ui-field-x'],node.style.left);assert.equal(node.style['--ui-field-y'],node.style.top);
 orient.emit('sss:safe-area');
-assert.equal(node.style.width,'36rem');assert.equal(node.style.height,'max-content');
+assert.equal(node.style.width,'500px');assert.equal(node.style.height,'400px');
 const plain=f.options.get('organism:plain').projection;assert.equal(plain.sourceMarker,'organism:plain');
 for(let frame=0;frame<30;frame++){
   const bodies=f.options.get('organism:origin').bodies();
@@ -331,7 +333,7 @@ async function feedHandoffWitness(){
   assert.equal(asyncRefusal.hosts.get(ids[0]).hidden,false);
   assert.match(asyncRefusal.stateEl.textContent,/ENCOUNTER UNAVAILABLE/);
 }
-feedHandoffWitness().then(()=>console.log('display runtime: orientation-only carrier + lazy feed identity handoff/navigation PASS'))
+feedHandoffWitness().then(()=>console.log('display runtime: address-bounded carrier + lazy feed identity handoff/navigation PASS'))
   .catch(error=>{console.error(error);process.exitCode=1});
 /* A source-owned Inquiry encounter uses the actual offered body membrane.
  * The containing Philosophy view survives while the project restarts locally. */
@@ -444,6 +446,7 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
 }
 
 assert(boot(1,'',{}, {}, {},false,null,'template').runtime.ui.get(ids[0]).bounded,'the supplied role declaration depended on an extra flag');
+assert.throws(()=>boot(1,'',{}, {}, {},false,null,'intrinsic'),/require address-derived extents/);
 console.log('PASS — common role declarations bind actual extents without an extra user sizing flag');
 
 (async()=>{

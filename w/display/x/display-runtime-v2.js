@@ -1,8 +1,8 @@
 (() => {
 'use strict';
-const Nav=globalThis.SSSDisplayNavigation,H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea,UI=globalThis.SSSUIGrid;
+const Nav=globalThis.SSSDisplayNavigation,H=globalThis.SSSSiteHolon,F=globalThis.SSSSiteFold,W=globalThis.SSSWorldView,Fields=globalThis.SSSInterlocutorFields,Safe=globalThis.SSSDisplaySafeArea,UI=globalThis.SSSUIGrid,Membrane=globalThis.SSSDisplayMembraneGrid;
 const Modules=globalThis.SSSInterlocutorModules,RH=globalThis.SSSRepresentationHandoff;
-if(!H||!F||!W||!Fields||!Safe||!UI||!RH||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
+if(!H||!F||!W||!Fields||!Safe||!UI||!Membrane||!RH||!(Modules instanceof Map)) throw new Error('Display runtime dependencies missing');
 const SPEC=JSON.parse(document.getElementById('site-registry').textContent);
 const PROJECTIONS=JSON.parse(document.getElementById('site-projections').textContent);
 const FEED_URLS=JSON.parse(document.getElementById('site-feed-locations')?.textContent||'{}');
@@ -27,26 +27,24 @@ function surfaceRect(host){
   }
   return {left:0,top:0,right:innerWidth,bottom:innerHeight,width:innerWidth,height:innerHeight};
 }
-/* Bounded declarations address the full surface, including their own header.
- * Intrinsic carriers retain their measured top-origin relation. Occupied HUDs
- * never silently rewrite either owner's declared address state. */
-function safeCarrier(host,bounded=false){
-  const hr=surfaceRect(host),snap=Safe.snapshot?.()||{},ins=snap.insets||{};
-  const top=bounded?0:Math.max(0,Math.min(hr.height,(Number(ins.top)||0)-hr.top));
-  return {x:0,y:top,w:hr.width,h:Math.max(0,hr.height-top)};
+/* UI declarations address the full site surface. Global occupied tissue
+ * informs internal reading; it never shifts the site's canonical field. */
+function safeCarrier(host){
+  const hr=surfaceRect(host);
+  return {x:0,y:0,w:hr.width,h:hr.height};
 }
 function makeSiteUI(id,host,raw){
-  const state=UI.normalizeState(raw),bindings=new Map(),bounded=state.meta.extent==='bounded'||(state.meta.extent!=='intrinsic'&&['compass','description','header','viewport'].every(name=>state.fields[name]));
-  const carrier=()=>safeCarrier(host,bounded);
+  const state=UI.normalizeState(raw),bindings=new Map(),bounded=true;
+  if(state.meta.extent==='intrinsic')throw new Error('Display UI fields require address-derived extents');
+  const carrier=()=>safeCarrier(host);
   function carrierVariant(carrier){return carrier.h>carrier.w?'portrait':''}
-  function field(name,carrier=safeCarrier(host,bounded)){
+  function field(name,carrier=safeCarrier(host)){
     const info=UI.fieldInfo(state,name,carrierVariant(carrier));
     return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds}),z:info.z,variant:info.variant||'default'});
   }
   function apply(el,name){
     if(!el)throw new TypeError('UI field element required');
     const c=carrier(),info=field(name,c),b=info.bounds;
-    // Intrinsic bindings retain owner extents; bounded bindings below own the box.
     // Stacking is deterministic within the site's isolated Display layer.
     const tie=Object.keys(state.fields).sort().indexOf(name);
     el.style.setProperty?.('--ui-field-x',(c.x+b.x*c.w)+'px');
@@ -57,8 +55,8 @@ function makeSiteUI(id,host,raw){
       top:(c.y+b.y*c.h)+'px',
       zIndex:String(4+info.z*64+tie)
     });
-    if(bounded)Object.assign(el.style,{right:'auto',bottom:'auto',width:b.w*c.w+'px',height:b.h*c.h+'px',inlineSize:b.w*c.w+'px',blockSize:b.h*c.h+'px',minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overscrollBehavior:'contain',contain:'layout paint'});
-    if(el.dataset){el.dataset.uiField=name;el.dataset.uiVariant=info.variant;if(bounded)el.dataset.uiBounded='true'}
+    Object.assign(el.style,{right:'auto',bottom:'auto',width:b.w*c.w+'px',height:b.h*c.h+'px',inlineSize:b.w*c.w+'px',blockSize:b.h*c.h+'px',minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overflowWrap:'anywhere',overscrollBehavior:'contain',contain:'layout paint'});
+    if(el.dataset){el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiBounded='true'}
     return el;
   }
   function bind(el,name){bindings.set(el,name);return apply(el,name)}
@@ -197,10 +195,18 @@ function composition(){const c=H.composeInterlocutors(activeIds.map(interlocutor
 function syncMembraneGrid(){
  const ui=activeIds.map(id=>uiById.get(id)).find(u=>u?.bounded&&u.state.fields.compass)||uiById.get(ROOT_IDS[0]);
  const mini=document.getElementById('mini');if(!mini||!ui?.bounded||!ui.state.fields.compass)return;
- const b=ui.field('compass').bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
+ const info=ui.field('compass'),b=info.bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
+ Membrane.useCompass(ui.state,info);
  const values={left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',transform:'none'};
  for(const [k,v]of Object.entries(values))if(mini.style[k]!==v)mini.style[k]=v;
  for(const [k,v]of [['--compass-field-height',r.height+'px'],['--compass-field-width',r.width+'px']])if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
+ for(const name of ['pocket','help','trigger','legal']){
+   const f=Membrane.relative(name);
+   for(const [axis,value]of Object.entries({x:f.x,y:f.y,w:f.w,h:f.h})){
+     const k='--membrane-'+name+'-'+axis,v=(value*100)+'%';
+     if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
+   }
+ }
  const hb=ui.state.fields.header?ui.field('header').bounds:null,header=hb?{width:hb.w*innerWidth,height:hb.h*innerHeight}:null;
  if(header)for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:header.height+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
 }

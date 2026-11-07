@@ -558,19 +558,23 @@ function makeStage(host){
   canvas.classList.add('papers-sierpinski-stage');canvas.setAttribute('aria-label','Papers recursive tetrahedral inquiry field');
   const textCanvas=document.createElement('canvas');textCanvas.className='papers-wisdom-stage';textCanvas.setAttribute('aria-label','Papers active metabolight wisdom');textCanvas.dataset.pretextVersion=PRETEXT_VERSION;host.append(textCanvas);
   const tissueCanvas=document.createElement('canvas');tissueCanvas.className='papers-tissue-stage';tissueCanvas.setAttribute('aria-hidden','true');host.append(tissueCanvas);
+  const physiologyField=document.createElement('div');physiologyField.className='papers-physiology-field';
   const physiology=document.createElement('section');physiology.className='papers-physiology';physiology.setAttribute('aria-label','How Papers lives');
   const tutorialButton=document.createElement('button');tutorialButton.type='button';tutorialButton.textContent='HOW PAPERS LIVES';
-  tutorialButton.addEventListener('click',()=>state.tutorial?stopTutorial():startTutorial());physiology.append(tutorialButton);host.append(physiology);
+  tutorialButton.addEventListener('click',()=>state.tutorial?stopTutorial():startTutorial());physiology.append(tutorialButton);physiologyField.append(physiology);host.append(physiologyField);
   const originButton=document.createElement('button');originButton.type='button';originButton.className='papers-origin-door';originButton.textContent='ORIGIN ↗';originButton.hidden=true;originButton.addEventListener('click',()=>{state.originOpen=!state.originOpen;});host.append(originButton);
+  const sourceInfoField=document.createElement('div');sourceInfoField.className='papers-source-field';
   const sourceInfo=document.createElement('section');sourceInfo.className='papers-source-inquiry';sourceInfo.setAttribute('aria-label','Selected Papers organism origin');
   sourceInfo.innerHTML='<div class="papers-source-original"><small class="papers-origin-label">ORIGIN</small><span class="papers-source-code"></span><h2></h2><p class="papers-source-credit"></p><div class="papers-source-links"></div></div>';
-  host.append(sourceInfo);
+  sourceInfoField.append(sourceInfo);host.append(sourceInfoField);
   const chamberLabels=document.createElement('div');chamberLabels.className='papers-chamber-labels';chamberLabels.setAttribute('aria-hidden','true');host.append(chamberLabels);
   const chamberLabelNodes=new Map();
   for(const gene of GENES){const n=document.createElement('button');n.type='button';n.className='papers-chamber-label';n.dataset.gene=gene;n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(state&&!state.current)setChamber(gene)});chamberLabels.append(n);chamberLabelNodes.set(gene,n)}
-  const hud=document.createElement('div');hud.className='papers-sierpinski-hud';host.append(hud);
-  const label=document.createElement('div');label.className='papers-sierpinski-label';host.append(label);
-  return {canvas,textCanvas,tissueCanvas,physiology,tutorialButton,originButton,sourceInfo,chamberLabels,chamberLabelNodes,hud,label};
+  const hudField=document.createElement('div');hudField.className='papers-hud-field';
+  const hud=document.createElement('div');hud.className='papers-sierpinski-hud';hudField.append(hud);host.append(hudField);
+  const labelField=document.createElement('div');labelField.className='papers-label-field';
+  const label=document.createElement('div');label.className='papers-sierpinski-label';labelField.append(label);host.append(labelField);
+  return {canvas,textCanvas,tissueCanvas,physiology,physiologyField,tutorialButton,originButton,sourceInfo,sourceInfoField,chamberLabels,chamberLabelNodes,hud,hudField,label,labelField};
 }
 function resizeWisdomCanvas(canvas,rect){
   const d=Math.min(devicePixelRatio||1,1.6),w=Math.max(1,Math.round(rect.width*d)),h=Math.max(1,Math.round(rect.height*d));
@@ -1059,6 +1063,14 @@ function inkChrome(rect){
   const now=performance.now(),c=state.inkChrome;if(c&&now-c.t<250&&c.w===rect.width&&c.h===rect.height)return c.list;
   const base=state.textCanvas.getBoundingClientRect(),list=[],panel=state.host.querySelector('.papers-source-original')?.getBoundingClientRect();
   state.inkPanel=panel&&panel.width>1?{x:panel.left-base.left,y:panel.top-base.top,w:panel.width,h:panel.height}:null;
+  // A bounded field is a container, not all occupied ink. Global top
+  // occupancy is the common addressed surface; local obstacles below remain
+  // the actual text and controls inside their owner fields.
+  for(const entry of globalThis.SSSDisplaySafeArea?.snapshot()?.occupied||[]){
+    if(!entry.role.split(/\s+/).includes('top'))continue;const r=entry.rect;
+    if(list.some(b=>b.x===r.left-base.left-INK_PAD&&b.y===r.top-base.top-INK_PAD&&b.w===r.width+2*INK_PAD&&b.h===r.height+2*INK_PAD))continue;
+    list.push({x:r.left-base.left-INK_PAD,y:r.top-base.top-INK_PAD,w:r.width+2*INK_PAD,h:r.height+2*INK_PAD});
+  }
   for(const el of [...state.host.querySelectorAll('.papers-source-original,.papers-sierpinski-hud,.papers-sierpinski-label,.papers-physiology'),...document.querySelectorAll('aside')]){
     if(el.tagName!=='ASIDE'&&!el.textContent.trim())continue;if(!inkShown(el))continue;const r=el.getBoundingClientRect();if(r.width<2||r.height<2)continue;
     list.push({x:r.left-base.left-INK_PAD,y:r.top-base.top-INK_PAD,w:r.width+2*INK_PAD,h:r.height+2*INK_PAD})}
@@ -1578,7 +1590,7 @@ function escape(){
 function initialize(host,projection,backgroundDrag=true,dependency=null){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
-  state={host,projection,dependency,structure:built.structure,canvas:stage.canvas,textCanvas:stage.textCanvas,tissueCanvas:stage.tissueCanvas,physiology:stage.physiology,tutorialButton:stage.tutorialButton,originButton:stage.originButton,sourceInfo:stage.sourceInfo,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,label:stage.label,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},pointer:null,mounted:true,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
+  state={host,projection,dependency,structure:built.structure,canvas:stage.canvas,textCanvas:stage.textCanvas,tissueCanvas:stage.tissueCanvas,physiology:stage.physiology,physiologyField:stage.physiologyField,tutorialButton:stage.tutorialButton,originButton:stage.originButton,sourceInfo:stage.sourceInfo,sourceInfoField:stage.sourceInfoField,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,hudField:stage.hudField,label:stage.label,labelField:stage.labelField,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},pointer:null,mounted:true,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
   state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.chamberPath='overview';state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextIdentity=PRETEXT_ID;state.textCanvas.dataset.pretextVersion=PRETEXT_VERSION;state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();return state;
 }
@@ -1590,7 +1602,7 @@ function render({host,content,projection,backgroundDrag=true,dependency=null,len
   const shared=host.querySelector('.interlocutor-background');if(shared)shared.style.pointerEvents='auto';
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
   if(!state||state.host!==host){if(!initialize(host,projection,backgroundDrag,dependency)){host.hidden=true;return false}}else{state.dependency=dependency;if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.textCanvas.hidden=false;state.physiology.hidden=false;state.sourceInfo.hidden=false;state.chamberLabels.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
-  if(ui){state.ui=ui;ui.bind(state.hud,'hud');ui.bind(state.physiology,'physiology');ui.bind(state.label,'label');ui.bind(state.sourceInfo,'sourceInquiry')}
+  if(ui){state.ui=ui;ui.bind(state.hudField,'hud');ui.bind(state.physiologyField,'physiology');ui.bind(state.labelField,'label');ui.bind(state.sourceInfoField,'sourceInquiry')}
   return true;
 }
 function unmount({host,content}={}){if(state?.tutorial)stopTutorial();withdrawOverviewLens();withdrawPaperLens();if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.originButton.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}

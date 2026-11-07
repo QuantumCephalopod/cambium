@@ -26,15 +26,15 @@
       if(!entry)continue;
       const r=rect(entry.rect||entry);
       if(r.width<.5||r.height<.5)continue;
-      occupied.push(Object.freeze({id:String(entry.id||''),role:String(entry.role||''),rect:r}));
+      occupied.push(Object.freeze({id:String(entry.id||''),role:String(entry.role||''),rect:r,canonical:!!entry.canonical,clearance:Math.max(0,number(entry.clearance))}));
     }
     let top=0,right=0,bottom=0,left=0;
     for(const entry of occupied){
-      const t=tokens(entry.role),r=entry.rect;
-      if(t.has('top')) top=Math.max(top,r.bottom+g);
-      if(t.has('right')) right=Math.max(right,width-r.left+g);
-      if(t.has('bottom')) bottom=Math.max(bottom,height-r.top+g);
-      if(t.has('left')) left=Math.max(left,r.right+g);
+      const t=tokens(entry.role),r=entry.rect,p=entry.canonical?entry.clearance:g;
+      if(t.has('top')) top=Math.max(top,r.bottom+p);
+      if(t.has('right')) right=Math.max(right,width-r.left+p);
+      if(t.has('bottom')) bottom=Math.max(bottom,height-r.top+p);
+      if(t.has('left')) left=Math.max(left,r.right+p);
     }
     const insets=Object.freeze({
       top:Math.min(height,Math.max(0,top)),
@@ -45,15 +45,31 @@
     return Object.freeze({viewport:Object.freeze({width,height}),occupied:Object.freeze(occupied),insets});
   }
   function snapshot(){return state}
-  function visibleEntry(el){
+  function measure(el){
     if(!el||typeof el.getBoundingClientRect!=='function')return null;
     const cs=globalThis.getComputedStyle?getComputedStyle(el):null;
     if(cs&&(cs.display==='none'||cs.visibility==='hidden'||number(cs.opacity)<=.02))return null;
     const raw=el.getBoundingClientRect();
     if(raw.width<.5||raw.height<.5)return null;
+    return {el,raw};
+  }
+  function visibleEntry(measured,clearance=0){
+    if(!measured)return null;
+    const {el,raw}=measured;
     const r=globalThis.SSSDisplayGlass?.surfaceRect?SSSDisplayGlass.surfaceRect(el,raw):raw;
     if(r.width<.5||r.height<.5)return null;
-    return {id:el.id||'',role:el.getAttribute('data-display-occupancy')||'',rect:r,readRect:rect(raw)};
+    return {id:el.id||'',role:el.getAttribute('data-display-occupancy')||'',rect:r,readRect:rect(raw),canonical:!!globalThis.SSSDisplayMembraneGrid,clearance};
+  }
+  function readingLimit(clearance){
+    let limit=Infinity;
+    for(const field of document.querySelectorAll('[data-interlocutor]:not([hidden]) [data-ui-bounded="true"]')){
+      const b=field.getBoundingClientRect();if(b.top>.5||b.height<1)continue;
+      const ink=field.querySelector('h1,h2,button,span,b,small');if(!ink)continue;
+      const h=ink.getBoundingClientRect().height;if(h<=0)continue;
+      const padding=globalThis.getComputedStyle?parseFloat(getComputedStyle(field).paddingBottom)||0:0;
+      limit=Math.min(limit,b.bottom-h-padding-clearance);
+    }
+    return limit;
   }
   function apply(next){
     if(typeof document!=='object')return next;
@@ -71,12 +87,23 @@
     // Place real feedback after the measured header before acquiring its own
     // geometry. Reuse the ordinary header read; no additional layout scan or
     // observer phase is needed, including the first/explicit refresh.
-    const header=elements.find(el=>el.id==='display-header'),headerEntry=header?visibleEntry(header):null;
+    const header=elements.find(el=>el.id==='display-header'),headerEntry=header?measure(header):null;
     if(header){
-      const style=document.documentElement.style,value=(headerEntry?.readRect.bottom||0)+'px';
+      const style=document.documentElement.style,value=(headerEntry?.raw.bottom??(headerEntry?headerEntry.raw.top+headerEntry.raw.height:0))+'px';
       if(style.getPropertyValue?.('--display-header-bottom')!==value)style.setProperty('--display-header-bottom',value);
     }
-    const entries=elements.map(el=>el===header?headerEntry:visibleEntry(el)).filter(Boolean);
+    const measured=elements.map(el=>el===header?headerEntry:measure(el)).filter(Boolean);
+    const find=id=>measured.find(entry=>entry.el.id===id)?.raw;
+    let inset=0;
+    if(globalThis.SSSDisplayMembraneGrid){
+      const glass=globalThis.SSSDisplayGlass;
+      inset=glass?.readInset?.()||0;
+      const status=find('display-membrane-status'),ratio=Number(globalThis.devicePixelRatio)||1;
+      SSSDisplayMembraneGrid.reconcile({width:innerWidth,height:innerHeight,headerRect:headerEntry?.raw,
+        statusRect:status,triggerRect:find('mini-trigger'),inset,
+        limit:status?readingLimit(inset):Infinity,quantum:1/ratio});
+    }
+    const entries=measured.map(entry=>visibleEntry(entry,inset)).filter(Boolean);
     state=apply(derive({width:innerWidth,height:innerHeight},entries));
     try{dispatchEvent(new CustomEvent('sss:safe-area',{detail:state}))}catch(_){}
     return state;

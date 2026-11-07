@@ -100,10 +100,10 @@
     return Object.freeze({count:n,data,readData,mergeData,scale:sx,inset:out[0]?.inset??PARAMS.bevelMax});
   }
 
-  function surfaceRect(el,value,inset=readInset()){
-    const r=box(value),overfill=Math.max(0,Math.min(96,number(el.getAttribute('data-display-glass-overfill'))));
-    const filled=overfill?box({left:r.left,top:r.top,width:r.width,height:r.height+overfill}):r;
-    return el.getAttribute('data-display-glass')==='off'?filled:readingFrame(filled,inset).rect;
+  function surfaceRect(el,value){
+    const grid=globalThis.SSSDisplayMembraneGrid;
+    if(!grid)throw new Error('Display membrane UI grid is required for HUD geometry');
+    return box(grid.surfaceRect(el,box(value)));
   }
   function visible(el,getStyle,inset){
     const cs=getStyle?getStyle(el):null;
@@ -111,8 +111,7 @@
     const raw=box(el.getBoundingClientRect());if(raw.width<2||raw.height<2)return null;
     const r=surfaceRect(el,raw,inset);
     return {id:surfaceId(el),ids:[surfaceId(el)],rect:r,readRect:raw,inset,role:el.getAttribute('data-display-occupancy')||'',
-      kind:el.getAttribute('data-display-glass-kind')||'hud',layer:el.getAttribute('data-display-glass-layer')||'hud',
-      overfill:number(el.getAttribute('data-display-glass-overfill'))};
+      kind:el.getAttribute('data-display-glass-kind')||'hud',layer:el.getAttribute('data-display-glass-layer')||'hud'};
   }
   /* The surfaces: occupied HUD surfaces unless they opt out, plus anything that opts in. */
   function collect(doc,getStyle){

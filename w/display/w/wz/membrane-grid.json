@@ -1,0 +1,13 @@
+{
+  "schema": "sss.display.ui-grid.v2",
+  "meta": {"name": "display-membrane", "extent": "bounded"},
+  "splits": ["", "w", "x", "z", "zx", "zz"],
+  "fields": {
+    "top": {
+      "cells": ["ww", "wx", "xw", "xx"],
+      "label": "global upper liquid containing field"
+    },
+    "compass": {"cells": ["zx", "zz"], "label": "global navigation"}
+  },
+  "elements": {}
+}

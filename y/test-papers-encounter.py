@@ -10,7 +10,7 @@ explicitly; this is not a physical-device or frame-rate claim.
 from pathlib import Path
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from functools import partial
-import argparse, json, threading
+import argparse, json, os, threading
 
 p=argparse.ArgumentParser();p.add_argument('--artifact',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
 p.add_argument('--backend',choices=['canvas2d','webgl'],default='canvas2d')
@@ -236,7 +236,8 @@ def complete_case(page,width):
 try:
  from playwright.sync_api import sync_playwright
  with sync_playwright() as pw:
-  browser=pw.chromium.launch(headless=True,args=['--disable-webgl'] if a.backend=='canvas2d' else ['--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+  kw={'executable_path':os.environ['CHROMIUM_EXECUTABLE']} if os.environ.get('CHROMIUM_EXECUTABLE') else {}
+  browser=pw.chromium.launch(headless=True,args=['--disable-webgl'] if a.backend=='canvas2d' else ['--use-angle=swiftshader','--enable-unsafe-swiftshader'],**kw)
   for width,height in [(1280,800),(390,844)]:
    if width not in a.viewports:continue
    for case in a.cases:

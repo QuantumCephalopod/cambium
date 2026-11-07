@@ -26,7 +26,7 @@ for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[d
   el.addEventListener('focus',()=>{focusContext=key;renderHint()});
   el.addEventListener('blur',()=>{focusContext=null;renderHint()});
 }
-function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));if(next&&pocket.getAttribute?.('aria-hidden')==='true')open('help');measure()}
+function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));if(next&&pocket.getAttribute?.('aria-hidden')==='true')open('help');measure();if(next)guide.scrollIntoView?.({block:'nearest',inline:'nearest'})}
 helpButton?.addEventListener('click',()=>setHelp(guide.hidden));
 
 function px(name,value){const v=Math.ceil(value)+'px';if(mini.style.getPropertyValue(name)!==v)mini.style.setProperty(name,v)}
