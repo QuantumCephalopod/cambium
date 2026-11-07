@@ -25,7 +25,12 @@ for(const [width,height] of [[1275,596],[1280,800],[667,375],[390,844],[320,568]
   assert.ok(idle.top.height/2<46,'a further top split could not fit the navigation');
   assert.ok(idle.trigger.width>=40&&idle.trigger.height>=40,'input target fits its addressed field');
   close(idle.pocket.bottom,idle.help.top);close(idle.pocket.bottom,idle.trigger.top);
-  close(idle.pocket.bottom,idle.legal.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left,'refined trigger stays beyond legal links');
+  if(variant==='portrait'){
+    close(idle.help.bottom,idle.legal.top);close(idle.help.right,idle.trigger.left);
+    assert.ok(idle.help.left>=width*.75&&idle.legal.left>=width*.75,'portrait controls clear the site timeline');
+  }else{
+    close(idle.pocket.bottom,idle.legal.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left,'refined trigger stays beyond legal links');
+  }
   const pending=grid.reconcile({...input,statusRect:{bottom:51,height:13}});
   verifyField(pending.outer,'top',pending.viewport,pending.top);
   assert.ok(pending.top.bottom>=59,'real feedback and rim fit');

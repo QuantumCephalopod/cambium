@@ -47,7 +47,8 @@ function measure(){
   px('--compass-guide-cap',available*.45);
   // An opened guide scrolls within the pocket; it does not consume the map's
   // permanent budget. Otherwise opening help can collapse the instrument.
-  const gap=Number.parseFloat(globalThis.getComputedStyle?.(core)?.rowGap)||0;
+  const coreStyle=globalThis.getComputedStyle?.(core);
+  const gap=Number.parseFloat(coreStyle?.rowGap)||0;
   const guideHeight=guide&&!guide.hidden?(guide.offsetHeight||0)+gap:0;
   const chrome=Math.max(0,core.scrollHeight-map.offsetHeight-guideHeight);
   const measured=String(Math.round(chrome*64)/64);
@@ -55,7 +56,12 @@ function measure(){
     mini.dataset.mapChrome=measured;
     if(typeof globalThis.dispatchEvent==='function'&&typeof globalThis.CustomEvent==='function')globalThis.dispatchEvent(new CustomEvent('sss:navigator-measure'));
   }
-  px('--compass-map-cap',bounded?Math.floor(Math.max(24,Math.min(available-chrome,(field?.width||0)-2.5*rem))):Math.max(24,available-chrome));
+  // A stable scrollbar gutter keeps disclosure from squeezing the instrument.
+  // Its actual width is excluded by clientWidth; leave the measured padding
+  // and the existing rail/gap room before choosing a square map extent.
+  const padding=(Number.parseFloat(coreStyle?.paddingLeft)||.5*rem)+(Number.parseFloat(coreStyle?.paddingRight)||.5*rem);
+  const mapWidth=Math.max(0,(core.clientWidth??field?.width??0)-padding-2*rem);
+  px('--compass-map-cap',bounded?Math.floor(Math.max(24,Math.min(available-chrome,mapWidth))):Math.max(24,available-chrome));
   px('--compass-core-height',core.offsetHeight);
   core.dataset.scroll=String(core.scrollHeight>core.clientHeight+1);
 }

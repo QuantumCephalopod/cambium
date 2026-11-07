@@ -46,9 +46,15 @@ try:
       const glass=SSSDisplayGlass.collect().map(s=>({id:s.id,ids:s.ids,rect:s.rect}));
       const map=toBox(document.getElementById('navTwin').getBoundingClientRect());
       const chrome=Number(document.getElementById('mini').dataset.mapChrome)||0;
+      const timeline=document.querySelector('[data-interlocutor]:not([hidden]) [data-ui-field="timeline"]');
+      const siteTargets=timeline?[...timeline.querySelectorAll('button,input,a')].map(el=>{
+       const r=el.getBoundingClientRect(),p=timeline.getBoundingClientRect();
+       return {name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(r.left,p.left),top:Math.max(r.top,p.top),right:Math.min(r.right,p.right),bottom:Math.min(r.bottom,p.bottom)};
+      }).filter(r=>r.right>r.left&&r.bottom>r.top):[];
+      const navTargets=[...document.querySelectorAll('#mini-help-toggle,#mini-trigger,#legal-links a')].map(el=>({name:el.id||el.textContent.trim(),...toBox(el.getBoundingClientRect())}));
       const topAddress=SSSUIGrid.fieldInfo(state.outer,'top').bounds;
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.fieldInfo(state.inner,name).bounds]));
-      return {state:{top:state.top,compass:state.compass,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome};
+      return {state:{top:state.top,compass:state.compass,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,siteTargets,navTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
      assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
@@ -62,6 +68,9 @@ try:
       for right in bottom[i+1:]:
        a,b=left['actual'],right['actual']
        assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,left,right,'navigator controls overlap')
+     for a in measured['siteTargets']:
+      for b in measured['navTargets']:
+       assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,a,b,'navigator covers a site timeline control')
      top=next(x for x in measured['glass'] if 'display-header' in x['ids'])
      assert abs(top['rect']['bottom']-measured['state']['top']['bottom'])<.5,(site,top,measured['state']['top'])
      assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5

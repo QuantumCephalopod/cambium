@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.37"
+version: "3.38"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -107,7 +107,7 @@ The optional `viewport` is a neutral camera framing rectangle, not an exclusive 
 
 The global compass, including its trigger, legal links, map, rails and help, fits the active declared compass rectangle in the viewport; the overview declaration is fallback when a child supplies no compass field. Internal scrolling/readability cannot grow that rectangle. Global surfaces remain Display-owned. Owner-local timeline/footer controls consume their declared field; the current Crawlerbait and Schattenseiten carriers share the exact `yzy / yzz / zyy / zyz` footprint. The enclosing carrier witness checks that invariant without making either child import its sibling’s anatomy.
 
-An owner may explicitly declare portrait and compact compass variants as realized address spans. The shared navigator can borrow those spans when the carrier and its measured chrome need more usable room. Variant selection preserves owner authority, map interaction, the fixed timeline and reachable help/legal controls; it does not turn an unaddressed pixel expansion into a field.
+An owner may explicitly declare portrait and compact compass variants as realized address spans. The shared navigator can borrow those spans when the carrier and its measured chrome need more usable room. Its portrait arrangement keeps help, trigger and legal targets clear of the site's timeline controls. Variant selection preserves owner authority, map interaction, the fixed timeline and reachable help/legal controls; it does not turn an unaddressed pixel expansion into a field.
 
 ### Source-owned sharp contact foreground
 

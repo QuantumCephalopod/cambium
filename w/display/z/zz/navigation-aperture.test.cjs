@@ -68,5 +68,7 @@ console.log('PASS — contextual mouse/touch/keyboard hints, accessible persiste
  const ctx={MutationObserver:class{constructor(){}observe(){}},document:{getElementById:id=>elements.get(id),documentElement:{dataset:{composition:'single'},lang:'en'}},innerHeight:800,addEventListener(k,f){listeners.set(k,f)},setTimeout:()=>1,clearTimeout(){}};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'navigation-aperture.js'),'utf8'),ctx);
  assert.equal(mini.style['--compass-map-cap'],'52px');assert.equal(help.parentNode,mini);ctx.SSSNavigationAperture.close();help.events.click();assert.equal(pocket.attrs['aria-hidden'],'false');assert.equal(guide.hidden,false);
+ pocket.clientHeight=500;core.clientWidth=160;listeners.get('resize')();
+ assert.equal(mini.style['--compass-map-cap'],'112px','map uses the available content width after scrollbar, padding and rail');
  console.log('PASS — bounded compass subtracts measured chrome, preserves map budget and opens persistent help from the closed state');
 }
