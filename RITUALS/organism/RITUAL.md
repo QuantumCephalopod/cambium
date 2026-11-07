@@ -1,7 +1,7 @@
 ---
 name: cambium
 description: "Local ritual receptor for the cambium website organism: preserve its host phenotype, differentiated Display child organ, lifecycle shell, publication membrane, and substrate-invariant HOME/_feed dance."
-version: "1.20"
+version: "1.21"
 ---
 
 # CAMBIUM ORGANISM RITUAL — local root
@@ -167,6 +167,8 @@ Fork promotion remains a separate, owner-controlled repository permission bounda
 ## Bounded layout substrate witness — 2026-10-28
 
 The isolated `y/test-bounded-layout.py` integration witness serves only an already-built public artifact to a fresh Chromium test context. It measures actual DOM field bounds, declared camera rectangle, unchanged footer through selection/mode, and the complete compass through help. It retains screenshots and precise browser/backend limits. The bounded-layout staging lane installs its pinned test dependency and runs this witness without changing ordinary Tide publication cost or giving tests authority over site semantics. Native/lifecycle/source checks remain required; a screenshot is not source or device-performance authority. Actual layout ownership remains Display and the respective independently rooted child.
+
+The same staging lane also exercises the six-site addressed membrane witness, including actual map scale, control separation and the light/dark shadow contract. This is a browser witness over the built artifact; it does not replace owner-local semantic acceptance or establish physical-device performance.
 
 The Crawlerbait browser-layout case uses the existing no-Worker capability fallback to read its same complete immutable public source, at half physical rendering resolution and unchanged CSS carrier dimensions. This bounds software-GPU/acknowledged-transfer test cost without fabricating data or changing the product. Worker transport has its separate native protocol/refusal witness; browser layout completion makes no full-source throughput or device-performance claim.
 

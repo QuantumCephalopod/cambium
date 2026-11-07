@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.36"
+version: "3.38"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -106,6 +106,8 @@ A binding fixes both origin and border-box extent, contains paint, and provides 
 The optional `viewport` is a neutral camera framing rectangle, not an exclusive world viewport or source admission boundary. The same camera/projection frames the subject and maps pointer/hit positions on both backends. Visible receding/sibling world context remains available outside that focus rectangle through the actual full-camera frustum. World positions, source membership, genealogy, selection and simulation remain native. Full-size liquid/composite targets remain Display-owned. A focus declaration does not silently install a scissor, mask world labels or withdraw a visible contact. Explicit source-owned lens/readable-input clipping remains its distinct operation. Sites receive both the full `rect` and the actual `viewRect` in their layer frame. Shared DOM HUD fields are distinct from world-projected labels and bodies.
 
 The global compass, including its trigger, legal links, map, rails and help, fits the active declared compass rectangle in the viewport; the overview declaration is fallback when a child supplies no compass field. Internal scrolling/readability cannot grow that rectangle. Global surfaces remain Display-owned. Owner-local timeline/footer controls consume their declared field; the current Crawlerbait and Schattenseiten carriers share the exact `yzy / yzz / zyy / zyz` footprint. The enclosing carrier witness checks that invariant without making either child import its sibling’s anatomy.
+
+An owner may explicitly declare portrait and compact compass variants as realized address spans. The shared navigator can borrow those spans when the carrier and its measured chrome need more usable room. Its portrait arrangement keeps help, trigger and legal targets clear of the site's timeline controls. Variant selection preserves owner authority, map interaction, the fixed timeline and reachable help/legal controls; it does not turn an unaddressed pixel expansion into a field.
 
 ### Source-owned sharp contact foreground
 

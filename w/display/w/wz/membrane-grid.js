@@ -85,13 +85,25 @@
     for(const name of ['pocket','help','trigger','legal'])if(!navBase.fields[name])throw new Error('missing navigator field '+name);
     const topSeed=UI.fieldInfo(base,'top').bounds;
     if(topSeed.x!==0||topSeed.y!==0||topSeed.w!==1)throw new Error('global top field must span the upper viewport');
-    let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,topKey='',triggerKey='',fit={top:true,trigger:true};
+    let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,navVariant='',topKey='',triggerKey='',fit={top:true,trigger:true};
+    function navigatorState(variant){
+      if(!variant)return navBase;
+      const fields={};
+      for(const name of ['pocket','help','trigger','legal']){
+        const cells=navBase.fields[name].variants?.[variant];
+        if(!cells)throw new Error('navigator variant is incomplete: '+variant+' '+name);
+        fields[name]=cells;
+      }
+      return realize(navBase,fields);
+    }
     function useCompass(state,field){
       if(!state||!field)return;
       const check=UI.spanInfo(state,field.cells);
       if(!check.ok)throw new Error('global compass has no realized field');
-      if(compassState===state&&compassInfo?.cells.join(',')===check.cells.join(','))return;
+      const variant=field.variant==='portrait'?'portrait':'';
+      if(compassState===state&&compassInfo?.cells.join(',')===check.cells.join(',')&&navVariant===variant)return;
       compassState=state;compassInfo=check;
+      if(navVariant!==variant){navVariant=variant;inner=navigatorState(variant);triggerKey=''}
       outer=realize(outer,{compass:check.cells});
     }
     function rect(name){
@@ -100,6 +112,19 @@
     }
     function nested(name){return projection(UI.fieldInfo(inner,name).bounds,rect('compass'))}
     function relative(name){return {...UI.fieldInfo(inner,name).bounds}}
+    function compassVariant(state,carrier,chrome=0){
+      const field=state?.fields?.compass;
+      if(!field)return '';
+      if(carrier.h>carrier.w)return 'portrait';
+      if(!field.variants?.compact)return '';
+      const ordinary=UI.fieldInfo(state,'compass').bounds,expanded=UI.fieldInfo(state,'compass','compact').bounds;
+      const pocket=UI.fieldInfo(navBase,'pocket').bounds;
+      // Choose the owner's taller addressed carrier only when the real chrome
+      // leaves the map less than half the ordinary field's width. The variant
+      // remains an authored recursive span and needs to provide more room.
+      const mapRoom=carrier.h*ordinary.h*pocket.h-Math.max(0,num(chrome));
+      return expanded.h>ordinary.h&&mapRoom<carrier.w*ordinary.w/2?'compact':'';
+    }
     function reconcile(input={}){
       viewport=box(0,0,Math.max(0,num(input.width)),Math.max(0,num(input.height)));
       const h=input.headerRect,s=input.statusRect,t=input.triggerRect;
@@ -110,8 +135,8 @@
         if(compassInfo)outer=realize(outer,{compass:compassInfo.cells});
         topKey=key;
       }
-      const c=rect('compass'),inputKey=[c.width,c.height,num(t?.width),num(t?.height)].join('|');
-      if(inputKey!==triggerKey){inner=triggerState(navBase,c,t);triggerKey=inputKey}
+      const c=rect('compass'),inputKey=[navVariant,c.width,c.height,num(t?.width),num(t?.height)].join('|');
+      if(inputKey!==triggerKey){inner=triggerState(navigatorState(navVariant),c,t);triggerKey=inputKey}
       const top=rect('top'),trigger=nested('trigger');
       fit={top:Math.max(num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0)+num(input.inset)<=top.bottom,
         trigger:!t||(num(t.width)<=trigger.width&&num(t.height)<=trigger.height)};
@@ -128,7 +153,7 @@
       return {outer,inner,viewport:{...viewport},compassState,compassInfo,fit:{...fit},
         top:rect('top'),compass:rect('compass'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')};
     }
-    return Object.freeze({useCompass,reconcile,rect,nested,relative,surfaceRect,snapshot});
+    return Object.freeze({useCompass,reconcile,rect,nested,relative,compassVariant,surfaceRect,snapshot});
   }
   return Object.freeze({create,address,topBand,triggerState});
 });

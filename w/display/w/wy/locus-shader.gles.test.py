@@ -171,8 +171,12 @@ def readable_contract(width,height):
         assert all(max(abs(fg[i+k]-bare[i+k]) for k in range(4))<=1 for i in range(0,len(fg),4) if bare[i+3]==255),'shadow changes solid glyph colour beyond one UNORM rounding unit'
         inverse=Path(tmp)/'inverse.rgba';subprocess.check_call(['node',str(Path(__file__).parent/'../wx/liquid-reading-ink.cjs'),str(width),str(height),json.dumps(frame),str(inverse),'inverse']);light=inverse.read_bytes()
         support=[i for i in range(0,len(light),4) if bare[i+3]==0 and light[i+3]>40]
-        assert len(support)>100 and all(light[i+k]>=light[i+3]*.9 for i in support for k in range(3)), 'global inverse loses contrasting shadow'
-        results.append({'kind':'type-shadow','additional_edge_support_pixels':shadow_pixels,'solid_glyph_colour_max_unorm_error':1,'inverse_dark_shadow_support_pixels':len(support)})
+        # The browser applies its one invert filter to the composed layer. A
+        # transparent premultiplied black source becomes a white shadow after
+        # inversion: alpha - channel. Pre-inverting here made it dark again.
+        assert light==fg, 'the source shadow changed before the global inverse'
+        assert len(support)>100 and all(light[i+k]<=1 and light[i+3]-light[i+k]>=light[i+3]*.9 for i in support for k in range(3)), 'global inverse loses light shadow support'
+        results.append({'kind':'type-shadow','additional_edge_support_pixels':shadow_pixels,'solid_glyph_colour_max_unorm_error':1,'inverse_light_shadow_support_pixels':len(support)})
         combined=bytearray(background)
         for i in range(0,len(fg),4):
             a=fg[i+3]/255

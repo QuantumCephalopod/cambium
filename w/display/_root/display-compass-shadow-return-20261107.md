@@ -1,0 +1,9 @@
+# Compass usability and shadow inversion — 2026-11-07
+
+Philipp's live counterexample showed that a square, contained compass could still be too small to use. Display now gives the actual map the upper three quarters of its recursively addressed navigator, with help, legal links and the trigger in adjacent cells. The map uses the available width and measured chrome; opened guidance scrolls without collapsing the map. Owner-authored portrait and compact address variants lend more room where needed. The overview lends its variant using the visible global carrier even while its own host is hidden.
+
+The earlier inverse-aware shadow code pre-inverted a white source shadow and the global filter inverted it again. DOM, Canvas, cached labels and tissue now share a dark source shadow in both modes; the one global inverse turns it light with the glyph. Philipp's selected offset, blur, spread and opacity are unchanged. The native software-GLES witness now checks that post-inversion result instead of requiring the defeated pre-inversion.
+
+An isolated 1363×936 Chromium Canvas2D preview measured the map at 148px before and 265px after. Help left it at 265px, and selecting a visible compass target entered Papers. The shadow source remained black under both root modes, with `invert(1)` applied only in the inverted mode. The complete enclosing check passed 199 checks including software GLES. Owner-defined portrait and short variants were checked algebraically and in runtime fixtures; the multi-viewport browser matrix is staged, not yet observed here. No physical-device frame-rate or browser-WebGL claim is made.
+
+Source-owned witness: `w/display/_root/display-compass-shadow-witness-20261107.json` (SHA-256 `a4a548b2f06f9bef2c68ac531813edd1c86f8f9af1ad82c8104e4a6cb13bb737`). Latest implementation/witness commit: `edd6105977efdddedc1a333d6766fcd112b8e7a4`. Existing separate Display and Crawlerbait performance nutrients stay open.

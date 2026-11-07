@@ -445,6 +445,22 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  console.log('PASS — bounded arbitrary-owner grid enforces actual rectangles, unchanged addresses on resize, camera frame and shared compass bounds');
 }
 
+// The overview also lends the navigator to sites without their own compass.
+// Its hidden site host can measure 0×0, but the global carrier is still real.
+{
+ const f=boot(1,'',{}, {}, {},false,null,true),u=f.runtime.ui.get(ids[0]),mini=f.elements.get('mini');
+ u.state.splits.push('x','z');u.state.fields.compass.cells=['zx','zz'];
+ u.state.fields.compass.variants={portrait:['z'],compact:['xz','zx','zz']};
+ f.hosts.get(ids[0]).getBoundingClientRect=()=>({left:0,top:0,width:0,height:0,right:0,bottom:0});
+ mini.dataset.mapChrome='86';f.context.innerWidth=1363;f.context.innerHeight=936;f.emit('sss:safe-area');
+ assert.equal(mini.style.top,'468px');assert.equal(mini.style.height,'468px');
+ f.context.innerWidth=667;f.context.innerHeight=375;f.emit('sss:navigator-measure');
+ assert.equal(mini.style.top,'93.75px');assert.equal(mini.style.height,'281.25px');
+ f.context.innerWidth=390;f.context.innerHeight=844;f.emit('sss:safe-area');
+ assert.equal(mini.style.left,'195px');assert.equal(mini.style.width,'195px');
+ console.log('PASS — a hidden overview lends its compass variant against the visible global carrier');
+}
+
 assert(boot(1,'',{}, {}, {},false,null,'template').runtime.ui.get(ids[0]).bounded,'the supplied role declaration depended on an extra flag');
 assert.throws(()=>boot(1,'',{}, {}, {},false,null,'intrinsic'),/require address-derived extents/);
 console.log('PASS — common role declarations bind actual extents without an extra user sizing flag');

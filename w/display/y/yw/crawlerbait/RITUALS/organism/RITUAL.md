@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.19"
+version: "5.20"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -322,3 +322,5 @@ Version5.18 context correction2026-10-28: Being/type contact follows actual visi
 
 
 Layout return2026-10-29: The supplied common ui-grid.json determines actual extents. Narrative/camera framing consumes viewport, including its intentional compass overlap. Replay, clock, source identity and fixed timeline retain their source owners.
+
+The owner-declared compass keeps its ordinary wide address and lends `z` on portrait carriers or `xz / zx / zz` when the actual short-carrier navigator needs more height. These are recursive variants of the same field; replay, source identities and the fixed timeline remain unchanged.
