@@ -102,7 +102,7 @@
         gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,count);gl.disable(gl.BLEND)}
       gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
       if(count){gl.useProgram(full);gl.bindVertexArray(empty);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,field);gl.uniform1i(UC.F,0);
-        gl.uniform2f(UC.res,w,h);gl.uniform1f(UC.scale,SCALE);gl.uniform3fv(UC.ink,ink);gl.uniform1f(UC.alpha,alpha);const rem=(root.SSSDisplayType?.rootRemPx?.()||16)*dpr;gl.uniform4f(UC.shadowPx,-rem/32,rem*3/32,rem*21/32,rem*3/32);gl.uniform3fv(UC.shadowInk,root.document?.documentElement?.dataset?.inverse==='true'?[1,1,1]:[0,0,0]);gl.drawArrays(gl.TRIANGLES,0,3)}
+        gl.uniform2f(UC.res,w,h);gl.uniform1f(UC.scale,SCALE);gl.uniform3fv(UC.ink,ink);gl.uniform1f(UC.alpha,alpha);const rem=(root.SSSDisplayType?.rootRemPx?.()||16)*dpr;gl.uniform4f(UC.shadowPx,-rem/32,rem*3/32,rem*21/32,rem*3/32);gl.uniform3fv(UC.shadowInk,root.SSSDisplayType.SHADOW_RGB);gl.drawArrays(gl.TRIANGLES,0,3)}
       return count;
     }
     return Object.freeze({draw,canvas});

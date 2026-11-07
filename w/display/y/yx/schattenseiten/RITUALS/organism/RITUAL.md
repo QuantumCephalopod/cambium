@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.13"
+version: "1.14"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -79,3 +79,5 @@ Version1.12 focus-context correction2026-10-28: retain selected-work framing wit
 
 
 Layout return2026-10-29: The supplied common ui-grid.json supersedes the earlier field coordinates and names. Viewport frames the actual source camera, while world context remains available; documentation and compass consume their expanded declarations. All49 works/55 slots, source geometry, media and timeline stay intact.
+
+The owner-declared compass keeps its ordinary wide address and lends `z` on portrait carriers or `xz / zx / zz` when the actual short-carrier navigator needs more height. These are recursive variants of the same field; source geometry, media, controls and the fixed timeline remain unchanged.

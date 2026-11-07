@@ -21,9 +21,10 @@
   }
   function rankPx(rank,doc=root.document){return rootRemPx(doc)*rankFactor(rank)}
   const SHADOW=Object.freeze({x:-.03125,y:.09375,blur:.65625,spread:.09375,opacity:.86});
-  function shadowColor(doc=root.document){return doc?.documentElement?.dataset?.inverse==='true'?'rgba(255,255,255,.86)':'rgba(0,0,0,.86)'}
+  const SHADOW_RGB=Object.freeze([0,0,0]);
+  function shadowColor(){return `rgba(${SHADOW_RGB.join(',')},${SHADOW.opacity})`}
   function shadowPadding(doc=root.document){return Math.ceil(rootRemPx(doc)*(Math.max(Math.abs(SHADOW.x),Math.abs(SHADOW.y))+SHADOW.spread+SHADOW.blur*2)+2)}
-  function cssShadow(doc=root.document){const rem=rootRemPx(doc),rgb=doc?.documentElement?.dataset?.inverse==='true'?'255,255,255':'0,0,0',out=[];for(let i=0;i<9;i++){const a=i*Math.PI/4,rad=i===8?0:SHADOW.spread;out.push(`rgba(${rgb},${SHADOW.opacity/9}) ${(SHADOW.x+Math.cos(a)*rad)*rem}px ${(SHADOW.y+Math.sin(a)*rad)*rem}px ${SHADOW.blur*rem}px`)}return out.join(',')}
+  function cssShadow(doc=root.document){const rem=rootRemPx(doc),rgb=SHADOW_RGB.join(','),out=[];for(let i=0;i<9;i++){const a=i*Math.PI/4,rad=i===8?0:SHADOW.spread;out.push(`rgba(${rgb},${SHADOW.opacity/9}) ${(SHADOW.x+Math.cos(a)*rad)*rem}px ${(SHADOW.y+Math.sin(a)*rad)*rem}px ${SHADOW.blur*rem}px`)}return out.join(',')}
   function shadow(ctx){if(!ctx)return;const m=ctx.getTransform?.(),density=m?Math.hypot(m.a,m.b):1,rem=rootRemPx()*density;ctx.shadowColor=shadowColor();ctx.shadowOffsetX=rem*SHADOW.x;ctx.shadowOffsetY=rem*SHADOW.y;ctx.shadowBlur=rem*SHADOW.blur}
   // Expanded opaque glyph masks are reusable across position, colour and frame time.
   const shadowMasks=new Map();let shadowMaskBytes=0,fontGeneration=0;
@@ -67,5 +68,5 @@
       for(const r of records){if(r.type==='characterData')foldNode(r.target);else for(const n of r.addedNodes)foldNode(n)}
     }).observe(document.body,{subtree:true,childList:true,characterData:true});
   }
-  return Object.freeze({IDENTITY,rankFactor,rankVar,rankRem,rootRemPx,rankPx,SHADOW,fontEpoch,shadowColor,shadowPadding,cssShadow,shadow,fillText,fold,foldNode,faceUrl,start});
+  return Object.freeze({IDENTITY,rankFactor,rankVar,rankRem,rootRemPx,rankPx,SHADOW,SHADOW_RGB,fontEpoch,shadowColor,shadowPadding,cssShadow,shadow,fillText,fold,foldNode,faceUrl,start});
 });

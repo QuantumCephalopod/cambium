@@ -3,6 +3,7 @@ const assert=require('node:assert/strict');
 const UI=require('./ui-grid.js'),M=require('./membrane-grid.js');
 const membrane=require('./membrane-grid.json'),navigator=require('./navigator-grid.json');
 const grid=M.create(membrane,navigator);
+const owned=UI.normalizeState(require('../../y/philosophy/w/ui-grid.json'));
 function close(a,b){assert.ok(Math.abs(a-b)<1e-8,JSON.stringify({a,b}))}
 function verifyField(state,name,parent,actual){
   const info=UI.fieldInfo(state,name),b=info.bounds;
@@ -11,6 +12,8 @@ function verifyField(state,name,parent,actual){
   assert.ok(UI.spanInfo(state,info.cells).ok,'field must consist of realized address cells');
 }
 for(const [width,height] of [[1275,596],[1280,800],[667,375],[390,844],[320,568]]){
+  const variant=grid.compassVariant(owned,{w:width,h:height},86);
+  grid.useCompass(owned,UI.fieldInfo(owned,'compass',variant));
   const input={width,height,headerRect:{bottom:38},triggerRect:{width:40,height:40},inset:8};
   const idle=grid.reconcile(input);
   assert.deepEqual(idle.fit,{top:true,trigger:true});
@@ -22,7 +25,7 @@ for(const [width,height] of [[1275,596],[1280,800],[667,375],[390,844],[320,568]
   assert.ok(idle.top.height/2<46,'a further top split could not fit the navigation');
   assert.ok(idle.trigger.width>=40&&idle.trigger.height>=40,'input target fits its addressed field');
   close(idle.pocket.bottom,idle.help.top);close(idle.pocket.bottom,idle.trigger.top);
-  close(idle.help.bottom,idle.legal.top);
+  close(idle.pocket.bottom,idle.legal.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left,'refined trigger stays beyond legal links');
   const pending=grid.reconcile({...input,statusRect:{bottom:51,height:13}});
   verifyField(pending.outer,'top',pending.viewport,pending.top);
   assert.ok(pending.top.bottom>=59,'real feedback and rim fit');
@@ -47,6 +50,11 @@ assert.equal(s.compass.width,1000);assert.equal(s.compass.height,600);
 verifyField(s.inner,'trigger',s.compass,s.trigger);
 assert.throws(()=>grid.surfaceRect({getAttribute:()=>null,dataset:{}},{left:0,top:0,width:1,height:1}),/realized recursive UI field/);
 assert.equal(M.address(0,0,40),'w'.repeat(40),'recursive addresses are not rank-capped by a UI breakpoint');
+assert.equal(grid.compassVariant(owned,{w:1280,h:800},86),'','a roomy carrier keeps the declared ordinary field');
+assert.equal(grid.compassVariant(owned,{w:667,h:375},86),'compact','a short carrier borrows the owner-declared taller field');
+assert.equal(grid.compassVariant(owned,{w:390,h:844},86),'portrait','a portrait carrier borrows the owner-declared wider field');
+assert.deepEqual(UI.fieldInfo(owned,'compass','compact').bounds,{x:.75,y:.25,w:.25,h:.75});
+assert.deepEqual(UI.fieldInfo(owned,'compass','portrait').bounds,{x:.5,y:.5,w:.5,h:.5});
 const tooShort=grid.reconcile({width:320,height:80,headerRect:{bottom:38},triggerRect:{width:40,height:40},inset:8});
 assert.equal(tooShort.fit.top,false,'finite carriers report when the authored field cannot contain reading tissue');
 // Refinement stays inside the field the owner actually declared, including a

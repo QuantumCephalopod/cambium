@@ -100,6 +100,19 @@
     }
     function nested(name){return projection(UI.fieldInfo(inner,name).bounds,rect('compass'))}
     function relative(name){return {...UI.fieldInfo(inner,name).bounds}}
+    function compassVariant(state,carrier,chrome=0){
+      const field=state?.fields?.compass;
+      if(!field)return '';
+      if(carrier.h>carrier.w)return 'portrait';
+      if(!field.variants?.compact)return '';
+      const ordinary=UI.fieldInfo(state,'compass').bounds,expanded=UI.fieldInfo(state,'compass','compact').bounds;
+      const pocket=UI.fieldInfo(navBase,'pocket').bounds;
+      // Choose the owner's taller addressed carrier only when the real chrome
+      // leaves the map less than half the ordinary field's width. The variant
+      // remains an authored recursive span and needs to provide more room.
+      const mapRoom=carrier.h*ordinary.h*pocket.h-Math.max(0,num(chrome));
+      return expanded.h>ordinary.h&&mapRoom<carrier.w*ordinary.w/2?'compact':'';
+    }
     function reconcile(input={}){
       viewport=box(0,0,Math.max(0,num(input.width)),Math.max(0,num(input.height)));
       const h=input.headerRect,s=input.statusRect,t=input.triggerRect;
@@ -128,7 +141,7 @@
       return {outer,inner,viewport:{...viewport},compassState,compassInfo,fit:{...fit},
         top:rect('top'),compass:rect('compass'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')};
     }
-    return Object.freeze({useCompass,reconcile,rect,nested,relative,surfaceRect,snapshot});
+    return Object.freeze({useCompass,reconcile,rect,nested,relative,compassVariant,surfaceRect,snapshot});
   }
   return Object.freeze({create,address,topBand,triggerState});
 });

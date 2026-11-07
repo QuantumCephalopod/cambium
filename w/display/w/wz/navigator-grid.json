@@ -1,12 +1,12 @@
 {
   "schema": "sss.display.ui-grid.v2",
   "meta": {"name": "display-navigator", "extent": "bounded"},
-  "splits": ["", "y", "z"],
+  "splits": ["", "w", "x", "y", "z"],
   "fields": {
-    "pocket": {"cells": ["w", "x"], "label": "navigation field"},
-    "help": {"cells": ["yw", "yx"], "label": "navigation help"},
-    "trigger": {"cells": ["zw", "zx"], "label": "navigation aperture"},
-    "legal": {"cells": ["yy", "yz", "zy", "zz"], "label": "legal apertures"}
+    "pocket": {"cells": ["ww", "wx", "wy", "wz", "xw", "xx", "xy", "xz", "yw", "yx", "zw", "zx"], "label": "navigation field"},
+    "help": {"cells": ["yy"], "label": "navigation help"},
+    "trigger": {"cells": ["zz"], "label": "navigation aperture"},
+    "legal": {"cells": ["yz", "zy"], "label": "legal apertures"}
   },
   "elements": {}
 }

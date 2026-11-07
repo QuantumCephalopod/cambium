@@ -39,7 +39,8 @@ function makeSiteUI(id,host,raw){
   const carrier=()=>safeCarrier(host);
   function carrierVariant(carrier){return carrier.h>carrier.w?'portrait':''}
   function field(name,carrier=safeCarrier(host)){
-    const info=UI.fieldInfo(state,name,carrierVariant(carrier));
+    const variant=name==='compass'?Membrane.compassVariant(state,carrier,document.getElementById('mini')?.dataset?.mapChrome):carrierVariant(carrier);
+    const info=UI.fieldInfo(state,name,variant);
     return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds}),z:info.z,variant:info.variant||'default'});
   }
   function apply(el,name){
@@ -195,7 +196,9 @@ function composition(){const c=H.composeInterlocutors(activeIds.map(interlocutor
 function syncMembraneGrid(){
  const ui=activeIds.map(id=>uiById.get(id)).find(u=>u?.bounded&&u.state.fields.compass)||uiById.get(ROOT_IDS[0]);
  const mini=document.getElementById('mini');if(!mini||!ui?.bounded||!ui.state.fields.compass)return;
- const info=ui.field('compass'),b=info.bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
+ // The overview can lend its compass while its own host is hidden. Select the
+ // variant against the visible global carrier, never that hidden host's 0×0 box.
+ const info=ui.field('compass',{x:0,y:0,w:innerWidth,h:innerHeight}),b=info.bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
  Membrane.useCompass(ui.state,info);
  const values={left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',transform:'none'};
  for(const [k,v]of Object.entries(values))if(mini.style[k]!==v)mini.style[k]=v;
@@ -361,7 +364,7 @@ addEventListener('sss:membrane-ascend',e=>{
   const origin={x:innerWidth/2,y:innerHeight/2};
   try{const result=fold.swap(back,{origin,from:activeAddress,to:'',onClosing:duration=>globalThis.SSSDisplayLens?.departFrom?.(origin,duration)});if(result&&typeof result.catch==='function')result.catch(feedWound)}catch(error){feedWound(error)}
 });
-addEventListener('sss:language',()=>{syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});addEventListener('resize',()=>{Safe.refresh();composition();syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});
+addEventListener('sss:language',()=>{syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});addEventListener('sss:navigator-measure',()=>{const mini=document.getElementById('mini'),before=mini?.style.top+':'+mini?.style.height;syncMembraneGrid();if(before!==mini?.style.top+':'+mini?.style.height){Safe.refresh();for(const ui of uiById.values())ui.refresh()}});addEventListener('resize',()=>{Safe.refresh();composition();syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});
 home.addEventListener('click',e=>{e.preventDefault();if(cancelPendingEncounter())return;if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{nextHandoff();setLocalView('','home')}});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(cancelPendingEncounter())return;if(escapeLocal())return;if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});

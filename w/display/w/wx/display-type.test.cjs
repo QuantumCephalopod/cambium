@@ -53,6 +53,13 @@ console.log('display type fold witness: PASS');
 // The shared shadow follows CSS/root scale and restores unrelated canvas paint.
 {const seen=[],ctx={shadowColor:'old',shadowOffsetX:0,shadowOffsetY:0,shadowBlur:0,getTransform:()=>({a:2,b:0}),save(){this.saved=[this.shadowColor,this.shadowOffsetX,this.shadowOffsetY,this.shadowBlur]},restore(){[this.shadowColor,this.shadowOffsetX,this.shadowOffsetY,this.shadowBlur]=this.saved},fillText(...args){seen.push([args,this.shadowOffsetX,this.shadowOffsetY,this.shadowBlur])}};const T=require('./display-type.js');T.fillText(ctx,'source',4,8);assert.deepEqual(seen[0],[['source',4,8],-1,3,21]);assert.equal(ctx.shadowColor,'old')}
 
-assert.equal(T.shadowColor({documentElement:{dataset:{inverse:'true'}}}),'rgba(255,255,255,.86)');assert.equal(T.shadowColor({documentElement:{dataset:{inverse:'false'}}}),'rgba(0,0,0,.86)');
+// The page's one global inversion changes shadow and glyph together. Never
+// pre-invert the source shadow, which would make it dark in both views.
+assert.equal(T.shadowColor({documentElement:{dataset:{inverse:'true'}}}),'rgba(0,0,0,0.86)');
+assert.equal(T.shadowColor({documentElement:{dataset:{inverse:'false'}}}),'rgba(0,0,0,0.86)');
+assert.deepEqual(T.SHADOW_RGB,[0,0,0]);
+assert.equal(T.cssShadow({documentElement:{dataset:{inverse:'true'}}}),T.cssShadow({documentElement:{dataset:{inverse:'false'}}}));
+assert.match(css,/html\[data-inverse="true"\]\{filter:invert\(1\)/);
+assert.doesNotMatch(css,/html\[data-inverse="true"\]\{[^}]*--display-shadow-color/,'the global filter must invert the original shadow once');
 
 assert.deepEqual(T.SHADOW,{x:-.03125,y:.09375,blur:.65625,spread:.09375,opacity:.86});assert.equal(T.cssShadow().split(/rgba\(/).length-1,9);assert.equal(T.rankPx(0),16);

@@ -1,7 +1,7 @@
 ---
 name: philosophy
 description: "Local ritual receptor for the first public Philosophy organism: preserve its Inquiry / Continuity / Care / Becoming constitution, translation-independent semantic identity, recursive addressability and explicit root relation to Display."
-version: "1.14"
+version: "1.15"
 ---
 
 # PHILOSOPHY ORGANISM RITUAL — local root
@@ -153,3 +153,5 @@ Layout return2026-10-29: The supplied common ui-grid.json is the exact owner lay
 The existing Inquiry/Continuity/Care/Becoming split owns all active carriers; no additional rank is created. Inquiry carries the forms through which questioning becomes perceptible: `w/render.js`, `w/style.css`, `w/ui-grid.json` and its encounter witness. Continuity carries `x/encounter.json`, preserving the whole's authored bilingual position. Care carries the derived `z/projection.json`, its existing derivation and independent acceptance/refusal witness, constraining that public surface to this body's own truth. Becoming continues to carry its live `y/content.json`; the other children retain their content as well. These placements follow the existing 4V relation, including Inquiry–Continuity revision and Inquiry–Care bounded expression; they do not turn software file types into new semantic axes.
 
 The root retains the canonical shell, receptors, constitution and the `site.json` membrane. The membrane names body-relative carriers; it does not become a fifth implementation locus. Owner evidence follows those declared paths and checks the shared UI measurement at the integration boundary. Public meaning, renderer/style/grid bytes and authored copy survive this redistribution; projection provenance follows the moved encounter source.
+
+The owner-declared compass keeps its ordinary wide address and lends `z` on portrait carriers or `xz / zx / zz` when the actual short-carrier navigator needs more height. These are recursive variants of the same field; Description, world projection and source copy remain owned and unchanged.
