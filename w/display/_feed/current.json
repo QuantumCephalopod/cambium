@@ -26,18 +26,16 @@
   "home": {
     "changed_scope": [
       "w/display/w/wz/navigator-grid.json",
+      "w/display/w/wz/membrane-grid.js",
       "w/display/z/zz/navigation-aperture.js",
       "w/display/z/zz/navigation-aperture.css",
-      "w/display/w/wz/membrane-grid.js",
-      "w/display/x/display-runtime-v2.js",
-      "w/display/w/wx/display-type.js",
-      "w/display/w/ww/display-text-tissue.js",
-      "w/display/RITUALS"
+      "w/display/RITUALS",
+      "y/test-membrane-grid.py"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — the compass has a larger operable map inside realized fields and the font shadow follows the single global inversion."
+    "outcome": "COMPLETED — portrait navigator controls clear the site timeline, while the square map stays stable when help opens."
   },
-  "observed_at_utc": "2026-11-07T23:21:15.878861Z",
+  "observed_at_utc": "2026-11-07T23:38:54.670194Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -77,7 +75,7 @@
       }
     }
   },
-  "reflected_home_event": "display-compass-shadow-20261107",
+  "reflected_home_event": "display-portrait-compass-timeline-20261107",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -85,11 +83,11 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "282f57e69ec703735d18fd6860c130e27cd6e51bce92cd7b380547892e222893"
+      "sha256": "8754dde91c79973437a27173338088856db4a8ac10472306e87c7fcb3f427767"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "68a5c78ab1389c2fccf1ae059723c8e6edb8f3703b5f8c9e75f894196836d19d"
+      "sha256": "92a3d598835fd149fd54f84140d4b37c124cf2e6d0db6a17f185b5dfe3220b0e"
     }
   ],
   "shell": {
@@ -99,10 +97,10 @@
       "NUTRIENT__frame-owned-hud-measurement__20261106.md",
       "NUTRIENT__inactive-optical-target-lifetime__20261106.md"
     ],
-    "waste_direct_count": 136
+    "waste_direct_count": 137
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "167d6d6714247abc300af97fa7efd30fccd26748"
+    "source_revision": "219393da87c052f347e8cb544de82ba218e60d76"
   }
 }
