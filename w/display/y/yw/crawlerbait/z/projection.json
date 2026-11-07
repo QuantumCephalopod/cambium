@@ -5908,17 +5908,17 @@
         },
         {
           "address": "xywywxwyx",
-          "events": 455,
+          "events": 456,
           "path": "/~/2567328ee21f2043599ffa53"
         }
       ],
-      "events": 1405,
+      "events": 1406,
       "first_seen": "2026-09-13T20:18:42Z",
-      "genome": "ff26d3217f40f151804ca21d5ed286ae58ce688050bbcf8f4e15eb845107253c",
+      "genome": "4cc4bb65fd698ea33e95e08efcf7731cb47e7bf083c6287b6db556dbedc78902",
       "id": "5e799495316e57f07453e0e6",
       "kind": "z",
-      "last_seen": "2026-11-07T20:25:13Z",
-      "phenotype_samples": 1404
+      "last_seen": "2026-11-07T22:27:13Z",
+      "phenotype_samples": 1405
     },
     {
       "baits": [
@@ -184907,6 +184907,22 @@
     {
       "baits": [
         {
+          "address": "xxxxxxzyy",
+          "events": 7,
+          "path": "/~/1c59a749625b9700fc36d048"
+        }
+      ],
+      "events": 7,
+      "first_seen": "2026-10-10T03:05:39Z",
+      "genome": "9954cc9a93fb19b8e218367ca04bd2d516e0024a27253b9aa141a5bebff86e78",
+      "id": "c901747272dc25187a7a1a0e",
+      "kind": "y",
+      "last_seen": "2026-11-07T21:53:48Z",
+      "phenotype_samples": 7
+    },
+    {
+      "baits": [
+        {
           "address": "wywyywwxx",
           "events": 2,
           "path": "/~/ecc06a945fc90ea6de0d89bb"
@@ -188691,22 +188707,6 @@
       "id": "c70a231f76d4d6e0221dc17c",
       "kind": "z",
       "last_seen": "2026-10-29T22:22:57Z",
-      "phenotype_samples": 6
-    },
-    {
-      "baits": [
-        {
-          "address": "xxxxxxzyy",
-          "events": 6,
-          "path": "/~/1c59a749625b9700fc36d048"
-        }
-      ],
-      "events": 6,
-      "first_seen": "2026-10-10T03:05:39Z",
-      "genome": "c764d12a78d86af06f24ef620a03e7248a7f8cfd5cfa20d8b39d20bfb2e68267",
-      "id": "c901747272dc25187a7a1a0e",
-      "kind": "y",
-      "last_seen": "2026-10-26T05:43:57Z",
       "phenotype_samples": 6
     },
     {
@@ -272380,6 +272380,22 @@
       "id": "e3a8b66b73851571818de700",
       "kind": "x",
       "last_seen": "2026-09-26T21:13:54Z",
+      "phenotype_samples": 1
+    },
+    {
+      "baits": [
+        {
+          "address": "wywyywwxx",
+          "events": 1,
+          "path": "/~/ecc06a945fc90ea6de0d89bb"
+        }
+      ],
+      "events": 1,
+      "first_seen": "2026-11-07T22:03:33Z",
+      "genome": "a1454f7dcad6a8f2d0390857bb8c283df2063826f114d165b34400e6fb3b52e0",
+      "id": "e3b33e962fb48a3555f41374",
+      "kind": "x",
+      "last_seen": "2026-11-07T22:03:33Z",
       "phenotype_samples": 1
     },
     {
@@ -869641,6 +869657,36 @@
       "source_index": 148,
       "status": 200,
       "t": "2026-11-07T21:45:17Z"
+    },
+    {
+      "bait_address": "xxxxxxzyy",
+      "crawler": "c901747272dc25187a7a1a0e",
+      "method": "GET",
+      "path": "/~/1c59a749625b9700fc36d048",
+      "source_file": "20261107T214710Z--20261107T223121Z.traffic.json",
+      "source_index": 1,
+      "status": 200,
+      "t": "2026-11-07T21:53:48Z"
+    },
+    {
+      "bait_address": "wywyywwxx",
+      "crawler": "e3b33e962fb48a3555f41374",
+      "method": "GET",
+      "path": "/~/ecc06a945fc90ea6de0d89bb",
+      "source_file": "20261107T214710Z--20261107T223121Z.traffic.json",
+      "source_index": 2,
+      "status": 200,
+      "t": "2026-11-07T22:03:33Z"
+    },
+    {
+      "bait_address": "xywywxwyx",
+      "crawler": "5e799495316e57f07453e0e6",
+      "method": "GET",
+      "path": "/~/2567328ee21f2043599ffa53",
+      "source_file": "20261107T214710Z--20261107T223121Z.traffic.json",
+      "source_index": 0,
+      "status": 404,
+      "t": "2026-11-07T22:27:13Z"
     }
   ],
   "policy": {
@@ -869658,7 +869704,7 @@
     "semantic_filters": [],
     "traffic_identity": "opaque artwork-local being ID derived transiently from private network recognition + exact User-Agent"
   },
-  "raw_capture_end": "2026-11-07T21:47:10Z",
+  "raw_capture_end": "2026-11-07T22:31:21Z",
   "raw_capture_start": "2026-08-18T15:42:27Z",
   "routes": [
     {
@@ -881962,6 +882008,10 @@
         },
         {
           "events": 1,
+          "id": "e3b33e962fb48a3555f41374"
+        },
+        {
+          "events": 1,
           "id": "e3b57c99ac96b912a8dbc278"
         },
         {
@@ -882835,11 +882885,11 @@
       ],
       "first_seen": "2026-09-13T20:02:54Z",
       "href": "/crawlerbait/bait/~/ecc06a945fc90ea6de0d89bb/",
-      "last_seen": "2026-11-07T21:45:17Z",
+      "last_seen": "2026-11-07T22:03:33Z",
       "legacy_404_observations": 0,
       "path": "/~/ecc06a945fc90ea6de0d89bb",
       "path_shape_preserved": true,
-      "raw_requests": 7264
+      "raw_requests": 7265
     },
     {
       "address": "wxzzxwz",
@@ -883321,12 +883371,12 @@
           "id": "69fe274b19066288f0e00195"
         },
         {
-          "events": 6,
-          "id": "073c332f369653df2da3d809"
+          "events": 7,
+          "id": "c901747272dc25187a7a1a0e"
         },
         {
           "events": 6,
-          "id": "c901747272dc25187a7a1a0e"
+          "id": "073c332f369653df2da3d809"
         },
         {
           "events": 6,
@@ -884791,27 +884841,27 @@
       ],
       "first_seen": "2026-09-13T20:38:21Z",
       "href": "/crawlerbait/bait/~/1c59a749625b9700fc36d048/",
-      "last_seen": "2026-11-07T21:18:54Z",
+      "last_seen": "2026-11-07T21:53:48Z",
       "legacy_404_observations": 0,
       "path": "/~/1c59a749625b9700fc36d048",
       "path_shape_preserved": true,
-      "raw_requests": 798
+      "raw_requests": 799
     },
     {
       "address": "xywywxwyx",
       "crawlers": [
         {
-          "events": 455,
+          "events": 456,
           "id": "5e799495316e57f07453e0e6"
         }
       ],
       "first_seen": "2026-10-02T13:55:09Z",
       "href": "/crawlerbait/bait/~/2567328ee21f2043599ffa53/",
-      "last_seen": "2026-11-07T20:25:13Z",
+      "last_seen": "2026-11-07T22:27:13Z",
       "legacy_404_observations": 0,
       "path": "/~/2567328ee21f2043599ffa53",
       "path_shape_preserved": true,
-      "raw_requests": 455
+      "raw_requests": 456
     },
     {
       "address": "xwwyxwz",
@@ -1234726,10 +1234776,10 @@
   "source": "crawlerbait/x/state.json",
   "summary": {
     "baits": 16672,
-    "crawlers": 6474,
+    "crawlers": 6475,
     "legacy_404_observations": 2475,
-    "web_requests": 59153
+    "web_requests": 59156
   },
   "trace_source": "crawlerbait/x/captures/*.traffic.json (+ preserved legacy 404 evidence)",
-  "updated_at": "2026-11-07T21:47:10Z"
+  "updated_at": "2026-11-07T22:31:21Z"
 }
