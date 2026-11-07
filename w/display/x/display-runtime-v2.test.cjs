@@ -454,6 +454,8 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  f.hosts.get(ids[0]).getBoundingClientRect=()=>({left:0,top:0,width:0,height:0,right:0,bottom:0});
  mini.dataset.mapChrome='86';f.context.innerWidth=1363;f.context.innerHeight=936;f.emit('sss:safe-area');
  assert.equal(mini.style.top,'468px');assert.equal(mini.style.height,'468px');
+ f.context.innerWidth=667;f.context.innerHeight=375;f.emit('sss:navigator-measure');
+ assert.equal(mini.style.top,'93.75px');assert.equal(mini.style.height,'281.25px');
  f.context.innerWidth=390;f.context.innerHeight=844;f.emit('sss:safe-area');
  assert.equal(mini.style.left,'195px');assert.equal(mini.style.width,'195px');
  console.log('PASS — a hidden overview lends its compass variant against the visible global carrier');

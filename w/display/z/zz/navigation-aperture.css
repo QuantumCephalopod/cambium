@@ -238,7 +238,7 @@ html #mini[data-grid-bounded="true"]{box-sizing:border-box;overflow:hidden;conta
 html #mini[data-grid-bounded="true"] #mini-pocket{left:var(--membrane-pocket-x);top:var(--membrane-pocket-y);width:var(--membrane-pocket-w);height:var(--membrane-pocket-h);right:auto;bottom:auto;transform:none;clip-path:none;overflow:hidden}
 html #mini[data-grid-bounded="true"] #mini-core{max-height:100%;height:auto;min-height:0;box-sizing:border-box;padding:.5rem;overflow:auto}
 html #mini[data-grid-bounded="true"] #mini-trigger{left:calc(var(--membrane-trigger-x) + (var(--membrane-trigger-w) - min(2.5rem,var(--membrane-trigger-w)))/2);top:calc(var(--membrane-trigger-y) + (var(--membrane-trigger-h) - min(2.5rem,var(--membrane-trigger-h)))/2);width:min(2.5rem,var(--membrane-trigger-w));height:min(2.5rem,var(--membrane-trigger-h));right:auto;bottom:auto;transform:none}
-html #mini[data-grid-bounded="true"] #legal-links{left:var(--membrane-legal-x);top:var(--membrane-legal-y);width:var(--membrane-legal-w);height:var(--membrane-legal-h);right:auto;bottom:auto;max-height:none;overflow:auto;justify-content:flex-end}
+html #mini[data-grid-bounded="true"] #legal-links{left:var(--membrane-legal-x);top:var(--membrane-legal-y);width:var(--membrane-legal-w);height:var(--membrane-legal-h);right:auto;bottom:auto;max-height:none;overflow:auto;justify-content:flex-end;align-content:flex-end}
 html #mini[data-grid-bounded="true"] #navTwin{max-width:100%;max-height:100%}
 
 /* Fit the instrument, not just its outer rectangle. A square map keeps its
