@@ -1,0 +1,43 @@
+name: orientation regression revisit
+on:
+  push:
+    branches: ['witness/long-axis-regressions-2-20261108']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        witness: [membrane, bounded, longaxis]
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 y/site-public.py --artifact _site
+      - run: python3 -m pip install playwright==1.56.0
+      - run: python3 -m playwright install --with-deps chromium
+      - if: matrix.witness == 'membrane'
+        run: python3 y/test-membrane-grid.py --artifact _site --out _witness
+      - if: matrix.witness == 'bounded'
+        run: python3 y/test-bounded-layout.py --artifact _site --out _witness --canvas2d
+      - if: matrix.witness == 'longaxis'
+        run: python3 y/test-long-axis-browser.py --artifact _site --out _witness
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revisit-${{ matrix.witness }}
+          path: _witness
+          if-no-files-found: warn
+  local-browser:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python3 -m pip install --target /tmp/local-python playwright==1.56.0
+      - run: python3 -m playwright install chromium --only-shell
+        env:
+          PYTHONPATH: /tmp/local-python
+      - run: tar -cf /tmp/local-browser.tar -C /tmp local-python -C /home/runner/.cache/ms-playwright chromium_headless_shell-1194
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portable-browser-for-orientation-witness
+          path: /tmp/local-browser.tar
+          retention-days: 1
