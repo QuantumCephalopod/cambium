@@ -13,8 +13,8 @@ Members:
   SpriteSheet-Mono.ttf / .woff2: supplied Mono v4, package 4.0.0.
   SpriteSheet-Regular.ttf / .woff2: natural widths, original A-Z face unchanged at 1.0.1.
 Regular source: SpriteSheet-font-package.zip, handed over 2026-10-01.
-The original v4 package is identified by its SHA-256 and Library source in VERSION.json.
-The source v3 package and prior v2 body remain in Display _waste; v3's earlier source-grid cmap repair remains recorded in its immutable HOME.
+The original v4 package and its source sprite are preserved unchanged under ../../../_waste/; VERSION.json records their paths and source hash.
+The previous corrected v3 Mono body is preserved unchanged at ../../../_waste/spritesheet-mono-v3-20261108.carrier/. The source v3 package and prior v2 body remain in Display _waste; v3's earlier source-grid cmap repair remains recorded in its immutable HOME.
 
 Mono TTF SHA-256: 53a6210ec17bb0faec17f0b7a6b5d8437feea500a8fee80455054745c0daddf3
 Mono WOFF2 SHA-256: ad37e39de57589a53989d13607d234e3c6efe37a77deb53b1cca598c72ee4187

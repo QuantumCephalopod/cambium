@@ -161,7 +161,7 @@ jobs:
       - name: Witness SpriteSheet v4 in the built membrane
         if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/spritesheet-mono-v4-')
         run: |
-          python3 y/test-spritesheet-v4-source.py --sprite w/display/_stomach/SOURCE__SpriteSheet-Mono-v4-sprite__20261108.png --package w/display/_stomach/SOURCE__SpriteSheet-Mono-v4-package__20261108.zip
+          python3 y/test-spritesheet-v4-source.py --sprite w/display/_waste/SOURCE__SpriteSheet-Mono-v4-sprite__20261108.png --package w/display/_waste/SOURCE__SpriteSheet-Mono-v4-package__20261108.zip
           python3 y/test-spritesheet-v4-browser.py --artifact _site --out _font-witness/glyphs
           python3 y/test-long-axis-browser.py --artifact _site --out _font-witness/orientation
           python3 y/test-membrane-grid.py --artifact _site --out _font-witness/membrane
