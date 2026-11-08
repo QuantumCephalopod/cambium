@@ -1,0 +1,35 @@
+name: integrated SpriteSheet v4 witness
+on:
+  push:
+    branches: ['witness/spritesheet-v4-integrated-20261108']
+permissions:
+  contents: read
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build current source
+        run: python3 y/site-public.py --artifact _site
+      - name: Witness repository and address algebra
+        run: |
+          python3 y/check.py --artifact _site
+          SITE_DIR=_site node y/test-address.cjs
+          node w/display/z/zy/site-fold.test.cjs
+          python3 y/site-public.py --artifact _site --check
+      - name: Prepare real browser and source readers
+        run: |
+          python3 -m pip install playwright==1.56.0 fonttools==4.61.1 pillow==13.0.0
+          python3 -m playwright install --with-deps chromium
+      - name: Witness source, font and screen geometries
+        run: |
+          python3 y/test-spritesheet-v4-source.py --sprite w/display/_waste/SOURCE__SpriteSheet-Mono-v4-sprite__20261108.png --package w/display/_waste/SOURCE__SpriteSheet-Mono-v4-package__20261108.zip
+          python3 y/test-spritesheet-v4-browser.py --artifact _site --out _witness/glyphs
+          python3 y/test-long-axis-browser.py --artifact _site --out _witness/orientation
+          python3 y/test-membrane-grid.py --artifact _site --out _witness/membrane
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrated-spritesheet-v4-witness
+          path: _witness
+          if-no-files-found: warn
