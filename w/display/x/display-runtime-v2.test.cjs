@@ -106,6 +106,11 @@ assert.equal(node.style.width,'500px');assert.equal(node.style.height,'400px');
 assert.equal(node.style.right,'auto');assert.equal(node.style.zIndex,'132');assert.equal(node.style['--ui-field-x'],node.style.left);assert.equal(node.style['--ui-field-y'],node.style.top);
 orient.emit('sss:safe-area');
 assert.equal(node.style.width,'500px');assert.equal(node.style.height,'400px');
+assert.equal(node.dataset.uiGlobalRight,'false');
+orient.context.innerWidth=800;orient.context.innerHeight=1000;ui.refresh();
+assert.equal(node.dataset.uiGlobalRight,'true','the turned top field meets the global right edge');
+orient.hosts.get(ids[0]).getBoundingClientRect=()=>({left:0,top:0,width:400,height:1000,right:400,bottom:1000});ui.refresh();
+assert.equal(node.dataset.uiGlobalRight,'false','an internal carrier does not borrow the viewport edge inset');
 const plain=f.options.get('organism:plain').projection;assert.equal(plain.sourceMarker,'organism:plain');
 for(let frame=0;frame<30;frame++){
   const bodies=f.options.get('organism:origin').bodies();

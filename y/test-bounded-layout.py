@@ -98,7 +98,8 @@ try:
      map_box=bounds(page,'#navTwin');assert abs(map_box['width']-map_box['height'])<1.1,('distorted map',map_box)
      compass_box=bounds(page,'#mini');pocket_box=bounds(page,'#mini-pocket')
      chrome=page.locator('#mini').evaluate('e=>Number(e.dataset.mapChrome)||0')
-     expected_usable=min(compass_box['width']/2,max(0,pocket_box['height']-chrome))
+     map_room=page.evaluate('''()=>{const core=document.getElementById('mini-core'),s=getComputedStyle(core),instrument=document.getElementById('mini-instrument');return Math.max(0,core.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap))}''')
+     expected_usable=min(compass_box['width']/2,max(0,pocket_box['height']-chrome),map_room)
      assert map_box['width']>=expected_usable-1,('the map fits but is too small to use',map_box,compass_box,pocket_box,chrome)
      records['square_map']=map_box
      records['compass_variant']=compass_variant

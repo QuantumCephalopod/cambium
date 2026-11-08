@@ -55,7 +55,13 @@ function makeSiteUI(id,host,raw){
       zIndex:String(4+info.z*64+tie)
     });
     Object.assign(el.style,{right:'auto',bottom:'auto',width:b.w*c.w+'px',height:b.h*c.h+'px',inlineSize:b.w*c.w+'px',blockSize:b.h*c.h+'px',minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overflowWrap:'anywhere',overscrollBehavior:'contain',contain:'layout paint'});
-    if(el.dataset){el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiBounded='true'}
+    if(el.dataset){
+      el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiBounded='true';
+      // Only a field actually meeting the viewport edge shares its global
+      // occupied tissue. This remains geometric, independent of site names.
+      const hostEdge=surfaceRect(host).right;
+      el.dataset.uiGlobalRight=String(info.orientation==='portrait'&&Math.abs(hostEdge-(1-b.x-b.w)*c.w-innerWidth)<.5);
+    }
     return el;
   }
   function bind(el,name){bindings.set(el,name);return apply(el,name)}

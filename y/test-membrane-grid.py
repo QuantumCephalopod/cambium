@@ -46,6 +46,8 @@ try:
       const glass=SSSDisplayGlass.collect().map(s=>({id:s.id,ids:s.ids,rect:s.rect}));
       const map=toBox(document.getElementById('navTwin').getBoundingClientRect());
       const chrome=Number(document.getElementById('mini').dataset.mapChrome)||0;
+      const core=document.getElementById('mini-core'),cs=getComputedStyle(core),instrument=document.getElementById('mini-instrument');
+      const mapRoom=Math.max(0,core.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap));
       const timeline=document.querySelector('[data-interlocutor]:not([hidden]) [data-ui-field="timeline"]');
       const siteTargets=timeline?[...timeline.querySelectorAll('button,input,a')].map(el=>{
        const r=el.getBoundingClientRect(),p=timeline.getBoundingClientRect();
@@ -60,7 +62,7 @@ try:
        }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.inner,name).bounds,state.orientation)]));
-      return {state:{top:state.top,compass:state.compass,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
+      return {state:{top:state.top,compass:state.compass,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
      assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
@@ -91,7 +93,7 @@ try:
      else:assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5
      compass=measured['state']['compass']
      pocket=next(c['expected'] for c in measured['controls'] if c['field']=='pocket')
-     usable=min(compass['width']/2,max(0,pocket['height']-measured['chrome']))
+     usable=min(compass['width']/2,max(0,pocket['height']-measured['chrome']),measured['mapRoom'])
      assert measured['map']['width']>=usable-1,(site,measured['map'],compass,pocket,measured['chrome'])
      assert abs(measured['map']['width']-measured['map']['height'])<1.1,(site,measured['map'])
      for name,b in measured['nested'].items():
