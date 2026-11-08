@@ -1,0 +1,138 @@
+{
+  "event_id": "display-hud-observation-optical-return-witness-20261108",
+  "kind": "WITNESS",
+  "organism": "display",
+  "implementation_revision": "32bbf422429eec012a4c2f3ffe93a79f9591ad6e",
+  "browser_witness_revision": "b9cbc520985122679232e35cb6a16cd89aae61d7",
+  "browser_witness_difference": "The witness revision adds only the isolated GitHub Actions workflow on top of the implementation revision.",
+  "browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42506538946",
+  "browser": {
+    "status": "PASS",
+    "cases": [
+      {
+        "viewport": [
+          1280,
+          800
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "observation": {
+          "same": 1,
+          "after": 2,
+          "shift": 7
+        },
+        "active": {
+          "Framebuffer": 3,
+          "Renderbuffer": 3,
+          "Texture": 4
+        },
+        "hidden": [
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          },
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          }
+        ],
+        "returned": [
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          },
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          }
+        ],
+        "lost_cached_context_refused_with_prior_preserved": true
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "observation": {
+          "same": 1,
+          "after": 2,
+          "shift": 7
+        },
+        "active": {
+          "Framebuffer": 3,
+          "Renderbuffer": 3,
+          "Texture": 4
+        },
+        "hidden": [
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          },
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          }
+        ],
+        "returned": [
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          },
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          }
+        ],
+        "lost_cached_context_refused_with_prior_preserved": true
+      }
+    ]
+  },
+  "first_entry": {
+    "status": "PASS",
+    "browser_cases": 6,
+    "source": {
+      "bytes": 25325243,
+      "sha256": "b266820da659750e7f74be1d564d36da633fa913e11a7a95aed1de9bc47e3bcb",
+      "routes": 16843,
+      "encounters": 59741,
+      "crawlers": 6531
+    }
+  },
+  "native_contracts": [
+    {
+      "path": "w/display/z/zz/display-glass-observation.test.cjs",
+      "sha256": "ea0763efa02e24aef4cdbdaf582899f1d8c1fd15aefcc26b54ee8b6a0d38b8c7",
+      "result": "PASS; frame phases, field scaling, same-frame geometry/visibility/mutation/scroll, resize and grid invalidation"
+    },
+    {
+      "path": "w/display/w/wy/locus-shader.test.cjs",
+      "sha256": "ca602883296fc3d518203b368b3b864f2bb6e6a906dce1f56d41b6754e7e9e48",
+      "result": "PASS; inactive target deletion, repeated returns, resize, refusal and retry"
+    },
+    {
+      "path": "w/display/x/display-runtime-v2.test.cjs",
+      "sha256": "7dba72c4878a9091a6b02d05a8137671fa20a63f63bb02d53952cd15294c09f8",
+      "result": "PASS; refused preparation retains prior owner and history"
+    },
+    {
+      "path": "y/test-display-optics-browser.py",
+      "sha256": "a0c9b1d18f262c4bbc355987e519851df2bc84a5e364f8762377f11473b87879",
+      "result": "PASS in isolated Chromium WebGL2 / SwiftShader at 1280x800 and 390x844"
+    },
+    {
+      "path": "y/test-first-entry.py",
+      "sha256": "5d9c56c6e16f87add14eaa5c7f47f07f266a001437971874df4a80e790ecc38c",
+      "result": "PASS; six browser cases"
+    }
+  ],
+  "boundary": "Browser context loss is induced and refused; restoration is not demonstrated. SwiftShader and native invocation counts do not measure Philipp's device FPS, actual GPU memory or the cause of reported lag."
+}
+
