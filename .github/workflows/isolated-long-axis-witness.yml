@@ -1,0 +1,27 @@
+name: Long-axis browser witness
+on:
+  push:
+    branches: ['witness/long-axis-20261108']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build current Display
+        run: python3 y/site-public.py --artifact _site
+      - name: Install Chromium
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Witness long-axis layout
+        run: python3 y/test-long-axis-browser.py --artifact _site --out _orientation-witness
+      - name: Retain browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: long-axis-browser-witness
+          path: _orientation-witness
+          if-no-files-found: warn
