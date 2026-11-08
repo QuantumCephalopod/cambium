@@ -4,11 +4,13 @@
  */
 (function(root,factory){
   'use strict';
-  const api=factory();
+  const UI=typeof module==='object'&&module.exports?require('../../w/wz/ui-grid.js'):root.SSSUIGrid;
+  const api=factory(UI);
   if(typeof module==='object'&&module.exports) module.exports=api;
   else root.SSSDisplaySafeArea=api;
-})(typeof globalThis==='object'?globalThis:this,function(){
+})(typeof globalThis==='object'?globalThis:this,function(UI){
   'use strict';
+  if(!UI)throw new Error('recursive UI-grid algebra is required');
   const GAP=8;
   let state=Object.freeze({viewport:Object.freeze({width:0,height:0}),occupied:Object.freeze([]),insets:Object.freeze({top:0,right:0,bottom:0,left:0})});
   let started=false,resizeObserver=null,mutationObserver=null,raf=0;
@@ -53,21 +55,23 @@
     if(raw.width<.5||raw.height<.5)return null;
     return {el,raw};
   }
-  function visibleEntry(measured,clearance=0){
+  function visibleEntry(measured,clearance=0,mode='landscape'){
     if(!measured)return null;
     const {el,raw}=measured;
     const r=globalThis.SSSDisplayGlass?.surfaceRect?SSSDisplayGlass.surfaceRect(el,raw):raw;
     if(r.width<.5||r.height<.5)return null;
-    return {id:el.id||'',role:el.getAttribute('data-display-occupancy')||'',rect:r,readRect:rect(raw),canonical:!!globalThis.SSSDisplayMembraneGrid,clearance};
+    return {id:el.id||'',role:UI.orientEdges(el.getAttribute('data-display-occupancy')||'',mode),rect:r,readRect:rect(raw),canonical:!!globalThis.SSSDisplayMembraneGrid,clearance};
   }
-  function readingLimit(clearance){
+  function readingLimit(clearance,mode){
     let limit=Infinity;
     for(const field of document.querySelectorAll('[data-interlocutor]:not([hidden]) [data-ui-bounded="true"]')){
-      const b=field.getBoundingClientRect();if(b.top>.5||b.height<1)continue;
+      const b=field.getBoundingClientRect(),portrait=mode==='portrait';
+      if(portrait?(b.right<innerWidth-.5||b.width<1):(b.top>.5||b.height<1))continue;
       const ink=field.querySelector('h1,h2,button,span,b,small');if(!ink)continue;
-      const h=ink.getBoundingClientRect().height;if(h<=0)continue;
-      const padding=globalThis.getComputedStyle?parseFloat(getComputedStyle(field).paddingBottom)||0:0;
-      limit=Math.min(limit,b.bottom-h-padding-clearance);
+      const r=ink.getBoundingClientRect(),extent=portrait?r.width:r.height;if(extent<=0)continue;
+      const cs=globalThis.getComputedStyle?getComputedStyle(field):null;
+      const padding=parseFloat(portrait?cs?.paddingLeft:cs?.paddingBottom)||0;
+      limit=Math.min(limit,(portrait?innerWidth-b.left:b.bottom)-extent-padding-clearance);
     }
     return limit;
   }
@@ -83,6 +87,8 @@
   }
   function refresh(){
     if(typeof document!=='object')return state;
+    const mode=UI.orientation(innerWidth,innerHeight),root=document.documentElement;
+    if(root.dataset.displayOrientation!==mode)root.dataset.displayOrientation=mode;
     const elements=[...document.querySelectorAll('[data-display-occupancy]')];
     // Place real feedback after the measured header before acquiring its own
     // geometry. Reuse the ordinary header read; no additional layout scan or
@@ -91,6 +97,8 @@
     if(header){
       const style=document.documentElement.style,value=(headerEntry?.raw.bottom??(headerEntry?headerEntry.raw.top+headerEntry.raw.height:0))+'px';
       if(style.getPropertyValue?.('--display-header-bottom')!==value)style.setProperty('--display-header-bottom',value);
+      const depth=(mode==='portrait'&&headerEntry?Math.max(0,innerWidth-headerEntry.raw.left):0)+'px';
+      if(style.getPropertyValue?.('--display-header-depth')!==depth)style.setProperty('--display-header-depth',depth);
     }
     const measured=elements.map(el=>el===header?headerEntry:measure(el)).filter(Boolean);
     const find=id=>measured.find(entry=>entry.el.id===id)?.raw;
@@ -101,10 +109,10 @@
       const status=find('display-membrane-status'),ratio=Number(globalThis.devicePixelRatio)||1;
       SSSDisplayMembraneGrid.reconcile({width:innerWidth,height:innerHeight,headerRect:headerEntry?.raw,
         statusRect:status,triggerRect:find('mini-trigger'),inset,
-        limit:status?readingLimit(inset):Infinity,quantum:1/ratio});
+        limit:status?readingLimit(inset,mode):Infinity,quantum:1/ratio});
       glass?.invalidate?.();
     }
-    const entries=measured.map(entry=>visibleEntry(entry,inset)).filter(Boolean);
+    const entries=measured.map(entry=>visibleEntry(entry,inset,mode)).filter(Boolean);
     state=apply(derive({width:innerWidth,height:innerHeight},entries));
     try{dispatchEvent(new CustomEvent('sss:safe-area',{detail:state}))}catch(_){}
     return state;

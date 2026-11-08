@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('assert');
-const S=require('./display-safe-area.js');
+const S=require('./display-safe-area.js'),UI=require('../../w/wz/ui-grid.js');
 
 let s=S.derive({width:1440,height:1000},[
   {id:'header',role:'top',rect:{left:0,top:0,width:1440,height:50}},
@@ -47,7 +47,7 @@ for(const name of ['document','innerWidth','innerHeight','SSSDisplayGlass'])dele
     const hud={id:'measured-hud',getAttribute:()=> 'top',
       getBoundingClientRect(){reads++;return {left:0,top:0,width:800,height}},
       addEventListener:(name,fn)=>listeners[name]=fn};
-    const context={document:{querySelectorAll:()=>[hud],getElementById:()=>null,
+    const context={SSSUIGrid:UI,document:{querySelectorAll:()=>[hud],getElementById:()=>null,
       documentElement:{style:{setProperty(){writes++}},dataset:{}}},
       innerWidth:800,innerHeight:600,
       getComputedStyle:()=>({display:'block',visibility:'visible',opacity:'1'}),
@@ -100,7 +100,7 @@ console.log('display safe-area contract pass');
     getBoundingClientRect(){reads.header++;return {left:0,top:0,width,height:headerHeight}}};
   const status={id:'display-membrane-status',getAttribute:header.getAttribute,
     getBoundingClientRect(){reads.status++;return {left:18,top:parseFloat(values['--display-header-bottom']||0),width:width-36,height:statusHeight}}};
-  const context={document:{documentElement:root,querySelectorAll:()=>[status,header]},
+  const context={SSSUIGrid:UI,document:{documentElement:root,querySelectorAll:()=>[status,header]},
     innerWidth:width,innerHeight:600,
     getComputedStyle:()=>({display:'block',visibility:'visible',opacity:'1'}),
     SSSDisplayGlass:{surfaceRect:(_el,r)=>Glass.readingFrame(r,rem/2).rect}};
@@ -119,9 +119,13 @@ console.log('display safe-area contract pass');
   assert.equal(writes['--display-header-bottom'],1,'unchanged header does not dirty styles again');
   headerHeight=78;rem=24;
   assert.equal(acquire().insets.top,112,'font growth updates feedback before its measurement');
-  width=390;context.innerWidth=390;headerHeight=66;statusHeight=28;
+  width=390;context.innerWidth=390;context.innerHeight=300;headerHeight=66;statusHeight=28;
   assert.equal(acquire().insets.top,114,'narrow wrapped feedback has actual occupied extent');
   statusHeight=0;
   const empty=acquire();assert.equal(empty.occupied.length,1);assert.equal(empty.insets.top,86);
+  // The same logical upper reservoir is physically on the right in portrait.
+  context.innerHeight=844;header.getBoundingClientRect=()=>({left:350,top:0,width:40,height:844,right:390,bottom:844});
+  const turned=context.SSSDisplaySafeArea.refresh();
+  assert.equal(root.dataset.displayOrientation,'portrait');assert.equal(turned.insets.top,0);assert.equal(turned.insets.right,60);
 }
 console.log('same-refresh measured header/status placement and empty feedback pass');

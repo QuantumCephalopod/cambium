@@ -85,7 +85,8 @@
     for(const name of ['pocket','help','trigger','legal'])if(!navBase.fields[name])throw new Error('missing navigator field '+name);
     const topSeed=UI.fieldInfo(base,'top').bounds;
     if(topSeed.x!==0||topSeed.y!==0||topSeed.w!==1)throw new Error('global top field must span the upper viewport');
-    let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,navVariant='',topKey='',triggerKey='',fit={top:true,trigger:true};
+    let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,topKey='',triggerKey='',fit={top:true,trigger:true};
+    const mode=()=>UI.orientation(viewport.width,viewport.height);
     function ascentCells(compass){
       const ordinary=UI.fieldInfo(base,'ascent'),compact=UI.fieldInfo(base,'ascent','compact');
       // The compact authored span is needed only when the navigator's own
@@ -94,59 +95,42 @@
       const overlaps=a.x<c.x+c.w&&c.x<a.x+a.w&&a.y<c.y+c.h&&c.y<a.y+a.h;
       return overlaps?compact.cells:ordinary.cells;
     }
-    function navigatorState(variant){
-      if(!variant)return navBase;
-      const fields={};
-      for(const name of ['pocket','help','trigger','legal']){
-        const cells=navBase.fields[name].variants?.[variant];
-        if(!cells)throw new Error('navigator variant is incomplete: '+variant+' '+name);
-        fields[name]=cells;
-      }
-      return realize(navBase,fields);
-    }
     function useCompass(state,field){
       if(!state||!field)return;
       const check=UI.spanInfo(state,field.cells);
       if(!check.ok)throw new Error('global compass has no realized field');
-      const variant=field.variant==='portrait'?'portrait':'';
-      if(compassState===state&&compassInfo?.cells.join(',')===check.cells.join(',')&&navVariant===variant)return;
+      if(compassState===state&&compassInfo?.cells.join(',')===check.cells.join(','))return;
       compassState=state;compassInfo=check;
-      if(navVariant!==variant){navVariant=variant;inner=navigatorState(variant);triggerKey=''}
       outer=realize(outer,{compass:check.cells,ascent:ascentCells(check)});
     }
     function rect(name){
-      const own=UI.fieldInfo(outer,name).bounds;
+      const own=UI.orientBounds(UI.fieldInfo(outer,name).bounds,mode());
       return projection(own,viewport);
     }
-    function nested(name){return projection(UI.fieldInfo(inner,name).bounds,rect('compass'))}
-    function relative(name){return {...UI.fieldInfo(inner,name).bounds}}
-    function compassVariant(state,carrier,chrome=0){
-      const field=state?.fields?.compass;
-      if(!field)return '';
-      if(carrier.h>carrier.w)return 'portrait';
-      if(!field.variants?.compact)return '';
-      const ordinary=UI.fieldInfo(state,'compass').bounds,expanded=UI.fieldInfo(state,'compass','compact').bounds;
-      const pocket=UI.fieldInfo(navBase,'pocket').bounds;
-      // Choose the owner's taller addressed carrier only when the real chrome
-      // leaves the map less than half the ordinary field's width. The variant
-      // remains an authored recursive span and needs to provide more room.
-      const mapRoom=carrier.h*ordinary.h*pocket.h-Math.max(0,num(chrome));
-      return expanded.h>ordinary.h&&mapRoom<carrier.w*ordinary.w/2?'compact':'';
+    function relative(name){return UI.orientBounds(UI.fieldInfo(inner,name).bounds,mode())}
+    function nested(name){return projection(relative(name),rect('compass'))}
+    function role(value){return UI.orientEdges(value,mode())}
+    function logicalRead(r){
+      if(!r)return null;
+      return mode()==='portrait'?{bottom:viewport.width-num(r.left),height:num(r.width)}:r;
     }
     function reconcile(input={}){
       viewport=box(0,0,Math.max(0,num(input.width)),Math.max(0,num(input.height)));
-      const h=input.headerRect,s=input.statusRect,t=input.triggerRect;
+      const rotated=mode()==='portrait',h=logicalRead(input.headerRect),s=logicalRead(input.statusRect),t=input.triggerRect;
+      const logicalHeight=rotated?viewport.width:viewport.height;
       const limit=Number.isFinite(input.limit)?input.limit:Infinity,quantum=num(input.quantum)>0?num(input.quantum):Number.EPSILON;
-      const key=[viewport.height,num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0,num(s?.height),num(input.inset),limit,quantum].join('|');
+      const key=[mode(),logicalHeight,num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0,num(s?.height),num(input.inset),limit,quantum].join('|');
       if(key!==topKey){
-        outer=topBand(base,viewport.height,num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0,num(s?.height),num(input.inset),limit,quantum);
+        outer=topBand(base,logicalHeight,num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0,num(s?.height),num(input.inset),limit,quantum);
         if(compassInfo)outer=realize(outer,{compass:compassInfo.cells,ascent:ascentCells(compassInfo)});
         topKey=key;
       }
-      const c=rect('compass'),inputKey=[navVariant,c.width,c.height,num(t?.width),num(t?.height)].join('|');
-      if(inputKey!==triggerKey){inner=triggerState(navigatorState(navVariant),c,t);triggerKey=inputKey}
-      const top=rect('top'),trigger=nested('trigger');
-      fit={top:Math.max(num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0)+num(input.inset)<=top.bottom,
+      const c=rect('compass'),logicalCompass=rotated?{width:c.height,height:c.width}:c,
+        logicalTrigger=rotated&&t?{width:t.height,height:t.width}:t,
+        inputKey=[mode(),c.width,c.height,num(t?.width),num(t?.height)].join('|');
+      if(inputKey!==triggerKey){inner=triggerState(navBase,logicalCompass,logicalTrigger);triggerKey=inputKey}
+      const topBounds=UI.fieldInfo(outer,'top').bounds,trigger=nested('trigger');
+      fit={top:Math.max(num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0)+num(input.inset)<=(topBounds.y+topBounds.h)*logicalHeight,
         trigger:!t||(num(t.width)<=trigger.width&&num(t.height)<=trigger.height)};
       return snapshot();
     }
@@ -158,10 +142,10 @@
       throw new Error('Display surface lacks a realized recursive UI field');
     }
     function snapshot(){
-      return {outer,inner,viewport:{...viewport},compassState,compassInfo,fit:{...fit},
+      return {outer,inner,viewport:{...viewport},orientation:mode(),compassState,compassInfo,fit:{...fit},
         top:rect('top'),compass:rect('compass'),ascent:rect('ascent'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')};
     }
-    return Object.freeze({useCompass,reconcile,rect,nested,relative,compassVariant,surfaceRect,snapshot});
+    return Object.freeze({useCompass,reconcile,rect,nested,relative,role,surfaceRect,snapshot});
   }
   return Object.freeze({create,address,topBand,triggerState});
 });

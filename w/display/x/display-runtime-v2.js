@@ -37,11 +37,9 @@ function makeSiteUI(id,host,raw){
   const state=UI.normalizeState(raw),bindings=new Map(),bounded=true;
   if(state.meta.extent==='intrinsic')throw new Error('Display UI fields require address-derived extents');
   const carrier=()=>safeCarrier(host);
-  function carrierVariant(carrier){return carrier.h>carrier.w?'portrait':''}
   function field(name,carrier=safeCarrier(host)){
-    const variant=name==='compass'?Membrane.compassVariant(state,carrier,document.getElementById('mini')?.dataset?.mapChrome):carrierVariant(carrier);
-    const info=UI.fieldInfo(state,name,variant);
-    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze({...info.bounds}),z:info.z,variant:info.variant||'default'});
+    const info=UI.fieldInfo(state,name),mode=UI.orientation(innerWidth,innerHeight);
+    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,variant:'default',orientation:mode});
   }
   function apply(el,name){
     if(!el)throw new TypeError('UI field element required');
@@ -196,14 +194,14 @@ function composition(){const c=H.composeInterlocutors(activeIds.map(interlocutor
 function syncMembraneGrid(){
  const ui=activeIds.map(id=>uiById.get(id)).find(u=>u?.bounded&&u.state.fields.compass)||uiById.get(ROOT_IDS[0]);
  const mini=document.getElementById('mini');if(!mini||!ui?.bounded||!ui.state.fields.compass)return;
- // The overview can lend its compass while its own host is hidden. Select the
- // variant against the visible global carrier, never that hidden host's 0×0 box.
+ // The overview can lend its compass while its own host is hidden. All sites
+ // project their canonical fields through the single global screen orientation.
  const info=ui.field('compass',{x:0,y:0,w:innerWidth,h:innerHeight}),b=info.bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
  Membrane.useCompass(ui.state,info);
  globalThis.SSSDisplayGlass?.invalidate?.();
  if(ascentSlot){
-   const a=UI.fieldInfo(Membrane.snapshot().outer,'ascent').bounds;
-   const position={left:a.x*innerWidth+'px',top:a.y*innerHeight+'px',width:a.w*innerWidth+'px',height:a.h*innerHeight+'px'};
+   const a=Membrane.rect('ascent');
+   const position={left:a.left+'px',top:a.top+'px',width:a.width+'px',height:a.height+'px'};
    for(const [k,v]of Object.entries(position))if(ascentSlot.style[k]!==v)ascentSlot.style[k]=v;
  }
  const values={left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',transform:'none'};
@@ -217,7 +215,11 @@ function syncMembraneGrid(){
    }
  }
  const hb=ui.state.fields.header?ui.field('header').bounds:null,header=hb?{width:hb.w*innerWidth,height:hb.h*innerHeight}:null;
- if(header)for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:header.height+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
+ if(header){
+   const rootStyle=document.documentElement.style;
+   if(rootStyle?.getPropertyValue?.('--display-header-field-width')!==header.width+'px')rootStyle?.setProperty?.('--display-header-field-width',header.width+'px');
+   for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:header.height+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
+ }
 }
 function siteTitle(id){const root=surfaces.get(id)?.fieldProjection?.root;return root?.[W.language]||specs.get(id)?.title||root?.noun||id.replace(/^organism:/,'')}
 function handoffStatus(){

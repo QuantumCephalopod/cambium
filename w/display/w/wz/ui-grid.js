@@ -61,6 +61,17 @@
     return {x,y,w,h};
   }
 
+  // One screen orientation applies to every recursive field. Logical address
+  // geometry remains unchanged; only its physical carrier is quarter-turned.
+  function orientation(width,height){return Number(height)>Number(width)?'portrait':'landscape'}
+  function orientBounds(b,mode){
+    return mode==='portrait'?{x:1-b.y-b.h,y:b.x,w:b.h,h:b.w}:{x:b.x,y:b.y,w:b.w,h:b.h};
+  }
+  function orientEdges(role,mode){
+    const turn={top:'right',right:'bottom',bottom:'left',left:'top'};
+    return String(role||'').trim().split(/\s+/).filter(Boolean).map(edge=>mode==='portrait'?(turn[edge]||edge):edge).join(' ');
+  }
+
   function coord(address){
     if(!addressOk(address))throw new Error('invalid address '+address);
     let x=0,y=0;
@@ -343,7 +354,7 @@
 
   return Object.freeze({
     SCHEMA,LEGACY_SCHEMA,ADDRESS_SYMBOLS,rootLabel,parentOf,childrenOf,compareAddress,canonicalCells,
-    emptyState,initialState,normalizeState,bounds,coord,leafSet,isLeaf,spanInfo,fieldInfo,
+    emptyState,initialState,normalizeState,bounds,orientation,orientBounds,orientEdges,coord,leafSet,isLeaf,spanInfo,fieldInfo,
     split,coalesce,defineField,removeField,refineField,place,move,bindElement,remove,updateElement,
     spanText,formatState,parseState,command
   });

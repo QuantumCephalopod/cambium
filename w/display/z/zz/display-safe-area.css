@@ -8,6 +8,21 @@
 #display-membrane-status{position:fixed;z-index:16;left:28px;right:28px;top:var(--display-header-bottom);pointer-events:none;min-width:0}
 #display-membrane-status #site-state{overflow-wrap:anywhere}
 
+/* In portrait the same upper logical field is the right screen edge. Its
+ * actual controls remain upright and continue to reserve their measured rim. */
+html[data-display-orientation="portrait"] #display-header{
+  left:auto;right:0;top:0;bottom:0;width:max-content;height:auto;
+  flex-direction:column;justify-content:space-between;align-items:center;padding:.5rem .25rem;
+}
+html[data-display-orientation="portrait"] #display-header .lang{flex-direction:column;gap:.15rem}
+html[data-display-orientation="portrait"] #display-membrane-status{
+  left:auto;right:var(--display-header-depth,0px);top:.5rem;
+  width:max(0px,calc(var(--display-header-field-width,25vw) - var(--display-header-depth,0px) - .5rem));
+}
+html[data-display-orientation="portrait"] [data-interlocutor] [data-ui-field="header"]{
+  padding-block-start:.25rem;padding-inline-end:max(.75rem,var(--display-safe-right,0px));
+}
+
 /* Generic opt-in anchors for any autonomous site-holon. They are contract
  * surfaces only; Display never names or interprets the site using them.
  */

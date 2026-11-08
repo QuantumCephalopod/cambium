@@ -268,9 +268,10 @@
     const outer=entries.filter((e,i)=>!entries.some((p,j)=>j!==i&&p.kind===e.kind&&p.layer===e.layer&&
       p.rect.left<=e.rect.left&&p.rect.top<=e.rect.top&&p.rect.right>=e.rect.right&&p.rect.bottom>=e.rect.bottom&&
       (p.rect.width>e.rect.width||p.rect.height>e.rect.height||j<i)));
+    const inward={top:'bottom',right:'left',bottom:'top',left:'right'};
     return outer.map(e=>({id:e.id,ids:e.ids||[e.id],rect:e.rect,readRect:e.readRect,inset:e.inset,cx:e.rect.left+e.rect.width/2,
       cy:e.rect.top+e.rect.height/2,hx:e.rect.width/2,hy:e.rect.height/2,kind:e.kind||'hud',layer:e.layer||'hud',
-      edge:e.role?.split(/\s+/).includes('top')?'bottom':'left'}));
+      edge:e.role?.split(/\s+/).map(side=>inward[side]).find(Boolean)||'left'}));
   }
   /* The drop lets the world through: hover is never blocked and a direct click passes to whatever
    * lies under it. Pressing on the drop and pulling takes it at once (or pulls it from a reservoir edge). */

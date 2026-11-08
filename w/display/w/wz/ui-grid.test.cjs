@@ -73,6 +73,18 @@ assert.deepStrictEqual(legacy.fields,{});
 
 console.log('ui-grid v2: persistent orientation across splits + overlapping z fields PASS');
 
+// One global carrier orientation acts on the entire rectangle, without
+// rewriting any recursive address. The screen origin is upper left.
+{
+  const G=require('./ui-grid.js');
+  assert.equal(G.orientation(800,600),'landscape');assert.equal(G.orientation(600,800),'portrait');
+  assert.equal(G.orientation(600,600),'landscape');
+  assert.deepEqual(G.orientBounds({x:.75,y:.5,w:.25,h:.5},'portrait'),{x:0,y:.75,w:.5,h:.25});
+  assert.deepEqual(G.orientBounds({x:.125,y:.25,w:.5,h:.125},'portrait'),{x:.625,y:.125,w:.125,h:.5});
+  assert.equal(G.orientEdges('top right bottom left','portrait'),'right bottom left top');
+  assert.equal(G.orientEdges('top right bottom left','landscape'),'top right bottom left');
+}
+
 for(const extent of ['bounded','intrinsic']){const state=G.emptyState();state.meta.extent=extent;assert.equal(G.normalizeState(state).meta.extent,extent);}
 assert.throws(()=>G.normalizeState({...G.emptyState(),meta:{extent:'invented'}}),/unknown UI extent/);
 console.log('PASS — explicit bounding intent survives canonical normalization and invalid extent refuses');
