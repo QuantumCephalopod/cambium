@@ -1,0 +1,72 @@
+{
+  "event_id": "display-spritesheet-mono-v4-witness-20261108",
+  "kind": "WITNESS",
+  "organism": "display",
+  "outcome": "PASS / BOUNDED FONT WITNESS",
+  "baseline_revision": "d5fed702803a1d0515bcdbf82e8d759e54aaf07d",
+  "intake_revision": "3e67bf9d8f0377ce5da0ef5af7c6a3186199b267",
+  "implementation_revision": "f63d15d8dfea1931e69bcc6d55e89f9b8633404e",
+  "source_witness_revision": "d8166e5f2cb09cd787597367b631e52881aa184b",
+  "source_witness_revision_difference": "Adds the independent original sprite, its source glyph witness and the corresponding staging-only workflow step; runtime font bytes remain identical to implementation_revision.",
+  "source": {
+    "archive_name": "SpriteSheet-Mono-v4-package.zip",
+    "archive_sha256": "3c28e42e0dbe91fa45809e6127d8af97162cc3a4fea70ec91afc8108b9831398",
+    "archive_library_file_id": "libfile_f693f3d996b88191857dc474951982de",
+    "sprite_name": "FONT (1)(1).png",
+    "sprite_sha256": "2779609dc7a949e9c871f85b988a47cb31d5cf70a790a014addd762afc483be4",
+    "sprite_library_file_id": "libfile_a5c01659fccc8191b1603b1bec078eda",
+    "ttf_sha256": "53a6210ec17bb0faec17f0b7a6b5d8437feea500a8fee80455054745c0daddf3",
+    "woff2_sha256": "ad37e39de57589a53989d13607d234e3c6efe37a77deb53b1cca598c72ee4187",
+    "hosted_ttf_and_woff2": "byte-identical to user-supplied archive; no cmap, outline or metadata alteration",
+    "previous_v3_distinct_uppercase_or_digit_outlines": [
+      "R",
+      "2",
+      "4",
+      "7",
+      "8",
+      "9"
+    ]
+  },
+  "native_source_witness": {
+    "status": "PASS",
+    "test": "y/test-spritesheet-v4-source.py",
+    "test_sha256": "eac9b0475b8d97ba3a6e9cf2d612644f1855bcc8180f675bf56a307d26511aaf",
+    "source_pixels": [
+      108,
+      96
+    ],
+    "visible_glyphs": 68,
+    "pixel_centres_per_glyph": 144,
+    "mismatched_glyphs": [],
+    "method": "The supplied QA supplies source grid cells and centering. Independently sample the actual source image and the hosted TTF outlines at each of 144 cell-pixel centres. This is not a hinted/browser raster equality claim."
+  },
+  "browser_witness": {
+    "status": "PASS",
+    "run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42528621015",
+    "test": "y/test-spritesheet-v4-browser.py",
+    "test_sha256": "b70239d5a149d08f0626b7a6681fa287e74518b5c193f776804d75eeda885e39",
+    "carrier": "actual built Display artifact; isolated Chromium with Canvas2D",
+    "glyphs_including_spaces": 70,
+    "lowercase_distinct_from_uppercase": 29,
+    "ttf_woff2_and_active_family_raster": "identical for tested glyphs at 32px",
+    "advance_at_32px": 32,
+    "actual_mixed_case_title": "Privacy policy",
+    "orientation_cases": 12,
+    "membrane_cases": 18
+  },
+  "native_integration": {
+    "status": "PASS",
+    "check": "python3 y/check.py --artifact /tmp/sss-v4-site",
+    "checks": 199,
+    "crawlerbait_checks": 453482,
+    "scope": "native source/build/integration suites; user device and GPU timing not measured"
+  },
+  "preserved": [
+    "existing stable @sss/spritesheet dependency and filenames",
+    "Regular 1.0.1",
+    "browser-rooted half-octave type lattice",
+    "authored wording and existing explicit uppercase styling",
+    "source font bytes and 1200 units per em with 1200 unit fixed advances"
+  ],
+  "boundary": "The current physical portrait reading-fit and global unit relation remain unresolved in their existing Display intake. This font return does not claim to resolve them, nor to verify user-device GPU or performance."
+}
