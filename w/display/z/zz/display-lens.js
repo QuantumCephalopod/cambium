@@ -261,10 +261,10 @@
       if(id===lockedId&&out.length===before)out.push({id,kind:spec.kind,pending:true});
     }return out;
   }
-  function surfaces(){
+  function surfaces(frame){
     const G=root.SSSDisplayGlass,doc=root.document;if(!G||!doc)return [];
     const comp=doc.documentElement.dataset.composition||'single';if(comp==='split'||comp==='grid')return [];
-    const entries=G.collect(doc,root.getComputedStyle);
+    const entries=G.observe(frame,doc,root.getComputedStyle);
     const outer=entries.filter((e,i)=>!entries.some((p,j)=>j!==i&&p.kind===e.kind&&p.layer===e.layer&&
       p.rect.left<=e.rect.left&&p.rect.top<=e.rect.top&&p.rect.right>=e.rect.right&&p.rect.bottom>=e.rect.bottom&&
       (p.rect.width>e.rect.width||p.rect.height>e.rect.height||j<i)));
@@ -314,7 +314,7 @@
   }
   function paintPhase(){if(el&&state){el.dataset.phase=state.held?'held':state.lock?'locked':state.docked?'stored':state.attached?'joining':'free';el.dataset.lock=state.lock?.kind||'';
     el.setAttribute('aria-pressed',String(state.held));
-    const de=root.document?.documentElement;if(de){if(state.lock){de.dataset.displayLensLock=state.lock.kind;de.dataset.displayLensTarget=state.lock.id}else{delete de.dataset.displayLensLock;delete de.dataset.displayLensTarget}}}}
+    const de=root.document?.documentElement;if(de){if(state.lock){if(de.dataset.displayLensLock!==state.lock.kind)de.dataset.displayLensLock=state.lock.kind;if(de.dataset.displayLensTarget!==state.lock.id)de.dataset.displayLensTarget=state.lock.id}else{delete de.dataset.displayLensLock;delete de.dataset.displayLensTarget}}}}
   function endPointer(e){
     if(!state?.held||state.pid!==e.pointerId)return;
     release(state,e.pointerId);cursor.active=false;
@@ -338,7 +338,7 @@
     }for(const p of pores)if(!wanted.has(p.key))p.node.style.display='none';
   }
   function loop(ms){
-    const dt=last?(ms-last)/1000:0;last=ms;const G=root.SSSDisplayGlass,hs=surfaces(),off=!(G&&G.enabled())||!hs.length;
+    const dt=last?(ms-last)/1000:0;last=ms;const G=root.SSSDisplayGlass,hs=surfaces(ms),off=!(G&&G.enabled())||!hs.length;
     if(!state&&hs.length)state=create(hs.find(h=>h.id==='mini-pocket')||hs[0],{w:root.innerWidth,h:root.innerHeight});
     if(state){
       const target=state.lock?resolveTargets().find(t=>t.id===state.lock.id)||null:null;
@@ -352,7 +352,14 @@
         paintPhase();el.dataset.layer=state.layer}
     }updatePores(hs);root.requestAnimationFrame(loop);
   }
-  function snapshot(){return state&&visible?{lens:geometry(state,homeNow),home:homeNow}:null}
+  function snapshot(frame){
+    if(!state||!visible)return null;
+    if(Number.isFinite(frame)){
+      const hs=surfaces(frame);if(!hs.length)return null;
+      homeNow=state.attached?hs.find(h=>h.id===state.homeId&&compatible(state,h))||null:null;
+    }
+    return {lens:geometry(state,homeNow),home:homeNow};
+  }
   function departFrom(origin,duration=380){
     if(!state||!visible||state.held||state.lock?.kind!=='body')return false;
     pending=null;cursor.active=false;depart(state,origin,{w:root.innerWidth,h:root.innerHeight},duration/1000);paintPhase();return true;

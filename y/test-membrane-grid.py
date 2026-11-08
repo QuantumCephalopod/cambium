@@ -120,9 +120,10 @@ try:
      if site=='schattenseiten':
       read_shadow="""()=>({filter:getComputedStyle(document.documentElement).filter,shadow:getComputedStyle(document.querySelector('[data-interlocutor="organism:schattenseiten"] [data-ui-field="header"] h1')).textShadow,canvas:SSSDisplayType.shadowColor()})"""
       dark=page.evaluate(read_shadow)
-      page.locator('#inverse-mode').check();light=page.evaluate(read_shadow)
+      page.locator('.inverse-control span').click();assert page.locator('#inverse-mode').is_checked()
+      light=page.evaluate(read_shadow)
       assert dark['filter']=='none' and light['filter']=='invert(1)' and dark['shadow']==light['shadow'] and dark['canvas']==light['canvas'],(site,dark,light)
-      page.locator('#inverse-mode').uncheck()
+      page.locator('.inverse-control span').click();assert not page.locator('#inverse-mode').is_checked()
      if site=='papers':
       page.locator('.papers-physiology button').click(trial=True)
       ink=page.locator('.papers-sierpinski-hud span').first.bounding_box()

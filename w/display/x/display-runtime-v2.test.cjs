@@ -50,7 +50,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
-  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {approachBody(id){approaches.push({from:config.id,id});return true},pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})},ascend(source){ascents.push({id:config.id,source});if(config.localScope===W.scopeId&&W.view){const up=W.view.slice(0,-1);if(up)W.inspect(up);else W.clearInspection();return true}emit('sss:membrane-ascend',{id:config.id,source});return false}}}};
+  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {prepareFrame(){return renderKinds[config.id]!=='frame-fail'},approachBody(id){approaches.push({from:config.id,id});return true},pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})},ascend(source){ascents.push({id:config.id,source});if(config.localScope===W.scopeId&&W.view){const up=W.view.slice(0,-1);if(up)W.inspect(up);else W.clearInspection();return true}emit('sss:membrane-ascend',{id:config.id,source});return false}}}};
   if(lens)context.SSSDisplayLens=lens;
   if(lens)for(const [id,owner] of Modules){
     const render=owner.render,unmount=owner.unmount;
@@ -73,6 +73,17 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
  refusal.renderKinds[ids[0]]='decline';refusal.ascent.click({preventDefault(){}});
  assert.equal(refusal.runtime.state.activeAddress,'w','a refused return preserves the active encounter');
  assert.equal(refusal.history.filter(e=>e.kind==='push').length,pushes,'a refused return does not invent a visit');
+}
+{
+ const b=boot(),priorHistory=b.history.length,priorUnmounts=b.unmounts.filter(p=>p.host===b.hosts.get(ids[0])).length;
+ b.renderKinds[ids[1]]='frame-fail';b.runtime.navigateGlobal('w');
+ assert.equal(b.runtime.state.activeAddress,'','unprepared return changed the encounter');
+ assert.equal(b.hosts.get(ids[0]).hidden,false,'unprepared return retired the prior field');
+ assert.equal(b.unmounts.filter(p=>p.host===b.hosts.get(ids[0])).length,priorUnmounts,'unprepared return unmounted the prior owner');
+ assert.equal(b.hosts.get(ids[1]).hidden,true,'unprepared candidate was exposed');
+ assert.equal(b.history.length,priorHistory+1,'refusal should only replace the preserved history state');
+ b.renderKinds[ids[1]]='ready';b.runtime.navigateGlobal('w');
+ assert.equal(b.runtime.state.activeAddress,'w','a recovered candidate could not be retried');
 }
 const f=boot(),runtime=f.runtime;
 assert.equal(f.stateEl.textContent,'','settled encounter has no technical status copy');

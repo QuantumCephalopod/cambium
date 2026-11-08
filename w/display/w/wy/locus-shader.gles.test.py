@@ -347,7 +347,12 @@ def main():
                 interior=b''.join(images[-1][0][((height-1-y)*width+x)*4:((height-1-y)*width+x)*4+4] for y in range(frame['top']+20,frame['top']+frame['height']-20) for x in range(frame['left']+20,frame['left']+frame['width']-20))
                 release.append(interior)
         assert len(set(release))==5,'intermediate optical states snapped to an endpoint'
-        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release)),'coalescence':coalescence_contract(width,height),'liquid_revelation':reveal_contract(width,height),'actual_sites':actual_site_contract(width,height)})
+        env={**os.environ,'REENTER':'1'}
+        capture=json.loads(subprocess.check_output(['node',str(Path(__file__).with_name('locus-shader.gles-capture.cjs')),str(width),str(height),'1','.12'],env=env,text=True))
+        assert any(c['name']=='deleteFramebuffer' for c in capture),'re-entry witness did not retire the old optical framebuffer'
+        returned,_=replay(capture,width,height)
+        assert returned[-2][0]==returned[-1][0],'rebuilt optical frame differs from the same active scene before retirement'
+        results.append({'carrier':[width,height],'linked_programs':programs,'preview_changed_pixels':changes,'outside_lens_changed_pixels':outside,'interior_optics_changed_pixels':optics_pixels,'frames_per_mode':len(runs[0]),'actual_depth_clears_unmasked':True,'optical_reentry_byte_exact':True,'readable_interiors':readable_contract(width,height),'distinct_release_optical_states':len(set(release)),'coalescence':coalescence_contract(width,height),'liquid_revelation':reveal_contract(width,height),'actual_sites':actual_site_contract(width,height)})
     print(json.dumps({'status':'PASS','backend':gl('GetString',C.c_char_p,[U],7937).decode(),'gles':gl('GetString',C.c_char_p,[U],7938).decode(),'actual_source':'locus-shader.js','cases':results,'scope':'Actual shaders/mesh/passes on software GLES with declared fixture state and procedural preview input; not browser layout, physical GPU or device FPS.'}))
 
 if __name__=='__main__':main()

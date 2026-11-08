@@ -200,6 +200,7 @@ function syncMembraneGrid(){
  // variant against the visible global carrier, never that hidden host's 0×0 box.
  const info=ui.field('compass',{x:0,y:0,w:innerWidth,h:innerHeight}),b=info.bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
  Membrane.useCompass(ui.state,info);
+ globalThis.SSSDisplayGlass?.invalidate?.();
  if(ascentSlot){
    const a=UI.fieldInfo(Membrane.snapshot().outer,'ascent').bounds;
    const position={left:a.x*innerWidth+'px',top:a.y*innerHeight+'px',width:a.w*innerWidth+'px',height:a.h*innerHeight+'px'};
@@ -253,6 +254,17 @@ function render(path=W.view,{retainPrior=false,requireReady=false}={}){
     try{accepted=s.module.render({id,host:s.host,content:s.content,projection:s.projection,path:localPath,language:W.language,activity:registry.getInterlocutor(id)?.state?.activity||null,safeArea:Safe.snapshot(),backgroundDrag:spec.manifestation?.background_drag!==false,dependency,lens:lensNow,ui:s.ui})}
     catch(error){if(requireReady)throw renderFailure(id,error);throw error}
     if(requireReady&&(accepted===false||s.host.hidden))throw renderFailure(id);
+  }
+  if(retainPrior&&requireReady){
+    // During this synchronous covered preparation, take the previous hosts
+    // out of the grid without unmounting them or giving their fields a hidden
+    // animation frame. Restore them if any candidate refuses its first paint.
+    const prior=[...surfaces].filter(([id,s])=>!activeIds.includes(id)&&!s.host.hidden).map(([,s])=>s.host);
+    for(const host of prior)host.hidden=true;
+    try{
+      composition();syncMembraneGrid();Safe.refresh();for(const ui of uiById.values())ui.refresh();
+      for(const id of activeIds){const field=fieldById.get(id);if(!field||!field.prepareFrame())throw renderFailure(id,new Error('prepared frame unavailable'))}
+    }catch(error){for(const host of prior)host.hidden=false;throw error}
   }
   if(retainPrior)for(const id of surfaces.keys())if(!activeIds.includes(id))resetSurface(id);
   for(const id of activeIds)if(!renderedIds.has(id))fieldById.get(id)?.arriveFrom(null);

@@ -76,7 +76,7 @@ const win=target(),nodes=[],frames=[];let glassOn=true,clock=100,reduced=false;
 class PE{constructor(type,init){Object.assign(this,init);this.type=type}}
 Object.assign(win,{innerWidth:1100,innerHeight:700,PointerEvent:PE,matchMedia:()=>({matches:reduced}),getComputedStyle:()=>({}),requestAnimationFrame:f=>frames.push(f),
   document:{documentElement:{dataset:{}},body:{append:n=>nodes.push(n)},createElement:target},
-  SSSDisplayGlass:{enabled:()=>glassOn,collect:()=>[{id:'top',kind:'hud',layer:'hud',role:'top',rect:{left:0,top:0,right:1100,bottom:120,width:1100,height:120}}]},module:{exports:{}}});
+  SSSDisplayGlass:{enabled:()=>glassOn,observe:()=>[{id:'top',kind:'hud',layer:'hud',role:'top',rect:{left:0,top:0,right:1100,bottom:120,width:1100,height:120}}]},module:{exports:{}}});
 win.globalThis=win;vm.runInNewContext(fs.readFileSync(require.resolve('./display-lens.js'),'utf8'),win);
 const controller=win.module.exports;controller.start();
 const tick=(ms=16)=>{clock+=ms;frames.shift()(clock)};tick();

@@ -1,0 +1,50 @@
+{
+  "kind": "HOME",
+  "event_id": "display-hud-observation-optical-return-20261108",
+  "home_at_utc": "2026-11-08T17:50:53.462Z",
+  "organism": "display",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "COMPLETED — frame-phase HUD observation is shared without discarding real intervening changes; inactive Display-owned optical attachments retire and a returning encounter is prepared before exposure. Actual WebGL context restoration remains separately OPEN.",
+  "changed_scope": [
+    "w/display/z/zz/display-glass.js",
+    "w/display/z/zz/display-lens.js",
+    "w/display/z/zz/display-safe-area.js",
+    "w/display/w/wy/locus-shader.js",
+    "w/display/x/display-runtime-v2.js",
+    "Display-local ritual and targeted native/browser witnesses"
+  ],
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "baseline_revision": "6f39464c792134c3c043c6e66f2972f86bc861dc",
+    "implementation_revision": "32bbf422429eec012a4c2f3ffe93a79f9591ad6e",
+    "witness_revision": "7c6835dcb6d91ea418465c4e2af69400eeed184a",
+    "prior_audit": {
+      "path": "w/display/_root/display-runtime-performance-audit-20261106.json",
+      "sha256": "65ee147210526f3fdd476d7dbf1757b640057beea3ee4ac338d311830c940c45"
+    },
+    "witness": {
+      "path": "w/display/_root/display-hud-observation-optical-return-witness-20261108.json",
+      "sha256": "902b5b507545886aabeacfb353d98fd72cff2b3356b3606d1eee362954422eba",
+      "claim": "Source-bound native contracts and isolated Chromium WebGL2/SwiftShader browser results for measurement phases, two repeated optical retirements/returns, lost-context refusal and six first-entry cases."
+    },
+    "additional_validation": "Full local y/check.py passed 198 checks against the built artifact, including software GLES execution when libEGL.so.1 was present. GLES replay at 1280x800 and 390x844 compared the retired/rebuilt optical frame byte-for-byte with its prior frame. Public address witness passed 12,335 assertions.",
+    "clearance": [
+      {
+        "source": "w/display/_stomach/NUTRIENT__frame-owned-hud-measurement__20261106.md",
+        "destination": "w/display/_waste/NUTRIENT__frame-owned-hud-measurement__20261106.md",
+        "sha256": "4adc63125bf5119bf59b3349c99a7d22b7ebf22b0fdc852a55f3cb3f0659645b",
+        "state": "Exact source retirement follows this durable HOME."
+      },
+      {
+        "source": "w/display/_stomach/NUTRIENT__inactive-optical-target-lifetime__20261106.md",
+        "destination": "w/display/_waste/NUTRIENT__inactive-optical-target-lifetime__20261106.md",
+        "sha256": "36a90b830ddfc1271691796d57ace6e566bf0e876824f011295fca3f1b4d0492",
+        "state": "Exact source retirement follows this durable HOME."
+      }
+    ],
+    "remaining": "w/display/_stomach/NUTRIENT__webgl-context-recovery__20261108.md",
+    "boundary": "The browser witness induces context loss and verifies refusal with the prior encounter preserved; it does not prove full context restoration. Software/native observations do not measure actual device memory, FPS, or diagnose the visitor's lag.",
+    "propagation": "Display-local obligations and evidence only; no shared-root, host semantic, or mounted-source dependency changed."
+  }
+}
+
