@@ -110,7 +110,7 @@ jobs:
         run: python3 y/site-public.py --artifact _site --check
 
       - name: Prepare bounded layout browser witness
-        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/bounded-ui-grid-') || startsWith(github.ref_name, 'staging/long-axis-display-'))
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/bounded-ui-grid-') || startsWith(github.ref_name, 'staging/long-axis-display-') || startsWith(github.ref_name, 'staging/spritesheet-mono-v4-'))
         run: |
           python3 -m pip install playwright==1.56.0
           python3 -m playwright install --with-deps chromium
@@ -152,6 +152,26 @@ jobs:
         with:
           name: long-axis-witness
           path: _orientation-witness
+          if-no-files-found: warn
+
+      - name: Prepare SpriteSheet v4 source witness
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/spritesheet-mono-v4-')
+        run: python3 -m pip install fonttools==4.61.1 pillow==13.0.0
+
+      - name: Witness SpriteSheet v4 in the built membrane
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/spritesheet-mono-v4-')
+        run: |
+          python3 y/test-spritesheet-v4-source.py --sprite w/display/_waste/SOURCE__SpriteSheet-Mono-v4-sprite__20261108.png --package w/display/_waste/SOURCE__SpriteSheet-Mono-v4-package__20261108.zip
+          python3 y/test-spritesheet-v4-browser.py --artifact _site --out _font-witness/glyphs
+          python3 y/test-long-axis-browser.py --artifact _site --out _font-witness/orientation
+          python3 y/test-membrane-grid.py --artifact _site --out _font-witness/membrane
+
+      - name: Retain SpriteSheet v4 browser witness
+        if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/spritesheet-mono-v4-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: spritesheet-v4-witness
+          path: _font-witness
           if-no-files-found: warn
 
       - name: Retain bounded layout screenshots
