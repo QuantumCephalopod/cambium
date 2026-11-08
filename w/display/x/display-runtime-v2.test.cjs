@@ -10,10 +10,10 @@ const anatomy=noun=>({noun,children:{w:atom('W'),x:atom('X'),z:atom('Z'),y:atom(
 function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=false,lens=null,bounded=false,preparations={}){
   const membrane=Membrane.create(membraneState,navigatorState);
   const calls=new Map(),sources=new Map(),projected=new Map(),renders=[],unmounts=[],options=new Map(),pulses=new Map(),collected=[];
-  const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[];
+  const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[],ascents=[];
   const heldFolds=[],approaches=[],foldLayer={dataset:{fold:'open'},hidden:true};let foldBusy=false;
   const fold=holdFold==='real'?require('../z/zy/site-fold.js').createFold(foldLayer,{reduced:true}):{get busy(){return foldBusy},swap(fn,details){swaps.push(details);details.onClosing?.(380);if(!holdFold)return fn();foldBusy=true;return new Promise((resolve,reject)=>heldFolds.push(()=>{try{resolve(fn())}catch(error){reject(error)}finally{foldBusy=false}}))}};
-  const element=()=>({hidden:true,dataset:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn}});
+  const element=()=>({hidden:true,dataset:{},attrs:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn},setAttribute(name,value){this.attrs[name]=value}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
   const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id,...(bounded===true?{extent:'bounded'}:bounded==='intrinsic'?{extent:'intrinsic'}:{})},splits:[''],fields:{...(bounded?{compass:{cells:['z'],label:'compass'},viewport:{cells:['x'],label:'view'},header:{cells:['w'],label:'header'},description:{cells:['y'],label:'description'}}:{}),slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
@@ -22,7 +22,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   elements.set('site-registry',{textContent:JSON.stringify(spec)});elements.set('site-projections',{textContent:JSON.stringify(previews)});
   elements.set('site-feed-locations',{textContent:JSON.stringify(feedUrls)});
   elements.set('site-ui-grids',{textContent:JSON.stringify(grids)});elements.set('display-dependencies',{textContent:'{}'});
-  for(const id of ['tetra-fold','root-home','site-state','interlocutor-stage',...(bounded?['mini']:[])])elements.set(id,element());
+  for(const id of ['tetra-fold','root-home','display-ascent','display-ascent-label','display-ascent-slot','site-state','interlocutor-stage',...(bounded?['mini']:[])])elements.set(id,element());
   const hosts=new Map(ids.map(id=>{const host=element(),canvas=element(),labelHost=element(),content=element();host.querySelector=selector=>({'.interlocutor-background':canvas,'.interlocutor-field-labels':labelHost,'.interlocutor-content':content})[selector];return [id,host]}));
   const Modules=new Map();
   for(const id of ids){
@@ -50,7 +50,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
   vm.runInContext(fieldSource,context,{filename:'locus-shader.js'});
   const fields=context.SSSInterlocutorFields;
-  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {approachBody(id){approaches.push({from:config.id,id});return true},pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})}}}};
+  context.SSSInterlocutorFields={...fields,create(config){options.set(config.id,config);return {approachBody(id){approaches.push({from:config.id,id});return true},pulse(){pulses.set(config.id,(pulses.get(config.id)||0)+1)},arriveFrom(place,bodyId){arrivals.push({id:config.id,place,bodyId})},ascend(source){ascents.push({id:config.id,source});if(config.localScope===W.scopeId&&W.view){const up=W.view.slice(0,-1);if(up)W.inspect(up);else W.clearInspection();return true}emit('sss:membrane-ascend',{id:config.id,source});return false}}}};
   if(lens)context.SSSDisplayLens=lens;
   if(lens)for(const [id,owner] of Modules){
     const render=owner.render,unmount=owner.unmount;
@@ -59,7 +59,20 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   }
   vm.runInContext(runtimeSource,context,{filename:'display-runtime-v2.js'});
   const hand=(url,kind='popstate')=>{context.location.hash=url;for(const fn of events.get(kind)||[])fn({state:null})};
-  return {context,elements,Modules,runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
+  return {context,elements,Modules,runtime:context.SSSDisplayRuntime,hand,location:context.location,W,calls,sources,projected,renders,unmounts,options,pulses,collected,emit,history,swaps,input,arrivals,fetches,held,heldFolds,approaches,ascents,fold,foldLayer,hosts,renderKinds,stateEl:elements.get('site-state'),home:elements.get('root-home'),ascent:elements.get('display-ascent'),pop(state,url){context.location.hash=url;for(const fn of events.get('popstate')||[])fn({state})},key(event){for(const fn of events.get('keydown')||[])fn(event)}};
+}
+{
+ const b=boot(),click=()=>b.ascent.click({preventDefault(){}});
+ b.W.inspect('wx');click();assert.equal(b.W.view,'w','return pops one actual local rank');
+ click();assert.equal(b.W.view,'');const swaps=b.swaps.length;click();assert.equal(b.swaps.length,swaps,'outer root is inert');
+ b.runtime.navigateGlobal('w');click();assert.equal(b.runtime.state.activeAddress,'','return crosses the actual containing membrane');
+ b.runtime.navigateGlobal('w');let local=0;const owner=b.Modules.get(ids[1]);owner.canEscape=()=>true;owner.escape=()=>{local++;return true};
+ const count=b.ascents.length;click();assert.equal(local,1,'site-owned finer return takes priority');assert.equal(b.ascents.length,count);assert.equal(b.runtime.state.activeAddress,'w');
+ b.W.language='de';b.emit('sss:language');assert.equal(b.elements.get('display-ascent-label').textContent,'ZURÜCK');assert.equal(b.ascent.attrs['aria-label'],'Eine Ebene zurück');
+ const refusal=boot();refusal.runtime.navigateGlobal('w');const pushes=refusal.history.filter(e=>e.kind==='push').length;
+ refusal.renderKinds[ids[0]]='decline';refusal.ascent.click({preventDefault(){}});
+ assert.equal(refusal.runtime.state.activeAddress,'w','a refused return preserves the active encounter');
+ assert.equal(refusal.history.filter(e=>e.kind==='push').length,pushes,'a refused return does not invent a visit');
 }
 const f=boot(),runtime=f.runtime;
 assert.equal(f.stateEl.textContent,'','settled encounter has no technical status copy');

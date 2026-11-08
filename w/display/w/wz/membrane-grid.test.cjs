@@ -20,6 +20,10 @@ for(const [width,height] of [[1275,596],[1280,800],[667,375],[390,844],[320,568]
   assert.strictEqual(grid.reconcile(input).outer,idle.outer,'an unchanged observation reuses the realized field');
   assert.strictEqual(grid.reconcile(input).inner,idle.inner,'an unchanged navigator reuses its realized field');
   verifyField(idle.outer,'top',idle.viewport,idle.top);
+  verifyField(idle.outer,'ascent',idle.viewport,idle.ascent);
+  close(idle.ascent.right,width);
+  assert.ok(idle.ascent.bottom<=idle.compass.top,'return field stays above the active compass');
+  assert.ok(idle.ascent.top>=idle.top.bottom,'return field stays below the header');
   for(const name of ['pocket','help','trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name]);
   assert.ok(idle.top.bottom>=46,'navigation and rim fit');
   assert.ok(idle.top.height/2<46,'a further top split could not fit the navigation');
@@ -65,7 +69,7 @@ assert.equal(tooShort.fit.top,false,'finite carriers report when the authored fi
 // Refinement stays inside the field the owner actually declared, including a
 // differently placed navigator trigger. A too-small authored top reports it.
 const narrowTop=structuredClone(membrane);
-narrowTop.splits.push('ww','wx','xw','xx');
+narrowTop.splits.push('ww','wx','xw');
 narrowTop.fields.top.cells=['www','wwx','wxw','wxx','xww','xwx','xxw','xxx'];
 const alternateNavigator=structuredClone(navigator);
 alternateNavigator.fields.trigger.cells=['yw','yx'];

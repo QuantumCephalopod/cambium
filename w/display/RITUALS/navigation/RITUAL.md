@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.30"
+version: "3.31"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -92,9 +92,9 @@ Examples:
 
 `site-space:w ⟦ crawlerbait:ε ⟧`
 
-Address spaces stay distinct across the membrane; the gesture does not. Crawlerbait-local machine-facing routes never become global navigation addresses.
+Address spaces stay distinct across the membrane while passage stays continuous. Crawlerbait-local machine-facing routes never become global navigation addresses.
 
-## Descent — one gesture at every rank
+## Descent and ascent — one walked relation at every rank
 
 The witness is always inside exactly one current container: a realized cell of the global field or an organism body floating in one. A container's content is its four children. Content propagates on every split (Cambium wood law, `ua^m ~ ua`), so every organism floats in every cell above its deepest realized address; the view's resolution only decides how finely it is sorted.
 
@@ -102,8 +102,8 @@ The witness is always inside exactly one current container: a realized cell of t
 - descend: the container is pushed onto the walked path and the child is framed at its centroid, relatively, with no absolute zoom ceiling; the camera moves there smoothly (~0.33 s), never teleports, and ascent moves back the same way;
 - render: geometry is drawn at full realized resolution — a Sierpinski body is cheap and each rank quadruples capacity, so depth settles. LOD governs content only: content below the container's children and their realized children coalesces into pools (Display invariant); a pool opens into its four sub-pools, never a flat list, and entering it fills the walked path through every intermediate container;
 - bodies: organisms float as bodies in their host, drawn with their own identity shader at full geometry and entered by selection. Content is two ranks smaller than the realized container carrying it; when that container splits, the content propagates into the finer child (self-child for content at the split point) and shrinks with it, keeping its own subdivision. A body drifts inside the space its container bounds and never crosses it. Every body carries a label attached to it; the label is selectable exactly like the body's face. Organisms refine inward; composed holons grow with rank (composition grows outward);
-- ascend: a gesture that enters no child pops the walked path — back through the container the witness came through;
-- membranes: entering or leaving a site-holon is the same gesture. Entering begins the accepted camera approach and target-origin fold together; leaving crosses under the same fold and the host zooms out from the body it left while the cover opens. Detailed readiness drives an incomplete moving particle fill, never postponing the beginning of the cut; only prepared readiness earns its final seal. The active interlocutor is the organism whose container is innermost on the walked path; Continuity reads it rather than switching separately. The target-origin fold remains a loading cover at membrane crossings.
+- ascend: the visible shared BACK / ZURÜCK control above the compass returns one step through the container the witness came through. The active owner may first consume its existing finer local return; otherwise the shared field pops its walked path. Empty-space contact does not ascend;
+- membranes: entry and return use the same continuing containment relation. Entering begins the accepted camera approach and target-origin fold together; leaving crosses under the same fold and the host zooms out from the body it left while the cover opens. Detailed readiness drives an incomplete moving particle fill, never postponing the beginning of the cut; only prepared readiness earns its final seal. The active interlocutor is the organism whose container is innermost on the walked path; Continuity reads it rather than switching separately. The target-origin fold remains a loading cover at membrane crossings.
 
 The global minimap and x/y rails remain shared orientation controls. A fresh witness meets the navigator open (pinned); a click tucks it away.
 
@@ -197,7 +197,7 @@ The browser hash `#<scope>:<address>` (`overview` for the empty address) witness
 
 ## Structural ascent
 
-The walked path contains actual containing bodies and their local containers. Global navigator/hash jumps establish the destination's structural context from current body offers; they never append the previously visited sibling. A real body-entry gesture preserves the containing field's current local container, so leaving that membrane returns to that container and the next outside gesture ascends one local rank. The root outside gesture is inert.
+The walked path contains actual containing bodies and their local containers. Global navigator/hash jumps establish the destination's structural context from current body offers; they never append the previously visited sibling. A real body-entry gesture preserves the containing field's current local container, so leaving that membrane returns to that container and the next explicit return ascends one local rank. Return at the outer root is inert. The control occupies an authored recursive field above the current compass, remains available while its pocket is closed, and uses the existing local and membrane return operations rather than browser-visit history.
 
 A raw Population address prefix is placement within a shared field; it does not by itself make one independently rooted site the interior parent of another. Current floating-body offers are owned by the overview host. Future hosting is admissible through the same actual containment relation, not a special-case identity rule. Browser back/forward independently restore visits, and older visit-derived stacks are normalized to current containing-body offers. Receiving-renderer refusal preserves the current body and its structural path.
 

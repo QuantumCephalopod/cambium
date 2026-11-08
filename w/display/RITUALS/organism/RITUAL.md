@@ -1,7 +1,7 @@
 ---
 name: display
 description: "Visitor-facing Display organism: an oriented membrane whose Population vertex physically addresses autonomous site-holons; repository anatomy is the global mount truth."
-version: "3.71"
+version: "3.72"
 ---
 
 # DISPLAY ORGAN RITUAL — local root
@@ -149,7 +149,7 @@ A contact may require more than optical enlargement. In Papers, the source-press
 
 The same Display-owned drop may be temporarily borrowed by a guided encounter. A borrower can contact only currently offered, projected identities, and the visitor's deliberate take cancels the loan rather than being overwritten. Completion or interruption returns the saved physical relation; a previous lock can resume only while its original owner still offers that identity. A missing projection remains pending under the existing offer law; a withdrawn identity is not fabricated. This neutral control knows neither Papers nor any site's semantics.
 
-Escape preserves the same owner boundaries as navigation. An encounter in flight is cancelled first. When focus is not inside the navigator, the active site may consume one finer local return through its optional `canEscape()` / `escape()` capability before the host crosses its membrane; an inactive or refusing site cannot consume it. Navigator-focused Escape remains the navigator's own action. The host does not interpret a site's local stack, selected tissue or identity.
+Escape and the visible global return control preserve the same owner boundaries as navigation. The control asks the active site to consume one finer return through its optional `canEscape()` / `escape()` capability, then uses the field's actual walked ascent and membrane crossing. An inactive or refusing site cannot consume it. Escape cancels an encounter in flight first, and navigator-focused Escape remains the navigator's own action. The host does not interpret a site's local stack, selected tissue or identity.
 
 The situated-function relation is assimilated. The generic offer channel and Philosophy/Papers consumers now have native witnesses for identity-following contact, measured readable frames and source-owned wording/continuation. The completed source-owned lens contract is witnessed with actual admitted wording, the real SpriteSheet face, pinned Pretext, production tissue shaders and actual glyph input through the shared glass on software GLES at narrow/wide carriers. Browser rasterization and hardware-specific timing retain their actual limits; no default personal/device approval remains. A new CCCC split, different source authority, extra overlay, per-site duplicate droplette or menu of Form/Continuity/Care/Inquiry modes is not earned by these encounters.
 
@@ -337,7 +337,7 @@ Display keeps alive across every encounter:
 - target-origin tetrahedral closure transition;
 - activity receptor and browser encounter/history body, in which the `#scope:address` hash is both witness and input (navigation `Address hash`).
 
-Entering an interlocutor never hands the global minimap to its local recursive space; descent and ascent are one gesture on both sides of the membrane.
+Entering an interlocutor never hands the global minimap to its local recursive space; descent and the explicit return follow the same walked relation on both sides of the membrane.
 
 ## Navigation and local inspection
 
@@ -408,7 +408,7 @@ The chosen German/English expression travels in the ordinary `lang` URL query, i
 
 ## Structural containment and visit continuity
 
-Outside-click ascent follows actual body-host offers and local container descent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The shared liquid/lock continuity is owned by **Continuous liquid contact**; site-owned body approach, crawlercam availability and their current lifecycle remain with the respective site.
+The explicit global return follows actual body-host offers and local container descent; clicking empty space does not trigger ascent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The shared liquid/lock continuity is owned by **Continuous liquid contact**; site-owned body approach, crawlercam availability and their current lifecycle remain with the respective site.
 
 ## Readable liquid interior — earned shared geometry
 

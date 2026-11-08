@@ -1,9 +1,9 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const source=fs.readFileSync(path.join(__dirname,'sierpinski.js'),'utf8');
-function load(text=source,field=null){
-  const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]}};
-  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={paperReadingChrome,paperReadingRegion,foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,hitGlobal,enterOverviewTarget,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,createFlatRenderer,clipCameraPlane,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,overviewBodyProjection,updateOverviewApproach,currentDisplayScale,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
+function load(text=source,field=null,environment={}){
+  const context={SSSInterlocutorFields:field?{get:()=>field}:null,console,performance,SSSDisplayType:{rankPx:()=>12},SSSDisplayNavigation:require(process.argv[2]),document:{},SSSWorldView:{orientation:[1,0,0,0]},...environment};
+  vm.runInNewContext(text.replace(/\}\)\(\);\s*$/,`globalThis.test={paperReadingChrome,paperReadingRegion,foldedEdgeGlyphs,bodyDoorPoint,setChamber,openGlobal,hitGlobal,enterOverviewTarget,attachInput,canEscape,escape,updateTransition,collectVisibleBody,edgeMaterial,faceReading,tutorialCandidates,startTutorial,tutorialStep,stopTutorial,cameraZ,draw,ensureBeing,driftBodies,driftOrganisms,flowPoint,holdInTet,random01,collectBody,organismEmber,populationBodies,populationInView,tissueGlyphs,flushTissue,shader,fieldProjection,identityIndex,parentIndex,buildRecords,mergeGenealogyRepair,createRenderer,createFlatRenderer,clipCameraPlane,drawNames,paperLensParts,syncPaperLens,withdrawPaperLens,syncOverviewLens,withdrawOverviewLens,liveOverviewLensPart,drawOverviewForeground,overviewCenterFor,overviewOrientation,overviewBodyProjection,updateOverviewApproach,currentDisplayScale,projectPoint,paperLensReading,paperLensPage,paperLensReady,livePaperLensPart,lensLocal,inLens,drawPaperLens,setLensAPI:L=>globalThis.SSSDisplayLens=L,nameCalls:()=>globalThis.nameCalls||0,setState:s=>state=s,getState:()=>state,setPretext:p=>pretextModule=p,setLens:f=>lensAccess=f};})();`),context);
   return context.test;
 }
 const api=load(),clone=x=>JSON.parse(JSON.stringify(x));
@@ -299,6 +299,21 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
  assert(a.escape());assert.equal(s.chamberPath,'');assert.equal(field.container,'');assert.equal(a.canEscape(),false,'local root yields enclosing return');
  s.mounted=false;assert.equal(a.escape(),false,'inactive owner cannot consume input');
  console.log('Papers Escape returns tissue, body and chamber one level at a time with stable lock PASS');
+}
+{
+ const events={},field={path:'x',get container(){return this.path},descendTo(path){this.path=path;return true},ascend(){this.path=this.path.slice(0,-1);return true}};
+ const canvas={dataset:{},addEventListener(name,fn){events[name]=fn},getBoundingClientRect:()=>({left:0,top:0,width:390,height:844})};
+ const document={createElement:()=>({setAttribute(){},append(){},hidden:false})};
+ const a=load(source,field,{document,addEventListener(){}});
+ const s={mounted:true,host:{hidden:false,append(){}},canvas,records:[],recordById:new Map(),structure:{addresses:[]},current:null,stack:[],chamberPath:'x',inner:null,transition:1,backgroundDrag:true};
+ a.setState(s);a.attachInput();
+ const click=()=>{const e={button:0,pointerId:3,clientX:1,clientY:1,preventDefault(){},stopImmediatePropagation(){}};events.pointerdown(e);events.pointerup(e)};
+ click();assert.equal(s.chamberPath,'x','empty contact keeps the Papers chamber');
+ assert(a.escape());assert.equal(s.chamberPath,'','the local return still ascends the chamber');
+ s.current={id:'S.actual'};s.stack=[];s.closing=false;s.beingGeo=null;s.transition=0;
+ click();assert.equal(s.closing,false,'empty contact does not close the selected body');
+ assert(a.escape());assert.equal(s.closing,true,'the local return still closes the selected body');
+ console.log('Papers empty contacts stay put; the shared local return preserves chamber and body passage PASS');
 }
 
 /* Contact outranks an overlapping neighbour only while the real body is projected. */

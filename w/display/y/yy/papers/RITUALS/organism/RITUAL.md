@@ -1,7 +1,7 @@
 ---
 name: papers
 description: "Local ritual receptor for the public Papers site-holon: preserve its tetrahedral point-population body, source authorship/provenance, recursive inquiry lineage, readable holon metabolism, identity-owned shader/interaction and private-to-public feed boundary."
-version: "3.15"
+version: "3.16"
 ---
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
@@ -172,7 +172,7 @@ Papers inhabits Display's shared Descent (navigation `Descent`) at every rank, i
 
 - nothing is selectable from the Papers overview; the witness first descends into a realized chamber and selects among the organisms it contains;
 - inside a selected organism, its own simplices and metabolites are the next children;
-- hover peeks, click descends and locks, a gesture that enters no child ascends back through the container the witness came through — across the Papers membrane into its host the same way;
+- hover peeks, click descends and locks, and the shared BACK / ZURÜCK control returns through selected tissue, the current organism and chamber one step at a time — across the Papers membrane into its host in the same continuing relation;
 - organisms refine inward; composed Holons grow with rank (composition outward) — the S-anchored `2^n` scale law is that distinction for Papers.
 
 ## The lens is the instrument and the LOD
@@ -426,7 +426,7 @@ Uneven organism counts may make one chamber perceptually sparse, but sparse occu
 
 **The chambers are Papers' visible rank-1 Sierpiński body** — the same container grammar every Display site shows, never invisible packing bins with floating labels: faint faces and clear edges, the current container brighter and the others receding, all of it stepping back while an organism is open. Chamber labels hang from their chamber's body — from the one vertex that chamber owns alone, its own outer corner, never a corner it shares with a sibling — and are selectable like its face. Geometry is always drawn at full realized resolution; when Papers earns a deeper split, the same body simply shows more cells.
 
-**Container first, and out through the membrane.** A gesture that enters nothing at Papers' own root ascends across the membrane into the container the witness came through, exactly as everywhere else. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
+**Container first, and out through the membrane.** The shared return control at Papers' own root ascends across the membrane into the container the witness came through. Empty-space contact does not ascend. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
 
 ### Parent off-field
 

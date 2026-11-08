@@ -52,9 +52,15 @@ try:
        return {name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(r.left,p.left),top:Math.max(r.top,p.top),right:Math.min(r.right,p.right),bottom:Math.min(r.bottom,p.bottom)};
       }).filter(r=>r.right>r.left&&r.bottom>r.top):[];
       const navTargets=[...document.querySelectorAll('#mini-help-toggle,#mini-trigger,#legal-links a')].map(el=>({name:el.id||el.textContent.trim(),...toBox(el.getBoundingClientRect())}));
+      const returnSlot=toBox(document.getElementById('display-ascent-slot').getBoundingClientRect()),returnButton=toBox(document.getElementById('display-ascent').getBoundingClientRect());
+      const otherTargets=[...document.querySelectorAll('[data-interlocutor]:not([hidden]) button,[data-interlocutor]:not([hidden]) input,[data-interlocutor]:not([hidden]) select,[data-interlocutor]:not([hidden]) a')]
+       .filter(el=>el.getClientRects().length).map(el=>{
+        const r=el.getBoundingClientRect(),field=el.closest('[data-ui-bounded="true"]'),p=field?field.getBoundingClientRect():{left:0,top:0,right:innerWidth,bottom:innerHeight};
+        return {name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(0,r.left,p.left),top:Math.max(0,r.top,p.top),right:Math.min(innerWidth,r.right,p.right),bottom:Math.min(innerHeight,r.bottom,p.bottom)};
+       }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const topAddress=SSSUIGrid.fieldInfo(state.outer,'top').bounds;
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.fieldInfo(state.inner,name).bounds]));
-      return {state:{top:state.top,compass:state.compass,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,siteTargets,navTargets};
+      return {state:{top:state.top,compass:state.compass,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
      assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
@@ -71,6 +77,12 @@ try:
      for a in measured['siteTargets']:
       for b in measured['navTargets']:
        assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,a,b,'navigator covers a site timeline control')
+     a=measured['returnButton'];slot=measured['returnSlot'];field=measured['state']['ascent']
+     assert all(abs(slot[k]-field[k])<1 for k in ['left','top','width','height']),(site,slot,field)
+     assert a['left']>=slot['left']-1 and a['right']<=slot['right']+1 and a['top']>=slot['top']-1 and a['bottom']<=slot['bottom']+1,(site,a,slot)
+     assert a['top']>=measured['state']['top']['bottom']-1 and a['bottom']<=measured['state']['compass']['top']+1,(site,a,'return leaves its gap')
+     for b in measured['otherTargets']+measured['navTargets']:
+      assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,a,b,'return covers another control')
      top=next(x for x in measured['glass'] if 'display-header' in x['ids'])
      assert abs(top['rect']['bottom']-measured['state']['top']['bottom'])<.5,(site,top,measured['state']['top'])
      assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5
@@ -120,9 +132,14 @@ try:
       assert text['scroll']<=text['client']+1,(site,text,'description requires horizontal scrolling')
      if site in ('datenschutz','impressum'):
       for link in page.locator('[data-ui-field="description"] a').all():link.click(trial=True)
+     if site in ('papers','datenschutz') and width in (1280,390):page.screenshot(path=str(a.out/f'{site}-{width}.png'))
+     page.locator('#display-ascent').click()
+     if site=='philosophy':
+      assert page.evaluate('SSSDisplayRuntime.state.activeAddress')=='',(site,'outer root moved')
+     else:
+      page.wait_for_function('SSSDisplayRuntime.state.activeAddress===""&&document.getElementById("tetra-fold").dataset.fold==="open"',timeout=180000)
      assert not errors,(site,errors)
      cases.append({'site':site,'viewport':[width,height],**measured,'errors':errors})
-     if site in ('papers','datenschutz') and width in (1280,390):page.screenshot(path=str(a.out/f'{site}-{width}.png'))
     finally:page.close()
   browser.close()
 finally:

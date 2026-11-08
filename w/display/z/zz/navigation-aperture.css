@@ -126,6 +126,11 @@
   right:6px;
   top:6px;
 }
+/* One shared return control inhabits the addressed gap above the navigator. */
+#display-ascent-slot{position:fixed;z-index:20;display:flex;justify-content:flex-end;align-items:flex-end;box-sizing:border-box;padding:0 .5rem .5rem 0;pointer-events:none}
+#display-ascent{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;max-width:100%;min-height:2rem;padding:.35rem .4rem;border:1px solid rgba(241,239,233,.4);background:rgba(5,7,10,.48);color:rgba(241,239,233,.9);font:var(--type-rn2)/1 var(--mono);letter-spacing:.05em;cursor:pointer;pointer-events:auto}
+#display-ascent svg{width:.8rem;height:.8rem;flex:none;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:square;stroke-linejoin:miter}
+#display-ascent:hover,#display-ascent:focus-visible{border-color:rgba(241,239,233,.95);color:rgba(255,255,255,.98);outline:1px solid currentColor;outline-offset:2px}
 /* Text is intrinsic flow; only the controls retain local physical coordinates. */
 #mini-core{position:relative;display:flex;flex-direction:column;gap:.5rem;padding:.75rem;min-width:0;box-sizing:border-box;max-height:var(--compass-core-cap,calc(100vh - 8rem));overflow:auto;overscroll-behavior:contain}
 #mini-core[data-scroll="true"]{pointer-events:auto}

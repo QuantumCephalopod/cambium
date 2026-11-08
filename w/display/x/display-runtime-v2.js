@@ -101,7 +101,7 @@ const rootSurface=surfaces.get(ROOT_IDS[0]);
 const GLOBAL_PROJECTION=rootSurface.fieldProjection;
 if(!rootSurface.projection||!GLOBAL_PROJECTION?.root) throw new Error('overview interlocutor must expose its full public root; an outer preview cannot replace site-space authority');
 const activity=H.createActivityBus(registry),fold=F.createFold(document.getElementById('tetra-fold'));
-const home=document.getElementById('root-home'),stateEl=document.getElementById('site-state'),stage=document.getElementById('interlocutor-stage');
+const home=document.getElementById('root-home'),ascent=document.getElementById('display-ascent'),ascentLabel=document.getElementById('display-ascent-label'),ascentSlot=document.getElementById('display-ascent-slot'),stateEl=document.getElementById('site-state'),stage=document.getElementById('interlocutor-stage');
 let pendingEncounter=null;
 const fieldById=new Map();
 /* A site floats inside the container the witness came through: the encounter it
@@ -200,6 +200,11 @@ function syncMembraneGrid(){
  // variant against the visible global carrier, never that hidden host's 0×0 box.
  const info=ui.field('compass',{x:0,y:0,w:innerWidth,h:innerHeight}),b=info.bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
  Membrane.useCompass(ui.state,info);
+ if(ascentSlot){
+   const a=UI.fieldInfo(Membrane.snapshot().outer,'ascent').bounds;
+   const position={left:a.x*innerWidth+'px',top:a.y*innerHeight+'px',width:a.w*innerWidth+'px',height:a.h*innerHeight+'px'};
+   for(const [k,v]of Object.entries(position))if(ascentSlot.style[k]!==v)ascentSlot.style[k]=v;
+ }
  const values={left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',transform:'none'};
  for(const [k,v]of Object.entries(values))if(mini.style[k]!==v)mini.style[k]=v;
  for(const [k,v]of [['--compass-field-height',r.height+'px'],['--compass-field-width',r.width+'px']])if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
@@ -349,6 +354,20 @@ function leave(push=true){
  * asks the active site first and never infers its inner navigation state. */
 function canLocalEscape(){return [...activeIds].reverse().some(id=>surfaces.get(id)?.module?.canEscape?.()===true)}
 function escapeLocal(){for(const id of [...activeIds].reverse()){const m=surfaces.get(id)?.module;if(m?.canEscape?.()===true&&m.escape?.()===true)return true}return false}
+function ascendFromControl(){
+  if(fold.busy)return false;
+  // Site-owned finer returns precede the same field ascent that an empty
+  // contact used to invoke; the field itself owns local walk and membrane.
+  if(escapeLocal())return true;
+  const field=fieldById.get(activeIds.at(-1));if(!field)return false;
+  field.ascend('ascent:control');return true;
+}
+function ascentLanguage(){
+  if(!ascent)return;
+  const de=W.language==='de',label=de?'Eine Ebene zurück':'Go back one level';
+  ascent.setAttribute('aria-label',label);ascent.setAttribute('title',label);
+  if(ascentLabel)ascentLabel.textContent=de?'ZURÜCK':'BACK';
+}
 addEventListener('sss:view',e=>{if(installingEncounter||e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'')});
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
 /* Ascent past a site's own root continues through the membrane: the same
@@ -364,7 +383,8 @@ addEventListener('sss:membrane-ascend',e=>{
   const origin={x:innerWidth/2,y:innerHeight/2};
   try{const result=fold.swap(back,{origin,from:activeAddress,to:'',onClosing:duration=>globalThis.SSSDisplayLens?.departFrom?.(origin,duration)});if(result&&typeof result.catch==='function')result.catch(feedWound)}catch(error){feedWound(error)}
 });
-addEventListener('sss:language',()=>{syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});addEventListener('sss:navigator-measure',()=>{const mini=document.getElementById('mini'),before=mini?.style.top+':'+mini?.style.height;syncMembraneGrid();if(before!==mini?.style.top+':'+mini?.style.height){Safe.refresh();for(const ui of uiById.values())ui.refresh()}});addEventListener('resize',()=>{Safe.refresh();composition();syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});
+addEventListener('sss:language',()=>{ascentLanguage();syncGlobalNavigator();render(W.view)});addEventListener('sss:safe-area',()=>{syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});addEventListener('sss:navigator-measure',()=>{const mini=document.getElementById('mini'),before=mini?.style.top+':'+mini?.style.height;syncMembraneGrid();if(before!==mini?.style.top+':'+mini?.style.height){Safe.refresh();for(const ui of uiById.values())ui.refresh()}});addEventListener('resize',()=>{Safe.refresh();composition();syncMembraneGrid();for(const ui of uiById.values())ui.refresh()});
+ascent?.addEventListener('click',e=>{e.preventDefault();ascendFromControl()});ascentLanguage();
 home.addEventListener('click',e=>{e.preventDefault();if(cancelPendingEncounter())return;if(activeAddress||!sameIds(activeIds,ROOT_IDS))navigateGlobal('',true,{x:innerWidth/2,y:innerHeight/2});else{nextHandoff();setLocalView('','home')}});
 addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==='Escape'){e.preventDefault();if(cancelPendingEncounter())return;if(escapeLocal())return;if(stack.length)leave();else home.click()}});
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});

@@ -841,7 +841,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       if(!down||down.id!==e.pointerId)return;const wasMoved=down.moved;down=null;try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId)}catch(_){}
       if(!wasMoved){
         const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,hp=hasPoints?hitPoint(x,y,r):null;
-        const body=hp?'':hitBody(x,y,r);if(body)enterBody(body,{x:e.clientX,y:e.clientY});else if(hp?.rec.pool)descendTo(hp.rec.path,'pool:'+id);else if(hp)selectPoint(hp.rec.spec.id,true);else{const path=hitChild(x,y,r);if(path)descendTo(path,'descent:'+id);else ascend('ascent:'+id)}
+        const body=hp?'':hitBody(x,y,r);if(body)enterBody(body,{x:e.clientX,y:e.clientY});else if(hp?.rec.pool)descendTo(hp.rec.path,'pool:'+id);else if(hp)selectPoint(hp.rec.spec.id,true);else{const path=hitChild(x,y,r);if(path)descendTo(path,'descent:'+id)}
       }
       canvas.style.cursor=draggable?'grab':'default';e.preventDefault()
     };
