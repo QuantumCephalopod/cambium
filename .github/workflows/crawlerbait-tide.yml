@@ -4,14 +4,14 @@ on:
   push:
     branches: [main]
     paths:
-      - 'w/display/y/yw/crawlerbait/y/capture.py'
-      - 'w/display/y/yw/crawlerbait/y/path_membrane.py'
-      - 'w/display/y/yw/crawlerbait/y/migrate_owned_path_membrane.py'
-      - 'w/display/y/yw/crawlerbait/y/migrate_privacy.py'
-      - 'w/display/y/yw/crawlerbait/y/tide.py'
-      - 'w/display/y/yw/crawlerbait/y/replay.py'
-      - 'w/display/y/yw/crawlerbait/x/captures/manifest.json'
-      - 'w/display/y/yw/crawlerbait/z/policy.json'
+      - 'w/display/y/yy/crawlerbait/y/capture.py'
+      - 'w/display/y/yy/crawlerbait/y/path_membrane.py'
+      - 'w/display/y/yy/crawlerbait/y/migrate_owned_path_membrane.py'
+      - 'w/display/y/yy/crawlerbait/y/migrate_privacy.py'
+      - 'w/display/y/yy/crawlerbait/y/tide.py'
+      - 'w/display/y/yy/crawlerbait/y/replay.py'
+      - 'w/display/y/yy/crawlerbait/x/captures/manifest.json'
+      - 'w/display/y/yy/crawlerbait/z/policy.json'
       - 'y/check.py'
       - '.github/workflows/crawlerbait-tide.yml'
   schedule:
@@ -44,13 +44,13 @@ jobs:
           CRAWLERBAIT_ID_KEY: ${{ secrets.CRAWLERBAIT_ID_KEY }}
         run: |
           set -euo pipefail
-          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
-          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --write
-          if [ -n "$(git status --porcelain -- 'w/display/y/yw/crawlerbait/x/captures' 'w/display/y/yw/crawlerbait/x/cursor.json')" ]; then
-            python3 w/display/y/yw/crawlerbait/y/tide.py --write
-            python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
-            python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
-            node w/display/y/yw/crawlerbait/z/render.test.cjs
+          python3 w/display/y/yy/crawlerbait/y/migrate_privacy.py --self-test
+          python3 w/display/y/yy/crawlerbait/y/migrate_privacy.py --write
+          if [ -n "$(git status --porcelain -- 'w/display/y/yy/crawlerbait/x/captures' 'w/display/y/yy/crawlerbait/x/cursor.json')" ]; then
+            python3 w/display/y/yy/crawlerbait/y/tide.py --write
+            python3 w/display/y/yy/crawlerbait/y/tide.py --self-test
+            python3 w/display/y/yy/crawlerbait/y/replay.py --self-test
+            node w/display/y/yy/crawlerbait/z/render.test.cjs
             python3 y/site-public.py --artifact _site
             python3 y/check.py --artifact _site
             SITE_DIR=_site node y/test-address.cjs
@@ -58,7 +58,7 @@ jobs:
             python3 y/site-public.py --artifact _site --check
             git config user.name "crawlerbait tide"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -- 'w/display/y/yw/crawlerbait'
+            git add -- 'w/display/y/yy/crawlerbait'
             git commit -m "crawlerbait: condense legacy provider traces into phenotype DNA"
             git fetch origin main
             git rebase origin/main
@@ -73,14 +73,14 @@ jobs:
           CRAWLERBAIT_ID_KEY: ${{ secrets.CRAWLERBAIT_ID_KEY }}
         run: |
           set -euo pipefail
-          python3 w/display/y/yw/crawlerbait/y/path_membrane.py
-          python3 w/display/y/yw/crawlerbait/y/migrate_owned_path_membrane.py --self-test
-          python3 w/display/y/yw/crawlerbait/y/migrate_owned_path_membrane.py --write
-          if [ -n "$(git status --porcelain -- 'w/display/y/yw/crawlerbait')" ]; then
-            python3 w/display/y/yw/crawlerbait/y/tide.py --write
-            python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
-            python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
-            node w/display/y/yw/crawlerbait/z/render.test.cjs
+          python3 w/display/y/yy/crawlerbait/y/path_membrane.py
+          python3 w/display/y/yy/crawlerbait/y/migrate_owned_path_membrane.py --self-test
+          python3 w/display/y/yy/crawlerbait/y/migrate_owned_path_membrane.py --write
+          if [ -n "$(git status --porcelain -- 'w/display/y/yy/crawlerbait')" ]; then
+            python3 w/display/y/yy/crawlerbait/y/tide.py --write
+            python3 w/display/y/yy/crawlerbait/y/tide.py --self-test
+            python3 w/display/y/yy/crawlerbait/y/replay.py --self-test
+            node w/display/y/yy/crawlerbait/z/render.test.cjs
             python3 y/site-public.py --artifact _site
             python3 y/check.py --artifact _site
             SITE_DIR=_site node y/test-address.cjs
@@ -88,7 +88,7 @@ jobs:
             python3 y/site-public.py --artifact _site --check
             git config user.name "crawlerbait tide"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -- 'w/display/y/yw/crawlerbait'
+            git add -- 'w/display/y/yy/crawlerbait'
             git commit -m "crawlerbait: cross request paths through privacy membrane"
             git fetch origin main
             git rebase origin/main
@@ -105,24 +105,24 @@ jobs:
           CRAWLERBAIT_ID_KEY: ${{ secrets.CRAWLERBAIT_ID_KEY }}
         run: |
           set -euo pipefail
-          python3 w/display/y/yw/crawlerbait/y/capture.py --write
+          python3 w/display/y/yy/crawlerbait/y/capture.py --write
 
       - name: Witness capture and DNA law
         run: |
           set -euo pipefail
-          python3 w/display/y/yw/crawlerbait/y/capture.py --self-test
-          python3 w/display/y/yw/crawlerbait/y/migrate_privacy.py --self-test
-          python3 w/display/y/yw/crawlerbait/y/migrate_owned_path_membrane.py --self-test
+          python3 w/display/y/yy/crawlerbait/y/capture.py --self-test
+          python3 w/display/y/yy/crawlerbait/y/migrate_privacy.py --self-test
+          python3 w/display/y/yy/crawlerbait/y/migrate_owned_path_membrane.py --self-test
 
       - name: Persist metabolized Traces before downstream metabolism
         run: |
           set -euo pipefail
-          if [ -z "$(git status --porcelain -- 'w/display/y/yw/crawlerbait/x/captures' 'w/display/y/yw/crawlerbait/x/cursor.json')" ]; then
+          if [ -z "$(git status --porcelain -- 'w/display/y/yy/crawlerbait/x/captures' 'w/display/y/yy/crawlerbait/x/cursor.json')" ]; then
             echo "no new provider window to persist"
           else
             git config user.name "crawlerbait tide"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -- 'w/display/y/yw/crawlerbait/x/captures'                        'w/display/y/yw/crawlerbait/x/cursor.json'
+            git add -- 'w/display/y/yy/crawlerbait/x/captures'                        'w/display/y/yy/crawlerbait/x/cursor.json'
             git commit -m "crawlerbait: capture metabolized web traffic"
             git fetch origin main
             git rebase origin/main
@@ -133,13 +133,13 @@ jobs:
       - name: Metabolize owned web traffic
         run: |
           set -euo pipefail
-          python3 w/display/y/yw/crawlerbait/y/tide.py --write
+          python3 w/display/y/yy/crawlerbait/y/tide.py --write
 
       - name: Witness replay and public membrane
         run: |
           set -euo pipefail
-          python3 w/display/y/yw/crawlerbait/y/tide.py --self-test
-          python3 w/display/y/yw/crawlerbait/y/replay.py --self-test
+          python3 w/display/y/yy/crawlerbait/y/tide.py --self-test
+          python3 w/display/y/yy/crawlerbait/y/replay.py --self-test
           python3 y/site-public.py --artifact _site
           python3 y/check.py --artifact _site
           SITE_DIR=_site node y/test-address.cjs
@@ -149,13 +149,13 @@ jobs:
       - name: Persist downstream Crawlerbait only when bytes changed
         run: |
           set -euo pipefail
-          if [ -z "$(git status --porcelain -- 'w/display/y/yw/crawlerbait/w' 'w/display/y/yw/crawlerbait/x/state.json' 'w/display/y/yw/crawlerbait/z/projection.json' 'w/display/y/yw/crawlerbait/z/public')" ]; then
+          if [ -z "$(git status --porcelain -- 'w/display/y/yy/crawlerbait/w' 'w/display/y/yy/crawlerbait/x/state.json' 'w/display/y/yy/crawlerbait/z/projection.json' 'w/display/y/yy/crawlerbait/z/public')" ]; then
             echo "no downstream Crawlerbait bytes changed"
             exit 0
           fi
           git config user.name "crawlerbait tide"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- 'w/display/y/yw/crawlerbait/w'                      'w/display/y/yw/crawlerbait/x/state.json'                      'w/display/y/yw/crawlerbait/z/projection.json'                      'w/display/y/yw/crawlerbait/z/public'
+          git add -- 'w/display/y/yy/crawlerbait/w'                      'w/display/y/yy/crawlerbait/x/state.json'                      'w/display/y/yy/crawlerbait/z/projection.json'                      'w/display/y/yy/crawlerbait/z/public'
           if git diff --cached --quiet; then
             echo "no derived Crawlerbait body changed"
             exit 0

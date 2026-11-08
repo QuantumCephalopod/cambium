@@ -481,7 +481,9 @@ def raw_public_manifest():
         value = read_json(path)
         records = raw_records(value)
         versions.add(int(value.get("version") or 0))
-        rel = "w/display/y/yw/crawlerbait/x/captures/" + path.name
+        # The enclosing Population address is custody, not Crawlerbait identity.
+        # Follow the current whole-body mount when publishing capture links.
+        rel = f"w/display/y/{ROOT.parent.name}/{ROOT.name}/x/captures/{path.name}"
         files.append({
             "file": path.name,
             "window": value["window"],

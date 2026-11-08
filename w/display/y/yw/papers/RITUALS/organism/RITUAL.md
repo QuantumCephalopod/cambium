@@ -6,7 +6,7 @@ version: "3.16"
 
 # PAPERS SITE-HOLON RITUAL — local public inquiry body
 
-This ritual governs the **public Papers site-holon** at `w/display/y/yy/papers/`. It is not the independently rooted Drive `/papers` research organism and must not replace that organism's own constitution, metabolism or lifecycle law.
+This ritual governs the **public Papers site-holon** at `w/display/y/yw/papers/`. It is not the independently rooted Drive `/papers` research organism and must not replace that organism's own constitution, metabolism or lifecycle law.
 
 Drive Papers remains semantic/source authority. This body is the bounded public encounter projected from it.
 
@@ -22,9 +22,9 @@ Each layer contributes a different constraint. Do not copy parent law into this 
 
 ## Boundary and identity
 
-Papers is globally mounted at site-space `y` while remaining locally rooted at:
+Papers is globally mounted at site-space `w` while remaining locally rooted at:
 
-`site-space:y ⟦ papers:ε ⟧`
+`site-space:w ⟦ papers:ε ⟧`
 
 Its global mount is environment. Its public body, shader, local traversal and research projection belong to `organism:papers` identity and must survive lawful remounting unchanged.
 
@@ -379,7 +379,7 @@ Selection is a **change of scale inside one continuing world**.
 
 #### Host-environment continuity
 
-When Papers is encountered through `site-space:y ⟦ papers:ε ⟧`, the surrounding world inherits the actual host's material at the container carrying Papers, while Papers remains an independently rooted organism floating inside that volume.
+When Papers is encountered through `site-space:w ⟦ papers:ε ⟧`, the surrounding world inherits the actual host's material at the container carrying Papers, while Papers remains an independently rooted organism floating inside that volume.
 
 The relation is environmental, not constitutive:
 - the generic host relation supplies the surrounding material/shader at the actual mounted container; current Philosophy names its own `w` Inquiry and `y` Becoming, so Papers' global mount `y` must not be called Philosophy's Inquiry locus;
@@ -426,7 +426,7 @@ Uneven organism counts may make one chamber perceptually sparse, but sparse occu
 
 **The chambers are Papers' visible rank-1 Sierpiński body** — the same container grammar every Display site shows, never invisible packing bins with floating labels: faint faces and clear edges, the current container brighter and the others receding, all of it stepping back while an organism is open. Chamber labels hang from their chamber's body — from the one vertex that chamber owns alone, its own outer corner, never a corner it shares with a sibling — and are selectable like its face. Geometry is always drawn at full realized resolution; when Papers earns a deeper split, the same body simply shows more cells.
 
-**Container first, and out through the membrane.** The shared return control at Papers' own root ascends across the membrane into the container the witness came through. Empty-space contact does not ascend. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
+**Container first, and out through the membrane.** The shared return control at Papers' own root ascends across the membrane into the container the witness came through. Two empty-space clicks request that same local-to-global return; one remains inert. Local tissue, organism and chamber contacts take precedence and lend their actual projected boundaries to shared contact ink. Only the current container's content can be entered. Touching content that lives deeper descends into the next container on its way first; the organism opens only from inside the chamber that holds it.
 
 ### Parent off-field
 

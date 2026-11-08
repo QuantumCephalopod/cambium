@@ -89,7 +89,7 @@ Display `y / Population` is itself a membrane into global page-organism site-spa
 
 `display:y ⟦ site-space:ε ⟧`
 
-Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current population: Philosophy at site-space overview, Crawlerbait at `w`, Schattenseiten at `x`, Papers at `y`, Datenschutz at `z`, and Impressum at the quotient midpoint `xz`. The Population tree remains the authority; this list only orients re-entry. A mounted site's identity or situated purpose does not name its host's semantic cell. Current host-field expression is derived from the overview organism's own phenotype; do not preserve obsolete field nouns as global mount truth.
+Autonomous site-holon bodies physically planted under this Population tree determine global encounter addresses. Current population: Philosophy at site-space overview, Crawlerbait at `y`, Schattenseiten at `x`, Papers at `w`, Datenschutz at `z`, and Impressum at the quotient midpoint `xz`. The Population tree remains the authority; this list only orients re-entry. A mounted site's identity or situated purpose does not name its host's semantic cell. Current host-field expression is derived from the overview organism's own phenotype; do not preserve obsolete field nouns as global mount truth.
 
 Host continuity/orientation/renewal remain host interfaces across the Display boundary; they do not become Display child vertices merely because similar functional relations recur locally.
 

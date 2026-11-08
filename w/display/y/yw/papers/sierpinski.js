@@ -569,7 +569,7 @@ function makeStage(host){
   sourceInfoField.append(sourceInfo);host.append(sourceInfoField);
   const chamberLabels=document.createElement('div');chamberLabels.className='papers-chamber-labels';chamberLabels.setAttribute('aria-hidden','true');host.append(chamberLabels);
   const chamberLabelNodes=new Map();
-  for(const gene of GENES){const n=document.createElement('button');n.type='button';n.className='papers-chamber-label';n.dataset.gene=gene;n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(state&&!state.current)setChamber(gene)});chamberLabels.append(n);chamberLabelNodes.set(gene,n)}
+  for(const gene of GENES){const n=document.createElement('button');n.type='button';n.className='papers-chamber-label';n.dataset.gene=gene;n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(state&&!state.current)setChamber(gene)});n.addEventListener('pointerenter',()=>{if(state&&!state.current)state.traceLabel=gene});n.addEventListener('pointerleave',()=>{if(state?.traceLabel===gene)state.traceLabel=''});chamberLabels.append(n);chamberLabelNodes.set(gene,n)}
   const hudField=document.createElement('div');hudField.className='papers-hud-field';
   const hud=document.createElement('div');hud.className='papers-sierpinski-hud';hudField.append(hud);host.append(hudField);
   const labelField=document.createElement('div');labelField.className='papers-label-field';
@@ -1516,7 +1516,7 @@ function draw(now,frame){
     if(state.transition>.72){const kids=childBodies(state.current).map(k=>({...k,color:[.72,1,.85,.62]}));state.renderer.draw(kids,state.localQ,translate,proj,view,{faces:false})}
   }
   syncOverviewLens(rect,now);if(!state.current)state.overviewRender={rect,proj,view,q:overviewQ,cam,ms:now,dpr:d};
-  drawWisdom(rect,cam,translate,metabolights,now);flushTissue(rect);drawNames(rect,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
+  drawWisdom(rect,cam,translate,metabolights,now);flushTissue(rect);drawNames(rect,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);drawContactTrace(rect,now);
   const inquiryFocus=inquiryFrameFocus();
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);setData(state.canvas,'populationResolved',population.considered);
   if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${inquiryBody(entity?.id)?.state==='PARTIAL'?' · PUBLIC TISSUE PARTIAL':''}${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent</small>`)}
@@ -1555,6 +1555,43 @@ function hitChild(x,y,width,height){
   return best?.id||'';
 }
 
+/* The local renderer lends its actual click target and projected boundaries to
+ * the same neutral contact ink used by every Display field. */
+function paperContact(x,y,width,height,now=performance.now()){
+  if(state.current){
+    const piece=beingHit(x,y);if(piece)return {kind:'piece',piece};
+    const child=!state.inner&&hitChild(x,y,width,height);return child?{kind:'child',id:child}:null;
+  }
+  const target=hitGlobal(x,y,width,height,now),rec=target&&state.recordById.get(target),here=state.chamberPath||'';
+  if(rec&&(rec.locus===here||rec.locus.startsWith(here)))return {kind:'organism',id:target};
+  const chamber=hitChamber(x,y,width,height);return chamber?{kind:'chamber',path:chamber}:null;
+}
+function drawContactTrace(rect,now){
+  const trace=state.trace;if(!trace)return;
+  if(!state.mounted||state.host.hidden||state.pointer?.moved){trace.clear();return}
+  const p=state.hover,contact=!state.current&&state.traceLabel?{kind:'chamber',path:state.traceLabel}:p?paperContact(p.x,p.y,rect.width,rect.height,now):null;
+  if(!contact){trace.clear();return}
+  const w=rect.width,h=rect.height;
+  if(contact.kind==='chamber'){
+    const a=N.addressRecord(state.structure,contact.path);if(a)trace.tetra(a.tet.map(v=>projectOverviewPoint(v,w,h)),w,h,contact.path);else trace.clear();
+  }else if(contact.kind==='organism'){
+    const rec=state.recordById.get(contact.id);if(!rec){trace.clear();return}
+    const body=overviewBodyProjection(rec,rect,now),q=overviewOrientation(),cam=cameraZ();
+    trace.tetra(state.renderer.V0.map(v=>projectPoint(add(body.center,mul(v,body.scale)),q,cam,w,h)),w,h,contact.id);
+  }else if(contact.kind==='child'){
+    const child=childBodies(state.current).find(c=>c.id===contact.id),t=currentTranslation(),cam=cameraZ();
+    if(child)trace.tetra(state.renderer.V0.map(v=>projectWorldPoint(add(qRot(state.localQ,add(child.center,mul(v,child.scale))),t),cam,w,h)),w,h,contact.id);else trace.clear();
+  }else{
+    const piece=contact.piece,G=state.beingGeo,B=state.being;if(!G){trace.clear();return}
+    if(piece.kind==='whole')trace.tetra(G.P,w,h,piece.key);
+    else if(piece.kind==='vert')trace.marker(G.P[piece.key],7,w,h,false,piece.key);
+    else if(piece.kind==='met'){const m=G.mets.find(x=>x.id===piece.key);if(m)trace.marker(m,7,w,h,false,piece.key);else trace.clear()}
+    else if(piece.kind==='edge'){const edge=B?.edges.find(e=>e.key===piece.key);if(edge)trace.paths([[G.P[edge.a],G.P[edge.b]]],w,h,'edge',piece.key);else trace.clear()}
+    else if(piece.kind==='face'){const face=B?.faces.find(f=>f.key===piece.key);if(face){const p=face.idx.map(i=>G.P[i]);trace.paths([[...p,p[0]]],w,h,'face',piece.key)}else trace.clear()}
+    else trace.clear();
+  }
+}
+
 function attachInput(){
   const canvas=state.canvas,on=(name,handler,options={})=>canvas.addEventListener(name,e=>{if(!state?.mounted)return;e.stopImmediatePropagation();handler(e)},{...options,capture:true});
   const reader=document.createElement('section');reader.className='papers-lens-reader';reader.setAttribute('aria-label','Papers lens reading');reader.hidden=true;
@@ -1562,20 +1599,21 @@ function attachInput(){
   on('wheel',e=>{const r=canvas.getBoundingClientRect(),L=lensLocal(r);if(!L?.lock||!livePaperLensPart(L.lock.id)||!inLens(L,e.clientX-r.left,e.clientY-r.top))return;if(e.deltaY){paperLensPage(e.deltaY>0?1:-1);e.preventDefault()}},{passive:false});
   addEventListener('keydown',e=>{if(!state?.mounted||e.altKey||e.ctrlKey||e.metaKey||e.target?.closest?.('input,textarea,select,[contenteditable="true"]'))return;const L=lensLocal(state.canvas.getBoundingClientRect());if(!L?.lock||!livePaperLensPart(L.lock.id))return;const delta={PageDown:1,PageUp:-1,Home:-Infinity,End:Infinity}[e.key];if(delta!==undefined){paperLensPage(delta);e.preventDefault()}});
   on('pointerdown',e=>{if(e.button!==0)return;if(state.tutorial)stopTutorial();state.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
-  on('pointermove',e=>{{const r=canvas.getBoundingClientRect();state.hover={x:e.clientX-r.left,y:e.clientY-r.top}}const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){if(state.current){state.beingTargetQ=null;state.localQ=rotateQ(state.localQ,dx,dy)}else if(state.backgroundDrag)W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
+  on('pointermove',e=>{{const r=canvas.getBoundingClientRect();state.hover=globalThis.SSSDisplayRuntime?.isAscentPoint?.(e.clientX,e.clientY)?null:{x:e.clientX-r.left,y:e.clientY-r.top}}const p=state.pointer;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;if(p.moved){state.clickContacts=[];if(state.current){state.beingTargetQ=null;state.localQ=rotateQ(state.localQ,dx,dy)}else if(state.backgroundDrag)W.rotateBy(dx,dy,'papers:sierpinski');p.x=e.clientX;p.y=e.clientY}e.preventDefault()});
   const end=e=>{
     const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
-    if(!p.moved){
-      const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-      if(state.current){const piece=beingHit(x,y),bodyLocked=state.lensBodyId&&globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id===state.lensBodyId;if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door)&&(!bodyLocked||beingSame(piece,state.inner)))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(!state.inner){const child=hitChild(x,y,r.width,r.height);if(child)descend(child)}}
-      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now);
-        /* Descent: only the current container's content can be entered; touching content that
-         * lives deeper descends into the next container on its way first. */
-        if(!enterOverviewTarget(target,r.width,now)){const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now)}}
-    }
+    if(!p.moved&&e.type!=='pointercancel'){
+      const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,now=performance.now(),contact=paperContact(x,y,r.width,r.height,now);
+      state.clickContacts.push(!contact);state.clickContacts=state.clickContacts.slice(-2);
+      if(contact?.kind==='piece'){const piece=contact.piece,bodyLocked=state.lensBodyId&&globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id===state.lensBodyId;if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door)&&(!bodyLocked||beingSame(piece,state.inner)))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}
+      else if(contact?.kind==='child')descend(contact.id);
+      else if(contact?.kind==='organism')enterOverviewTarget(contact.id,r.width,now);
+      else if(contact?.kind==='chamber')setChamber(contact.path,now);
+    }else state.clickContacts=[];
     e.preventDefault();
   };
-  on('pointerup',end);on('pointerleave',()=>{state.hover=null});on('pointercancel',end);
+  on('pointerup',end);on('pointerleave',()=>{state.hover=null;state.trace?.clear()});on('pointercancel',end);
+  on('dblclick',e=>{const r=canvas.getBoundingClientRect(),empty=state.clickContacts.length===2&&state.clickContacts.every(Boolean)&&!paperContact(e.clientX-r.left,e.clientY-r.top,r.width,r.height);state.clickContacts=[];if(!empty)return;dispatchEvent(new CustomEvent('sss:outside-doubleclick',{detail:{id}}));e.preventDefault()});
 }
 
 function canEscape(){return !!state?.mounted&&!state.host?.hidden&&!!(state.tutorial||state.current||state.chamberPath)}
@@ -1590,7 +1628,7 @@ function escape(){
 function initialize(host,projection,backgroundDrag=true,dependency=null){
   const stage=makeStage(host),fp=fieldProjection(projection),built=buildRecords(projection,fp.root),renderer=null;
   const identities=identityIndex(projection),parents=parentIndex(projection),recordById=new Map(built.records.map(x=>[x.id,x]));
-  state={host,projection,dependency,structure:built.structure,canvas:stage.canvas,textCanvas:stage.textCanvas,tissueCanvas:stage.tissueCanvas,physiology:stage.physiology,physiologyField:stage.physiologyField,tutorialButton:stage.tutorialButton,originButton:stage.originButton,sourceInfo:stage.sourceInfo,sourceInfoField:stage.sourceInfoField,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,hudField:stage.hudField,label:stage.label,labelField:stage.labelField,renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},pointer:null,mounted:true,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
+  state={host,projection,dependency,structure:built.structure,canvas:stage.canvas,textCanvas:stage.textCanvas,tissueCanvas:stage.tissueCanvas,physiology:stage.physiology,physiologyField:stage.physiologyField,tutorialButton:stage.tutorialButton,originButton:stage.originButton,sourceInfo:stage.sourceInfo,sourceInfoField:stage.sourceInfoField,chamberLabels:stage.chamberLabels,chamberLabelNodes:stage.chamberLabelNodes,hud:stage.hud,hudField:stage.hudField,label:stage.label,labelField:stage.labelField,trace:globalThis.SSSInterlocutorFields?.createTrace?.(host)||null,traceLabel:'',clickContacts:[],renderer,identities,parents,records:built.records,recordById,current:null,stack:[],localQ:[1,0,0,0],transition:0,transitionStart:0,closing:false,backgroundPassage:0,backgroundPassageFrom:null,backgroundPassageTo:null,backgroundPassageStart:0,chamberPath:'',chamberFocus:{center:[0,0,0],scale:1},pointer:null,mounted:true,backgroundDrag:backgroundDrag!==false,pretextStatus:pretextModule?'ready':'loading',wisdomPrepared:new Map(),inquiryBodies:{},shadowApplied:false,shadowHome:''};
   state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.chamberPath='overview';state.canvas.dataset.shadowState='loading';state.textCanvas.dataset.pretextIdentity=PRETEXT_ID;state.textCanvas.dataset.pretextVersion=PRETEXT_VERSION;state.textCanvas.dataset.pretextStatus=state.pretextStatus;state.textCanvas.dataset.shadowState='loading';
   ensurePretext();hydrateShadow(host);attachInput();return state;
 }
@@ -1605,7 +1643,7 @@ function render({host,content,projection,backgroundDrag=true,dependency=null,len
   if(ui){state.ui=ui;ui.bind(state.hudField,'hud');ui.bind(state.physiologyField,'physiology');ui.bind(state.labelField,'label');ui.bind(state.sourceInfoField,'sourceInquiry')}
   return true;
 }
-function unmount({host,content}={}){if(state?.tutorial)stopTutorial();withdrawOverviewLens();withdrawPaperLens();if(state){state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.originButton.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
+function unmount({host,content}={}){if(state?.tutorial)stopTutorial();withdrawOverviewLens();withdrawPaperLens();if(state){state.trace?.clear();state.hover=null;state.clickContacts=[];state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.originButton.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}
 function activateFieldPoint(){}
 
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,canEscape,escape}));

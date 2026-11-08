@@ -34,9 +34,9 @@ A site-holon body directly under `w/display/y/` occupies site-space overview. A 
 Current first bodies:
 
 - `w/display/y/philosophy/` -> `organism:philosophy @ ε`;
-- `w/display/y/yw/crawlerbait/` -> `organism:crawlerbait @ w`;
+- `w/display/y/yy/crawlerbait/` -> `organism:crawlerbait @ y`;
 - `w/display/y/yx/schattenseiten/` -> `organism:schattenseiten @ x`;
-- `w/display/y/yy/papers/` -> `organism:papers @ y`;
+- `w/display/y/yw/papers/` -> `organism:papers @ w`;
 - `w/display/y/yz/datenschutz/` -> `organism:datenschutz @ z`;
 - `w/display/y/yxz/impressum/` -> `organism:impressum @ xz`.
 
@@ -174,7 +174,7 @@ Moving the entire body between lawful Population address folders must preserve e
 
 Killer witness:
 
-`display/y/yy/papers/ -> display/y/yz/papers/`
+`display/y/yw/papers/ -> display/y/yz/papers/`
 
 must change Papers global site address `y -> z` on rebuild with zero Papers-internal edits.
 
@@ -190,11 +190,11 @@ Global site address and interlocutor-local recursive address are separate.
 
 For Papers:
 
-`site-space:y ⟦ papers:ε ⟧`
+`site-space:w ⟦ papers:ε ⟧`
 
 For Crawlerbait:
 
-`site-space:w ⟦ crawlerbait:ε ⟧`
+`site-space:y ⟦ crawlerbait:ε ⟧`
 
 Relocation changes the outer environment only. It may never rewrite a site's local genealogy into fake concatenations such as `main:yy`.
 

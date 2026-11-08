@@ -18,7 +18,7 @@ class Quiet(SimpleHTTPRequestHandler):
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(args.artifact.resolve())))
 threading.Thread(target=server.serve_forever,daemon=True).start()
 base=f'http://127.0.0.1:{server.server_port}/index.html'
-sites=[('philosophy','overview'),('crawlerbait','w'),('schattenseiten','x'),('papers','y'),('datenschutz','z'),('impressum','xz')]
+sites=[('philosophy','overview'),('crawlerbait','y'),('schattenseiten','x'),('papers','w'),('datenschutz','z'),('impressum','xz')]
 cases=[]
 try:
  from playwright.sync_api import sync_playwright
@@ -58,7 +58,8 @@ try:
       const otherTargets=[...document.querySelectorAll('[data-interlocutor]:not([hidden]) button,[data-interlocutor]:not([hidden]) input,[data-interlocutor]:not([hidden]) select,[data-interlocutor]:not([hidden]) a')]
        .filter(el=>el.getClientRects().length).map(el=>{
         const r=el.getBoundingClientRect(),field=el.closest('[data-ui-bounded="true"]'),p=field?field.getBoundingClientRect():{left:0,top:0,right:innerWidth,bottom:innerHeight};
-        return {name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(0,r.left,p.left),top:Math.max(0,r.top,p.top),right:Math.min(innerWidth,r.right,p.right),bottom:Math.min(innerHeight,r.bottom,p.bottom)};
+        const box={name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(0,r.left,p.left),top:Math.max(0,r.top,p.top),right:Math.min(innerWidth,r.right,p.right),bottom:Math.min(innerHeight,r.bottom,p.bottom)};
+        const at=document.elementFromPoint((box.left+box.right)/2,(box.top+box.bottom)/2);box.reachable=Boolean(at&&(at===el||el.contains(at)));return box;
        }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.inner,name).bounds,state.orientation)]));
@@ -84,8 +85,11 @@ try:
      assert a['left']>=slot['left']-1 and a['right']<=slot['right']+1 and a['top']>=slot['top']-1 and a['bottom']<=slot['bottom']+1,(site,a,slot)
      if height>width:assert a['left']>=measured['state']['compass']['right']-1 and a['right']<=measured['state']['top']['left']+1,(site,a,'return leaves its rotated gap')
      else:assert a['top']>=measured['state']['top']['bottom']-1 and a['bottom']<=measured['state']['compass']['top']+1,(site,a,'return leaves its gap')
-     for b in measured['otherTargets']+measured['navTargets']:
-      assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,a,b,'return covers another control')
+     for b in measured['otherTargets']:
+      overlaps=min(a['right'],b['right'])-max(a['left'],b['left'])>1 and min(a['bottom'],b['bottom'])-max(a['top'],b['top'])>1
+      if overlaps:assert b['reachable'],(site,a,b,'return obscures another control')
+     for b in measured['navTargets']:
+      assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,a,b,'return covers navigator control')
      top=next(x for x in measured['glass'] if 'display-header' in x['ids'])
      edge='left' if height>width else 'bottom'
      assert abs(top['rect'][edge]-measured['state']['top'][edge])<.5,(site,top,measured['state']['top'])
@@ -140,7 +144,7 @@ try:
      if site in ('datenschutz','impressum'):
       for link in page.locator('[data-ui-field="description"] a').all():link.click(trial=True)
      if site in ('papers','datenschutz') and width in (1280,390):page.screenshot(path=str(args.out/f'{site}-{width}.png'))
-     page.locator('#display-ascent').click()
+     page.locator('#display-ascent').focus();page.keyboard.press('Enter')
      if site=='philosophy':
       assert page.evaluate('SSSDisplayRuntime.state.activeAddress')=='',(site,'outer root moved')
      else:

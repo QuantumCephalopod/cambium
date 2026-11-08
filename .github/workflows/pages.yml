@@ -110,7 +110,7 @@ jobs:
         run: python3 y/site-public.py --artifact _site --check
 
       - name: Prepare bounded layout browser witness
-        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/bounded-ui-grid-') || startsWith(github.ref_name, 'staging/long-axis-display-') || startsWith(github.ref_name, 'staging/spritesheet-mono-v4-'))
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/bounded-ui-grid-') || startsWith(github.ref_name, 'staging/long-axis-display-') || startsWith(github.ref_name, 'staging/spritesheet-mono-v4-') || startsWith(github.ref_name, 'staging/navigation-encounters-'))
         run: |
           python3 -m pip install playwright==1.56.0
           python3 -m playwright install --with-deps chromium
@@ -152,6 +152,20 @@ jobs:
         with:
           name: long-axis-witness
           path: _orientation-witness
+          if-no-files-found: warn
+
+      - name: Witness navigation contact and shared controls
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/navigation-encounters-')
+        run: |
+          python3 y/test-navigation-contact.py --artifact _site --out _navigation-witness/contact
+          python3 y/test-membrane-grid.py --artifact _site --out _navigation-witness/membrane
+
+      - name: Retain navigation contact witness
+        if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/navigation-encounters-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: navigation-contact-witness
+          path: _navigation-witness
           if-no-files-found: warn
 
       - name: Prepare SpriteSheet v4 source witness

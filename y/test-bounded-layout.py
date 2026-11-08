@@ -70,7 +70,7 @@ try:
   fallback=pw.chromium.launch(headless=True,args=['--disable-webgl'],**executable)
   viewports=[(1280,800),(390,844),(1275,596),(667,375),(320,568)]
   for w,h in viewports:
-   for identity,address in [('organism:philosophy','overview'),('organism:schattenseiten','x'),('organism:crawlerbait','w')]:
+   for identity,address in [('organism:philosophy','overview'),('organism:schattenseiten','x'),('organism:crawlerbait','y')]:
     if identity=='organism:philosophy' and (w,h) not in viewports[:2]:continue
     use_fallback=a.canvas2d or identity=='organism:crawlerbait'
     page=(fallback if use_fallback else browser).new_page(viewport={'width':w,'height':h},device_scale_factor=1);errors=[];console=[];page.on('console',lambda m:console.append(m.text) if m.type in ['warning','error'] else None);page.on('pageerror',lambda e:errors.append(str(e)));stem=identity.split(':')[1]+f'-{w}'

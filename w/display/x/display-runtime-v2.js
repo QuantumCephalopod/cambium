@@ -373,14 +373,14 @@ function leave(push=true){
 /* A live site can own a finer return than its enclosing membrane. The runtime
  * asks the active site first and never infers its inner navigation state. */
 function canLocalEscape(){return [...activeIds].reverse().some(id=>surfaces.get(id)?.module?.canEscape?.()===true)}
-function escapeLocal(){for(const id of [...activeIds].reverse()){const m=surfaces.get(id)?.module;if(m?.canEscape?.()===true&&m.escape?.()===true)return true}return false}
-function ascendFromControl(){
+function escapeLocal(sourceId=null){for(const id of sourceId?[sourceId]:[...activeIds].reverse()){const m=surfaces.get(id)?.module;if(m?.canEscape?.()===true&&m.escape?.()===true)return true}return false}
+function ascendFromControl(sourceId=null,source='ascent:control'){
   if(fold.busy)return false;
   // Site-owned finer returns precede the same field ascent that an empty
   // contact used to invoke; the field itself owns local walk and membrane.
-  if(escapeLocal())return true;
-  const field=fieldById.get(activeIds.at(-1));if(!field)return false;
-  field.ascend('ascent:control');return true;
+  if(escapeLocal(sourceId))return true;
+  const field=fieldById.get(sourceId||activeIds.at(-1));if(!field)return false;
+  field.ascend(source);return true;
 }
 function ascentLanguage(){
   if(!ascent)return;
@@ -388,11 +388,34 @@ function ascentLanguage(){
   ascent.setAttribute('aria-label',label);ascent.setAttribute('title',label);
   if(ascentLabel)ascentLabel.textContent=de?'ZURÜCK':'BACK';
 }
+/* The whole bounded gap is return tissue. Existing native controls in that
+ * gap keep their own contact; bare field contact is intercepted before the
+ * field's own pointer handler. Keyboard activation remains the real button. */
+function isAscentPoint(x,y){
+  if(!ascentSlot?.getBoundingClientRect)return false;
+  const r=ascentSlot.getBoundingClientRect();return x>=r.left&&x<r.right&&y>=r.top&&y<r.bottom;
+}
+function ascentFieldContact(e){
+  return isAscentPoint(e.clientX,e.clientY)&&Boolean(e.target?.closest?.('[data-interlocutor]'))&&
+    !e.target?.closest?.('button,a,input,select,textarea,label,[role="button"],[role="slider"],[contenteditable="true"]');
+}
+let ascentPointer=null;
+addEventListener('pointermove',e=>{if(ascent)ascent.dataset.pointer=String(ascentFieldContact(e))},true);
+addEventListener('pointerdown',e=>{
+  if(e.button!==0||!ascentFieldContact(e))return;
+  ascentPointer={pointerId:e.pointerId,owner:e.target.closest('[data-interlocutor]').dataset.interlocutor};e.preventDefault();e.stopImmediatePropagation();
+},true);
+addEventListener('pointerup',e=>{
+  if(ascentPointer?.pointerId!==e.pointerId)return;const owner=ascentPointer.owner;ascentPointer=null;
+  if(ascentFieldContact(e))ascendFromControl(activeIds.includes(owner)?owner:null);e.preventDefault();e.stopImmediatePropagation();
+},true);
+addEventListener('pointercancel',e=>{if(ascentPointer?.pointerId===e.pointerId)ascentPointer=null},true);
 addEventListener('sss:view',e=>{if(installingEncounter||e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'')});
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
 /* Ascent past a site's own root continues through the membrane: the same
  * gesture returns to the container the witness came through. */
 addEventListener('sss:enter-body',e=>{const d=e.detail||{};if(!d.id||!activeIds.includes(d.from)||!floatingBodies(d.from).some(b=>b.id===d.id))return;const m=registry.getMount(d.id);if(m&&m.scope===GLOBAL_SCOPE)navigateGlobal(m.rawAddress,true,d.origin||null,[...stack,{activeIds:[...activeIds],activeAddress,localView:W.view}],{from:d.from,id:d.id})});
+addEventListener('sss:outside-doubleclick',e=>{const id=e.detail?.id;if(id&&activeIds.includes(id))ascendFromControl(id,'ascent:doubleclick')});
 /* Leaving an organism is the same transition as arriving: the membrane closes,
  * the host returns, and the host camera zooms out from the body it left. */
 addEventListener('sss:membrane-ascend',e=>{
@@ -433,5 +456,5 @@ Safe.start();W.setScope({id:GLOBAL_SCOPE,projection:GLOBAL_PROJECTION});syncGlob
 /* Arriving at #scope:address enters that encounter directly; overview stays beneath it, so ascent and Escape return there. */
 if(arrival){const r=resolveGlobal(arrival);if(r.interlocutors.length)navigateGlobal(arrival,'replace')}
 function remount(id,scope,address){const relation=registry.mount(id,{scope,address});if(activeIds.length===1&&activeIds[0]===id&&scope===GLOBAL_SCOPE)activeAddress=relation.rawAddress;syncGlobalNavigator();render(W.view);return relation}
-globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingEncounter(){return hasPendingEncounter()},get hasLocalEscape(){return canLocalEscape()},get pendingFeeds(){return detailHandoff.pending()},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
+globalThis.SSSDisplayRuntime=Object.freeze({registry,activity,receiveActivity,navigateGlobal,resolveGlobal,isAscentPoint,resolve:(scope,path)=>registry.resolve(scope,path,{width:innerWidth,height:innerHeight}),dependency,remount,get state(){return snap()},get fields(){return fieldById},get ui(){return uiById},get pendingEncounter(){return hasPendingEncounter()},get hasLocalEscape(){return canLocalEscape()},get pendingFeeds(){return detailHandoff.pending()},get globalScope(){return GLOBAL_SCOPE},get globalTargets(){return globalTargets()},get rootIds(){return [...ROOT_IDS]}});
 })();

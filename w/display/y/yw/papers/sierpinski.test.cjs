@@ -304,11 +304,14 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
  const events={},field={path:'x',get container(){return this.path},descendTo(path){this.path=path;return true},ascend(){this.path=this.path.slice(0,-1);return true}};
  const canvas={dataset:{},addEventListener(name,fn){events[name]=fn},getBoundingClientRect:()=>({left:0,top:0,width:390,height:844})};
  const document={createElement:()=>({setAttribute(){},append(){},hidden:false})};
- const a=load(source,field,{document,addEventListener(){}});
- const s={mounted:true,host:{hidden:false,append(){}},canvas,records:[],recordById:new Map(),structure:{addresses:[]},current:null,stack:[],chamberPath:'x',inner:null,transition:1,backgroundDrag:true};
+ const raised=[];class CustomEvent{constructor(type,options){this.type=type;this.detail=options.detail}}
+ const a=load(source,field,{document,addEventListener(){},dispatchEvent:e=>raised.push(e),CustomEvent});
+ const s={mounted:true,host:{hidden:false,append(){}},canvas,records:[],recordById:new Map(),structure:{addresses:[]},current:null,stack:[],chamberPath:'x',inner:null,transition:1,backgroundDrag:true,clickContacts:[]};
  a.setState(s);a.attachInput();
  const click=()=>{const e={button:0,pointerId:3,clientX:1,clientY:1,preventDefault(){},stopImmediatePropagation(){}};events.pointerdown(e);events.pointerup(e)};
  click();assert.equal(s.chamberPath,'x','empty contact keeps the Papers chamber');
+ click();events.dblclick({clientX:1,clientY:1,preventDefault(){},stopImmediatePropagation(){}});
+ assert.equal(raised.at(-1).type,'sss:outside-doubleclick');assert.equal(raised.at(-1).detail.id,'organism:papers');
  assert(a.escape());assert.equal(s.chamberPath,'','the local return still ascends the chamber');
  s.current={id:'S.actual'};s.stack=[];s.closing=false;s.beingGeo=null;s.transition=0;
  click();assert.equal(s.closing,false,'empty contact does not close the selected body');

@@ -32,7 +32,7 @@ def scene(page,identity):
 def enter_papers(page):
  # The public address is routing. All contact, tissue and return evidence below
  # still uses actual pointer/keyboard gestures in the unmodified owner body.
- page.goto(base+'#main:y',wait_until='domcontentloaded')
+ page.goto(base+'#main:w',wait_until='domcontentloaded')
  scene(page,'organism:papers')
  page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.shadowState==="ready"',timeout=60000)
  print(json.dumps({'entry':'Papers ready','viewport':page.viewport_size}),flush=True)

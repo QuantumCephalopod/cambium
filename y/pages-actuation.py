@@ -17,7 +17,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parent.parent
 REPOSITORY = "self-similar-systems/cambium"
 MATERIALIZER = ".github/workflows/papers-shadow-materialize.yml"
-SHADOW = "w/display/y/yy/papers/public/papers-shadow/current.json"
+SHADOW = "w/display/y/yw/papers/public/papers-shadow/current.json"
 
 
 def trusted_completion(event: dict, repository: str) -> bool:
