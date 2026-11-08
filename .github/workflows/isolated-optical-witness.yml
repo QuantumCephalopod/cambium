@@ -1,0 +1,34 @@
+name: Isolated optical return witness
+
+on:
+  push:
+    branches: ['witness/optics-20261108']
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build current artifact
+        run: python3 y/site-public.py --artifact _site
+      - name: Install browser
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Witness optical returns
+        run: python3 y/test-display-optics-browser.py --artifact _site --out _optical-witness
+      - name: Witness first-entry cancellation
+        run: python3 y/test-first-entry.py --artifact _site --out _first-entry-witness
+      - name: Retain evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: isolated-optical-witness
+          path: |
+            _optical-witness
+            _first-entry-witness
+          if-no-files-found: warn
