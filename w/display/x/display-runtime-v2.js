@@ -400,16 +400,20 @@ function ascentFieldContact(e){
     !e.target?.closest?.('button,a,input,select,textarea,label,[role="button"],[role="slider"],[contenteditable="true"]');
 }
 let ascentPointer=null;
-addEventListener('pointermove',e=>{if(ascent)ascent.dataset.pointer=String(ascentFieldContact(e))},true);
+addEventListener('pointermove',e=>{
+  if(ascent)ascent.dataset.pointer=String(ascentFieldContact(e));
+  if(ascentPointer?.pointerId===e.pointerId&&Math.hypot(e.clientX-ascentPointer.x,e.clientY-ascentPointer.y)>3)ascentPointer.moved=true;
+},true);
 addEventListener('pointerdown',e=>{
   if(e.button!==0||!ascentFieldContact(e))return;
-  ascentPointer={pointerId:e.pointerId,owner:e.target.closest('[data-interlocutor]').dataset.interlocutor};e.preventDefault();e.stopImmediatePropagation();
+  ascentPointer={pointerId:e.pointerId,owner:e.target.closest('[data-interlocutor]').dataset.interlocutor,x:e.clientX,y:e.clientY,moved:false};e.preventDefault();e.stopImmediatePropagation();
 },true);
 addEventListener('pointerup',e=>{
-  if(ascentPointer?.pointerId!==e.pointerId)return;const owner=ascentPointer.owner;ascentPointer=null;
-  if(ascentFieldContact(e))ascendFromControl(activeIds.includes(owner)?owner:null);e.preventDefault();e.stopImmediatePropagation();
+  if(ascentPointer?.pointerId!==e.pointerId)return;const {owner,moved}=ascentPointer;ascentPointer=null;
+  if(!moved&&ascentFieldContact(e))ascendFromControl(activeIds.includes(owner)?owner:null);e.preventDefault();e.stopImmediatePropagation();
 },true);
 addEventListener('pointercancel',e=>{if(ascentPointer?.pointerId===e.pointerId)ascentPointer=null},true);
+addEventListener('blur',()=>{ascentPointer=null},true);
 addEventListener('sss:view',e=>{if(installingEncounter||e.detail.scopeId!==GLOBAL_SCOPE)return;render(e.detail.path||'')});
 addEventListener('sss:global-navigate',e=>{if(e.detail?.scopeId!==GLOBAL_SCOPE)return;navigateGlobal(e.detail.path??'',true,e.detail.origin||null)});
 /* Ascent past a site's own root continues through the membrane: the same

@@ -89,6 +89,8 @@ try:
         page.mouse.dblclick(400,700,delay=70)
         page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="overview"')
         s=slot_geometry(page,False)['slot'];x=s['left']+s['width']*.3;y=s['top']+s['height']*.7
+        page.mouse.move(x,y);page.mouse.down();page.mouse.move(x+20,y+20);page.mouse.up()
+        assert page.evaluate('SSSDisplayRuntime.state.activeAddress')=='w','a drag across the return field must not ascend'
         page.mouse.click(x,y)
         page.wait_for_function('SSSDisplayRuntime.state.activeAddress===""&&document.getElementById("tetra-fold").dataset.fold==="open"',timeout=180000)
         assert not errors,errors
