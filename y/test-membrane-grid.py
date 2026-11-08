@@ -12,10 +12,10 @@ import argparse,json,os,threading
 p=argparse.ArgumentParser()
 p.add_argument('--artifact',type=Path,required=True)
 p.add_argument('--out',type=Path,required=True)
-a=p.parse_args();a.out.mkdir(parents=True,exist_ok=True)
+args=p.parse_args();args.out.mkdir(parents=True,exist_ok=True)
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
-server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())))
+server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(args.artifact.resolve())))
 threading.Thread(target=server.serve_forever,daemon=True).start()
 base=f'http://127.0.0.1:{server.server_port}/index.html'
 sites=[('philosophy','overview'),('crawlerbait','w'),('schattenseiten','x'),('papers','y'),('datenschutz','z'),('impressum','xz')]
@@ -132,7 +132,7 @@ try:
       assert text['scroll']<=text['client']+1,(site,text,'description requires horizontal scrolling')
      if site in ('datenschutz','impressum'):
       for link in page.locator('[data-ui-field="description"] a').all():link.click(trial=True)
-     if site in ('papers','datenschutz') and width in (1280,390):page.screenshot(path=str(a.out/f'{site}-{width}.png'))
+     if site in ('papers','datenschutz') and width in (1280,390):page.screenshot(path=str(args.out/f'{site}-{width}.png'))
      page.locator('#display-ascent').click()
      if site=='philosophy':
       assert page.evaluate('SSSDisplayRuntime.state.activeAddress')=='',(site,'outer root moved')
@@ -144,5 +144,5 @@ try:
   browser.close()
 finally:
  server.shutdown();server.server_close()
- (a.out/'membrane.json').write_text(json.dumps({'scope':__doc__,'cases':cases},indent=2)+'\n')
+ (args.out/'membrane.json').write_text(json.dumps({'scope':__doc__,'cases':cases},indent=2)+'\n')
 print(json.dumps({'status':'PASS','cases':len(cases),'sites':[s for s,_ in sites]}))
