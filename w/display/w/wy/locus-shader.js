@@ -105,6 +105,7 @@ function fieldPointRecords(structure,projection){
 }
 function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope,environment=null,bodies=null,presentation=null}){
   if(!element||!canvas||!projection?.root)throw new Error('interlocutor field surface incomplete: '+id);
+  const canvasState=(key,value)=>{value=String(value);if(canvas.dataset[key]!==value)canvas.dataset[key]=value};
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
   if(typeof shader.preload==='function')shader.preload();
@@ -553,11 +554,11 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
     gl.disable(gl.BLEND);gl.bindTexture(gl.TEXTURE_2D,tex0);gl.activeTexture(unit0);
   }
-  function resetLabelInk(){labelInk?.reset();canvas.dataset.refractedLabels='0'}
+  function resetLabelInk(){labelInk?.reset();canvasState('refractedLabels','0')}
   function drawLabelInk(r,w,h,additionalTarget=null,foreground=null){
     const Ink=globalThis.SSSDisplayLabelInk;if(!Ink||!labelHost)return;
     if(!labelInk)labelInk=Ink.create(gl,labelHost);
-    canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget,foreground)?'1':'0';
+    canvasState('refractedLabels',labelInk.draw(r,w,h,additionalTarget,foreground)?'1':'0');
   }
   addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview();disposeForeground();disposeScene()});
   function disposePreview(){if(!PREVIEW)return;gl.deleteFramebuffer(PREVIEW.fb);gl.deleteRenderbuffer(PREVIEW.depth);gl.deleteTexture(PREVIEW.tex);PREVIEW=null}
@@ -660,18 +661,17 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     return S;
   }
   function glassBegin(r,w,h,ms){
-    canvas.dataset.glass='0';
     const Gm=globalThis.SSSDisplayGlass;
-    if(GLASS_OFF||!Gm||!Gm.enabled())return null;
+    if(GLASS_OFF||!Gm||!Gm.enabled()){canvasState('glass','0');return null}
     const Ln=globalThis.SSSDisplayLens,snap=Ln?Ln.snapshot(ms):null;
     const pack=Gm.rects(r,{width:w,height:h},ms,snap?.home?.ids||null,snap?.lens);
-    if(!pack.count&&!snap)return null;
+    if(!pack.count&&!snap){canvasState('glass','0');return null}
     try{if(!SCENE||SCENE.w!==w||SCENE.h!==h)buildScene(w,h)}
-    catch(err){console.warn('display glass unavailable for '+id,err);GLASS_OFF=true;disposeScene();gl.bindFramebuffer(gl.FRAMEBUFFER,null);return null}
+    catch(err){console.warn('display glass unavailable for '+id,err);GLASS_OFF=true;disposeScene();gl.bindFramebuffer(gl.FRAMEBUFFER,null);canvasState('glass','0');return null}
     const native=gl.bindFramebuffer;
     gl.bindFramebuffer=function(target,fb){return native.call(gl,target,fb===null?SCENE.ms:fb)};
     gl.bindFramebuffer(gl.FRAMEBUFFER,null);
-    canvas.dataset.glass=String(pack.count+(snap?1:0));
+    canvasState('glass',pack.count+(snap?1:0));
     return {pack,Gm,snap,r};
   }
   function glassEnd(g,w,h,previewReady=false,foregroundReady=false){
@@ -766,7 +766,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     updateLabels(r);
     const fb=floatingBodies();
     for(const B of fb)B.pos=driftAt(B.drift,ms);
-    canvas.dataset.container=cur||'ε';canvas.dataset.visibleCells=String(cells.length);canvas.dataset.visibleContent=String(visible.length);canvas.dataset.floatingBodies=fb.map(B=>B.id).join(' ');
+    canvasState('container',cur||'ε');canvasState('visibleCells',cells.length);canvasState('visibleContent',visible.length);canvasState('floatingBodies',fb.map(B=>B.id).join(' '));
     for(const [bodyId,n] of bodyLabels)if(!BODIES.get(bodyId)?.active)n.hidden=true;
     for(const B of fb){
       const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r),size=labelSizes.get(n)||{w:0,h:0};
@@ -783,7 +783,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         gl.uniform4fv(H.U.quat,new Float32Array(W.orientation));gl.uniform3fv(H.U.center,new Float32Array(hv.center));gl.uniform1f(H.U.span,hv.span);gl.uniform1f(H.U.region,hv.region);
         if(H.U.time)gl.uniform1f(H.U.time,ms*.001);if(H.U.focus)gl.uniform1f(H.U.focus,hv.region);if(H.U.resolution)gl.uniform2f(H.U.resolution,w,h);if(H.U.pal)gl.uniform3fv(H.U.pal,new Float32Array(H.colors.flat()));
         gl.drawArrays(gl.TRIANGLES,0,3);prepareClear();gl.clear(gl.DEPTH_BUFFER_BIT);
-        canvas.dataset.hostView=hv.e.hostId;canvas.dataset.hostPath=hv.e.path;
+        canvasState('hostView',hv.e.hostId);canvasState('hostPath',hv.e.path);
       }else{delete canvas.dataset.hostView;delete canvas.dataset.hostPath}
       gl.disable(gl.SCISSOR_TEST);applyState();gl.useProgram(GL.p);
       gl.uniformMatrix4fv(GL.U.proj,false,proj);gl.uniformMatrix4fv(GL.U.view,false,view);gl.uniformMatrix4fv(GL.U.model,false,mdl);

@@ -158,9 +158,6 @@
       const changed=[...(record.addedNodes||[]),...(record.removedNodes||[])];
       if(!changed.some(hasSurface)&&!overlay.querySelector?.(SURFACE))return false;
     }
-    // Per-frame field diagnostics on the canvas do not own HUD geometry.
-    if(node.tagName==='CANVAS'&&record.type==='attributes'&&/^data-/.test(record.attributeName||'')&&
-      !/^data-(display-occupancy|display-glass|display-ui-field|composite)$/.test(record.attributeName))return false;
     return true;
   }
   function mutations(records){if(records.some(affectsObservation))invalidate()}

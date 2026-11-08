@@ -59,7 +59,10 @@ const newHud=element();newHud.id='new';newHud.parentElement=overlay;newHud.attrs
 newHud.matches=selector=>selector.includes('data-display-glass');newHud.getBoundingClientRect=()=>{counts.rects++;return {left:300,top:40,width:100,height:80}};
 huds.push(newHud);pending.push({type:'childList',target:overlay,addedNodes:[newHud],removedNodes:[]});rectangle(26);assert.equal(counts.scans,10);
 huds.pop();pending.push({type:'childList',target:overlay,addedNodes:[],removedNodes:[newHud]});rectangle(26);assert.equal(counts.scans,11);
-G.observe();G.observe();assert.equal(counts.scans,13,'unframed reads must not reuse geometry');
+// Canvas attributes may participate in CSS selectors affecting the HUD.
+const fieldCanvas=element('canvas');pending.push({type:'attributes',target:fieldCanvas,attributeName:'data-dynamic-style'});
+rectangle(26);assert.equal(counts.scans,12,'canvas attribute mutation must reopen observation');
+G.observe();G.observe();assert.equal(counts.scans,14,'unframed reads must not reuse geometry');
 const before={...counts};
 for(let i=0;i<60;i++){
  const frame=100+i*16;frames.shift()(frame);wallClock=frame+12;
