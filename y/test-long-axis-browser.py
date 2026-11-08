@@ -99,8 +99,16 @@ try:
                     page.locator('#mini-trigger').click();page.locator('#mini-trigger').click()
                     page.locator('#mini-help-toggle').click();assert page.locator('#mini-guide').is_visible()
                     page.locator('#mini-help-toggle').click()
+                    # Retain actual pointer access when the rotated control
+                    # fields are narrow and their contents wrap or scroll.
+                    for link in page.locator('#legal-links a').all():
+                        link.scroll_into_view_if_needed();link.click(trial=True,timeout=10000)
+                    page.locator('.inverse-control span').click(trial=True,timeout=10000)
+                    if site in ('crawlerbait','schattenseiten'):
+                        text=page.locator('[data-ui-field="header"] h1')
+                        assert text.is_visible() and text.bounding_box()['width']>=16,(site,'header title lost reading room')
                     assert not errors,(site,errors)
-                    if site=='philosophy':page.screenshot(path=str(args.out/(stem+'.png')))
+                    if portrait or site=='philosophy':page.screenshot(path=str(args.out/(stem+'.png')))
                     cases.append({'site':site,'viewport':[width,height],'mode':result['mode'],'fields':len(result['fields']),'compass':compass,'fit':result['fit']})
                     print('PASS',stem,flush=True)
                 except Exception:
