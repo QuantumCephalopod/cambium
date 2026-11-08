@@ -1,0 +1,28 @@
+name: isolated orientation regressions
+on:
+  push:
+    branches: ['witness/long-axis-regressions-20261108']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        witness: [membrane, bounded]
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 y/site-public.py --artifact _site
+      - run: python3 -m pip install playwright==1.56.0
+      - run: python3 -m playwright install --with-deps chromium
+      - if: matrix.witness == 'membrane'
+        run: python3 y/test-membrane-grid.py --artifact _site --out _witness
+      - if: matrix.witness == 'bounded'
+        run: python3 y/test-bounded-layout.py --artifact _site --out _witness --canvas2d
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: orientation-regression-${{ matrix.witness }}
+          path: _witness
+          if-no-files-found: warn
