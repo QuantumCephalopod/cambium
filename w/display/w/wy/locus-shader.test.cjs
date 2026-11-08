@@ -52,7 +52,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   ctx2d.translate=(x,y)=>calls.push({type:'point2d',x,y});
   const canvas=element();Object.assign(canvas,{width,height,getContext:type=>type==='2d'?ctx2d:webgl?gl:null,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   gl.canvas=canvas;
-  const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
+  const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},rotateBy(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
   const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element(),createElementNS:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
   if(glass){const G=require('../../z/zz/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:preview||lens?0:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
   if(lens!==false&&(preview||lens))context.SSSDisplayLens={foreground:(_id,frame)=>foreground?foreground(frame):null,snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:typeof lensHome==='function'?lensHome():lensHome})};
@@ -93,6 +93,22 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
  f.canvas.pointerdown(empty);f.canvas.pointerup(empty);f.canvas.dblclick(empty);
  assert.equal(f.events.at(-1).type,'sss:outside-doubleclick');
  f.canvas.pointerleave();f.frame(48);assert.equal(ink.style.display,'none');
+}
+
+// A native touch double-tap requests one return even without a dblclick event.
+// A later synthetic dblclick cannot return a second time; a slow cumulative
+// drag between taps must also cancel the pending pair.
+{
+ const f=fixture();f.frame(0);
+ const e={button:0,pointerId:1,pointerType:'touch',isPrimary:true,clientX:1,clientY:1,timeStamp:100,preventDefault(){}};
+ const tap=()=>{f.canvas.pointerdown(e);f.canvas.pointerup(e)};
+ tap();assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,0);
+ e.timeStamp=250;tap();assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1);
+ f.canvas.dblclick(e);assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1);
+ e.timeStamp=500;tap();e.timeStamp=600;f.canvas.pointerdown(e);
+ for(const x of [2,3,4])f.canvas.pointermove({...e,clientX:x});
+ f.canvas.pointerup({...e,clientX:4});e.timeStamp=700;tap();
+ assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1,'drag left a live touch pair');
 }
 
 function assertClears(f){

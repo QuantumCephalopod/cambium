@@ -117,7 +117,35 @@ try:
         assert not errors,errors
         page.screenshot(path=str(args.out/'portrait-return.png'))
         cases.append({'carrier':[390,844],'rotatedReturn':values['slot'],'keyboardReturn':True})
-        page.close();browser.close()
+        page.close()
+
+        # Chromium touch does not synthesize dblclick here. Exercise actual
+        # primary touch input on the shared field and Papers' own canvas.
+        context=browser.new_context(viewport={'width':390,'height':844},device_scale_factor=1,is_mobile=True,has_touch=True)
+        page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+        page.goto(base+'#main:overview',wait_until='domcontentloaded');ready(page,'organism:philosophy')
+        page.evaluate("SSSInterlocutorFields.get('organism:philosophy').descendTo('w','touch-witness')")
+        page.wait_for_timeout(500)
+        assert page.evaluate("document.elementFromPoint(20,400).classList.contains('interlocutor-background')")
+        page.touchscreen.tap(20,400);assert page.evaluate('SSSWorldView.view')=='w'
+        page.wait_for_timeout(500)
+        page.touchscreen.tap(20,400);page.touchscreen.tap(20,400)
+        page.wait_for_function('SSSWorldView.view===""')
+        page.wait_for_timeout(300);assert page.evaluate('SSSWorldView.view')==''
+        page.goto(base+'#main:w',wait_until='domcontentloaded');ready(page,'organism:papers')
+        page.wait_for_selector('.papers-chamber-label[data-gene=w]')
+        page.evaluate("document.querySelector('.papers-chamber-label[data-gene=w]').click()")
+        page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="w"')
+        page.wait_for_timeout(500)
+        assert page.evaluate("document.elementFromPoint(20,400).classList.contains('papers-sierpinski-stage')")
+        page.touchscreen.tap(20,400);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='w'
+        page.wait_for_timeout(500)
+        page.touchscreen.tap(20,400);page.touchscreen.tap(20,400)
+        page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="overview"')
+        page.wait_for_timeout(300);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='overview'
+        assert not errors,errors
+        cases.append({'carrier':[390,844],'touchFieldDoubleTap':True,'touchPapersDoubleTap':True,'singleTouchInert':True})
+        context.close();browser.close()
 finally:
     server.shutdown();server.server_close()
     (args.out/'navigation-contact.json').write_text(json.dumps({'scope':__doc__,'cases':cases},indent=2)+'\n')

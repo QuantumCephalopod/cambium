@@ -313,6 +313,12 @@ edge.weave=.2;assert.equal(api.foldedEdgeGlyphs(edge,80,1),glyphs,'opening resto
  click();events.dblclick({clientX:1,clientY:1,preventDefault(){},stopImmediatePropagation(){}});
  assert.equal(raised.at(-1).type,'sss:outside-doubleclick');assert.equal(raised.at(-1).detail.id,'organism:papers');
  assert(a.escape());assert.equal(s.chamberPath,'','the local return still ascends the chamber');
+ s.chamberPath='x';const before=raised.length;
+ const touch={button:0,pointerId:4,pointerType:'touch',isPrimary:true,clientX:1,clientY:1,timeStamp:100,preventDefault(){},stopImmediatePropagation(){}};
+ events.pointerdown(touch);events.pointerup(touch);assert.equal(raised.length,before);
+ touch.timeStamp=250;events.pointerdown(touch);events.pointerup(touch);
+ assert.equal(raised.length,before+1);assert.equal(raised.at(-1).type,'sss:outside-doubleclick');
+ events.dblclick(touch);assert.equal(raised.length,before+1,'synthetic dblclick must not repeat touch return');
  s.current={id:'S.actual'};s.stack=[];s.closing=false;s.beingGeo=null;s.transition=0;
  click();assert.equal(s.closing,false,'empty contact does not close the selected body');
  assert(a.escape());assert.equal(s.closing,true,'the local return still closes the selected body');

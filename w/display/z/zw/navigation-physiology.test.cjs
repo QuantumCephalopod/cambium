@@ -4,6 +4,23 @@ const assert = require('node:assert/strict');
 const A = require('../../../../z/address.js');
 const N = require('./navigation-physiology.js');
 
+// Touch does not reliably synthesize dblclick; only two consecutive nearby
+// empty taps request the shared return, and unrelated input breaks the pair.
+{
+  const surface={},other={},listeners=new Map();
+  const watch={addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:(name,fn)=>{if(listeners.get(name)===fn)listeners.delete(name)}};
+  const tap=N.createTouchDoubleTap(surface,watch);
+  const contact=(time,x=10,empty=true)=>tap.contact({pointerType:'touch',isPrimary:true,timeStamp:time,clientX:x,clientY:10},empty);
+  const down=(target=surface,primary=true)=>listeners.get('pointerdown')({target,pointerType:'touch',isPrimary:primary});
+  down();assert.equal(contact(100),false);down();assert.equal(contact(300),true);
+  down();assert.equal(contact(400),false);down(other);down();assert.equal(contact(500),false);
+  down();assert.equal(contact(1000),false,'slow taps cannot return');
+  down();assert.equal(contact(1100,80),false,'far taps cannot return');
+  down();assert.equal(contact(1200,80,false),false,'body contact clears the pair');
+  down();assert.equal(contact(1250),false);down(surface,false);down();assert.equal(contact(1300),false,'multitouch clears the pair');
+  tap.reset();down();assert.equal(contact(1400),false);tap.dispose();assert.equal(listeners.size,0);
+}
+
 // Child/cell geometry is the neutral capability lent to local presentations.
 // Pin the former split arithmetic, including a non-root parent frame.
 {

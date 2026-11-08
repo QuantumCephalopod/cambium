@@ -899,15 +899,16 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   const hasPoints=pointRecords.length>0||typeof shader.snapshot==='function';
   canvas.dataset.backgroundDrag=draggable?'true':'false';
   {
+    const touchReturn=N.createTouchDoubleTap(canvas);
     canvas.style.pointerEvents='auto';
     canvas.style.cursor=draggable?'grab':'default';
-    canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;down={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
+    canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&e.isPrimary===false){touchReturn.reset();return}if(e.button!==0)return;down={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
     canvas.addEventListener('pointermove',e=>{
       const r=canvas.getBoundingClientRect();
       if(down&&down.id===e.pointerId){
         const dx=e.clientX-down.x,dy=e.clientY-down.y;
-        if(Math.hypot(dx,dy)>2)down.moved=true;
-        if(down.moved){hoverPosition=null;clickContacts=[];setHover('');trace?.clear();updateTooltip(null,r)}
+        if(Math.hypot(e.clientX-down.startX,e.clientY-down.startY)>2)down.moved=true;
+        if(down.moved){touchReturn.reset();hoverPosition=null;clickContacts=[];setHover('');trace?.clear();updateTooltip(null,r)}
         if(draggable){W.rotateBy(dx,dy,'interlocutor:'+id);down.x=e.clientX;down.y=e.clientY;e.preventDefault();return}
         if(down.moved){e.preventDefault();return}
       }
@@ -922,11 +923,12 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       if(!wasMoved&&e.type!=='pointercancel'){
         const r=canvas.getBoundingClientRect(),hit=contactAt(e.clientX-r.left,e.clientY-r.top,r);
         clickContacts.push(!hit);clickContacts=clickContacts.slice(-2);
+        if(touchReturn.contact(e,!hit)){clickContacts=[];dispatchEvent(new CustomEvent('sss:outside-doubleclick',{detail:{id}}))}
         if(hit?.kind==='body')enterBody(hit.id,{x:e.clientX,y:e.clientY});
         else if(hit?.kind==='point'&&hit.point.rec.pool)descendTo(hit.point.rec.path,'pool:'+id);
         else if(hit?.kind==='point')selectPoint(hit.point.rec.spec.id,true);
         else if(hit?.kind==='cell')descendTo(hit.path,'descent:'+id);
-      }else{clickContacts=[]}
+      }else{touchReturn.reset();clickContacts=[]}
       if(e.type==='pointercancel'){hoverPosition=null;trace?.clear()}
       else if(e.pointerType!=='touch'){
         hoverPosition={x:e.clientX,y:e.clientY};
@@ -936,7 +938,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
     canvas.addEventListener('dblclick',e=>{
       const r=canvas.getBoundingClientRect(),empty=clickContacts.length===2&&clickContacts.every(Boolean)&&!contactAt(e.clientX-r.left,e.clientY-r.top,r);
-      clickContacts=[];if(!empty)return;
+      touchReturn.reset();clickContacts=[];if(!empty)return;
       dispatchEvent(new CustomEvent('sss:outside-doubleclick',{detail:{id}}));e.preventDefault();
     });
   }

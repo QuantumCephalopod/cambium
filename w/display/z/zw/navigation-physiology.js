@@ -146,6 +146,29 @@
     throw new Error('axis must be x or y');
   }
 
+  // Touch browsers need not synthesize dblclick. Two nearby, timely, primary
+  // empty contacts form the same return request; another input breaks the pair.
+  function createTouchDoubleTap(surface, watch = globalThis) {
+    let first = null;
+    const reset = () => { first = null; };
+    const pointerDown = e => {
+      if (e.target !== surface || e.pointerType !== 'touch' || e.isPrimary === false) reset();
+    };
+    watch?.addEventListener?.('pointerdown', pointerDown, true);
+    function contact(e, empty) {
+      if (e.pointerType !== 'touch' || e.isPrimary === false || !empty ||
+          !Number.isFinite(e.timeStamp) || !Number.isFinite(e.clientX) || !Number.isFinite(e.clientY)) {
+        reset(); return false;
+      }
+      const pair = first && e.timeStamp >= first.time && e.timeStamp - first.time <= 450 &&
+        Math.hypot(e.clientX - first.x, e.clientY - first.y) <= 24;
+      first = pair ? null : {time:e.timeStamp, x:e.clientX, y:e.clientY};
+      return !!pair;
+    }
+    function dispose() { reset(); watch?.removeEventListener?.('pointerdown', pointerDown, true); }
+    return Object.freeze({contact, reset, dispose});
+  }
+
   function createState(rootNode) {
     const structure = collectStructure(rootNode);
     let view = '';
@@ -165,5 +188,5 @@
     });
   }
 
-  return Object.freeze({GENES,V0,hasFullSplit,childTet,splitTet,cellTet,centroid,semanticPoint,cellForPath,collectStructure,addressRecord,bodyPlacement,bodyDrift,bodyPosition,sampleTet,focusTarget,velocity,axisValue,createState});
+  return Object.freeze({GENES,V0,hasFullSplit,childTet,splitTet,cellTet,centroid,semanticPoint,cellForPath,collectStructure,addressRecord,bodyPlacement,bodyDrift,bodyPosition,sampleTet,focusTarget,velocity,axisValue,createTouchDoubleTap,createState});
 });
