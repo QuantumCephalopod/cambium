@@ -18,7 +18,8 @@ const N = require('./navigation-physiology.js');
   down();assert.equal(contact(1100,80),false,'far taps cannot return');
   down();assert.equal(contact(1200,80,false),false,'body contact clears the pair');
   down();assert.equal(contact(1250),false);down(surface,false);down();assert.equal(contact(1300),false,'multitouch clears the pair');
-  tap.reset();down();assert.equal(contact(1400),false);tap.dispose();assert.equal(listeners.size,0);
+  tap.reset();down();assert.equal(contact(1400),false);listeners.get('keydown')();down();assert.equal(contact(1450),false,'keyboard input clears the pair');
+  tap.dispose();assert.equal(listeners.size,0);
 }
 
 // Child/cell geometry is the neutral capability lent to local presentations.

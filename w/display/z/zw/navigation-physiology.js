@@ -155,6 +155,7 @@
       if (e.target !== surface || e.pointerType !== 'touch' || e.isPrimary === false) reset();
     };
     watch?.addEventListener?.('pointerdown', pointerDown, true);
+    for (const name of ['keydown','wheel','blur']) watch?.addEventListener?.(name, reset, true);
     function contact(e, empty) {
       if (e.pointerType !== 'touch' || e.isPrimary === false || !empty ||
           !Number.isFinite(e.timeStamp) || !Number.isFinite(e.clientX) || !Number.isFinite(e.clientY)) {
@@ -165,7 +166,10 @@
       first = pair ? null : {time:e.timeStamp, x:e.clientX, y:e.clientY};
       return !!pair;
     }
-    function dispose() { reset(); watch?.removeEventListener?.('pointerdown', pointerDown, true); }
+    function dispose() {
+      reset(); watch?.removeEventListener?.('pointerdown', pointerDown, true);
+      for (const name of ['keydown','wheel','blur']) watch?.removeEventListener?.(name, reset, true);
+    }
     return Object.freeze({contact, reset, dispose});
   }
 

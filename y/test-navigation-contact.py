@@ -6,6 +6,7 @@ from pathlib import Path
 import argparse
 import json
 import threading
+import time
 
 from playwright.sync_api import sync_playwright
 
@@ -27,6 +28,14 @@ cases = []
 
 def ready(page, identity):
     page.wait_for_function('id=>window.SSSDisplayRuntime?.state.activeIds.includes(id)&&document.getElementById("tetra-fold").dataset.fold==="open"', arg=identity, timeout=180000)
+
+def double_touch(page, x, y):
+    # CDP timestamps model two adjacent real touch contacts even when a slow
+    # software renderer delays the automation round trip between injections.
+    c=page.context.new_cdp_session(page);t=time.time()
+    for kind,points,offset in [('touchStart',[{'x':x,'y':y,'id':9}],0),('touchEnd',[],.05),('touchStart',[{'x':x,'y':y,'id':9}],.15),('touchEnd',[],.2)]:
+        c.send('Input.dispatchTouchEvent',{'type':kind,'touchPoints':points,'timestamp':t+offset})
+    c.detach()
 
 def slot_geometry(page, portrait):
     values = page.evaluate('''()=>{const s=SSSDisplayMembraneGrid.snapshot(),b=document.getElementById('display-ascent').getBoundingClientRect();return {top:s.top,compass:s.compass,slot:s.ascent,button:{left:b.left,top:b.top,right:b.right,bottom:b.bottom,width:b.width,height:b.height}}}''')
@@ -129,7 +138,7 @@ try:
         assert page.evaluate("document.elementFromPoint(20,400).classList.contains('interlocutor-background')")
         page.touchscreen.tap(20,400);assert page.evaluate('SSSWorldView.view')=='w'
         page.wait_for_timeout(500)
-        page.touchscreen.tap(20,400);page.touchscreen.tap(20,400)
+        double_touch(page,20,400)
         page.wait_for_function('SSSWorldView.view===""')
         page.wait_for_timeout(300);assert page.evaluate('SSSWorldView.view')==''
         page.goto(base+'#main:w',wait_until='domcontentloaded');ready(page,'organism:papers')
@@ -140,7 +149,7 @@ try:
         assert page.evaluate("document.elementFromPoint(20,400).classList.contains('papers-sierpinski-stage')")
         page.touchscreen.tap(20,400);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='w'
         page.wait_for_timeout(500)
-        page.touchscreen.tap(20,400);page.touchscreen.tap(20,400)
+        double_touch(page,20,400)
         page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="overview"')
         page.wait_for_timeout(300);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='overview'
         assert not errors,errors
