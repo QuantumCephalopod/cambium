@@ -58,8 +58,8 @@ try:
         const r=el.getBoundingClientRect(),field=el.closest('[data-ui-bounded="true"]'),p=field?field.getBoundingClientRect():{left:0,top:0,right:innerWidth,bottom:innerHeight};
         return {name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(0,r.left,p.left),top:Math.max(0,r.top,p.top),right:Math.min(innerWidth,r.right,p.right),bottom:Math.min(innerHeight,r.bottom,p.bottom)};
        }).filter(r=>r.right>r.left&&r.bottom>r.top);
-      const topAddress=SSSUIGrid.fieldInfo(state.outer,'top').bounds;
-      const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.fieldInfo(state.inner,name).bounds]));
+      const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
+      const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.inner,name).bounds,state.orientation)]));
       return {state:{top:state.top,compass:state.compass,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
@@ -80,12 +80,15 @@ try:
      a=measured['returnButton'];slot=measured['returnSlot'];field=measured['state']['ascent']
      assert all(abs(slot[k]-field[k])<1 for k in ['left','top','width','height']),(site,slot,field)
      assert a['left']>=slot['left']-1 and a['right']<=slot['right']+1 and a['top']>=slot['top']-1 and a['bottom']<=slot['bottom']+1,(site,a,slot)
-     assert a['top']>=measured['state']['top']['bottom']-1 and a['bottom']<=measured['state']['compass']['top']+1,(site,a,'return leaves its gap')
+     if height>width:assert a['left']>=measured['state']['compass']['right']-1 and a['right']<=measured['state']['top']['left']+1,(site,a,'return leaves its rotated gap')
+     else:assert a['top']>=measured['state']['top']['bottom']-1 and a['bottom']<=measured['state']['compass']['top']+1,(site,a,'return leaves its gap')
      for b in measured['otherTargets']+measured['navTargets']:
       assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,a,b,'return covers another control')
      top=next(x for x in measured['glass'] if 'display-header' in x['ids'])
-     assert abs(top['rect']['bottom']-measured['state']['top']['bottom'])<.5,(site,top,measured['state']['top'])
-     assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5
+     edge='left' if height>width else 'bottom'
+     assert abs(top['rect'][edge]-measured['state']['top'][edge])<.5,(site,top,measured['state']['top'])
+     if height>width:assert abs(measured['state']['top']['left']-measured['topAddress']['x']*width)<.5
+     else:assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5
      compass=measured['state']['compass']
      pocket=next(c['expected'] for c in measured['controls'] if c['field']=='pocket')
      usable=min(compass['width']/2,max(0,pocket['height']-measured['chrome']))
@@ -103,12 +106,12 @@ try:
       document.getElementById('site-state').textContent='ENCOUNTER UNAVAILABLE · RETRY THE ENCOUNTER';
       SSSDisplaySafeArea.refresh();
       const status=document.getElementById('display-membrane-status').getBoundingClientRect(),state=SSSDisplayMembraneGrid.snapshot();
-      const result={bottom:status.bottom,top:state.top,fit:state.fit,inset:SSSDisplayGlass.readInset()};
+      const result={left:status.left,bottom:status.bottom,top:state.top,fit:state.fit,inset:SSSDisplayGlass.readInset()};
       document.getElementById('site-state').textContent='';SSSDisplaySafeArea.refresh();
       result.restored=SSSDisplayMembraneGrid.snapshot().outer.fields.top.cells;
       return result;
      }''')
-     assert feedback['fit']['top'] and feedback['bottom']+feedback['inset']<=feedback['top']['bottom']+.5,(site,feedback)
+     assert feedback['fit']['top'] and (feedback['left']-feedback['inset']>=feedback['top']['left']-.5 if height>width else feedback['bottom']+feedback['inset']<=feedback['top']['bottom']+.5),(site,feedback)
      assert feedback['restored']==measured['state']['outer']['fields']['top']['cells'],(site,feedback)
      measured['feedback']=feedback
      page.locator('#mini-trigger').click();page.locator('#mini-trigger').click()
@@ -127,7 +130,8 @@ try:
      if site=='papers':
       page.locator('.papers-physiology button').click(trial=True)
       ink=page.locator('.papers-sierpinski-hud span').first.bounding_box()
-      assert ink['y']>=measured['state']['top']['bottom']-1,(site,ink,measured['state']['top'])
+      if height>width:assert ink['x']+ink['width']<=measured['state']['top']['left']+1,(site,ink,measured['state']['top'])
+      else:assert ink['y']>=measured['state']['top']['bottom']-1,(site,ink,measured['state']['top'])
      if site=='philosophy':
       text=page.locator('[data-interlocutor="organism:philosophy"] [data-ui-field="description"]').evaluate('e=>({client:e.clientWidth,scroll:e.scrollWidth})')
       assert text['scroll']<=text['client']+1,(site,text,'description requires horizontal scrolling')
