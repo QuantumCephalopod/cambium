@@ -470,3 +470,9 @@ Usability correction2026-10-28: bounded UI boxes stay binding, while viewport is
 
 
 Layout return2026-10-29: The canonical camera role is now viewport, consumed by the same shared camera/pointer relation. Exact common cell membership is owner JSON, witnessed against the real browser carrier. Cosmetic meta.name does not determine body identity.
+
+## Frame observation and inactive optical return — 2026-11-08
+
+Glass owns the shared HUD observation for an actual animation-frame phase. Lens and field optics derive their respective geometry from that observation. A relevant intervening DOM, grid, scroll, font or viewport change earns a new phase even at the same frame timestamp; where changes cannot be observed, acquire fresh geometry. Display's fixed optical instruments remain outside this reuse boundary only while they contain no measured surface. Identical diagnostic state need not be written again, but canvas attributes are not presumed irrelevant to CSS geometry.
+
+An actually hidden retained field releases its own full-size scene, preview and foreground attachments; semantic identity, source state and camera are not those attachments. The covered handoff prepares a complete candidate frame before retiring the previous encounter, and refusal preserves that encounter and history. Attachments remain context-local and are recreated at the current drawing-buffer size. A lost WebGL context refuses prepared return; reconstituting all Display and source-owned resources after a real context loss remains the separate open recovery intake. Software raster/browser witnesses do not establish user-device memory, FPS or the cause of lag.
