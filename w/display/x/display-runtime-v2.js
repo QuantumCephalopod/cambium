@@ -437,17 +437,27 @@ addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key
 activity.subscribe(e=>{const site=registry.getInterlocutor(e.interlocutorId);if(site)site.state.activity=e;fieldById.get(e.interlocutorId)?.pulse();if(activeIds.includes(e.interlocutorId))render(W.view)});
 function receiveActivity(event){return activity.receive(event)}
 addEventListener('sss:activity',e=>{if(e.detail)receiveActivity(e.detail)});
+/* A stored visit carries body identities as well as their former address.
+ * Reacquire the current mount before restoring an identity after relocation. */
+function historyAddress(ids,prior){
+  const matches=path=>sameIds(resolveGlobal(path).interlocutors.map(x=>x.interlocutorId),ids);
+  if(matches(prior))return prior;
+  for(const id of ids){const m=registry.getMount(id);if(m?.scope===GLOBAL_SCOPE&&matches(m.rawAddress))return m.rawAddress}
+  throw new Error('stored encounter no longer has a matching mounted body');
+}
 /* An unresolvable address is answered by restoring the truthful current hash. */
 function followHash(){const address=hashAddress(location.hash);if(address===null)return;if(!navigateGlobal(address,'replace',{x:innerWidth/2,y:innerHeight/2}))writeHistory('replace')}
 addEventListener('popstate',e=>{
   if(!e.state){followHash();return}
   const desired=e.state,ids=desired.activeIds||[...ROOT_IDS],token=nextHandoff();
+  let address;try{address=historyAddress(ids,desired.activeAddress||'')}catch(error){feedWound(error);writeHistory('replace');return}
   const restore=()=>{
     if(token!==handoffIntent)return;
     restoring=true;
-    try{installEncounter(ids,desired.activeAddress||'',desired.stack||[],desired.localView,'history')}
+    try{installEncounter(ids,address,desired.stack||[],desired.localView,'history')}
     catch(error){restoring=false;feedWound(error)}
     finally{restoring=false}
+    if(address!==(desired.activeAddress||''))writeHistory('replace');
   };
   const acquired=acquireTarget(ids);
   if(acquired)acquired.then(restore).catch(error=>{if(token===handoffIntent)feedWound(error)});

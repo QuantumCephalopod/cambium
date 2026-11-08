@@ -96,6 +96,12 @@ once();assert.strictEqual(f.W.projection,f.projected.get('organism:origin'));
 assert.equal(f.W.targets.find(t=>t.path==='w').titles['organism:branch'],'English organism:branch');
 for(const target of f.W.targets)for(const body of target.bodies)assert.equal(body.path,runtime.registry.getMount(body.id).rawAddress,'compass receives each identity actual raw mount path');
 assert.equal(f.options.get('organism:origin').bodies().find(b=>b.id==='organism:branch').title,'English organism:branch');
+{
+ const moved=boot();moved.runtime.navigateGlobal('w');const visit=moved.history.at(-1).state;
+ moved.runtime.remount(ids[1],'main','z');moved.runtime.navigateGlobal('');moved.pop(visit,'#main:w');
+ assert.equal(moved.runtime.state.activeIds[0],ids[1]);assert.equal(moved.runtime.state.activeAddress,'z','restored visits follow stable identity to its current mount');
+ assert.equal(moved.history.at(-1).kind,'replace');assert.equal(moved.history.at(-1).url,'#main:z','restored hash names the actual current address');
+}
 for(const id of ids.slice(0,3))assert.strictEqual(f.options.get(id).projection,f.projected.get(id));
 const slotBounds=runtime.ui.get(ids[0]).field('slot').bounds;assert.equal(slotBounds.x,0);assert.equal(slotBounds.y,0);assert.equal(slotBounds.w,.5);assert.equal(slotBounds.h,.5);
 assert.equal(runtime.ui.get(ids[0]).field('slot').z,2);
