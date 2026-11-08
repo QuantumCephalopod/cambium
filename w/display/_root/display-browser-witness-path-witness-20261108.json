@@ -1,0 +1,12 @@
+{
+  "event_id": "display-browser-witness-path-witness-20261108",
+  "implementation_commit": "dd63a587bf5b49054b427b06ff5d5a0f2e900a0d",
+  "kind": "WITNESS",
+  "limits": [
+    "This is an output-path witness, not execution of the full Chromium staging lane. GitHub Actions status was not available through the connector."
+  ],
+  "observation": "The staging browser script reused its parsed argument name for rectangle dictionaries, making later output writes access a dictionary as if it were the argument namespace.",
+  "observed_at_utc": "2026-11-08T00:39:48.852470Z",
+  "organism": "display",
+  "verification": "Executed the actual screenshot-path and final membrane.json write statements extracted from the corrected source with the old rectangle variable bound to a dictionary. Both used the parsed output directory and the JSON cases were readable. Python compilation and git diff whitespace checks passed."
+}

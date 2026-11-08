@@ -186,8 +186,8 @@ console.log('PASS — actual shared-glass lock/shape uniforms preserve contacted
  assert.strictEqual(f.frames[1].find(c=>c.type==='draw'&&c.name.includes('// ordinary-a')).vao,draw.vao);
 }
 
-/* The same outside pointer gesture pops one realized local rank for mouse and
- * touch. A restored view must be reconciled before the very first frame. */
+/* Empty contact leaves the walk untouched for mouse and touch; the shared
+ * control still uses the same ascent operation, including a restored view. */
 for(const pointerType of ['mouse','touch']){
  const tree=anatomy();function anatomy(depth=0){return depth===3?{noun:'leaf',children:{}}:{noun:'cell',children:Object.fromEntries(N.GENES.map(g=>[g,anatomy(depth+1)]))}}
  const f=fixture({tree,inspectable:true});f.world.view='wx';
@@ -195,9 +195,12 @@ for(const pointerType of ['mouse','touch']){
  f.frame(0);
  const event={button:0,pointerId:7,pointerType,clientX:1,clientY:1,preventDefault(){}};
  f.canvas.pointerdown(event);f.canvas.pointerup(event);
- assert.equal(f.world.view,'','outside pops exactly one rank');
+ assert.equal(f.world.view,'w','empty contact keeps the local rank');
+ assert.equal(f.api.ascend('control'),true);assert.equal(f.world.view,'');
+ const events=f.events.length;
  f.canvas.pointerdown(event);f.canvas.pointerup(event);
- assert.equal(f.world.view,'');assert.equal(f.events.at(-1).type,'sss:membrane-ascend');
+ assert.equal(f.world.view,'');assert.equal(f.events.length,events,'empty contact does not cross the membrane');
+ assert.equal(f.api.ascend('control'),false);assert.equal(f.events.at(-1).type,'sss:membrane-ascend');
 }
 
 /* Site-owned coarse cells/draw stay inside the shared placement/identity frame.

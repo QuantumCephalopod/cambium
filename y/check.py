@@ -110,7 +110,7 @@ def main():
     actual=(artifact/'index.html').read_text(encoding='utf-8'); check(actual==build.render(),'artifact HTML stale')
     p=Page(); p.feed(actual); check(len(p.ids)==len(set(p.ids)),'duplicate element ids')
     check(len(p.label_hosts)==len(expected_sites) and not any(p.label_hosts),'floating body buttons inherit a hidden accessibility subtree')
-    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','site-registry','site-projections','site-feed-locations','site-ui-grids','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
+    for eid in ('navTwin','axis-x','axis-y','mini','mini-trigger','mini-pocket','mini-core','display-ascent','display-ascent-slot','site-registry','site-projections','site-feed-locations','site-ui-grids','display-dependencies','site-state','display-membrane-status','tetra-fold','interlocutor-stage'):
         check(eid in p.ids,f'missing invariant surface {eid}')
     check(set(p.interlocutors)==expected_sites,'generic site surfaces do not match discovered Population')
 

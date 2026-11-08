@@ -3,7 +3,7 @@ name: site-holon
 description: "Rank-invariant Display primitive for autonomous page-organism bodies physically addressed inside Population while identity remains independent of placement."
 organism: display
 geometry: tetrahedral
-version: "3.38"
+version: "3.39"
 ---
 
 # SITE-HOLON RITUAL — display local
@@ -198,7 +198,7 @@ For Crawlerbait:
 
 Relocation changes the outer environment only. It may never rewrite a site's local genealogy into fake concatenations such as `main:yy`.
 
-Local descent inside a site-holon does not mutate its global mount. Ascent past the site's own root continues through the membrane into the container the witness came through (navigation `Descent`).
+Local descent inside a site-holon does not mutate its global mount. The shared return control may invoke the site's existing optional finer return before ascent past its root continues through the membrane into the container the witness came through (navigation `Descent`).
 
 ## Identity-owned embodiment
 

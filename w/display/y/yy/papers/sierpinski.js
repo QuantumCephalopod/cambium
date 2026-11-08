@@ -780,7 +780,7 @@ function updateOrganismInquiry(){
 }
 /* ---------- text-being: every simplex of the selected organism is made of its own words ----------
  * At rest nothing is written out: faint lines, face dust, four vertex letters, sleeping metabolite lights.
- * hover peeks · click descends and locks · a click that enters no piece ascends one step.
+ * hover peeks · click descends and locks · the shared return control ascends one step.
  * Edges: thread of letters (tapered) → fibres (the pointer bursts them) → woven sentence, edge turned level in front.
  * Faces: dust of their letters → woven disk, face turned frontal. Vertices: the letter they are; for a Holon the
  * vertex is its parent organism (a door). Metabolites: the light is the sentence asleep. */
@@ -1519,8 +1519,8 @@ function draw(now,frame){
   drawWisdom(rect,cam,translate,metabolights,now);flushTissue(rect);drawNames(rect,now);updateOrganismInquiry();drawOverviewPhysiology(now);updateChamberLabels(rect.width,rect.height);
   const inquiryFocus=inquiryFrameFocus();
   state.canvas.dataset.sQuantumScale=String(S_QUANTUM_SCALE);state.canvas.dataset.backgroundFieldAlpha=String(fade);state.canvas.dataset.backgroundStarAlpha=String(starFade);state.canvas.dataset.backgroundPassage=String(passage);state.canvas.dataset.inquiryCameraZ=String(cam);state.canvas.dataset.rootFieldScale=String(rootFieldScale(rect.width));state.canvas.dataset.overviewSScale=String(overviewBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.rootSScale=String(rootBodyScaleFor({rank:'S'},rect.width));state.canvas.dataset.overviewWander=String(OVERVIEW_WANDER);state.canvas.dataset.overviewFlowPeriod=String(OVERVIEW_FLOW_PERIOD_MS);state.canvas.dataset.overviewBasisY=String(PAPERS_OVERVIEW_BASIS_Y);state.canvas.dataset.chamberPath=state.chamberPath||'overview';state.canvas.dataset.chamberScale=String(chamberFocus().scale);state.canvas.dataset.inquiryFrameScale=String(inquiryFocus.scale);state.canvas.dataset.inquiryFrameCenter=inquiryFocus.center.map(v=>v.toFixed(6)).join(',');state.canvas.dataset.metabolightCount=String(metaboliteCount);state.canvas.dataset.organismEmberCount=String(organismEmberCount);setData(state.canvas,'populationResolved',population.considered);
-  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${inquiryBody(entity?.id)?.state==='PARTIAL'?' · PUBLIC TISSUE PARTIAL':''}${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent · empty space ascends</small>`)}
-  else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';setHud(`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}${state.chamberPath?'touch organism · empty space ascends':'touch a chamber to enter it'}</small>`)};
+  if(state.current){const entity=state.identities.get(state.current.id),rank=rankNumber(entity?.rank);state.canvas.dataset.currentRank=String(rank);state.canvas.dataset.currentBodyScale=String(state.current.scale);setHud(`<span>INQUIRY${inquiryBody(entity?.id)?.state==='PARTIAL'?' · PUBLIC TISSUE PARTIAL':''}${state.inner?' · '+beingDescribe(state.inner):''}</span><b>${state.current.id}</b><small>hover peeks · touch opens · a vertex of a holon is its parent</small>`)}
+  else{delete state.canvas.dataset.currentRank;delete state.canvas.dataset.currentBodyScale;const locus=state.chamberPath?state.chamberPath+' · '+chamberLabel(state.chamberPath):'overview';setHud(`<span>PAPERS · ${locus}</span><b>${state.records.length} tetrahedral organisms</b><small>${state.backgroundDrag?'drag field · ':''}${state.chamberPath?'touch organism':'touch a chamber to enter it'}</small>`)};
 }
 
 /* The lens is the instrument and the LOD: organisms' particle letters exist, and organisms can be peeked
@@ -1567,11 +1567,11 @@ function attachInput(){
     const p=state.pointer;if(!p||p.id!==e.pointerId)return;state.pointer=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
     if(!p.moved){
       const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-      if(state.current){const piece=beingHit(x,y),bodyLocked=state.lensBodyId&&globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id===state.lensBodyId;if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door)&&(!bodyLocked||beingSame(piece,state.inner)))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(state.inner)lockInner(null);else{const child=hitChild(x,y,r.width,r.height);if(child)descend(child);else closeOrAscend()}}
-      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now),here=state.chamberPath||'';
+      if(state.current){const piece=beingHit(x,y),bodyLocked=state.lensBodyId&&globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id===state.lensBodyId;if(piece){if(piece.kind==='vert'&&piece.door&&childBodies(state.current).some(c=>c.id===piece.door)&&(!bodyLocked||beingSame(piece,state.inner)))descend(piece.door);else if(!beingSame(piece,state.inner))lockInner(piece)}else if(!state.inner){const child=hitChild(x,y,r.width,r.height);if(child)descend(child)}}
+      else{const now=performance.now(),target=hitGlobal(x,y,r.width,r.height,now);
         /* Descent: only the current container's content can be entered; touching content that
          * lives deeper descends into the next container on its way first. */
-        if(!enterOverviewTarget(target,r.width,now)){const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now);else if(here)ascendChamber(now);else dispatchEvent(new CustomEvent('sss:membrane-ascend',{detail:{id,source:'ascent:papers'}}))}}
+        if(!enterOverviewTarget(target,r.width,now)){const chamber=hitChamber(x,y,r.width,r.height);if(chamber)setChamber(chamber,now)}}
     }
     e.preventDefault();
   };
