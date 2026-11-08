@@ -17,8 +17,8 @@ server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifac
 expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.75,.5,.25,.5),'viewport':(.25,.25,.625,.625)}
 def bounds(page,selector):return page.locator(selector).evaluate('(e)=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}}')
 def close(actual,field,w,h,variant='default'):
- compass_variants={'default':(.75,.5,.25,.5),'portrait':(.5,.5,.5,.5),'compact':(.75,.25,.25,.75)}
- x,y,fw,fh=compass_variants[variant] if field=='compass' else expected[field]
+ x,y,fw,fh=expected[field]
+ if h>w:x,y,fw,fh=1-y-fh,x,fh,fw
  for k,v in dict(x=x*w,y=y*h,width=fw*w,height=fh*h).items():assert abs(actual[k]-v)<1.1,(field,k,actual,v)
 def wait_scene(page,identity):
  page.wait_for_selector(f'[data-interlocutor="{identity}"]:not([hidden]) [data-ui-bounded="true"]',timeout=180000)
@@ -28,14 +28,19 @@ def header_content(page,host,identity,w,h):
  outer=host+' [data-ui-field="header"]';close(bounds(page,outer),'header',w,h)
  inner=outer+(' .crawlerbait-hud-top' if identity=='organism:crawlerbait' else ' .ss-hud-top')
  reading=page.locator(inner)
- metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot();return {top:r.top,bottom:r.bottom,height:r.height,outerBottom:o.bottom,safeTop:SSSDisplaySafeArea.snapshot().insets.top,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,glassBottom:g.rect.bottom,inset:g.inset,fieldBottom:f.top.bottom,topCells:f.outer.fields.top.cells}}''')
+ metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot(),safe=SSSDisplaySafeArea.snapshot().insets;return {top:r.top,bottom:r.bottom,right:r.right,height:r.height,outerBottom:o.bottom,safeTop:safe.top,safeRight:safe.right,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,headerLeft:h.left,glassBottom:g.rect.bottom,glassLeft:g.rect.left,inset:g.inset,fieldBottom:f.top.bottom,fieldLeft:f.top.left,topCells:f.outer.fields.top.cells}}''')
  assert metrics['top']>=metrics['safeTop']-.5,metrics
  assert metrics['bottom']<=metrics['outerBottom']+.5,metrics
  assert metrics['clientHeight']>=metrics['titleHeight']-.5,('no complete title line',metrics)
  assert metrics['scrollWidth']<=metrics['clientWidth']+1,('horizontal header overflow',metrics)
- assert abs(metrics['glassBottom']-metrics['fieldBottom'])<.5,('liquid edge departed from its realized field',metrics)
- assert metrics['glassBottom']>=metrics['headerBottom']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
- assert metrics['top']>=metrics['glassBottom']+metrics['inset']-.5,('site reading tissue touches liquid rim',metrics)
+ if h>w:
+  assert abs(metrics['glassLeft']-metrics['fieldLeft'])<.5,('liquid edge departed from its realized field',metrics)
+  assert metrics['headerLeft']>=metrics['glassLeft']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
+  assert metrics['right']<=w-metrics['safeRight']+.5,('site reading tissue touches liquid rim',metrics)
+ else:
+  assert abs(metrics['glassBottom']-metrics['fieldBottom'])<.5,('liquid edge departed from its realized field',metrics)
+  assert metrics['glassBottom']>=metrics['headerBottom']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
+  assert metrics['top']>=metrics['glassBottom']+metrics['inset']-.5,('site reading tissue touches liquid rim',metrics)
  reading.evaluate('(e)=>{e.scrollTop=e.scrollHeight}')
  end=reading.evaluate('e=>({top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,last:e.lastElementChild.getBoundingClientRect().bottom,scrollTop:e.scrollTop})')
  assert end['top']>=metrics['safeTop']-.5 and end['last']<=end['bottom']+1,('last header content unreachable',end)
@@ -43,8 +48,8 @@ def header_content(page,host,identity,w,h):
  # A real unavailable-encounter message must leave a complete reading line on
  # short carriers, and clearing it must restore the same continuation surface.
  page.evaluate("()=>{document.getElementById('site-state').textContent='ENCOUNTER UNAVAILABLE · RETRY THE ENCOUNTER';SSSDisplaySafeArea.refresh()}")
- failure=reading.evaluate('e=>({height:e.clientHeight,top:e.getBoundingClientRect().top,safeTop:SSSDisplaySafeArea.snapshot().insets.top})')
- assert failure['height']>=metrics['titleHeight']-.5 and failure['top']>=failure['safeTop']-.5,('failure feedback obscures header',failure,metrics)
+ failure=reading.evaluate('e=>({height:e.clientHeight,top:e.getBoundingClientRect().top,right:e.getBoundingClientRect().right,safeTop:SSSDisplaySafeArea.snapshot().insets.top,safeRight:SSSDisplaySafeArea.snapshot().insets.right})')
+ assert failure['height']>=metrics['titleHeight']-.5 and (failure['right']<=w-failure['safeRight']+.5 if h>w else failure['top']>=failure['safeTop']-.5),('failure feedback obscures header',failure,metrics)
  page.evaluate("()=>{document.getElementById('site-state').textContent='';SSSDisplaySafeArea.refresh()}")
  assert abs(reading.evaluate('e=>e.getBoundingClientRect().height')-metrics['height'])<.5,'feedback did not release occupied space'
  metrics['failure_reading_height']=failure['height']
@@ -73,7 +78,7 @@ try:
      page.goto(base+'#main:'+address,wait_until='domcontentloaded');wait_scene(page,identity)
      host=f'[data-interlocutor="{identity}"]:not([hidden])';description=host+' [data-ui-field="description"]'
      compass_variant=page.evaluate('(id)=>SSSDisplayRuntime.ui.get(id).field("compass").variant',identity)
-     if h>w:assert compass_variant=='portrait',(identity,w,h,compass_variant)
+     assert compass_variant=='default',(identity,w,h,compass_variant)
      close(bounds(page,description),'description',w,h);close(bounds(page,'#mini'),'compass',w,h,compass_variant)
      # The exact neutral camera rectangle is lent to the actual field. Its
      # GL source projection and pointer equivalence have separate native tests.
@@ -93,7 +98,8 @@ try:
      map_box=bounds(page,'#navTwin');assert abs(map_box['width']-map_box['height'])<1.1,('distorted map',map_box)
      compass_box=bounds(page,'#mini');pocket_box=bounds(page,'#mini-pocket')
      chrome=page.locator('#mini').evaluate('e=>Number(e.dataset.mapChrome)||0')
-     expected_usable=min(compass_box['width']/2,max(0,pocket_box['height']-chrome))
+     map_room=page.evaluate('''()=>{const core=document.getElementById('mini-core'),s=getComputedStyle(core),instrument=document.getElementById('mini-instrument');return Math.max(0,core.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap))}''')
+     expected_usable=min(compass_box['width']/2,max(0,pocket_box['height']-chrome),map_room)
      assert map_box['width']>=expected_usable-1,('the map fits but is too small to use',map_box,compass_box,pocket_box,chrome)
      records['square_map']=map_box
      records['compass_variant']=compass_variant

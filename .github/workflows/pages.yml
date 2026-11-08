@@ -110,7 +110,7 @@ jobs:
         run: python3 y/site-public.py --artifact _site --check
 
       - name: Prepare bounded layout browser witness
-        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/bounded-ui-grid-') || startsWith(github.ref_name, 'staging/long-axis-display-'))
         run: |
           python3 -m pip install playwright==1.56.0
           python3 -m playwright install --with-deps chromium
@@ -138,6 +138,21 @@ jobs:
       - name: Witness shared observation and optical returns
         if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-optics-')
         run: python3 y/test-display-optics-browser.py --artifact _site --out _layout-witness/optical
+
+      - name: Witness long-axis layout and controls
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/long-axis-display-')
+        run: |
+          python3 y/test-long-axis-browser.py --artifact _site --out _orientation-witness/long-axis
+          python3 y/test-membrane-grid.py --artifact _site --out _orientation-witness/membrane
+          python3 y/test-bounded-layout.py --artifact _site --out _orientation-witness/bounded --canvas2d
+
+      - name: Retain long-axis browser witness
+        if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/long-axis-display-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: long-axis-witness
+          path: _orientation-witness
+          if-no-files-found: warn
 
       - name: Retain bounded layout screenshots
         if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/bounded-ui-grid-')

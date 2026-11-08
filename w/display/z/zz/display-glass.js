@@ -110,7 +110,9 @@
     if(cs&&(cs.display==='none'||cs.visibility==='hidden'||number(cs.opacity)<=.02))return null;
     const raw=box(el.getBoundingClientRect());if(raw.width<2||raw.height<2)return null;
     const r=surfaceRect(el,raw,inset);
-    const entry={id:surfaceId(el),ids:[surfaceId(el)],rect:r,readRect:raw,inset,role:el.getAttribute('data-display-occupancy')||'',
+    const logicalRole=el.getAttribute('data-display-occupancy')||'',field=el.getAttribute('data-display-ui-field')||'';
+    const role=globalThis.SSSDisplayMembraneGrid?.role?.(logicalRole)||logicalRole;
+    const entry={id:surfaceId(el),ids:[surfaceId(el)],rect:r,readRect:raw,inset,role,field,
       kind:el.getAttribute('data-display-glass-kind')||'hud',layer:el.getAttribute('data-display-glass-layer')||'hud'};
     entrySources.set(entry,[el]);return entry;
   }
@@ -126,8 +128,8 @@
     }
     const merged=[];
     for(const e of out){
-      const top=e.role.split(/\s+/).includes('top');
-      const sibling=top&&merged.find(v=>v.role.split(/\s+/).includes('top')&&v.kind===e.kind&&v.layer===e.layer);
+      const top=v=>v.field==='top'||(!v.field&&v.role.split(/\s+/).includes('top'));
+      const sibling=top(e)&&merged.find(v=>top(v)&&v.kind===e.kind&&v.layer===e.layer);
       if(!sibling){merged.push(e);continue}
       const a=sibling.rect,b=e.rect,left=Math.min(a.left,b.left),topY=Math.min(a.top,b.top),right=Math.max(a.right,b.right),bottom=Math.max(a.bottom,b.bottom);
       sibling.rect=box({left,top:topY,width:right-left,height:bottom-topY});sibling.ids.push(...e.ids);entrySources.get(sibling).push(...entrySources.get(e));

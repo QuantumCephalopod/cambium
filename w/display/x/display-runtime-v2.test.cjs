@@ -106,6 +106,11 @@ assert.equal(node.style.width,'500px');assert.equal(node.style.height,'400px');
 assert.equal(node.style.right,'auto');assert.equal(node.style.zIndex,'132');assert.equal(node.style['--ui-field-x'],node.style.left);assert.equal(node.style['--ui-field-y'],node.style.top);
 orient.emit('sss:safe-area');
 assert.equal(node.style.width,'500px');assert.equal(node.style.height,'400px');
+assert.equal(node.dataset.uiGlobalRight,'false');
+orient.context.innerWidth=800;orient.context.innerHeight=1000;ui.refresh();
+assert.equal(node.dataset.uiGlobalRight,'true','the turned top field meets the global right edge');
+orient.hosts.get(ids[0]).getBoundingClientRect=()=>({left:0,top:0,width:400,height:1000,right:400,bottom:1000});ui.refresh();
+assert.equal(node.dataset.uiGlobalRight,'false','an internal carrier does not borrow the viewport edge inset');
 const plain=f.options.get('organism:plain').projection;assert.equal(plain.sourceMarker,'organism:plain');
 for(let frame=0;frame<30;frame++){
   const bodies=f.options.get('organism:origin').bodies();
@@ -464,8 +469,8 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  const n={style:{width:'36rem',height:'max-content',right:'12px',setProperty(k,v){this[k]=v}},dataset:{},isConnected:true};u.bind(n,'slot');
  assert.equal(n.style.inlineSize,'500px');assert.equal(n.style.blockSize,'400px');assert.equal(n.style.right,'auto');assert.equal(n.style.overflow,'auto');assert.equal(n.style.contain,'layout paint');
  assert.deepEqual({...f.options.get(ids[0]).presentation()},{x:500,y:0,left:500,top:0,right:1000,bottom:400,width:500,height:400});
- const before=JSON.stringify(u.state);f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();assert.equal(n.style.inlineSize,'195px');assert.equal(n.style.blockSize,'422px');assert.equal(JSON.stringify(u.state),before);
- const mini=f.elements.get('mini');f.emit('sss:safe-area');assert.equal(mini.style.left,'195px');assert.equal(mini.style.top,'422px');assert.equal(mini.style.width,'195px');assert.equal(mini.style.height,'422px');assert.equal(mini.dataset.gridBounded,'true');
+ const before=JSON.stringify(u.state);f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();assert.equal(n.style.left,'195px');assert.equal(n.style.top,'0px');assert.equal(n.style.inlineSize,'195px');assert.equal(n.style.blockSize,'422px');assert.equal(JSON.stringify(u.state),before);
+ const mini=f.elements.get('mini');f.emit('sss:safe-area');assert.equal(mini.style.left,'0px');assert.equal(mini.style.top,'422px');assert.equal(mini.style.width,'195px');assert.equal(mini.style.height,'422px');assert.equal(mini.dataset.gridBounded,'true');
  console.log('PASS — bounded arbitrary-owner grid enforces actual rectangles, unchanged addresses on resize, camera frame and shared compass bounds');
 }
 
@@ -479,10 +484,10 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  mini.dataset.mapChrome='86';f.context.innerWidth=1363;f.context.innerHeight=936;f.emit('sss:safe-area');
  assert.equal(mini.style.top,'468px');assert.equal(mini.style.height,'468px');
  f.context.innerWidth=667;f.context.innerHeight=375;f.emit('sss:navigator-measure');
- assert.equal(mini.style.top,'93.75px');assert.equal(mini.style.height,'281.25px');
+ assert.equal(mini.style.top,'187.5px');assert.equal(mini.style.height,'187.5px');
  f.context.innerWidth=390;f.context.innerHeight=844;f.emit('sss:safe-area');
- assert.equal(mini.style.left,'195px');assert.equal(mini.style.width,'195px');
- console.log('PASS — a hidden overview lends its compass variant against the visible global carrier');
+ assert.equal(mini.style.left,'0px');assert.equal(mini.style.top,'633px');assert.equal(mini.style.width,'195px');assert.equal(mini.style.height,'211px');
+ console.log('PASS — a hidden overview lends its canonical compass to the global orientation');
 }
 
 assert(boot(1,'',{}, {}, {},false,null,'template').runtime.ui.get(ids[0]).bounded,'the supplied role declaration depended on an extra flag');

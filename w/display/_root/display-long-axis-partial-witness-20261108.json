@@ -1,0 +1,31 @@
+{
+  "event_id": "display-long-axis-partial-witness-20261108",
+  "kind": "WITNESS",
+  "organism": "display",
+  "outcome": "PARTIAL_UNRESOLVED",
+  "baseline_revision": "aaa965093d18dea5df5004eddfe3e5bcb591541e",
+  "intake_revision": "29bba4759b978844db6041acaa5d6d8ac571dc5e",
+  "implementation_revision": "7bb5be39000e47b4ca9ccd5d9c6f5e06b0a62273",
+  "intake": {
+    "path": "w/display/_stomach/NUTRIENT__long-axis-display-orientation__20261108.md",
+    "sha256": "a3769ccfa1fa3303c1d19bab86619e9d7281f9659aa509028a92f16e3a722979",
+    "state": "OPEN; not moved or declared complete"
+  },
+  "browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42517100113",
+  "browser_witness_revision": "0317456f82984a5db4ffab69ff359ba3265f1274",
+  "browser_witness_difference": "Adds an isolated Actions workflow to the implementation revision; application and test sources are the same.",
+  "browser": {
+    "environment": "isolated headless Chromium, Canvas2D path; no claim about a physical device, GPU or FPS",
+    "long_axis": "PASS: 12 cases across six site-holons at 1280x800 and 390x844, with live resize and deterministic square tie",
+    "membrane": "PASS: 18 cases across six site-holons at 1280x800, 667x375 and 390x844",
+    "bounded_layout": "FAIL at 390x844: Schattenseiten header's reading element has clientWidth 29 px and scrollWidth 49 px; its title wraps into single characters. Exact failures and screenshots are retained in the linked Actions run."
+  },
+  "source_hashes": {
+    "y/test-long-axis-browser.py": "a43fe837a15b40a73f912a2a2fdcb5f6577d362e6c1072cdedb231c51e998604",
+    "y/test-membrane-grid.py": "ed18b4f2ec6ed85f80762e287e3a4f1e95c1647989d63c606ac7a32c9254be2c",
+    "y/test-bounded-layout.py": "710902a55abaf15549926d71a4fd4c30ed5ffd2954672f48c65b07498d9fd40a"
+  },
+  "additional_observation": "At 390x844 the Datenschutz title field is 48.75 px wide; 16 px local padding on each side leaves 16.75 px for its title and apertures. Shared legal labels are also cramped. A clickable target and a matching rectangle do not establish readable text.",
+  "remainder": "w/display/_stomach/NUTRIENT__long-axis-readable-content-fit__20261108.md",
+  "closure": "No HOME, intake retirement, feed projection, merge or deployment is claimed for this unfinished act."
+}

@@ -5,81 +5,69 @@ const membrane=require('./membrane-grid.json'),navigator=require('./navigator-gr
 const grid=M.create(membrane,navigator);
 const owned=UI.normalizeState(require('../../y/philosophy/w/ui-grid.json'));
 function close(a,b){assert.ok(Math.abs(a-b)<1e-8,JSON.stringify({a,b}))}
-function verifyField(state,name,parent,actual){
-  const info=UI.fieldInfo(state,name),b=info.bounds;
+function verifyField(state,name,parent,actual,mode){
+  const info=UI.fieldInfo(state,name),b=UI.orientBounds(info.bounds,mode);
   close(actual.left,parent.left+b.x*parent.width);close(actual.top,parent.top+b.y*parent.height);
   close(actual.width,b.w*parent.width);close(actual.height,b.h*parent.height);
   assert.ok(UI.spanInfo(state,info.cells).ok,'field must consist of realized address cells');
 }
-for(const [width,height] of [[1275,596],[1280,800],[667,375],[390,844],[320,568]]){
-  const variant=grid.compassVariant(owned,{w:width,h:height},86);
-  grid.useCompass(owned,UI.fieldInfo(owned,'compass',variant));
-  const input={width,height,headerRect:{bottom:38},triggerRect:{width:40,height:40},inset:8};
+function header(width,height){return height>width?{left:width-38,top:0,width:38,height,right:width,bottom:height}:{left:0,top:0,width,height:38,right:width,bottom:38}}
+function status(width,height){return height>width?{left:width-51,top:0,width:13,height:40,right:width-38,bottom:40}:{left:0,top:38,width:40,height:13,right:40,bottom:51}}
+const carriers=[[1275,596],[1280,800],[667,375],[390,844],[320,568],[600,600],[599,600],[600,599]];
+for(const [width,height] of carriers){
+  const mode=UI.orientation(width,height);grid.useCompass(owned,UI.fieldInfo(owned,'compass'));
+  const input={width,height,headerRect:header(width,height),triggerRect:{width:24,height:24},inset:8};
   const idle=grid.reconcile(input);
-  assert.deepEqual(idle.fit,{top:true,trigger:true});
+  assert.equal(idle.orientation,mode);assert.deepEqual(idle.fit,{top:true,trigger:true});
   assert.strictEqual(grid.reconcile(input).outer,idle.outer,'an unchanged observation reuses the realized field');
   assert.strictEqual(grid.reconcile(input).inner,idle.inner,'an unchanged navigator reuses its realized field');
-  verifyField(idle.outer,'top',idle.viewport,idle.top);
-  verifyField(idle.outer,'ascent',idle.viewport,idle.ascent);
-  close(idle.ascent.right,width);
-  assert.ok(idle.ascent.bottom<=idle.compass.top,'return field stays above the active compass');
-  assert.ok(idle.ascent.top>=idle.top.bottom,'return field stays below the header');
-  for(const name of ['pocket','help','trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name]);
-  assert.ok(idle.top.bottom>=46,'navigation and rim fit');
-  assert.ok(idle.top.height/2<46,'a further top split could not fit the navigation');
-  assert.ok(idle.trigger.width>=40&&idle.trigger.height>=40,'input target fits its addressed field');
-  close(idle.pocket.bottom,idle.help.top);close(idle.pocket.bottom,idle.trigger.top);
-  if(variant==='portrait'){
-    close(idle.help.bottom,idle.legal.top);close(idle.help.right,idle.trigger.left);
-    assert.ok(idle.help.left>=width*.75&&idle.legal.left>=width*.75,'portrait controls clear the site timeline');
+  for(const name of ['top','compass','ascent'])verifyField(idle.outer,name,idle.viewport,idle[name],mode);
+  for(const name of ['pocket','help','trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name],mode);
+  assert.deepEqual(idle.compassInfo.cells,UI.fieldInfo(owned,'compass').cells,'orientation cannot replace the owner address');
+  if(mode==='portrait'){
+    close(idle.compass.left,0);close(idle.ascent.left,idle.compass.right);
+    close(idle.pocket.left,idle.help.right);close(idle.help.bottom,idle.legal.top);assert.ok(idle.legal.bottom<=idle.trigger.top);
+    assert.ok(width-idle.top.left>=46,'header and optical rim fit the right-edge field');
   }else{
-    close(idle.pocket.bottom,idle.legal.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left,'refined trigger stays beyond legal links');
+    close(idle.compass.right,width);close(idle.ascent.bottom,idle.compass.top);
+    close(idle.pocket.bottom,idle.help.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left);
+    assert.ok(idle.top.bottom>=46,'header and optical rim fit the upper field');
   }
-  const pending=grid.reconcile({...input,statusRect:{bottom:51,height:13}});
-  verifyField(pending.outer,'top',pending.viewport,pending.top);
-  assert.ok(pending.top.bottom>=59,'real feedback and rim fit');
-  if(height===375){
-    const constrained=grid.reconcile({...input,statusRect:{bottom:51,height:13},limit:65.75,quantum:1});
-    verifyField(constrained.outer,'top',constrained.viewport,constrained.top);
-    assert.ok(constrained.top.bottom>=59&&constrained.top.bottom<=65.75,'refinement leaves a real neighbouring line readable');
-  }
+  const pending=grid.reconcile({...input,statusRect:status(width,height)});
+  verifyField(pending.outer,'top',pending.viewport,pending.top,mode);
+  assert.ok(mode==='portrait'?width-pending.top.left>=59:pending.top.bottom>=59,'real feedback and its rim fit');
   const restored=grid.reconcile(input);
   assert.deepEqual(restored.outer.fields.top.cells,idle.outer.fields.top.cells,'empty feedback restores the original addresses');
 }
-// A site's independently declared compass is the parent frame. The nested
-// fields must follow that owner address, even after a viewport change.
+assert.equal(UI.orientation(600,600),'landscape','a square has a deterministic tie');
+assert.deepEqual(UI.orientBounds({x:.75,y:.5,w:.25,h:.5},'portrait'),{x:0,y:.75,w:.5,h:.25});
+assert.equal(UI.orientEdges('right bottom','portrait'),'bottom left');
+
+// A different owner remains itself across a live format change; its compass
+// cells and nested actual rectangles follow the same global turn.
 const site=UI.normalizeState({schema:UI.SCHEMA,meta:{name:'another-owner'},splits:[''],fields:{compass:{cells:['w']}},elements:{}});
 grid.useCompass(site,UI.fieldInfo(site,'compass'));
-let s=grid.reconcile({width:1000,height:600,headerRect:{bottom:38},triggerRect:{width:40,height:40},inset:8});
+let s=grid.reconcile({width:1000,height:600,headerRect:header(1000,600),triggerRect:{width:24,height:24},inset:8});
 assert.deepEqual(s.compass,{left:0,top:0,width:500,height:300,right:500,bottom:300});
-verifyField(s.outer,'compass',s.viewport,s.compass);
-verifyField(s.inner,'pocket',s.compass,s.pocket);
-s=grid.reconcile({width:2000,height:1200,headerRect:{bottom:38},triggerRect:{width:40,height:40},inset:8});
-assert.equal(s.compass.width,1000);assert.equal(s.compass.height,600);
-verifyField(s.inner,'trigger',s.compass,s.trigger);
+s=grid.reconcile({width:600,height:1000,headerRect:header(600,1000),triggerRect:{width:24,height:24},inset:8});
+assert.deepEqual(s.compass,{left:300,top:0,width:300,height:500,right:600,bottom:500});
+assert.deepEqual(s.compassInfo.cells,['w']);
+verifyField(s.inner,'trigger',s.compass,s.trigger,'portrait');
 assert.throws(()=>grid.surfaceRect({getAttribute:()=>null,dataset:{}},{left:0,top:0,width:1,height:1}),/realized recursive UI field/);
 assert.equal(M.address(0,0,40),'w'.repeat(40),'recursive addresses are not rank-capped by a UI breakpoint');
-assert.equal(grid.compassVariant(owned,{w:1280,h:800},86),'','a roomy carrier keeps the declared ordinary field');
-assert.equal(grid.compassVariant(owned,{w:667,h:375},86),'compact','a short carrier borrows the owner-declared taller field');
-assert.equal(grid.compassVariant(owned,{w:390,h:844},86),'portrait','a portrait carrier borrows the owner-declared wider field');
-assert.deepEqual(UI.fieldInfo(owned,'compass','compact').bounds,{x:.75,y:.25,w:.25,h:.75});
-assert.deepEqual(UI.fieldInfo(owned,'compass','portrait').bounds,{x:.5,y:.5,w:.5,h:.5});
+
+// Measured fit remains bounded by the actual authored field, including an
+// unrelated navigator declaration and an insufficient finite carrier.
 const tooShort=grid.reconcile({width:320,height:80,headerRect:{bottom:38},triggerRect:{width:40,height:40},inset:8});
-assert.equal(tooShort.fit.top,false,'finite carriers report when the authored field cannot contain reading tissue');
-// Refinement stays inside the field the owner actually declared, including a
-// differently placed navigator trigger. A too-small authored top reports it.
+assert.equal(tooShort.fit.top,false);
 const narrowTop=structuredClone(membrane);
 narrowTop.splits.push('ww','wx','xw');
 narrowTop.fields.top.cells=['www','wwx','wxw','wxx','xww','xwx','xxw','xxx'];
-const alternateNavigator=structuredClone(navigator);
-alternateNavigator.fields.trigger.cells=['yw','yx'];
+const alternateNavigator=structuredClone(navigator);alternateNavigator.fields.trigger.cells=['yw','yx'];
 const alternate=M.create(narrowTop,alternateNavigator);
-const alternateState=alternate.reconcile({width:1000,height:800,headerRect:{bottom:110},triggerRect:{width:20,height:20},inset:8});
-assert.equal(alternateState.fit.top,false,'refinement cannot escape its authored containing field');
-assert.ok(alternateState.top.bottom<=100);
-const authoredTrigger=UI.fieldInfo(UI.normalizeState(alternateNavigator),'trigger').bounds;
-const actualTrigger=UI.fieldInfo(alternateState.inner,'trigger').bounds;
-assert.ok(actualTrigger.x>=authoredTrigger.x&&actualTrigger.y>=authoredTrigger.y);
-assert.ok(actualTrigger.x+actualTrigger.w<=authoredTrigger.x+authoredTrigger.w&&actualTrigger.y+actualTrigger.h<=authoredTrigger.y+authoredTrigger.h);
-verifyField(alternateState.inner,'trigger',alternateState.compass,alternateState.trigger);
-console.log('canonical Display and nested navigator fields: PASS');
+const a=alternate.reconcile({width:1000,height:800,headerRect:{bottom:110},triggerRect:{width:20,height:20},inset:8});
+assert.equal(a.fit.top,false);assert.ok(a.top.bottom<=100);
+const seed=UI.fieldInfo(UI.normalizeState(alternateNavigator),'trigger').bounds,actual=UI.fieldInfo(a.inner,'trigger').bounds;
+assert.ok(actual.x>=seed.x&&actual.y>=seed.y&&actual.x+actual.w<=seed.x+seed.w&&actual.y+actual.h<=seed.y+seed.h);
+verifyField(a.inner,'trigger',a.compass,a.trigger,'landscape');
+console.log('PASS — one long-axis orientation projects addressed Display, navigator and owner fields through resize');
