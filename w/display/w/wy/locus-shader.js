@@ -559,7 +559,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     if(!labelInk)labelInk=Ink.create(gl,labelHost);
     canvas.dataset.refractedLabels=labelInk.draw(r,w,h,additionalTarget,foreground)?'1':'0';
   }
-  addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview();disposeForeground()});
+  addEventListener('pagehide',()=>{labelInk?.dispose();labelInk=null;disposePreview();disposeForeground();disposeScene()});
   function disposePreview(){if(!PREVIEW)return;gl.deleteFramebuffer(PREVIEW.fb);gl.deleteRenderbuffer(PREVIEW.depth);gl.deleteTexture(PREVIEW.tex);PREVIEW=null}
   function drawPreview(g,fb,r,d,w,h,proj,view,t,base,ms){
     if(!g)return false;
@@ -659,12 +659,12 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     }
     return S;
   }
-  function glassBegin(r,w,h){
+  function glassBegin(r,w,h,ms){
     canvas.dataset.glass='0';
     const Gm=globalThis.SSSDisplayGlass;
     if(GLASS_OFF||!Gm||!Gm.enabled())return null;
-    const Ln=globalThis.SSSDisplayLens,snap=Ln?Ln.snapshot():null;
-    const pack=Gm.rects(r,{width:w,height:h},undefined,snap?.home?.ids||null,snap?.lens);
+    const Ln=globalThis.SSSDisplayLens,snap=Ln?Ln.snapshot(ms):null;
+    const pack=Gm.rects(r,{width:w,height:h},ms,snap?.home?.ids||null,snap?.lens);
     if(!pack.count&&!snap)return null;
     try{if(!SCENE||SCENE.w!==w||SCENE.h!==h)buildScene(w,h)}
     catch(err){console.warn('display glass unavailable for '+id,err);GLASS_OFF=true;disposeScene();gl.bindFramebuffer(gl.FRAMEBUFFER,null);return null}
@@ -756,9 +756,9 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     if(P.U.time)gl.uniform1f(P.U.time,ms*.001);if(P.U.focus)gl.uniform1f(P.U.focus,-1);if(P.U.resolution)gl.uniform2f(P.U.resolution,w,h);if(P.U.pal)gl.uniform3fv(P.U.pal,new Float32Array(B.colors.flat()));
     gl.bindVertexArray(plain?B.plainVAO:B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
   }
-  function draw(ms){
+  function draw(ms,prepareOnly=false){
     viewCache=null;
-    if(element.hidden){restDone=false;resetLabelInk();requestAnimationFrame(draw);return}
+    if(element.hidden){restDone=false;resetLabelInk();disposePreview();disposeForeground();disposeScene();if(!prepareOnly)requestAnimationFrame(draw);return false}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
     followStep(ms);refreshProjection(ms);refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(viewBox(r).width<560?1.42:1.75);
     const proj=fieldProjectionMatrix(r),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
@@ -776,7 +776,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     if(gl&&GL){
       const hv=hostView(),hostClear=hv?.e.shader.clear;
       const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);
-      const glass=glassBegin(r,w,h);
+      const glass=glassBegin(r,w,h,ms);
       gl.viewport(0,0,w,h);prepareClear();gl.clearColor(...clear);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
       if(hv){
         const {H}=hv;gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.disable(gl.BLEND);gl.useProgram(H.p);gl.bindVertexArray(H.vao);
@@ -817,7 +817,24 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       if(typeof shader.afterDraw==='function'){try{shader.afterDraw({gl:null,context2D:ctx,canvas,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation,rect:r,viewRect:viewBox(r)})}catch(err){canvas.dataset.layerError=String(err?.message||err)}}
       drawPoints2D(r);ctx.restore();
     }
-    requestAnimationFrame(draw)
+    if(!prepareOnly)requestAnimationFrame(draw);
+    return true;
+  }
+  // During a covered handoff, paint the candidate before its previous field
+  // is retired. A lost context or newly failed target leaves the old field in
+  // place; a later retry may build the same optical attachments again.
+  function prepareFrame(){
+    if(element.hidden||(!gl&&!ctx)||gl?.isContextLost?.())return false;
+    const wasOff=GLASS_OFF,ownBind=gl&&Object.prototype.hasOwnProperty.call(gl,'bindFramebuffer'),bind=gl?.bindFramebuffer;
+    try{
+      const painted=draw(performance.now(),true);
+      if(!wasOff&&GLASS_OFF){GLASS_OFF=false;return false}
+      delete canvas.dataset.frameError;return painted;
+    }catch(error){
+      if(gl){if(ownBind)gl.bindFramebuffer=bind;else delete gl.bindFramebuffer}
+      if(!wasOff)GLASS_OFF=false;
+      canvas.dataset.frameError=String(error?.message||error);return false;
+    }
   }
   const hasPoints=pointRecords.length>0||typeof shader.snapshot==='function';
   canvas.dataset.backgroundDrag=draggable?'true':'false';
@@ -848,7 +865,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
   }
   requestAnimationFrame(draw);
-  api=Object.freeze({presentationRect:()=>viewBox(canvas.getBoundingClientRect()),
+  api=Object.freeze({prepareFrame,presentationRect:()=>viewBox(canvas.getBoundingClientRect()),
     id,shaderId:shader.id,element,canvas,get projection(){return projection},palette,inspectable,draggable,interactive:inspectable,localScope,
     selectPoint,projectAddressCenter,projectBody,get container(){return container()},approachBody(bodyId){const B=BODIES.get(bodyId);if(!B?.active)return false;cam={from:currentFrame(),to:{center:[...B.pos],scale:1/B.place.k},start:performance.now()};return true},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},

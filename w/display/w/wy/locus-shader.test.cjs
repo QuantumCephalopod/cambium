@@ -12,11 +12,11 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
  * This catches a masked clear even when the frame has no composite canvases. */
 function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined,foreground=null,presentation=null}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
-  const calls=[],frames=[],queue=[],timers=[],events=[],enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
+  const calls=[],frames=[],queue=[],timers=[],events=[],resources={created:[],deleted:[]},enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
   constants.forEach((n,i)=>gl[n]=100+i);gl.COLOR_BUFFER_BIT=1;gl.DEPTH_BUFFER_BIT=2;
   for(const kind of ['Program','Shader','VertexArray','Buffer','Texture','Framebuffer','Renderbuffer']){
-    gl['create'+kind]=()=>({kind,id:++serial});gl['delete'+kind]=()=>{};
+    gl['create'+kind]=()=>{const object={kind,id:++serial};resources.created.push(object);return object};gl['delete'+kind]=object=>{if(object)resources.deleted.push(object)};
   }
   gl.createProgram=()=>({kind:'Program',id:++serial,shaders:[]});
   gl.shaderSource=(shader,body)=>{shader.source=body};gl.attachShader=(program,shader)=>program.shaders.push(shader);
@@ -24,7 +24,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.getAttribLocation=(p,name)=>{p.attribs||={};if(!(name in p.attribs))p.attribs[name]=Object.keys(p.attribs).length;return p.attribs[name]};
   gl.getParameter=k=>k===gl.MAX_SAMPLES?4:k===gl.ACTIVE_TEXTURE?textureUnit:k===gl.FRAMEBUFFER_BINDING?drawTarget:k===gl.TEXTURE_BINDING_2D?null:null;
   Object.setPrototypeOf(gl,{bindFramebuffer(target,fb){if(target===gl.READ_FRAMEBUFFER)readTarget=fb;else if(target===gl.DRAW_FRAMEBUFFER)drawTarget=fb;else drawTarget=readTarget=fb}});
-  gl.checkFramebufferStatus=()=>gl.FRAMEBUFFER_COMPLETE;
+  gl.checkFramebufferStatus=()=>gl.incomplete?0:gl.FRAMEBUFFER_COMPLETE;gl.isContextLost=()=>!!gl.lost;
   gl.depthMask=v=>{values.depth=v};gl.colorMask=(...v)=>{values.color=v};gl.clearDepth=v=>{values.clearDepth=v};
   gl.enable=k=>enabled.add(k);gl.disable=k=>enabled.delete(k);gl.activeTexture=u=>{textureUnit=u};
   gl.useProgram=p=>{currentProgram=p};gl.bindVertexArray=v=>{currentVAO=v};
@@ -73,7 +73,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   const projection={root:tree,points:pointSpecs||(points?[{id:'point',gene:'w',kind:'source'}]:[])};
   const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,palette:fieldPalette,shader,inspectable,localScope:'fixture',presentation,bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
-  return {gl,canvas,api,world,shader,events,calls,frames,frame,order,bodies,labels:labelHost,host:hostElement,flushTimers(){while(timers.length)timers.shift()()},clickBody(index,accept=true){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});if(accept)api.approachBody(events.at(-1).detail.id)}};
+  return {gl,canvas,api,world,shader,events,calls,frames,resources,frame,order,bodies,labels:labelHost,host:hostElement,resize(w,h){width=w;height=h},flushTimers(){while(timers.length)timers.shift()()},clickBody(index,accept=true){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});if(accept)api.approachBody(events.at(-1).detail.id)}};
 }
 
 function assertClears(f){
@@ -423,3 +423,49 @@ console.log('PASS — independently lent target draw, carrier ownership and with
 }
 
 {const f=fixture({glass:false,points:true,order:[],presentation:()=>({x:100,y:200,width:600,height:400})});f.frame(0);assert(f.frames[0].filter(c=>c.type==='draw'&&c.mode===f.gl.POINTS).every(c=>!c.scissor),'focus framing erased visible context with a scissor');console.log('PASS — focus framing keeps visible point context; depth clears remain unmasked');}
+
+// Cached fields retain their source/identity, but the full-size optical targets
+// must have a bounded lifetime. Re-entry allocates and paints them before use.
+for(const [width,height] of [[390,844],[1280,800]]){
+ const lens={x:width/2,y:height/2,hx:2000,hy:2000,round:1,lock:{id:'mineral',kind:'body'},protect:1};
+ const f=fixture({width,height,preview:true,lens,foreground:()=>true,points:true});
+ const attachments=()=>f.resources.created.filter(v=>['Framebuffer','Renderbuffer','Texture'].includes(v.kind));
+ const live=()=>attachments().filter(v=>!f.resources.deleted.includes(v));
+ f.api.selectPoint('point');f.frame(0);
+ const expected=live();assert.equal(expected.length,11,'fixture must allocate scene, preview and foreground attachments');
+ assert.equal(f.frames.at(-1).find(c=>c.type==='draw'&&c.name.includes('uniform sampler2D uScene')).foregroundReady,1);
+ f.frame(16);assert.equal(live().length,11,'unchanged active frames reallocated their targets');
+ f.host.hidden=true;f.frame(32);
+ assert.equal(live().length,0,'inactive field retained optical attachments');
+ const deleted=f.resources.deleted.length;
+ for(let i=0;i<20;i++)f.frame(48+i*16);
+ assert.equal(f.resources.deleted.length,deleted,'hidden frames repeatedly retired the same resources');
+ assert.equal(f.api.selectedPointId,'point','optical retirement discarded semantic selection');
+ for(let cycle=0;cycle<3;cycle++){
+  f.host.hidden=false;f.frame(500+cycle*100);
+  const frame=f.frames.at(-1),optics=frame.find(c=>c.type==='draw'&&c.name.includes('uniform sampler2D uScene'));
+  assert.equal(live().length,11,'return failed to recreate the full optical set');
+  assert(optics&&optics.foregroundReady===1,'returned frame did not complete the contact and glass passes');
+  assert.equal(f.api.selectedPointId,'point');
+  f.host.hidden=true;f.frame(516+cycle*100);assert.equal(live().length,0);
+ }
+ f.host.hidden=false;f.frame(900);f.resize(width+40,height+30);f.frame(916);
+ assert.equal(live().length,11,'resize left old full-size optical targets live');
+ assert.equal(f.canvas.width,width+40);assert.equal(f.canvas.height,height+30);
+}
+console.log('PASS — inactive optical targets retire once, repeated returns plateau, identity survives and resized frames repaint');
+
+{
+ const f=fixture();f.frame(0);f.host.hidden=true;f.frame(16);f.host.hidden=false;
+ f.gl.lost=true;assert.equal(f.api.prepareFrame(),false,'a lost context was accepted as a prepared return');
+ f.gl.lost=false;f.gl.incomplete=true;assert.equal(f.api.prepareFrame(),false,'an incomplete rebuilt target was exposed');
+ f.gl.incomplete=false;assert.equal(f.api.prepareFrame(),true,'the same field could not retry after target allocation recovered');
+ f.frame(32);assert(f.frames.at(-1).some(c=>c.type==='draw'&&c.name.includes('uniform sampler2D uScene')));
+}
+{
+ let broken=true;const shader={id:'fault-injection',fragment:fragment('fault-injection'),beforeDraw(){if(broken)throw Error('source refused frame')}};
+ const f=fixture({fieldShader:shader});const bind=f.gl.bindFramebuffer;
+ assert.equal(f.api.prepareFrame(),false);assert.equal(f.gl.bindFramebuffer,bind,'failed preparation leaked its temporary framebuffer binding');
+ broken=false;assert.equal(f.api.prepareFrame(),true,'a source exception made the field impossible to retry');
+}
+console.log('PASS — prepared return refuses context loss/incomplete targets and retries without duplicating the frame loop');

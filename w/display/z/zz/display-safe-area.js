@@ -102,6 +102,7 @@
       SSSDisplayMembraneGrid.reconcile({width:innerWidth,height:innerHeight,headerRect:headerEntry?.raw,
         statusRect:status,triggerRect:find('mini-trigger'),inset,
         limit:status?readingLimit(inset):Infinity,quantum:1/ratio});
+      glass?.invalidate?.();
     }
     const entries=measured.map(entry=>visibleEntry(entry,inset)).filter(Boolean);
     state=apply(derive({width:innerWidth,height:innerHeight},entries));

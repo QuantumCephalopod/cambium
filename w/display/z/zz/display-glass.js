@@ -13,7 +13,7 @@
 })(typeof globalThis==='object'?globalThis:this,function(){
   'use strict';
   const MAX=8;
-  const anonymousIds=new WeakMap();let nextSurface=0;
+  const anonymousIds=new WeakMap(),entrySources=new WeakMap();let nextSurface=0;
   function surfaceId(el){if(el.id)return el.id;if(!anonymousIds.has(el))anonymousIds.set(el,'glass-surface-'+(++nextSurface));return anonymousIds.get(el)}
   /* CSS pixels and radians, first drafts: one line each to tune by eye.
    *  radius   corner radius of a glass surface
@@ -110,8 +110,9 @@
     if(cs&&(cs.display==='none'||cs.visibility==='hidden'||number(cs.opacity)<=.02))return null;
     const raw=box(el.getBoundingClientRect());if(raw.width<2||raw.height<2)return null;
     const r=surfaceRect(el,raw,inset);
-    return {id:surfaceId(el),ids:[surfaceId(el)],rect:r,readRect:raw,inset,role:el.getAttribute('data-display-occupancy')||'',
+    const entry={id:surfaceId(el),ids:[surfaceId(el)],rect:r,readRect:raw,inset,role:el.getAttribute('data-display-occupancy')||'',
       kind:el.getAttribute('data-display-glass-kind')||'hud',layer:el.getAttribute('data-display-glass-layer')||'hud'};
+    entrySources.set(entry,[el]);return entry;
   }
   /* The surfaces: occupied HUD surfaces unless they opt out, plus anything that opts in. */
   function collect(doc,getStyle){
@@ -129,7 +130,7 @@
       const sibling=top&&merged.find(v=>v.role.split(/\s+/).includes('top')&&v.kind===e.kind&&v.layer===e.layer);
       if(!sibling){merged.push(e);continue}
       const a=sibling.rect,b=e.rect,left=Math.min(a.left,b.left),topY=Math.min(a.top,b.top),right=Math.max(a.right,b.right),bottom=Math.max(a.bottom,b.bottom);
-      sibling.rect=box({left,top:topY,width:right-left,height:bottom-topY});sibling.ids.push(...e.ids);
+      sibling.rect=box({left,top:topY,width:right-left,height:bottom-topY});sibling.ids.push(...e.ids);entrySources.get(sibling).push(...entrySources.get(e));
       const ar=sibling.readRect,br=e.readRect,rl=Math.min(ar.left,br.left),rt=Math.min(ar.top,br.top);
       sibling.readRect=box({left:rl,top:rt,width:Math.max(ar.right,br.right)-rl,height:Math.max(ar.bottom,br.bottom)-rt});
     }
@@ -138,13 +139,72 @@
   function enabled(){
     try{return !(typeof matchMedia==='function'&&matchMedia('(prefers-reduced-transparency: reduce)').matches)}catch(_){return true}
   }
-  /* One DOM read per animation frame, shared by every field that asks. */
-  let cache=null,cacheAt=-1e9;
-  function rects(canvasRect,buffer,now,skip,liquid){
-    const t=typeof now==='number'?now:(typeof performance==='object'?performance.now():0);
-    if(!cache||t-cacheAt>6){cache=collect();cacheAt=t}
-    const pack=derive(skip&&skip.length?cache.filter(e=>!e.ids.some(id=>skip.includes(id))):cache,canvasRect,buffer,liquid);
-    return {...pack,inset:cache[0]?.inset??PARAMS.bevelMax};
+  /* A frame timestamp identifies a shared observation phase, not an elapsed
+   * time window. A DOM change between consumers opens a new phase even when
+   * their animation-frame timestamp is identical. */
+  const SURFACE='[data-display-occupancy],[data-display-glass="on"]';
+  let observedDoc=null,observer=null,observation=null,revision=0;
+  function invalidate(){revision++}
+  function hasSurface(node){
+    return node?.nodeType===1&&!!(node.matches?.(SURFACE)||node.querySelector?.(SURFACE));
   }
-  return Object.freeze({MAX,PARAMS,derive,collect,rects,enabled,surfaceRect,readInset,readingFrame});
+  function affectsObservation(record){
+    const node=record.target?.nodeType===1?record.target:record.target?.parentElement;
+    if(!node)return true;
+    // These fixed-position instruments/labels are outside layout. If one ever
+    // contains an offered surface, its mutations remain observable.
+    const overlay=node.closest?.('#display-lens,.display-glass-edge,.interlocutor-field-labels');
+    if(overlay&&!node.closest?.(SURFACE)&&!overlay.matches?.(SURFACE)){
+      const changed=[...(record.addedNodes||[]),...(record.removedNodes||[])];
+      if(!changed.some(hasSurface)&&!overlay.querySelector?.(SURFACE))return false;
+    }
+    // Per-frame field diagnostics on the canvas do not own HUD geometry.
+    if(node.tagName==='CANVAS'&&record.type==='attributes'&&/^data-/.test(record.attributeName||'')&&
+      !/^data-(display-occupancy|display-glass|display-ui-field|composite)$/.test(record.attributeName))return false;
+    return true;
+  }
+  function mutations(records){if(records.some(affectsObservation))invalidate()}
+  function watch(doc){
+    observer?.disconnect();observer=null;observation=null;
+    if(observedDoc){
+      globalThis.removeEventListener?.('resize',invalidate);
+      globalThis.removeEventListener?.('scroll',invalidate,true);
+      observedDoc.fonts?.removeEventListener?.('loadingdone',invalidate);
+      observedDoc.fonts?.removeEventListener?.('loadingerror',invalidate);
+    }
+    observedDoc=doc;
+    if(typeof MutationObserver!=='function'||!doc?.documentElement)return;
+    observer=new MutationObserver(mutations);
+    observer.observe(doc.documentElement,{attributes:true,childList:true,characterData:true,subtree:true});
+    globalThis.addEventListener?.('resize',invalidate,{passive:true});
+    globalThis.addEventListener?.('scroll',invalidate,{capture:true,passive:true});
+    doc.fonts?.addEventListener?.('loadingdone',invalidate);
+    doc.fonts?.addEventListener?.('loadingerror',invalidate);
+  }
+  function scrollWitness(entries){
+    const seen=new Set();
+    for(const entry of entries)for(const source of entrySources.get(entry)||[]){
+      for(let node=source.parentElement;node;node=node.parentElement)seen.add(node);
+    }
+    return [...seen].map(node=>({node,left:node.scrollLeft||0,top:node.scrollTop||0}));
+  }
+  function scrolled(witness){return witness.some(v=>(v.node.scrollLeft||0)!==v.left||(v.node.scrollTop||0)!==v.top)}
+  function observe(frame,doc=globalThis.document,getStyle=globalThis.getComputedStyle){
+    if(doc!==observedDoc)watch(doc);
+    // Without a frame or a way to witness intervening changes, this call is
+    // its own observation phase; no stale geometry is silently reused.
+    if(!Number.isFinite(frame)||!observer)return collect(doc,getStyle);
+    mutations(observer.takeRecords());
+    if(!observation||observation.frame!==frame||observation.revision!==revision||observation.getStyle!==getStyle||scrolled(observation.scroll)){
+      const entries=collect(doc,getStyle);
+      observation={frame,revision,getStyle,entries,scroll:scrollWitness(entries)};
+    }
+    return observation.entries;
+  }
+  function rects(canvasRect,buffer,frame,skip,liquid){
+    const entries=observe(frame);
+    const pack=derive(skip&&skip.length?entries.filter(e=>!e.ids.some(id=>skip.includes(id))):entries,canvasRect,buffer,liquid);
+    return {...pack,inset:entries[0]?.inset??PARAMS.bevelMax};
+  }
+  return Object.freeze({MAX,PARAMS,derive,collect,observe,invalidate,rects,enabled,surfaceRect,readInset,readingFrame});
 });
