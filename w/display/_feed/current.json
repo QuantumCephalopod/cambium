@@ -25,17 +25,20 @@
   },
   "home": {
     "changed_scope": [
-      "w/display/w/wz/navigator-grid.json",
+      "w/display/w/wz/membrane-grid.json",
       "w/display/w/wz/membrane-grid.js",
-      "w/display/z/zz/navigation-aperture.js",
+      "w/display/w/wz/template.html",
+      "w/display/w/wy/locus-shader.js",
+      "w/display/x/display-runtime-v2.js",
       "w/display/z/zz/navigation-aperture.css",
       "w/display/RITUALS",
+      "y/check.py",
       "y/test-membrane-grid.py"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — portrait navigator controls clear the site timeline, while the square map stays stable when help opens."
+    "outcome": "COMPLETED — a shared, recursively addressed BACK / ZURÜCK control performs the actual local or membrane ascent; empty canvas contact no longer triggers it."
   },
-  "observed_at_utc": "2026-11-07T23:38:54.670194Z",
+  "observed_at_utc": "2026-11-08T00:36:53.824454Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -75,19 +78,19 @@
       }
     }
   },
-  "reflected_home_event": "display-portrait-compass-timeline-20261107",
+  "reflected_home_event": "display-explicit-ascent-20261108",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "37deacd870f0ac6e9ca9a80bc44fbedc5524f594079f5ef3c6d0f034468cf596"
+      "sha256": "45a0c2d259783ab2bd3d6592a377cf9869bf68e2052150c061d1437b7a35182c"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "8754dde91c79973437a27173338088856db4a8ac10472306e87c7fcb3f427767"
+      "sha256": "bc92c0183f0d79825f5d32b27688ac07204eeb2baccff598953aed74401a2180"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "92a3d598835fd149fd54f84140d4b37c124cf2e6d0db6a17f185b5dfe3220b0e"
+      "sha256": "4a1b02d6c6efc3084cb003f62ce255789a5c1ec4b872535e5a51c80d5903b846"
     }
   ],
   "shell": {
@@ -97,10 +100,10 @@
       "NUTRIENT__frame-owned-hud-measurement__20261106.md",
       "NUTRIENT__inactive-optical-target-lifetime__20261106.md"
     ],
-    "waste_direct_count": 137
+    "waste_direct_count": 138
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "219393da87c052f347e8cb544de82ba218e60d76"
+    "source_revision": "1f91b8a929def4ae1ce538b9935252e184585c8c"
   }
 }
