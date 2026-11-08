@@ -76,6 +76,12 @@ try:
         page.wait_for_function('window.actualBody==="organism:papers"')
         ready(page,'organism:papers')
 
+        # A stored pre-relocation visit names the old address but retains the
+        # actual body identity; browser history reacquires the current mount.
+        page.evaluate('''()=>{const now=SSSDisplayRuntime.state;history.pushState({...now,activeAddress:'y'},'','#main:y');history.pushState(now,'','#main:w')}''')
+        page.go_back()
+        page.wait_for_function('SSSDisplayRuntime.state.activeIds.includes("organism:papers")&&SSSDisplayRuntime.state.activeAddress==="w"&&location.hash==="#main:w"')
+
         # Papers owns its own input and finer walk; its double-click returns that
         # chamber before crossing the site membrane.
         chamber=page.locator('.papers-chamber-label[data-gene=w]');box=chamber.bounding_box();assert box
@@ -94,7 +100,7 @@ try:
         page.mouse.click(x,y)
         page.wait_for_function('SSSDisplayRuntime.state.activeAddress===""&&document.getElementById("tetra-fold").dataset.fold==="open"',timeout=180000)
         assert not errors,errors
-        cases.append({'carrier':[1280,800],'mounts':mounts,'fieldDoubleClick':True,'papersDoubleClick':True,'hoverTarget':'organism:papers','pointerReturn':True})
+        cases.append({'carrier':[1280,800],'mounts':mounts,'historyRemount':True,'fieldDoubleClick':True,'papersDoubleClick':True,'hoverTarget':'organism:papers','pointerReturn':True})
         page.close()
 
         page=browser.new_page(viewport={'width':390,'height':844},device_scale_factor=1,reduced_motion='reduce')
