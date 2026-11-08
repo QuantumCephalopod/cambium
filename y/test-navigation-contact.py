@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Witness real Canvas2D pointer contact, body ink and return in Chromium."""
+"""Witness browser pointer contact, body ink and return on Canvas2D or WebGL."""
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -12,6 +12,7 @@ from playwright.sync_api import sync_playwright
 parser = argparse.ArgumentParser()
 parser.add_argument('--artifact', required=True, type=Path)
 parser.add_argument('--out', required=True, type=Path)
+parser.add_argument('--backend', choices=('canvas2d','webgl'), default='canvas2d')
 args = parser.parse_args()
 args.out.mkdir(parents=True, exist_ok=True)
 
@@ -42,12 +43,15 @@ def slot_geometry(page, portrait):
 
 try:
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True, args=['--disable-webgl'])
+        flags=['--disable-webgl'] if args.backend=='canvas2d' else ['--use-angle=swiftshader','--enable-unsafe-swiftshader']
+        browser = pw.chromium.launch(headless=True, args=flags)
         page = browser.new_page(viewport={'width':1280,'height':800}, device_scale_factor=1)
         errors=[]
         page.on('pageerror', lambda e: errors.append(str(e)))
         page.goto(base+'#main:overview', wait_until='domcontentloaded')
         ready(page,'organism:philosophy')
+        renderer=page.locator('[data-interlocutor="organism:philosophy"] .interlocutor-background').get_attribute('data-field-renderer')
+        assert renderer==('webgl2' if args.backend=='webgl' else 'canvas2d'),renderer
         mounts=page.evaluate('''()=>Object.fromEntries(['papers','crawlerbait'].map(id=>[id,SSSDisplayRuntime.registry.getMount('organism:'+id).rawAddress]))''')
         assert mounts == {'papers':'w','crawlerbait':'y'}, mounts
         slot_geometry(page,False)
@@ -75,6 +79,7 @@ try:
         page.mouse.click(box['x']+box['width']/2,box['y']+box['height']/2)
         page.wait_for_function('window.actualBody==="organism:papers"')
         ready(page,'organism:papers')
+        assert page.locator('.papers-sierpinski-stage').get_attribute('data-field-renderer')==renderer
 
         # A stored pre-relocation visit names the old address but retains the
         # actual body identity; browser history reacquires the current mount.
@@ -100,7 +105,7 @@ try:
         page.mouse.click(x,y)
         page.wait_for_function('SSSDisplayRuntime.state.activeAddress===""&&document.getElementById("tetra-fold").dataset.fold==="open"',timeout=180000)
         assert not errors,errors
-        cases.append({'carrier':[1280,800],'mounts':mounts,'historyRemount':True,'fieldDoubleClick':True,'papersDoubleClick':True,'hoverTarget':'organism:papers','pointerReturn':True})
+        cases.append({'carrier':[1280,800],'backend':renderer,'mounts':mounts,'historyRemount':True,'fieldDoubleClick':True,'papersDoubleClick':True,'hoverTarget':'organism:papers','pointerReturn':True})
         page.close()
 
         page=browser.new_page(viewport={'width':390,'height':844},device_scale_factor=1,reduced_motion='reduce')
