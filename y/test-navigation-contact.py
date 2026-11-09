@@ -37,6 +37,23 @@ def double_touch(page, x, y):
         c.send('Input.dispatchTouchEvent',{'type':kind,'touchPoints':points,'timestamp':t+offset})
     c.detach()
 
+def empty_point(page, identity, canvas_class):
+    """Find an actual uncovered, non-contact point in the current frame."""
+    # Labels and world bodies move; a remembered pixel is not evidence that a
+    # point is empty. The same production hover trace reports contact geometry.
+    for x in (12, 24, 40, 60, 80):
+        for y in (240, 300, 360, 420, 480, 540, 600):
+            surface=page.evaluate('''([x,y,klass])=>{
+              const el=document.elementFromPoint(x,y);
+              return !!el?.classList.contains(klass)&&!SSSDisplayRuntime.isAscentPoint(x,y);
+            }''',[x,y,canvas_class])
+            if not surface:continue
+            page.mouse.move(x,y)
+            page.evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
+            empty=page.evaluate('''([id,x,y,klass])=>{const el=document.elementFromPoint(x,y),traces=[...document.querySelectorAll(`[data-interlocutor="${id}"] .field-contact-trace`)];return !!el?.classList.contains(klass)&&!SSSDisplayRuntime.isAscentPoint(x,y)&&traces.length>0&&traces.every(e=>getComputedStyle(e).display==='none')}''',[identity,x,y,canvas_class])
+            if empty:return x,y
+    raise AssertionError((identity,'no currently uncovered empty field point found'))
+
 def slot_geometry(page, portrait):
     values = page.evaluate('''()=>{const s=SSSDisplayMembraneGrid.snapshot(),b=document.getElementById('display-ascent').getBoundingClientRect();return {top:s.top,compass:s.compass,slot:s.ascent,button:{left:b.left,top:b.top,right:b.right,bottom:b.bottom,width:b.width,height:b.height}}}''')
     s, b, top, compass = values['slot'], values['button'], values['top'], values['compass']
@@ -137,10 +154,11 @@ try:
         assert mobile_renderer==renderer,(mobile_renderer,renderer)
         page.evaluate("SSSInterlocutorFields.get('organism:philosophy').descendTo('w','touch-witness')")
         page.wait_for_timeout(500)
-        assert page.evaluate("document.elementFromPoint(20,400).classList.contains('interlocutor-background')")
-        page.touchscreen.tap(20,400);assert page.evaluate('SSSWorldView.view')=='w'
+        x,y=empty_point(page,'organism:philosophy','interlocutor-background')
+        page.touchscreen.tap(x,y);assert page.evaluate('SSSWorldView.view')=='w'
         page.wait_for_timeout(500)
-        double_touch(page,20,400)
+        x,y=empty_point(page,'organism:philosophy','interlocutor-background')
+        double_touch(page,x,y)
         page.wait_for_function('SSSWorldView.view===""')
         page.wait_for_timeout(300);assert page.evaluate('SSSWorldView.view')==''
         page.goto(base+'#main:w',wait_until='domcontentloaded');ready(page,'organism:papers')
@@ -149,10 +167,11 @@ try:
         page.evaluate("document.querySelector('.papers-chamber-label[data-gene=w]').click()")
         page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="w"')
         page.wait_for_timeout(500)
-        assert page.evaluate("document.elementFromPoint(20,400).classList.contains('papers-sierpinski-stage')")
-        page.touchscreen.tap(20,400);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='w'
+        x,y=empty_point(page,'organism:papers','papers-sierpinski-stage')
+        page.touchscreen.tap(x,y);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='w'
         page.wait_for_timeout(500)
-        double_touch(page,20,400)
+        x,y=empty_point(page,'organism:papers','papers-sierpinski-stage')
+        double_touch(page,x,y)
         page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="overview"')
         page.wait_for_timeout(300);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='overview'
         assert not errors,errors
