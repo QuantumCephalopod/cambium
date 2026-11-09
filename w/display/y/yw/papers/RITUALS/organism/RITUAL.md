@@ -559,3 +559,7 @@ Sources and Holons in the Papers overview offer their actual moving projected bo
 The sharp foreground redraws only the contacted organism’s actual source geometry and visibility embers in the existing isolated shared pass. Its actual admitted ID/title opens through the existing Pretext reading and transparent sharp-page path, with complete wording and continuation. This redraw does not advance simulation, enter inquiry, change chamber/selection or mutate public source/genealogy. Other organisms remain background. Resolution/blur/glass and lock/release physics remain Display-owned.
 
 The 2026-10-28 return completed only the then-new bounded overview Source/Holon softlock intake, with native movement/resolver/lifetime and actual-font/source-renderer GLES witnesses at390×844 and1280×800. Its historical HOME keeps that scope. The later liquid-encounter HOME above owns the broader approach/locked-Descent/topology/tutorial completion. Source-runtime projection freshness remains separate. Later concrete failures are new nutrients; publication/merge is not a personal completion gate.
+
+## Upright mobile field — 2026-11-09
+
+The Papers owner declares upright physiology, HUD and label spans for the turned carrier. The physiology button wraps within its own field; its existing action, source wording, organisms and camera physiology remain unchanged. Ordinary spans remain available in the wide carrier. These presentation changes do not execute the separate source-runtime freshness operation.

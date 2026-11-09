@@ -11,12 +11,15 @@
     "z",
     "ww",
     "wx",
+    "wy",
     "wz",
     "xw",
     "xx",
     "xy",
     "xz",
+    "yw",
     "yx",
+    "yy",
     "yz",
     "zw",
     "zx",
@@ -36,7 +39,16 @@
         "zzz"
       ],
       "label": "compass",
-      "variants": {"portrait": ["z"], "compact": ["xz", "zx", "zz"]}
+      "variants": {
+        "portrait": [
+          "z"
+        ],
+        "compact": [
+          "xz",
+          "zx",
+          "zz"
+        ]
+      }
     },
     "description": {
       "cells": [
@@ -44,7 +56,19 @@
         "yw",
         "yy"
       ],
-      "label": "description"
+      "label": "description",
+      "variants": {
+        "upright": [
+          "ywx",
+          "ywz",
+          "yyx",
+          "yyz",
+          "yxw",
+          "yxy",
+          "yzw",
+          "yzy"
+        ]
+      }
     },
     "header": {
       "cells": [
@@ -65,7 +89,19 @@
         "xxy",
         "xxz"
       ],
-      "label": "header"
+      "label": "header",
+      "variants": {
+        "upright": [
+          "www",
+          "wwy",
+          "wyw",
+          "wyy",
+          "yww",
+          "ywy",
+          "yyw",
+          "yyy"
+        ]
+      }
     },
     "timeline": {
       "cells": [
@@ -74,7 +110,20 @@
         "zyy",
         "zyz"
       ],
-      "label": "time"
+      "label": "time",
+      "variants": {
+        "upright": [
+          "yxz",
+          "yzx",
+          "yzz",
+          "zwy",
+          "zyw",
+          "zyy",
+          "zwz",
+          "zyx",
+          "zyz"
+        ]
+      }
     },
     "viewport": {
       "cells": [

@@ -270,6 +270,12 @@
     return {...spanInfo(state,used?f.variants[used]:f.cells),id,label:f.label,z:f.z,variant:used};
   }
 
+  // The same long-axis turn applies everywhere. An owner may lend an
+  // explicitly addressed upright-content span when the carrier is turned.
+  function carrierField(state,id,mode){
+    return fieldInfo(state,id,mode==='portrait'?'upright':'');
+  }
+
   function place(state,id,spec){
     state=normalizeState(state);
     if(state.elements[id])throw new Error('element '+id+' already exists');
@@ -354,7 +360,7 @@
 
   return Object.freeze({
     SCHEMA,LEGACY_SCHEMA,ADDRESS_SYMBOLS,rootLabel,parentOf,childrenOf,compareAddress,canonicalCells,
-    emptyState,initialState,normalizeState,bounds,orientation,orientBounds,orientEdges,coord,leafSet,isLeaf,spanInfo,fieldInfo,
+    emptyState,initialState,normalizeState,bounds,orientation,orientBounds,orientEdges,coord,leafSet,isLeaf,spanInfo,fieldInfo,carrierField,
     split,coalesce,defineField,removeField,refineField,place,move,bindElement,remove,updateElement,
     spanText,formatState,parseState,command
   });

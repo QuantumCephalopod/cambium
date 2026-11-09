@@ -15,17 +15,24 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/index.html';results=[]
 expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.75,.5,.25,.5),'viewport':(.25,.25,.625,.625)}
+portrait_expected={
+ ('organism:philosophy','viewport'):(0,.25,1,.5),
+ **{(site,field):box for site in ('organism:crawlerbait','organism:schattenseiten') for field,box in {
+   'header':(0,0,1,.125),'description':(0,.125,.5,.25),'timeline':(0,.375,.375,.375)
+ }.items()}
+}
 def bounds(page,selector):return page.locator(selector).evaluate('(e)=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}}')
-def close(actual,field,w,h,variant='default'):
+def close(actual,field,w,h,variant='default',identity=None):
  x,y,fw,fh=expected[field]
- if h>w:x,y,fw,fh=1-y-fh,x,fh,fw
+ if h>w:
+  x,y,fw,fh=portrait_expected.get((identity,field),(1-y-fh,x,fh,fw))
  for k,v in dict(x=x*w,y=y*h,width=fw*w,height=fh*h).items():assert abs(actual[k]-v)<1.1,(field,k,actual,v)
 def wait_scene(page,identity):
  page.wait_for_selector(f'[data-interlocutor="{identity}"]:not([hidden]) [data-ui-bounded="true"]',timeout=180000)
  page.wait_for_function("document.getElementById('tetra-fold').dataset.fold==='open'",timeout=180000)
  page.evaluate('document.fonts.ready')
 def header_content(page,host,identity,w,h):
- outer=host+' [data-ui-field="header"]';close(bounds(page,outer),'header',w,h)
+ outer=host+' [data-ui-field="header"]';close(bounds(page,outer),'header',w,h,identity=identity)
  inner=outer+(' .crawlerbait-hud-top' if identity=='organism:crawlerbait' else ' .ss-hud-top')
  reading=page.locator(inner)
  metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot(),safe=SSSDisplaySafeArea.snapshot().insets;return {top:r.top,bottom:r.bottom,right:r.right,height:r.height,outerBottom:o.bottom,safeTop:safe.top,safeRight:safe.right,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,headerLeft:h.left,glassBottom:g.rect.bottom,glassLeft:g.rect.left,inset:g.inset,fieldBottom:f.top.bottom,fieldLeft:f.top.left,topCells:f.outer.fields.top.cells}}''')
@@ -79,21 +86,21 @@ try:
      host=f'[data-interlocutor="{identity}"]:not([hidden])';description=host+' [data-ui-field="description"]'
      compass_variant=page.evaluate('(id)=>SSSDisplayRuntime.ui.get(id).field("compass").variant',identity)
      assert compass_variant=='default',(identity,w,h,compass_variant)
-     close(bounds(page,description),'description',w,h);close(bounds(page,'#mini'),'compass',w,h,compass_variant)
+     close(bounds(page,description),'description',w,h,identity=identity);close(bounds(page,'#mini'),'compass',w,h,compass_variant)
      # The exact neutral camera rectangle is lent to the actual field. Its
      # GL source projection and pointer equivalence have separate native tests.
-     world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewport',w,h)
+     world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewport',w,h,identity=identity)
      canvas=page.locator(host+' .interlocutor-background');assert not canvas.get_attribute('data-layer-error')
      records={'identity':identity,'carrier':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if use_fallback else 'software WebGL','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewport':world}
      if identity!='organism:philosophy':
       records['header_content']=header_content(page,host,identity,w,h)
-      timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h);records['timeline']=before
+      timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h,identity=identity);records['timeline']=before
       if identity=='organism:schattenseiten':
        page.locator(host+' .ss-rows button').first.click();page.locator(host+' .ss-work-choices button').first.click();page.locator(host+' .ss-panel img').wait_for(state='visible')
        assert page.locator(host+' .ss-hud-rail .ss-panel').count()==1
       else:
        page.locator(host+' .crawlerbait-modes button').nth(1).click()
-      assert bounds(page,timeline)==before,'selection/mode moved the declared footer';close(bounds(page,description),'description',w,h)
+      assert bounds(page,timeline)==before,'selection/mode moved the declared footer';close(bounds(page,description),'description',w,h,identity=identity)
      page.wait_for_function("(()=>{const m=document.getElementById('navTwin').getBoundingClientRect(),c=document.getElementById('mini-core');return Math.abs(m.width-m.height)<1.1&&c.scrollHeight<=c.clientHeight+1})()",timeout=10000)
      map_box=bounds(page,'#navTwin');assert abs(map_box['width']-map_box['height'])<1.1,('distorted map',map_box)
      compass_box=bounds(page,'#mini');pocket_box=bounds(page,'#mini-pocket')

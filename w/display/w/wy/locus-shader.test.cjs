@@ -45,7 +45,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.uniform1fv=(loc,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
   gl.uniform4f=(loc,...value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniformMatrix4fv=(loc,_,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
-  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},attributes:{},children:[],append(...nodes){this.children.push(...nodes)},remove(){},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
+  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{setProperty(k,v){this[k]=v}},attributes:{},children:[],append(...nodes){this.children.push(...nodes)},remove(){},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
   let inkPath=[];
   const ctx2d={beginPath(){inkPath=[]},moveTo(x,y){inkPath.push([x,y])},lineTo(x,y){inkPath.push([x,y])},fill(){calls.push({type:'fill2d',path:inkPath.map(p=>[...p]),style:this.fillStyle})}};
   for(const name of ['rect','clip','setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};

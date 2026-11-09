@@ -260,6 +260,36 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     const ink=n.querySelector('b');if(ink.textContent!==B.title)ink.textContent=B.title;
     return n;
   }
+  /* Preserve the projected body anchor while separating only the native
+   * reading/contact rectangles. The nearest available position is chosen
+   * from the actual edges of the already placed labels, not from rows or
+   * semantic addresses. A fine tether returns displaced ink to its anchor. */
+  function placeBodyLabels(records,r){
+    const placed=[],gap=2,clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+    for(const item of records.sort((a,b)=>a.B.id.localeCompare(b.B.id))){
+      const {B,n,lp,size}=item,halfW=Math.min(size.w/2+8,r.width/2),halfH=Math.min(size.h/2+8,r.height/2);
+      n.style.maxWidth=Math.max(1,r.width-16)+'px';
+      const bx=clamp(lp.x,halfW,r.width-halfW),by=clamp(lp.y,halfH,r.height-halfH),xs=[bx],ys=[by];
+      const boxAt=(x,y)=>({left:x-size.w/2,right:x+size.w/2,top:y-size.h/2,bottom:y+size.h/2});
+      const free=box=>!placed.some(p=>box.left<p.right+gap&&box.right+gap>p.left&&box.top<p.bottom+gap&&box.bottom+gap>p.top);
+      const base={x:bx,y:by,box:boxAt(bx,by)};let chosen=base;
+      if(!free(base.box)){
+        for(const p of placed){xs.push(p.left-size.w/2-gap,p.right+size.w/2+gap);ys.push(p.top-size.h/2-gap,p.bottom+size.h/2+gap)}
+        const candidates=[];
+        for(const x of xs)for(const y of ys){
+          if(x<halfW||x>r.width-halfW||y<halfH||y>r.height-halfH)continue;
+          const box=boxAt(x,y);if(!free(box))continue;
+          candidates.push({x,y,box,d:(x-bx)**2+(y-by)**2});
+        }
+        candidates.sort((a,b)=>a.d-b.d||a.y-b.y||a.x-b.x);chosen=candidates[0]||base;
+      }
+      placed.push(chosen.box);n.hidden=false;n.style.left=chosen.x+'px';n.style.top=chosen.y+'px';n.style.zIndex=String(10+Math.round((lp.z+2)*10));
+      const dx=lp.x-chosen.x,dy=lp.y-chosen.y;
+      const edge=Math.min(1,dx?size.w/2/Math.abs(dx):1,dy?size.h/2/Math.abs(dy):1);
+      n.style.setProperty('--body-label-line-x',(dx*edge)+'px');n.style.setProperty('--body-label-line-y',(dy*edge)+'px');
+      n.style.setProperty('--body-label-line-length',(Math.hypot(dx,dy)*(1-edge))+'px');n.style.setProperty('--body-label-line-angle',Math.atan2(dy,dx)+'rad');
+    }
+  }
   function enterBody(bodyId,origin){
     const B=BODIES.get(bodyId);if(!B?.active)return;
     dispatchEvent(new CustomEvent('sss:enter-body',{detail:{from:id,id:bodyId,origin}}));
@@ -828,11 +858,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     traceContact(r);
     canvasState('container',cur||'ε');canvasState('visibleCells',cells.length);canvasState('visibleContent',visible.length);canvasState('floatingBodies',fb.map(B=>B.id).join(' '));
     for(const [bodyId,n] of bodyLabels)if(!BODIES.get(bodyId)?.active)n.hidden=true;
-    for(const B of fb){
-      const n=bodyLabel(B),lp=project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r),size=labelSizes.get(n)||{w:0,h:0};
-      const halfW=Math.min(size.w/2+8,r.width/2),halfH=Math.min(size.h/2+8,r.height/2);
-      n.hidden=false;n.style.maxWidth=Math.max(1,r.width-16)+'px';n.style.left=Math.max(halfW,Math.min(r.width-halfW,lp.x))+'px';n.style.top=Math.max(halfH,Math.min(r.height-halfH,lp.y))+'px';n.style.zIndex=String(10+Math.round((lp.z+2)*10));
-    }
+    placeBodyLabels(fb.map(B=>{const n=bodyLabel(B);return {B,n,lp:project(B.pos.map((v,j)=>v+N.V0[0][j]*B.place.k*.9),r),size:labelSizes.get(n)||{w:0,h:0}}}),r);
     if(gl&&GL){
       const hv=hostView(),hostClear=hv?.e.shader.clear;
       const clear=Array.isArray(hostClear)&&hostClear.length===4?hostClear:(Array.isArray(shader.clear)&&shader.clear.length===4?shader.clear:[.014,.019,.027,1]);

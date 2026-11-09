@@ -5,8 +5,8 @@ const membrane=require('./membrane-grid.json'),navigator=require('./navigator-gr
 const grid=M.create(membrane,navigator);
 const owned=UI.normalizeState(require('../../y/philosophy/w/ui-grid.json'));
 function close(a,b){assert.ok(Math.abs(a-b)<1e-8,JSON.stringify({a,b}))}
-function verifyField(state,name,parent,actual,mode){
-  const info=UI.fieldInfo(state,name),b=UI.orientBounds(info.bounds,mode);
+function verifyField(state,name,parent,actual,mode,carrier=false){
+  const info=carrier?UI.carrierField(state,name,mode):UI.fieldInfo(state,name),b=UI.orientBounds(info.bounds,mode);
   close(actual.left,parent.left+b.x*parent.width);close(actual.top,parent.top+b.y*parent.height);
   close(actual.width,b.w*parent.width);close(actual.height,b.h*parent.height);
   assert.ok(UI.spanInfo(state,info.cells).ok,'field must consist of realized address cells');
@@ -22,12 +22,15 @@ for(const [width,height] of carriers){
   assert.strictEqual(grid.reconcile(input).outer,idle.outer,'an unchanged observation reuses the realized field');
   assert.strictEqual(grid.reconcile(input).inner,idle.inner,'an unchanged navigator reuses its realized field');
   for(const name of ['top','compass','ascent'])verifyField(idle.outer,name,idle.viewport,idle[name],mode);
-  for(const name of ['pocket','help','trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name],mode);
+  for(const name of ['pocket','help','trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name],mode,true);
   assert.deepEqual(idle.compassInfo.cells,UI.fieldInfo(owned,'compass').cells,'orientation cannot replace the owner address');
   if(mode==='portrait'){
     close(idle.compass.left,0);close(idle.ascent.left,idle.compass.right);
     close(idle.ascent.right,idle.top.left);close(idle.ascent.top,idle.compass.top);close(idle.ascent.bottom,idle.compass.bottom);
-    close(idle.pocket.left,idle.help.right);close(idle.help.bottom,idle.legal.top);assert.ok(idle.legal.bottom<=idle.trigger.top);
+    close(idle.pocket.bottom,idle.legal.top);close(idle.legal.left,idle.compass.left);
+    close(idle.legal.right,idle.trigger.left);close(idle.trigger.right,idle.compass.right);
+    close(idle.legal.top,idle.trigger.top);close(idle.help.top,idle.compass.top);
+    close(idle.help.left,idle.trigger.left);close(idle.help.right,idle.trigger.right);
     assert.ok(width-idle.top.left>=46,'header and optical rim fit the right-edge field');
   }else{
     close(idle.compass.right,width);close(idle.ascent.bottom,idle.compass.top);
@@ -44,6 +47,7 @@ for(const [width,height] of carriers){
 assert.equal(UI.orientation(600,600),'landscape','a square has a deterministic tie');
 assert.deepEqual(UI.orientBounds({x:.75,y:.5,w:.25,h:.5},'portrait'),{x:0,y:.75,w:.5,h:.25});
 assert.equal(UI.orientEdges('right bottom','portrait'),'bottom left');
+assert.deepEqual(grid.topCapacity(320,568),{left:240,top:0,width:80,height:568,right:320,bottom:568},'status capacity comes from the whole declared membrane band before measured refinement');
 
 // A different owner remains itself across a live format change; its compass
 // cells and nested actual rectangles follow the same global turn.
@@ -54,7 +58,7 @@ assert.deepEqual(s.compass,{left:0,top:0,width:500,height:300,right:500,bottom:3
 s=grid.reconcile({width:600,height:1000,headerRect:header(600,1000),triggerRect:{width:24,height:24},inset:8});
 assert.deepEqual(s.compass,{left:300,top:0,width:300,height:500,right:600,bottom:500});
 assert.deepEqual(s.compassInfo.cells,['w']);
-verifyField(s.inner,'trigger',s.compass,s.trigger,'portrait');
+verifyField(s.inner,'trigger',s.compass,s.trigger,'portrait',true);
 assert.throws(()=>grid.surfaceRect({getAttribute:()=>null,dataset:{}},{left:0,top:0,width:1,height:1}),/realized recursive UI field/);
 assert.equal(M.address(0,0,40),'w'.repeat(40),'recursive addresses are not rank-capped by a UI breakpoint');
 

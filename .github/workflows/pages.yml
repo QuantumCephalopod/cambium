@@ -110,7 +110,7 @@ jobs:
         run: python3 y/site-public.py --artifact _site --check
 
       - name: Prepare bounded layout browser witness
-        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/bounded-ui-grid-') || startsWith(github.ref_name, 'staging/long-axis-display-') || startsWith(github.ref_name, 'staging/spritesheet-mono-v4-') || startsWith(github.ref_name, 'staging/navigation-encounters-'))
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && (startsWith(github.ref_name, 'staging/bounded-ui-grid-') || startsWith(github.ref_name, 'staging/long-axis-display-') || startsWith(github.ref_name, 'staging/spritesheet-mono-v4-') || startsWith(github.ref_name, 'staging/navigation-encounters-') || startsWith(github.ref_name, 'staging/mobile-display-'))
         run: |
           python3 -m pip install playwright==1.56.0
           python3 -m playwright install --with-deps chromium
@@ -152,6 +152,22 @@ jobs:
         with:
           name: long-axis-witness
           path: _orientation-witness
+          if-no-files-found: warn
+
+      - name: Witness mobile reading and shared layout
+        if: steps.publication.outputs.publish == 'true' && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/mobile-display-')
+        run: |
+          python3 y/test-mobile-reading-browser.py --artifact _site --out _mobile-witness/reading
+          python3 y/test-long-axis-browser.py --artifact _site --out _mobile-witness/orientation
+          python3 y/test-membrane-grid.py --artifact _site --out _mobile-witness/membrane
+          python3 y/test-bounded-layout.py --artifact _site --out _mobile-witness/bounded --canvas2d
+
+      - name: Retain mobile browser witness
+        if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/mobile-display-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-display-witness
+          path: _mobile-witness
           if-no-files-found: warn
 
       - name: Witness navigation contact and shared controls

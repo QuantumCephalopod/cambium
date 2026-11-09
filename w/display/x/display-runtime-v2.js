@@ -38,8 +38,8 @@ function makeSiteUI(id,host,raw){
   if(state.meta.extent==='intrinsic')throw new Error('Display UI fields require address-derived extents');
   const carrier=()=>safeCarrier(host);
   function field(name,carrier=safeCarrier(host)){
-    const info=UI.fieldInfo(state,name),mode=UI.orientation(innerWidth,innerHeight);
-    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,variant:'default',orientation:mode});
+    const mode=UI.orientation(innerWidth,innerHeight),info=UI.carrierField(state,name,mode);
+    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,variant:info.variant||'default',orientation:mode});
   }
   function apply(el,name){
     if(!el)throw new TypeError('UI field element required');
@@ -223,8 +223,12 @@ function syncMembraneGrid(){
  const hb=ui.state.fields.header?ui.field('header').bounds:null,header=hb?{width:hb.w*innerWidth,height:hb.h*innerHeight}:null;
  if(header){
    const rootStyle=document.documentElement.style;
-   if(rootStyle?.getPropertyValue?.('--display-header-field-width')!==header.width+'px')rootStyle?.setProperty?.('--display-header-field-width',header.width+'px');
-   for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:header.height+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
+   const portrait=UI.orientation(innerWidth,innerHeight)==='portrait';
+   const statusWidth=portrait?Math.min(header.width,Membrane.topCapacity(innerWidth,innerHeight).width):header.width;
+   if(rootStyle?.getPropertyValue?.('--display-header-field-width')!==statusWidth+'px')rootStyle?.setProperty?.('--display-header-field-width',statusWidth+'px');
+   // The global edge turns with the membrane and spans the carrier's long
+   // axis. A site's short upright title field cannot clip those controls.
+   for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:(portrait?innerHeight:header.height)+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
  }
 }
 function siteTitle(id){const root=surfaces.get(id)?.fieldProjection?.root;return root?.[W.language]||specs.get(id)?.title||root?.noun||id.replace(/^organism:/,'')}

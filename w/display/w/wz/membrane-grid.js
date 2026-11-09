@@ -116,7 +116,11 @@
       const own=UI.orientBounds(UI.fieldInfo(outer,name).bounds,mode());
       return projection(own,viewport);
     }
-    function relative(name){return UI.orientBounds(UI.fieldInfo(inner,name).bounds,mode())}
+    function topCapacity(width,height){
+      const area=box(0,0,Math.max(0,num(width)),Math.max(0,num(height)));
+      return projection(UI.orientBounds(UI.fieldInfo(base,'top').bounds,UI.orientation(area.width,area.height)),area);
+    }
+    function relative(name){return UI.orientBounds(UI.carrierField(inner,name,mode()).bounds,mode())}
     function nested(name){return projection(relative(name),rect('compass'))}
     function role(value){return UI.orientEdges(value,mode())}
     function logicalRead(r){
@@ -154,7 +158,7 @@
       return {outer,inner,viewport:{...viewport},orientation:mode(),compassState,compassInfo,fit:{...fit},
         top:rect('top'),compass:rect('compass'),ascent:rect('ascent'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')};
     }
-    return Object.freeze({useCompass,reconcile,rect,nested,relative,role,surfaceRect,snapshot});
+    return Object.freeze({useCompass,reconcile,rect,topCapacity,nested,relative,role,surfaceRect,snapshot});
   }
   return Object.freeze({create,address,topBand,triggerState});
 });
