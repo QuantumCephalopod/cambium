@@ -58,10 +58,19 @@ try:
        return {name:el.id||el.textContent.trim(),left:Math.max(r.left,clip.left),top:Math.max(r.top,clip.top),right:Math.min(r.right,clip.right),bottom:Math.min(r.bottom,clip.bottom)};
       }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const returnSlot=toBox(document.getElementById('display-ascent-slot').getBoundingClientRect()),returnButton=toBox(document.getElementById('display-ascent').getBoundingClientRect());
+      // A visually clipped source article still exposes its semantic text to
+      // assistive technology; its off-screen descendants are not screen hit
+      // targets. Intersect every actual overflow clip before testing contact.
+      const visibleRect=el=>{
+       const r=el.getBoundingClientRect(),b={left:Math.max(0,r.left),top:Math.max(0,r.top),right:Math.min(innerWidth,r.right),bottom:Math.min(innerHeight,r.bottom)};
+       for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),q=p.getBoundingClientRect();
+        if(/^(hidden|clip|auto|scroll)$/.test(s.overflowX)){b.left=Math.max(b.left,q.left);b.right=Math.min(b.right,q.right)}
+        if(/^(hidden|clip|auto|scroll)$/.test(s.overflowY)){b.top=Math.max(b.top,q.top);b.bottom=Math.min(b.bottom,q.bottom)}
+       }return b;
+      };
       const otherTargets=[...document.querySelectorAll('[data-interlocutor]:not([hidden]) button,[data-interlocutor]:not([hidden]) input,[data-interlocutor]:not([hidden]) select,[data-interlocutor]:not([hidden]) a')]
        .filter(el=>el.getClientRects().length).map(el=>{
-        const r=el.getBoundingClientRect(),field=el.closest('[data-ui-bounded="true"]'),p=field?field.getBoundingClientRect():{left:0,top:0,right:innerWidth,bottom:innerHeight};
-        const box={name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(0,r.left,p.left),top:Math.max(0,r.top,p.top),right:Math.min(innerWidth,r.right,p.right),bottom:Math.min(innerHeight,r.bottom,p.bottom)};
+        const box={name:el.getAttribute('aria-label')||el.textContent.trim(),...visibleRect(el)};
         const at=document.elementFromPoint((box.left+box.right)/2,(box.top+box.bottom)/2);box.reachable=Boolean(at&&(at===el||el.contains(at)));return box;
        }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
