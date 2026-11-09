@@ -17,7 +17,13 @@ try:
     page.goto(f'http://127.0.0.1:{server.server_port}/index.html#main:overview',wait_until='domcontentloaded')
     page.wait_for_function('window.SSSDisplayRuntime?.state.activeAddress===""&&document.getElementById("tetra-fold").dataset.fold==="open"',timeout=180000);page.evaluate('document.fonts.ready')
     q=page.evaluate('''()=>{const box=id=>{const r=document.getElementById(id).getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};return {pocket:box('mini-pocket'),trigger:box('mini-trigger'),map:box('navTwin'),axisX:box('axis-x'),axisY:box('axis-y'),help:box('mini-help-toggle'),back:box('display-ascent'),legal:box('legal-links'),state:SSSDisplayMembraneGrid.snapshot().fit}}''')
-    page.screenshot(path=str(a.out/f'open-{w}x{h}.png'));page.locator('#mini-trigger').click();assert page.locator('#mini-trigger').get_attribute('aria-expanded')=='false';page.screenshot(path=str(a.out/f'closed-{w}x{h}.png'));page.locator('#mini-trigger').click();assert page.locator('#mini-trigger').get_attribute('aria-expanded')=='true'
+    page.screenshot(path=str(a.out/f'open-{w}x{h}.png'))
+    def overlap(a,b):return min(a['right'],b['right'])-max(a['x'],b['x'])>1 and min(a['bottom'],b['bottom'])-max(a['y'],b['y'])>1
+    for name in ('map','axisX','axisY','help','back','legal'):
+     assert not overlap(q['trigger'],q[name]),(w,h,name,q)
+    assert q['trigger']['width']>=39 and q['trigger']['height']>=39,(w,h,'trigger size',q)
+    for target in ('#navTwin','#axis-x','#axis-y','#mini-help-toggle'):page.locator(target).click(trial=True,timeout=10000)
+    page.locator('#mini-trigger').click();assert page.locator('#mini-trigger').get_attribute('aria-expanded')=='false';page.screenshot(path=str(a.out/f'closed-{w}x{h}.png'));page.locator('#mini-trigger').click();assert page.locator('#mini-trigger').get_attribute('aria-expanded')=='true'
     cases.append({'viewport':[w,h],**q});print('GEOMETRY',w,h,json.dumps(q),flush=True)
    finally:page.close()
   browser.close()

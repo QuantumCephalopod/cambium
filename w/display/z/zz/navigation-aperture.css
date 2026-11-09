@@ -251,5 +251,6 @@ html #mini[data-grid-bounded="true"] #navTwin{max-width:100%;max-height:100%}
 html #mini[data-grid-bounded="true"]{container-type:inline-size;--hud-t:max(0px,min(var(--compass-map-cap,100%),calc(var(--compass-field-width) - 3rem)))}
 html #mini[data-grid-bounded="true"] #mini-instrument{grid-template-columns:1.75rem minmax(0,var(--hud-t));grid-template-rows:var(--hud-t) 1.75rem;inline-size:max-content;max-inline-size:100%;align-self:center}
 html #mini[data-grid-bounded="true"] #navTwin{inline-size:var(--hud-t);block-size:var(--hud-t);aspect-ratio:1}
+html #mini[data-grid-bounded="true"] #axis-x{width:max(0px,calc(var(--hud-t) - var(--compass-axis-x-cut,0px)))}
 html #mini[data-grid-bounded="true"]>#mini-help-toggle{position:absolute;pointer-events:auto;z-index:4;left:calc(var(--membrane-help-x) + (var(--membrane-help-w) - min(2rem,var(--membrane-help-w)))/2);top:calc(var(--membrane-help-y) + (var(--membrane-help-h) - min(2rem,var(--membrane-help-h)))/2);width:min(2rem,var(--membrane-help-w));height:min(2rem,var(--membrane-help-h));right:auto;bottom:auto}
 @container (max-width:12rem){#mini[data-grid-bounded="true"] #mini-help-bar{display:none}}
