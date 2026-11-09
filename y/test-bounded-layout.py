@@ -14,7 +14,7 @@ p=argparse.ArgumentParser();p.add_argument('--artifact',type=Path,required=True)
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/index.html';results=[]
-expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.625,.25,.375,.5),'viewport':(.25,.25,.625,.625)}
+expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.75,.5,.25,.5),'viewport':(.25,.25,.625,.625)}
 portrait_expected={
  ('organism:philosophy','viewport'):(0,.25,1,.5),
  **{(site,field):box for site in ('organism:crawlerbait','organism:schattenseiten') for field,box in {
@@ -86,12 +86,14 @@ try:
      host=f'[data-interlocutor="{identity}"]:not([hidden])';description=host+' [data-ui-field="description"]'
      compass_variant=page.evaluate('(id)=>SSSDisplayRuntime.ui.get(id).field("compass").variant',identity)
      assert compass_variant=='default',(identity,w,h,compass_variant)
-     close(bounds(page,description),'description',w,h,identity=identity);close(bounds(page,'#mini'),'compass',w,h,compass_variant)
+     close(bounds(page,description),'description',w,h,identity=identity)
+     compass=page.evaluate('''()=>{const r=SSSDisplayMembraneGrid.snapshot().compass;return {x:r.left,y:r.top,width:r.width,height:r.height}}''')
+     close(compass,'compass',w,h,compass_variant)
      # The exact neutral camera rectangle is lent to the actual field. Its
      # GL source projection and pointer equivalence have separate native tests.
      world=page.evaluate('(id)=>SSSInterlocutorFields.get(id).presentationRect()',identity);close(world,'viewport',w,h,identity=identity)
      canvas=page.locator(host+' .interlocutor-background');assert not canvas.get_attribute('data-layer-error')
-     records={'identity':identity,'carrier':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if use_fallback else 'software WebGL','description':bounds(page,description),'compass':bounds(page,'#mini'),'viewport':world}
+     records={'identity':identity,'carrier':[w,h],'render_dpr':1,'feed_transport':'normal Worker','renderer':'canvas2d' if use_fallback else 'software WebGL','description':bounds(page,description),'compass':compass,'pocket':bounds(page,'#mini-pocket'),'viewport':world}
      if identity!='organism:philosophy':
       records['header_content']=header_content(page,host,identity,w,h)
       timeline=host+' [data-ui-field="timeline"]';before=bounds(page,timeline);close(before,'timeline',w,h,identity=identity);records['timeline']=before
@@ -106,7 +108,7 @@ try:
      compass_box=bounds(page,'#mini');pocket_box=bounds(page,'#mini-pocket')
      chrome=page.locator('#mini').evaluate('e=>Number(e.dataset.mapChrome)||0')
      map_room=page.evaluate('''()=>{const core=document.getElementById('mini-core'),s=getComputedStyle(core),instrument=document.getElementById('mini-instrument');return Math.max(0,core.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap))}''')
-     expected_usable=min(compass_box['width']/2,max(0,pocket_box['height']-chrome),map_room)
+     expected_usable=min(pocket_box['width']/2,max(0,pocket_box['height']-chrome),map_room)
      assert map_box['width']>=expected_usable-1,('the map fits but is too small to use',map_box,compass_box,pocket_box,chrome)
      records['square_map']=map_box
      records['compass_variant']=compass_variant

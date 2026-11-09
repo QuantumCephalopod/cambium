@@ -55,16 +55,13 @@ def empty_point(page, identity, canvas_class):
     raise AssertionError((identity,'no currently uncovered empty field point found'))
 
 def slot_geometry(page, portrait):
-    values = page.evaluate('''()=>{const s=SSSDisplayMembraneGrid.snapshot(),b=document.getElementById('display-ascent').getBoundingClientRect();return {top:s.top,compass:s.compass,slot:s.ascent,button:{left:b.left,top:b.top,right:b.right,bottom:b.bottom,width:b.width,height:b.height}}}''')
+    values = page.evaluate('''()=>{const s=SSSDisplayMembraneGrid.snapshot(),b=document.getElementById('display-ascent').getBoundingClientRect(),p=SSSUIGrid.orientBounds(SSSUIGrid.carrierField(s.inner,'pocket',s.orientation).bounds,s.orientation);return {top:s.top,compass:s.compass,slot:s.ascent,pocket:p,button:{left:b.left,top:b.top,right:b.right,bottom:b.bottom,width:b.width,height:b.height}}}''')
     s, b, top, compass = values['slot'], values['button'], values['top'], values['compass']
     for k in ('left', 'top', 'right', 'bottom'):
         assert abs(s[k] - b[k]) < 1, (k, values)
-    if portrait:
-        for a, b in ((s['left'], 0), (s['right'], compass['left']), (s['top'], compass['top']), (s['bottom'], compass['bottom'])):
-            assert abs(a-b) < 1, values
-    else:
-        for a, b in ((s['top'], compass['bottom']), (s['bottom'], page.viewport_size['height']), (s['left'], compass['left']), (s['right'], compass['right'])):
-            assert abs(a-b) < 1, values
+    p=values['pocket']
+    expected={'left':compass['left']+p['x']*compass['width'],'top':compass['top']+p['y']*compass['height'],'width':p['w']*compass['width'],'height':p['h']*compass['height']}
+    for k,v in expected.items():assert abs(s[k]-v)<1,values
     return values
 
 try:

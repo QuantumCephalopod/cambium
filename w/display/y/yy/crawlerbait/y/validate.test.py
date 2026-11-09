@@ -179,11 +179,11 @@ const manifest=JSON.parse(fs.readFileSync(process.argv[2]+'/site.json'));
 const raw=JSON.parse(fs.readFileSync(process.argv[2]+'/'+manifest.ui_grid));
 const s=G.normalizeState(raw),box=id=>G.fieldInfo(s,id).bounds;
 assert.deepEqual(box('timeline'),{x:.25,y:.875,w:.5,h:.125});
-assert.deepEqual(box('compass'),{x:.625,y:.25,w:.375,h:.5});
+assert.deepEqual(box('compass'),{x:.75,y:.5,w:.25,h:.5});
 assert.deepEqual(box('description'),{x:0,y:.25,w:.25,h:.75});
 assert.deepEqual(box('viewport'),{x:.25,y:.25,w:.625,h:.625});
 assert.equal(s.fields.viewport.cells.length,25);
-assert.deepEqual(s.fields.viewport.cells.filter(c=>s.fields.compass.cells.includes(c)),['xyx','xyz','xzw','xzy','zwx','zwz','zxw','zxy']);"""
+assert.deepEqual(s.fields.viewport.cells.filter(c=>s.fields.compass.cells.includes(c)),['zxw','zxy','zzw']);"""
     commands.append(['node', '-e', grid_test, str(capabilities['ui_grid']), str(body)])
     for command in commands:
         result = subprocess.run(command, cwd=body,
