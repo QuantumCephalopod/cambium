@@ -63,7 +63,10 @@ function measure(){
   const mapWidth=Math.max(0,(core.clientWidth??field?.width??0)-padding-2*rem);
   let mapCap=Math.floor(Math.max(0,Math.min(available-chrome,mapWidth))),railCut=0,hintCut=0;
   if(bounded&&trigger.getBoundingClientRect&&map.getBoundingClientRect){
-    const b=trigger.getBoundingClientRect(),m=map.getBoundingClientRect(),axis=document.getElementById('axis-x'),a=axis?.getBoundingClientRect?.();
+    const b=trigger.getBoundingClientRect(),r=map.getBoundingClientRect(),axis=document.getElementById('axis-x'),a=axis?.getBoundingClientRect?.();
+    // Help can scroll the core without changing the instrument's layout.
+    // Fit against its unscrolled position so disclosure cannot resize it.
+    const sx=core.scrollLeft||0,sy=core.scrollTop||0,m={left:r.left+sx,right:r.right+sx,top:r.top+sy,width:r.width};
     const instrument=document.getElementById('mini-instrument'),rowGap=Number.parseFloat(globalThis.getComputedStyle?.(instrument)?.rowGap)||0;
     // The instrument is centered. Predict its uncapped right edge so this
     // measured fit remains stable after a previous fit changed its size.
@@ -77,8 +80,8 @@ function measure(){
       railCut=Math.max(0,mapRight-b.left);
     }
     const h=helpBar?.getBoundingClientRect?.();
-    if(h&&h.width>0&&h.height>0&&b.width>0&&b.height>0&&b.right>h.left&&b.top<h.bottom&&b.bottom>h.top){
-      hintCut=Math.max(0,h.right-b.left);
+    if(h&&h.width>0&&h.height>0&&b.width>0&&b.height>0&&b.right>h.left+sx&&b.top<h.bottom+sy&&b.bottom>h.top+sy){
+      hintCut=Math.max(0,h.right+sx-b.left);
     }
   }
   px('--compass-axis-x-cut',railCut);
