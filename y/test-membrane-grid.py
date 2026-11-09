@@ -45,7 +45,7 @@ try:
       });
       const glass=SSSDisplayGlass.collect().map(s=>({id:s.id,ids:s.ids,rect:s.rect}));
       const map=toBox(document.getElementById('navTwin').getBoundingClientRect());
-      const instruments=Object.fromEntries(['navTwin','axis-x','axis-y'].map(id=>[id,toBox(document.getElementById(id).getBoundingClientRect())]));
+      const instruments=Object.fromEntries(['navTwin','axis-x','axis-y','mini-help'].map(id=>[id,toBox(document.getElementById(id).getBoundingClientRect())]));
       const chrome=Number(document.getElementById('mini').dataset.mapChrome)||0;
       const core=document.getElementById('mini-core'),cs=getComputedStyle(core),instrument=document.getElementById('mini-instrument');
       const mapRoom=Math.max(0,core.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap));

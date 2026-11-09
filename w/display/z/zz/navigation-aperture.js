@@ -61,7 +61,7 @@ function measure(){
   // and the existing rail/gap room before choosing a square map extent.
   const padding=(Number.parseFloat(coreStyle?.paddingLeft)||.5*rem)+(Number.parseFloat(coreStyle?.paddingRight)||.5*rem);
   const mapWidth=Math.max(0,(core.clientWidth??field?.width??0)-padding-2*rem);
-  let mapCap=Math.floor(Math.max(0,Math.min(available-chrome,mapWidth))),railCut=0;
+  let mapCap=Math.floor(Math.max(0,Math.min(available-chrome,mapWidth))),railCut=0,hintCut=0;
   if(bounded&&trigger.getBoundingClientRect&&map.getBoundingClientRect){
     const b=trigger.getBoundingClientRect(),m=map.getBoundingClientRect(),axis=document.getElementById('axis-x'),a=axis?.getBoundingClientRect?.();
     const instrument=document.getElementById('mini-instrument'),rowGap=Number.parseFloat(globalThis.getComputedStyle?.(instrument)?.rowGap)||0;
@@ -76,8 +76,13 @@ function measure(){
     if(a&&b.width>0&&b.height>0&&b.right>m.left&&b.top<railTop+a.height&&b.bottom>railTop){
       railCut=Math.max(0,mapRight-b.left);
     }
+    const h=helpBar?.getBoundingClientRect?.();
+    if(h&&h.width>0&&h.height>0&&b.width>0&&b.height>0&&b.right>h.left&&b.top<h.bottom&&b.bottom>h.top){
+      hintCut=Math.max(0,h.right-b.left);
+    }
   }
   px('--compass-axis-x-cut',railCut);
+  px('--compass-hint-cut',hintCut);
   px('--compass-map-cap',bounded?mapCap:Math.max(24,available-chrome));
   px('--compass-core-height',core.offsetHeight);
   core.dataset.scroll=String(core.scrollHeight>core.clientHeight+1);
