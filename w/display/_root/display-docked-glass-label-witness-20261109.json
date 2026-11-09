@@ -1,0 +1,84 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-docked-glass-label-witness-20261109",
+  "observed_at_utc": "2026-11-09T01:51:00.203344Z",
+  "owner": "display",
+  "source_revision": "cccc9c09cdb3aaefe1e6558d72d7147a72289868",
+  "source_tree": "ec2f6b8ab620e0a0370898deda368d4f99acff03",
+  "prior_mobile_witness": {
+    "path": "w/display/_root/display-mobile-view-witness-20261109.json",
+    "sha256": "1ccf00d4045583fe06a105fbb855acecfb4c9b166cff930e9cec41822204b12a"
+  },
+  "source_sha256": {
+    "w/display/w/wy/locus-shader.js": "615ac3baa91f38ca54991740f9faa75fdb06f0a1d9f8b9387712fbae67b0d6dd",
+    "y/test-mobile-docked-glass-browser.py": "96d6f04a006e97a8daf5a210190eed5f18646a59efec196da1bf984654e9516b"
+  },
+  "claim": "A quiet body label is placed clear of an actual idle docked and attached liquid drop while retaining its body anchor and touch contact. Held/locked drops keep their own foreground relation; Canvas2D reserves no invisible glass.",
+  "evidence": {
+    "build": "python3 y/build.py --artifact /tmp/sss-mobile-final-display and --check: exact 59-file Display bundle 8ded8cdb170977c1",
+    "native": "locus-shader suite exercises resting, held, locked and Canvas2D cases",
+    "chromium_webgl2": [
+      {
+        "viewport": [
+          320,
+          568
+        ],
+        "language": "de",
+        "backend": "webgl2",
+        "drop": {
+          "left": 38.72,
+          "right": 121.28,
+          "top": 378.96000000000004,
+          "bottom": 461.52
+        }
+      },
+      {
+        "viewport": [
+          320,
+          568
+        ],
+        "language": "en",
+        "backend": "webgl2",
+        "drop": {
+          "left": 192.96,
+          "right": 275.52,
+          "top": 242.72,
+          "bottom": 325.28
+        }
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "language": "de",
+        "backend": "webgl2",
+        "drop": {
+          "left": 283.92,
+          "right": 384.54,
+          "top": 371.69,
+          "bottom": 472.31
+        }
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "language": "en",
+        "backend": "webgl2",
+        "drop": {
+          "left": 283.92,
+          "right": 384.54,
+          "top": 371.69,
+          "bottom": 472.31
+        }
+      }
+    ],
+    "canvas_navigation_cases": 3,
+    "webgl_navigation_cases": 3,
+    "staging_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42547449809",
+    "staging_run_at_witness": "in progress; no result claimed here"
+  },
+  "limits": "Chromium SwiftShader and touch emulation do not certify a physical phone or hardware frame rate. Offscreen GLES was unavailable on the staging host and killed by the local memory limit."
+}
