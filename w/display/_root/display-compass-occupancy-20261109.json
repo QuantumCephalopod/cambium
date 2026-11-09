@@ -1,0 +1,31 @@
+{
+  "kind": "HOME",
+  "event_id": "display-compass-occupancy-20261109",
+  "home_at_utc": "2026-11-09T03:40:20.011204Z",
+  "organism": "display",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — body-label clearance consumes existing cached navigator occupancy instead of reconstructing recursive membrane snapshots on every frame.",
+  "changed_scope": [
+    "w/wy/locus-shader.js",
+    "w/wy/locus-shader.test.cjs"
+  ],
+  "context": {
+    "source_revision": "4d58d13f8178d193f9d63a8fbc4e7d4d2c224e95",
+    "witness": {
+      "path": "w/display/_root/display-compass-occupancy-witness-20261109.json",
+      "sha256": "eb2006f64d71fdc7c2371d8c6f962aee9bb313018979e7d13144115dc7350566"
+    },
+    "previous_display_home": {
+      "path": "w/display/_root/display-compass-back-20261109.json",
+      "sha256": "ff3a43483364a70fa75a4290fa639cb5887d3e5389ab2a70aa598651ffc9debb"
+    },
+    "source_exact_spent_intake": {
+      "source": "w/display/_stomach/NUTRIENT__compass-occupancy-cost__20261109.md",
+      "destination": "w/display/_waste/NUTRIENT__compass-occupancy-cost__20261109.md",
+      "sha256": "dc7014e3c9c49073f52ebe7c78548956fd878724282853d7cbb5dfa765ad5d11",
+      "source_exact": true
+    },
+    "boundary": "Browser touch emulation and software WebGL2 do not prove physical-device ergonomics or FPS."
+  }
+}
