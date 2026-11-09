@@ -19,7 +19,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages-${{ github.repository }}
+  group: exact-swap-witness-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
