@@ -53,7 +53,10 @@ try:
        const r=el.getBoundingClientRect(),p=timeline.getBoundingClientRect();
        return {name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(r.left,p.left),top:Math.max(r.top,p.top),right:Math.min(r.right,p.right),bottom:Math.min(r.bottom,p.bottom)};
       }).filter(r=>r.right>r.left&&r.bottom>r.top):[];
-      const navTargets=[...document.querySelectorAll('#mini-help-toggle,#mini-trigger,#legal-links a')].map(el=>({name:el.id||el.textContent.trim(),...toBox(el.getBoundingClientRect())}));
+      const navTargets=[...document.querySelectorAll('#mini-help-toggle,#mini-trigger,#legal-links a')].map(el=>{
+       const r=el.getBoundingClientRect(),clip=el.closest('#legal-links')?.getBoundingClientRect()||{left:0,top:0,right:innerWidth,bottom:innerHeight};
+       return {name:el.id||el.textContent.trim(),left:Math.max(r.left,clip.left),top:Math.max(r.top,clip.top),right:Math.min(r.right,clip.right),bottom:Math.min(r.bottom,clip.bottom)};
+      }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const returnSlot=toBox(document.getElementById('display-ascent-slot').getBoundingClientRect()),returnButton=toBox(document.getElementById('display-ascent').getBoundingClientRect());
       const otherTargets=[...document.querySelectorAll('[data-interlocutor]:not([hidden]) button,[data-interlocutor]:not([hidden]) input,[data-interlocutor]:not([hidden]) select,[data-interlocutor]:not([hidden]) a')]
        .filter(el=>el.getClientRects().length).map(el=>{
