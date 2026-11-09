@@ -24,6 +24,10 @@ try:
     assert q['trigger']['width']>=39 and q['trigger']['height']>=39,(w,h,'trigger size',q)
     for target in ('#navTwin','#axis-x','#axis-y','#mini-help-toggle'):page.locator(target).click(trial=True,timeout=10000)
     page.locator('#mini-trigger').click();assert page.locator('#mini-trigger').get_attribute('aria-expanded')=='false';page.screenshot(path=str(a.out/f'closed-{w}x{h}.png'));page.locator('#mini-trigger').click();assert page.locator('#mini-trigger').get_attribute('aria-expanded')=='true'
+    debug="""()=>{let c=document.querySelector('#mini-core'),m=document.querySelector('#mini'),n=document.querySelector('#navTwin');return {map:n.getBoundingClientRect().toJSON(),core:c.getBoundingClientRect().toJSON(),scroll:c.scrollTop,scrollHeight:c.scrollHeight,cap:m.style.getPropertyValue('--compass-map-cap'),axisCut:m.style.getPropertyValue('--compass-axis-x-cut'),hintCut:m.style.getPropertyValue('--compass-hint-cut'),chrome:m.dataset.mapChrome}}"""
+    before=page.evaluate(debug);page.locator('#mini-help-toggle').click();page.wait_for_timeout(250);after=page.evaluate(debug);print('HELP',w,h,json.dumps({'before':before,'after':after}),flush=True)
+    assert abs(after['map']['width']-before['map']['width'])<1,(w,h,'help shrank map',before,after)
+    page.locator('#mini-help-toggle').click()
     cases.append({'viewport':[w,h],**q});print('GEOMETRY',w,h,json.dumps(q),flush=True)
    finally:page.close()
   browser.close()
