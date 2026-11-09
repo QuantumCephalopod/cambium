@@ -133,6 +133,8 @@ try:
         context=browser.new_context(viewport={'width':390,'height':844},device_scale_factor=1,is_mobile=True,has_touch=True)
         page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
         page.goto(base+'#main:overview',wait_until='domcontentloaded');ready(page,'organism:philosophy')
+        mobile_renderer=page.locator('[data-interlocutor="organism:philosophy"] .interlocutor-background').get_attribute('data-field-renderer')
+        assert mobile_renderer==renderer,(mobile_renderer,renderer)
         page.evaluate("SSSInterlocutorFields.get('organism:philosophy').descendTo('w','touch-witness')")
         page.wait_for_timeout(500)
         assert page.evaluate("document.elementFromPoint(20,400).classList.contains('interlocutor-background')")
@@ -142,6 +144,7 @@ try:
         page.wait_for_function('SSSWorldView.view===""')
         page.wait_for_timeout(300);assert page.evaluate('SSSWorldView.view')==''
         page.goto(base+'#main:w',wait_until='domcontentloaded');ready(page,'organism:papers')
+        assert page.locator('.papers-sierpinski-stage').get_attribute('data-field-renderer')==renderer
         page.wait_for_selector('.papers-chamber-label[data-gene=w]')
         page.evaluate("document.querySelector('.papers-chamber-label[data-gene=w]').click()")
         page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="w"')
@@ -153,7 +156,7 @@ try:
         page.wait_for_function('document.querySelector(".papers-sierpinski-stage")?.dataset.chamberPath==="overview"')
         page.wait_for_timeout(300);assert page.locator('.papers-sierpinski-stage').get_attribute('data-chamber-path')=='overview'
         assert not errors,errors
-        cases.append({'carrier':[390,844],'touchFieldDoubleTap':True,'touchPapersDoubleTap':True,'singleTouchInert':True})
+        cases.append({'carrier':[390,844],'backend':mobile_renderer,'touchFieldDoubleTap':True,'touchPapersDoubleTap':True,'singleTouchInert':True})
         context.close();browser.close()
 finally:
     server.shutdown();server.server_close()
