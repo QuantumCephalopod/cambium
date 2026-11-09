@@ -202,8 +202,9 @@ function syncMembraneGrid(){
  const mini=document.getElementById('mini');if(!mini||!ui?.bounded||!ui.state.fields.compass)return;
  // The overview can lend its compass while its own host is hidden. All sites
  // project their canonical fields through the single global screen orientation.
- const info=ui.field('compass',{x:0,y:0,w:innerWidth,h:innerHeight}),b=info.bounds,r={left:b.x*innerWidth,top:b.y*innerHeight,width:b.w*innerWidth,height:b.h*innerHeight};mini.dataset.gridBounded='true';
+ const info=ui.field('compass',{x:0,y:0,w:innerWidth,h:innerHeight});mini.dataset.gridBounded='true';
  Membrane.useCompass(ui.state,info);
+ const layout=Membrane.snapshot(),r=layout.container;
  globalThis.SSSDisplayGlass?.invalidate?.();
  if(ascentSlot){
    const a=Membrane.rect('ascent');
@@ -212,7 +213,7 @@ function syncMembraneGrid(){
  }
  const values={left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',transform:'none'};
  for(const [k,v]of Object.entries(values))if(mini.style[k]!==v)mini.style[k]=v;
- for(const [k,v]of [['--compass-field-height',r.height+'px'],['--compass-field-width',r.width+'px']])if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
+ for(const [k,v]of [['--compass-field-height',layout.pocket.height+'px'],['--compass-field-width',layout.pocket.width+'px']])if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
  for(const name of ['pocket','help','trigger','legal']){
    const f=Membrane.relative(name);
    for(const [axis,value]of Object.entries({x:f.x,y:f.y,w:f.w,h:f.h})){

@@ -293,7 +293,7 @@ for(const [w,h] of [[390,844],[1280,800]]){
  assert.equal(state.meta.name,'site-holon-layout');const time=UI.fieldInfo(state,'timeline').bounds;
  assert.deepStrictEqual(time,{x:.25,y:.875,w:.5,h:.125});
  const view=UI.fieldInfo(state,'viewport').bounds,description=UI.fieldInfo(state,'description').bounds,compass=UI.fieldInfo(state,'compass').bounds;
- assert.equal(description.x+description.w,view.x);assert(compass.y+compass.h<=time.y);assert(view.y+view.h<=time.y);
+ assert.equal(description.x+description.w,view.x);assert(time.x+time.w<=compass.x);assert(view.y+view.h<=time.y);
 }
 console.log('PASS · one immutable timeline geometry shared by Crawlerbait/Schattenseiten, with declared viewport/description/compass overlap');
 

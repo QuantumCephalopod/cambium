@@ -13,7 +13,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
   const events=new Map(),elements=new Map(),history=[],swaps=[],arrivals=[],fetches=[],held=[],ascents=[];
   const heldFolds=[],approaches=[],foldLayer={dataset:{fold:'open'},hidden:true};let foldBusy=false;
   const fold=holdFold==='real'?require('../z/zy/site-fold.js').createFold(foldLayer,{reduced:true}):{get busy(){return foldBusy},swap(fn,details){swaps.push(details);details.onClosing?.(380);if(!holdFold)return fn();foldBusy=true;return new Promise((resolve,reject)=>heldFolds.push(()=>{try{resolve(fn())}catch(error){reject(error)}finally{foldBusy=false}}))}};
-  const element=()=>({hidden:true,dataset:{},attrs:{},style:{setProperty(){}},replaceChildren(){},addEventListener(name,fn){this[name]=fn},setAttribute(name,value){this.attrs[name]=value}});
+  const element=()=>({hidden:true,dataset:{},attrs:{},style:{setProperty(k,v){this[k]=v},getPropertyValue(k){return this[k]||''}},replaceChildren(){},addEventListener(name,fn){this[name]=fn},setAttribute(name,value){this.attrs[name]=value}});
   const spec={interlocutors:ids.map(id=>({id,local_scope:id==='organism:origin'?'main':id,shader:{palette:[.4,.7,.9]},manifestation:{background_inspect:id==='organism:origin'}})),mounts:ids.map((id,i)=>({interlocutor:id,scope:'main',address:['','w','wx','y'][i]}))};
   const input=Object.fromEntries(ids.map(id=>[id,{sourceMarker:id,version,root:anatomy('source '+id)}]));
   const grids=Object.fromEntries(ids.map(id=>[id,{schema:UI.SCHEMA,meta:{name:id,...(bounded===true?{extent:'bounded'}:bounded==='intrinsic'?{extent:'intrinsic'}:{})},splits:[''],fields:{...(bounded?{compass:{cells:['z'],label:'compass'},viewport:{cells:['x'],label:'view'},header:{cells:['w'],label:'header'},description:{cells:['y'],label:'description'}}:{}),slot:{cells:['w'],label:'slot',z:2}},elements:{}}]));
@@ -35,7 +35,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
     if(preparations[id])module.prepareFieldProjection=preparations[id];
     Modules.set(id,module);
   }
-  const emit=(name,detail)=>{for(const fn of events.get(name)||[])fn({detail})};
+  const emit=(name,detail)=>{if(name==='sss:safe-area')membrane.reconcile({width:context.innerWidth,height:context.innerHeight});for(const fn of events.get(name)||[])fn({detail})};
   const W={view:'',language:'en',scopeId:'main',orientation:[1,0,0,0],setScope({id,projection}){this.scopeId=id;this.projection=projection},setGlobalTargets(targets){this.targets=targets},setActiveGlobalAddress(address,locus){this.activeGlobalAddress=address;this.activeGlobalLocus=locus},inspect(view){this.view=view;emit('sss:view',{scopeId:this.scopeId,path:view});return true},clearInspection(){this.view='';emit('sss:view',{scopeId:this.scopeId,path:''})}};
   function fetchFeed(url){
     const target=Object.keys(feedUrls).find(id=>String(url).endsWith(feedUrls[id]));
@@ -44,7 +44,7 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
     if(feedKinds[target]==='hold')return new Promise(resolve=>held.push(()=>resolve({ok:true,text:async()=>JSON.stringify(input[target])})));
     return Promise.resolve({ok:true,text:async()=>JSON.stringify(input[target])});
   }
-  const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSDisplayMembraneGrid:membrane,SSSRepresentationHandoff:RH,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>fold},SSSWorldView:W,SSSDisplaySafeArea:{start(){},refresh(){},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
+  const context={Map,URL,console,fetch:fetchFeed,innerWidth:1000,innerHeight:800,CSS:{escape:value=>value},document:{baseURI:'https://display.invalid/',getElementById:id=>elements.get(id),querySelector:selector=>{const id=selector.match(/data-interlocutor="([^"]+)"/)?.[1];return hosts.get(id)},documentElement:{dataset:{}}},location:{hash},history:{pushState(state,_,url){history.push({kind:'push',state,url});context.location.hash=url},replaceState(state,_,url){history.push({kind:'replace',state,url});context.location.hash=url}},addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},SSSDisplayNavigation:{...N,collectStructure(root){collected.push(root);return N.collectStructure(root)}},SSSUIGrid:UI,SSSDisplayMembraneGrid:membrane,SSSRepresentationHandoff:RH,SSSSiteHolon:H,SSSSiteFold:{createFold:()=>fold},SSSWorldView:W,SSSDisplaySafeArea:{start(){this.refresh()},refresh(){membrane.reconcile({width:context.innerWidth,height:context.innerHeight})},snapshot:()=>({insets})},SSSInterlocutorModules:Modules};
   vm.createContext(context);
   vm.runInContext(fs.readFileSync(path.join(__dirname,'feed-acquisition.js'),'utf8'),context);
   // Use the real placement physiology; only rendering/canvas creation is a fixture.
@@ -480,7 +480,9 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  assert.equal(n.style.inlineSize,'500px');assert.equal(n.style.blockSize,'400px');assert.equal(n.style.right,'auto');assert.equal(n.style.overflow,'auto');assert.equal(n.style.contain,'layout paint');
  assert.deepEqual({...f.options.get(ids[0]).presentation()},{x:500,y:0,left:500,top:0,right:1000,bottom:400,width:500,height:400});
  const before=JSON.stringify(u.state);f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();assert.equal(n.style.left,'195px');assert.equal(n.style.top,'0px');assert.equal(n.style.inlineSize,'195px');assert.equal(n.style.blockSize,'422px');assert.equal(JSON.stringify(u.state),before);
- const mini=f.elements.get('mini');f.emit('sss:safe-area');assert.equal(mini.style.left,'0px');assert.equal(mini.style.top,'422px');assert.equal(mini.style.width,'195px');assert.equal(mini.style.height,'422px');assert.equal(mini.dataset.gridBounded,'true');
+ const mini=f.elements.get('mini');f.emit('sss:safe-area');const layout=f.context.SSSDisplayMembraneGrid.snapshot();
+ for(const k of ['left','top','width','height'])assert.equal(mini.style[k],layout.container[k]+'px');
+ assert.equal(mini.style['--compass-field-width'],layout.pocket.width+'px');assert.equal(mini.style['--compass-field-height'],layout.pocket.height+'px');assert.equal(mini.dataset.gridBounded,'true');
  console.log('PASS — bounded arbitrary-owner grid enforces actual rectangles, unchanged addresses on resize, camera frame and shared compass bounds');
 }
 
@@ -507,12 +509,13 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  u.state.splits.push('x','z');u.state.fields.compass.cells=['zx','zz'];
  u.state.fields.compass.variants={portrait:['z'],compact:['xz','zx','zz']};
  f.hosts.get(ids[0]).getBoundingClientRect=()=>({left:0,top:0,width:0,height:0,right:0,bottom:0});
+ const assertGlobal=()=>{const s=f.context.SSSDisplayMembraneGrid.snapshot();for(const k of ['left','top','width','height'])assert.equal(mini.style[k],s.container[k]+'px');assert.deepEqual(s.compassInfo.cells,UI.fieldInfo(u.state,'compass').cells)};
  mini.dataset.mapChrome='86';f.context.innerWidth=1363;f.context.innerHeight=936;f.emit('sss:safe-area');
- assert.equal(mini.style.top,'468px');assert.equal(mini.style.height,'468px');
- f.context.innerWidth=667;f.context.innerHeight=375;f.emit('sss:navigator-measure');
- assert.equal(mini.style.top,'187.5px');assert.equal(mini.style.height,'187.5px');
+ assertGlobal();
+ f.context.innerWidth=667;f.context.innerHeight=375;f.context.SSSDisplaySafeArea.refresh();f.emit('sss:navigator-measure');
+ assertGlobal();
  f.context.innerWidth=390;f.context.innerHeight=844;f.emit('sss:safe-area');
- assert.equal(mini.style.left,'0px');assert.equal(mini.style.top,'633px');assert.equal(mini.style.width,'195px');assert.equal(mini.style.height,'211px');
+ assertGlobal();
  console.log('PASS — a hidden overview lends its canonical compass to the global orientation');
 }
 

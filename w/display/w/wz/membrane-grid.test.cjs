@@ -21,23 +21,26 @@ for(const [width,height] of carriers){
   assert.equal(idle.orientation,mode);assert.deepEqual(idle.fit,{top:true,trigger:true});
   assert.strictEqual(grid.reconcile(input).outer,idle.outer,'an unchanged observation reuses the realized field');
   assert.strictEqual(grid.reconcile(input).inner,idle.inner,'an unchanged navigator reuses its realized field');
-  for(const name of ['top','compass','ascent'])verifyField(idle.outer,name,idle.viewport,idle[name],mode);
-  for(const name of ['pocket','help','trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name],mode,true);
+  for(const name of ['top','compass'])verifyField(idle.outer,name,idle.viewport,idle[name],mode);
+  // The authored Back field now contains the pocket, and the authored
+  // pocket field contains Back. The legal and trigger fields do not move.
+  verifyField(idle.outer,'ascent',idle.viewport,idle.pocket,mode);
+  verifyField(idle.inner,'pocket',idle.compass,idle.ascent,mode,true);
+  verifyField(idle.inner,'help',idle.pocket,idle.help,mode,true);
+  for(const name of ['trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name],mode,true);
   assert.deepEqual(idle.compassInfo.cells,UI.fieldInfo(owned,'compass').cells,'orientation cannot replace the owner address');
   if(mode==='portrait'){
-    close(idle.ascent.left,0);close(idle.ascent.right,idle.compass.left);
-    close(idle.ascent.top,idle.compass.top);close(idle.ascent.bottom,idle.compass.bottom);
-    assert.ok(idle.compass.right<=idle.top.left+1e-8,'compass stays outside the liquid band');
-    close(idle.pocket.bottom,idle.legal.top);close(idle.legal.left,idle.compass.left);
+    close(idle.ascent.left,0);close(idle.ascent.right,idle.pocket.left);
+    close(idle.ascent.top,idle.pocket.top);close(idle.pocket.bottom,idle.compass.bottom);
+    close(idle.ascent.bottom,idle.legal.top);close(idle.legal.left,idle.compass.left);
     close(idle.legal.right,idle.trigger.left);close(idle.trigger.right,idle.compass.right);
-    close(idle.legal.top,idle.trigger.top);close(idle.help.top,idle.compass.top);
-    close(idle.help.left,idle.trigger.left);close(idle.help.right,idle.trigger.right);
+    close(idle.legal.top,idle.trigger.top);close(idle.help.top,idle.pocket.top);
+    close(idle.help.right,idle.pocket.right);
     assert.ok(width-idle.top.left>=46,'header and optical rim fit the right-edge field');
   }else{
-    close(idle.compass.right,width);close(idle.ascent.top,idle.compass.bottom);
-    close(idle.ascent.bottom,height);close(idle.ascent.left,idle.compass.left);close(idle.ascent.right,idle.compass.right);
-    assert.ok(idle.compass.top>=idle.top.bottom-1e-8,'compass stays outside the liquid band');
-    close(idle.pocket.bottom,idle.help.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left);
+    close(idle.compass.right,width);close(idle.pocket.bottom,idle.ascent.top);
+    close(idle.pocket.top,idle.top.bottom);close(idle.ascent.left,idle.compass.left);close(idle.ascent.right,idle.compass.right);
+    close(idle.ascent.bottom,idle.legal.top);assert.ok(idle.legal.right<=idle.trigger.left);
     assert.ok(idle.top.bottom>=46,'header and optical rim fit the upper field');
   }
   const pending=grid.reconcile({...input,statusRect:status(width,height)});
@@ -50,6 +53,24 @@ assert.equal(UI.orientation(600,600),'landscape','a square has a deterministic t
 assert.deepEqual(UI.orientBounds({x:.75,y:.5,w:.25,h:.5},'portrait'),{x:0,y:.75,w:.5,h:.25});
 assert.equal(UI.orientEdges('right bottom','portrait'),'bottom left');
 assert.deepEqual(grid.topCapacity(320,568),{left:240,top:0,width:80,height:568,right:320,bottom:568},'status capacity comes from the whole declared membrane band before measured refinement');
+
+// Concrete pre-exchange measurements preserve the user's authored fields:
+// only the bodies occupying the old Back and pocket rectangles are swapped.
+for(const [width,height,oldPocket,oldBack,oldLegal] of [
+ [320,568,[0,426,160,106.5],[160,426,80,142],[0,532.5,120,35.5]],
+ [390,844,[0,633,195,158.25],[195,633,146.25,211],[0,791.25,146.25,52.75]],
+ [1280,800,[960,400,320,300],[960,50,320,350],[1040,700,160,100]]
+]){
+ const example=M.create(membrane,navigator);example.useCompass(owned,UI.fieldInfo(owned,'compass'));
+ const s=example.reconcile({width,height,headerRect:header(width,height),triggerRect:{width:24,height:24},inset:8});
+ const parts=r=>[r.left,r.top,r.width,r.height];
+ assert.deepEqual(parts(s.pocket),oldBack,'compass must take the old Back rectangle');
+ assert.deepEqual(parts(s.ascent),oldPocket,'Back must take the old compass pocket rectangle');
+ assert.deepEqual(parts(s.legal),oldLegal,'legal links must keep their original rectangle');
+}
+const originalCompass=['zxw','zxx','zxy','zxz','zzw','zzx','zzy','zzz'];
+for(const site of [owned,UI.normalizeState(require('../../y/yx/schattenseiten/ui-grid.json')),UI.normalizeState(require('../../y/yy/crawlerbait/ui-grid.json'))])
+ assert.deepEqual(site.fields.compass.cells,originalCompass,'an owner compass declaration changed');
 
 // A different owner remains itself across a live format change; its compass
 // cells and nested actual rectangles follow the same global turn.

@@ -54,9 +54,12 @@ def examine(page, identity, width, height):
       const controls=Object.fromEntries(['mini-pocket','mini-trigger','mini-help-toggle','legal-links'].map(id=>{
         const el=document.getElementById(id);return [id,{actual:box(el.getBoundingClientRect()),expected:state[el.getAttribute('data-display-ui-field')]}];
       }));
+      const authoredBack=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'ascent').bounds,state.orientation);
+      const pocketWithin=SSSUIGrid.orientBounds(SSSUIGrid.carrierField(state.inner,'pocket',state.orientation).bounds,state.orientation);
       return {mode:document.documentElement.dataset.displayOrientation,stateMode:state.orientation,
         address:SSSDisplayRuntime.state.activeAddress,fields,compass:state.compass,top:state.top,
         ascent:state.ascent,ascentSlot:box(document.getElementById('display-ascent-slot').getBoundingClientRect()),
+        pocket:state.pocket,authoredBack,pocketWithin,
         header:box(document.getElementById('display-header').getBoundingClientRect()),
         headerTransform:getComputedStyle(document.getElementById('display-header')).transform,
         topGlass:top&&{role:top.role,rect:top.rect},controls,
@@ -83,9 +86,11 @@ try:
                         expect_box(field['actual'],field['logical'],width,height,portrait,(site,field['name']))
                         assert field['cells']==field['applied'],(site,field)
                     compass=result['compass']
-                    ascent=result['ascent']
-                    if portrait:assert abs(ascent['right']-compass['left'])<1 and abs(ascent['bottom']-compass['bottom'])<1,(site,compass,ascent)
-                    else:assert abs(ascent['top']-compass['bottom'])<1 and abs(ascent['right']-compass['right'])<1,(site,compass,ascent)
+                    a=result['authoredBack'];p=result['pocketWithin'];back=result['ascent'];pocket=result['pocket']
+                    for key,value in [('left',a['x']*width),('top',a['y']*height),('width',a['w']*width),('height',a['h']*height)]:
+                        assert abs(pocket[key]-value)<1,(site,'compass must occupy the original Back field',pocket,a)
+                    for key,value in [('left',compass['left']+p['x']*compass['width']),('top',compass['top']+p['y']*compass['height']),('width',p['w']*compass['width']),('height',p['h']*compass['height'])]:
+                        assert abs(back[key]-value)<1,(site,'Back must occupy the original compass pocket',back,p)
                     assert result['headerTransform']=='none',(site,result['headerTransform'])
                     for key in ('left','top','width','height'):
                         assert abs(result['ascentSlot'][key]-result['ascent'][key])<1,(site,result['ascentSlot'],result['ascent'])

@@ -25,13 +25,14 @@
   },
   "home": {
     "changed_scope": [
-      "w/wy/locus-shader.js",
-      "w/wy/locus-shader.test.cjs"
+      "Restore the three source-owned compass declarations and eliminate the unrequested widened field and its dependent label displacement.",
+      "Place the compass pocket in the prior Back field and Back in the prior pocket field; retain legal and trigger and apply the same global quarter-turn.",
+      "Remove the fixed map-size floor that distorted the map in the narrow authored field."
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — body-label clearance consumes existing cached navigator occupancy instead of reconstructing recursive membrane snapshots on every frame."
+    "outcome": "COMPLETED — the original compass pocket and Back rectangles exchange occupants, and legal and trigger retain their original fields. Portrait map room remains unresolved."
   },
-  "observed_at_utc": "2026-11-09T03:40:35.282944Z",
+  "observed_at_utc": "2026-11-09T20:32:30.403438Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -71,33 +72,34 @@
       }
     }
   },
-  "reflected_home_event": "display-compass-occupancy-20261109",
+  "reflected_home_event": "display-literal-swap-20261109",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
-      "sha256": "04456acbb4bc05b7e4e0587dc26f3ead9b9f13533bad1b2b4e798788f203c65a"
+      "sha256": "636ecba05f5b65efeac26eb8d608da908f3dd9dfb2fb1aef4d8cff0fd230ddbd"
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "105cdf00e1c68c2a15dbe81f48e97c255fb9ceca5b99e99ae5632151a9bb2838"
+      "sha256": "815af4e6912600180159a680b5859d0f9b9ffd31365d8d057f69f056894274f3"
     },
     {
       "path": "RITUALS/site-holon/RITUAL.md",
-      "sha256": "089a5fa550d29828242133247e84e5306e21527fcd2c4bcc8a69b301069b3ba4"
+      "sha256": "aec1a466114c58c6ed91839cc7ace70eaa65c89510b9cf70b42201c154a3a9c6"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
+      "NUTRIENT__literal-swap-small-portrait-map__20261109.md",
       "NUTRIENT__long-axis-display-orientation__20261108.md",
       "NUTRIENT__long-axis-readable-content-fit__20261108.md",
       "NUTRIENT__webgl-context-recovery__20261108.md"
     ],
-    "waste_direct_count": 153
+    "waste_direct_count": 152
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "f4b624b4589ffd490d7c66973dc5c649d87020b1"
+    "source_revision": "c89d7a10f57d50b34aaed27dfa06902d80efba9a"
   }
 }

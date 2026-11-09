@@ -1,0 +1,56 @@
+{
+  "kind": "HOME",
+  "event_id": "display-literal-swap-20261109",
+  "home_at_utc": "2026-11-09T20:31:41.048441Z",
+  "organism": "display",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — the original compass pocket and Back rectangles exchange occupants, and legal and trigger retain their original fields. Portrait map room remains unresolved.",
+  "changed_scope": [
+    "Restore the three source-owned compass declarations and eliminate the unrequested widened field and its dependent label displacement.",
+    "Place the compass pocket in the prior Back field and Back in the prior pocket field; retain legal and trigger and apply the same global quarter-turn.",
+    "Remove the fixed map-size floor that distorted the map in the narrow authored field."
+  ],
+  "context": {
+    "source_revision": "2f64895b7c79bb7370ef2c40bff73e0aba3c3760",
+    "witness": {
+      "path": "w/display/_root/display-literal-swap-witness-20261109.json",
+      "sha256": "9510c1de526794fc75600311b78e02eb75e512acfc72f0a1bb7aa5be05d3f134"
+    },
+    "child_homes": [
+      {
+        "path": "w/display/y/philosophy/_root/philosophy-restore-compass-20261109.json",
+        "sha256": "8ca584c46124d25b9a84a005042562262416d0dac45052034a2e85c46906159b"
+      },
+      {
+        "path": "w/display/y/yx/schattenseiten/_root/schattenseiten-restore-compass-20261109.json",
+        "sha256": "d6ec4420d3a90f5a30e559884a9c646020930700cab01ab2a63a1009ba7f3601"
+      },
+      {
+        "path": "w/display/y/yy/crawlerbait/_root/crawlerbait-restore-compass-20261109.json",
+        "sha256": "717c139c33a0231e5952c619b7957db55745ba21bf91e9f7e23d65a841ed95c8"
+      }
+    ],
+    "source_exact_spent_intakes": [
+      {
+        "source": "w/display/_stomach/NUTRIENT__literal-compass-back-swap__20261109.md",
+        "destination": "w/display/_waste/NUTRIENT__literal-compass-back-swap__20261109.md",
+        "sha256": "a2bb767dce6d0f30137675046c40d6a2ac9ac6b4c84e913c394e14e9dce868e4",
+        "source_exact": true
+      },
+      {
+        "source": "w/display/_stomach/NUTRIENT__compass-map-square-in-exact-field__20261109.md",
+        "destination": "w/display/_waste/NUTRIENT__compass-map-square-in-exact-field__20261109.md",
+        "sha256": "b21d1ad92feadc5de4ac145da81cd59bc4992a48b7707c53e26903b2bd5075c1",
+        "source_exact": true
+      }
+    ],
+    "unresolved": [
+      {
+        "path": "w/display/_stomach/NUTRIENT__literal-swap-small-portrait-map__20261109.md",
+        "sha256": "e9b77d80d206f6be52c4c09c4e9234daf6b961810caad4c6e5de76bf0eed1ab5"
+      }
+    ],
+    "boundary": "The smaller portrait map is a measured remaining problem, not permission to resize authored fields. Physical device ergonomics are not established."
+  }
+}

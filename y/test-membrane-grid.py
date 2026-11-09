@@ -74,8 +74,9 @@ try:
         const at=document.elementFromPoint((box.left+box.right)/2,(box.top+box.bottom)/2);box.reachable=Boolean(at&&(at===el||el.contains(at)));return box;
        }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
+      const oldBack=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'ascent').bounds,state.orientation);
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.carrierField(state.inner,name,state.orientation).bounds,state.orientation)]));
-      return {state:{top:state.top,compass:state.compass,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
+      return {state:{top:state.top,compass:state.compass,pocket:state.pocket,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,oldBack,nested,fields,controls,glass,map,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
      assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
@@ -95,8 +96,6 @@ try:
      a=measured['returnButton'];slot=measured['returnSlot'];field=measured['state']['ascent']
      assert all(abs(slot[k]-field[k])<1 for k in ['left','top','width','height']),(site,slot,field)
      assert a['left']>=slot['left']-1 and a['right']<=slot['right']+1 and a['top']>=slot['top']-1 and a['bottom']<=slot['bottom']+1,(site,a,slot)
-     if height>width:assert abs(a['right']-measured['state']['compass']['left'])<1 and abs(a['bottom']-measured['state']['compass']['bottom'])<1,(site,a,'return leaves its rotated field')
-     else:assert abs(a['top']-measured['state']['compass']['bottom'])<1 and abs(a['right']-measured['state']['compass']['right'])<1,(site,a,'return leaves its field')
      for b in measured['otherTargets']:
       overlaps=min(a['right'],b['right'])-max(a['left'],b['left'])>1 and min(a['bottom'],b['bottom'])-max(a['top'],b['top'])>1
       if overlaps:assert b['reachable'],(site,a,b,'return obscures another control')
@@ -109,12 +108,19 @@ try:
      else:assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5
      compass=measured['state']['compass']
      pocket=next(c['expected'] for c in measured['controls'] if c['field']=='pocket')
-     usable=min(compass['width']/2,max(0,pocket['height']-measured['chrome']),measured['mapRoom'])
+     usable=min(pocket['width']/2,max(0,pocket['height']-measured['chrome']),measured['mapRoom'])
      assert measured['map']['width']>=usable-1,(site,measured['map'],compass,pocket,measured['chrome'])
      assert abs(measured['map']['width']-measured['map']['height'])<1.1,(site,measured['map'])
+     previous=measured['oldBack']
+     for key,value in [('left',previous['x']*width),('top',previous['y']*height),('width',previous['w']*width),('height',previous['h']*height)]:
+      assert abs(pocket[key]-value)<.5,(site,'compass did not take the original Back field',pocket,previous)
      for name,b in measured['nested'].items():
-      q=next(c['expected'] for c in measured['controls'] if c['field']==name)
-      for key,value in [('left',compass['left']+b['x']*compass['width']),('top',compass['top']+b['y']*compass['height']),('width',b['w']*compass['width']),('height',b['h']*compass['height'])]:
+      if name=='pocket':
+       q=measured['state']['ascent'];parent=compass
+      else:
+       q=next(c['expected'] for c in measured['controls'] if c['field']==name)
+       parent=pocket if name=='help' else compass
+      for key,value in [('left',parent['left']+b['x']*parent['width']),('top',parent['top']+b['y']*parent['height']),('width',b['w']*parent['width']),('height',b['h']*parent['height'])]:
        assert abs(q[key]-value)<.5,(site,name,key,q,value)
      for name in ['pocket','trigger']:
       g=next(x for x in measured['glass'] if 'mini-'+name in x['ids'])

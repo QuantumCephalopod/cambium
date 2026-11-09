@@ -88,13 +88,13 @@
     let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,topKey='',triggerKey='',fit={top:true,trigger:true};
     const mode=()=>UI.orientation(viewport.width,viewport.height);
     function ascentCells(compass){
-      // The compass and return exchange places along the logical short axis.
-      // Return fills the compass's full cross-axis span, from its lower edge
-      // to the screen edge. The same relation turns together.
-      const c=compass.bounds;
-      const depth=compass.depth,n=2**depth;
+      // The compass lends its full cross-axis span. The top liquid and the
+      // compass bound the available return region in the same logical field;
+      // orientation turns that one relation together with everything else.
+      const top=UI.spanInfo(outer,outer.fields.top.cells),c=compass.bounds;
+      const depth=Math.max(top.depth,compass.depth),n=2**depth;
       const x0=Math.round(c.x*n),x1=Math.round((c.x+c.w)*n);
-      const y0=Math.round((c.y+c.h)*n),y1=n;
+      const y0=Math.ceil((top.bounds.y+top.bounds.h)*n-1e-9),y1=Math.round(c.y*n);
       if(x1<=x0||y1<=y0){
         // No free strip exists on this actual carrier; retain the authored
         // compact instrument rather than erasing its accessible return.
@@ -112,16 +112,36 @@
       compassState=state;compassInfo=check;
       outer=realize(outer,{compass:check.cells,ascent:ascentCells(check)});
     }
-    function rect(name){
+    function authoredRect(name){
       const own=UI.orientBounds(UI.fieldInfo(outer,name).bounds,mode());
       return projection(own,viewport);
+    }
+    // Exchange only the two existing content fields. The legal and trigger
+    // cells continue to be projected from the original compass declaration.
+    function rect(name){
+      return name==='ascent'?authoredNested('pocket'):authoredRect(name);
     }
     function topCapacity(width,height){
       const area=box(0,0,Math.max(0,num(width)),Math.max(0,num(height)));
       return projection(UI.orientBounds(UI.fieldInfo(base,'top').bounds,UI.orientation(area.width,area.height)),area);
     }
-    function relative(name){return UI.orientBounds(UI.carrierField(inner,name,mode()).bounds,mode())}
-    function nested(name){return projection(relative(name),rect('compass'))}
+    function authoredRelative(name){return UI.orientBounds(UI.carrierField(inner,name,mode()).bounds,mode())}
+    function authoredNested(name){return projection(authoredRelative(name),authoredRect('compass'))}
+    function nested(name){
+      if(name==='pocket')return authoredRect('ascent');
+      if(name==='help')return projection(authoredRelative(name),authoredRect('ascent'));
+      return authoredNested(name);
+    }
+    function container(){
+      const a=authoredRect('compass'),b=authoredRect('ascent');
+      const left=Math.min(a.left,b.left),top=Math.min(a.top,b.top);
+      return box(left,top,Math.max(a.right,b.right)-left,Math.max(a.bottom,b.bottom)-top);
+    }
+    function relative(name){
+      const a=nested(name),b=container();
+      return {x:b.width?(a.left-b.left)/b.width:0,y:b.height?(a.top-b.top)/b.height:0,
+        w:b.width?a.width/b.width:0,h:b.height?a.height/b.height:0};
+    }
     function role(value){return UI.orientEdges(value,mode())}
     function logicalRead(r){
       if(!r)return null;
@@ -156,7 +176,7 @@
     }
     function snapshot(){
       return {outer,inner,viewport:{...viewport},orientation:mode(),compassState,compassInfo,fit:{...fit},
-        top:rect('top'),compass:rect('compass'),ascent:rect('ascent'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')};
+        top:rect('top'),compass:rect('compass'),container:container(),ascent:rect('ascent'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')};
     }
     return Object.freeze({useCompass,reconcile,rect,topCapacity,nested,relative,role,surfaceRect,snapshot});
   }

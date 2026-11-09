@@ -1,0 +1,159 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-literal-swap-witness-20261109",
+  "owner": "display",
+  "observed_at_utc": "2026-11-09T20:31:22.228624Z",
+  "source_revision": "2f64895b7c79bb7370ef2c40bff73e0aba3c3760",
+  "baseline_revision": "16d5a1dc56351c92909f0fc3f2ccab395a4a873d",
+  "baseline_browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42549123217",
+  "geometry_browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42692013147",
+  "full_browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42692049055",
+  "browser_carrier_boundary": "The geometry/full witness branches contain the exact candidate product code; their only additional changes are isolated test-carrier files or a CI concurrency group. The browser uses actual current Tide data.",
+  "measurements": [
+    {
+      "viewport": [
+        320,
+        568
+      ],
+      "old_map": 40,
+      "new_map": 22,
+      "old_back": [
+        160,
+        426,
+        80,
+        142
+      ],
+      "new_pocket": [
+        159.984375,
+        426,
+        79.984375,
+        142
+      ],
+      "old_pocket": [
+        0,
+        426,
+        160,
+        106.5
+      ],
+      "new_back": [
+        0,
+        426,
+        160,
+        106.5
+      ],
+      "legal_before_after": [
+        0,
+        532.5,
+        120,
+        35.5
+      ]
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "old_map": 91,
+      "new_map": 88,
+      "old_back": [
+        195,
+        633,
+        146.25,
+        211
+      ],
+      "new_pocket": [
+        195,
+        633,
+        146.25,
+        211
+      ],
+      "old_pocket": [
+        0,
+        633,
+        195,
+        158.25
+      ],
+      "new_back": [
+        0,
+        633,
+        195,
+        158.25
+      ],
+      "legal_before_after": [
+        0,
+        791.25,
+        146.25,
+        52.75
+      ]
+    },
+    {
+      "viewport": [
+        1280,
+        800
+      ],
+      "old_map": 214,
+      "new_map": 262,
+      "old_back": [
+        960,
+        50,
+        320,
+        350
+      ],
+      "new_pocket": [
+        960,
+        50,
+        320,
+        350
+      ],
+      "old_pocket": [
+        960,
+        400,
+        320,
+        300
+      ],
+      "new_back": [
+        960,
+        400,
+        320,
+        300
+      ],
+      "legal_before_after": [
+        1040,
+        700,
+        160,
+        100
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "w/display/w/wz/membrane-grid.test.cjs",
+      "sha256": "aeea1cc7c52358f2c15d776617deb7971edacb61df5aeabf0c98026ca6fe23ee"
+    },
+    {
+      "path": "w/display/z/zz/navigation-aperture.test.cjs",
+      "sha256": "3b9f3af2ca615941b53c3b727b649bb9d440a3db935d2009d83a21de15b6a217"
+    },
+    {
+      "path": "y/test-mobile-reading-browser.py",
+      "sha256": "e4123ea0b1ea5ce4ea2748bd713488a7311e1b3fc9835fb701e4d70668788809"
+    },
+    {
+      "path": "y/test-long-axis-browser.py",
+      "sha256": "b57c423545f8183023ec4ef394b13495be25d5facf8ccfd73bf8799ddabc762b"
+    },
+    {
+      "path": "y/test-membrane-grid.py",
+      "sha256": "5e8c007ec1a998fa3934f056b4fd8f75ebaf8811dbabf33f7435af9f446fe021"
+    },
+    {
+      "path": "y/test-bounded-layout.py",
+      "sha256": "b87a702e79e39c29e0c99ff878002ba2de56c49868bec3af7d171eb31cb84c64"
+    },
+    {
+      "path": "y/test-navigation-contact.py",
+      "sha256": "5560c37962e0df2a86bf48e0e5ead9a53b8256f824040527a25954a1061f9e5c"
+    }
+  ],
+  "limits": "Chromium touch emulation and software rendering; physical device ergonomics and offscreen GLES are not established."
+}
