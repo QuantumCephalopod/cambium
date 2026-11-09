@@ -119,7 +119,7 @@ try:
        q=measured['state']['ascent'];parent=compass
       else:
        q=next(c['expected'] for c in measured['controls'] if c['field']==name)
-       parent=pocket if name=='help' else compass
+       parent=pocket if name in ('help','trigger') else compass
       for key,value in [('left',parent['left']+b['x']*parent['width']),('top',parent['top']+b['y']*parent['height']),('width',b['w']*parent['width']),('height',b['h']*parent['height'])]:
        assert abs(q[key]-value)<.5,(site,name,key,q,value)
      for name in ['pocket','trigger']:

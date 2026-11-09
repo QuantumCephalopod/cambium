@@ -1,0 +1,27 @@
+name: compass trigger preview
+on:
+  push:
+    branches:
+      - staging/compass-trigger-preview-20261109
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install isolated browser
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Build and witness controls
+        run: |
+          python3 y/site-public.py --artifact _site
+          python3 y/trigger-check.py --artifact _site --out _trigger-check
+      - name: Retain visual witness
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compass-trigger-preview
+          path: _trigger-check
+          if-no-files-found: warn
