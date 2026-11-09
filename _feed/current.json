@@ -25,12 +25,16 @@
   },
   "home": {
     "changed_scope": [
+      "y/test-mobile-reading-browser.py",
+      "y/test-long-axis-browser.py",
+      "y/test-membrane-grid.py",
+      "y/test-bounded-layout.py",
       "y/test-navigation-contact.py"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — the browser return witness uses real current empty contact instead of a fixed pixel that moving body labels can cover."
+    "outcome": "COMPLETED — the host witnesses the exchanged compass and return relation, visible contact bounds, and the preserved navigation paths."
   },
-  "observed_at_utc": "2026-11-09T02:06:33.737646Z",
+  "observed_at_utc": "2026-11-09T03:33:49.945401Z",
   "owner": "cambium",
   "phenotype": {
     "w": {
@@ -46,7 +50,7 @@
       "noun": "orientation"
     }
   },
-  "reflected_home_event": "cambium-navigation-empty-contact-return-20261109",
+  "reflected_home_event": "cambium-compass-back-20261109",
   "rituals": [
     {
       "path": "RITUALS/catabolism/RITUAL.md",
@@ -61,10 +65,10 @@
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [],
-    "waste_direct_count": 49
+    "waste_direct_count": 50
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "293baf9692388ba1cbddd472c10046c3cc2bf7ca"
+    "source_revision": "3b1338b53dc256cd1a2830cc8e466b48ab922b58"
   }
 }
