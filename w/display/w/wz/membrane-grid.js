@@ -80,7 +80,7 @@
       if(!Number.isSafeInteger(2**(candidate.length+1)))break;
       candidate+='z';
     }
-    if(!chosen)return base;
+    if(chosen===null)return base;
     if(!variant)return realize(base,{trigger:[chosen]});
     const s=clone(base),splits=new Set(s.splits);
     for(let i=0;i<chosen.length;i++)splits.add(chosen.slice(0,i));
