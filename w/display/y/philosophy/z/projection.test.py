@@ -89,10 +89,10 @@ const manifest = JSON.parse(fs.readFileSync(path.join(body, 'site.json')));
 const state = G.normalizeState(JSON.parse(fs.readFileSync(path.join(body, manifest.ui_grid))));
 const box = id => G.fieldInfo(state, id).bounds;
 assert.deepEqual(box('timeline'), {x:.25,y:.875,w:.5,h:.125});
-assert.deepEqual(box('compass'), {x:.75,y:.5,w:.25,h:.5});
+assert.deepEqual(box('compass'), {x:.625,y:.25,w:.375,h:.5});
 assert.deepEqual(box('description'), {x:0,y:.25,w:.25,h:.75});
 assert.deepEqual(box('viewport'), {x:.25,y:.25,w:.625,h:.625});
 assert.equal(state.fields.viewport.cells.length, 25);
-assert.deepEqual(state.fields.viewport.cells.filter(c => state.fields.compass.cells.includes(c)), ['zxw','zxy','zzw']);
+assert.deepEqual(state.fields.viewport.cells.filter(c => state.fields.compass.cells.includes(c)), ['xyx','xyz','xzw','xzy','zwx','zwz','zxw','zxy']);
 console.log('Philosophy owner footprint through shared UI measurement PASS');
 """, str(body), str(capabilities['ui_grid'])], check=True)

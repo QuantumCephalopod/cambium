@@ -25,16 +25,18 @@ for(const [width,height] of carriers){
   for(const name of ['pocket','help','trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name],mode,true);
   assert.deepEqual(idle.compassInfo.cells,UI.fieldInfo(owned,'compass').cells,'orientation cannot replace the owner address');
   if(mode==='portrait'){
-    close(idle.compass.left,0);close(idle.ascent.left,idle.compass.right);
-    close(idle.ascent.right,idle.top.left);close(idle.ascent.top,idle.compass.top);close(idle.ascent.bottom,idle.compass.bottom);
+    close(idle.ascent.left,0);close(idle.ascent.right,idle.compass.left);
+    close(idle.ascent.top,idle.compass.top);close(idle.ascent.bottom,idle.compass.bottom);
+    assert.ok(idle.compass.right<=idle.top.left+1e-8,'compass stays outside the liquid band');
     close(idle.pocket.bottom,idle.legal.top);close(idle.legal.left,idle.compass.left);
     close(idle.legal.right,idle.trigger.left);close(idle.trigger.right,idle.compass.right);
     close(idle.legal.top,idle.trigger.top);close(idle.help.top,idle.compass.top);
     close(idle.help.left,idle.trigger.left);close(idle.help.right,idle.trigger.right);
     assert.ok(width-idle.top.left>=46,'header and optical rim fit the right-edge field');
   }else{
-    close(idle.compass.right,width);close(idle.ascent.bottom,idle.compass.top);
-    close(idle.ascent.top,idle.top.bottom);close(idle.ascent.left,idle.compass.left);close(idle.ascent.right,idle.compass.right);
+    close(idle.compass.right,width);close(idle.ascent.top,idle.compass.bottom);
+    close(idle.ascent.bottom,height);close(idle.ascent.left,idle.compass.left);close(idle.ascent.right,idle.compass.right);
+    assert.ok(idle.compass.top>=idle.top.bottom-1e-8,'compass stays outside the liquid band');
     close(idle.pocket.bottom,idle.help.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left);
     assert.ok(idle.top.bottom>=46,'header and optical rim fit the upper field');
   }

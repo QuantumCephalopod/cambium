@@ -323,7 +323,7 @@ Version5.18 context correction2026-10-28: Being/type contact follows actual visi
 
 Layout return2026-10-29: The supplied common ui-grid.json determines actual extents. Narrative/camera framing consumes viewport, including its intentional compass overlap. Replay, clock, source identity and fixed timeline retain their source owners.
 
-The owner-declared compass keeps its ordinary wide address and lends `z` on portrait carriers or `xz / zx / zz` when the actual short-carrier navigator needs more height. These are recursive variants of the same field; replay, source identities and the fixed timeline remain unchanged.
+The owner-declared compass lends its ordinary, recursively addressed span to the shared membrane. It sits between the liquid and the shared return field; the same span turns with the global long-axis orientation. Replay, source identities and the fixed timeline remain unchanged.
 
 ## Upright mobile field — 2026-11-09
 

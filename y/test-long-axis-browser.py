@@ -83,7 +83,9 @@ try:
                         expect_box(field['actual'],field['logical'],width,height,portrait,(site,field['name']))
                         assert field['cells']==field['applied'],(site,field)
                     compass=result['compass']
-                    assert abs((compass['left'] if portrait else compass['right']-width))<1,(site,compass)
+                    ascent=result['ascent']
+                    if portrait:assert abs(ascent['right']-compass['left'])<1 and abs(ascent['bottom']-compass['bottom'])<1,(site,compass,ascent)
+                    else:assert abs(ascent['top']-compass['bottom'])<1 and abs(ascent['right']-compass['right'])<1,(site,compass,ascent)
                     assert result['headerTransform']=='none',(site,result['headerTransform'])
                     for key in ('left','top','width','height'):
                         assert abs(result['ascentSlot'][key]-result['ascent'][key])<1,(site,result['ascentSlot'],result['ascent'])

@@ -1,0 +1,38 @@
+{
+  "kind": "WITNESS",
+  "event_id": "cambium-compass-back-witness-20261109",
+  "owner": "cambium",
+  "observed_at_utc": "2026-11-09T03:33:14.266343Z",
+  "source_revision": "816503c882453e7c8de1cd65cd0271ce59673618",
+  "display_witness": {
+    "path": "w/display/_root/display-compass-back-witness-20261109.json",
+    "sha256": "928484a3af43fdc5c46272537809491cd0f65ebcd628d17c57c924fca507e6b7"
+  },
+  "host_tests": [
+    {
+      "path": "y/test-mobile-reading-browser.py",
+      "sha256": "4d69dddacfe705cbc3d74360854f4ceb4b23b9796a9caf48ae58a4ceec5bb662"
+    },
+    {
+      "path": "y/test-long-axis-browser.py",
+      "sha256": "065018febecf1e555758e7b90b7205cd7398fa5e34508a1065370bdcad814088"
+    },
+    {
+      "path": "y/test-membrane-grid.py",
+      "sha256": "27dcac109c9b35b02995f104b0f202e6d6976c97067504096547bcbb7a00290b"
+    },
+    {
+      "path": "y/test-bounded-layout.py",
+      "sha256": "67c7ab04c859164e457a13d118fb1686be00d144bfe51cd799114aaa66578f48"
+    },
+    {
+      "path": "y/test-mobile-docked-glass-browser.py",
+      "sha256": "96d6f04a006e97a8daf5a210190eed5f18646a59efec196da1bf984654e9516b"
+    },
+    {
+      "path": "y/test-navigation-contact.py",
+      "sha256": "a247123f259429ad44c5a356ae66ad8a719f24850ce4619bd155e1e208733eda"
+    }
+  ],
+  "claim": "Host witnesses cover the exchanged field, unclipped actual contacts and both shared navigation backends; exact site-public output matched 17147 files."
+}

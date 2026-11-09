@@ -1,14 +1,60 @@
 {
   "schema": "sss.display.ui-grid.v2",
-  "meta": {"name": "display-membrane", "extent": "bounded"},
-  "splits": ["", "w", "x", "xx", "z", "zx", "zz"],
+  "meta": {
+    "name": "display-membrane",
+    "extent": "bounded"
+  },
+  "splits": [
+    "",
+    "w",
+    "x",
+    "z",
+    "xx",
+    "xy",
+    "xz",
+    "zw",
+    "zx",
+    "zz"
+  ],
   "fields": {
     "top": {
-      "cells": ["ww", "wx", "xw", "xx"],
+      "cells": [
+        "ww",
+        "wx",
+        "xw",
+        "xx"
+      ],
       "label": "global upper liquid containing field"
     },
-    "compass": {"cells": ["zx", "zz"], "label": "global navigation"},
-    "ascent": {"cells": ["xz"], "variants": {"compact": ["xxy", "xxz"]}, "label": "return above navigation"}
+    "compass": {
+      "cells": [
+        "xyx",
+        "xzw",
+        "xzx",
+        "xyz",
+        "xzy",
+        "xzz",
+        "zwx",
+        "zxw",
+        "zxx",
+        "zwz",
+        "zxy",
+        "zxz"
+      ],
+      "label": "global navigation"
+    },
+    "ascent": {
+      "cells": [
+        "zz"
+      ],
+      "variants": {
+        "compact": [
+          "xxy",
+          "xxz"
+        ]
+      },
+      "label": "return below navigation"
+    }
   },
   "elements": {}
 }

@@ -14,7 +14,7 @@ p=argparse.ArgumentParser();p.add_argument('--artifact',type=Path,required=True)
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/index.html';results=[]
-expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.75,.5,.25,.5),'viewport':(.25,.25,.625,.625)}
+expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.625,.25,.375,.5),'viewport':(.25,.25,.625,.625)}
 portrait_expected={
  ('organism:philosophy','viewport'):(0,.25,1,.5),
  **{(site,field):box for site in ('organism:crawlerbait','organism:schattenseiten') for field,box in {

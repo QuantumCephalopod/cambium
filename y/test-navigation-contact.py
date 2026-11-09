@@ -60,10 +60,10 @@ def slot_geometry(page, portrait):
     for k in ('left', 'top', 'right', 'bottom'):
         assert abs(s[k] - b[k]) < 1, (k, values)
     if portrait:
-        for a, b in ((s['left'], compass['right']), (s['right'], top['left']), (s['top'], compass['top']), (s['bottom'], compass['bottom'])):
+        for a, b in ((s['left'], 0), (s['right'], compass['left']), (s['top'], compass['top']), (s['bottom'], compass['bottom'])):
             assert abs(a-b) < 1, values
     else:
-        for a, b in ((s['top'], top['bottom']), (s['bottom'], compass['top']), (s['left'], compass['left']), (s['right'], compass['right'])):
+        for a, b in ((s['top'], compass['bottom']), (s['bottom'], page.viewport_size['height']), (s['left'], compass['left']), (s['right'], compass['right'])):
             assert abs(a-b) < 1, values
     return values
 

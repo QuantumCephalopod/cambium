@@ -53,12 +53,24 @@ try:
        const r=el.getBoundingClientRect(),p=timeline.getBoundingClientRect();
        return {name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(r.left,p.left),top:Math.max(r.top,p.top),right:Math.min(r.right,p.right),bottom:Math.min(r.bottom,p.bottom)};
       }).filter(r=>r.right>r.left&&r.bottom>r.top):[];
-      const navTargets=[...document.querySelectorAll('#mini-help-toggle,#mini-trigger,#legal-links a')].map(el=>({name:el.id||el.textContent.trim(),...toBox(el.getBoundingClientRect())}));
+      const navTargets=[...document.querySelectorAll('#mini-help-toggle,#mini-trigger,#legal-links a')].map(el=>{
+       const r=el.getBoundingClientRect(),clip=el.closest('#legal-links')?.getBoundingClientRect()||{left:0,top:0,right:innerWidth,bottom:innerHeight};
+       return {name:el.id||el.textContent.trim(),left:Math.max(r.left,clip.left),top:Math.max(r.top,clip.top),right:Math.min(r.right,clip.right),bottom:Math.min(r.bottom,clip.bottom)};
+      }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const returnSlot=toBox(document.getElementById('display-ascent-slot').getBoundingClientRect()),returnButton=toBox(document.getElementById('display-ascent').getBoundingClientRect());
+      // A visually clipped source article still exposes its semantic text to
+      // assistive technology; its off-screen descendants are not screen hit
+      // targets. Intersect every actual overflow clip before testing contact.
+      const visibleRect=el=>{
+       const r=el.getBoundingClientRect(),b={left:Math.max(0,r.left),top:Math.max(0,r.top),right:Math.min(innerWidth,r.right),bottom:Math.min(innerHeight,r.bottom)};
+       for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),q=p.getBoundingClientRect();
+        if(/^(hidden|clip|auto|scroll)$/.test(s.overflowX)){b.left=Math.max(b.left,q.left);b.right=Math.min(b.right,q.right)}
+        if(/^(hidden|clip|auto|scroll)$/.test(s.overflowY)){b.top=Math.max(b.top,q.top);b.bottom=Math.min(b.bottom,q.bottom)}
+       }return b;
+      };
       const otherTargets=[...document.querySelectorAll('[data-interlocutor]:not([hidden]) button,[data-interlocutor]:not([hidden]) input,[data-interlocutor]:not([hidden]) select,[data-interlocutor]:not([hidden]) a')]
        .filter(el=>el.getClientRects().length).map(el=>{
-        const r=el.getBoundingClientRect(),field=el.closest('[data-ui-bounded="true"]'),p=field?field.getBoundingClientRect():{left:0,top:0,right:innerWidth,bottom:innerHeight};
-        const box={name:el.getAttribute('aria-label')||el.textContent.trim(),left:Math.max(0,r.left,p.left),top:Math.max(0,r.top,p.top),right:Math.min(innerWidth,r.right,p.right),bottom:Math.min(innerHeight,r.bottom,p.bottom)};
+        const box={name:el.getAttribute('aria-label')||el.textContent.trim(),...visibleRect(el)};
         const at=document.elementFromPoint((box.left+box.right)/2,(box.top+box.bottom)/2);box.reachable=Boolean(at&&(at===el||el.contains(at)));return box;
        }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
@@ -83,8 +95,8 @@ try:
      a=measured['returnButton'];slot=measured['returnSlot'];field=measured['state']['ascent']
      assert all(abs(slot[k]-field[k])<1 for k in ['left','top','width','height']),(site,slot,field)
      assert a['left']>=slot['left']-1 and a['right']<=slot['right']+1 and a['top']>=slot['top']-1 and a['bottom']<=slot['bottom']+1,(site,a,slot)
-     if height>width:assert a['left']>=measured['state']['compass']['right']-1 and a['right']<=measured['state']['top']['left']+1,(site,a,'return leaves its rotated gap')
-     else:assert a['top']>=measured['state']['top']['bottom']-1 and a['bottom']<=measured['state']['compass']['top']+1,(site,a,'return leaves its gap')
+     if height>width:assert abs(a['right']-measured['state']['compass']['left'])<1 and abs(a['bottom']-measured['state']['compass']['bottom'])<1,(site,a,'return leaves its rotated field')
+     else:assert abs(a['top']-measured['state']['compass']['bottom'])<1 and abs(a['right']-measured['state']['compass']['right'])<1,(site,a,'return leaves its field')
      for b in measured['otherTargets']:
       overlaps=min(a['right'],b['right'])-max(a['left'],b['left'])>1 and min(a['bottom'],b['bottom'])-max(a['top'],b['top'])>1
       if overlaps:assert b['reachable'],(site,a,b,'return obscures another control')
