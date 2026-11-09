@@ -1,0 +1,29 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-fractal-format-plan-witness-20261110",
+  "owner": "display",
+  "source_revision": "26fe68d9acd2b21657dbac08b623b437ceac0588",
+  "intake": {
+    "path": "w/display/_stomach/NUTRIENT__one-invariant-format-plan__20261110.md",
+    "git_blob_sha": "f5549d6c1be1eb6c1128c7e75c90c59eb35c9eab"
+  },
+  "evidence": "w/display/_root/display-format-audit-witness-20261109.json",
+  "proposal": {
+    "status": "PROPOSED FOR DISCUSSION — not adopted and not an implementation",
+    "principle": "One user-authored recursive screen-format grammar and authoritative address tree, inherited down to UI internals; site holons may own distinct content and subdivisions.",
+    "geometry": "For logical long and short viewport axes L,S, a single-cell address at depth n occupies L/2^n by S/2^n; declared multi-cell fields may span cells. Use the same logical assignment under the existing 90-degree portrait projection.",
+    "occupancy": "Explicitly distinguish occupied, intentionally open and intentionally layered areas; check complete tiling only where a partition has been declared. No automatic redistribution of undeclared remainders.",
+    "typography": "The existing 1rem × 2^(r/2) rank and grid's 2^(-n) subdivision share a factor: r=-2n gives 2^(-n). A strict shared physical unit would require an explicitly chosen grid-derived reference length U; changing from rem changes the scaling behavior and is an unresolved design choice.",
+    "migration": [
+      "Inventory all current layout authorities and preserve authored roles and assignments.",
+      "Represent nested UI fields, their relationships, and explicitly intended open or layered regions in one recursive format.",
+      "Replace dynamic fit-based address selection and independent CSS geometry with projection from declared fields.",
+      "Specify common type origin, ranks and overflow behavior without silently changing layout for content fit.",
+      "Witness declared versus rendered geometry, orientation, hit targets, text, occupancy and accessibility on varied viewports and site holons."
+    ],
+    "scope": "The proposal covers screen-space composition. The 3D world has its own tetrahedral coordinates and projection; whether world coordinates should share this UI address grammar is not decided.",
+    "geometric_constraint": "A square visual cannot completely fill an allocated non-square rectangle while preserving its square shape; explicit division, empty space, cropping or distortion must be chosen rather than invented."
+  },
+  "changed_scope": "Planning evidence only. No site layout, style, runtime or declared grid is changed.",
+  "unresolved": "w/display/_stomach/NUTRIENT__shared-format-design-decisions__20261110.md"
+}
