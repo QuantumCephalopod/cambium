@@ -72,8 +72,13 @@ try:
                         assert page.evaluate('document.documentElement.lang')==other, stem
                         page.locator(f'[data-lang="{language}"]').tap(timeout=10000)
                         assert page.evaluate('document.documentElement.lang')==language, stem
+                        legal=page.locator('#legal-links')
+                        first=legal.evaluate('''e=>{e.scrollTop=0;const r=e.getBoundingClientRect(),f=e.querySelector('a').getBoundingClientRect();return {top:r.top,bottom:r.bottom,firstTop:f.top,firstBottom:f.bottom}}''')
+                        assert first['firstTop']>=first['top']-1 and first['firstBottom']<=first['bottom']+1,(stem,first,'first legal link is clipped at scroll origin')
                         for link in page.locator('#legal-links a').all():
                             link.scroll_into_view_if_needed()
+                            box=link.evaluate('''e=>{const r=e.getBoundingClientRect(),p=e.parentElement.getBoundingClientRect();return {top:r.top,bottom:r.bottom,parentTop:p.top,parentBottom:p.bottom}}''')
+                            assert box['top']>=box['parentTop']-1 and box['bottom']<=box['parentBottom']+1,(stem,box,'legal continuation cannot scroll fully into view')
                             link.tap(trial=True, timeout=10000)
                         page.locator('#mini-help-toggle').tap()
                         assert page.locator('#mini-guide').is_visible(), stem
