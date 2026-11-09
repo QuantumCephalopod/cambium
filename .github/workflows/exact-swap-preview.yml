@@ -1,0 +1,27 @@
+name: exact swap preview
+on:
+  push:
+    branches:
+      - staging/exact-swap-preview-square-20261109
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install isolated browser
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Build and witness exact exchange
+        run: |
+          python3 y/site-public.py --artifact _site
+          python3 y/exact-swap-preview.py --artifact _site --out _exact-preview
+      - name: Retain visual witness
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exact-swap-preview
+          path: _exact-preview
+          if-no-files-found: warn
