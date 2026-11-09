@@ -10,7 +10,7 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined,foreground=null,presentation=null}={}){
+function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined,foreground=null,presentation=null,labelBox=null}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
   const calls=[],frames=[],queue=[],timers=[],events=[],resources={created:[],deleted:[]},enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
@@ -54,6 +54,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.canvas=canvas;
   const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},rotateBy(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
   const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element(),createElementNS:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
+  if(labelBox)context.ResizeObserver=class{constructor(fn){this.fn=fn}observe(target){this.fn([{target,borderBoxSize:[{inlineSize:labelBox.w,blockSize:labelBox.h}]}])}disconnect(){}};
   if(glass){const G=require('../../z/zz/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:preview||lens?0:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
   if(lens!==false&&(preview||lens))context.SSSDisplayLens={foreground:(_id,frame)=>foreground?foreground(frame):null,snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:typeof lensHome==='function'?lensHome():lensHome})};
   context.SSSDisplayLabelInk={create:()=>({draw:(_r,_w,_h,additionalTarget)=>{calls.push({type:'labelInk',target:drawTarget,additionalTarget});return true},reset(){},dispose(){}})};
@@ -202,6 +203,20 @@ for(const [width,height] of [[1280,800],[390,844]]){
   const before=f.events.length;identity.click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});f.flushTimers();assert.equal(f.events.length,before,'withdrawn label can still enter a stale body');
 }
 console.log('PASS — Canvas2D retains full offered bodies, localized labels, drift, face/label entry and withdrawal at wide and portrait carriers');
+
+// Only a real resting optical drop reserves label room. A held/locked drop
+// keeps the existing contact path, and Canvas2D reserves no invisible glass.
+{
+ const options={width:390,height:844,order:['a'],labelBox:{w:100,h:44}};
+ const position=f=>{const n=f.labels.children.find(e=>e.className==='field-label field-body-label');return {x:parseFloat(n.style.left),y:parseFloat(n.style.top)}};
+ const base=fixture(options);base.frame(0);const anchor=position(base);
+ const lens={x:anchor.x,y:anchor.y,hx:36,hy:36,boundX:36,boundY:36,docked:true,attached:true,held:false,lock:null};
+ const resting=fixture({...options,lens});resting.frame(0);assert.notDeepEqual(position(resting),anchor,'quiet ink stayed under the resting drop');
+ const held=fixture({...options,lens:{...lens,held:true}});held.frame(0);assert.deepEqual(position(held),anchor,'taking a drop displaced its target ink');
+ const locked=fixture({...options,lens:{...lens,lock:{kind:'body',id:'body:a'}}});locked.frame(0);assert.deepEqual(position(locked),anchor,'a locked drop displaced foreground ink');
+ const canvas=fixture({...options,webgl:false,lens});canvas.frame(0);assert.deepEqual(position(canvas),anchor,'Canvas2D reserved glass it does not draw');
+ console.log('PASS — only real idle docked glass reserves room for native body ink');
+}
 /* A declined target returns through arriveFrom(null). Compare the real moving
  * body projection with an otherwise identical field that never approached it. */
 for(const webgl of [false,true]){

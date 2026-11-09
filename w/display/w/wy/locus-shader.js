@@ -266,6 +266,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
    * semantic addresses. A fine tether returns displaced ink to its anchor. */
   function placeBodyLabels(records,r){
     const placed=[],gap=2,clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+    // A resting liquid drop is real occupied optical geometry. Keep quiet
+    // body ink out of it while preserving the body's projected anchor. A
+    // held or locked drop remains governed by its own foreground contract.
+    const drop=gl&&!GLASS_OFF&&globalThis.SSSDisplayGlass?.enabled?.()?globalThis.SSSDisplayLens?.snapshot?.()?.lens:null;
+    if(drop?.docked&&drop.attached&&!drop.held&&!drop.lock){
+      const x=drop.x-r.left,y=drop.y-r.top,hx=drop.boundX??drop.hx,hy=drop.boundY??drop.hy;
+      if([x,y,hx,hy].every(Number.isFinite))placed.push({left:x-hx,right:x+hx,top:y-hy,bottom:y+hy});
+    }
     for(const item of records.sort((a,b)=>a.B.id.localeCompare(b.B.id))){
       const {B,n,lp,size}=item,halfW=Math.min(size.w/2+8,r.width/2),halfH=Math.min(size.h/2+8,r.height/2);
       n.style.maxWidth=Math.max(1,r.width-16)+'px';

@@ -161,6 +161,9 @@ jobs:
           python3 y/test-long-axis-browser.py --artifact _site --out _mobile-witness/orientation
           python3 y/test-membrane-grid.py --artifact _site --out _mobile-witness/membrane
           python3 y/test-bounded-layout.py --artifact _site --out _mobile-witness/bounded --canvas2d
+          python3 y/test-mobile-docked-glass-browser.py --artifact _site --out _mobile-witness/docked-glass
+          python3 y/test-navigation-contact.py --artifact _site --out _mobile-witness/contact-canvas --backend canvas2d
+          python3 y/test-navigation-contact.py --artifact _site --out _mobile-witness/contact-webgl --backend webgl
 
       - name: Retain mobile browser witness
         if: always() && github.repository == 'QuantumCephalopod/cambium' && startsWith(github.ref_name, 'staging/mobile-display-')
