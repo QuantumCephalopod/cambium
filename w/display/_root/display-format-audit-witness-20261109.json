@@ -1,0 +1,119 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-format-audit-witness-20261109",
+  "owner": "display",
+  "observed_at_utc": "2026-11-09T22:43:53.818225Z",
+  "source_revision": "26fe68d9acd2b21657dbac08b623b437ceac0588",
+  "source_files": [
+    {
+      "path": "w/display/w/wz/ui-grid.js",
+      "sha256": "fd7c89bf1d881bbfb45a08956f2d7fecda16c6ecdce1b428e809f869dfbafa3d"
+    },
+    {
+      "path": "w/display/w/wz/membrane-grid.js",
+      "sha256": "ca028d7122e3a3394414b70217617106dd23fce18bcba14a4e10a608123d0e87"
+    },
+    {
+      "path": "w/display/w/wz/membrane-grid.json",
+      "sha256": "c4e9a760bafe28b6e8c89323a7eebfb431b8ad6b41df85537d51383b0c034ae6"
+    },
+    {
+      "path": "w/display/w/wz/navigator-grid.json",
+      "sha256": "aa04f2034a72a1eab491af2f1ff5a1470a46b51d418eee571ce0432567fef27f"
+    },
+    {
+      "path": "w/display/x/display-runtime-v2.js",
+      "sha256": "c7a4ddd04b063b058c849be3547b80a11356f33c3e9c47120f73920c8fbfb3a7"
+    },
+    {
+      "path": "w/display/z/zz/navigation-aperture.js",
+      "sha256": "5a6fd347cee2bd047bc8b070a1345e17e50d52ec42528dda37ebd241abcf86e9"
+    },
+    {
+      "path": "w/display/z/zz/navigation-aperture.css",
+      "sha256": "19c588cf4527304dc9f4e0ef4b42c158437bca5d9fd00db5b1282a54746eb7ee"
+    },
+    {
+      "path": "w/display/w/wx/display-type.js",
+      "sha256": "e8b00b802a3be554d3c8b1c70ac519c51e95296900ebb3fc62358e22bc602079"
+    },
+    {
+      "path": "w/display/y/philosophy/w/style.css",
+      "sha256": "730e966b825192b935f1a79d58af3010339efe652cf0e807f0a8c499ec6c5a91"
+    },
+    {
+      "path": "w/display/y/philosophy/w/ui-grid.json",
+      "sha256": "9773e4a8a8979743db5ac242ac7b7ecf7463cafe6d4581d29672a3c8f10d53ff"
+    },
+    {
+      "path": "w/display/y/yw/papers/sierpinski.css",
+      "sha256": "333ff85bdbebcc90631658826c7985940ebc80424082a108737907416379fa8f"
+    },
+    {
+      "path": "w/display/x/site-holon.js",
+      "sha256": "15816c63bf1715ff5d16fb051e1fea44c10f1b132442fb57d39fbccc7ee44d91"
+    },
+    {
+      "path": "w/display/RITUALS/organism/RITUAL.md",
+      "sha256": "ea3f01569497f5d2a35fb83d16bac50ab4832f67b125056a04c93cd7c8ea14f4"
+    },
+    {
+      "path": "w/display/RITUALS/site-holon/RITUAL.md",
+      "sha256": "aec1a466114c58c6ed91839cc7ace70eaa65c89510b9cf70b42201c154a3a9c6"
+    }
+  ],
+  "findings": [
+    "Address projection is recursive fourfold with one normalized 90-degree portrait transform, but field declarations are separate per site and permit overlaps and uncovered cells.",
+    "Portrait selects an optional explicitly declared upright variant; the ordinary carrierField does not select a variant merely named portrait.",
+    "The global topBand and ascent fields are recomputed from measured content; triggerState refines/coarsens addresses to fit its measured input.",
+    "Navigator internal layout uses rem and pixel sizes, flow, measured chrome, collision-derived map/rail/hint fit, and a 12rem container rule.",
+    "Source typography exposes 1rem × 2^(r/2), with local origins and continuously sized body-projected labels outside strict rank selection.",
+    "The live Display and site-holon receptors disagree about whether the trigger remains in its former field."
+  ],
+  "browser_witness": {
+    "run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42701114190",
+    "boundary": "Chromium on a browser test carrier; source UI, runtime and CSS blobs match the audited main revision.",
+    "viewport": [
+      1280,
+      800
+    ],
+    "top": [
+      0,
+      0,
+      1280,
+      50
+    ],
+    "philosophy_description": [
+      0,
+      200,
+      320,
+      600
+    ],
+    "pocket": [
+      960,
+      50,
+      320,
+      350
+    ],
+    "back": [
+      960,
+      400,
+      320,
+      300
+    ],
+    "legal": [
+      1040,
+      700,
+      160,
+      100
+    ],
+    "trigger": [
+      1240,
+      360,
+      40,
+      40
+    ],
+    "inference": "The gap from the end of the global top band to the beginning of the description is 150px on this carrier. In the former compass bottom row, the declared legal field occupies the central half and the two outer 80×100px portions have no Back, legal or trigger UI occupancy."
+  },
+  "limits": "This is a bounded audit, not a claim about every UI element or a diagnosis of an unseen current physical device. No product layout is changed."
+}
