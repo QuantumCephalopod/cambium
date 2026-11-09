@@ -23,24 +23,24 @@ for(const [width,height] of carriers){
   assert.strictEqual(grid.reconcile(input).inner,idle.inner,'an unchanged navigator reuses its realized field');
   for(const name of ['top','compass'])verifyField(idle.outer,name,idle.viewport,idle[name],mode);
   // The authored Back field now contains the pocket, and the authored
-  // pocket field contains Back. The legal and trigger fields do not move.
+  // pocket field contains Back. Legal stays; navigator controls follow the pocket.
   verifyField(idle.outer,'ascent',idle.viewport,idle.pocket,mode);
   verifyField(idle.inner,'pocket',idle.compass,idle.ascent,mode,true);
-  verifyField(idle.inner,'help',idle.pocket,idle.help,mode,true);
-  for(const name of ['trigger','legal'])verifyField(idle.inner,name,idle.compass,idle[name],mode,true);
+  for(const name of ['help','trigger'])verifyField(idle.inner,name,idle.pocket,idle[name],mode,true);
+  verifyField(idle.inner,'legal',idle.compass,idle.legal,mode,true);
   assert.deepEqual(idle.compassInfo.cells,UI.fieldInfo(owned,'compass').cells,'orientation cannot replace the owner address');
   if(mode==='portrait'){
     close(idle.ascent.left,0);close(idle.ascent.right,idle.pocket.left);
     close(idle.ascent.top,idle.pocket.top);close(idle.pocket.bottom,idle.compass.bottom);
     close(idle.ascent.bottom,idle.legal.top);close(idle.legal.left,idle.compass.left);
-    close(idle.legal.right,idle.trigger.left);close(idle.trigger.right,idle.compass.right);
-    close(idle.legal.top,idle.trigger.top);close(idle.help.top,idle.pocket.top);
+    close(idle.trigger.right,idle.pocket.right);
+    close(idle.help.top,idle.pocket.top);
     close(idle.help.right,idle.pocket.right);
     assert.ok(width-idle.top.left>=46,'header and optical rim fit the right-edge field');
   }else{
     close(idle.compass.right,width);close(idle.pocket.bottom,idle.ascent.top);
     close(idle.pocket.top,idle.top.bottom);close(idle.ascent.left,idle.compass.left);close(idle.ascent.right,idle.compass.right);
-    close(idle.ascent.bottom,idle.legal.top);assert.ok(idle.legal.right<=idle.trigger.left);
+    close(idle.ascent.bottom,idle.legal.top);close(idle.trigger.right,idle.pocket.right);
     assert.ok(idle.top.bottom>=46,'header and optical rim fit the upper field');
   }
   const pending=grid.reconcile({...input,statusRect:status(width,height)});
@@ -81,7 +81,7 @@ assert.deepEqual(s.compass,{left:0,top:0,width:500,height:300,right:500,bottom:3
 s=grid.reconcile({width:600,height:1000,headerRect:header(600,1000),triggerRect:{width:24,height:24},inset:8});
 assert.deepEqual(s.compass,{left:300,top:0,width:300,height:500,right:600,bottom:500});
 assert.deepEqual(s.compassInfo.cells,['w']);
-verifyField(s.inner,'trigger',s.compass,s.trigger,'portrait',true);
+verifyField(s.inner,'trigger',s.pocket,s.trigger,'portrait',true);
 assert.throws(()=>grid.surfaceRect({getAttribute:()=>null,dataset:{}},{left:0,top:0,width:1,height:1}),/realized recursive UI field/);
 assert.equal(M.address(0,0,40),'w'.repeat(40),'recursive addresses are not rank-capped by a UI breakpoint');
 
@@ -98,5 +98,5 @@ const a=alternate.reconcile({width:1000,height:800,headerRect:{bottom:110},trigg
 assert.equal(a.fit.top,false);assert.ok(a.top.bottom<=100);
 const seed=UI.fieldInfo(UI.normalizeState(alternateNavigator),'trigger').bounds,actual=UI.fieldInfo(a.inner,'trigger').bounds;
 assert.ok(actual.x>=seed.x&&actual.y>=seed.y&&actual.x+actual.w<=seed.x+seed.w&&actual.y+actual.h<=seed.y+seed.h);
-verifyField(a.inner,'trigger',a.compass,a.trigger,'landscape');
+verifyField(a.inner,'trigger',a.pocket,a.trigger,'landscape');
 console.log('PASS — one long-axis orientation projects addressed Display, navigator and owner fields through resize');
