@@ -266,11 +266,12 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
    * semantic addresses. A fine tether returns displaced ink to its anchor. */
   function placeBodyLabels(records,r){
     const placed=[],gap=2,clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-    // The global compass is an occupied reading and contact field. Respect
-    // its actual realized rectangle while placing body ink around it.
-    const navigator=globalThis.SSSDisplayMembraneGrid?.snapshot?.();
-    const open=document.getElementById?.('mini')?.dataset?.aperture==='open';
-    for(const field of open?[navigator?.compass]:[navigator?.trigger,navigator?.legal]){
+    // Reuse the shared cached occupancy, which already tracks the open
+    // pocket and the always-available trigger and legal fields.
+    const occupied=globalThis.SSSDisplaySafeArea?.snapshot?.().occupied||[];
+    for(const entry of occupied){
+      if(!['mini-pocket','mini-trigger','legal-links'].includes(entry.id))continue;
+      const field=entry.rect;
       if(field&&field.width>0&&field.height>0)
         placed.push({left:field.left-r.left,right:field.right-r.left,top:field.top-r.top,bottom:field.bottom-r.top});
     }
