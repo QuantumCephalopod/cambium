@@ -61,7 +61,7 @@ function measure(){
   // and the existing rail/gap room before choosing a square map extent.
   const padding=(Number.parseFloat(coreStyle?.paddingLeft)||.5*rem)+(Number.parseFloat(coreStyle?.paddingRight)||.5*rem);
   const mapWidth=Math.max(0,(core.clientWidth??field?.width??0)-padding-2*rem);
-  px('--compass-map-cap',bounded?Math.floor(Math.max(24,Math.min(available-chrome,mapWidth))):Math.max(24,available-chrome));
+  px('--compass-map-cap',bounded?Math.floor(Math.max(0,Math.min(available-chrome,mapWidth))):Math.max(24,available-chrome));
   px('--compass-core-height',core.offsetHeight);
   core.dataset.scroll=String(core.scrollHeight>core.clientHeight+1);
 }

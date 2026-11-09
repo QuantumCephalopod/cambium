@@ -70,5 +70,7 @@ console.log('PASS — contextual mouse/touch/keyboard hints, accessible persiste
  assert.equal(mini.style['--compass-map-cap'],'52px');assert.equal(help.parentNode,mini);ctx.SSSNavigationAperture.close();help.events.click();assert.equal(pocket.attrs['aria-hidden'],'false');assert.equal(guide.hidden,false);
  pocket.clientHeight=500;core.clientWidth=160;listeners.get('resize')();
  assert.equal(mini.style['--compass-map-cap'],'112px','map uses the available content width after scrollbar, padding and rail');
+ core.clientWidth=70;listeners.get('resize')();
+ assert.equal(mini.style['--compass-map-cap'],'22px','the fixed field cannot be exceeded by a minimum map floor');
  console.log('PASS — bounded compass subtracts measured chrome, preserves map budget and opens persistent help from the closed state');
 }
