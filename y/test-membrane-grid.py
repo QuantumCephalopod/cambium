@@ -45,6 +45,7 @@ try:
       });
       const glass=SSSDisplayGlass.collect().map(s=>({id:s.id,ids:s.ids,rect:s.rect}));
       const map=toBox(document.getElementById('navTwin').getBoundingClientRect());
+      const instruments=Object.fromEntries(['navTwin','axis-x','axis-y','mini-help'].map(id=>[id,toBox(document.getElementById(id).getBoundingClientRect())]));
       const chrome=Number(document.getElementById('mini').dataset.mapChrome)||0;
       const core=document.getElementById('mini-core'),cs=getComputedStyle(core),instrument=document.getElementById('mini-instrument');
       const mapRoom=Math.max(0,core.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap));
@@ -76,7 +77,7 @@ try:
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
       const oldBack=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'ascent').bounds,state.orientation);
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.carrierField(state.inner,name,state.orientation).bounds,state.orientation)]));
-      return {state:{top:state.top,compass:state.compass,pocket:state.pocket,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,oldBack,nested,fields,controls,glass,map,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
+      return {state:{top:state.top,compass:state.compass,pocket:state.pocket,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,oldBack,nested,fields,controls,glass,map,instruments,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
      assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
@@ -90,6 +91,9 @@ try:
       for right in bottom[i+1:]:
        a,b=left['actual'],right['actual']
        assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,left,right,'navigator controls overlap')
+     trigger=next(c['actual'] for c in measured['controls'] if c['field']=='trigger')
+     for name,control in measured['instruments'].items():
+      assert min(trigger['right'],control['right'])-max(trigger['left'],control['left'])<=1 or min(trigger['bottom'],control['bottom'])-max(trigger['top'],control['top'])<=1,(site,name,trigger,control,'trigger covers compass instrument')
      for a in measured['siteTargets']:
       for b in measured['navTargets']:
        assert min(a['right'],b['right'])-max(a['left'],b['left'])<=1 or min(a['bottom'],b['bottom'])-max(a['top'],b['top'])<=1,(site,a,b,'navigator covers a site timeline control')
@@ -119,7 +123,7 @@ try:
        q=measured['state']['ascent'];parent=compass
       else:
        q=next(c['expected'] for c in measured['controls'] if c['field']==name)
-       parent=pocket if name=='help' else compass
+       parent=pocket if name in ('help','trigger') else compass
       for key,value in [('left',parent['left']+b['x']*parent['width']),('top',parent['top']+b['y']*parent['height']),('width',b['w']*parent['width']),('height',b['h']*parent['height'])]:
        assert abs(q[key]-value)<.5,(site,name,key,q,value)
      for name in ['pocket','trigger']:

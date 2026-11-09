@@ -1,0 +1,34 @@
+{
+  "kind": "HOME",
+  "event_id": "cambium-compass-trigger-20261109",
+  "home_at_utc": "2026-11-09T21:17:46.264913Z",
+  "organism": "cambium",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — host integration consumes the updated navigator trigger relation and keeps the authored exchange and legal field.",
+  "changed_scope": [
+    "y/test-membrane-grid.py"
+  ],
+  "context": {
+    "source_revision": "e9c0cf4334974c596694f213a048f4f0a06b330d",
+    "witness": {
+      "path": "_root/cambium-compass-trigger-witness-20261109.json",
+      "sha256": "e09d48b22ae7849b681b6633144fb1a676c169cdede1a8a8dbd0577d96e5efc9"
+    },
+    "display_home": {
+      "path": "w/display/_root/display-compass-trigger-20261109.json",
+      "sha256": "58d5a2a5662d98280ab399b25605d610c7fe174b0770d9cca1a1a903fbacc42b"
+    },
+    "source_exact_spent_intake": {
+      "source": "_stomach/NUTRIENT__compass-trigger-dependency__20261109.md",
+      "destination": "_waste/NUTRIENT__compass-trigger-dependency__20261109.md",
+      "sha256": "83cda1248ec3ef5e2debb57c41757e196879b2478aab39817b312ded1b24d14f",
+      "source_exact": true
+    },
+    "backpropagation": "Only the host browser witness depending on the changed Display relation was revised; no host semantic constitution changed.",
+    "shared_browser_witness": {
+      "run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42701114190",
+      "result": "PASS: 18 cases across six sites and three formats on the same product and integration-test bytes."
+    }
+  }
+}

@@ -64,20 +64,27 @@
     for(let y=firstY;y<firstY+rows;y++)for(let x=firstX;x<lastX;x++)cells.push(address(x,y,depth));
     return realize(base,{top:cells});
   }
-  function triggerState(base,compass,read){
+  function triggerState(base,compass,read,mode){
     if(!read||read.width<=0||read.height<=0)return base;
-    // The authored trigger span supplies the entrance. Descend along its
-    // upper-right contact while the actual input target still fits.
-    const seed=UI.spanInfo(base,base.fields.trigger.cells);
-    let candidate=seed.cells.find(cell=>{const c=UI.coord(cell);return c.x===seed.maxX&&c.y===seed.minY}),chosen=null;
+    // Fit the real input in its existing, orientation-specific trigger span.
+    // If that span is too small, its containing address supplies the least
+    // enlargement; deeper addresses are admitted only while the input fits.
+    const variant=mode==='portrait'&&base.fields.trigger.variants?.upright?'upright':'';
+    const seed=UI.fieldInfo(base,'trigger',variant);
+    let candidate=seed.cells.find(cell=>{const c=UI.coord(cell);return c.x===seed.maxX&&c.y===seed.maxY}),chosen=null;
+    const fits=cell=>{const b=UI.bounds(cell);return b.w*compass.width+1e-6>=read.width&&b.h*compass.height+1e-6>=read.height};
+    if(seed.cells.length===1)while(candidate&&!fits(candidate))candidate=candidate.slice(0,-1);
     for(;;){
-      const b=UI.bounds(candidate);
-      if(b.w*compass.width+1e-6<read.width||b.h*compass.height+1e-6<read.height)break;
+      if(!fits(candidate))break;
       chosen=candidate;
       if(!Number.isSafeInteger(2**(candidate.length+1)))break;
-      candidate+='x';
+      candidate+='z';
     }
-    return chosen?realize(base,{trigger:[chosen]}):base;
+    if(chosen===null)return base;
+    if(!variant)return realize(base,{trigger:[chosen]});
+    const s=clone(base),splits=new Set(s.splits);
+    for(let i=0;i<chosen.length;i++)splits.add(chosen.slice(0,i));
+    s.splits=[...splits];s.fields.trigger.variants[variant]=[chosen];return UI.normalizeState(s);
   }
   function create(membrane,navigator){
     const base=UI.normalizeState(membrane),navBase=UI.normalizeState(navigator);
@@ -116,8 +123,8 @@
       const own=UI.orientBounds(UI.fieldInfo(outer,name).bounds,mode());
       return projection(own,viewport);
     }
-    // Exchange only the two existing content fields. The legal and trigger
-    // cells continue to be projected from the original compass declaration.
+    // Exchange the two existing content fields. Legal keeps its original
+    // field; navigator controls follow the relocated pocket.
     function rect(name){
       return name==='ascent'?authoredNested('pocket'):authoredRect(name);
     }
@@ -129,7 +136,7 @@
     function authoredNested(name){return projection(authoredRelative(name),authoredRect('compass'))}
     function nested(name){
       if(name==='pocket')return authoredRect('ascent');
-      if(name==='help')return projection(authoredRelative(name),authoredRect('ascent'));
+      if(name==='help'||name==='trigger')return projection(authoredRelative(name),authoredRect('ascent'));
       return authoredNested(name);
     }
     function container(){
@@ -158,10 +165,10 @@
         if(compassInfo)outer=realize(outer,{compass:compassInfo.cells,ascent:ascentCells(compassInfo)});
         topKey=key;
       }
-      const c=rect('compass'),logicalCompass=rotated?{width:c.height,height:c.width}:c,
+      const c=authoredRect('ascent'),logicalCompass=rotated?{width:c.height,height:c.width}:c,
         logicalTrigger=rotated&&t?{width:t.height,height:t.width}:t,
         inputKey=[mode(),c.width,c.height,num(t?.width),num(t?.height)].join('|');
-      if(inputKey!==triggerKey){inner=triggerState(navBase,logicalCompass,logicalTrigger);triggerKey=inputKey}
+      if(inputKey!==triggerKey){inner=triggerState(navBase,logicalCompass,logicalTrigger,mode());triggerKey=inputKey}
       const topBounds=UI.fieldInfo(outer,'top').bounds,trigger=nested('trigger');
       fit={top:Math.max(num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0)+num(input.inset)<=(topBounds.y+topBounds.h)*logicalHeight,
         trigger:!t||(num(t.width)<=trigger.width&&num(t.height)<=trigger.height)};

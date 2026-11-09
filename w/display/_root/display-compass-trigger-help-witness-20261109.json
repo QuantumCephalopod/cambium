@@ -1,0 +1,37 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-compass-trigger-help-witness-20261109",
+  "owner": "display",
+  "observed_at_utc": "2026-11-09T21:17:00.703813Z",
+  "candidate_revision": "80d3042cb7826e92dc5e9b68450deb01bebd0f98",
+  "product_file": {
+    "path": "w/display/z/zz/navigation-aperture.js",
+    "sha256": "5a6fd347cee2bd047bc8b070a1345e17e50d52ec42528dda37ebd241abcf86e9"
+  },
+  "browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42700588001",
+  "supersedes": "The earlier bounded product build changed map width when the help disclosure scrolled the compass; the unscrolled layout position now keeps the measured fit stable.",
+  "map_width_before_after_help_px": {
+    "320x568": [
+      21.984375,
+      21.984375
+    ],
+    "390x844": [
+      88,
+      88
+    ],
+    "667x375": [
+      73,
+      73
+    ],
+    "1280x800": [
+      262,
+      262
+    ],
+    "1920x900": [
+      308,
+      308
+    ]
+  },
+  "webgl": "Chromium SwiftShader WebGL2: 390x844 and 1280x800 place the actual trigger glass in the moved pocket.",
+  "boundary": "Browser emulation and software WebGL only; no claim of physical-device performance."
+}
