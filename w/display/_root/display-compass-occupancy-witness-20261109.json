@@ -1,0 +1,30 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-compass-occupancy-witness-20261109",
+  "owner": "display",
+  "observed_at_utc": "2026-11-09T03:39:53.404007Z",
+  "source_revision": "4d58d13f8178d193f9d63a8fbc4e7d4d2c224e95",
+  "previous_field_witness": {
+    "path": "w/display/_root/display-compass-back-witness-20261109.json",
+    "sha256": "928484a3af43fdc5c46272537809491cd0f65ebcd628d17c57c924fca507e6b7"
+  },
+  "source": {
+    "path": "w/display/w/wy/locus-shader.js",
+    "sha256": "4850ee2d03fd0de2404898f13ea6d50dcf98d11615ec07a52e80ebaaa88143b1"
+  },
+  "native_test": {
+    "path": "w/display/w/wy/locus-shader.test.cjs",
+    "sha256": "87d57dbfdbeb9011faf9fdc804b23f0e3936682e1939de09ca72cb9f90020521"
+  },
+  "artifact_bundle": "3b920d3e63e11772",
+  "evidence": {
+    "mobile_de_en_touch_cases": 24,
+    "docked_webgl2_cases": 4,
+    "canvas_navigation_cases": 3,
+    "swiftshader_webgl2_navigation_cases": 3,
+    "exact_artifact_file_count": 17147,
+    "native_open_close_occupancy": true
+  },
+  "claim": "Labels consume the cached safe-area occupancy, release the pocket when closed, and avoid the same actual visible contact surfaces without reconstructing recursive grid snapshots in the frame loop.",
+  "limits": "Chromium touch emulation and software WebGL2; physical-device ergonomics/FPS and offscreen GLES are not established."
+}
