@@ -1,0 +1,28 @@
+{
+  "kind": "HOME",
+  "event_id": "crawlerbait-restore-compass-20261109",
+  "home_at_utc": "2026-11-09T20:31:41.048441Z",
+  "organism": "crawlerbait",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — restored the exact owner-declared compass span from before the unrequested widening.",
+  "changed_scope": [
+    "ui-grid.json",
+    "RITUALS/organism/RITUAL.md",
+    "y/validate.test.py"
+  ],
+  "context": {
+    "source_revision": "2f64895b7c79bb7370ef2c40bff73e0aba3c3760",
+    "witness": {
+      "path": "w/display/y/yy/crawlerbait/_root/crawlerbait-restore-compass-witness-20261109.json",
+      "sha256": "3edc9ddf0261bf2fbf6faff39cce0961465aa563ada2ebd176691779fce19741"
+    },
+    "source_exact_spent_intake": {
+      "source": "w/display/y/yy/crawlerbait/_stomach/NUTRIENT__restore-authored-compass-span__20261109.md",
+      "destination": "w/display/y/yy/crawlerbait/_waste/NUTRIENT__restore-authored-compass-span__20261109.md",
+      "sha256": "0f8171d674916334b5c63a87bb8a0792b1543bcdd15c81e110ffde7cdea69c05",
+      "source_exact": true
+    },
+    "boundary": "No source meaning, scene or timeline change is claimed."
+  }
+}
