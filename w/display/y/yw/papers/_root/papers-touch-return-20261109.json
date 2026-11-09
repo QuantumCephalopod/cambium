@@ -1,0 +1,28 @@
+{
+  "kind": "HOME",
+  "event_id": "papers-touch-return-20261109",
+  "home_at_utc": "2026-11-09T00:04:52.783611Z",
+  "organism": "papers",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — Papers participates in the shared nearby double-touch return using its own actual contact and existing local ascent; one empty touch remains inert.",
+  "changed_scope": [
+    "Retain Papers-owned tissue, chamber and body hit precedence while lending empty primary touch contacts to the shared pair.",
+    "Clear pending touches on drag, cancellation, unmount or unrelated input and prevent a subsequent synthetic double-click from repeating return."
+  ],
+  "context": {
+    "source_revision": "7b544a10b89b5a7b10e046f252d86e28e72cf616",
+    "witness_revision": "78d1181da9d6a9c3fa08bb620a13f0bb52647854",
+    "witness": {
+      "path": "w/display/y/yw/papers/_root/papers-touch-return-witness-20261109.json",
+      "sha256": "4c06bafce12550c29844f0a8223d2f651d49233cc0946653a4de00ca0dd66323"
+    },
+    "source_exact_spent_intake": {
+      "source": "w/display/y/yw/papers/_stomach/NUTRIENT__empty-return-touch__20261108.md",
+      "destination": "w/display/y/yw/papers/_waste/NUTRIENT__empty-return-touch__20261108.md",
+      "sha256": "cfa03cdb7af511d00d12e09b46e704a7dd1b81b7d73b29c549fbc10c4c076d24"
+    },
+    "previous_home": "w/display/y/yw/papers/_root/papers-navigation-contact-20261108.json",
+    "independent_open_intake": "NUTRIENT__source-inquiry-metabolite-projection__20260926.md"
+  }
+}
