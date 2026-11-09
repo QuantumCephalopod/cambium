@@ -85,6 +85,21 @@ console.log('ui-grid v2: persistent orientation across splits + overlapping z fi
   assert.equal(G.orientEdges('top right bottom left','landscape'),'top right bottom left');
 }
 
+// The owner can explicitly offer a different readable span without changing
+// either span or the common quarter-turn geometry, including on live resize.
+{
+  const state=G.normalizeState({schema:G.SCHEMA,splits:['','w','y'],fields:{
+    title:{cells:['w'],variants:{upright:['ww','wy','yw','yy']}},
+    plain:{cells:['w']}
+  },elements:{}});
+  const before=JSON.stringify(state),wide=G.carrierField(state,'title','landscape'),tall=G.carrierField(state,'title','portrait');
+  assert.deepStrictEqual(wide.cells,['w']);assert.equal(wide.variant,'');
+  assert.deepStrictEqual(tall.cells,['ww','wy','yw','yy']);assert.equal(tall.variant,'upright');
+  assert.deepStrictEqual(G.orientBounds(tall.bounds,'portrait'),{x:0,y:0,w:1,h:.25});
+  assert.deepStrictEqual(G.carrierField(state,'plain','portrait').cells,['w']);
+  assert.equal(JSON.stringify(state),before,'presentation must not rewrite owner addresses');
+}
+
 for(const extent of ['bounded','intrinsic']){const state=G.emptyState();state.meta.extent=extent;assert.equal(G.normalizeState(state).meta.extent,extent);}
 assert.throws(()=>G.normalizeState({...G.emptyState(),meta:{extent:'invented'}}),/unknown UI extent/);
 console.log('PASS — explicit bounding intent survives canonical normalization and invalid extent refuses');

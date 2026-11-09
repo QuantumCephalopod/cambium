@@ -34,4 +34,12 @@ html[data-composition="split"] header{z-index:32}
 /* Body labels keep their anchors; long names wrap and focus owns legible ink.
    No packing/reflow of bodies or semantic coordinates is introduced. */
 .field-body-label{box-sizing:border-box;width:max-content;white-space:normal;overflow-wrap:anywhere;text-align:center;line-height:1.2;background:rgba(4,8,12,.36);border-radius:3px}
+.field-body-label::after{content:"";position:absolute;pointer-events:none;left:calc(50% + var(--body-label-line-x,0px));top:calc(50% + var(--body-label-line-y,0px));width:var(--body-label-line-length,0px);height:1px;transform-origin:0 50%;transform:rotate(var(--body-label-line-angle,0rad));background:rgba(241,239,233,.32)}
 .field-body-label:hover,.field-body-label:focus-visible{z-index:100!important;background:rgba(4,8,12,.94);outline:1px solid rgba(238,248,241,.72)}
+
+/* Coarse pointers need a usable contact area in every bounded site field.
+   Keep the type scale and the declared field geometry unchanged. */
+@media (pointer:coarse){
+  [data-interlocutor] [data-ui-bounded="true"] :is(button,select,input[type="range"]){min-block-size:2.75rem;min-inline-size:min(2.75rem,100%)}
+  .field-body-label{min-block-size:2.75rem}
+}

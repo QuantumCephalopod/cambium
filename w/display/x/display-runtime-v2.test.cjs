@@ -484,6 +484,22 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  console.log('PASS — bounded arbitrary-owner grid enforces actual rectangles, unchanged addresses on resize, camera frame and shared compass bounds');
 }
 
+// An unrelated owner may lend an explicitly addressed reading span on the
+// same quarter-turn; resize must not rewrite the declaration or other fields.
+{
+ const f=boot(1,'',{}, {}, {},false,null,true),u=f.runtime.ui.get(ids[0]);
+ u.state.fields.slot.variants={upright:['w','x']};
+ const n={style:{setProperty(k,v){this[k]=v}},dataset:{},isConnected:true};u.bind(n,'slot');
+ const original=JSON.stringify(u.state);assert.equal(u.field('slot').variant,'default');
+ assert.equal(n.style.inlineSize,'500px');assert.equal(n.style.blockSize,'400px');
+ f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();
+ assert.equal(u.field('slot').variant,'upright');assert.equal(n.style.left,'195px');assert.equal(n.style.top,'0px');
+ assert.equal(n.style.inlineSize,'195px');assert.equal(n.style.blockSize,'844px');assert.equal(JSON.stringify(u.state),original);
+ f.context.innerWidth=800;f.context.innerHeight=600;u.refresh();assert.equal(u.field('slot').variant,'default');
+ assert.equal(n.style.inlineSize,'400px');assert.equal(n.style.blockSize,'300px');assert.equal(JSON.stringify(u.state),original);
+ console.log('PASS — owner-declared upright span follows the shared turn and live resize without mutating its state');
+}
+
 // The overview also lends the navigator to sites without their own compass.
 // Its hidden site host can measure 0×0, but the global carrier is still real.
 {

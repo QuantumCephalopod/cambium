@@ -324,3 +324,7 @@ Version5.18 context correction2026-10-28: Being/type contact follows actual visi
 Layout return2026-10-29: The supplied common ui-grid.json determines actual extents. Narrative/camera framing consumes viewport, including its intentional compass overlap. Replay, clock, source identity and fixed timeline retain their source owners.
 
 The owner-declared compass keeps its ordinary wide address and lends `z` on portrait carriers or `xz / zx / zz` when the actual short-carrier navigator needs more height. These are recursive variants of the same field; replay, source identities and the fixed timeline remain unchanged.
+
+## Upright mobile field — 2026-11-09
+
+The turned carrier uses source-declared upright header, description and timeline address spans, while the ordinary declarations and replay, source identities and controls remain intact. The header and description do not cover each other's touch targets. The upright timeline is exactly the same source-addressed span as Schattenseiten's and remains fixed during replay and selection. The common compass stays at its ordinary address; previous compass-variant wording above describes an earlier carrier rather than the current selection.

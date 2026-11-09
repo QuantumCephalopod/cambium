@@ -155,3 +155,7 @@ The existing Inquiry/Continuity/Care/Becoming split owns all active carriers; no
 The root retains the canonical shell, receptors, constitution and the `site.json` membrane. The membrane names body-relative carriers; it does not become a fifth implementation locus. Owner evidence follows those declared paths and checks the shared UI measurement at the integration boundary. Public meaning, renderer/style/grid bytes and authored copy survive this redistribution; projection provenance follows the moved encounter source.
 
 The owner-declared compass keeps its ordinary wide address and lends `z` on portrait carriers or `xz / zx / zz` when the actual short-carrier navigator needs more height. These are recursive variants of the same field; Description, world projection and source copy remain owned and unchanged.
+
+## Upright mobile field — 2026-11-09
+
+The current long-axis carrier keeps the ordinary compass address. Philosophy explicitly lends an `upright` viewport span for the turned carrier so the same world bodies, anchors, source prose and contacts have more room; the selected span still uses Display's quarter-turn. The common Display label-contact operation separates overlapping title rectangles and tethers any displaced ink to its actual body anchor. Earlier compass-variant descriptions above remain historical; they are not selected by this upright carrier operation.

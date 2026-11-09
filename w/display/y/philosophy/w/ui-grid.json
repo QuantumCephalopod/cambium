@@ -36,7 +36,16 @@
         "zzz"
       ],
       "label": "compass",
-      "variants": {"portrait": ["z"], "compact": ["xz", "zx", "zz"]}
+      "variants": {
+        "portrait": [
+          "z"
+        ],
+        "compact": [
+          "xz",
+          "zx",
+          "zz"
+        ]
+      }
     },
     "description": {
       "cells": [
@@ -104,7 +113,19 @@
         "zyx",
         "zzw"
       ],
-      "label": "viewport"
+      "label": "viewport",
+      "variants": {
+        "upright": [
+          "wx",
+          "wz",
+          "yx",
+          "yz",
+          "xw",
+          "xy",
+          "zw",
+          "zy"
+        ]
+      }
     }
   },
   "elements": {}

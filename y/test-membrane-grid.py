@@ -62,7 +62,7 @@ try:
         const at=document.elementFromPoint((box.left+box.right)/2,(box.top+box.bottom)/2);box.reachable=Boolean(at&&(at===el||el.contains(at)));return box;
        }).filter(r=>r.right>r.left&&r.bottom>r.top);
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
-      const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.inner,name).bounds,state.orientation)]));
+      const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.carrierField(state.inner,name,state.orientation).bounds,state.orientation)]));
       return {state:{top:state.top,compass:state.compass,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,nested,fields,controls,glass,map,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])

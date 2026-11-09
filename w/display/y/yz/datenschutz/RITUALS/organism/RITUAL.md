@@ -35,3 +35,7 @@ Reading uses continuous native scroll, direct source-section jumps and a continu
 The independent clean apertures remain at `/privacy/` and `/privacy/en/`, with their ordinary language/contact/reference links and byte identity. Closure requires complete source equality, real narrow/wide DE/EN interaction and readable pixels; neither a rectangle nor an automated PASS alone establishes usability. This presentation return changes no legal assessment, contact delivery or provider status.
 
 Compass return2026-10-31: the former quarter-height compass declaration collapsed the map behind its own chrome. Remove that declaration and the unused local global-header override. Compare the actual map, rails and footer to the inherited overview instrument, including enlarged type and the supplied wide/short proportions; an outer-box PASS alone does not witness an operable compass.
+
+## Upright mobile field — 2026-11-09
+
+The owner declares upright description and controls spans for the turned carrier. The title uses the next existing Display type rank in that orientation, and safe centring leaves its beginning visible if content needs scrolling. Source wording, legal document, destinations and the inherited compass remain unchanged; ordinary address spans remain available in the wide carrier.

@@ -1,0 +1,26 @@
+{
+  "kind": "HOME",
+  "event_id": "cambium-navigation-empty-contact-return-20261109",
+  "home_at_utc": "2026-11-09T02:05:58.380833Z",
+  "organism": "cambium",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — the browser return witness uses real current empty contact instead of a fixed pixel that moving body labels can cover.",
+  "changed_scope": [
+    "y/test-navigation-contact.py"
+  ],
+  "context": {
+    "source_revision": "a38a152e15c91c5e78ecce5d9fa4ec3dbae1e714",
+    "witness": {
+      "path": "_root/cambium-navigation-empty-contact-witness-20261109.json",
+      "sha256": "507da8fe82e144458aafc263983c36d3b4e23f1a2cac9ffb475626d4a8454647"
+    },
+    "source_exact_spent_intake": {
+      "source": "_stomach/NUTRIENT__navigation-empty-contact-witness__20261109.md",
+      "destination": "_waste/NUTRIENT__navigation-empty-contact-witness__20261109.md",
+      "sha256": "b6b275d88a597483e07aa92b3dc1e2458b50d19bdfeafb5e51904c7fd78c80ca",
+      "source_exact": true
+    },
+    "backpropagation": "Test transport only; no Display production behavior, source identity, shared-root physiology or main promotion changed."
+  }
+}

@@ -1,6 +1,7 @@
 [data-interlocutor="organism:impressum"] .impressum-content{position:absolute;inset:0;pointer-events:none;color:#e1f6c7}
-.impressum-heading{padding:0 1rem;display:flex;flex-direction:column;justify-content:center;gap:.25rem}
+.impressum-heading{padding:0 1rem;display:flex;flex-direction:column;justify-content:safe center;gap:.25rem}
 .impressum-heading h1{margin:0;font:500 var(--type-rp1)/1.2 var(--mono)}
+html[data-display-orientation="portrait"] .impressum-heading h1{font-size:var(--type-r0)}
 .impressum-apertures{display:flex;gap:1.5rem;flex-wrap:wrap;font:var(--type-r0)/1.2 var(--mono)}
 .impressum-apertures a{pointer-events:auto;display:flex;align-items:center;min-height:44px;color:inherit;text-underline-offset:.25em}
 .impressum-controls{pointer-events:auto;padding:.25rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:.25rem}

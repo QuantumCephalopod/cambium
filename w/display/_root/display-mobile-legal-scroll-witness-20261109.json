@@ -1,0 +1,33 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-mobile-legal-scroll-witness-20261109",
+  "observed_at_utc": "2026-11-09T01:58:43.464719Z",
+  "owner": "display",
+  "source_revision": "14b1f53a92ded5710caf1aa4135fa0f27998a4a1",
+  "source_tree": "38ed8ecb6a8a40d03fd93a4bd016ae672b54996a",
+  "prior_witness": {
+    "path": "w/display/_root/display-docked-glass-label-witness-20261109.json",
+    "sha256": "5ca00bee5d8ea16ca76737587058e1d153c0a6fc5122fade3152a3804756c789"
+  },
+  "source_sha256": {
+    "w/display/z/zz/navigation-aperture.css": "616065996658786e2905513508ef8446c219286640efbc365cd5d571c1d68dc5",
+    "y/test-mobile-reading-browser.py": "ecc0129a4b60bef36d3a1cb83ae3893897a3aaee4e8285b14faa4ec646fa14d6"
+  },
+  "counterexample": {
+    "carrier": [
+      320,
+      568
+    ],
+    "before": "The first 24px legal row began above the 35.5px field while scrollHeight equalled clientHeight; it could not scroll back to its full beginning.",
+    "after": "Safe alignment starts the first row inside the field and exposes a 48px scrollable continuation."
+  },
+  "evidence": {
+    "full_site_artifact": "python3 y/site-public.py --artifact /tmp/sss-mobile-candidate6 --check: all 17147 files byte-equal; bundle 8e0cc040f0b3324e",
+    "mobile_reading_cases": 24,
+    "docked_webgl_cases": 4,
+    "membrane_cases": 18,
+    "scope": "Six sites, both languages and two mobile dimensions; first legal row and full scroll continuation, real touch, actual WebGL docked geometry and shared membrane controls."
+  },
+  "unresolved": "The unchanged compass still yields an approximately 40×40 CSS-pixel map on 320×568; its room and ergonomics remain in the same current intake.",
+  "limits": "Chromium touch emulation and SwiftShader do not certify physical-device timing or ergonomics."
+}

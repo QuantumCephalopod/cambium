@@ -1,0 +1,30 @@
+{
+  "kind": "HOME",
+  "event_id": "cambium-mobile-legal-scroll-return-20261109",
+  "home_at_utc": "2026-11-09T01:58:56.934487Z",
+  "organism": "cambium",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — the existing mobile witness checks the full reachable legal-link continuation.",
+  "changed_scope": [
+    "y/test-mobile-reading-browser.py"
+  ],
+  "context": {
+    "source_revision": "14b1f53a92ded5710caf1aa4135fa0f27998a4a1",
+    "witness": {
+      "path": "_root/cambium-mobile-legal-scroll-witness-20261109.json",
+      "sha256": "a4d6851a9121eaf240baa8ed4d3cbecd8371929cd55248fbced79d37c76fe562"
+    },
+    "display_home": {
+      "path": "w/display/_root/display-mobile-legal-scroll-20261109.json",
+      "sha256": "3c2bc139b6669be2cf2df897ee56053fa90c2ad699aea4c76e6dada632093279"
+    },
+    "source_exact_spent_intake": {
+      "source": "_stomach/NUTRIENT__mobile-legal-scroll-witness__20261109.md",
+      "destination": "_waste/NUTRIENT__mobile-legal-scroll-witness__20261109.md",
+      "sha256": "9c961007d5c1d9ce24aca2b9388061d7cbcc203805fde2893deb36731b50c2ea",
+      "source_exact": true
+    },
+    "backpropagation": "Only the host integration witness changed in response to the admitted child pressure; no shared-root-field change is claimed."
+  }
+}

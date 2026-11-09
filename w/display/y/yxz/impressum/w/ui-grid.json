@@ -40,7 +40,15 @@
         "xxz"
       ],
       "label": "Notice title and ordinary apertures",
-      "z": 1
+      "z": 1,
+      "variants": {
+        "upright": [
+          "ww",
+          "wy",
+          "yw",
+          "yy"
+        ]
+      }
     },
     "viewport": {
       "cells": [
@@ -97,6 +105,10 @@
           "yzx",
           "zyw",
           "zyx"
+        ],
+        "upright": [
+          "yx",
+          "yz"
         ]
       }
     }

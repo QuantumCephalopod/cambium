@@ -42,11 +42,12 @@ def examine(page, identity, width, height):
     return page.evaluate('''id => {
       const ui=SSSDisplayRuntime.ui.get(id),state=SSSDisplayMembraneGrid.snapshot();
       const host=document.querySelector(`[data-interlocutor="${id}"]`);
+      const mode=SSSUIGrid.orientation(innerWidth,innerHeight);
       const box=r=>({left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height});
       const fields=[...host.querySelectorAll('[data-ui-field][data-ui-bounded="true"]')].map(el=>({
         name:el.dataset.uiField,actual:box(el.getBoundingClientRect()),
-        logical:SSSUIGrid.fieldInfo(ui.state,el.dataset.uiField).bounds,
-        cells:SSSUIGrid.fieldInfo(ui.state,el.dataset.uiField).cells,
+        logical:SSSUIGrid.carrierField(ui.state,el.dataset.uiField,mode).bounds,
+        cells:SSSUIGrid.carrierField(ui.state,el.dataset.uiField,mode).cells,
         applied:ui.field(el.dataset.uiField).cells
       }));
       const top=SSSDisplayGlass.collect().find(x=>x.ids.includes('display-header'));
@@ -121,15 +122,36 @@ try:
         page=browser.new_page(viewport={'width':800,'height':600},reduced_motion='reduce')
         page.goto(base+'#main:overview',wait_until='domcontentloaded')
         before=examine(page,'organism:philosophy',800,600)
+        original_state=page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:philosophy").state)')
         for width,height in [(600,800),(600,600),(599,600),(600,599),(800,600)]:
             page.set_viewport_size({'width':width,'height':height})
             page.wait_for_function('([w,h]) => SSSDisplayMembraneGrid.snapshot().viewport.width===w && SSSDisplayMembraneGrid.snapshot().viewport.height===h',arg=[width,height])
             after=examine(page,'organism:philosophy',width,height)
             assert after['address']==before['address'] and after['mode']==('portrait' if height>width else 'landscape'),(before,after)
+            assert page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:philosophy").state)')==original_state
             assert [(f['name'],f['cells']) for f in after['fields']]==[(f['name'],f['cells']) for f in before['fields']],(before,after)
             for field in after['fields']:expect_box(field['actual'],field['logical'],width,height,height>width,('resize',field['name']))
+        page.close()
+        # An owner that actually declares upright spans must also survive the
+        # live turn without a reload, identity change, or mutation of its grid.
+        page=browser.new_page(viewport={'width':800,'height':600},reduced_motion='reduce')
+        page.goto(base+'#main:y',wait_until='domcontentloaded')
+        before=examine(page,'organism:crawlerbait',800,600)
+        original_state=page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:crawlerbait").state)')
+        for width,height in [(390,844),(600,600),(844,390)]:
+            page.set_viewport_size({'width':width,'height':height})
+            page.wait_for_function('([w,h]) => SSSDisplayMembraneGrid.snapshot().viewport.width===w && SSSDisplayMembraneGrid.snapshot().viewport.height===h',arg=[width,height])
+            after=examine(page,'organism:crawlerbait',width,height)
+            assert after['address']==before['address'] and after['mode']==('portrait' if height>width else 'landscape')
+            assert page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:crawlerbait").state)')==original_state
+            assert {f['name'] for f in after['fields']}=={f['name'] for f in before['fields']}
+            for field in after['fields']:expect_box(field['actual'],field['logical'],width,height,height>width,('owner resize',field['name']))
+            old=next(f for f in before['fields'] if f['name']=='header')
+            new=next(f for f in after['fields'] if f['name']=='header')
+            assert (new['cells']!=old['cells'])==(height>width),('owner variant selection',old,new)
+            for language in ('de','en'):page.locator(f'[data-lang="{language}"]').click(trial=True)
         page.close();browser.close()
 finally:
     server.shutdown();server.server_close()
     (args.out/'long-axis.json').write_text(json.dumps({'cases':cases,'scope':__doc__},indent=2)+'\n')
-print(json.dumps({'status':'PASS','cases':len(cases),'live_resize_and_square_tie':True}))
+print(json.dumps({'status':'PASS','cases':len(cases),'live_resize_and_square_tie':True,'owner_variant_resize':True}))
