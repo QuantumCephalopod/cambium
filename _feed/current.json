@@ -25,13 +25,12 @@
   },
   "home": {
     "changed_scope": [
-      ".github/workflows/pages.yml",
-      "y/test-mobile-docked-glass-browser.py"
+      "y/test-mobile-reading-browser.py"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — staging carries the actual mobile docked-glass and navigation browser witnesses."
+    "outcome": "COMPLETED — the existing mobile witness checks the full reachable legal-link continuation."
   },
-  "observed_at_utc": "2026-11-09T01:52:01.553624Z",
+  "observed_at_utc": "2026-11-09T01:59:40.479747Z",
   "owner": "cambium",
   "phenotype": {
     "w": {
@@ -47,7 +46,7 @@
       "noun": "orientation"
     }
   },
-  "reflected_home_event": "cambium-docked-glass-return-20261109",
+  "reflected_home_event": "cambium-mobile-legal-scroll-return-20261109",
   "rituals": [
     {
       "path": "RITUALS/catabolism/RITUAL.md",
@@ -62,10 +61,10 @@
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [],
-    "waste_direct_count": 47
+    "waste_direct_count": 48
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "22b3d4eae246fc5196159ee270003485681bf712"
+    "source_revision": "417eee90ce247f5a38bef9c04237014d630833e0"
   }
 }
