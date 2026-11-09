@@ -36,9 +36,9 @@ This README is a derived GitHub-facing projection of the living repository anato
 | site-space | interlocutor | identity |
 |---|---|---|
 | `ε` | Philosophy | `organism:philosophy` |
-| `w` | Crawlerbait | `organism:crawlerbait` |
+| `w` | Papers | `organism:papers` |
 | `x` | Schattenseiten | `organism:schattenseiten` |
-| `y` | Papers | `organism:papers` |
+| `y` | Crawlerbait | `organism:crawlerbait` |
 | `z` | Privacy policy | `organism:datenschutz` |
 | `xz` | Legal notice | `organism:impressum` |
 
