@@ -83,8 +83,8 @@ try:
      a=measured['returnButton'];slot=measured['returnSlot'];field=measured['state']['ascent']
      assert all(abs(slot[k]-field[k])<1 for k in ['left','top','width','height']),(site,slot,field)
      assert a['left']>=slot['left']-1 and a['right']<=slot['right']+1 and a['top']>=slot['top']-1 and a['bottom']<=slot['bottom']+1,(site,a,slot)
-     if height>width:assert a['left']>=measured['state']['compass']['right']-1 and a['right']<=measured['state']['top']['left']+1,(site,a,'return leaves its rotated gap')
-     else:assert a['top']>=measured['state']['top']['bottom']-1 and a['bottom']<=measured['state']['compass']['top']+1,(site,a,'return leaves its gap')
+     if height>width:assert abs(a['right']-measured['state']['compass']['left'])<1 and abs(a['bottom']-measured['state']['compass']['bottom'])<1,(site,a,'return leaves its rotated field')
+     else:assert abs(a['top']-measured['state']['compass']['bottom'])<1 and abs(a['right']-measured['state']['compass']['right'])<1,(site,a,'return leaves its field')
      for b in measured['otherTargets']:
       overlaps=min(a['right'],b['right'])-max(a['left'],b['left'])>1 and min(a['bottom'],b['bottom'])-max(a['top'],b['top'])>1
       if overlaps:assert b['reachable'],(site,a,b,'return obscures another control')

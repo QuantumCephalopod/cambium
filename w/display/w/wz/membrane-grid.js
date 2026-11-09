@@ -88,13 +88,13 @@
     let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,topKey='',triggerKey='',fit={top:true,trigger:true};
     const mode=()=>UI.orientation(viewport.width,viewport.height);
     function ascentCells(compass){
-      // The compass lends its full cross-axis span. The top liquid and the
-      // compass bound the available return region in the same logical field;
-      // orientation turns that one relation together with everything else.
-      const top=UI.spanInfo(outer,outer.fields.top.cells),c=compass.bounds;
-      const depth=Math.max(top.depth,compass.depth),n=2**depth;
+      // The compass and return exchange places along the logical short axis.
+      // Return fills the compass's full cross-axis span, from its lower edge
+      // to the screen edge. The same relation turns together.
+      const c=compass.bounds;
+      const depth=compass.depth,n=2**depth;
       const x0=Math.round(c.x*n),x1=Math.round((c.x+c.w)*n);
-      const y0=Math.ceil((top.bounds.y+top.bounds.h)*n-1e-9),y1=Math.round(c.y*n);
+      const y0=Math.round((c.y+c.h)*n),y1=n;
       if(x1<=x0||y1<=y0){
         // No free strip exists on this actual carrier; retain the authored
         // compact instrument rather than erasing its accessible return.

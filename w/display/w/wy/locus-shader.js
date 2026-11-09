@@ -266,6 +266,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
    * semantic addresses. A fine tether returns displaced ink to its anchor. */
   function placeBodyLabels(records,r){
     const placed=[],gap=2,clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+    // The global compass is an occupied reading and contact field. Respect
+    // its actual realized rectangle while placing body ink around it.
+    const navigator=globalThis.SSSDisplayMembraneGrid?.snapshot?.();
+    const open=document.getElementById?.('mini')?.dataset?.aperture==='open';
+    for(const field of open?[navigator?.compass]:[navigator?.trigger,navigator?.legal]){
+      if(field&&field.width>0&&field.height>0)
+        placed.push({left:field.left-r.left,right:field.right-r.left,top:field.top-r.top,bottom:field.bottom-r.top});
+    }
     // A resting liquid drop is real occupied optical geometry. Keep quiet
     // body ink out of it while preserving the body's projected anchor. A
     // held or locked drop remains governed by its own foreground contract.
