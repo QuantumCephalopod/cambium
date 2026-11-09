@@ -19,6 +19,7 @@ jobs:
           python3 y/site-public.py --artifact _site
           python3 y/trigger-check.py --artifact _site --out _trigger-check
           python3 y/trigger-glass-check.py --artifact _site --out _trigger-check
+          python3 y/test-membrane-grid.py --artifact _site --out _trigger-check/shared
       - name: Retain visual witness
         if: always()
         uses: actions/upload-artifact@v4
