@@ -1,0 +1,105 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-touch-return-witness-20261109",
+  "witness_at_utc": "2026-11-09T00:04:16.746942Z",
+  "owner": "display",
+  "source": {
+    "source_revision": "7b544a10b89b5a7b10e046f252d86e28e72cf616",
+    "source_tree": "98d2285ffce9cfa7f5aeca5d7858aec481ab3f8d",
+    "prior_integrated_staging_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42536610186",
+    "prior_run_scope": "Full integrated source, address, owner and browser run before this touch counterexample."
+  },
+  "counterexample": "On the pre-touch source Chromium delivered two touch pointer/click pairs without any dblclick, leaving the Philosophy field at w.",
+  "claim": "The same shared return follows a pair of nearby primary empty touch contacts. The owner-supplied actual hit law remains authoritative. A lone contact is inert; pointer movement, cancellation, other pointers, keyboard, wheel and blur clear a pending pair.",
+  "evidence": {
+    "native": "Exact-source navigation-physiology, locus-shader and Papers owner suites passed; touch tests cover timing, distance, hit, drag, cancellation/other input and synthetic duplicate dblclick.",
+    "chromium_canvas2d": [
+      {
+        "carrier": [
+          1280,
+          800
+        ],
+        "backend": "canvas2d",
+        "mounts": {
+          "papers": "w",
+          "crawlerbait": "y"
+        },
+        "historyRemount": true,
+        "fieldDoubleClick": true,
+        "papersDoubleClick": true,
+        "hoverTarget": "organism:papers",
+        "pointerReturn": true
+      },
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "rotatedReturn": {
+          "left": 195,
+          "top": 633,
+          "width": 146.25,
+          "height": 211,
+          "right": 341.25,
+          "bottom": 844
+        },
+        "keyboardReturn": true
+      },
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "backend": "canvas2d",
+        "touchFieldDoubleTap": true,
+        "touchPapersDoubleTap": true,
+        "singleTouchInert": true
+      }
+    ],
+    "chromium_webgl2": [
+      {
+        "carrier": [
+          1280,
+          800
+        ],
+        "backend": "webgl2",
+        "mounts": {
+          "papers": "w",
+          "crawlerbait": "y"
+        },
+        "historyRemount": true,
+        "fieldDoubleClick": true,
+        "papersDoubleClick": true,
+        "hoverTarget": "organism:papers",
+        "pointerReturn": true
+      },
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "rotatedReturn": {
+          "left": 195,
+          "top": 633,
+          "width": 146.25,
+          "height": 211,
+          "right": 341.25,
+          "bottom": 844
+        },
+        "keyboardReturn": true
+      },
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "backend": "webgl2",
+        "touchFieldDoubleTap": true,
+        "touchPapersDoubleTap": true,
+        "singleTouchInert": true
+      }
+    ],
+    "browser_scope": "Actual browser input, pointer dispatch, mounted Philosophy and Papers canvases on a 390×844 emulated touch device. CDP event timestamps represent consecutive touches even when software rendering delays the automation transport. WebGL2 is Chromium SwiftShader.",
+    "limits": "Neither browser emulation nor software rendering establishes physical-device timings or performance."
+  }
+}
