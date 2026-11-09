@@ -1,0 +1,29 @@
+{
+  "kind": "HOME",
+  "event_id": "display-docked-glass-label-20261109",
+  "home_at_utc": "2026-11-09T01:51:06.515429Z",
+  "organism": "display",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — real idle docked glass no longer covers the bounded mobile body-label ink in the witnessed carriers.",
+  "changed_scope": [
+    "Use the actual docked attached unlocked liquid bounds as an occupied region for the existing anchor-connected label layout.",
+    "Keep held/locked foreground and Canvas2D behavior, body identities, world geometry and the actual droplette.",
+    "Witness exact built Display bytes and real Chromium Canvas2D / SwiftShader WebGL2 interaction."
+  ],
+  "context": {
+    "source_revision": "cccc9c09cdb3aaefe1e6558d72d7147a72289868",
+    "witness": {
+      "path": "w/display/_root/display-docked-glass-label-witness-20261109.json",
+      "sha256": "5ca00bee5d8ea16ca76737587058e1d153c0a6fc5122fade3152a3804756c789"
+    },
+    "source_exact_spent_intake": {
+      "source": "w/display/_stomach/NUTRIENT__mobile-docked-glass-label__20261109.md",
+      "destination": "w/display/_waste/NUTRIENT__mobile-docked-glass-label__20261109.md",
+      "sha256": "b675f7fd920888a3a7b5276366c580d2dcdac74e0d4ee298178dab72524ed327",
+      "source_exact": true
+    },
+    "unresolved": "NUTRIENT__short-mobile-compass-room__20261109.md remains in Display intake; earlier long-axis pressures remain active.",
+    "boundary": "No physical-device performance or offscreen GLES pass claimed."
+  }
+}
