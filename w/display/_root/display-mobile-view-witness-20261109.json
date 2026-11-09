@@ -1,0 +1,46 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-mobile-view-witness-20261109",
+  "observed_at_utc": "2026-11-09T01:32:12.660195Z",
+  "owner": "display",
+  "source_revision": "7886048bdb748d08a0da40aec13122b33145f268",
+  "source_tree": "7366408d05c1ca3eb94d7a3b155847a99068f0f9",
+  "claim": "One global orientation selects explicitly declared upright spans and quarter-turns the selected address; actual reading/touch fields and native body-label contact are witnessed within the listed browser scopes.",
+  "evidence": {
+    "mobile_touch": {
+      "test": "y/test-mobile-reading-browser.py",
+      "cases": 24,
+      "scope": "six actual sites, DE/EN, 320×568 and 390×844; titles, links, language switches, body-label contact and returns"
+    },
+    "long_axis_resize": {
+      "test": "y/test-long-axis-browser.py",
+      "cases": 12,
+      "scope": "wide/tall, square tie and live resize of an owner with explicitly declared upright spans; local browser witness",
+      "test_sha256": "ef90fb980cec00f6fae5573fce29788a0e1ad2cc2212732e297999c036112597"
+    },
+    "membrane": {
+      "test": "y/test-membrane-grid.py",
+      "cases": 18,
+      "scope": "six sites at wide, short-wide and portrait dimensions; fit, actual field and control bounds, feedback and return"
+    },
+    "bounded": {
+      "test": "y/test-bounded-layout.py",
+      "cases": 12,
+      "scope": "owner field/camera/timeline and shared-control interactions on five carrier dimensions"
+    },
+    "navigation_canvas2d": {
+      "test": "y/test-navigation-contact.py --backend canvas2d",
+      "cases": 3
+    },
+    "navigation_swiftshader": {
+      "test": "y/test-navigation-contact.py --backend webgl",
+      "cases": 3
+    },
+    "native": "UI-grid, membrane, safe-area, aperture, runtime and locus-shader suites passed; staging repository structural check passed.",
+    "staging_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42545534092",
+    "staging_run_result": "PASS — repository build, structural check, and built mobile/long-axis/membrane/bounded browser witnesses all succeeded at the source revision.",
+    "local_source_transport": "The post-fast-path locus-shader.js bytes were copied into the isolated local built browser carrier for the live owner-resize and Canvas2D/SwiftShader navigation replays; the staging run independently built the actual source tree."
+  },
+  "residual": "At 320×568 the unchanged compass address gives a 160×142 box and an approximately 40×40 CSS-pixel map. Its room/ergonomics remain open in NUTRIENT__short-mobile-compass-room__20261109.md. Earlier orientation/content intakes remain active.",
+  "limits": "Chromium touch emulation and SwiftShader do not establish physical-phone ergonomics or hardware-specific performance. The local offscreen GLES process was killed by the workspace memory limit; the staging host reported EGL unavailable, so neither is claimed as an offscreen GLES pass."
+}

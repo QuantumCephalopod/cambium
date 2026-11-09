@@ -131,8 +131,27 @@ try:
             assert page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:philosophy").state)')==original_state
             assert [(f['name'],f['cells']) for f in after['fields']]==[(f['name'],f['cells']) for f in before['fields']],(before,after)
             for field in after['fields']:expect_box(field['actual'],field['logical'],width,height,height>width,('resize',field['name']))
+        page.close()
+        # An owner that actually declares upright spans must also survive the
+        # live turn without a reload, identity change, or mutation of its grid.
+        page=browser.new_page(viewport={'width':800,'height':600},reduced_motion='reduce')
+        page.goto(base+'#main:y',wait_until='domcontentloaded')
+        before=examine(page,'organism:crawlerbait',800,600)
+        original_state=page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:crawlerbait").state)')
+        for width,height in [(390,844),(600,600),(844,390)]:
+            page.set_viewport_size({'width':width,'height':height})
+            page.wait_for_function('([w,h]) => SSSDisplayMembraneGrid.snapshot().viewport.width===w && SSSDisplayMembraneGrid.snapshot().viewport.height===h',arg=[width,height])
+            after=examine(page,'organism:crawlerbait',width,height)
+            assert after['address']==before['address'] and after['mode']==('portrait' if height>width else 'landscape')
+            assert page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:crawlerbait").state)')==original_state
+            assert {f['name'] for f in after['fields']}=={f['name'] for f in before['fields']}
+            for field in after['fields']:expect_box(field['actual'],field['logical'],width,height,height>width,('owner resize',field['name']))
+            old=next(f for f in before['fields'] if f['name']=='header')
+            new=next(f for f in after['fields'] if f['name']=='header')
+            assert (new['cells']!=old['cells'])==(height>width),('owner variant selection',old,new)
+            for language in ('de','en'):page.locator(f'[data-lang="{language}"]').click(trial=True)
         page.close();browser.close()
 finally:
     server.shutdown();server.server_close()
     (args.out/'long-axis.json').write_text(json.dumps({'cases':cases,'scope':__doc__},indent=2)+'\n')
-print(json.dumps({'status':'PASS','cases':len(cases),'live_resize_and_square_tie':True}))
+print(json.dumps({'status':'PASS','cases':len(cases),'live_resize_and_square_tie':True,'owner_variant_resize':True}))
