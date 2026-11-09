@@ -1,0 +1,31 @@
+{
+  "kind": "HOME",
+  "event_id": "cambium-docked-glass-return-20261109",
+  "home_at_utc": "2026-11-09T01:51:10.721589Z",
+  "organism": "cambium",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "COMPLETED — staging carries the actual mobile docked-glass and navigation browser witnesses.",
+  "changed_scope": [
+    ".github/workflows/pages.yml",
+    "y/test-mobile-docked-glass-browser.py"
+  ],
+  "context": {
+    "source_revision": "cccc9c09cdb3aaefe1e6558d72d7147a72289868",
+    "witness": {
+      "path": "_root/cambium-docked-glass-witness-20261109.json",
+      "sha256": "dfc748728bd2faf2e5f4525195e40f1b08d1f3cc338d845d5cc8108249c87aaa"
+    },
+    "display_home": {
+      "path": "w/display/_root/display-docked-glass-label-20261109.json",
+      "sha256": "d2f17fc5dd13bc735bbff3344a135bfe46b6698899681aa4bc50721ffa106282"
+    },
+    "source_exact_spent_intake": {
+      "source": "_stomach/NUTRIENT__mobile-docked-glass-witness__20261109.md",
+      "destination": "_waste/NUTRIENT__mobile-docked-glass-witness__20261109.md",
+      "sha256": "b341b1ac82f61f6e62ba53e09ac9c5f2ae69a20dc603c3d8ef1a3d2e3595c82e",
+      "source_exact": true
+    },
+    "backpropagation": "The enclosing test carrier changed in response to the child result; no shared-root-field mutation or main promotion is implied."
+  }
+}
