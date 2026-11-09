@@ -1,0 +1,21 @@
+{
+  "kind": "WITNESS",
+  "event_id": "papers-touch-return-witness-20261109",
+  "witness_at_utc": "2026-11-09T00:04:16.746942Z",
+  "owner": "papers",
+  "source": {
+    "source_revision": "7b544a10b89b5a7b10e046f252d86e28e72cf616",
+    "source_tree": "98d2285ffce9cfa7f5aeca5d7858aec481ab3f8d",
+    "prior_integrated_staging_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42536610186",
+    "prior_run_scope": "Full integrated source, address, owner and browser run before this touch counterexample."
+  },
+  "claim": "Papers checks its own real tissue/chamber contact before using the shared touch pair and its existing local return. In the actual emulated touch carrier, one empty tap remained in chamber w and a pair returned to overview on both asserted Canvas2D and WebGL2 backends.",
+  "evidence": {
+    "native": "sierpinski.test.cjs on the exact source passed its owner-local empty contact, shared touch return and duplicate-dblclick checks.",
+    "shared_browser_witness": {
+      "path": "w/display/_root/display-touch-return-witness-20261109.json",
+      "sha256": "2bf849c7e6c85cb4d276b550959ceeb30352aadaf11eaa6e2b73d423186ab1f9"
+    },
+    "scope": "Actual mounted Papers canvas in Chromium, emulated touch at 390×844; WebGL2 uses SwiftShader. No physical-device performance claim."
+  }
+}

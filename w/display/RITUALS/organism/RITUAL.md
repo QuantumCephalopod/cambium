@@ -65,8 +65,8 @@ Physical custody encodes global site address:
 
 - a site-holon directly under `w/display/y/` occupies site-space `ε / overview`;
 - a site-holon under `w/display/y/y<address>/` occupies site-space `<address>`;
-- thus `w/display/y/yw/crawlerbait/` means Crawlerbait at global site-space `w`;
-- thus `w/display/y/yy/papers/` means Papers at global site-space `y`;
+- thus `w/display/y/yy/crawlerbait/` means Crawlerbait at global site-space `y`;
+- thus `w/display/y/yw/papers/` means Papers at global site-space `w`;
 - recursion continues by the same `{w,x,y,z}*` serialized-address law.
 
 The outer first `y` is Display Population custody, not part of the restarted site address.
@@ -84,13 +84,13 @@ This includes build-time meaning: the optional body-relative build hook lets a s
 Current bodies (the tree is the authority; this list only orients re-entry):
 
 - `w/display/y/philosophy/` -> global `ε / overview` -> `organism:philosophy`;
-- `w/display/y/yw/crawlerbait/` -> global `w` -> `organism:crawlerbait`;
+- `w/display/y/yy/crawlerbait/` -> global `y` -> `organism:crawlerbait`;
 - `w/display/y/yx/schattenseiten/` -> global `x` -> `organism:schattenseiten`;
-- `w/display/y/yy/papers/` -> global `y` -> `organism:papers`;
+- `w/display/y/yw/papers/` -> global `w` -> `organism:papers`;
 - `w/display/y/yz/datenschutz/` -> global `z` -> `organism:datenschutz`;
 - `w/display/y/yxz/impressum/` -> global `xz` -> `organism:impressum`. `xz` is a quotient midpoint with no semantic noun of its own; the address is given bare rather than inventing one.
 
-Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `y`. Crawlerbait remains locally rooted at `crawlerbait:ε`; its machine-facing HTTP bait routes are local public apertures, not additional global site-space addresses.
+Philosophy retains its own independently rooted recursive organism anatomy inside its body. Papers remains independently rooted at `papers:ε` even while globally mounted at site-space `w`. Crawlerbait remains locally rooted at `crawlerbait:ε`; its machine-facing HTTP bait routes are local public apertures, not additional global site-space addresses.
 
 Realized address lookup is shared Display geometry. A collected structure owns one private exact-address index for its own projection generation; consumers reuse its actual records without repeatedly searching the population. Projection changes recollect the structure, and absent addresses remain absent. The navigation receptor owns this carrier mechanism. Its arrays and semantic/quotient relations remain unchanged; inherited Cambium generation-lifetime law already bounds reuse, so no new host-root distinction is earned.
 
@@ -107,6 +107,8 @@ Display owns:
 - shared orientation coupling and global camera relation;
 - global site-space navigation, target-origin fold and membrane law;
 - neutral generic couplings required for arbitrary site-holons to inhabit that body — including the live glass-drop geometry in every render context (`lens()` → viewport `{x, y, r, held, docked}` or null; Display lends where the drop lies, the site decides what it means), a site composite (a site whose body lives in its own canvases may offer `shader.composite()` returning them in paint order; while glass is active the field draws them into its scene so the same invariant glass refracts them, and marks itself `data-composite="1"` so the site's own style can let its originals step back), and one optional site layer: a site shader may carry `afterDraw`, which Display calls once per frame inside the site's own field, after geometry and floating bodies and before the point layer, lending it the current Descent frame (`proj`, `view`, `model`, `frame`, `container`, orientation, size). Display restores its framebuffer/viewport afterwards and contains a failing layer; what the layer draws means nothing to Display.
+
+Shared contact ink traces the actual hovered click target's projected tetrahedral edges or its actual point/part boundary. It uses the same hit precedence as activation, follows the moving geometry, never intercepts input, and becomes still under reduced motion. A custom owner may lend its own local contact geometry to this same neutral ink; Display does not infer that owner's meaning.
 
 The site-holon owns:
 - its public/local projection boundary;
@@ -408,7 +410,7 @@ The chosen German/English expression travels in the ordinary `lang` URL query, i
 
 ## Structural containment and visit continuity
 
-The explicit global return follows actual body-host offers and local container descent; clicking empty space does not trigger ascent. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The shared liquid/lock continuity is owned by **Continuous liquid contact**; site-owned body approach, crawlercam availability and their current lifecycle remain with the respective site.
+The explicit global return follows actual body-host offers and local container descent; a double-click or a nearby double-tap on genuinely empty field space requests that same return, while one empty contact stays put. The shared touch pair is bounded in time and space, and actual body contact, intervening input, dragging, cancellation or multiple fingers clear it. Direct global movement re-establishes that structural context; earlier visited siblings do not become parents. Real body entry preserves its containing field's local view, while browser history keeps the independent visit relation. A raw mount prefix alone does not cross another organism's membrane. Bounded native witnesses preserve identity, orientation, renderer refusal and root no-op under the acceptance law above. The shared liquid/lock continuity is owned by **Continuous liquid contact**; site-owned body approach, crawlercam availability and their current lifecycle remain with the respective site.
 
 ## Readable liquid interior — earned shared geometry
 

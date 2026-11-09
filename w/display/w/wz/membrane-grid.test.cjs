@@ -26,10 +26,12 @@ for(const [width,height] of carriers){
   assert.deepEqual(idle.compassInfo.cells,UI.fieldInfo(owned,'compass').cells,'orientation cannot replace the owner address');
   if(mode==='portrait'){
     close(idle.compass.left,0);close(idle.ascent.left,idle.compass.right);
+    close(idle.ascent.right,idle.top.left);close(idle.ascent.top,idle.compass.top);close(idle.ascent.bottom,idle.compass.bottom);
     close(idle.pocket.left,idle.help.right);close(idle.help.bottom,idle.legal.top);assert.ok(idle.legal.bottom<=idle.trigger.top);
     assert.ok(width-idle.top.left>=46,'header and optical rim fit the right-edge field');
   }else{
     close(idle.compass.right,width);close(idle.ascent.bottom,idle.compass.top);
+    close(idle.ascent.top,idle.top.bottom);close(idle.ascent.left,idle.compass.left);close(idle.ascent.right,idle.compass.right);
     close(idle.pocket.bottom,idle.help.top);close(idle.help.right,idle.legal.left);assert.ok(idle.legal.right<=idle.trigger.left);
     assert.ok(idle.top.bottom>=46,'header and optical rim fit the upper field');
   }

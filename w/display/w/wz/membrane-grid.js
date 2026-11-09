@@ -88,12 +88,21 @@
     let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,topKey='',triggerKey='',fit={top:true,trigger:true};
     const mode=()=>UI.orientation(viewport.width,viewport.height);
     function ascentCells(compass){
-      const ordinary=UI.fieldInfo(base,'ascent'),compact=UI.fieldInfo(base,'ascent','compact');
-      // The compact authored span is needed only when the navigator's own
-      // realized field reaches into the ordinary return field.
-      const a=ordinary.bounds,c=compass.bounds;
-      const overlaps=a.x<c.x+c.w&&c.x<a.x+a.w&&a.y<c.y+c.h&&c.y<a.y+a.h;
-      return overlaps?compact.cells:ordinary.cells;
+      // The compass lends its full cross-axis span. The top liquid and the
+      // compass bound the available return region in the same logical field;
+      // orientation turns that one relation together with everything else.
+      const top=UI.spanInfo(outer,outer.fields.top.cells),c=compass.bounds;
+      const depth=Math.max(top.depth,compass.depth),n=2**depth;
+      const x0=Math.round(c.x*n),x1=Math.round((c.x+c.w)*n);
+      const y0=Math.ceil((top.bounds.y+top.bounds.h)*n-1e-9),y1=Math.round(c.y*n);
+      if(x1<=x0||y1<=y0){
+        // No free strip exists on this actual carrier; retain the authored
+        // compact instrument rather than erasing its accessible return.
+        return UI.fieldInfo(base,'ascent','compact').cells;
+      }
+      const cells=[];
+      for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)cells.push(address(x,y,depth));
+      return cells;
     }
     function useCompass(state,field){
       if(!state||!field)return;

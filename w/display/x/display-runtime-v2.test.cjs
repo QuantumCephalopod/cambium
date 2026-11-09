@@ -65,9 +65,13 @@ function boot(version=1,hash='',insets={},feedKinds={},renderKinds={},holdFold=f
  const b=boot(),click=()=>b.ascent.click({preventDefault(){}});
  b.W.inspect('wx');click();assert.equal(b.W.view,'w','return pops one actual local rank');
  click();assert.equal(b.W.view,'');const swaps=b.swaps.length;click();assert.equal(b.swaps.length,swaps,'outer root is inert');
+ b.W.inspect('wx');b.emit('sss:outside-doubleclick',{id:ids[0]});assert.equal(b.W.view,'w','empty double-click uses the same local return');
+ b.emit('sss:outside-doubleclick',{id:ids[1]});assert.equal(b.W.view,'w','an inactive body cannot request return');
+ b.emit('sss:outside-doubleclick',{id:ids[0]});assert.equal(b.W.view,'');
  b.runtime.navigateGlobal('w');click();assert.equal(b.runtime.state.activeAddress,'','return crosses the actual containing membrane');
  b.runtime.navigateGlobal('w');let local=0;const owner=b.Modules.get(ids[1]);owner.canEscape=()=>true;owner.escape=()=>{local++;return true};
  const count=b.ascents.length;click();assert.equal(local,1,'site-owned finer return takes priority');assert.equal(b.ascents.length,count);assert.equal(b.runtime.state.activeAddress,'w');
+ b.emit('sss:outside-doubleclick',{id:ids[1]});assert.equal(local,2,'empty double-click asks the contacted owner first');assert.equal(b.ascents.length,count);
  b.W.language='de';b.emit('sss:language');assert.equal(b.elements.get('display-ascent-label').textContent,'ZURÜCK');assert.equal(b.ascent.attrs['aria-label'],'Eine Ebene zurück');
  const refusal=boot();refusal.runtime.navigateGlobal('w');const pushes=refusal.history.filter(e=>e.kind==='push').length;
  refusal.renderKinds[ids[0]]='decline';refusal.ascent.click({preventDefault(){}});
@@ -92,6 +96,12 @@ once();assert.strictEqual(f.W.projection,f.projected.get('organism:origin'));
 assert.equal(f.W.targets.find(t=>t.path==='w').titles['organism:branch'],'English organism:branch');
 for(const target of f.W.targets)for(const body of target.bodies)assert.equal(body.path,runtime.registry.getMount(body.id).rawAddress,'compass receives each identity actual raw mount path');
 assert.equal(f.options.get('organism:origin').bodies().find(b=>b.id==='organism:branch').title,'English organism:branch');
+{
+ const moved=boot();moved.runtime.navigateGlobal('w');const visit=moved.history.at(-1).state;
+ moved.runtime.remount(ids[1],'main','z');moved.runtime.navigateGlobal('');moved.pop(visit,'#main:w');
+ assert.equal(moved.runtime.state.activeIds[0],ids[1]);assert.equal(moved.runtime.state.activeAddress,'z','restored visits follow stable identity to its current mount');
+ assert.equal(moved.history.at(-1).kind,'replace');assert.equal(moved.history.at(-1).url,'#main:z','restored hash names the actual current address');
+}
 for(const id of ids.slice(0,3))assert.strictEqual(f.options.get(id).projection,f.projected.get(id));
 const slotBounds=runtime.ui.get(ids[0]).field('slot').bounds;assert.equal(slotBounds.x,0);assert.equal(slotBounds.y,0);assert.equal(slotBounds.w,.5);assert.equal(slotBounds.h,.5);
 assert.equal(runtime.ui.get(ids[0]).field('slot').z,2);

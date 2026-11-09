@@ -1,0 +1,3 @@
+# Encounter: Papers placement and navigational contact
+
+Source: Philipp's 2026-11-08 Display encounter `NUTRIENT__navigation-body-contact__20261108.md` reports Papers under Becoming instead of Inquiry and requests a larger shared return control, double-click on empty space to return, and a subtle pulsing trace on the body actually targeted by a click. Display's living host anatomy places Inquiry at `w`; Papers is offered a change of external Population custody from `y` to `w`. Its existing custom field/input and locally owned finer return must participate truthfully in the shared contact and empty-space relation without changing its local genealogy or research source.

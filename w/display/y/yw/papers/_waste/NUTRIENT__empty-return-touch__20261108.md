@@ -1,0 +1,3 @@
+# Encounter: Papers empty return on touch
+
+The Display navigation/body-contact encounter requests double empty-space return as a shared invariant. On a Chromium 390×844 touch-enabled Philosophy carrier, two empty taps delivered two touch pointer/click sequences without a `dblclick`, and did not return. Papers owns and intercepts its own canvas input, so its contact and existing local return must participate in the same touch operation using its own hit geometry. Preserve one-tap inertia and the precedence of actual Papers tissue, chambers, bodies, drags and cancellation. Witness the Papers carrier independently; the Philosophy counterexample does not itself prove Papers behavior.

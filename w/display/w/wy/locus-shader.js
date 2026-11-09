@@ -10,6 +10,39 @@ const nrm=v=>{const m=Math.hypot(...v)||1;return v.map(x=>x/m)};
 const qMul=(a,b)=>{const[w,x,y,z]=a,[v,i,j,k]=b;return [w*v-x*i-y*j-z*k,w*i+x*v+y*k-z*j,w*j-x*k+y*v+z*i,w*k+x*j-y*i+z*v]};
 const qRot=(q,p)=>{const r=qMul(qMul(q,[0,...p]),[q[0],-q[1],-q[2],-q[3]]);return r.slice(1)};
 const shaders=new Map();
+/* Screen-space ink for a real, owner-supplied contact geometry. The overlay
+ * takes no pointer; every renderer retains its own hit and navigation law. */
+function createTrace(host){
+  const ns='http://www.w3.org/2000/svg';
+  if(!host||typeof document.createElementNS!=='function')return null;
+  const svg=document.createElementNS(ns,'svg'),quiet=document.createElementNS(ns,'path'),pulse=document.createElementNS(ns,'path');
+  svg.setAttribute('class','field-contact-trace');svg.setAttribute('aria-hidden','true');
+  quiet.setAttribute('class','field-contact-edge');pulse.setAttribute('class','field-contact-pulse');
+  pulse.setAttribute('pathLength','100');svg.append(quiet,pulse);host.append(svg);svg.style.display='none';
+  let last='',view='';
+  const pt=p=>`${Number(p.x).toFixed(2)},${Number(p.y).toFixed(2)}`;
+  function paths(lines,width,height,kind='body',target=''){
+    if(!lines?.length||!Number.isFinite(width)||!Number.isFinite(height)||width<=0||height<=0){clear();return}
+    const d=lines.filter(line=>line.length>1&&line.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)))
+      .map(line=>'M'+line.map(pt).join(' L')).join(' ');
+    if(!d){clear();return}
+    const v=`0 0 ${width} ${height}`;if(v!==view){svg.setAttribute('viewBox',v);view=v}
+    if(d!==last){quiet.setAttribute('d',d);pulse.setAttribute('d',d);last=d}
+    svg.dataset.kind=kind;svg.dataset.target=String(target);svg.style.display='block';
+  }
+  function tetra(p,w,h,target=''){
+    if(!Array.isArray(p)||p.length!==4){clear();return}
+    paths([[p[0],p[1],p[2],p[0],p[3],p[1],p[3],p[2],p[0]]],w,h,'tetra',target);
+  }
+  function marker(p,r,w,h,diamond=false,target=''){
+    if(!p||!Number.isFinite(r)){clear();return}
+    const sides=diamond?4:16,points=Array.from({length:sides+1},(_,i)=>{const a=2*Math.PI*i/sides+(diamond?0:Math.PI/8);return {x:p.x+Math.cos(a)*r,y:p.y+Math.sin(a)*r}});
+    paths([points],w,h,'marker',target);
+  }
+  function clear(){if(svg.style.display!=='none')svg.style.display='none';delete svg.dataset.kind;delete svg.dataset.target}
+  function dispose(){svg.remove()}
+  return Object.freeze({paths,tetra,marker,clear,dispose});
+}
 function paletteSet(base){const b=Array.isArray(base)&&base.length===3?base:[.4,.7,.9],genes=[[1.0,.78,.72],[.72,.86,1.0],[1.0,.70,.86],[.78,1.0,.70]];return genes.map(g=>b.map((v,i)=>clamp(v*g[i]+.055*g[(i+1)%3])))}
 function orthographic(half,aspect,near,far){const nf=1/(near-far);return new Float32Array([1/(half*aspect),0,0,0,0,1/half,0,0,0,0,2*nf,0,0,0,(far+near)*nf,1])}
 function perspective(fovy,aspect,near,far){const f=1/Math.tan(fovy/2),nf=1/(near-far);return new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)*nf,-1,0,0,2*far*near*nf,0])}
@@ -106,6 +139,7 @@ function fieldPointRecords(structure,projection){
 function create({id,element,canvas,labelHost,projection,palette,shader,inspectable=false,draggable=true,localScope,environment=null,bodies=null,presentation=null}){
   if(!element||!canvas||!projection?.root)throw new Error('interlocutor field surface incomplete: '+id);
   const canvasState=(key,value)=>{value=String(value);if(canvas.dataset[key]!==value)canvas.dataset[key]=value};
+  const trace=createTrace(element);
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
   if(typeof shader.preload==='function')shader.preload();
@@ -218,6 +252,10 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     let n=bodyLabels.get(B.id);
     if(!n){n=document.createElement('button');n.type='button';n.className='field-label field-body-label';n.innerHTML='<b></b>';n.querySelector('b').textContent=B.title;
       n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const p=e.detail===0?projectBody(B.id):null,r=p&&canvas.getBoundingClientRect();enterBody(B.id,p?{x:r.left+p.x,y:r.top+p.y}:{x:e.clientX,y:e.clientY})});
+      n.addEventListener('pointerenter',()=>{hoverLabelId=B.id});
+      n.addEventListener('pointerleave',()=>{if(hoverLabelId===B.id)hoverLabelId=''});
+      n.addEventListener('focus',()=>{hoverLabelId=B.id});
+      n.addEventListener('blur',()=>{if(hoverLabelId===B.id)hoverLabelId=''});
       (labelHost||element).append(n);bodyLabels.set(B.id,n);labelObserver?.observe(n)}
     const ink=n.querySelector('b');if(ink.textContent!==B.title)ink.textContent=B.title;
     return n;
@@ -277,7 +315,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   const geneLabels=[];
   if(labelHost){labelHost.replaceChildren();for(const g of N.GENES){const n=document.createElement('div');n.className='field-label';n.setAttribute('aria-hidden','true');n.dataset.gene=g;const node=nodeAt(projection.root,g);n.innerHTML=`<span>${g}</span><b>${node?.en||node?.noun||g}</b>`;labelHost.append(n);geneLabels.push(n)}}
-  let selectedPointId='',hoverPointId='',down=null,api=null;
+  let selectedPointId='',hoverPointId='',hoverLabelId='',hoverPosition=null,clickContacts=[],down=null,api=null;
   let tooltip=null;
   if(pointRecords.length||typeof shader.snapshot==='function'){
     tooltip=document.createElement('div');tooltip.className='field-point-tooltip';tooltip.hidden=true;tooltip.setAttribute('role','status');tooltip.setAttribute('aria-live','polite');
@@ -392,6 +430,27 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       if(d<radius&&(!best||d<best.d||(d===best.d&&p.z>best.p.z)))best={rec,d,p};
     }
     return best;
+  }
+  // Hover, click and empty-space return all use the very same precedence.
+  function contactAt(x,y,rect){
+    const point=hasPoints?hitPoint(x,y,rect):null;if(point)return {kind:'point',point};
+    const body=hitBody(x,y,rect);if(body)return {kind:'body',id:body};
+    const path=hitChild(x,y,rect);return path?{kind:'cell',path}:null;
+  }
+  function traceContact(r){
+    if(!trace)return;
+    const label=hoverLabelId&&BODIES.get(hoverLabelId)?.active?{kind:'body',id:hoverLabelId}:null;
+    const contact=label||(!down&&hoverPosition?contactAt(hoverPosition.x-r.left,hoverPosition.y-r.top,r):null);
+    if(!contact){trace.clear();return}
+    if(contact.kind==='body'){
+      const B=BODIES.get(contact.id);if(!B?.active){trace.clear();return}
+      trace.tetra(N.V0.map(v=>project(v.map((x,j)=>B.pos[j]+x*B.place.k),r)),r.width,r.height,B.id);
+    }else if(contact.kind==='cell'){
+      const a=N.addressRecord(structure,contact.path);if(!a){trace.clear();return}
+      trace.tetra(a.tet.map(p=>project(p,r)),r.width,r.height,contact.path);
+    }else{
+      const {rec,p}=contact.point;trace.marker(p,rec.spec.kind==='holon'?7:5,r.width,r.height,rec.spec.kind==='holon',rec.spec.id);
+    }
   }
   function updateTooltip(hitResult,rect){
     if(!tooltip)return;
@@ -758,7 +817,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   }
   function draw(ms,prepareOnly=false){
     viewCache=null;
-    if(element.hidden){restDone=false;resetLabelInk();disposePreview();disposeForeground();disposeScene();if(!prepareOnly)requestAnimationFrame(draw);return false}
+    if(element.hidden){trace?.clear();restDone=false;resetLabelInk();disposePreview();disposeForeground();disposeScene();if(!prepareOnly)requestAnimationFrame(draw);return false}
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
     followStep(ms);refreshProjection(ms);refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(viewBox(r).width<560?1.42:1.75);
     const proj=fieldProjectionMatrix(r),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
@@ -766,6 +825,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     updateLabels(r);
     const fb=floatingBodies();
     for(const B of fb)B.pos=driftAt(B.drift,ms);
+    traceContact(r);
     canvasState('container',cur||'ε');canvasState('visibleCells',cells.length);canvasState('visibleContent',visible.length);canvasState('floatingBodies',fb.map(B=>B.id).join(' '));
     for(const [bodyId,n] of bodyLabels)if(!BODIES.get(bodyId)?.active)n.hidden=true;
     for(const B of fb){
@@ -839,30 +899,48 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   const hasPoints=pointRecords.length>0||typeof shader.snapshot==='function';
   canvas.dataset.backgroundDrag=draggable?'true':'false';
   {
+    const touchReturn=N.createTouchDoubleTap(canvas);
     canvas.style.pointerEvents='auto';
     canvas.style.cursor=draggable?'grab':'default';
-    canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;down={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
+    canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&e.isPrimary===false){touchReturn.reset();return}if(e.button!==0)return;down={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};try{canvas.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
     canvas.addEventListener('pointermove',e=>{
       const r=canvas.getBoundingClientRect();
       if(down&&down.id===e.pointerId){
         const dx=e.clientX-down.x,dy=e.clientY-down.y;
-        if(Math.hypot(dx,dy)>2)down.moved=true;
-        if(down.moved){setHover('');updateTooltip(null,r)}
+        if(Math.hypot(e.clientX-down.startX,e.clientY-down.startY)>2)down.moved=true;
+        if(down.moved){touchReturn.reset();hoverPosition=null;clickContacts=[];setHover('');trace?.clear();updateTooltip(null,r)}
         if(draggable){W.rotateBy(dx,dy,'interlocutor:'+id);down.x=e.clientX;down.y=e.clientY;e.preventDefault();return}
         if(down.moved){e.preventDefault();return}
       }
-      if(!down&&hasPoints){const hp=hitPoint(e.clientX-r.left,e.clientY-r.top,r);setHover(hp?.rec.spec.id||'');updateTooltip(hp,r);canvas.style.cursor=hp?'pointer':(draggable?'grab':'default')}
+      if(!down){
+        if(globalThis.SSSDisplayRuntime?.isAscentPoint?.(e.clientX,e.clientY)){hoverPosition=null;setHover('');trace?.clear();updateTooltip(null,r);canvas.style.cursor='pointer';return}
+        hoverPosition={x:e.clientX,y:e.clientY};const hit=contactAt(e.clientX-r.left,e.clientY-r.top,r),hp=hit?.kind==='point'?hit.point:null;setHover(hp?.rec.spec.id||'');updateTooltip(hp,r);canvas.style.cursor=hit?'pointer':(draggable?'grab':'default')
+      }
     });
-    canvas.addEventListener('pointerleave',()=>{if(!down){setHover('');if(tooltip)tooltip.hidden=true;canvas.style.cursor=draggable?'grab':'default'}});
+    canvas.addEventListener('pointerleave',()=>{if(!down){hoverPosition=null;setHover('');trace?.clear();if(tooltip)tooltip.hidden=true;canvas.style.cursor=draggable?'grab':'default'}});
     const end=e=>{
       if(!down||down.id!==e.pointerId)return;const wasMoved=down.moved;down=null;try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId)}catch(_){}
-      if(!wasMoved){
-        const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,hp=hasPoints?hitPoint(x,y,r):null;
-        const body=hp?'':hitBody(x,y,r);if(body)enterBody(body,{x:e.clientX,y:e.clientY});else if(hp?.rec.pool)descendTo(hp.rec.path,'pool:'+id);else if(hp)selectPoint(hp.rec.spec.id,true);else{const path=hitChild(x,y,r);if(path)descendTo(path,'descent:'+id)}
+      if(!wasMoved&&e.type!=='pointercancel'){
+        const r=canvas.getBoundingClientRect(),hit=contactAt(e.clientX-r.left,e.clientY-r.top,r);
+        clickContacts.push(!hit);clickContacts=clickContacts.slice(-2);
+        if(touchReturn.contact(e,!hit)){clickContacts=[];dispatchEvent(new CustomEvent('sss:outside-doubleclick',{detail:{id}}))}
+        if(hit?.kind==='body')enterBody(hit.id,{x:e.clientX,y:e.clientY});
+        else if(hit?.kind==='point'&&hit.point.rec.pool)descendTo(hit.point.rec.path,'pool:'+id);
+        else if(hit?.kind==='point')selectPoint(hit.point.rec.spec.id,true);
+        else if(hit?.kind==='cell')descendTo(hit.path,'descent:'+id);
+      }else{touchReturn.reset();clickContacts=[]}
+      if(e.type==='pointercancel'){hoverPosition=null;trace?.clear()}
+      else if(e.pointerType!=='touch'){
+        hoverPosition={x:e.clientX,y:e.clientY};
       }
       canvas.style.cursor=draggable?'grab':'default';e.preventDefault()
     };
     canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
+    canvas.addEventListener('dblclick',e=>{
+      const r=canvas.getBoundingClientRect(),empty=clickContacts.length===2&&clickContacts.every(Boolean)&&!contactAt(e.clientX-r.left,e.clientY-r.top,r);
+      touchReturn.reset();clickContacts=[];if(!empty)return;
+      dispatchEvent(new CustomEvent('sss:outside-doubleclick',{detail:{id}}));e.preventDefault();
+    });
   }
   requestAnimationFrame(draw);
   api=Object.freeze({prepareFrame,presentationRect:()=>viewBox(canvas.getBoundingClientRect()),
@@ -876,5 +954,5 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
   shaders.set(id,api);return api;
 }
 function get(id){return shaders.get(id)||null}
-globalThis.SSSInterlocutorFields=Object.freeze({create,get,paletteSet,placement});
+globalThis.SSSInterlocutorFields=Object.freeze({create,get,paletteSet,placement,createTrace});
 })();

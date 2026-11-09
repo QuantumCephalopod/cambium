@@ -1,0 +1,99 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-navigation-contact-witness-20261108",
+  "witness_at_utc": "2026-11-08T23:41:54.473934Z",
+  "owner": "display",
+  "source": {
+    "source_revision": "7ff1fb8ce1adf168cede3e553cca80aa7b0dafa3",
+    "source_tree": "58f6f35955340e9e7b8ae861cb006f8c62716143",
+    "staging_carrier": "QuantumCephalopod/cambium:staging/navigation-encounters-20261108",
+    "source_baseline": "7344e05fc33f104f613a849c0d7b2a88f483379d",
+    "source_screenshot_sha256": "7dd5556143598e9f6043ffb8defe3a514a05b36e1d5d48a20c346ea46391d8ed"
+  },
+  "scope": "Shared orientation-derived return field and current-contact trace, actual browser navigation, mount remapping, and source render transport; no physical-device performance or final owner deployment claimed.",
+  "observations": {
+    "native": [
+      "membrane-grid.test.cjs: gap matches realized carrier and orientation",
+      "locus-shader.test.cjs: body and empty-contact precedence, projected trace and double-click",
+      "display-runtime-v2.test.cjs: owner escape and relocation-aware browser history"
+    ],
+    "browser_canvas2d": [
+      {
+        "carrier": [
+          1280,
+          800
+        ],
+        "mounts": {
+          "papers": "w",
+          "crawlerbait": "y"
+        },
+        "historyRemount": true,
+        "fieldDoubleClick": true,
+        "papersDoubleClick": true,
+        "hoverTarget": "organism:papers",
+        "pointerReturn": true
+      },
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "rotatedReturn": {
+          "left": 195,
+          "top": 633,
+          "width": 146.25,
+          "height": 211,
+          "right": 341.25,
+          "bottom": 844
+        },
+        "keyboardReturn": true
+      }
+    ],
+    "browser_webgl2": [
+      {
+        "carrier": [
+          1280,
+          800
+        ],
+        "backend": "webgl2",
+        "mounts": {
+          "papers": "w",
+          "crawlerbait": "y"
+        },
+        "historyRemount": true,
+        "fieldDoubleClick": true,
+        "papersDoubleClick": true,
+        "hoverTarget": "organism:papers",
+        "pointerReturn": true
+      },
+      {
+        "carrier": [
+          390,
+          844
+        ],
+        "rotatedReturn": {
+          "left": 195,
+          "top": 633,
+          "width": 146.25,
+          "height": 211,
+          "right": 341.25,
+          "bottom": 844
+        },
+        "keyboardReturn": true
+      }
+    ],
+    "browser_render_backend": "Chromium SwiftShader software WebGL2 and Canvas2D",
+    "shared_membrane": "18 actual Chromium carrier cases: 6 site holons at 1280x800, 667x375, 390x844; mounted controls reachable",
+    "source_gles": {
+      "status": "PASS",
+      "backend": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "carrier_cases": 2
+    },
+    "staging_ci_prior_code": "https://github.com/QuantumCephalopod/cambium/actions/runs/42535477268",
+    "staging_ci_scope": "Prior integrated tree includes relocation, return, pointer drag and tracing; subsequent browser-history remount and dual-renderer witness were tested separately on the source revision above.",
+    "full_source_exact": {
+      "status": "ABORTED_BY_ENVIRONMENT_MEMORY_LIMIT",
+      "detail": "Full local orchestrator completed native and owner checks but was OOM-killed at software GLES; the exact same source GLES test passed independently. Prior integrated GitHub Actions source run passed; final branch CI follows closure."
+    }
+  }
+}

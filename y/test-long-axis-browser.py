@@ -25,7 +25,7 @@ class Quiet(SimpleHTTPRequestHandler):
 server = ThreadingHTTPServer(('127.0.0.1', 0), partial(Quiet, directory=str(args.artifact.resolve())))
 threading.Thread(target=server.serve_forever, daemon=True).start()
 base = f'http://127.0.0.1:{server.server_port}/index.html'
-sites = [('philosophy','overview'),('crawlerbait','w'),('schattenseiten','x'),('papers','y'),('datenschutz','z'),('impressum','xz')]
+sites = [('philosophy','overview'),('crawlerbait','y'),('schattenseiten','x'),('papers','w'),('datenschutz','z'),('impressum','xz')]
 cases = []
 
 def expect_box(actual, bounds, width, height, portrait, label):

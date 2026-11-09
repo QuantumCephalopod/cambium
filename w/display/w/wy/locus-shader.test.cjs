@@ -45,15 +45,15 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.uniform1fv=(loc,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
   gl.uniform4f=(loc,...value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniformMatrix4fv=(loc,_,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
-  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},attributes:{},children:[],append(n){this.children.push(n)},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
+  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{},attributes:{},children:[],append(...nodes){this.children.push(...nodes)},remove(){},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
   let inkPath=[];
   const ctx2d={beginPath(){inkPath=[]},moveTo(x,y){inkPath.push([x,y])},lineTo(x,y){inkPath.push([x,y])},fill(){calls.push({type:'fill2d',path:inkPath.map(p=>[...p]),style:this.fillStyle})}};
   for(const name of ['rect','clip','setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};
   ctx2d.translate=(x,y)=>calls.push({type:'point2d',x,y});
   const canvas=element();Object.assign(canvas,{width,height,getContext:type=>type==='2d'?ctx2d:webgl?gl:null,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   gl.canvas=canvas;
-  const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
-  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
+  const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},rotateBy(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
+  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element(),createElementNS:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
   if(glass){const G=require('../../z/zz/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:preview||lens?0:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
   if(lens!==false&&(preview||lens))context.SSSDisplayLens={foreground:(_id,frame)=>foreground?foreground(frame):null,snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:typeof lensHome==='function'?lensHome():lensHome})};
   context.SSSDisplayLabelInk={create:()=>({draw:(_r,_w,_h,additionalTarget)=>{calls.push({type:'labelInk',target:drawTarget,additionalTarget});return true},reset(){},dispose(){}})};
@@ -74,6 +74,46 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   const api=context.SSSInterlocutorFields.create({id:'fixture',element:hostElement,canvas,labelHost,projection,palette:fieldPalette,shader,inspectable,localScope:'fixture',presentation,bodies:()=>order.map(k=>bodies[k]),environment:host?()=>({hostId:'host',path:'w',place:{center:[0,0,0],k:.125},shader:{id:'host:shader',fragment:fragment('host')},palette:[.1,.2,.3]}):null});
   function frame(ms){now=ms;const start=calls.length;assert(queue.length);queue.shift()(ms);frames.push(calls.slice(start));return frames.at(-1)}
   return {gl,canvas,api,world,shader,events,calls,frames,resources,frame,order,bodies,labels:labelHost,host:hostElement,resize(w,h){width=w;height=h},flushTimers(){while(timers.length)timers.shift()()},clickBody(index,accept=true){labelHost.children.filter(n=>n.className==='field-label field-body-label')[index].click({preventDefault(){},stopPropagation(){},clientX:0,clientY:0});if(accept)api.approachBody(events.at(-1).detail.id)}};
+}
+
+/* The moving trace and the click share the actual hit target. Two genuinely
+ * empty clicks request the common return; a body double-click does not. */
+{
+ const f=fixture();f.frame(0);const p=f.api.projectBody('body:b');
+ const event={button:0,pointerId:7,pointerType:'mouse',clientX:p.x,clientY:p.y,preventDefault(){}};
+ f.canvas.pointermove(event);f.frame(32);
+ const ink=f.host.children.find(n=>n.attributes.class==='field-contact-trace');
+ assert.equal(ink.style.display,'block');assert.equal(ink.dataset.kind,'tetra');
+ const target=ink.dataset.target;
+ f.canvas.pointerdown(event);f.canvas.pointerup(event);f.canvas.pointerdown(event);f.canvas.pointerup(event);f.canvas.dblclick(event);
+ assert.equal(f.events.findLast(e=>e.type==='sss:enter-body').detail.id,target,'ink identifies the body that receives the click');
+ assert(!f.events.some(e=>e.type==='sss:outside-doubleclick'),'body contact cannot also ascend');
+ const empty={...event,clientX:1,clientY:1};
+ f.canvas.pointerdown(empty);f.canvas.pointerup(empty);assert(!f.events.some(e=>e.type==='sss:outside-doubleclick'));
+ f.canvas.pointerdown(empty);f.canvas.pointerup(empty);f.canvas.dblclick(empty);
+ assert.equal(f.events.at(-1).type,'sss:outside-doubleclick');
+ f.canvas.pointerleave();f.frame(48);assert.equal(ink.style.display,'none');
+}
+
+// A native touch double-tap requests one return even without a dblclick event.
+// A later synthetic dblclick cannot return a second time; a slow cumulative
+// drag between taps must also cancel the pending pair.
+{
+ const f=fixture();f.frame(0);
+ const e={button:0,pointerId:1,pointerType:'touch',isPrimary:true,clientX:1,clientY:1,timeStamp:100,preventDefault(){}};
+ const tap=()=>{f.canvas.pointerdown(e);f.canvas.pointerup(e)};
+ tap();assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,0);
+ e.timeStamp=250;tap();assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1);
+ f.canvas.dblclick(e);assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1);
+ e.timeStamp=500;tap();e.timeStamp=600;f.canvas.pointerdown(e);
+ for(const x of [2,3,4])f.canvas.pointermove({...e,clientX:x});
+ f.canvas.pointerup({...e,clientX:4});e.timeStamp=700;tap();
+ assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1,'drag left a live touch pair');
+ e.timeStamp=1300;tap();e.timeStamp=1400;f.canvas.pointerdown(e);f.canvas.pointercancel({...e,type:'pointercancel'});
+ e.timeStamp=1500;tap();assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1,'cancel left a live touch pair');
+ e.timeStamp=2100;tap();const p=f.api.projectBody('body:b'),body={...e,timeStamp:2200,clientX:p.x,clientY:p.y};
+ f.canvas.pointerdown(body);f.canvas.pointerup(body);e.timeStamp=2300;tap();
+ assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1,'body contact left a live touch pair');
 }
 
 function assertClears(f){
