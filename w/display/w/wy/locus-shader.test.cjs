@@ -109,6 +109,11 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
  for(const x of [2,3,4])f.canvas.pointermove({...e,clientX:x});
  f.canvas.pointerup({...e,clientX:4});e.timeStamp=700;tap();
  assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1,'drag left a live touch pair');
+ e.timeStamp=1300;tap();e.timeStamp=1400;f.canvas.pointerdown(e);f.canvas.pointercancel({...e,type:'pointercancel'});
+ e.timeStamp=1500;tap();assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1,'cancel left a live touch pair');
+ e.timeStamp=2100;tap();const p=f.api.projectBody('body:b'),body={...e,timeStamp:2200,clientX:p.x,clientY:p.y};
+ f.canvas.pointerdown(body);f.canvas.pointerup(body);e.timeStamp=2300;tap();
+ assert.equal(f.events.filter(x=>x.type==='sss:outside-doubleclick').length,1,'body contact left a live touch pair');
 }
 
 function assertClears(f){
