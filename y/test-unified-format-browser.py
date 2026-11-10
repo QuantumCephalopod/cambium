@@ -59,6 +59,11 @@ try:
     page.locator('#display-language-en').click(timeout=10000);assert page.evaluate('document.documentElement.lang')=='en'
     for link in page.locator('#legal-links a').all():
      link.scroll_into_view_if_needed(timeout=10000);link.click(trial=True,timeout=10000)
+    if site in ('datenschutz','impressum'):
+     for selector in ('select','input','button'):
+      target=page.locator('[data-ui-field="controls"] '+selector)
+      target.click(trial=True,timeout=10000)
+      b=target.bounding_box();assert b and b['width']>0 and b['height']>0,(name,selector,b)
     if site=='philosophy':
      complete=page.locator('.philosophy-content>.root').evaluate('''e=>{if(e.scrollHeight<=e.clientHeight)return true;e.scrollTop=e.scrollHeight;return e.scrollTop+e.clientHeight>=e.scrollHeight-1}''')
      assert complete,(name,'the complete introduction cannot be scrolled')

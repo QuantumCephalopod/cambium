@@ -25,7 +25,11 @@
     "zw",
     "zx",
     "zy",
-    "zz"
+    "zz",
+    "yzw",
+    "yzx",
+    "zyw",
+    "zyx"
   ],
   "fields": {
     "description": {
@@ -111,7 +115,42 @@
           "yx",
           "yz"
         ]
-      }
+      },
+      "flow": "long-axis"
+    },
+    "sectionSelect": {
+      "cells": [
+        "yzww",
+        "yzwx",
+        "yzxw",
+        "yzxx",
+        "yzwy",
+        "yzwz",
+        "yzxy",
+        "yzxz"
+      ],
+      "label": "source section selection",
+      "z": 1
+    },
+    "readingPosition": {
+      "cells": [
+        "zyww",
+        "zywx",
+        "zyxw",
+        "zywy",
+        "zywz",
+        "zyxy"
+      ],
+      "label": "continuous reading position",
+      "z": 1
+    },
+    "orthogonalReset": {
+      "cells": [
+        "zyxx",
+        "zyxz"
+      ],
+      "label": "orthographic reset",
+      "z": 1
     }
   },
   "elements": {}

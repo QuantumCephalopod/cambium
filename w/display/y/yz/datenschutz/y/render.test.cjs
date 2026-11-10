@@ -9,7 +9,7 @@ const document={body:node('body'),getElementById:id=>nodes.find(n=>n.id===id),cr
 const Surface={prepare:async dependency=>{assert.equal(dependency('fixture','member'),'fixture/member');return {}},create:({blocks})=>{admitted.push(blocks);return {release(){released++}}}};
 const context={document,SSSTetraText:Surface,SSSWorldView:world,addEventListener(k,fn){const list=events.get(k)||[];list.push(fn);events.set(k,list)}};
 vm.runInNewContext(fs.readFileSync(path.join(body,manifest.renderer),'utf8'),context);
-const renderer=context.SSSInterlocutorModules.get(id),host=node('host'),content=node('content'),ui={bind(n,field){n.field=field}};
+const renderer=context.SSSInterlocutorModules.get(id),host=node('host'),content=node('content'),ui={bind(n,field){n.field=field},bindInside(n,field,parent){n.field=field;n.parentField=parent}};
 assert.equal(renderer.id,id);assert.equal(renderer.render({host,content,projection,language:'de',ui}),false,'unprepared source cannot appear as ready');
 const descendants=n=>[n,...(n.children||[]).flatMap(descendants)];
 (async()=>{
@@ -24,7 +24,7 @@ const descendants=n=>[n,...(n.children||[]).flatMap(descendants)];
   assert.equal(renderer.shader.view.projection,'orthographic');assert.deepEqual(Array.from(renderer.shader.view.rest),[1,0,0,0]);
   assert.equal(admitted.at(-1),projection.notices[language],'actual full approved source is handed to neutral material');
   const article=all.find(n=>n.tag==='article');assert.equal(article.children.flatMap(n=>n.tag==='ul'?n.children:[n]).length,projection.notices[language].length);assert.equal(article.attrs['data-type-fold'],'off');
-  const sections=all.find(n=>n.tag==='select');assert.equal(sections.children.length,privacy?16:4);assert.equal(sections.attrs['aria-label'],language==='de'?'Abschnitt':'Section');
+  const sections=all.find(n=>n.tag==='select');assert.equal(sections.field,'sectionSelect');assert.equal(sections.parentField,'controls');assert.equal(all.find(n=>n.field==='readingPosition').parentField,'controls');assert.equal(all.find(n=>n.field==='orthogonalReset').parentField,'controls');assert.equal(sections.children.length,privacy?16:4);assert.equal(sections.attrs['aria-label'],language==='de'?'Abschnitt':'Section');
   all.find(n=>n.tag==='button').listeners.click();
  }
  renderer.unmount({host,content});assert(host.hidden);assert.equal(content.children.length,0);assert.equal(released,3,'every retired material releases its context resources');
