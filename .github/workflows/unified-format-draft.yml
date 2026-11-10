@@ -1,0 +1,27 @@
+name: unified format browser draft
+on:
+  push:
+    branches: ['staging/mobile-display-unified-format-test-20261110']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build display
+        run: python3 y/site-public.py --artifact _site
+      - name: Install browser
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Witness the common fields
+        run: python3 y/test-unified-format-browser.py --artifact _site --out _unified-format-witness
+      - name: Retain evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unified-format-browser-draft
+          path: _unified-format-witness
+          if-no-files-found: warn

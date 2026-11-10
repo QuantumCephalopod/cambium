@@ -20,22 +20,12 @@
     "xz",
     "yw",
     "yx",
+    "yy",
+    "yz",
     "zw",
     "zx",
     "zy",
-    "zz",
-    "zwy",
-    "zwz",
-    "zxy",
-    "zxz",
-    "zyw",
-    "zyx",
-    "zyy",
-    "zyz",
-    "zzw",
-    "zzx",
-    "zzy",
-    "zzz"
+    "zz"
   ],
   "fields": {
     "pocket": {
@@ -53,155 +43,166 @@
         "zw",
         "zx"
       ],
-      "label": "navigation field",
-      "variants": {
-        "portrait": [
-          "www",
-          "wwx",
-          "wxw",
-          "wxx",
-          "xww",
-          "xwx",
-          "xxw",
-          "xxx",
-          "wwy",
-          "wwz",
-          "wxy",
-          "wxz",
-          "xwy",
-          "xwz",
-          "xxy",
-          "xxz",
-          "wyw",
-          "wyx",
-          "wzw",
-          "wzx",
-          "xyw",
-          "xyx",
-          "xzw",
-          "xzx",
-          "wyy",
-          "wyz",
-          "wzy",
-          "wzz",
-          "xyy",
-          "xyz",
-          "xzy",
-          "xzz",
-          "yww",
-          "ywx",
-          "yxw",
-          "yxx",
-          "zww",
-          "zwx",
-          "zxw",
-          "zxx"
-        ],
-        "upright": [
-          "ww",
-          "wx",
-          "xw",
-          "wy",
-          "wz",
-          "xy",
-          "yw",
-          "yx",
-          "zw",
-          "yy",
-          "yz",
-          "zy"
-        ]
-      }
-    },
-    "help": {
-      "cells": [
-        "yy"
-      ],
-      "label": "navigation help",
-      "variants": {
-        "portrait": [
-          "zwyw",
-          "zwyx",
-          "zwzw",
-          "zwzx",
-          "zwyy",
-          "zwyz",
-          "zwzy",
-          "zwzz",
-          "zyww",
-          "zywx",
-          "zyxw",
-          "zyxx"
-        ],
-        "upright": [
-          "ww"
-        ]
-      }
-    },
-    "trigger": {
-      "cells": [
-        "zz"
-      ],
-      "label": "navigation aperture",
-      "variants": {
-        "portrait": [
-          "zxyw",
-          "zxyx",
-          "zxzw",
-          "zxzx",
-          "zxyy",
-          "zxyz",
-          "zxzy",
-          "zxzz",
-          "zzww",
-          "zzwx",
-          "zzxw",
-          "zzxx"
-        ],
-        "upright": [
-          "xx"
-        ]
-      }
+      "label": "authored field for Back after swap"
     },
     "legal": {
       "cells": [
         "yz",
         "zy"
       ],
-      "label": "legal apertures",
-      "variants": {
-        "portrait": [
-          "zywy",
-          "zywz",
-          "zyxy",
-          "zyxz",
-          "zzwy",
-          "zzwz",
-          "zzxy",
-          "zzxz",
-          "zyyw",
-          "zyyx",
-          "zyzw",
-          "zyzx",
-          "zzyw",
-          "zzyx",
-          "zzzw",
-          "zzzx",
-          "zyyy",
-          "zyyz",
-          "zyzy",
-          "zyzz",
-          "zzyy",
-          "zzyz",
-          "zzzy",
-          "zzzz"
-        ],
-        "upright": [
-          "xz",
-          "zx",
-          "zz"
-        ]
-      }
+      "label": "legal apertures"
+    },
+    "state": {
+      "cells": [
+        "www",
+        "wwx",
+        "wxw",
+        "wxx",
+        "xww",
+        "xwx",
+        "xxw",
+        "xxx"
+      ],
+      "label": "navigator state"
+    },
+    "map": {
+      "cells": [
+        "wwz",
+        "wxy",
+        "wxz",
+        "xwy",
+        "xwz",
+        "xxy",
+        "xxz",
+        "wyx",
+        "wzw",
+        "wzx",
+        "xyw",
+        "xyx",
+        "xzw",
+        "xzx",
+        "wyz",
+        "wzy",
+        "wzz",
+        "xyy",
+        "xyz",
+        "xzy",
+        "xzz",
+        "ywx",
+        "yxw",
+        "yxx",
+        "zww",
+        "zwx",
+        "zxw",
+        "zxx",
+        "ywz",
+        "yxy",
+        "yxz",
+        "zwy",
+        "zwz",
+        "zxy",
+        "zxz"
+      ],
+      "label": "navigator map"
+    },
+    "axis-y": {
+      "cells": [
+        "wwy",
+        "wyw",
+        "wyy",
+        "yww",
+        "ywy"
+      ],
+      "label": "vertical rotation rail"
+    },
+    "axis-x": {
+      "cells": [
+        "yzw",
+        "yzx",
+        "zyw",
+        "zyx"
+      ],
+      "label": "horizontal rotation rail"
+    },
+    "hint": {
+      "cells": [
+        "yzy",
+        "yzz",
+        "zyy",
+        "zyz"
+      ],
+      "label": "navigation hint"
+    },
+    "help": {
+      "cells": [
+        "yyw",
+        "yyx",
+        "yyy",
+        "yyz"
+      ],
+      "label": "navigation help control"
+    },
+    "trigger": {
+      "cells": [
+        "zzw",
+        "zzx",
+        "zzy",
+        "zzz"
+      ],
+      "label": "navigation aperture control"
+    },
+    "guide": {
+      "cells": [
+        "wwz",
+        "wxy",
+        "wxz",
+        "xwy",
+        "xwz",
+        "xxy",
+        "xxz",
+        "wyx",
+        "wzw",
+        "wzx",
+        "xyw",
+        "xyx",
+        "xzw",
+        "xzx",
+        "wyz",
+        "wzy",
+        "wzz",
+        "xyy",
+        "xyz",
+        "xzy",
+        "xzz",
+        "ywx",
+        "yxw",
+        "yxx",
+        "zww",
+        "zwx",
+        "zxw",
+        "zxx",
+        "ywz",
+        "yxy",
+        "yxz",
+        "zwy",
+        "zwz",
+        "zxy",
+        "zxz"
+      ],
+      "label": "navigation guide overlay",
+      "z": 1
+    },
+    "original-reserve-left": {
+      "cells": [
+        "yy"
+      ],
+      "label": "background alongside legal"
+    },
+    "original-reserve-right": {
+      "cells": [
+        "zz"
+      ],
+      "label": "background alongside legal"
     }
   },
   "elements": {}

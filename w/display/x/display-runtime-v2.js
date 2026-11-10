@@ -38,7 +38,7 @@ function makeSiteUI(id,host,raw){
   if(state.meta.extent==='intrinsic')throw new Error('Display UI fields require address-derived extents');
   const carrier=()=>safeCarrier(host);
   function field(name,carrier=safeCarrier(host)){
-    const mode=UI.orientation(innerWidth,innerHeight),info=UI.carrierField(state,name,mode);
+    const mode=UI.orientation(innerWidth,innerHeight),info=UI.fieldInfo(state,name);
     return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,variant:info.variant||'default',orientation:mode});
   }
   function apply(el,name){
@@ -221,16 +221,26 @@ function syncMembraneGrid(){
      if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
    }
  }
- const hb=ui.state.fields.header?ui.field('header').bounds:null,header=hb?{width:hb.w*innerWidth,height:hb.h*innerHeight}:null;
- if(header){
-   const rootStyle=document.documentElement.style;
-   const portrait=UI.orientation(innerWidth,innerHeight)==='portrait';
-   const statusWidth=portrait?Math.min(header.width,Membrane.topCapacity(innerWidth,innerHeight).width):header.width;
-   if(rootStyle?.getPropertyValue?.('--display-header-field-width')!==statusWidth+'px')rootStyle?.setProperty?.('--display-header-field-width',statusWidth+'px');
-   // The global edge turns with the membrane and spans the carrier's long
-   // axis. A site's short upright title field cannot clip those controls.
-   for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:(portrait?innerHeight:header.height)+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
+ const pocket=document.getElementById('mini-pocket');
+ if(pocket)for(const name of ['state','map','axis-y','axis-x','hint','help','trigger','guide']){
+   const f=Membrane.pocketRelative(name);
+   for(const [axis,value]of Object.entries({x:f.x,y:f.y,w:f.w,h:f.h})){
+     const k='--navigator-'+name+'-'+axis,v=(value*100)+'%';
+     if(pocket.style.getPropertyValue?.(k)!==v)pocket.style.setProperty?.(k,v);
+   }
  }
+ const top=Membrane.rect('top');
+ function boxIn(el,r,parent={left:0,top:0}){
+   if(!el)return;
+   for(const [k,v]of Object.entries({left:(r.left-parent.left)+'px',top:(r.top-parent.top)+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',maxWidth:'none',maxHeight:'none'}))if(el.style[k]!==v)el.style[k]=v;
+ }
+ boxIn(document.getElementById('display-header'),top);
+ const brand=Membrane.rect('brand'),language=Membrane.rect('language');
+ boxIn(document.getElementById('root-home'),brand,top);
+ boxIn(document.getElementById('display-language'),language,top);
+ for(const name of ['brand-mark','brand-name'])boxIn(document.getElementById('display-'+name),Membrane.rect(name),brand);
+ for(const name of ['language-invert','language-dot','language-de','language-slash','language-en'])boxIn(document.getElementById('display-'+name),Membrane.rect(name),language);
+ boxIn(document.getElementById('display-membrane-status'),Membrane.rect('status'));
 }
 function siteTitle(id){const root=surfaces.get(id)?.fieldProjection?.root;return root?.[W.language]||specs.get(id)?.title||root?.noun||id.replace(/^organism:/,'')}
 function handoffStatus(){

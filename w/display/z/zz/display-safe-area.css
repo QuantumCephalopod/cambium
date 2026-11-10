@@ -34,3 +34,14 @@ html[data-display-orientation="portrait"] [data-interlocutor] [data-ui-global-ri
 @media(max-width:760px){
   #display-membrane-status{left:18px;right:18px}
 }
+
+/* The header, its identity, status and each language contact are authored
+ * grid fields. Their addresses turn with the same long-axis projection. */
+html[data-display-orientation] #display-header{position:fixed;display:block;box-sizing:border-box;padding:0;overflow:hidden}
+html[data-display-orientation] #root-home,html[data-display-orientation] #display-language{position:absolute;display:block;box-sizing:border-box;padding:0;min-width:0;min-height:0;overflow:hidden}
+html[data-display-orientation] #display-brand-mark,html[data-display-orientation] #display-brand-name,
+html[data-display-orientation] #display-language>label,html[data-display-orientation] #display-language>span,html[data-display-orientation] #display-language>button{position:absolute;box-sizing:border-box;display:grid;place-items:center;margin:0;padding:0;min-width:0;min-height:0;overflow:hidden}
+html[data-display-orientation] #display-brand-mark{clip-path:polygon(50% 37.5%,62.5% 62.5%,37.5% 62.5%);background:var(--fg)}
+html[data-display-orientation] #display-brand-name{white-space:nowrap}
+html[data-display-orientation="portrait"] #display-brand-name{writing-mode:vertical-rl;text-orientation:upright}
+html[data-display-orientation] #display-membrane-status{position:fixed;box-sizing:border-box;min-width:0;min-height:0;overflow:hidden}

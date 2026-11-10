@@ -1,4 +1,5 @@
 'use strict';
+global.innerWidth=1024;global.innerHeight=768;
 const assert=require('assert');
 const T=require('./display-text-tissue.js');
 const press=[{x:100,y:100,r:50}];
