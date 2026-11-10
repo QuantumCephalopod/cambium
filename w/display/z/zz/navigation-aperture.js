@@ -5,7 +5,7 @@ const trigger=document.getElementById('mini-trigger');
 const pocket=document.getElementById('mini-pocket');
 if(!mini||!trigger||!pocket) throw new Error('global navigation aperture surface missing');
 const legal=document.getElementById('legal-links');
-const core=document.getElementById('mini-core'),map=document.getElementById('nav-map-input')||document.getElementById('navTwin');
+const core=document.getElementById('mini-core'),map=document.getElementById('navTwin');
 const helpButton=document.getElementById('mini-help-toggle'),helpBar=document.getElementById('mini-help-bar'),guide=document.getElementById('mini-guide');
 const hints=Object.fromEntries(['map','mapKeys','axis','keys'].map(key=>[key,document.getElementById('mini-hint-'+key)]));
 const mapHelp=document.getElementById('mini-map-help'),axisHelp=document.getElementById('mini-axis-help');
