@@ -7,7 +7,7 @@ permissions:
 jobs:
   browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v6
       - name: Build display
@@ -17,7 +17,9 @@ jobs:
           python3 -m pip install playwright==1.56.0
           python3 -m playwright install --with-deps chromium
       - name: Witness the common fields
-        run: python3 y/test-unified-format-browser.py --artifact _site --out _unified-format-witness
+        run: |
+          python3 y/test-unified-format-browser.py --artifact _site --out _unified-format-witness/canvas
+          python3 y/test-unified-format-browser.py --artifact _site --out _unified-format-witness/webgl --webgl
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@v4

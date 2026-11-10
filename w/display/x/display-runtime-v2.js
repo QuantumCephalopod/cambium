@@ -39,7 +39,7 @@ function makeSiteUI(id,host,raw){
   const carrier=()=>safeCarrier(host);
   function field(name,carrier=safeCarrier(host)){
     const mode=UI.orientation(innerWidth,innerHeight),info=UI.carrierField(state,name,mode);
-    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,variant:info.variant||'default',orientation:mode});
+    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,flow:info.flow,variant:info.variant||'default',orientation:mode});
   }
   function apply(el,name){
     if(!el)throw new TypeError('UI field element required');
@@ -56,7 +56,7 @@ function makeSiteUI(id,host,raw){
     });
     Object.assign(el.style,{right:'auto',bottom:'auto',width:b.w*c.w+'px',height:b.h*c.h+'px',inlineSize:b.w*c.w+'px',blockSize:b.h*c.h+'px',minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overflowWrap:'anywhere',overscrollBehavior:'contain',contain:'layout paint'});
     if(el.dataset){
-      el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiBounded='true';
+      el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiFlow=info.flow;el.dataset.uiBounded='true';
       // Only a field actually meeting the viewport edge shares its global
       // occupied tissue. This remains geometric, independent of site names.
       const hostEdge=surfaceRect(host).right;

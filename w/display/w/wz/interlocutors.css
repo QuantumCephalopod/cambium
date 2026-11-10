@@ -43,3 +43,7 @@ html[data-composition="split"] header{z-index:32}
   [data-interlocutor] [data-ui-bounded="true"] :is(button,select,input[type="range"]){min-block-size:2.75rem;min-inline-size:min(2.75rem,100%)}
   .field-body-label{min-block-size:2.75rem}
 }
+
+/* A field that explicitly carries long-axis reading turns its text flow along
+ * with its existing cell; individual glyphs remain upright. */
+html[data-display-orientation="portrait"] [data-ui-flow="long-axis"]>*{writing-mode:vertical-rl;text-orientation:upright}

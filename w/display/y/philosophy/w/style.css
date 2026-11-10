@@ -2,12 +2,12 @@
 [data-interlocutor="organism:philosophy"] .philosophy-content{pointer-events:none}
 [data-interlocutor="organism:philosophy"] .philosophy-content>section{overflow:auto;overscroll-behavior:contain;pointer-events:auto}
 /* The root encounter lends a compact introduction; the field remains primary. */
-.philosophy-content>section{box-sizing:border-box;padding:.75rem}
-.philosophy-content>.root h1{font:520 var(--type-rp1)/1.24 var(--sans);letter-spacing:0;margin:0;text-wrap:balance}
-.philosophy-content>.root p{font:400 var(--type-r0)/1.55 var(--sans);letter-spacing:0;color:rgba(241,239,233,.48);max-width:100%;margin:10px 0 0}
-.philosophy-content>.locus .kicker{font:var(--type-rn2)/1.45 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(241,239,233,.42);margin-bottom:8px}
-.philosophy-content>.locus h1{font:520 var(--type-rp1)/1.24 var(--sans);letter-spacing:0;margin:0;text-wrap:balance}
-.philosophy-content>.locus p{font:400 var(--type-r0)/1.6 var(--sans);letter-spacing:0;color:rgba(241,239,233,.7);margin:10px 0 0;hyphens:auto}
+.philosophy-content>section{box-sizing:border-box;padding:var(--type-rn2)}
+.philosophy-content>.root h1{font:520 var(--type-rp1)/var(--type-rp2) var(--sans);letter-spacing:0;margin:0;text-wrap:balance}
+.philosophy-content>.root p{font:400 var(--type-r0)/var(--type-rp1) var(--sans);letter-spacing:0;color:rgba(241,239,233,.48);max-width:100%;margin:var(--type-rn2) 0 0}
+.philosophy-content>.locus .kicker{font:var(--type-rn2)/var(--type-rn1) var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(241,239,233,.42);margin-bottom:var(--type-rn2)}
+.philosophy-content>.locus h1{font:520 var(--type-rp1)/var(--type-rp2) var(--sans);letter-spacing:0;margin:0;text-wrap:balance}
+.philosophy-content>.locus p{font:400 var(--type-r0)/var(--type-rp1) var(--sans);letter-spacing:0;color:rgba(241,239,233,.7);margin:var(--type-rn2) 0 0;hyphens:auto}
 .philosophy-content>.locus p.question{color:rgba(170,255,229,.78)}
 /* framed by the locked droplette, the Description reads at full strength over its muted field */
 [data-display-lens-target="organism:philosophy|Description"] .philosophy-content>section :is(h1,p,.kicker){color:#f4f1ea;text-shadow:0 0 1px #000,0 1px 10px rgba(0,0,0,.85)}

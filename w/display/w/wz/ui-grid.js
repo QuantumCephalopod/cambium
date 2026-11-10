@@ -143,6 +143,10 @@
     const z=f?.z??0;
     if(!Number.isInteger(z)||z<0||z>255)throw new Error('field '+id+': z must be an integer from 0 to 255');
     const out={cells:canonicalCells(Array.isArray(f?.cells)?f.cells:[]),label:String(f?.label??id),z};
+    if(f?.flow!==undefined){
+      if(f.flow!=='long-axis')throw new Error('field '+id+': unsupported reading flow');
+      out.flow=f.flow;
+    }
     const info=spanInfo(state,out.cells);
     if(!info.ok)throw new Error('field '+id+': '+info.reason);
     out.cells=info.cells;
@@ -224,7 +228,8 @@
     const info=spanInfo(state,cells);
     if(!info.ok)throw new Error('field '+id+': '+info.reason);
     const priorZ=state.fields[id]?.z??0;
-    state.fields[id]={cells:info.cells,label:String(label??id),z:priorZ};
+    const priorFlow=state.fields[id]?.flow;
+    state.fields[id]={cells:info.cells,label:String(label??id),z:priorZ,...(priorFlow?{flow:priorFlow}:{})};
     for(const e of Object.values(state.elements)){
       if(e.field===id)e.cells=[...info.cells];
     }
@@ -267,7 +272,7 @@
     const f=state.fields[id];
     if(!f)throw new Error('unknown field '+id);
     const used=variant&&f.variants?.[variant]?variant:'';
-    return {...spanInfo(state,used?f.variants[used]:f.cells),id,label:f.label,z:f.z,variant:used};
+    return {...spanInfo(state,used?f.variants[used]:f.cells),id,label:f.label,z:f.z,flow:f.flow||'',variant:used};
   }
 
   // The carrier always projects the same authored field. Named alternatives

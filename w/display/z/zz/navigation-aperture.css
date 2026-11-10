@@ -1,6 +1,7 @@
 /* Every navigator box is supplied by its declared recursive field. */
 #mini{position:fixed;z-index:40;box-sizing:border-box;overflow:hidden;contain:layout paint;pointer-events:none;opacity:1;transform:none}
-#mini-pocket{position:absolute;left:var(--membrane-pocket-x);top:var(--membrane-pocket-y);width:var(--membrane-pocket-w);height:var(--membrane-pocket-h);right:auto;bottom:auto;box-sizing:border-box;overflow:hidden;contain:layout paint;pointer-events:none;opacity:0;background:linear-gradient(135deg,rgba(12,17,23,.72),rgba(4,7,11,.88));transition:opacity .22s ease}
+#mini-pocket{position:absolute;left:var(--membrane-pocket-x);top:var(--membrane-pocket-y);width:var(--membrane-pocket-w);height:var(--membrane-pocket-h);right:auto;bottom:auto;box-sizing:border-box;overflow:hidden;contain:layout paint;pointer-events:none;opacity:0;background:none;transition:opacity .22s ease}
+html[data-composition="split"] #mini-pocket,html[data-composition="grid"] #mini-pocket{background:linear-gradient(135deg,rgba(12,17,23,.72),rgba(4,7,11,.88))}
 #mini[data-aperture="open"] #mini-pocket{opacity:1;pointer-events:auto}
 #mini-core{position:absolute;inset:0;min-width:0;min-height:0}
 #mini-instrument,#mini-help-bar{display:contents}
