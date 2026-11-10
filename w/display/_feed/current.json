@@ -25,16 +25,13 @@
   },
   "home": {
     "changed_scope": [
-      "z/zz/display-glass.js",
-      "z/zz/display-glass.test.cjs",
-      "z/zz/display-glass-observation.test.cjs",
-      "../../y/test-unified-format-browser.py",
-      "RITUALS/organism/RITUAL.md"
+      "../../y/test-membrane-grid.py",
+      "../../y/test-bounded-layout.py"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "PASS / BOUNDED — shared glass reading clearance now derives from half the same authored cell; the overall format remains open."
+    "outcome": "PARTIAL / OPEN — browser checks now reference authored fields while preserving explicit evidence of remaining header and coverage issues."
   },
-  "observed_at_utc": "2026-11-10T02:28:17.874902Z",
+  "observed_at_utc": "2026-11-10T02:35:10.274024Z",
   "owner": "display",
   "phenotype": {
     "w": {
@@ -74,7 +71,7 @@
       }
     }
   },
-  "reflected_home_event": "display-grid-glass-clearance-20261110",
+  "reflected_home_event": "display-grid-checks-and-open-coverage-20261110",
   "rituals": [
     {
       "path": "RITUALS/navigation/RITUAL.md",
@@ -106,6 +103,6 @@
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "57acb56af2fe9365190abe403772d2fadd2ab5b0"
+    "source_revision": "f24819bf92c1c83e88f1fd9d80f2d5c01f8fd009"
   }
 }
