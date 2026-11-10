@@ -44,11 +44,8 @@ try:
        const el=document.getElementById(id);return {id,field:el.getAttribute('data-display-ui-field'),actual:toBox(el.getBoundingClientRect()),expected:state[el.getAttribute('data-display-ui-field')]};
       });
       const glass=SSSDisplayGlass.collect().map(s=>({id:s.id,ids:s.ids,rect:s.rect}));
-      const map=toBox(document.getElementById('navTwin').getBoundingClientRect());
+      const mapCanvas=document.getElementById('navTwin'),map=toBox(mapCanvas.getBoundingClientRect()),mapDeclared=SSSDisplayMembraneGrid.nested('map'),mapBacking=[mapCanvas.width,mapCanvas.height];
       const instruments=Object.fromEntries(['navTwin','axis-x','axis-y','mini-help'].map(id=>[id,toBox(document.getElementById(id).getBoundingClientRect())]));
-      const chrome=Number(document.getElementById('mini').dataset.mapChrome)||0;
-      const core=document.getElementById('mini-core'),cs=getComputedStyle(core),instrument=document.getElementById('mini-instrument');
-      const mapRoom=Math.max(0,core.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap));
       const timeline=document.querySelector('[data-interlocutor]:not([hidden]) [data-ui-field="timeline"]');
       const siteTargets=timeline?[...timeline.querySelectorAll('button,input,a')].map(el=>{
        const r=el.getBoundingClientRect(),p=timeline.getBoundingClientRect();
@@ -77,9 +74,8 @@ try:
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
       const oldBack=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'ascent').bounds,state.orientation);
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.carrierField(state.inner,name,state.orientation).bounds,state.orientation)]));
-      return {state:{top:state.top,compass:state.compass,pocket:state.pocket,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,oldBack,nested,fields,controls,glass,map,instruments,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
+      return {state:{top:state.top,compass:state.compass,pocket:state.pocket,ascent:state.ascent,outer:state.outer,inner:state.inner},topAddress,oldBack,nested,fields,controls,glass,map,mapDeclared,mapBacking,instruments,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
-     assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
      assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
      for f in measured['fields']:
       for key in ['left','top','width','height']:assert abs(f['actual'][key]-f['expected'][key])<1.1,(site,f,key)
@@ -112,9 +108,9 @@ try:
      else:assert abs(measured['state']['top']['bottom']-(measured['topAddress']['y']+measured['topAddress']['h'])*height)<.5
      compass=measured['state']['compass']
      pocket=next(c['expected'] for c in measured['controls'] if c['field']=='pocket')
-     usable=min(pocket['width']/2,max(0,pocket['height']-measured['chrome']),measured['mapRoom'])
-     assert measured['map']['width']>=usable-1,(site,measured['map'],compass,pocket,measured['chrome'])
-     assert abs(measured['map']['width']-measured['map']['height'])<1.1,(site,measured['map'])
+     for key in ['left','top','width','height']:
+      assert abs(measured['map'][key]-measured['mapDeclared'][key])<1.1,(site,'map left its declared cell',measured['map'],measured['mapDeclared'])
+     assert abs(measured['mapBacking'][0]/measured['mapBacking'][1]-measured['map']['width']/measured['map']['height'])<.02,(site,'map projection is stretched',measured['map'],measured['mapBacking'])
      previous=measured['oldBack']
      for key,value in [('left',previous['x']*width),('top',previous['y']*height),('width',previous['w']*width),('height',previous['h']*height)]:
       assert abs(pocket[key]-value)<.5,(site,'compass did not take the original Back field',pocket,previous)
@@ -133,13 +129,14 @@ try:
      feedback=page.evaluate('''()=>{
       document.getElementById('site-state').textContent='ENCOUNTER UNAVAILABLE · RETRY THE ENCOUNTER';
       SSSDisplaySafeArea.refresh();
-      const status=document.getElementById('display-membrane-status').getBoundingClientRect(),state=SSSDisplayMembraneGrid.snapshot();
-      const result={left:status.left,bottom:status.bottom,top:state.top,fit:state.fit,inset:SSSDisplayGlass.readInset()};
+      const status=document.getElementById('display-membrane-status').getBoundingClientRect(),state=SSSDisplayMembraneGrid.snapshot(),declared=SSSDisplayMembraneGrid.rect('status');
+      const result={status:{left:status.left,top:status.top,width:status.width,height:status.height},declared,top:state.top};
       document.getElementById('site-state').textContent='';SSSDisplaySafeArea.refresh();
       result.restored=SSSDisplayMembraneGrid.snapshot().outer.fields.top.cells;
       return result;
      }''')
-     assert feedback['fit']['top'] and (feedback['left']-feedback['inset']>=feedback['top']['left']-.5 if height>width else feedback['bottom']+feedback['inset']<=feedback['top']['bottom']+.5),(site,feedback)
+     assert all(abs(feedback['status'][k]-feedback['declared'][k])<.5 for k in ['left','top','width','height']),(site,'feedback left its authored cell',feedback)
+     assert all(abs(feedback['top'][k]-measured['state']['top'][k])<.5 for k in ['left','top','width','height']),(site,'feedback changed the header field',feedback)
      assert feedback['restored']==measured['state']['outer']['fields']['top']['cells'],(site,feedback)
      measured['feedback']=feedback
      page.locator('#mini-trigger').click();page.locator('#mini-trigger').click()

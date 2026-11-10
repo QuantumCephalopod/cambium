@@ -93,6 +93,7 @@ try:
                             page.evaluate("document.getElementById('navTwin').addEventListener('pointerdown',e=>window.__mapTouch=e.pointerType,{once:true})")
                             page.touchscreen.tap(map_box['x']+2,map_box['y']+2)
                             assert page.evaluate('window.__mapTouch')=='touch', (stem,'map did not receive touch')
+                            assert page.locator('#mini-guide').is_hidden(), (stem,'map touch also opened the neighbouring help')
                         page.locator('#mini-help-toggle').tap()
                         assert page.locator('#mini-guide').is_visible(), stem
                         page.locator('#mini-help-toggle').tap()

@@ -1,0 +1,29 @@
+name: grid probe
+on:
+  push:
+    branches: ['staging/mobile-display-unified-format-test-20261110']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - run: python3 y/site-public.py --artifact _site
+      - run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Membrane witness
+        continue-on-error: true
+        run: python3 y/test-membrane-grid.py --artifact _site --out _grid/membrane
+      - name: Bounded layout witness
+        continue-on-error: true
+        run: python3 y/test-bounded-layout.py --artifact _site --out _grid/bounded --canvas2d
+      - name: Retain evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: grid-probe
+          path: _grid
+          if-no-files-found: warn

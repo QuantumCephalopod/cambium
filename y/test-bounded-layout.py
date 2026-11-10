@@ -103,14 +103,13 @@ try:
       else:
        page.locator(host+' .crawlerbait-modes button').nth(1).click()
       assert bounds(page,timeline)==before,'selection/mode moved the declared footer';close(bounds(page,description),'description',w,h,identity=identity)
-     page.wait_for_function("(()=>{const m=document.getElementById('navTwin').getBoundingClientRect(),c=document.getElementById('mini-core');return Math.abs(m.width-m.height)<1.1&&c.scrollHeight<=c.clientHeight+1})()",timeout=10000)
-     map_box=bounds(page,'#navTwin');assert abs(map_box['width']-map_box['height'])<1.1,('distorted map',map_box)
-     compass_box=bounds(page,'#mini');pocket_box=bounds(page,'#mini-pocket')
-     chrome=page.locator('#mini').evaluate('e=>Number(e.dataset.mapChrome)||0')
-     map_room=page.evaluate('''()=>{const core=document.getElementById('mini-core'),s=getComputedStyle(core),instrument=document.getElementById('mini-instrument');return Math.max(0,core.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap))}''')
-     expected_usable=min(pocket_box['width']/2,max(0,pocket_box['height']-chrome),map_room)
-     assert map_box['width']>=expected_usable-1,('the map fits but is too small to use',map_box,compass_box,pocket_box,chrome)
-     records['square_map']=map_box
+     page.wait_for_function("document.getElementById('navTwin').getBoundingClientRect().width>0",timeout=10000)
+     map_box=bounds(page,'#navTwin');declared=page.evaluate("SSSDisplayMembraneGrid.nested('map')")
+     for edge in ('x','y','width','height'):
+      target={'x':'left','y':'top'}.get(edge,edge)
+      assert abs(map_box[edge]-declared[target])<1.1,('map left its declared field',map_box,declared)
+     assert page.locator('#navTwin').evaluate('''e=>{const r=e.getBoundingClientRect();return Math.abs(e.width/e.height-r.width/r.height)<.02}'''),('map projection stretched',map_box)
+     records['authored_map']=map_box
      records['compass_variant']=compass_variant
      mini=bounds(page,'#mini')
      if page.locator('#mini-pocket').get_attribute('aria-hidden')=='true':page.locator('#mini-trigger').click()
