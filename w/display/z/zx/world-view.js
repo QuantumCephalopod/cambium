@@ -136,6 +136,10 @@ twin.addEventListener('pointerdown',e=>{
   if(group){zoomMap(2,{x:group.x,y:group.y});e.preventDefault()}
   else if(target){requestGlobalTarget(target,'global-minimap',{x:e.clientX,y:e.clientY});e.preventDefault()}
 });
+// The actual selection happens on pointerdown. Also expose the canvas as a
+// click target to browser touch hit-testing, so a neighbouring button does
+// not acquire a tap whose point lies inside the authored map field.
+twin.addEventListener('click',e=>e.preventDefault());
 
 const axes={x:document.getElementById('axis-x'),y:document.getElementById('axis-y')};
 const AXIS_SETTLE_MS=520,AXIS_SETTLE_EPS=.018;
