@@ -226,3 +226,5 @@ Layout return2026-10-29: The compass consumes the current declared compass field
 ## Shared format candidate — 2026-11-10
 
 The navigator map and each control use declared cells, with the pocket and Back retaining their authored exchange. A canvas fills its rectangular map cell, while its body projection remains undistorted. Rails turn with the carrier and keep their pointer/keyboard direction. Historical square-container and measured-chrome statements above describe the prior carrier. The candidate still needs its complete mobile and graphics witnesses; an address match alone does not establish readable or touch-usable content.
+
+A native touch that the browser redirects to a neighbouring button while its exact hit point is the map is delivered to the map at that same point; the displaced button click is suppressed. Actual button points remain buttons. This changes contact arbitration, not any authored cell, and the 2026-11-10 witness is limited to the recorded single-touch Chromium case.
