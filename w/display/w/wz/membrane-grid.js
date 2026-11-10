@@ -1,7 +1,5 @@
-/* Display's UI fields use the same recursive address algebra as site fields.
- * Readable tissue supplies a fit constraint; the realized addresses, never a
- * stored pixel edge or a viewport breakpoint, supply the resulting rectangles.
- */
+/* Display-owned screen fields and the navigator's nested fields are authored
+ * in the same recursive grid. Observation never resizes or replaces an address. */
 (function(root,factory){
   'use strict';
   const UI=typeof module==='object'&&module.exports?require('./ui-grid.js'):root.SSSUIGrid;
@@ -16,176 +14,82 @@
 })(typeof globalThis==='object'?globalThis:this,function(UI){
   'use strict';
   if(!UI)throw new Error('recursive UI-grid algebra is required');
-  function clone(x){return JSON.parse(JSON.stringify(x))}
-  function num(v){v=Number(v);return Number.isFinite(v)?v:0}
-  function box(left,top,width,height){return {left,top,width,height,right:left+width,bottom:top+height}}
-  function projection(b,parent){return box(parent.left+b.x*parent.width,parent.top+b.y*parent.height,b.w*parent.width,b.h*parent.height)}
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const num=v=>Number.isFinite(Number(v))?Number(v):0;
+  const box=(left,top,width,height)=>({left,top,width,height,right:left+width,bottom:top+height});
+  const projection=(b,p)=>box(p.left+b.x*p.width,p.top+b.y*p.height,b.w*p.width,b.h*p.height);
   function address(x,y,depth){
     let out='';
-    for(let i=depth-1;i>=0;i--){
-      const div=2**i,qx=Math.floor(x/div)%2,qy=Math.floor(y/div)%2;
-      out+=qy?(qx?'z':'y'):(qx?'x':'w');
-    }
+    for(let i=depth-1;i>=0;i--){const div=2**i,qx=Math.floor(x/div)%2,qy=Math.floor(y/div)%2;out+=qy?(qx?'z':'y'):(qx?'x':'w')}
     return out;
   }
-  function realize(base,changes){
+  function realize(base,name,cells){
     const s=clone(base),splits=new Set(s.splits);
-    for(const [name,cells] of Object.entries(changes)){
-      if(!s.fields[name])throw new Error('unaddressed membrane field '+name);
-      for(const cell of cells)for(let i=0;i<cell.length;i++)splits.add(cell.slice(0,i));
-      s.fields[name].cells=cells;
-    }
-    s.splits=[...splits];return UI.normalizeState(s);
-  }
-  function topBand(base,height,headerBottom,statusBottom,statusHeight,inset,limit,quantum){
-    if(height<=0)return base;
-    const seed=UI.spanInfo(base,base.fields.top.cells),seedTop=seed.bounds.y*height;
-    const need=Math.max(0,headerBottom-seedTop)+Math.max(0,inset);
-    if(need<=0)return base;
-    let depth=seed.depth,unit=height/(2**depth),scale=1;
-    // The next realized split is admitted while the actual reading body fits.
-    // Floating point resolution is the carrier's finite bound, not a fixed rank.
-    while(unit/2>=need&&unit/2>0&&Number.isSafeInteger(2**(depth+1))){unit/=2;depth++;scale*=2}
-    const withStatus=Math.max(need,statusHeight>0?Math.max(0,statusBottom-seedTop)+Math.max(0,inset):0);
-    let rows=Math.min((seed.maxY-seed.minY+1)*scale,Math.ceil(need/unit));
-    if(withStatus>rows*unit){
-      // The same fit relation recurs for the actual status tissue. Its own
-      // height, not a viewport breakpoint or a fixed rank, earns refinement.
-      while(statusHeight>0&&unit/2>=statusHeight&&unit/2>0&&Number.isSafeInteger(2**(depth+1))){unit/=2;depth++;scale*=2}
-      rows=Math.min((seed.maxY-seed.minY+1)*scale,Math.ceil(withStatus/unit));
-      // If a real neighbouring reading field would lose its first line,
-      // refine the same span further until both actual bodies fit. The
-      // rendered device pixel is the carrier's finite resolution.
-      while(Number.isFinite(limit)&&seedTop+rows*unit>limit&&seedTop+withStatus<limit&&unit/2>=quantum&&Number.isSafeInteger(2**(depth+1))){
-        unit/=2;depth++;scale*=2;rows=Math.min((seed.maxY-seed.minY+1)*scale,Math.ceil(withStatus/unit));
-      }
-    }
-    const cells=[],firstX=seed.minX*scale,lastX=(seed.maxX+1)*scale,firstY=seed.minY*scale;
-    for(let y=firstY;y<firstY+rows;y++)for(let x=firstX;x<lastX;x++)cells.push(address(x,y,depth));
-    return realize(base,{top:cells});
-  }
-  function triggerState(base,compass,read,mode){
-    if(!read||read.width<=0||read.height<=0)return base;
-    // Fit the real input in its existing, orientation-specific trigger span.
-    // If that span is too small, its containing address supplies the least
-    // enlargement; deeper addresses are admitted only while the input fits.
-    const variant=mode==='portrait'&&base.fields.trigger.variants?.upright?'upright':'';
-    const seed=UI.fieldInfo(base,'trigger',variant);
-    let candidate=seed.cells.find(cell=>{const c=UI.coord(cell);return c.x===seed.maxX&&c.y===seed.maxY}),chosen=null;
-    const fits=cell=>{const b=UI.bounds(cell);return b.w*compass.width+1e-6>=read.width&&b.h*compass.height+1e-6>=read.height};
-    if(seed.cells.length===1)while(candidate&&!fits(candidate))candidate=candidate.slice(0,-1);
-    for(;;){
-      if(!fits(candidate))break;
-      chosen=candidate;
-      if(!Number.isSafeInteger(2**(candidate.length+1)))break;
-      candidate+='z';
-    }
-    if(chosen===null)return base;
-    if(!variant)return realize(base,{trigger:[chosen]});
-    const s=clone(base),splits=new Set(s.splits);
-    for(let i=0;i<chosen.length;i++)splits.add(chosen.slice(0,i));
-    s.splits=[...splits];s.fields.trigger.variants[variant]=[chosen];return UI.normalizeState(s);
+    if(!s.fields[name])throw new Error('unaddressed membrane field '+name);
+    for(const cell of cells)for(let i=0;i<cell.length;i++)splits.add(cell.slice(0,i));
+    s.fields[name].cells=cells;s.splits=[...splits];return UI.normalizeState(s);
   }
   function create(membrane,navigator){
-    const base=UI.normalizeState(membrane),navBase=UI.normalizeState(navigator);
-    for(const name of ['top','compass','ascent'])if(!base.fields[name])throw new Error('missing membrane field '+name);
-    for(const name of ['pocket','help','trigger','legal'])if(!navBase.fields[name])throw new Error('missing navigator field '+name);
-    const topSeed=UI.fieldInfo(base,'top').bounds;
-    if(topSeed.x!==0||topSeed.y!==0||topSeed.w!==1)throw new Error('global top field must span the upper viewport');
-    let outer=base,inner=navBase,viewport=box(0,0,0,0),compassInfo=null,compassState=null,topKey='',triggerKey='',fit={top:true,trigger:true};
-    const mode=()=>UI.orientation(viewport.width,viewport.height);
-    function ascentCells(compass){
-      // The compass lends its full cross-axis span. The top liquid and the
-      // compass bound the available return region in the same logical field;
-      // orientation turns that one relation together with everything else.
-      const top=UI.spanInfo(outer,outer.fields.top.cells),c=compass.bounds;
-      const depth=Math.max(top.depth,compass.depth),n=2**depth;
-      const x0=Math.round(c.x*n),x1=Math.round((c.x+c.w)*n);
-      const y0=Math.ceil((top.bounds.y+top.bounds.h)*n-1e-9),y1=Math.round(c.y*n);
-      if(x1<=x0||y1<=y0){
-        // No free strip exists on this actual carrier; retain the authored
-        // compact instrument rather than erasing its accessible return.
-        return UI.fieldInfo(base,'ascent','compact').cells;
-      }
-      const cells=[];
-      for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)cells.push(address(x,y,depth));
-      return cells;
+    const base=UI.normalizeState(membrane),inner=UI.normalizeState(navigator);
+    const headerNames=['brand','status','language','brand-mark','brand-name','language-invert','language-dot','language-de','language-slash','language-en'];
+    for(const name of ['top','compass','ascent','type-unit',...headerNames])if(!base.fields[name])throw new Error('missing membrane field '+name);
+    const pocketFields=['state','map','axis-y','axis-x','hint','help','trigger'];
+    for(const name of ['pocket','legal','guide','original-reserve-left','original-reserve-right',...pocketFields])if(!inner.fields[name])throw new Error('missing navigator field '+name);
+    const typeRef=UI.fieldInfo(base,'type-unit');
+    if(typeRef.cells.length!==1)throw new Error('the shared type reference must be one realized cell');
+    const typeUnitRatio=typeRef.bounds.w;
+    const headerCells=['brand','status','language'].flatMap(name=>base.fields[name].cells);
+    if(headerCells.length!==16||new Set(headerCells).size!==16||headerCells.some(c=>!base.fields.top.cells.includes(c)))throw new Error('header fields must exactly partition the authored top');
+    function partition(parent,names){
+      const p=UI.fieldInfo(base,parent).bounds,rs=names.map(n=>UI.fieldInfo(base,n).bounds);
+      const inside=r=>r.x>=p.x&&r.y>=p.y&&r.x+r.w<=p.x+p.w&&r.y+r.h<=p.y+p.h;
+      const overlaps=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
+      if(rs.some(r=>!inside(r))||rs.some((a,i)=>rs.slice(i+1).some(b=>overlaps(a,b)))||rs.reduce((s,r)=>s+r.w*r.h,0)!==p.w*p.h)throw new Error(parent+' children must exactly partition their parent');
     }
+    partition('brand',['brand-mark','brand-name']);
+    partition('language',['language-invert','language-dot','language-de','language-slash','language-en']);
+    // The pocket is a declared partition; the guide deliberately overlays map.
+    const cells=pocketFields.flatMap(name=>inner.fields[name].cells);
+    if(cells.some(c=>c.length!==3)||new Set(cells).size!==64||cells.length!==64)throw new Error('navigator pocket must explicitly partition every rank-three cell');
+    const originalCells=['pocket','legal','original-reserve-left','original-reserve-right'].flatMap(name=>inner.fields[name].cells);
+    if(originalCells.some(c=>c.length!==2)||originalCells.length!==16||new Set(originalCells).size!==16)throw new Error('original navigator field must explicitly account for every rank-two cell');
+    if(inner.fields.guide.cells.join(',')!==inner.fields.map.cells.join(',')||inner.fields.guide.z<=inner.fields.map.z)throw new Error('navigator guide must explicitly overlay its map');
+    let outer=base,viewport=box(0,0,0,0),compassInfo=null,compassState=null;
+    const mode=()=>UI.orientation(viewport.width,viewport.height);
     function useCompass(state,field){
       if(!state||!field)return;
       const check=UI.spanInfo(state,field.cells);
       if(!check.ok)throw new Error('global compass has no realized field');
       if(compassState===state&&compassInfo?.cells.join(',')===check.cells.join(','))return;
-      compassState=state;compassInfo=check;
-      outer=realize(outer,{compass:check.cells,ascent:ascentCells(check)});
+      compassState=state;compassInfo=check;outer=realize(base,'compass',check.cells);
     }
-    function authoredRect(name){
-      const own=UI.orientBounds(UI.fieldInfo(outer,name).bounds,mode());
-      return projection(own,viewport);
-    }
-    // Exchange the two existing content fields. Legal keeps its original
-    // field; navigator controls follow the relocated pocket.
-    function rect(name){
-      return name==='ascent'?authoredNested('pocket'):authoredRect(name);
-    }
-    function topCapacity(width,height){
-      const area=box(0,0,Math.max(0,num(width)),Math.max(0,num(height)));
-      return projection(UI.orientBounds(UI.fieldInfo(base,'top').bounds,UI.orientation(area.width,area.height)),area);
-    }
-    function authoredRelative(name){return UI.orientBounds(UI.carrierField(inner,name,mode()).bounds,mode())}
-    function authoredNested(name){return projection(authoredRelative(name),authoredRect('compass'))}
+    function authoredRect(name){return projection(UI.orientBounds(UI.fieldInfo(outer,name).bounds,mode()),viewport)}
+    function pocketRelative(name){return UI.orientBounds(UI.fieldInfo(inner,name).bounds,mode())}
+    function authoredNested(name){return projection(pocketRelative(name),authoredRect('compass'))}
+    function rect(name){return name==='ascent'?authoredNested('pocket'):authoredRect(name)}
     function nested(name){
       if(name==='pocket')return authoredRect('ascent');
-      if(name==='help'||name==='trigger')return projection(authoredRelative(name),authoredRect('ascent'));
-      return authoredNested(name);
+      if(name==='legal')return authoredNested(name);
+      if(pocketFields.includes(name)||name==='guide')return projection(pocketRelative(name),authoredRect('ascent'));
+      throw new Error('unknown navigator field '+name);
     }
     function container(){
-      const a=authoredRect('compass'),b=authoredRect('ascent');
-      const left=Math.min(a.left,b.left),top=Math.min(a.top,b.top);
+      const a=authoredRect('compass'),b=authoredRect('ascent'),left=Math.min(a.left,b.left),top=Math.min(a.top,b.top);
       return box(left,top,Math.max(a.right,b.right)-left,Math.max(a.bottom,b.bottom)-top);
     }
-    function relative(name){
-      const a=nested(name),b=container();
-      return {x:b.width?(a.left-b.left)/b.width:0,y:b.height?(a.top-b.top)/b.height:0,
-        w:b.width?a.width/b.width:0,h:b.height?a.height/b.height:0};
-    }
+    function relative(name){const a=nested(name),b=container();return {x:b.width?(a.left-b.left)/b.width:0,y:b.height?(a.top-b.top)/b.height:0,w:b.width?a.width/b.width:0,h:b.height?a.height/b.height:0}}
+    function topCapacity(width,height){const area=box(0,0,Math.max(0,num(width)),Math.max(0,num(height)));return projection(UI.orientBounds(UI.fieldInfo(base,'top').bounds,UI.orientation(area.width,area.height)),area)}
     function role(value){return UI.orientEdges(value,mode())}
-    function logicalRead(r){
-      if(!r)return null;
-      return mode()==='portrait'?{bottom:viewport.width-num(r.left),height:num(r.width)}:r;
-    }
-    function reconcile(input={}){
-      viewport=box(0,0,Math.max(0,num(input.width)),Math.max(0,num(input.height)));
-      const rotated=mode()==='portrait',h=logicalRead(input.headerRect),s=logicalRead(input.statusRect),t=input.triggerRect;
-      const logicalHeight=rotated?viewport.width:viewport.height;
-      const limit=Number.isFinite(input.limit)?input.limit:Infinity,quantum=num(input.quantum)>0?num(input.quantum):Number.EPSILON;
-      const key=[mode(),logicalHeight,num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0,num(s?.height),num(input.inset),limit,quantum].join('|');
-      if(key!==topKey){
-        outer=topBand(base,logicalHeight,num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0,num(s?.height),num(input.inset),limit,quantum);
-        if(compassInfo)outer=realize(outer,{compass:compassInfo.cells,ascent:ascentCells(compassInfo)});
-        topKey=key;
-      }
-      const c=authoredRect('ascent'),logicalCompass=rotated?{width:c.height,height:c.width}:c,
-        logicalTrigger=rotated&&t?{width:t.height,height:t.width}:t,
-        inputKey=[mode(),c.width,c.height,num(t?.width),num(t?.height)].join('|');
-      if(inputKey!==triggerKey){inner=triggerState(navBase,logicalCompass,logicalTrigger,mode());triggerKey=inputKey}
-      const topBounds=UI.fieldInfo(outer,'top').bounds,trigger=nested('trigger');
-      fit={top:Math.max(num(h?.bottom),s&&num(s.height)>0?num(s.bottom):0)+num(input.inset)<=(topBounds.y+topBounds.h)*logicalHeight,
-        trigger:!t||(num(t.width)<=trigger.width&&num(t.height)<=trigger.height)};
-      return snapshot();
-    }
+    function reconcile(input={}){viewport=box(0,0,Math.max(0,num(input.width)),Math.max(0,num(input.height)));return snapshot()}
     function surfaceRect(el,raw){
       const name=el?.getAttribute?.('data-display-ui-field');
-      if(name==='top'||name==='ascent')return rect(name);
-      if(name==='pocket'||name==='help'||name==='trigger'||name==='legal')return nested(name);
+      if(['top','ascent',...headerNames].includes(name))return rect(name);
+      if(name==='pocket'||name==='legal'||pocketFields.includes(name)||name==='guide')return nested(name);
       if(el?.dataset?.uiBounded==='true')return raw;
       throw new Error('Display surface lacks a realized recursive UI field');
     }
-    function snapshot(){
-      return {outer,inner,viewport:{...viewport},orientation:mode(),compassState,compassInfo,fit:{...fit},
-        top:rect('top'),compass:rect('compass'),container:container(),ascent:rect('ascent'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')};
-    }
-    return Object.freeze({useCompass,reconcile,rect,topCapacity,nested,relative,role,surfaceRect,snapshot});
+    function snapshot(){return {outer,inner,viewport:{...viewport},orientation:mode(),compassState,compassInfo,top:rect('top'),compass:rect('compass'),container:container(),ascent:rect('ascent'),pocket:nested('pocket'),help:nested('help'),trigger:nested('trigger'),legal:nested('legal')}}
+    return Object.freeze({typeUnitRatio,useCompass,reconcile,rect,topCapacity,nested,pocketRelative,relative,role,surfaceRect,snapshot});
   }
-  return Object.freeze({create,address,topBand,triggerState});
+  return Object.freeze({create,address});
 });

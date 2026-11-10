@@ -1,27 +1,8 @@
 :root{--display-safe-top:0px;--display-safe-right:0px;--display-safe-bottom:0px;--display-safe-left:0px}
 
-/* Actual pending/refused encounter feedback. Its physical size is measured by
- * display-safe-area.js; local sites receive the measured contract rather than
- * copying pixel offsets or learning current specimen identities. The mounted
- * live region has no occupied height while there is nothing to announce.
- */
-#display-membrane-status{position:fixed;z-index:16;left:28px;right:28px;top:var(--display-header-bottom);pointer-events:none;min-width:0}
+/* Pending/refused feedback occupies its declared field without moving it. */
+#display-membrane-status{position:fixed;z-index:16;pointer-events:none;min-width:0}
 #display-membrane-status #site-state{overflow-wrap:anywhere}
-
-/* In portrait the same upper logical field is the right screen edge. Its
- * actual controls remain upright and continue to reserve their measured rim. */
-html[data-display-orientation="portrait"] #display-header{
-  left:auto;right:0;top:0;bottom:0;width:max-content;height:auto;
-  flex-direction:column;justify-content:space-between;align-items:center;padding:.5rem .25rem;
-}
-html[data-display-orientation="portrait"] #display-header .lang{flex-direction:column;gap:.15rem}
-html[data-display-orientation="portrait"] #display-membrane-status{
-  left:auto;right:var(--display-header-depth,0px);top:.5rem;
-  width:max(0px,calc(var(--display-header-field-width,25vw) - var(--display-header-depth,0px) - .5rem));
-}
-html[data-display-orientation="portrait"] [data-interlocutor] [data-ui-global-right="true"]{
-  padding-block-start:.25rem;padding-inline-end:max(.75rem,var(--display-safe-right,0px));
-}
 
 /* Generic opt-in anchors for any autonomous site-holon. They are contract
  * surfaces only; Display never names or interprets the site using them.
@@ -31,6 +12,13 @@ html[data-display-orientation="portrait"] [data-interlocutor] [data-ui-global-ri
 [data-display-safe-anchor="bottom-left"]{bottom:var(--display-safe-bottom)!important;left:var(--display-safe-left)!important}
 [data-display-safe-anchor="bottom-right"]{bottom:var(--display-safe-bottom)!important;right:var(--display-safe-right)!important}
 
-@media(max-width:760px){
-  #display-membrane-status{left:18px;right:18px}
-}
+/* The header, its identity, status and each language contact are authored
+ * grid fields. Their addresses turn with the same long-axis projection. */
+html[data-display-orientation] #display-header{position:fixed;display:block;box-sizing:border-box;padding:0;overflow:hidden}
+html[data-display-orientation] #root-home,html[data-display-orientation] #display-language{position:absolute;display:block;box-sizing:border-box;padding:0;min-width:0;min-height:0;overflow:hidden}
+html[data-display-orientation] #display-brand-mark,html[data-display-orientation] #display-brand-name,
+html[data-display-orientation] #display-language>label,html[data-display-orientation] #display-language>span,html[data-display-orientation] #display-language>button{position:absolute;box-sizing:border-box;display:grid;place-items:center;margin:0;padding:0;min-width:0;min-height:0;overflow:hidden}
+html[data-display-orientation] #display-brand-mark{clip-path:polygon(50% 37.5%,62.5% 62.5%,37.5% 62.5%);background:var(--fg)}
+html[data-display-orientation] #display-brand-name{white-space:nowrap}
+html[data-display-orientation="portrait"] #display-brand-name{writing-mode:vertical-rl;text-orientation:upright}
+html[data-display-orientation] #display-membrane-status{position:fixed;box-sizing:border-box;min-width:0;min-height:0;overflow:hidden}

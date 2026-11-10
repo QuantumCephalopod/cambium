@@ -39,3 +39,8 @@ Compass return2026-10-31: the former quarter-height compass declaration collapse
 ## Upright mobile field — 2026-11-09
 
 The owner declares upright description and controls spans for the turned carrier. The title uses the next existing Display type rank in that orientation, and safe centring leaves its beginning visible if content needs scrolling. Source wording, legal document, destinations and the inherited compass remain unchanged; ordinary address spans remain available in the wide carrier.
+
+
+## Shared format candidate — 2026-11-10
+
+The ordinary title and control field addresses are used through the turn. Within the existing controls field, section selection, reading position and orthogonal reset each have a declared nested cell; the reading direction follows the long axis. The earlier `upright` selection above is historical. Browser interaction in a bounded candidate does not by itself close narrow visual readability or the complete formatting request; notice wording and destinations are unchanged.

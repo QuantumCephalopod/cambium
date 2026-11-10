@@ -563,3 +563,8 @@ The 2026-10-28 return completed only the then-new bounded overview Source/Holon 
 ## Upright mobile field — 2026-11-09
 
 The Papers owner declares upright physiology, HUD and label spans for the turned carrier. The physiology button wraps within its own field; its existing action, source wording, organisms and camera physiology remain unchanged. Ordinary spans remain available in the wide carrier. These presentation changes do not execute the separate source-runtime freshness operation.
+
+
+## Shared format candidate — 2026-11-10
+
+Papers' HUD content and Source origin use explicitly declared subfields, and cached name/being type is rebuilt from the current shared rank when the carrier changes without clearing the selected simplex or Source aperture. The ordinary fields are used through the turn; the earlier `upright` selection above is historical. Existing lens reading-region and text-fit decisions remain Papers-local and are not yet the common grid invariant; selected Source/reading usability remains unresolved.

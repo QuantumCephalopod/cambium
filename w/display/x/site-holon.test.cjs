@@ -3,6 +3,20 @@
 const assert=require('node:assert/strict');
 const H=require('./site-holon.js');
 const F=require('../z/zy/site-fold.js');
+const UI=require('../w/wz/ui-grid.js');
+
+// Population, not viewport aspect or square-root packing, determines a
+// complete recursive composition. The same addresses turn as one carrier.
+for(let count=1;count<=40;count++){
+ const entries=Array.from({length:count},(_,i)=>({interlocutorId:'site:'+i}));
+ const wide=H.composeInterlocutors(entries,{width:1280,height:800}),tall=H.composeInterlocutors(entries,{width:800,height:1280});
+ assert.deepEqual(wide.layout,tall.layout,'orientation cannot replace population addresses');
+ const rs=wide.layout.map(x=>x.bounds),area=rs.reduce((s,r)=>s+r.w*r.h,0);
+ assert.equal(area,1,'all of the shared carrier is assigned');
+ const overlap=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
+ for(let i=0;i<rs.length;i++)for(let j=i+1;j<rs.length;j++)assert(!overlap(rs[i],rs[j]),'population bodies must not overlap');
+ for(const r of rs){const t=UI.orientBounds(r,'portrait');assert.equal(t.w*t.h,r.w*r.h)}
+}
 
 const a=H.resolveAddress('xyw'), b=H.resolveAddress('xwy');
 assert.equal(a.locus,b.locus,'reciprocal addresses must coalesce to one locus');

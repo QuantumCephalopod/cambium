@@ -59,6 +59,17 @@ for(const [width,height] of [[1280,800],[390,844]])for(const pointerType of ['mo
   axis.keyup();assert.equal(+axis.attrs['aria-valuenow'],0,'keyboard release stops the axis without inventing a pointer latch');
 }
 console.log('PASS — wide/narrow mouse/touch520ms swell/lock/rearm/cancel and keyboard/reduced-motion contract');
+{
+ const f=boot('',{width:390,height:844});f.document.documentElement.dataset.displayOrientation='portrait';
+ f.W.setScope({id:'main',projection:{root:{noun:'root',children:{}}}});
+ const x=f.elements.get('axis-x'),y=f.elements.get('axis-y'),r=x.getBoundingClientRect();
+ const event={button:0,pointerId:4,clientX:r.left+r.width/2,clientY:r.top+r.height*.8,preventDefault(){}};
+ x.pointerdown(event);assert(+x.attrs['aria-valuenow']>0,'turned x rail increases downward');assert.equal(x.attrs['aria-orientation'],'vertical');
+ x.pointercancel(event);x.keydown({key:'ArrowDown',preventDefault(){}});assert(+x.attrs['aria-valuenow']>0);x.keyup();
+ const ry=y.getBoundingClientRect();y.pointerdown({...event,clientX:ry.left+ry.width*.8,clientY:ry.top+ry.height/2});
+ assert(+y.attrs['aria-valuenow']>0,'turned y rail increases to the right');assert.equal(y.attrs['aria-orientation'],'horizontal');y.pointercancel(event);
+}
+console.log('PASS — pointer and keyboard rails turn with their declared portrait cells');
 
 /* The compass consumes the same host-space frame and clock as the actual field.
  * Semantic address loci remain unchanged; moving geometry is what gets picked. */

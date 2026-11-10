@@ -1,14 +1,198 @@
 {
   "schema": "sss.display.ui-grid.v2",
-  "meta": {"name": "display-membrane", "extent": "bounded"},
-  "splits": ["", "w", "x", "xx", "z", "zx", "zz"],
+  "meta": {
+    "name": "display-membrane",
+    "extent": "bounded"
+  },
+  "splits": [
+    "",
+    "w",
+    "x",
+    "z",
+    "ww",
+    "wx",
+    "xw",
+    "xx",
+    "xz",
+    "www",
+    "wwx",
+    "wxw",
+    "wxx",
+    "xww",
+    "xwx",
+    "xxw",
+    "xxx",
+    "xxy",
+    "xxz",
+    "xzw",
+    "xzx",
+    "xzy",
+    "xzz",
+    "wwww",
+    "xxww",
+    "xxwx",
+    "xxxw",
+    "xxxx",
+    "wwwww"
+  ],
   "fields": {
+    "type-unit": {
+      "cells": [
+        "wwwwww"
+      ],
+      "label": "common type reference"
+    },
     "top": {
-      "cells": ["ww", "wx", "xw", "xx"],
+      "cells": [
+        "wwww",
+        "wwwx",
+        "wwxw",
+        "wwxx",
+        "wxww",
+        "wxwx",
+        "wxxw",
+        "wxxx",
+        "xwww",
+        "xwwx",
+        "xwxw",
+        "xwxx",
+        "xxww",
+        "xxwx",
+        "xxxw",
+        "xxxx"
+      ],
       "label": "global upper liquid containing field"
     },
-    "compass": {"cells": ["zx", "zz"], "label": "global navigation"},
-    "ascent": {"cells": ["xz"], "variants": {"compact": ["xxy", "xxz"]}, "label": "return above navigation"}
+    "compass": {
+      "cells": [
+        "zx",
+        "zz"
+      ],
+      "label": "global navigation"
+    },
+    "ascent": {
+      "cells": [
+        "xxwy",
+        "xxwz",
+        "xxxy",
+        "xxxz",
+        "xxyw",
+        "xxyx",
+        "xxzw",
+        "xxzx",
+        "xxyy",
+        "xxyz",
+        "xxzy",
+        "xxzz",
+        "xzww",
+        "xzwx",
+        "xzxw",
+        "xzxx",
+        "xzwy",
+        "xzwz",
+        "xzxy",
+        "xzxz",
+        "xzyw",
+        "xzyx",
+        "xzzw",
+        "xzzx",
+        "xzyy",
+        "xzyz",
+        "xzzy",
+        "xzzz"
+      ],
+      "label": "authored field for compass after swap"
+    },
+    "brand": {
+      "cells": [
+        "wwww",
+        "wwwx",
+        "wwxw",
+        "wwxx",
+        "wxww",
+        "wxwx",
+        "wxxw",
+        "wxxx"
+      ],
+      "label": "global identity"
+    },
+    "status": {
+      "cells": [
+        "xwww",
+        "xwwx",
+        "xwxw",
+        "xwxx"
+      ],
+      "label": "encounter status"
+    },
+    "language": {
+      "cells": [
+        "xxww",
+        "xxwx",
+        "xxxw",
+        "xxxx"
+      ],
+      "label": "language and light"
+    },
+    "brand-mark": {
+      "cells": [
+        "wwww"
+      ],
+      "label": "identity mark"
+    },
+    "brand-name": {
+      "cells": [
+        "wwwx",
+        "wwxw",
+        "wwxx",
+        "wxww",
+        "wxwx",
+        "wxxw",
+        "wxxx"
+      ],
+      "label": "identity name"
+    },
+    "language-invert": {
+      "cells": [
+        "xxwww",
+        "xxwwx",
+        "xxwwy",
+        "xxwwz"
+      ],
+      "label": "light switch"
+    },
+    "language-dot": {
+      "cells": [
+        "xxwxw",
+        "xxwxy"
+      ],
+      "label": "language separator"
+    },
+    "language-de": {
+      "cells": [
+        "xxwxx",
+        "xxxww",
+        "xxwxz",
+        "xxxwy"
+      ],
+      "label": "German"
+    },
+    "language-slash": {
+      "cells": [
+        "xxxwx",
+        "xxxwz"
+      ],
+      "label": "language separator"
+    },
+    "language-en": {
+      "cells": [
+        "xxxxw",
+        "xxxxx",
+        "xxxxy",
+        "xxxxz"
+      ],
+      "label": "English"
+    }
   },
   "elements": {}
 }

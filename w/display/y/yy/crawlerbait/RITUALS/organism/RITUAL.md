@@ -328,3 +328,8 @@ The owner-declared compass keeps its ordinary wide address and lends `z` on port
 ## Upright mobile field — 2026-11-09
 
 The turned carrier uses source-declared upright header, description and timeline address spans, while the ordinary declarations and replay, source identities and controls remain intact. The header and description do not cover each other's touch targets. The upright timeline is exactly the same source-addressed span as Schattenseiten's and remains fixed during replay and selection. The common compass stays at its ordinary address; previous compass-variant wording above describes an earlier carrier rather than the current selection.
+
+
+## Shared format candidate — 2026-11-10
+
+The ordinary header, description and timeline fields retain their addresses under the turn. Header content has a declared inner field and an explicit long-axis reading direction; its title uses the shared +1 type rank. The earlier `upright` selection above is historical. Local rail and timeline internals, including narrow reading/touch usability, remain unresolved; replay, source identities and privacy are unchanged.

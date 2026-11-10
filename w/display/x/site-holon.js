@@ -7,14 +7,18 @@
   const address = (typeof module === 'object' && module.exports)
     ? require('../../../z/address.js')
     : root.CambiumAddress;
-  const api = factory(address);
+  const grid = (typeof module === 'object' && module.exports)
+    ? require('../w/wz/ui-grid.js')
+    : root.SSSUIGrid;
+  const api = factory(address,grid);
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.SSSSiteHolon = api;
-})(typeof globalThis === 'object' ? globalThis : this, function (A) {
+})(typeof globalThis === 'object' ? globalThis : this, function (A,UI) {
   'use strict';
   if (!A || typeof A.key !== 'function' || typeof A.witnesses !== 'function') {
     throw new Error('CambiumAddress quotient is required');
   }
+  if (!UI) throw new Error('recursive UI-grid algebra is required');
 
   const ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,200}$/;
   function stableId(value, label='identity') {
@@ -46,15 +50,28 @@
 
   function composeInterlocutors(entries, viewport={width:0,height:0}) {
     const active = Array.isArray(entries) ? entries.filter(Boolean) : [];
-    if (active.length <= 1) return Object.freeze({mode:'single',axis:null,columns:1,active:Object.freeze(active.slice())});
     const width = Math.max(0, Number(viewport.width) || 0);
     const height = Math.max(0, Number(viewport.height) || 0);
+    // Partition the same logical carrier recursively. A three-way encounter
+    // retains the last pair of sibling cells as one field; no remainder or
+    // viewport-dependent square-root packing is introduced.
+    function partition(prefix,count){
+      if(count<=1)return count?[[prefix]]:[];
+      if(count===2)return [[prefix+'w',prefix+'y'],[prefix+'x',prefix+'z']];
+      if(count===3)return [[prefix+'w'],[prefix+'x'],[prefix+'y',prefix+'z']];
+      const share=Math.floor(count/4),extra=count%4;
+      return ['w','x','y','z'].flatMap((child,i)=>partition(prefix+child,share+(i<extra?1:0)));
+    }
+    const assigned=partition('',active.length),splits=new Set(),fields={};
+    assigned.forEach((cells,i)=>{fields['body'+i]={cells};for(const cell of cells)for(let j=0;j<cell.length;j++)splits.add(cell.slice(0,j))});
+    const state=UI.normalizeState({schema:UI.SCHEMA,splits:[...splits],fields,elements:{}});
+    const layout=Object.freeze(assigned.map((_,i)=>{const f=UI.fieldInfo(state,'body'+i);return Object.freeze({cells:Object.freeze([...f.cells]),bounds:Object.freeze({...f.bounds})})}));
+    if (active.length <= 1) return Object.freeze({mode:'single',axis:null,columns:1,layout,active:Object.freeze(active.slice())});
     if (active.length === 2) {
       const axis = width >= height ? 'vertical' : 'horizontal';
-      return Object.freeze({mode:'split',axis,columns:axis==='vertical'?2:1,active:Object.freeze(active.slice())});
+      return Object.freeze({mode:'split',axis,columns:axis==='vertical'?2:1,layout,active:Object.freeze(active.slice())});
     }
-    const columns = Math.max(1, Math.ceil(Math.sqrt(active.length * Math.max(1,width) / Math.max(1,height))));
-    return Object.freeze({mode:'grid',axis:null,columns,active:Object.freeze(active.slice())});
+    return Object.freeze({mode:'grid',axis:null,columns:2,layout,active:Object.freeze(active.slice())});
   }
 
   function locusKey(scope, locus) { return scopeId(scope)+'::'+locus; }

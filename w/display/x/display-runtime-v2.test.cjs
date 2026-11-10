@@ -486,8 +486,8 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  console.log('PASS — bounded arbitrary-owner grid enforces actual rectangles, unchanged addresses on resize, camera frame and shared compass bounds');
 }
 
-// An unrelated owner may lend an explicitly addressed reading span on the
-// same quarter-turn; resize must not rewrite the declaration or other fields.
+// An old optional upright variant remains in its owner's state but does not
+// replace the shared address on portrait: one quarter-turn governs both.
 {
  const f=boot(1,'',{}, {}, {},false,null,true),u=f.runtime.ui.get(ids[0]);
  u.state.fields.slot.variants={upright:['w','x']};
@@ -495,11 +495,26 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  const original=JSON.stringify(u.state);assert.equal(u.field('slot').variant,'default');
  assert.equal(n.style.inlineSize,'500px');assert.equal(n.style.blockSize,'400px');
  f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();
- assert.equal(u.field('slot').variant,'upright');assert.equal(n.style.left,'195px');assert.equal(n.style.top,'0px');
- assert.equal(n.style.inlineSize,'195px');assert.equal(n.style.blockSize,'844px');assert.equal(JSON.stringify(u.state),original);
+ assert.equal(u.field('slot').variant,'default');assert.equal(n.style.left,'195px');assert.equal(n.style.top,'0px');
+ assert.equal(n.style.inlineSize,'195px');assert.equal(n.style.blockSize,'422px');assert.equal(JSON.stringify(u.state),original);
  f.context.innerWidth=800;f.context.innerHeight=600;u.refresh();assert.equal(u.field('slot').variant,'default');
  assert.equal(n.style.inlineSize,'400px');assert.equal(n.style.blockSize,'300px');assert.equal(JSON.stringify(u.state),original);
- console.log('PASS — owner-declared upright span follows the shared turn and live resize without mutating its state');
+ console.log('PASS — orientation turns the same owner address without selecting a separate upright span');
+}
+
+// Nested fields use the same root addresses and are measured relative to the
+// declared parent, including a vertical reading flow after the quarter-turn.
+{
+ const f=boot(1,'',{}, {}, {},false,null,true),u=f.runtime.ui.get(ids[0]);
+ u.state.splits.push('w');u.state.fields.slot.flow='long-axis';u.state.fields.child={cells:['ww'],label:'child',z:0};
+ const parent={style:{setProperty(k,v){this[k]=v}},dataset:{},isConnected:true},child={style:{setProperty(k,v){this[k]=v}},dataset:{},isConnected:true};
+ u.bind(parent,'slot');u.bindInside(child,'child','slot');
+ assert.equal(child.style.left,'0px');assert.equal(child.style.top,'0px');assert.equal(child.style.width,'250px');assert.equal(child.style.height,'200px');
+ f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();
+ assert.equal(child.style.left,'97.5px');assert.equal(child.style.top,'0px');assert.equal(child.style.width,'97.5px');assert.equal(child.style.height,'211px');
+ assert.equal(child.style.inlineSize,'211px');assert.equal(child.style.blockSize,'97.5px');
+ assert.throws(()=>u.bindInside(child,'slot','child'),/inside its declared parent/);
+ console.log('PASS — nested fields retain exact relative rectangles and turned reading flow');
 }
 
 // The overview also lends the navigator to sites without their own compass.

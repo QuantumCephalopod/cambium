@@ -39,24 +39,26 @@ function makeSiteUI(id,host,raw){
   const carrier=()=>safeCarrier(host);
   function field(name,carrier=safeCarrier(host)){
     const mode=UI.orientation(innerWidth,innerHeight),info=UI.carrierField(state,name,mode);
-    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,variant:info.variant||'default',orientation:mode});
+    return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,flow:info.flow,variant:info.variant||'default',orientation:mode});
   }
-  function apply(el,name){
+  function apply(el,name,parentName=''){
     if(!el)throw new TypeError('UI field element required');
-    const c=carrier(),info=field(name,c),b=info.bounds;
+    const c=carrier(),info=field(name,c),b=info.bounds,parentInfo=parentName?field(parentName,c):null,parent=parentInfo?.bounds||{x:0,y:0,w:1,h:1};
+    if(b.x<parent.x-1e-9||b.y<parent.y-1e-9||b.x+b.w>parent.x+parent.w+1e-9||b.y+b.h>parent.y+parent.h+1e-9)throw new Error('nested UI field must be inside its declared parent');
     // Stacking is deterministic within the site's isolated Display layer.
     const tie=Object.keys(state.fields).sort().indexOf(name);
     el.style.setProperty?.('--ui-field-x',(c.x+b.x*c.w)+'px');
     el.style.setProperty?.('--ui-field-y',(c.y+b.y*c.h)+'px');
     Object.assign(el.style,{
       position:'absolute',
-      left:(c.x+b.x*c.w)+'px',
-      top:(c.y+b.y*c.h)+'px',
+      left:((b.x-parent.x)*c.w)+'px',
+      top:((b.y-parent.y)*c.h)+'px',
       zIndex:String(4+info.z*64+tie)
     });
-    Object.assign(el.style,{right:'auto',bottom:'auto',width:b.w*c.w+'px',height:b.h*c.h+'px',inlineSize:b.w*c.w+'px',blockSize:b.h*c.h+'px',minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overflowWrap:'anywhere',overscrollBehavior:'contain',contain:'layout paint'});
+    const vertical=parentInfo?.flow==='long-axis'&&info.orientation==='portrait',width=b.w*c.w+'px',height=b.h*c.h+'px';
+    Object.assign(el.style,{right:'auto',bottom:'auto',width,height,inlineSize:vertical?height:width,blockSize:vertical?width:height,minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overflowWrap:'anywhere',overscrollBehavior:'contain',contain:'layout paint'});
     if(el.dataset){
-      el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiBounded='true';
+      el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiFlow=info.flow;el.dataset.uiBounded='true';
       // Only a field actually meeting the viewport edge shares its global
       // occupied tissue. This remains geometric, independent of site names.
       const hostEdge=surfaceRect(host).right;
@@ -64,15 +66,16 @@ function makeSiteUI(id,host,raw){
     }
     return el;
   }
-  function bind(el,name){bindings.set(el,name);return apply(el,name)}
+  function bind(el,name){bindings.set(el,{name,parentName:''});return apply(el,name)}
+  function bindInside(el,name,parentName){bindings.set(el,{name,parentName});return apply(el,name,parentName)}
   function refresh(){
-    for(const [el,name] of [...bindings]){
+    for(const [el,{name,parentName}] of [...bindings]){
       if(el.isConnected===false){bindings.delete(el);continue}
-      apply(el,name);
+      apply(el,name,parentName);
     }
   }
   function rect(name,global=false){const c=carrier(),b=field(name,c).bounds,hostRect=surfaceRect(host),x=c.x+b.x*c.w+(global?hostRect.left:0),y=c.y+b.y*c.h+(global?hostRect.top:0),width=b.w*c.w,height=b.h*c.h;return {x,y,left:x,top:y,right:x+width,bottom:y+height,width,height}}
-  return Object.freeze({id,state,field,rect,bind,refresh,bounded,get carrier(){return Object.freeze({...carrier()})}});
+  return Object.freeze({id,state,field,rect,bind,bindInside,refresh,bounded,get carrier(){return Object.freeze({...carrier()})}});
 }
 const registry=H.createRegistry(),specs=new Map(),surfaces=new Map(),uiById=new Map();
 for(const s of SPEC.interlocutors||[]){
@@ -196,7 +199,16 @@ function structuralStack(ids,frames=[]){
 }
 function resolveGlobal(path=''){return registry.resolve(GLOBAL_SCOPE,path,{width:innerWidth,height:innerHeight})}
 function snap(){return {globalScope:GLOBAL_SCOPE,activeIds:[...activeIds],activeAddress,stack:stack.map(x=>({...x,activeIds:[...x.activeIds]})),localView:W.view}}
-function composition(){const c=H.composeInterlocutors(activeIds.map(interlocutorId=>({interlocutorId})),{width:innerWidth,height:innerHeight});document.documentElement.dataset.composition=c.mode;document.documentElement.dataset.compositionAxis=c.axis||'';stage.dataset.composition=c.mode;stage.dataset.axis=c.axis||'';stage.style.setProperty('--interlocutor-columns',String(c.columns||1));return c}
+function composition(){
+  const c=H.composeInterlocutors(activeIds.map(interlocutorId=>({interlocutorId})),{width:innerWidth,height:innerHeight}),mode=UI.orientation(innerWidth,innerHeight);
+  document.documentElement.dataset.composition=c.mode;document.documentElement.dataset.compositionAxis=c.axis||'';stage.dataset.composition=c.mode;stage.dataset.axis=c.axis||'';
+  activeIds.forEach((id,i)=>{
+    const host=surfaces.get(id)?.host,b=c.layout[i]&&UI.orientBounds(c.layout[i].bounds,mode);if(!host||!b)return;
+    for(const [k,v]of Object.entries({position:'absolute',left:(b.x*100)+'%',top:(b.y*100)+'%',width:(b.w*100)+'%',height:(b.h*100)+'%',right:'auto',bottom:'auto'}))if(host.style[k]!==v)host.style[k]=v;
+    host.dataset.compositionCells=c.layout[i].cells.join(' ');
+  });
+  return c;
+}
 function syncMembraneGrid(){
  const ui=activeIds.map(id=>uiById.get(id)).find(u=>u?.bounded&&u.state.fields.compass)||uiById.get(ROOT_IDS[0]);
  const mini=document.getElementById('mini');if(!mini||!ui?.bounded||!ui.state.fields.compass)return;
@@ -221,16 +233,26 @@ function syncMembraneGrid(){
      if(mini.style.getPropertyValue?.(k)!==v)mini.style.setProperty?.(k,v);
    }
  }
- const hb=ui.state.fields.header?ui.field('header').bounds:null,header=hb?{width:hb.w*innerWidth,height:hb.h*innerHeight}:null;
- if(header){
-   const rootStyle=document.documentElement.style;
-   const portrait=UI.orientation(innerWidth,innerHeight)==='portrait';
-   const statusWidth=portrait?Math.min(header.width,Membrane.topCapacity(innerWidth,innerHeight).width):header.width;
-   if(rootStyle?.getPropertyValue?.('--display-header-field-width')!==statusWidth+'px')rootStyle?.setProperty?.('--display-header-field-width',statusWidth+'px');
-   // The global edge turns with the membrane and spans the carrier's long
-   // axis. A site's short upright title field cannot clip those controls.
-   for(const name of ['display-header','display-membrane-status']){const el=document.getElementById(name);if(!el)continue;for(const [k,v]of Object.entries({maxWidth:header.width+'px',maxHeight:(portrait?innerHeight:header.height)+'px',overflow:'hidden'}))if(el.style[k]!==v)el.style[k]=v}
+ const pocket=document.getElementById('mini-pocket');
+ if(pocket)for(const name of ['state','map','axis-y','axis-x','hint','help','trigger','guide']){
+   const f=Membrane.pocketRelative(name);
+   for(const [axis,value]of Object.entries({x:f.x,y:f.y,w:f.w,h:f.h})){
+     const k='--navigator-'+name+'-'+axis,v=(value*100)+'%';
+     if(pocket.style.getPropertyValue?.(k)!==v)pocket.style.setProperty?.(k,v);
+   }
  }
+ const top=Membrane.rect('top');
+ function boxIn(el,r,parent={left:0,top:0}){
+   if(!el)return;
+   for(const [k,v]of Object.entries({left:(r.left-parent.left)+'px',top:(r.top-parent.top)+'px',width:r.width+'px',height:r.height+'px',right:'auto',bottom:'auto',maxWidth:'none',maxHeight:'none'}))if(el.style[k]!==v)el.style[k]=v;
+ }
+ boxIn(document.getElementById('display-header'),top);
+ const brand=Membrane.rect('brand'),language=Membrane.rect('language');
+ boxIn(document.getElementById('root-home'),brand,top);
+ boxIn(document.getElementById('display-language'),language,top);
+ for(const name of ['brand-mark','brand-name'])boxIn(document.getElementById('display-'+name),Membrane.rect(name),brand);
+ for(const name of ['language-invert','language-dot','language-de','language-slash','language-en'])boxIn(document.getElementById('display-'+name),Membrane.rect(name),language);
+ boxIn(document.getElementById('display-membrane-status'),Membrane.rect('status'));
 }
 function siteTitle(id){const root=surfaces.get(id)?.fieldProjection?.root;return root?.[W.language]||specs.get(id)?.title||root?.noun||id.replace(/^organism:/,'')}
 function handoffStatus(){

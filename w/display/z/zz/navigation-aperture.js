@@ -16,7 +16,7 @@ const COPY={
 let pointerContext='map',focusContext=null,keyboard=true;
 function copy(){return COPY[document.documentElement.lang==='de'?'de':'en']}
 function renderHint(){const key=focusContext&&keyboard?(focusContext==='axis'?'keys':'mapKeys'):pointerContext||focusContext||'map';for(const [id,el] of Object.entries(hints))el?.setAttribute('aria-hidden',String(id!==key))}
-function language(){const c=copy();for(const [key,el] of Object.entries(hints))if(el)el.textContent=c[key];renderHint();if(helpButton)helpButton.setAttribute('aria-label',c.help);if(mapHelp)mapHelp.textContent=c.mapHelp;if(axisHelp)axisHelp.textContent=c.axisHelp;measure()}
+function language(){const c=copy();for(const [key,el] of Object.entries(hints))if(el)el.textContent=c[key];renderHint();if(helpButton)helpButton.setAttribute('aria-label',c.help);if(mapHelp)mapHelp.textContent=c.mapHelp;if(axisHelp)axisHelp.textContent=c.axisHelp;}
 for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[document.getElementById('axis-y'),'axis']]){
   if(!el)continue;
   el.setAttribute('aria-describedby',key==='map'?'mini-map-help':'mini-axis-help');
@@ -26,78 +26,10 @@ for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[d
   el.addEventListener('focus',()=>{focusContext=key;renderHint()});
   el.addEventListener('blur',()=>{focusContext=null;renderHint()});
 }
-function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));if(next&&pocket.getAttribute?.('aria-hidden')==='true')open('help');measure();if(next)guide.scrollIntoView?.({block:'nearest',inline:'nearest'})}
+function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));if(next&&pocket.getAttribute?.('aria-hidden')==='true')open('help');if(next)guide.scrollIntoView?.({block:'nearest',inline:'nearest'})}
 helpButton?.addEventListener('click',()=>setHelp(guide.hidden));
 
-function px(name,value){const v=Math.ceil(value)+'px';if(mini.style.getPropertyValue(name)!==v)mini.style.setProperty(name,v)}
-function measure(){
-  const legalHeight=legal?.offsetHeight??legal?.getBoundingClientRect().height??0;
-  px('--legal-footer-height',legalHeight);
-  if(!core||!map)return;
-  // Layout extents do not inherit the pocket's opening transform. No frame polling.
-  const top=globalThis.SSSDisplaySafeArea?.snapshot().insets.top||0;
-  const rem=globalThis.SSSDisplayType?.rootRemPx?.()||16;
-  const bounded=mini.dataset.gridBounded==='true',field=mini.getBoundingClientRect?.();
-  // Keep disclosure in the existing control strip. The hint stays in flow;
-  // a compact field hides only that redundant visual hint, never help access.
-  if(bounded&&helpButton&&helpButton.parentNode!==mini&&mini.append)mini.append(helpButton);
-  if(!bounded&&helpButton&&helpBar&&helpButton.parentNode!==helpBar&&helpBar.append)helpBar.append(helpButton);
-  const available=bounded?Math.max(0,pocket.clientHeight??((field?.height||0)-legalHeight-2.75*rem)):Math.max(0,innerHeight-top-legalHeight-6*rem);
-  px('--compass-top',top);px('--compass-core-cap',available);
-  px('--compass-guide-cap',available*.45);
-  // An opened guide scrolls within the pocket; it does not consume the map's
-  // permanent budget. Otherwise opening help can collapse the instrument.
-  const coreStyle=globalThis.getComputedStyle?.(core);
-  const gap=Number.parseFloat(coreStyle?.rowGap)||0;
-  const guideHeight=guide&&!guide.hidden?(guide.offsetHeight||0)+gap:0;
-  const chrome=Math.max(0,core.scrollHeight-map.offsetHeight-guideHeight);
-  const measured=String(Math.round(chrome*64)/64);
-  if(mini.dataset.mapChrome!==measured){
-    mini.dataset.mapChrome=measured;
-    if(typeof globalThis.dispatchEvent==='function'&&typeof globalThis.CustomEvent==='function')globalThis.dispatchEvent(new CustomEvent('sss:navigator-measure'));
-  }
-  // A stable scrollbar gutter keeps disclosure from squeezing the instrument.
-  // Its actual width is excluded by clientWidth; leave the measured padding
-  // and the existing rail/gap room before choosing a square map extent.
-  const padding=(Number.parseFloat(coreStyle?.paddingLeft)||.5*rem)+(Number.parseFloat(coreStyle?.paddingRight)||.5*rem);
-  const mapWidth=Math.max(0,(core.clientWidth??field?.width??0)-padding-2*rem);
-  let mapCap=Math.floor(Math.max(0,Math.min(available-chrome,mapWidth))),railCut=0,hintCut=0;
-  if(bounded&&trigger.getBoundingClientRect&&map.getBoundingClientRect){
-    const b=trigger.getBoundingClientRect(),r=map.getBoundingClientRect(),axis=document.getElementById('axis-x'),a=axis?.getBoundingClientRect?.();
-    // Help can scroll the core without changing the instrument's layout.
-    // Fit against its unscrolled position so disclosure cannot resize it.
-    const sx=core.scrollLeft||0,sy=core.scrollTop||0,m={left:r.left+sx,right:r.right+sx,top:r.top+sy,width:r.width};
-    const instrument=document.getElementById('mini-instrument'),rowGap=Number.parseFloat(globalThis.getComputedStyle?.(instrument)?.rowGap)||0;
-    // The instrument is centered. Predict its uncapped right edge so this
-    // measured fit remains stable after a previous fit changed its size.
-    const naturalRight=m.right+(mapCap-m.width)/2;
-    if(b.width>0&&b.height>0&&b.right>m.left&&naturalRight>b.left&&b.bottom>m.top&&b.top<m.top+mapCap){
-      const horizontal=mapCap-2*(naturalRight-b.left),vertical=b.top-m.top;
-      mapCap=Math.floor(Math.max(0,Math.min(mapCap,Math.max(horizontal,vertical))));
-    }
-    const mapRight=m.right+(mapCap-m.width)/2,railTop=m.top+mapCap+rowGap;
-    if(a&&b.width>0&&b.height>0&&b.right>m.left&&b.top<railTop+a.height&&b.bottom>railTop){
-      railCut=Math.max(0,mapRight-b.left);
-    }
-    const h=helpBar?.getBoundingClientRect?.();
-    if(h&&h.width>0&&h.height>0&&b.width>0&&b.height>0&&b.right>h.left+sx&&b.top<h.bottom+sy&&b.bottom>h.top+sy){
-      hintCut=Math.max(0,h.right+sx-b.left);
-    }
-  }
-  px('--compass-axis-x-cut',railCut);
-  px('--compass-hint-cut',hintCut);
-  px('--compass-map-cap',bounded?mapCap:Math.max(24,available-chrome));
-  px('--compass-core-height',core.offsetHeight);
-  core.dataset.scroll=String(core.scrollHeight>core.clientHeight+1);
-}
-if(typeof ResizeObserver==='function'){
-  const observer=new ResizeObserver(measure);
-  for(const el of [legal,core,document.getElementById('mini-state'),document.getElementById('mini-help-bar'),guide])if(el)observer.observe(el);
-}
-addEventListener('resize',measure,{passive:true});
-addEventListener('sss:safe-area',measure);
 addEventListener('sss:language',language);
-document.fonts?.ready.then(measure);
 language();
 
 let pinned=false,closeTimer=null;
@@ -146,7 +78,6 @@ addEventListener('keydown',e=>{
 new MutationObserver(()=>{
   mini.dataset.composition=document.documentElement.dataset.composition||'single';
   mini.dataset.axis=document.documentElement.dataset.compositionAxis||'';
-  measure();
 }).observe(document.documentElement,{attributes:true,attributeFilter:['data-composition','data-composition-axis']});
 
 mini.dataset.aperture='closed';

@@ -270,8 +270,8 @@ try {
  for(const language of ['en','de']){
   global.SSSWorldView={language};moduleRef.fieldProjection(projection);
   const host=new Element('section'),content=new Element('div'),bound=[];
-  assert(moduleRef.render({host,content,projection,ui:{bind:(el,name)=>bound.push(name)}}));
-  assert.deepStrictEqual(bound,['header','description','timeline'],'selected context created a competing overlay');
+  assert(moduleRef.render({host,content,projection,ui:{bind:(el,name)=>bound.push(name),bindInside:(el,name,parent)=>{assert.equal(parent,'header');bound.push(name)}}}));
+  assert.deepStrictEqual(bound,['header','headerContent','description','timeline'],'selected context created a competing overlay');
   assert.equal(content.querySelector('h1').textContent,'Crawlerbait');
   const scrub=content.querySelector('.crawlerbait-scrub');scrub.value='400';scrub.listeners.input();
   const before=moduleRef.shader.snapshot({container:''}),modes=content.querySelector('.crawlerbait-modes').children;

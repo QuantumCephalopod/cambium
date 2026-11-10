@@ -46,6 +46,10 @@ layered=G.defineField(layered,'third',['w'],'third');
 assert.equal(Object.keys(layered.fields).length,3);
 assert.deepStrictEqual(G.parseState(G.formatState(layered)),layered);
 assert.throws(()=>G.normalizeState({schema:G.SCHEMA,splits:[''],fields:{bad:{cells:['w'],z:-1}}}),/z must be/);
+let reading=G.normalizeState({schema:G.SCHEMA,splits:[''],fields:{label:{cells:['w'],flow:'long-axis'}}});
+assert.equal(G.fieldInfo(reading,'label').flow,'long-axis');
+reading=G.defineField(reading,'label',['x']);assert.equal(G.fieldInfo(reading,'label').flow,'long-axis','editing cells retains the authored reading direction');
+assert.throws(()=>G.normalizeState({schema:G.SCHEMA,splits:[''],fields:{label:{cells:['w'],flow:'automatic-fit'}}}),/unsupported reading flow/);
 const refinedOverlap=G.refineField(layered,'above');
 assert.deepStrictEqual(refinedOverlap.fields.behind.cells,['w']);
 assert.deepStrictEqual(refinedOverlap.fields.above.cells,['ww','wx','wy','wz']);
@@ -85,8 +89,8 @@ console.log('ui-grid v2: persistent orientation across splits + overlapping z fi
   assert.equal(G.orientEdges('top right bottom left','landscape'),'top right bottom left');
 }
 
-// The owner can explicitly offer a different readable span without changing
-// either span or the common quarter-turn geometry, including on live resize.
+// Named historical alternatives remain available for explicit inspection;
+// portrait carries the same address through the common quarter-turn.
 {
   const state=G.normalizeState({schema:G.SCHEMA,splits:['','w','y'],fields:{
     title:{cells:['w'],variants:{upright:['ww','wy','yw','yy']}},
@@ -94,8 +98,9 @@ console.log('ui-grid v2: persistent orientation across splits + overlapping z fi
   },elements:{}});
   const before=JSON.stringify(state),wide=G.carrierField(state,'title','landscape'),tall=G.carrierField(state,'title','portrait');
   assert.deepStrictEqual(wide.cells,['w']);assert.equal(wide.variant,'');
-  assert.deepStrictEqual(tall.cells,['ww','wy','yw','yy']);assert.equal(tall.variant,'upright');
-  assert.deepStrictEqual(G.orientBounds(tall.bounds,'portrait'),{x:0,y:0,w:1,h:.25});
+  assert.deepStrictEqual(tall.cells,['w']);assert.equal(tall.variant,'');
+  assert.deepStrictEqual(G.orientBounds(tall.bounds,'portrait'),{x:.5,y:0,w:.5,h:.5});
+  assert.deepStrictEqual(G.fieldInfo(state,'title','upright').cells,['ww','wy','yw','yy']);
   assert.deepStrictEqual(G.carrierField(state,'plain','portrait').cells,['w']);
   assert.equal(JSON.stringify(state),before,'presentation must not rewrite owner addresses');
 }

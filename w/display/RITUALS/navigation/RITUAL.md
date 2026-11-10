@@ -221,3 +221,8 @@ Usability return2026-10-28: the navigator map preserves its square projection. M
 
 
 Layout return2026-10-29: The compass consumes the current declared compass field without substituting its former rectangle. Its square map, actual chrome budget, persistent help and fixed extent remain invariant while the declaration grows.
+
+
+## Shared format candidate — 2026-11-10
+
+The navigator map and each control use declared cells, with the pocket and Back retaining their authored exchange. A canvas fills its rectangular map cell, while its body projection remains undistorted. Rails turn with the carrier and keep their pointer/keyboard direction. Historical square-container and measured-chrome statements above describe the prior carrier. The candidate still needs its complete mobile and graphics witnesses; an address match alone does not establish readable or touch-usable content.

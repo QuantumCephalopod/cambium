@@ -649,7 +649,7 @@ function drawOverviewPhysiology(now){
   if(!tour.copy||now<tour.readyAt||state.transition<.98)return;
   const target=state.beingTargetQ;if(target&&Math.abs(target.reduce((s,v,i)=>s+v*state.localQ[i],0))<.995)return;
   const rect=state.textCanvas.getBoundingClientRect(),ctx=state.textCanvas.getContext('2d'),font=typeFont(-1,500),width=Math.max(80,Math.min(rect.width*.84,520)),lines=paperLensLines('tutorial:'+tour.specimen+':'+tour.step,tour.copy,font,width);
-  if(!lines)return;const lh=BEING_LH*1.3,x=(rect.width-width)/2,carrier=state.ui?.carrier,y=Math.max(80,(carrier?carrier.y+carrier.h:rect.height*.72)-lh*(lines.length+1));const captionBox=inkNudge(tour,{x,y,w:width,h:lines.length*lh},rect,[]);setData(state.textCanvas,'tutorialCommentaryBounds',[captionBox.x,captionBox.y,captionBox.w,captionBox.h].map(v=>v.toFixed(1)).join(','));ctx.save();ctx.font=font;ctx.textBaseline='top';ctx.fillStyle='rgba(229,246,237,.88)';lines.forEach((line,i)=>typeInk(ctx,line.text,captionBox.x,captionBox.y+i*lh));ctx.restore();
+  if(!lines)return;const lh=beingLineHeight()*1.3,x=(rect.width-width)/2,carrier=state.ui?.carrier,y=Math.max(80,(carrier?carrier.y+carrier.h:rect.height*.72)-lh*(lines.length+1));const captionBox=inkNudge(tour,{x,y,w:width,h:lines.length*lh},rect,[]);setData(state.textCanvas,'tutorialCommentaryBounds',[captionBox.x,captionBox.y,captionBox.w,captionBox.h].map(v=>v.toFixed(1)).join(','));ctx.save();ctx.font=font;ctx.textBaseline='top';ctx.fillStyle='rgba(229,246,237,.88)';lines.forEach((line,i)=>typeInk(ctx,line.text,captionBox.x,captionBox.y+i*lh));ctx.restore();
 }
 function projectedPixels(scale,cameraZ,height){return (scale/cameraZ)*(height/2)/Math.tan(FOV/2)*2}
 function childBodies(current){
@@ -784,8 +784,10 @@ function updateOrganismInquiry(){
  * Edges: thread of letters (tapered) → fibres (the pointer bursts them) → woven sentence, edge turned level in front.
  * Faces: dust of their letters → woven disk, face turned frontal. Vertices: the letter they are; for a Holon the
  * vertex is its parent organism (a door). Metabolites: the light is the sentence asleep. */
-const BEING_FONT=typeFont(-1,500),BEING_LH=typePx(0);
-const FACE_FONT=typeFont(-1,500),FACE_LH=typePx(-1)*1.2;
+function beingFont(){return typeFont(-1,500)}
+function beingLineHeight(){return typePx(0)}
+function faceFont(){return typeFont(-1,500)}
+function faceLineHeight(){return typePx(-1)*1.2}
 const BEING_TW=300,BEING_TR=BEING_TW*Math.sqrt(3)/6,BEING_CAN=[[0,0],[BEING_TW,0],[BEING_TW/2,BEING_TW*Math.sqrt(3)/2]],BEING_CEN=[BEING_TW/2,BEING_TR];
 const beingSegmenter=typeof Intl!=='undefined'&&Intl.Segmenter?new Intl.Segmenter():null;
 function graphemes(text){return beingSegmenter?[...beingSegmenter.segment(text)].map(x=>x.segment):Array.from(text)}
@@ -818,25 +820,25 @@ function beingQFromRows(m){const[a,b,c,d,e,f,g,h,i]=m,tr=a+e+i;let q;
   else{const k=Math.sqrt(1+i-a-e)*2;q=[(d-b)/k,(c+g)/k,(f+h)/k,k/4]}return qNorm(q)}
 function beingKeyIdx(key){return String(key||'').split('').map(ch=>GENES.indexOf(ch))}
 function ensureBeing(entity,width){
-  const body=inquiryBody(entity.id);
-  if(state.being&&state.being.id===entity.id&&state.being.body===body)return state.being;
-  const ctx=state.textCanvas.getContext('2d'),B={id:entity.id,body,volume:body?.volume?[body.volume.title,body.volume.text].filter(Boolean).join(' — '):'',verts:[],edges:[],faces:[],mets:new Map()};
-  state.inner=null;state.beingTargetQ=null;state.originOpen=false;
+  const body=inquiryBody(entity.id),unit=typePx(0),sameBody=state.being&&state.being.id===entity.id&&state.being.body===body;
+  if(sameBody&&state.being.typeUnit===unit)return state.being;
+  const ctx=state.textCanvas.getContext('2d'),B={id:entity.id,body,typeUnit:unit,volume:body?.volume?[body.volume.title,body.volume.text].filter(Boolean).join(' — '):'',verts:[],edges:[],faces:[],mets:new Map()};
+  if(!sameBody){state.inner=null;state.beingTargetQ=null;state.originOpen=false}
   const holon=entity.kind!=='source',parents=state.parents.get(entity.id)||[];
   GENES.forEach((g,i)=>{
     let text='',door='';
     if(holon&&parents.length===4){door=parents[i];const d=state.identities.get(door);text=g+' · '+door+' · '+(d?.title||door)}
     else{const v=(Array.isArray(body?.vertices)?body.vertices:[]).find(x=>x&&x.id===g);if(v)text=g+' · '+String(v.title||'').trim()+(v.text?' — '+String(v.text).trim():'')}
     if(!text)text=g;
-    const lines=beingLines(entity.id+'·v·'+g,text,BEING_FONT,Array.from({length:12},(_,j)=>({x:0,y:j*BEING_LH,w:240})));
+    const lines=beingLines(entity.id+'·v·'+g,text,beingFont(),Array.from({length:12},(_,j)=>({x:0,y:j*beingLineHeight(),w:240})));
     const bold=text.indexOf(' — ');
-    B.verts.push({i,gene:g,door,text:text===g?'':text,glyphs:beingGlyphs(ctx,lines,BEING_FONT,bold>0?bold:text.length),h:lines.length*BEING_LH,open:0});
+    B.verts.push({i,gene:g,door,text:text===g?'':text,glyphs:beingGlyphs(ctx,lines,beingFont(),bold>0?bold:text.length),h:lines.length*beingLineHeight(),open:0});
   });
   for(const e of (Array.isArray(body?.edges)?body.edges:[])){
     const idx=beingKeyIdx(e?.id);if(idx.length!==2||idx.some(x=>x<0))continue;
     const text=String(e.text||e.title||'').trim();if(!text)continue;
-    const w=Math.min(520,width*.72),lines=beingLines(entity.id+'·e·'+e.id,text,BEING_FONT,Array.from({length:16},(_,j)=>({x:-w/2,y:j*BEING_LH,w})));
-    const g=beingGlyphs(ctx,lines,BEING_FONT),n=g.length,h=lines.length*BEING_LH;
+    const w=Math.min(520,width*.72),lines=beingLines(entity.id+'·e·'+e.id,text,beingFont(),Array.from({length:16},(_,j)=>({x:-w/2,y:j*beingLineHeight(),w})));
+    const g=beingGlyphs(ctx,lines,beingFont()),n=g.length,h=lines.length*beingLineHeight();
     g.forEach((q,j)=>{q.u0=n>1?j/(n-1)-.5:0;q.ty-=h/2;q.seed=random01(entity.id+e.id,j)*6.283;q.amp=.4+random01(entity.id+e.id,'a'+j)});
     B.edges.push({key:e.id,text,a:idx[0],b:idx[1],glyphs:g,unravel:0,weave:0});
   }
@@ -844,9 +846,9 @@ function ensureBeing(entity,width){
     const idx=beingKeyIdx(f?.id);if(idx.length!==3||idx.some(x=>x<0))continue;
     const text=String(f.text||f.title||'').trim();if(!text)continue;
     let lines=[];
-    for(let r=BEING_TR*.92;r<BEING_TR*3;r+=4){const rows=[];for(let y=-r+FACE_LH*.6;y<r-FACE_LH*.4;y+=FACE_LH){const w=2*Math.sqrt(Math.max(0,r*r-(y+FACE_LH/2)**2))*.92;rows.push({x:-w/2,y,w})}
-      lines=beingLines(entity.id+'·f·'+f.id+'·'+Math.round(r),text,FACE_FONT,rows);if(lines.done)break}
-    const g=beingGlyphs(ctx,lines,FACE_FONT);
+    for(let r=BEING_TR*.92;r<BEING_TR*3;r+=4){const rows=[];for(let y=-r+faceLineHeight()*.6;y<r-faceLineHeight()*.4;y+=faceLineHeight()){const w=2*Math.sqrt(Math.max(0,r*r-(y+faceLineHeight()/2)**2))*.92;rows.push({x:-w/2,y,w})}
+      lines=beingLines(entity.id+'·f·'+f.id+'·'+Math.round(r),text,faceFont(),rows);if(lines.done)break}
+    const g=beingGlyphs(ctx,lines,faceFont());
     g.forEach((q,j)=>{let a=random01(entity.id+f.id,'a'+j),b=random01(entity.id+f.id,'b'+j);if(a+b>1){a=1-a;b=1-b}
       const [c0,c1,c2]=BEING_CAN;q.rc=[c0[0]+a*(c1[0]-c0[0])+b*(c2[0]-c0[0]),c0[1]+a*(c1[1]-c0[1])+b*(c2[1]-c0[1])];q.x=q.rc[0]-BEING_CEN[0];q.y=q.rc[1]-BEING_CEN[1];q.seed=random01(entity.id+f.id,'s'+j)*6.283});
     B.faces.push({key:f.id,text,idx,miss:[0,1,2,3].find(i=>!idx.includes(i)),glyphs:g,stir:0,weave:0});
@@ -858,10 +860,10 @@ function metaboliteGlyphs(B,light,font){
   const text=metaboliteWisdomText(light.metabolite);if(!text)return null;
   const prepared=preparedWisdom(light.id,text,font);if(!prepared)return null;
   const title=typeof light.metabolite?.title==='string'?light.metabolite.title.trim():'';
-  const lines=beingLines(light.id,text,font,Array.from({length:10},(_,j)=>({x:0,y:j*BEING_LH,w:METABOLITE_LABEL_MAX_WIDTH*.8})));
+  const lines=beingLines(light.id,text,font,Array.from({length:10},(_,j)=>({x:0,y:j*beingLineHeight(),w:METABOLITE_LABEL_MAX_WIDTH*.8})));
   const g=beingGlyphs(state.textCanvas.getContext('2d'),lines,font,title.length),n=g.length,ga=Math.PI*(3-Math.sqrt(5));
   g.forEach((q,j)=>{const r=Math.sqrt(j/Math.max(1,n))*9;q.ix=Math.cos(j*ga)*r;q.iy=Math.sin(j*ga)*r;q.x=q.ix;q.y=q.iy});
-  const M={id:light.id,glyphs:g,h:lines.length*BEING_LH,open:0};B.mets.set(light.id,M);return M;
+  const M={id:light.id,glyphs:g,h:lines.length*beingLineHeight(),open:0};B.mets.set(light.id,M);return M;
 }
 function lockInner(piece){
   state.inner=piece;state.originOpen=false;state.beingTargetQ=null;if(!piece||!state.current)return;
@@ -886,10 +888,10 @@ function beingDescribe(p){
  * are always retained by the lens; foreshortening never stretches the body. */
 function bodyDoorPoint(points,rect,side=1,occupied=[]){
   const center={x:points.reduce((s,p)=>s+p.x,0)/4,y:points.reduce((s,p)=>s+p.y,0)/4},ordered=[...points].sort((a,b)=>Math.atan2(a.y-center.y,a.x-center.x)-Math.atan2(b.y-center.y,b.x-center.x)),candidates=[];
-  for(let i=0;i<ordered.length;i++){const a=ordered[i],b=ordered[(i+1)%ordered.length];for(const t of [.3,.5,.7]){let x=mix(a.x,b.x,t),y=mix(a.y,b.y,t),dx=x-center.x,dy=y-center.y,len=Math.hypot(dx,dy)||1;x+=dx/len*BEING_LH*1.2;y+=dy/len*BEING_LH*1.2;if(x>BEING_LH&&x<rect.width-BEING_LH&&y>80&&y<rect.height-BEING_LH*2)candidates.push({x,y});}}
+  for(let i=0;i<ordered.length;i++){const a=ordered[i],b=ordered[(i+1)%ordered.length];for(const t of [.3,.5,.7]){let x=mix(a.x,b.x,t),y=mix(a.y,b.y,t),dx=x-center.x,dy=y-center.y,len=Math.hypot(dx,dy)||1;x+=dx/len*beingLineHeight()*1.2;y+=dy/len*beingLineHeight()*1.2;if(x>beingLineHeight()&&x<rect.width-beingLineHeight()&&y>80&&y<rect.height-beingLineHeight()*2)candidates.push({x,y});}}
   // This is a door on the actual projected boundary, not a HUD overlay.
   // Keep its glyph/contact clear of the same measured chrome as body ink.
-  return candidates.filter(p=>!occupied.some(b=>p.x+BEING_LH>b.x&&p.x-BEING_LH<b.x+b.w&&p.y+BEING_LH>b.y&&p.y-BEING_LH<b.y+b.h)).sort((a,b)=>side*(b.x-a.x))[0]||null;
+  return candidates.filter(p=>!occupied.some(b=>p.x+beingLineHeight()>b.x&&p.x-beingLineHeight()<b.x+b.w&&p.y+beingLineHeight()>b.y&&p.y-beingLineHeight()<b.y+b.h)).sort((a,b)=>side*(b.x-a.x))[0]||null;
 }
 function foldedEdgeGlyphs(edge,length,dpr=1){
   if(edge.unravel>=.02||edge.weave>=.02)return edge.glyphs;
@@ -897,18 +899,18 @@ function foldedEdgeGlyphs(edge,length,dpr=1){
   return stride===1?edge.glyphs:edge.glyphs.filter((_,i)=>i%stride===0);
 }
 function edgeMaterial(edge,length){
-  const bounds=edge.bounds||(edge.bounds=inkBounds(edge.glyphs,BEING_LH,'alphabetic'));
-  const width=Math.max(BEING_LH,bounds.x1-bounds.x0),span=Math.max(1e-6,length*.92),scale=Math.min(1,span/(width+BEING_LH));
-  return {scale,half:span/2,glyph:BEING_LH*scale};
+  const bounds=edge.bounds||(edge.bounds=inkBounds(edge.glyphs,beingLineHeight(),'alphabetic'));
+  const width=Math.max(beingLineHeight(),bounds.x1-bounds.x0),span=Math.max(1e-6,length*.92),scale=Math.min(1,span/(width+beingLineHeight()));
+  return {scale,half:span/2,glyph:beingLineHeight()*scale};
 }
 function faceReading(points){
   const [a,b,c]=points,area=Math.abs((b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x)),sides=[Math.hypot(b.x-a.x,b.y-a.y),Math.hypot(c.x-b.x,c.y-b.y),Math.hypot(a.x-c.x,a.y-c.y)],longest=Math.max(...sides);
-  return area/(longest*longest||1)>.18&&area/(longest||1)>=FACE_LH*4;
+  return area/(longest*longest||1)>.18&&area/(longest||1)>=faceLineHeight()*4;
 }
 function beingSegDist(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,t=clamp(((p[0]-a.x)*dx+(p[1]-a.y)*dy)/(dx*dx+dy*dy||1));return Math.hypot(p[0]-a.x-t*dx,p[1]-a.y-t*dy)}
 function beingHit(x,y){
   const G=state.beingGeo;if(!G||!state.current||state.transition<.82)return null;const m=[x,y];
-  if(G.whole&&Math.hypot(x-G.whole.x,y-G.whole.y)<BEING_LH)return {kind:'whole',key:'wxyz'};
+  if(G.whole&&Math.hypot(x-G.whole.x,y-G.whole.y)<beingLineHeight())return {kind:'whole',key:'wxyz'};
   for(const L of G.mets)if(Math.hypot(x-L.x,y-L.y)<18)return {kind:'met',key:L.id};
   for(let i=0;i<4;i++)if(Math.hypot(x-G.P[i].x,y-G.P[i].y)<14)return {kind:'vert',key:i,door:G.doors[i]||''};
   let best=9,hit=null;for(const e of state.being?.edges||[]){const d=beingSegDist(m,G.P[e.a],G.P[e.b]);if(d<best){best=d;hit={kind:'edge',key:e.key}}}if(hit)return hit;
@@ -1169,7 +1171,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   for(const light of lights){const p=proj(light.center);metGeo.push({id:light.id,x:p.x,y:p.y,light})}
   const chrome=inkChrome(rect),whole=B.volume?bodyDoorPoint(P,rect,1,chrome):null;
   state.beingGeo={P,front,mets:metGeo,whole,doors:B.verts.map(v=>v.door)};
-  if(whole){ctx.font=BEING_FONT;ctx.fillStyle=`rgba(223,243,234,${alpha*.6})`;typeInk(ctx,'1T',whole.x-BEING_LH*.5,whole.y);}
+  if(whole){ctx.font=beingFont();ctx.fillStyle=`rgba(223,243,234,${alpha*.6})`;typeInk(ctx,'1T',whole.x-beingLineHeight()*.5,whole.y);}
   if(state.originButton){state.originButton.hidden=entity.kind!=='source';const origin=bodyDoorPoint(P,rect,-1,chrome);if(origin){state.originButton.style.left=origin.x+'px';state.originButton.style.top=origin.y+'px';}else state.originButton.hidden=true;}
   state.readingChrome=paperReadingChrome(rect,chrome);
   syncPaperLens(B,state.beingGeo);
@@ -1199,14 +1201,14 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     /* A woven face opens at one readable size at every rank: where the camera clamp frames a small body
      * below MACRO_FILL (S ground), the weave grows the text plane back to the size a fully framed body gives. */
     const kw=mix(1,Math.max(1,MACRO_FILL*cam/sc),clamp(F.weave*1.5)),L0=[la,lb,lc,ld];la*=kw;lb*=kw;lc*=kw;ld*=kw;
-    {const ma=la*u[0]+lc*u[1],mb=lb*u[0]+ld*u[1],mc=la*v[0]+lc*v[1],md=lb*v[0]+ld*v[1],fb=F.bounds||(F.bounds=inkBounds(F.glyphs,FACE_LH));
+    {const ma=la*u[0]+lc*u[1],mb=lb*u[0]+ld*u[1],mc=la*v[0]+lc*v[1],md=lb*v[0]+ld*v[1],fb=F.bounds||(F.bounds=inkBounds(F.glyphs,faceLineHeight()));
       let want=[0,0];
       if(F.weave>.05){const box=inkAabb([[fb.x0,fb.y0],[fb.x1,fb.y0],[fb.x0,fb.y1],[fb.x1,fb.y1]].map(([x,y])=>[ma*x+mc*y+ox,mb*x+md*y+oy])),b=inkNudge(F,box,rect,taken);want=[b.sx,b.sy];if(F.weave>.2)taken.push(b)}else F.inkShift=null;
       F.sh=F.sh||[0,0];F.sh=F.sh.map((s,i)=>mix(s,want[i],Math.min(1,dt*6)));const k=clamp(F.weave*1.5);ox+=F.sh[0]*k;oy+=F.sh[1]*k}
     const mcx=((L0[3]*(m[0]-A.x)-L0[2]*(m[1]-A.y))/ldet-BEING_CEN[0])/kw,mcy=((-L0[1]*(m[0]-A.x)+L0[0]*(m[1]-A.y))/ldet-BEING_CEN[1])/kw;
     const mlx=mcx*u[0]+mcy*u[1],mly=mcx*v[0]+mcy*v[1],near=beingSame(peek,{kind:'face',key:F.key})&&!isLock,n=F.glyphs.length,active=F.stir>.01||F.weave>.01;
     const dim=1-.6*state.beingRecede*(isOpen?0:1);
-    ctx.save();ctx.setTransform(d*(la*u[0]+lc*u[1]),d*(lb*u[0]+ld*u[1]),d*(la*v[0]+lc*v[1]),d*(lb*v[0]+ld*v[1]),d*ox,d*oy);ctx.font=FACE_FONT;
+    ctx.save();ctx.setTransform(d*(la*u[0]+lc*u[1]),d*(lb*u[0]+ld*u[1]),d*(la*v[0]+lc*v[1]),d*(lb*v[0]+ld*v[1]),d*ox,d*oy);ctx.font=faceFont();
     F.glyphs.forEach((g,j)=>{
       const rx=g.rc[0]-BEING_CEN[0],ry=g.rc[1]-BEING_CEN[1];let lx=rx*u[0]+ry*u[1],ly=rx*v[0]+ry*v[1];
       if(!active){g.x=lx;g.y=ly;g.vx=0;g.vy=0;g.s=0}else{
@@ -1237,7 +1239,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
       const tx=lu*(1-sw)+g.tx*material.scale*sw,ty=lv*(1-sw)+g.ty*material.scale*sw;
       beingSpring(g,tx,ty,.2,.68);g.x=Math.max(-material.half,Math.min(material.half-material.glyph,g.x));g.s=sw});
     const visibleGlyphs=foldedEdgeGlyphs(E,len,d);
-    ctx.save();ctx.translate(c[0],c[1]);ctx.transform(ax[0],ax[1],pe[0],pe[1],0,0);ctx.font=BEING_FONT;
+    ctx.save();ctx.translate(c[0],c[1]);ctx.transform(ax[0],ax[1],pe[0],pe[1],0,0);ctx.font=beingFont();
     if(TS){const ang=Math.atan2(ax[1],ax[0]),place=(g,size)=>{const sz=size*material.scale,y=g.y-sz*.8;return {x:c[0]+ax[0]*g.x+pe[0]*y,y:c[1]+ax[1]*g.x+pe[1]*y,cx:c[0]+ax[0]*(g.x+sz*.3)+pe[0]*(y+sz*.5),cy:c[1]+ax[1]*(g.x+sz*.3)+pe[1]*(y+sz*.5),angle:ang,scale:material.scale}};
       tissueGlyphs(visibleGlyphs,()=>true,place,g=>g.s<.4?5+4*g.t:12,g=>g.s<.4?2.4:.9,g=>(g.s<.4?(.4+.6*E.unravel)*(.5+.5*g.t):clamp((g.s-.4)*2))*alpha*dim)}
     else{for(let band=0;band<5;band++)inkDust(ctx,visibleGlyphs,g=>g.s<.4&&Math.min(4,Math.floor(g.t*5))===band,g=>material.scale*(.35+.75*g.t),'rgb(191,245,220)',(.25+.6*E.unravel)*(.4+.6*(band+.5)/5)*alpha);
@@ -1250,8 +1252,8 @@ function drawWisdom(rect,cam,translate,metabolights,now){
     const p=P[Vt.i],isOpen=beingSame(open,{kind:'vert',key:Vt.i});Vt.open=mix(Vt.open,isOpen?1:0,Math.min(1,dt*5));
     const n=Vt.glyphs.length,g0=Vt.glyphs[0];if(!g0)continue;
     let ox=-120,oy=18;
-    if(LZ&&Vt.open>.02){const vb=Vt.bounds||(Vt.bounds=inkBounds(Vt.glyphs,BEING_LH)),q=bindToDrop(LZ,p.x,p.y,vb);ox=q.ox;oy=q.oy}
-    else if(Vt.open>.02){const vb=Vt.bounds||(Vt.bounds=inkBounds(Vt.glyphs,BEING_LH)),r=inkRing(Vt,p.x,p.y,[0,1],10,vb,rect,taken);
+    if(LZ&&Vt.open>.02){const vb=Vt.bounds||(Vt.bounds=inkBounds(Vt.glyphs,beingLineHeight())),q=bindToDrop(LZ,p.x,p.y,vb);ox=q.ox;oy=q.oy}
+    else if(Vt.open>.02){const vb=Vt.bounds||(Vt.bounds=inkBounds(Vt.glyphs,beingLineHeight())),r=inkRing(Vt,p.x,p.y,[0,1],10,vb,rect,taken);
       ox=Math.max(16-p.x-vb.x0,Math.min(rect.width-16-p.x-vb.x1,r.ox));oy=Math.max(80-p.y-vb.y0,Math.min(rect.height-24-p.y-vb.y1,r.oy));
       if(Vt.open>.15)taken.push({x:p.x+ox+vb.x0,y:p.y+oy+vb.y0,w:vb.x1-vb.x0,h:vb.y1-vb.y0})}else Vt.inkAt=null;
     Vt.glyphs.forEach((g,j)=>{const sw=j===0?1:clamp(Vt.open*1.6-(j/Math.max(1,n))*.6);
@@ -1265,12 +1267,12 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   // metabolites: the light is the sentence asleep
   const cx=rect.width*.5,cy=rect.height*.5,metPx=(font.match(/[\d.]+px/)||[typePx(-1)+'px'])[0];let labelCount=0,lineCount=0;
   for(const L of metGeo){
-    const M=metaboliteGlyphs(B,L.light,font);if(!M)continue;labelCount++;lineCount+=Math.round(M.h/BEING_LH);
+    const M=metaboliteGlyphs(B,L.light,font);if(!M)continue;labelCount++;lineCount+=Math.round(M.h/beingLineHeight());
     const isOpen=beingSame(open,{kind:'met',key:L.id});M.open=mix(M.open,isOpen?1:0,Math.min(1,dt*6));
     let ux=L.x-cx,uy=L.y-cy;const ul=Math.hypot(ux,uy)||1;ux/=ul;uy/=ul;
     let ox=0,oy=0;const n=M.glyphs.length;
-    if(LZ&&M.open>.02){const mb=M.bounds||(M.bounds=inkBounds(M.glyphs,BEING_LH)),q=bindToDrop(LZ,L.x,L.y,mb);ox=q.ox;oy=q.oy}
-    else if(M.open>.02){const mb=M.bounds||(M.bounds=inkBounds(M.glyphs,BEING_LH)),r=inkRing(M,L.x,L.y,[ux,uy],22,mb,rect,taken);
+    if(LZ&&M.open>.02){const mb=M.bounds||(M.bounds=inkBounds(M.glyphs,beingLineHeight())),q=bindToDrop(LZ,L.x,L.y,mb);ox=q.ox;oy=q.oy}
+    else if(M.open>.02){const mb=M.bounds||(M.bounds=inkBounds(M.glyphs,beingLineHeight())),r=inkRing(M,L.x,L.y,[ux,uy],22,mb,rect,taken);
       ox=Math.max(14-L.x-mb.x0,Math.min(rect.width-14-L.x-mb.x1,r.ox));oy=Math.max(80-L.y-mb.y0,Math.min(rect.height-24-L.y-mb.y1,r.oy));
       if(M.open>.15)taken.push({x:L.x+ox+mb.x0,y:L.y+oy+mb.y0,w:mb.x1-mb.x0,h:mb.y1-mb.y0})}else M.inkAt=null;
     M.glyphs.forEach((g,j)=>{const sw=clamp(M.open*1.6-(j/Math.max(1,n))*.6);
@@ -1290,20 +1292,23 @@ function drawWisdom(rect,cam,translate,metabolights,now){
  * identity (`id · title`) rests as a cluster of its letters on its body, so an organism too small to
  * see is still perceptible as its sleeping name; a peek unfolds the letters into the readable name and
  * leaving folds them back. The cluster is presence, not selection: entering still follows Descent. */
-const NAME_FONT=typeFont(-1,500),NAME_LH=typePx(-1)*1.25,NAME_W=220;
+function nameFont(){return typeFont(-1,500)}
+function nameLineHeight(){return typePx(-1)*1.25}
+const NAME_W=220;
 function nameGlyphs(rec,L=null){
-  if(state.namesFor!==state.records){state.names=new Map();state.namesFor=state.records}
+  if(state.namesFor!==state.records||state.namesUnit!==typePx(0)){state.names=new Map();state.namesFor=state.records;state.namesUnit=typePx(0)}
   const fit=L?Math.max(60,Math.min(NAME_W,Math.round(L.r*1.3/10)*10)):0,N0=state.names,cacheKey=rec.id+'@'+fit;let G=N0.get(cacheKey);if(G)return G;
   const d=state.identities.get(rec.id),text=rec.id+' · '+String(d?.title||rec.title||'').trim();
-  const lines=beingLines('name·'+rec.id,text,NAME_FONT,Array.from({length:4},(_,j)=>({x:0,y:j*NAME_LH,w:fit||NAME_W})));
+  const lines=beingLines('name·'+rec.id,text,nameFont(),Array.from({length:4},(_,j)=>({x:0,y:j*nameLineHeight(),w:fit||NAME_W})));
   if(!lines.length)return null;
-  const g=beingGlyphs(state.textCanvas.getContext('2d'),lines,NAME_FONT,rec.id.length),n=g.length,ga=Math.PI*(3-Math.sqrt(5)),R=4+Math.sqrt(n)*.55;
+  const g=beingGlyphs(state.textCanvas.getContext('2d'),lines,nameFont(),rec.id.length),n=g.length,ga=Math.PI*(3-Math.sqrt(5)),R=4+Math.sqrt(n)*.55;
   g.forEach((q,j)=>{const r=Math.sqrt(j/Math.max(1,n))*R;q.ix=Math.cos(j*ga)*r;q.iy=Math.sin(j*ga)*r;q.x=q.ix;q.y=q.iy});
   G={id:rec.id,glyphs:g,open:0};N0.set(cacheKey,G);return G;
 }
 function drawNames(rect,now){
   const canvas=state.textCanvas,presence=1-backgroundPassage();
   if(presence<=.01||state.pretextStatus!=='ready'||!pretextModule){canvas.dataset.nameClusters='0';canvas.dataset.nameOpen='';return}
+  if(state.namesFor!==state.records||state.namesUnit!==typePx(0)){state.names=new Map();state.namesFor=state.records;state.namesUnit=typePx(0)}
   const ctx=canvas.getContext('2d'),q=overviewOrientation(),here=state.chamberPath||'',dt=Math.min(.05,Math.max(0,(now-(state.nameLast||now))/1000));state.nameLast=now;
   const hov=state.hover&&!state.current&&!state.pointer?.moved?hitGlobal(state.hover.x,state.hover.y,rect.width,rect.height,now):'';
   if(!state.current)state.canvas.style.cursor=hov?'pointer':'';
@@ -1320,10 +1325,10 @@ function drawNames(rect,now){
     const G=nameGlyphs(rec,L);if(!G)continue;count++;
     const isOpen=rec.id===hov||contact?.key===rec.id;G.open=mix(G.open,isOpen?1:0,Math.min(1,dt*6));
     let ox=0,oy=0;const n=G.glyphs.length;
-    if(L&&G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,NAME_LH)),s=L.r*.72,w=b.x1-b.x0,h=b.y1-b.y0;
+    if(L&&G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,nameLineHeight())),s=L.r*.72,w=b.x1-b.x0,h=b.y1-b.y0;
       const cx=Math.max(L.x-s+w/2,Math.min(L.x+s-w/2,p.x)),cy=Math.max(L.y-s+h/2,Math.min(L.y+s-h/2,p.y+12+h/2));
       ox=(w>2*s?L.x:cx)-p.x-(b.x0+b.x1)/2;oy=(h>2*s?L.y:cy)-p.y-(b.y0+b.y1)/2}
-    else if(G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,NAME_LH)),r=inkRing(G,p.x,p.y,[0,1],12,b,rect,taken);
+    else if(G.open>.02){const b=G.bounds||(G.bounds=inkBounds(G.glyphs,nameLineHeight())),r=inkRing(G,p.x,p.y,[0,1],12,b,rect,taken);
       ox=Math.max(14-p.x-b.x0,Math.min(rect.width-14-p.x-b.x1,r.ox));oy=Math.max(80-p.y-b.y0,Math.min(rect.height-24-p.y-b.y1,r.oy));
       if(G.open>.15)taken.push({x:p.x+ox+b.x0,y:p.y+oy+b.y0,w:b.x1-b.x0,h:b.y1-b.y0})}else G.inkAt=null;
     G.glyphs.forEach((g,j)=>{const sw=clamp(G.open*1.6-(j/Math.max(1,n))*.6);
@@ -1642,7 +1647,7 @@ function render({host,content,projection,backgroundDrag=true,dependency=null,len
   const shared=host.querySelector('.interlocutor-background');if(shared)shared.style.pointerEvents='auto';
   const labels=host.querySelector('.interlocutor-field-labels');if(labels)labels.style.display='none';
   if(!state||state.host!==host){state?.touchReturn?.dispose();if(!initialize(host,projection,backgroundDrag,dependency)){host.hidden=true;return false}}else{state.dependency=dependency;if(!state.shadowApplied)applyProjection(projection);state.backgroundDrag=backgroundDrag!==false;state.canvas.dataset.backgroundDrag=state.backgroundDrag?'true':'false';state.mounted=true;state.canvas.hidden=false;state.textCanvas.hidden=false;state.physiology.hidden=false;state.sourceInfo.hidden=false;state.chamberLabels.hidden=false;state.hud.hidden=false;state.label.hidden=false;hydrateShadow(host)}
-  if(ui){state.ui=ui;ui.bind(state.hudField,'hud');ui.bind(state.physiologyField,'physiology');ui.bind(state.labelField,'label');ui.bind(state.sourceInfoField,'sourceInquiry')}
+  if(ui){state.ui=ui;ui.bind(state.hudField,'hud');ui.bindInside(state.hud,'hudContent','hud');ui.bind(state.physiologyField,'physiology');ui.bind(state.labelField,'label');ui.bind(state.sourceInfoField,'sourceInquiry');ui.bind(state.sourceInfo.querySelector('.papers-source-original'),'sourceOriginal')}
   return true;
 }
 function unmount({host,content}={}){if(state?.tutorial)stopTutorial();withdrawOverviewLens();withdrawPaperLens();if(state){state.touchReturn?.reset();state.trace?.clear();state.hover=null;state.clickContacts=[];state.mounted=false;state.canvas.hidden=true;state.textCanvas.hidden=true;state.physiology.hidden=true;state.originButton.hidden=true;state.sourceInfo.hidden=true;state.chamberLabels.hidden=true;state.hud.hidden=true;state.label.hidden=true}if(host)host.hidden=true;if(content)content.replaceChildren()}

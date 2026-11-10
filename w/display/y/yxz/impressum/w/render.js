@@ -60,14 +60,14 @@ function render({host,content,projection,language='de',ui}={}){
  full.href=de?'/impressum/':'/impressum/en/';contact.href='mailto:'+projection.contact.email;links.append(full,contact);heading.append(title,links);
  const controls=el('div','impressum-controls'),sections=el('select','impressum-sections');sections.setAttribute('aria-label',de?'Abschnitt':'Section');
  blocks.forEach((b,i)=>{if(b.tag==='h1'||b.tag==='h2'){const option=el('option','',b.text);option.value=String(i);sections.append(option)}});
- const transport=el('div','impressum-transport'),range=el('input','impressum-position');range.type='range';range.min='0';range.max='0';range.step='1';range.value='0';range.setAttribute('aria-label',de?'Leseposition':'Reading position');
- const reset=el('button','impressum-orthogonal','⊥');reset.type='button';reset.title=de?'Orthogonale Leseansicht':'Orthographic reading view';reset.setAttribute('aria-label',reset.title);reset.addEventListener('click',()=>SSSWorldView.easeTo([1,0,0,0]));transport.append(range,reset);controls.append(sections,transport);
+ const range=el('input','impressum-position');range.type='range';range.min='0';range.max='0';range.step='1';range.value='0';range.setAttribute('aria-label',de?'Leseposition':'Reading position');
+ const reset=el('button','impressum-orthogonal','⊥');reset.type='button';reset.title=de?'Orthogonale Leseansicht':'Orthographic reading view';reset.setAttribute('aria-label',reset.title);reset.addEventListener('click',()=>SSSWorldView.easeTo([1,0,0,0]));controls.append(sections,range,reset);
  const scroller=el('div','impressum-scroll'),spacer=el('div');scroller.tabIndex=0;scroller.setAttribute('role','region');scroller.setAttribute('aria-label',de?'Text auf dem Tetraeder — scrollen; Abschnitte unten':'Text on the tetrahedron — scroll; sections below');spacer.setAttribute('aria-hidden','true');scroller.append(spacer);
  state={host,language,material:Surface.create({blocks,pretext}),scroller,spacer,range,sections,fit:1};
  scroller.addEventListener('scroll',()=>{if(!state||state.scroller!==scroller)return;state.material.scroll(scroller.scrollTop);syncReading()},{passive:true});
  sections.addEventListener('change',()=>{const part=state.material.sections.find(p=>p.index===Number(sections.value));if(part){state.material.scroll(part.y);syncReading()}});
  range.addEventListener('input',()=>{state.material.scroll(range.value);syncReading()});
- content.append(heading,controls,scroller,semanticText(blocks,language));ui.bind(heading,'description');ui.bind(controls,'controls');return true;
+ content.append(heading,controls,scroller,semanticText(blocks,language));ui.bind(heading,'description');ui.bind(controls,'controls');ui.bindInside(sections,'sectionSelect','controls');ui.bindInside(range,'readingPosition','controls');ui.bindInside(reset,'orthogonalReset','controls');return true;
 }
 function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();state?.material.release();state=null}
 modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,prepareFieldProjection}));

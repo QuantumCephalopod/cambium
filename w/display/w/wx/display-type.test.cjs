@@ -1,5 +1,6 @@
 'use strict';
 const assert=require('assert'),fs=require('fs'),path=require('path');
+global.innerWidth=1024;global.innerHeight=768;
 const T=require('./display-type.js');
 assert.strictEqual(T.IDENTITY,'@sss/spritesheet');
 assert.strictEqual(T.rankFactor(-4),.25);
@@ -8,12 +9,18 @@ assert.strictEqual(T.rankFactor(0),1);
 assert.strictEqual(T.rankFactor(2),2);
 assert.strictEqual(T.rankFactor(4),4);
 for(let r=-8;r<=8;r++)assert.ok(Math.abs(T.rankFactor(r+2)/T.rankFactor(r)-2)<1e-12,'two half-octaves must recover one octave');
-const mock={documentElement:{},defaultView:{getComputedStyle:()=>({fontSize:'20px'})}};
-assert.strictEqual(T.rootRemPx(mock),20,'browser/user root rem must remain the live root');
+const mock={documentElement:{},defaultView:{innerWidth:1280,innerHeight:800,getComputedStyle:()=>({fontSize:'35px'})}};
+assert.equal(T.rootRemPx(mock),35,'reading browser preferences does not change the grid-derived type unit');
+assert.equal(T.typeUnitPx(mock),20,'rank-zero derives from the authored reference cell');
 assert.ok(Math.abs(T.rankPx(-1,mock)-20/Math.SQRT2)<1e-12);
+const phone={defaultView:{innerWidth:390,innerHeight:844}};
+assert.equal(T.typeUnitPx(phone),844/64);
+assert.equal(T.typeUnitPx({defaultView:{innerWidth:844,innerHeight:390}}),T.typeUnitPx(phone),'the same axes produce the same unit after a quarter turn');
+assert.equal(T.rankPx(-2,phone),844/128,'two type ranks halve the grid-derived size');
+assert.throws(()=>T.typeUnitPx({defaultView:{innerWidth:0,innerHeight:0}}),/positive viewport/);
 const css=fs.readFileSync(path.join(__dirname,'../wz/root-view.css'),'utf8');
 for(let r=-4;r<=4;r++){
-  const m=css.match(new RegExp(T.rankVar(r)+':([\\d.]+)rem'));
+  const m=css.match(new RegExp(T.rankVar(r)+':calc\\(var\\(--type-unit\\) \\* ([\\d.]+)\\)'));
   assert.ok(m,`missing CSS rank ${r}`);
   assert.ok(Math.abs(Number(m[1])-T.rankFactor(r))<1e-12,`CSS rank ${r} diverges from power-of-two lattice`);
 }

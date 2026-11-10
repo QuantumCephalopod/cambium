@@ -22,7 +22,7 @@ let mapZoom=1,mapOffset={x:0,y:0},bodyTree=null,clusterInk=[];
 const twin=document.getElementById('navTwin'),tc=twin.getContext('2d');
 const miniState=document.getElementById('mini-state');
 
-function miniProject(p){const scale=twin.width/2.9*mapZoom,q=qRot(orient,p);return {x:twin.width/2+mapOffset.x+q[0]*scale,y:twin.height/2+mapOffset.y-q[1]*scale,z:q[2]}}
+function miniProject(p){const scale=Math.min(twin.width,twin.height)/2.9*mapZoom,q=qRot(orient,p);return {x:twin.width/2+mapOffset.x+q[0]*scale,y:twin.height/2+mapOffset.y-q[1]*scale,z:q[2]}}
 function targetActive(t){return t.locus===activeGlobalLocus || t.path===activeGlobalAddress}
 function rebuildBodies(){
   const node=path=>({path,tet:N.cellForPath(path).tet,children:new Map(),bodies:[]});bodyTree=node('');
@@ -45,8 +45,13 @@ function projectedBodies(ms,U){
 }
 function strokeTet(points){for(const [a,b] of edgeIx){tc.beginPath();tc.moveTo(points[a].x,points[a].y);tc.lineTo(points[b].x,points[b].y);tc.stroke()}}
 function drawTwin(ms=performance.now()){
-  if(!nav)return;tc.clearRect(0,0,twin.width,twin.height);
-  const rect=twin.getBoundingClientRect(),U=twin.width/Math.max(1,rect.width),pad=1.5*U;
+  if(!nav)return;
+  const rect=twin.getBoundingClientRect();
+  // The cell may be rectangular. Match the backing aspect to that cell so
+  // the tetrahedral body stays undistorted without resizing the cell itself.
+  if(rect.width>0&&rect.height>0){const h=Math.max(1,Math.round(twin.width*rect.height/rect.width));if(twin.height!==h)twin.height=h}
+  tc.clearRect(0,0,twin.width,twin.height);
+  const U=twin.width/Math.max(1,rect.width),pad=1.5*U;
   tc.lineWidth=U;tc.strokeStyle='rgba(241,239,233,.16)';
   for(const cell of STRUCT.leaves)strokeTet(cell.tet.map(miniProject));
   const bodies=projectedBodies(ms,U);targetInk=[];
@@ -64,8 +69,8 @@ function drawTwin(ms=performance.now()){
     targetInk.push({...b,label:null});
   }
   tc.lineWidth=U;tc.strokeStyle='rgba(241,239,233,.45)';for(const group of clusterInk)strokeTet(group.corners);
-  /* A name belongs beside its own projected body. Scale comes from that body;
-   * crowding removes background ink rather than moving names into rows. */
+  /* A name belongs beside its own projected body. Every name uses a rank from
+   * the shared screen grid; crowding removes ink rather than changing its size. */
   const overview=GLOBAL_TARGETS.find(t=>t.path==='');
   if(overview)targetInk.unshift({target:overview,corners:N.V0.map(miniProject),point:miniProject([0,0,0]),root:true,label:null});
   const occupied=[],captioned=new Set();
@@ -73,8 +78,7 @@ function drawTwin(ms=performance.now()){
   for(const record of labels){
     const hot=targetActive(record.target)||record.target===hoverTarget,p=record.point;if(hot&&captioned.has(record.target))continue;
     const diameter=Math.max(...record.corners.map(q=>Math.hypot(q.x-p.x,q.y-p.y)))*2;
-    const size=hot?globalThis.SSSDisplayType.rankPx(-3,document)*U:Math.min(globalThis.SSSDisplayType.rankPx(-4,document)*U,diameter/5);
-    if(!hot&&size<globalThis.SSSDisplayType.rankPx(-6,document)*U)continue;
+    const size=globalThis.SSSDisplayType.rankPx(hot?-3:-4,document)*U;
     const ownedTitle=hot&&record.target.interlocutorIds.length>1?record.target.interlocutorIds.map(id=>record.target.titles[id]||id.replace(/^organism:/,'')).join(' + '):record.target.titles[record.id]||record.id.replace(/^organism:/,'');
     const text=globalThis.SSSDisplayType.fold(ownedTitle.toUpperCase());
     tc.font=size+'px "SpriteSheet Mono",ui-monospace,monospace';tc.textAlign='left';
@@ -145,7 +149,18 @@ function knobShape(knob){
   svg.setAttribute('class','knob-shape');svg.setAttribute('viewBox','-16 -16 32 32');svg.setAttribute('aria-hidden','true');svg.appendChild(poly);knob.appendChild(svg);
   return p=>{const u=p*p*(3-2*p);poly.setAttribute('points',KNOB_CIRCLE.map((c,i)=>(c[0]+(KNOB_TRIANGLE[i][0]-c[0])*u).toFixed(2)+','+(c[1]+(KNOB_TRIANGLE[i][1]-c[1])*u).toFixed(2)).join(' '));knob.style.setProperty('--knob-scale',(1+(KNOB_SWELL-1)*p).toFixed(3));knob.style.setProperty('--knob-lock',p.toFixed(3));knob.dataset.morph=p>0?'on':'off'}
 }
-function paintAxis(axis){if(!nav)return;const el=axes[axis],v=nav.axes[axis],k=el.querySelector('.knob');el.setAttribute('aria-valuenow',String(Math.round(v*100)));if(axis==='x')k.style.left=(50+v*43)+'%';else k.style.top=(50-v*43)+'%'}
+function turned(){return Number.isFinite(globalThis.innerWidth)&&Number.isFinite(globalThis.innerHeight)?globalThis.innerHeight>globalThis.innerWidth:document.documentElement.dataset.displayOrientation==='portrait'}
+function physicalAxis(axis){return turned()?(axis==='x'?'y':'x'):axis}
+function axisSample(axis,el,e){
+  const physical=physicalAxis(axis),value=N.axisValue(physical,el.getBoundingClientRect(),e.clientX,e.clientY);
+  return turned()&&axis==='x'?-value:value;
+}
+function paintAxis(axis){
+  if(!nav)return;const el=axes[axis],v=nav.axes[axis],k=el.querySelector('.knob'),physical=physicalAxis(axis);
+  el.setAttribute('aria-valuenow',String(Math.round(v*100)));el.setAttribute('aria-orientation',physical==='x'?'horizontal':'vertical');
+  k.style.left='50%';k.style.top='50%';
+  if(physical==='x')k.style.left=(50+v*43)+'%';else k.style.top=(50+(turned()?v:-v)*43)+'%';
+}
 function bindAxis(axis){
   const el=axes[axis];let active=null,timer=null,latched=false,lastValue=0;
   const clearTimer=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
@@ -153,17 +168,18 @@ function bindAxis(axis){
   const showKnob=p=>{shown=Math.max(0,Math.min(1,p));shape(shown)};
   const stopKnob=()=>{if(raf){cancelAnimationFrame(raf);raf=0}};
   const tick=now=>{raf=0;if(active===null)return;const dt=Math.max(0,now-prev),target=Math.min(1,(now-since)/AXIS_SETTLE_MS);prev=now;showKnob(target>=shown?target:shown-dt*KNOB_FALL/AXIS_SETTLE_MS);raf=requestAnimationFrame(tick)};
-  const sample=e=>{const v=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY),changed=Math.abs(v-lastValue)>AXIS_SETTLE_EPS;lastValue=v;nav.setAxis(axis,v);paintAxis(axis);return changed};
+  const sample=e=>{const v=axisSample(axis,el,e),changed=Math.abs(v-lastValue)>AXIS_SETTLE_EPS;lastValue=v;nav.setAxis(axis,v);paintAxis(axis);return changed};
   const arm=()=>{clearTimer();if(active===null)return;since=prev=performance.now();if(!KNOB_REDUCED&&!raf)raf=requestAnimationFrame(tick);timer=setTimeout(()=>{timer=null;if(active===null)return;const pid=active;active=null;latched=true;el.dataset.latched='true';stopKnob();showKnob(1);try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}},AXIS_SETTLE_MS)};
-  el.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;clearTimer();if(latched){latched=false;el.dataset.latched='false';showKnob(0)}active=e.pointerId;try{el.setPointerCapture(active)}catch(_){}lastValue=N.axisValue(axis,el.getBoundingClientRect(),e.clientX,e.clientY);nav.setAxis(axis,lastValue);paintAxis(axis);arm();e.preventDefault()});
+  el.addEventListener('pointerdown',e=>{if(e.button!==0||!nav)return;clearTimer();if(latched){latched=false;el.dataset.latched='false';showKnob(0)}active=e.pointerId;try{el.setPointerCapture(active)}catch(_){}lastValue=axisSample(axis,el,e);nav.setAxis(axis,lastValue);paintAxis(axis);arm();e.preventDefault()});
   el.addEventListener('pointermove',e=>{if(active!==e.pointerId)return;if(sample(e))arm();e.preventDefault()});
   const release=e=>{if(active!==e.pointerId)return;clearTimer();const pid=active;active=null;stopKnob();showKnob(0);nav.releaseAxis(axis);paintAxis(axis);try{if(el.hasPointerCapture(pid))el.releasePointerCapture(pid)}catch(_){}e.preventDefault()};
   el.addEventListener('pointerup',release);el.addEventListener('pointercancel',release);
-  el.addEventListener('keydown',e=>{if(!nav)return;const valid=axis==='x'?['ArrowLeft','ArrowRight']:['ArrowUp','ArrowDown'];if(!valid.includes(e.key))return;e.preventDefault();const sign=(e.key==='ArrowRight'||e.key==='ArrowUp')?1:-1;nav.setAxis(axis,sign*(e.shiftKey?1:.52));paintAxis(axis)});
+  el.addEventListener('keydown',e=>{if(!nav)return;const physical=physicalAxis(axis),valid=physical==='x'?['ArrowLeft','ArrowRight']:['ArrowUp','ArrowDown'];if(!valid.includes(e.key))return;e.preventDefault();const sign=(e.key==='ArrowRight'||(e.key==='ArrowDown'&&turned())||(e.key==='ArrowUp'&&!turned()))?1:-1;nav.setAxis(axis,sign*(e.shiftKey?1:.52));paintAxis(axis)});
   el.addEventListener('keyup',()=>{if(!nav)return;nav.releaseAxis(axis);paintAxis(axis)});
   el.addEventListener('blur',()=>{if(!nav||latched)return;nav.releaseAxis(axis);paintAxis(axis)});
 }
 bindAxis('x');bindAxis('y');
+addEventListener('resize',()=>{paintAxis('x');paintAxis('y');drawTwin()},{passive:true});
 
 function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;

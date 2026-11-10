@@ -159,3 +159,8 @@ The owner-declared compass keeps its ordinary wide address and lends `z` on port
 ## Upright mobile field — 2026-11-09
 
 The current long-axis carrier keeps the ordinary compass address. Philosophy explicitly lends an `upright` viewport span for the turned carrier so the same world bodies, anchors, source prose and contacts have more room; the selected span still uses Display's quarter-turn. The common Display label-contact operation separates overlapping title rectangles and tethers any displaced ink to its actual body anchor. Earlier compass-variant descriptions above remain historical; they are not selected by this upright carrier operation.
+
+
+## Shared format candidate — 2026-11-10
+
+Philosophy's introduction uses Display's rank-zero grid origin in its existing description cell; authored source and identity are unchanged. The ordinary viewport and compass addresses are used through the turn; the earlier `upright` selection above is historical. Its introduction can scroll in the bounded cell, but the narrow visual presentation has not yet earned complete readability closure.

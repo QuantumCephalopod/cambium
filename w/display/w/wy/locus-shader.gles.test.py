@@ -160,7 +160,7 @@ def replay(commands,width,height,min_depth_clears=3):
 def readable_contract(width,height):
     """Actual foreground stays sharp; scene keeps optics and gains focus blur."""
     import statistics
-    frame={'left':24,'top':height//3,'width':min(300,width-48),'height':120,'r':14}
+    frame={'left':24,'top':height//3,'width':min(300,width-48),'height':max(120,round(max(width,height)/64*7.5)),'r':14}
     background=bytes(v for y in range(height) for x in range(width) for v in ((225,235,218,255) if (x//3+y//5)%2 else (30,85,70,255)))
     results=[]
     with tempfile.TemporaryDirectory() as tmp:
