@@ -1,0 +1,39 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-grid-type-decision-witness-20261110",
+  "owner": "display",
+  "source_revision": "26fe68d9acd2b21657dbac08b623b437ceac0588",
+  "encounter": {
+    "path": "w/display/_stomach/NUTRIENT__grid-derived-type-origin__20261110.md",
+    "git_blob_sha": "ba4c767790922ed70dcb7026d772950fdf3151d8"
+  },
+  "accepted_direction": "Philipp explicitly accepted a grid-cell-derived common typographic origin scaling with the display format.",
+  "current_carrier": {
+    "type": "w/display/w/wx/display-type.js computes rankPx from computed root rem; rootRemPx also participates in Canvas shadows and compass fitting.",
+    "css": "w/display/w/wz/root-view.css expresses ranks in rem; Philosophy narrows a local origin at its width breakpoint.",
+    "tests": "w/display/w/wx/display-type.test.cjs and w/display/y/philosophy/w/render.test.cjs currently assert parts of the old rem-origin behavior.",
+    "contract": "w/display/RITUALS/organism/RITUAL.md still specifies a browser-rem origin and local origins; it has not been rewritten to claim the new behavior prematurely."
+  },
+  "reasoning": {
+    "formula": "For long logical axis L, reference depth n and existing relative font rank r, U=L/2^n and size=U*2^(r/2).",
+    "gauge": "Replacing n by n+1 and every role rank by r+2 leaves every font size unchanged. The reference depth and role ranks are not independently meaningful until a convention fixes one.",
+    "examples": [
+      {
+        "long_axis_css_px": 1920,
+        "reference_depth": 6,
+        "base_rank_zero_css_px": 30,
+        "relative_rank_minus_two_css_px": 15
+      },
+      {
+        "long_axis_css_px": 844,
+        "reference_depth": 6,
+        "base_rank_zero_css_px": 13.1875,
+        "relative_rank_minus_two_css_px": 6.59375
+      }
+    ],
+    "example_boundary": "Arithmetic examples only; depth 6 and the inherited relative ranks have not been selected or accepted. Absolute choices affect all actual type sizes.",
+    "access": "A purely viewport-derived type size does not inherently follow a separately configured browser root font size; user-controlled enlargement needs an explicit, consistent design.",
+    "mutation_boundary": "No product source, authored grid, site layout, type rank or living receptor changed."
+  },
+  "outcome": "Direction accepted and exact encounter preserved. Concrete type roles/reference and implementation remain unresolved; the current site still uses the prior rem origin."
+}
