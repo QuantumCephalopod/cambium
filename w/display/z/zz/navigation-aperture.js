@@ -26,6 +26,24 @@ for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[d
   el.addEventListener('focus',()=>{focusContext=key;renderHint()});
   el.addEventListener('blur',()=>{focusContext=null;renderHint()});
 }
+// Chromium can retarget a touch just inside the map to a nearby button even
+// when the exact hit point is the canvas. Resolve that one disputed contact
+// from the actual point, not a distance or a viewport-specific margin.
+let correctedTouch=null;
+addEventListener('pointerdown',e=>{
+  if(!e.isTrusted||e.pointerType!=='touch')return;
+  correctedTouch=null;
+  if(!map||e.target===map||document.elementFromPoint(e.clientX,e.clientY)!==map)return;
+  correctedTouch={id:e.pointerId,target:e.target};
+  e.preventDefault();e.stopImmediatePropagation();
+  map.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true,composed:true,pointerId:e.pointerId,pointerType:'touch',isPrimary:e.isPrimary,button:e.button,buttons:e.buttons,clientX:e.clientX,clientY:e.clientY}));
+},true);
+addEventListener('pointercancel',e=>{if(correctedTouch?.id===e.pointerId)correctedTouch=null},true);
+addEventListener('click',e=>{
+  if(!correctedTouch||!e.isTrusted||e.pointerType!=='touch')return;
+  if(e.pointerId!==correctedTouch.id&&e.target!==correctedTouch.target)return;
+  correctedTouch=null;e.preventDefault();e.stopImmediatePropagation();
+},true);
 function setHelp(next){if(!guide||!helpButton)return;guide.hidden=!next;helpButton.setAttribute('aria-expanded',String(next));if(next&&pocket.getAttribute?.('aria-hidden')==='true')open('help');if(next)guide.scrollIntoView?.({block:'nearest',inline:'nearest'})}
 helpButton?.addEventListener('click',()=>setHelp(guide.hidden));
 
