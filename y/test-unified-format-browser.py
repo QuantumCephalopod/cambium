@@ -15,15 +15,17 @@ server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(args.arti
 threading.Thread(target=server.serve_forever,daemon=True).start()
 base=f'http://127.0.0.1:{server.server_port}/index.html'
 reports=[]
+sites=[('philosophy','overview'),('crawlerbait','y'),('schattenseiten','x'),('papers','w'),('datenschutz','z'),('impressum','xz')]
 try:
  with sync_playwright() as pw:
   browser=pw.chromium.launch(headless=True,args=['--no-sandbox','--disable-webgl'])
-  for width,height in [(1280,800),(390,844),(844,390),(1920,1080)]:
+  carriers=[(w,h,site,address) for w,h in [(1280,800),(390,844)] for site,address in sites]+[(844,390,'philosophy','overview'),(1920,1080,'philosophy','overview')]
+  for width,height,site,address in carriers:
    page=browser.new_page(viewport={'width':width,'height':height},device_scale_factor=1,reduced_motion='reduce')
-   errors=[];page.on('pageerror',lambda e:errors.append(str(e)));name=f'{width}x{height}'
+   errors=[];page.on('pageerror',lambda e:errors.append(str(e)));name=f'{site}-{width}x{height}'
    try:
-    page.goto(base+'#main:overview',wait_until='domcontentloaded')
-    page.wait_for_function('window.SSSDisplayRuntime && SSSDisplayMembraneGrid.snapshot().viewport.width===innerWidth',timeout=180000)
+    page.goto(base+'#main:'+address,wait_until='domcontentloaded')
+    page.wait_for_function('id => window.SSSDisplayRuntime?.state.activeIds.includes(id) && SSSDisplayMembraneGrid.snapshot().viewport.width===innerWidth && document.getElementById("tetra-fold").dataset.fold==="open"',arg='organism:'+site,timeout=180000)
     page.evaluate('document.fonts.ready');page.wait_for_timeout(700)
     snap=page.evaluate('''() => {
       const G=SSSDisplayMembraneGrid,box=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height}}, names={state:'mini-state',map:'navTwin','axis-y':'axis-y','axis-x':'axis-x',hint:'mini-help',help:'mini-help-toggle',trigger:'mini-trigger',legal:'legal-links'};
@@ -38,7 +40,7 @@ try:
       for edge in ['left','top','width','height']:
        assert abs(entry['actual'][edge]-entry['expected'][edge])<1.1,(name,key,edge,entry)
     assert abs(snap['unit']-max(width,height)/64)<1e-8,(name,snap)
-    assert snap['font'] is not None and abs(snap['font']-snap['unit'])<.1,(name,snap['font'],snap['unit'])
+    if site=='philosophy': assert snap['font'] is not None and abs(snap['font']-snap['unit'])<.1,(name,snap['font'],snap['unit'])
     a=snap['fields']['map']['actual'];cw,ch=snap['mapCanvas'];assert abs(cw/ch-a['width']/a['height'])<.02,(name,'map distorted',snap)
     page.screenshot(path=str(args.out/(name+'.png')))
     page.locator('#mini-help-toggle').click(timeout=10000);assert page.locator('#mini-guide').is_visible()
@@ -48,7 +50,7 @@ try:
     for link in page.locator('#legal-links a').all():
      link.scroll_into_view_if_needed(timeout=10000);link.click(trial=True,timeout=10000)
     assert not errors,(name,errors)
-    reports.append({'viewport':[width,height],'unit':snap['unit'],'mode':snap['mode']});print('PASS',name,flush=True)
+    reports.append({'site':site,'viewport':[width,height],'unit':snap['unit'],'mode':snap['mode']});print('PASS',name,flush=True)
    except Exception:
     page.screenshot(path=str(args.out/(name+'-FAILED.png')));print('FAIL',name,'page errors',errors,flush=True);raise
    finally:page.close()

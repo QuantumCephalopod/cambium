@@ -270,10 +270,10 @@
     return {...spanInfo(state,used?f.variants[used]:f.cells),id,label:f.label,z:f.z,variant:used};
   }
 
-  // The same long-axis turn applies everywhere. An owner may lend an
-  // explicitly addressed upright-content span when the carrier is turned.
+  // The carrier always projects the same authored field. Named alternatives
+  // remain explicit state, but a change of orientation does not select one.
   function carrierField(state,id,mode){
-    return fieldInfo(state,id,mode==='portrait'?'upright':'');
+    return fieldInfo(state,id);
   }
 
   function place(state,id,spec){

@@ -38,7 +38,7 @@ function makeSiteUI(id,host,raw){
   if(state.meta.extent==='intrinsic')throw new Error('Display UI fields require address-derived extents');
   const carrier=()=>safeCarrier(host);
   function field(name,carrier=safeCarrier(host)){
-    const mode=UI.orientation(innerWidth,innerHeight),info=UI.fieldInfo(state,name);
+    const mode=UI.orientation(innerWidth,innerHeight),info=UI.carrierField(state,name,mode);
     return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,variant:info.variant||'default',orientation:mode});
   }
   function apply(el,name){
@@ -196,7 +196,16 @@ function structuralStack(ids,frames=[]){
 }
 function resolveGlobal(path=''){return registry.resolve(GLOBAL_SCOPE,path,{width:innerWidth,height:innerHeight})}
 function snap(){return {globalScope:GLOBAL_SCOPE,activeIds:[...activeIds],activeAddress,stack:stack.map(x=>({...x,activeIds:[...x.activeIds]})),localView:W.view}}
-function composition(){const c=H.composeInterlocutors(activeIds.map(interlocutorId=>({interlocutorId})),{width:innerWidth,height:innerHeight});document.documentElement.dataset.composition=c.mode;document.documentElement.dataset.compositionAxis=c.axis||'';stage.dataset.composition=c.mode;stage.dataset.axis=c.axis||'';stage.style.setProperty('--interlocutor-columns',String(c.columns||1));return c}
+function composition(){
+  const c=H.composeInterlocutors(activeIds.map(interlocutorId=>({interlocutorId})),{width:innerWidth,height:innerHeight}),mode=UI.orientation(innerWidth,innerHeight);
+  document.documentElement.dataset.composition=c.mode;document.documentElement.dataset.compositionAxis=c.axis||'';stage.dataset.composition=c.mode;stage.dataset.axis=c.axis||'';
+  activeIds.forEach((id,i)=>{
+    const host=surfaces.get(id)?.host,b=c.layout[i]&&UI.orientBounds(c.layout[i].bounds,mode);if(!host||!b)return;
+    for(const [k,v]of Object.entries({position:'absolute',left:(b.x*100)+'%',top:(b.y*100)+'%',width:(b.w*100)+'%',height:(b.h*100)+'%',right:'auto',bottom:'auto'}))if(host.style[k]!==v)host.style[k]=v;
+    host.dataset.compositionCells=c.layout[i].cells.join(' ');
+  });
+  return c;
+}
 function syncMembraneGrid(){
  const ui=activeIds.map(id=>uiById.get(id)).find(u=>u?.bounded&&u.state.fields.compass)||uiById.get(ROOT_IDS[0]);
  const mini=document.getElementById('mini');if(!mini||!ui?.bounded||!ui.state.fields.compass)return;
