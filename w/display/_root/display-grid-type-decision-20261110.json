@@ -1,0 +1,30 @@
+{
+  "kind": "HOME",
+  "event_id": "display-grid-type-decision-20261110",
+  "home_at_utc": "2026-11-10T00:31:52.295Z",
+  "organism": "display",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "outcome": "GRID-DERIVED TYPE DIRECTION ACCEPTED — Philipp chose a grid-cell origin for the common type scale. Current rem-based code remains unchanged; exact role sizes, reference convention and implementation remain open.",
+  "changed_scope": [
+    "Source-faithful decision and bounded source/formula witness; updated unresolved design decisions. No product runtime, style, grid or local receptor mutation."
+  ],
+  "context": {
+    "source_revision": "26fe68d9acd2b21657dbac08b623b437ceac0588",
+    "witness": {
+      "path": "w/display/_root/display-grid-type-decision-witness-20261110.json",
+      "git_blob_sha": "ab8066a2b9110f5465b0e62e583d321f9383959a"
+    },
+    "source_exact_spent_intake": {
+      "source": "w/display/_stomach/NUTRIENT__grid-derived-type-origin__20261110.md",
+      "destination": "w/display/_waste/NUTRIENT__grid-derived-type-origin__20261110.md",
+      "git_blob_sha": "ba4c767790922ed70dcb7026d772950fdf3151d8",
+      "source_exact": true
+    },
+    "unresolved": [
+      "w/display/_stomach/NUTRIENT__shared-format-design-decisions__20261110.md",
+      "w/display/_stomach/NUTRIENT__global-format-contract-mismatch__20261109.md"
+    ],
+    "boundary": "The accepted direction is not a completed implementation and does not determine absolute font sizes or other screen-grid assignments."
+  }
+}
