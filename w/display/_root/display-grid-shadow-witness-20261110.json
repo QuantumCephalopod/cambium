@@ -1,0 +1,24 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-grid-shadow-witness-20261110",
+  "witness_at_utc": "2026-11-10T02:12:24.633840Z",
+  "owner": "display",
+  "status": "PASS / BOUNDED",
+  "source": {
+    "implementation_commit": "21eb8ef38c010ce99d2966f086a375be286f8cd5",
+    "type_source_git_blob": "56883cf9864d53a1dbacfdfdbea0692d65b15252",
+    "prior_counterexample": "_root/display-shared-format-candidate-witness-20261110.json",
+    "mobile_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42740118105"
+  },
+  "claim": "The reusable Canvas glyph shadow is composited behind existing canvas ink, then the original glyph is drawn once. At the tested viewport-derived units this retains shadow support without changing already-opaque glyph colour.",
+  "evidence": {
+    "native_type": "node w/display/w/wx/display-type.test.cjs passed.",
+    "pixel_comparison": "Actual SpriteSheet native canvas at 1280x800 and 390x844: respectively 29,664 and 12,617 shadow-only support pixels; opaque glyph samples differed by at most one UNORM unit from no-shadow; source pixels were identical before global inversion.",
+    "software_gles": "The existing readable_contract from w/display/w/wy/locus-shader.gles.test.py passed separately at 1280x800 and 390x844, using actual captured locus-shader commands on software GLES. It checked sharp foreground, retained shadow, focused background blur, overlapping reading surfaces and refracted header/compass surfaces.",
+    "mobile": "The mobile-reading step of the linked run passed 24 combinations: six sites, DE/EN and 320x568/390x844, with emulated touch. Its next long-axis step passed 12 cases and live turns. The overall workflow later failed at the obsolete membrane fit assertion, so its other later browser suites are not claimed."
+  },
+  "limits": [
+    "The combined full local locus-shader.gles.test.py process exited 137 in this environment after the initial change; the two readable_contract executions above are narrower evidence, not a full-suite pass.",
+    "No physical GPU, physical touch device, full global format migration, selected Source interaction, or deployment is claimed."
+  ]
+}
