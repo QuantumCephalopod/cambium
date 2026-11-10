@@ -1,0 +1,23 @@
+{
+  "kind": "WITNESS",
+  "event_id": "cambium-fork-actions-quiet-witness-20261110",
+  "witness_at_utc": "2026-11-10T02:24:46.655888Z",
+  "owner": "cambium",
+  "status": "PASS / BOUNDED",
+  "source": {
+    "encounter": "_stomach/NUTRIENT__quiet-staging-actions__20261110.md",
+    "intake_commit": "93310df5e0ea0f6cd8f3b8ffb5d19da7e54d75",
+    "staging_quiet_commit": "7b41d33b30b78b4f695ef8aa085bd318d79272de",
+    "test_branch_quiet_commit": "182a9104eb6af6c89bda4fa1f9075d9396062e00"
+  },
+  "claim": "On these two fork branches, the disposable test workflows no longer exist and the persistent workflow jobs run only in the canonical self-similar-systems/cambium repository. Canonical conditions retain their prior behavior.",
+  "evidence": [
+    "The actual fork runs https://github.com/QuantumCephalopod/cambium/actions/runs/42742380778 (display membrane) and https://github.com/QuantumCephalopod/cambium/actions/runs/42742380619 (Papers materializer test) both concluded skipped at the quiet staging commit.",
+    "The disposable test branch no longer contains pages.yml, papers-shadow-materializer-test.yml, unified-format-draft.yml, touch-probe.yml or grid-probe.yml. Its remaining three workflows are not automatic staging-push jobs.",
+    "A 96-combination truth table covered canonical/fork, push/dispatch/workflow_run, success, dispatch origin, main branch and matching source; the canonical pages condition is logically identical to the original and the fork condition is false. The Cloudflare and Papers test guards likewise add only the canonical-repository condition."
+  ],
+  "limits": [
+    "No repository-wide GitHub Actions setting or previously started job was changed; already-started jobs may finish and other branches may still contain their old workflows.",
+    "A guarded workflow can appear as a skipped run; skipped is not a claim that the repository-wide Actions setting is disabled. No canonical branch was changed or deployed."
+  ]
+}
