@@ -502,6 +502,21 @@ console.log('PASS — runtime descent/ascent/repaint/refusal/restoration preserv
  console.log('PASS — orientation turns the same owner address without selecting a separate upright span');
 }
 
+// Nested fields use the same root addresses and are measured relative to the
+// declared parent, including a vertical reading flow after the quarter-turn.
+{
+ const f=boot(1,'',{}, {}, {},false,null,true),u=f.runtime.ui.get(ids[0]);
+ u.state.splits.push('w');u.state.fields.slot.flow='long-axis';u.state.fields.child={cells:['ww'],label:'child',z:0};
+ const parent={style:{setProperty(k,v){this[k]=v}},dataset:{},isConnected:true},child={style:{setProperty(k,v){this[k]=v}},dataset:{},isConnected:true};
+ u.bind(parent,'slot');u.bindInside(child,'child','slot');
+ assert.equal(child.style.left,'0px');assert.equal(child.style.top,'0px');assert.equal(child.style.width,'250px');assert.equal(child.style.height,'200px');
+ f.context.innerWidth=390;f.context.innerHeight=844;u.refresh();
+ assert.equal(child.style.left,'97.5px');assert.equal(child.style.top,'0px');assert.equal(child.style.width,'97.5px');assert.equal(child.style.height,'211px');
+ assert.equal(child.style.inlineSize,'211px');assert.equal(child.style.blockSize,'97.5px');
+ assert.throws(()=>u.bindInside(child,'slot','child'),/inside its declared parent/);
+ console.log('PASS — nested fields retain exact relative rectangles and turned reading flow');
+}
+
 // The overview also lends the navigator to sites without their own compass.
 // Its hidden site host can measure 0×0, but the global carrier is still real.
 {

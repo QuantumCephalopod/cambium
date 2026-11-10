@@ -14,7 +14,7 @@
 .papers-chamber-label[data-active="true"] b{color:rgba(235,255,243,.92)}
 .papers-chamber-label[data-active="true"] small{color:rgba(202,239,218,.58)}
 .papers-hud-field,.papers-physiology-field,.papers-label-field,.papers-source-field{pointer-events:none}
-.papers-hud-field{padding-block-start:var(--display-safe-top);box-sizing:border-box}
+.papers-hud-field{box-sizing:border-box}
 .papers-label-field{display:grid;place-items:end center}
 .papers-hud-field>.papers-sierpinski-hud,.papers-label-field>.papers-sierpinski-label{max-inline-size:100%;overflow-wrap:anywhere}
 .papers-sierpinski-hud{inline-size:min(24rem,calc(100vw - 1.5rem));z-index:5;display:grid;gap:4px;pointer-events:none;text-shadow:0 1px 18px rgba(0,0,0,.82);overflow:visible}

@@ -893,7 +893,7 @@ function render({host,content,projection,ui=null,dependency=null}={}){
   // the HUD is locked to the screen's borders so the centre stays free:
   // left — who the reef is and who lives in it; right — the one being you ride with and the bait you chose; bottom-left — time
   const rail=el('div','crawlerbait-hud-rail'),header=el('div','crawlerbait-hud-header');
-  header.append(top);content.append(header);if(ui)ui.bind(header,'header');
+  header.append(top);content.append(header);if(ui){ui.bind(header,'header');ui.bindInside(top,'headerContent','header')}
   const modes=el('div','crawlerbait-modes');for(const [mode,label]of [['reef',word('Riff','Reef')],['beings',word('Beings','Beings')]]){const button=el('button','crawlerbait-play',label);button.type='button';button.setAttribute('aria-pressed',String(MODE===mode));button.addEventListener('click',()=>{MODE=mode;camSet(false);if(life)life.camBox.hidden=mode!=='reef';if(inspectorHost)inspectorHost.hidden=mode!=='reef';for(const b of modes.children)b.setAttribute('aria-pressed',String(b===button));});modes.append(button)}rail.append(modes);
   storyLine(rail);
   const life=Array.isArray(projection.encounters)&&projection.encounters.length?lifeParts(projection):null;

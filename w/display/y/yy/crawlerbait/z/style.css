@@ -159,7 +159,7 @@
 
 /* Keep the global membrane outside the local reading scroller. The declared
    header rectangle stays fixed even when a short viewport needs continuation. */
-.crawlerbait-content>.crawlerbait-hud-header[data-ui-bounded]{display:flex;flex-direction:column;padding:.25rem .75rem;padding-block-start:max(.25rem,var(--display-safe-top,0px));overflow:hidden!important;pointer-events:auto}
+.crawlerbait-content>.crawlerbait-hud-header[data-ui-bounded]{padding:0;overflow:hidden!important;pointer-events:auto}
 .crawlerbait-hud-header[data-ui-bounded]>.crawlerbait-hud-top{display:flex;flex-wrap:wrap;align-content:flex-start;align-items:baseline;flex:1 1 auto;min-block-size:0;min-inline-size:0;gap:.5rem;padding:0;border:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
 .crawlerbait-hud-header[data-ui-bounded] .crawlerbait-hud-top h1{inline-size:100%;margin:0}
 .crawlerbait-content>.crawlerbait-hud-rail[data-ui-bounded],.crawlerbait-content>.crawlerbait-hud-bottom[data-ui-bounded]{padding:.75rem;pointer-events:auto}

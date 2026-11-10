@@ -41,20 +41,22 @@ function makeSiteUI(id,host,raw){
     const mode=UI.orientation(innerWidth,innerHeight),info=UI.carrierField(state,name,mode);
     return Object.freeze({id:name,label:info.label,cells:Object.freeze([...info.cells]),bounds:Object.freeze(UI.orientBounds(info.bounds,mode)),z:info.z,flow:info.flow,variant:info.variant||'default',orientation:mode});
   }
-  function apply(el,name){
+  function apply(el,name,parentName=''){
     if(!el)throw new TypeError('UI field element required');
-    const c=carrier(),info=field(name,c),b=info.bounds;
+    const c=carrier(),info=field(name,c),b=info.bounds,parentInfo=parentName?field(parentName,c):null,parent=parentInfo?.bounds||{x:0,y:0,w:1,h:1};
+    if(b.x<parent.x-1e-9||b.y<parent.y-1e-9||b.x+b.w>parent.x+parent.w+1e-9||b.y+b.h>parent.y+parent.h+1e-9)throw new Error('nested UI field must be inside its declared parent');
     // Stacking is deterministic within the site's isolated Display layer.
     const tie=Object.keys(state.fields).sort().indexOf(name);
     el.style.setProperty?.('--ui-field-x',(c.x+b.x*c.w)+'px');
     el.style.setProperty?.('--ui-field-y',(c.y+b.y*c.h)+'px');
     Object.assign(el.style,{
       position:'absolute',
-      left:(c.x+b.x*c.w)+'px',
-      top:(c.y+b.y*c.h)+'px',
+      left:((b.x-parent.x)*c.w)+'px',
+      top:((b.y-parent.y)*c.h)+'px',
       zIndex:String(4+info.z*64+tie)
     });
-    Object.assign(el.style,{right:'auto',bottom:'auto',width:b.w*c.w+'px',height:b.h*c.h+'px',inlineSize:b.w*c.w+'px',blockSize:b.h*c.h+'px',minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overflowWrap:'anywhere',overscrollBehavior:'contain',contain:'layout paint'});
+    const vertical=parentInfo?.flow==='long-axis'&&info.orientation==='portrait',width=b.w*c.w+'px',height=b.h*c.h+'px';
+    Object.assign(el.style,{right:'auto',bottom:'auto',width,height,inlineSize:vertical?height:width,blockSize:vertical?width:height,minWidth:'0',minHeight:'0',maxWidth:'none',maxHeight:'none',maxInlineSize:'none',maxBlockSize:'none',boxSizing:'border-box',margin:'0',transform:'none',overflow:'auto',overflowWrap:'anywhere',overscrollBehavior:'contain',contain:'layout paint'});
     if(el.dataset){
       el.dataset.uiField=name;el.dataset.uiVariant=info.variant;el.dataset.uiFlow=info.flow;el.dataset.uiBounded='true';
       // Only a field actually meeting the viewport edge shares its global
@@ -64,15 +66,16 @@ function makeSiteUI(id,host,raw){
     }
     return el;
   }
-  function bind(el,name){bindings.set(el,name);return apply(el,name)}
+  function bind(el,name){bindings.set(el,{name,parentName:''});return apply(el,name)}
+  function bindInside(el,name,parentName){bindings.set(el,{name,parentName});return apply(el,name,parentName)}
   function refresh(){
-    for(const [el,name] of [...bindings]){
+    for(const [el,{name,parentName}] of [...bindings]){
       if(el.isConnected===false){bindings.delete(el);continue}
-      apply(el,name);
+      apply(el,name,parentName);
     }
   }
   function rect(name,global=false){const c=carrier(),b=field(name,c).bounds,hostRect=surfaceRect(host),x=c.x+b.x*c.w+(global?hostRect.left:0),y=c.y+b.y*c.h+(global?hostRect.top:0),width=b.w*c.w,height=b.h*c.h;return {x,y,left:x,top:y,right:x+width,bottom:y+height,width,height}}
-  return Object.freeze({id,state,field,rect,bind,refresh,bounded,get carrier(){return Object.freeze({...carrier()})}});
+  return Object.freeze({id,state,field,rect,bind,bindInside,refresh,bounded,get carrier(){return Object.freeze({...carrier()})}});
 }
 const registry=H.createRegistry(),specs=new Map(),surfaces=new Map(),uiById=new Map();
 for(const s of SPEC.interlocutors||[]){

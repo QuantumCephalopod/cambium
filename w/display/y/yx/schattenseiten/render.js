@@ -278,7 +278,7 @@ function render({host,content,projection,ui=null,safeArea=null}={}){
  const side=el('div','ss-hud-side');panel=el('div','ss-panel');side.append(panel);
  const bottom=el('div','ss-hud-bottom'),breadcrumb=el('nav','ss-breadcrumb');breadcrumb.setAttribute?.('aria-label',t.path);bottom.append(breadcrumb,button(t.flat,()=>globalThis.SSSWorldView?.easeTo?.(shader.view.rest,900),false,'ss-hud-flat'));
  rail.append(side);content.append(header,rail,bottom);LAST={host,content,projection,ui,safeArea,rail,side,bottom,breadcrumb,rowButtons};
- if(ui){ui.bind(header,'header');ui.bind(rail,'description');ui.bind(bottom,'timeline')}
+ if(ui){ui.bind(header,'header');ui.bindInside(top,'headerContent','header');ui.bind(rail,'description');ui.bind(bottom,'timeline')}
  showWork(selected);updateNavigation();return true;
 }
 addEventListener('sss:language',()=>{if(LAST&&LAST.content.isConnected)render(LAST)});

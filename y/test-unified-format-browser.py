@@ -33,15 +33,19 @@ try:
       const fields=Object.fromEntries(Object.entries(names).map(([n,id])=>[n,{actual:box(document.getElementById(id)),expected:G.nested(n)}]));
       const outer=Object.fromEntries([['top','display-header'],['brand','root-home'],['brand-mark','display-brand-mark'],['brand-name','display-brand-name'],['language','display-language'],['language-invert','display-language-invert'],['language-dot','display-language-dot'],['language-de','display-language-de'],['language-slash','display-language-slash'],['language-en','display-language-en'],['status','display-membrane-status'],['ascent','display-ascent-slot']].map(([n,id])=>[n,{actual:box(document.getElementById(id)),expected:G.rect(n)}]));
       const text=document.querySelector('.philosophy-content>.root p'),map=document.getElementById('navTwin');
-      const host=document.querySelector('[data-interlocutor]:not([hidden])');
-      const flows=[...host.querySelectorAll('[data-ui-flow="long-axis"]')].map(e=>({field:e.dataset.uiField,flow:getComputedStyle(e.firstElementChild).writingMode}));
-      return {fields,outer,flows,font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
+      const host=document.querySelector('[data-interlocutor]:not([hidden])'),ui=SSSDisplayRuntime.ui.get(host.dataset.interlocutor);
+      const flows=[...host.querySelectorAll('[data-ui-flow="long-axis"]')].filter(e=>e.firstElementChild).map(e=>({field:e.dataset.uiField,flow:getComputedStyle(e.firstElementChild).writingMode}));
+      const siteFields=[...host.querySelectorAll('[data-ui-field][data-ui-bounded="true"]')].map(e=>({field:e.dataset.uiField,actual:box(e),expected:ui.rect(e.dataset.uiField,true)}));
+      return {fields,outer,flows,siteFields,font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
     }''')
     (args.out/(name+'.json')).write_text(json.dumps(snap,indent=2)+'\n')
     for group in ['fields','outer']:
      for key,entry in snap[group].items():
       for edge in ['left','top','width','height']:
        assert abs(entry['actual'][edge]-entry['expected'][edge])<1.1,(name,key,edge,entry)
+    for entry in snap['siteFields']:
+     for edge in ['left','top','width','height']:
+      assert abs(entry['actual'][edge]-entry['expected'][edge])<1.1,(name,entry['field'],edge,entry)
     assert abs(snap['unit']-max(width,height)/64)<1e-8,(name,snap)
     if site=='philosophy': assert snap['font'] is not None and abs(snap['font']-snap['unit'])<.1,(name,snap['font'],snap['unit'])
     if height>width:
