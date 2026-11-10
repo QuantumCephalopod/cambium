@@ -52,7 +52,8 @@ def check(page, language, identity):
         assert introduction.locator('p').all_text_contents() == [position]
         assert introduction.locator('.mission, .hint, .kicker').count() == 0
     if identity in ('organism:datenschutz', 'organism:impressum'):
-        assert page.locator(f'[data-interlocutor="{identity}"] article h1').inner_text() == expected[identity]
+        article_title=page.evaluate('''([id,language])=>JSON.parse(document.getElementById('site-projections').textContent)[id].notices[language].find(b=>b.tag==='h1').text''',[identity,language])
+        assert page.locator(f'[data-interlocutor="{identity}"] article h1').inner_text() == article_title
     if identity == 'organism:crawlerbait':
         heading = page.locator('[data-interlocutor="organism:crawlerbait"] h1')
         assert heading.text_content() == 'Crawlerbait'
