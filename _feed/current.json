@@ -25,12 +25,15 @@
   },
   "home": {
     "changed_scope": [
-      "y/test-membrane-grid.py"
+      ".github/workflows/pages.yml",
+      ".github/workflows/papers-shadow-materializer-test.yml",
+      ".github/workflows/cloudflare-live.yml",
+      "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — host integration consumes the updated navigator trigger relation and keeps the authored exchange and legal field."
+    "outcome": "PASS / BOUNDED — the two active fork branches no longer run their push-triggered jobs; broader fork-wide settings remain open."
   },
-  "observed_at_utc": "2026-11-09T21:20:56.770641Z",
+  "observed_at_utc": "2026-11-10T02:26:02.624210Z",
   "owner": "cambium",
   "phenotype": {
     "w": {
@@ -46,7 +49,7 @@
       "noun": "orientation"
     }
   },
-  "reflected_home_event": "cambium-compass-trigger-20261109",
+  "reflected_home_event": "cambium-fork-actions-quiet-20261110",
   "rituals": [
     {
       "path": "RITUALS/catabolism/RITUAL.md",
@@ -54,17 +57,19 @@
     },
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "e75b203174dbd8de83d15c68d0a14e3c590976f1aa0c9776ef3f7cf5aec48836"
+      "sha256": "3e82f8355bfc770ee75d35c732756d0ddcc61f0a19eea1d2e250c82885a47c85"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [],
+    "stomach_direct": [
+      "NUTRIENT__quiet-staging-actions__20261110.md"
+    ],
     "waste_direct_count": 52
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "80d5e9e63f452c818a2693068e5129149b90a9d0"
+    "source_revision": "7285e574883693968862e39691c263b4abba8756"
   }
 }
