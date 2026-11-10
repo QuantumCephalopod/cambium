@@ -37,7 +37,7 @@ try:
       const flows=[...host.querySelectorAll('[data-ui-flow="long-axis"]')].filter(e=>e.firstElementChild).map(e=>({field:e.dataset.uiField,flow:getComputedStyle(e.firstElementChild).writingMode}));
       const siteFields=[...host.querySelectorAll('[data-ui-field][data-ui-bounded="true"]')].map(e=>({field:e.dataset.uiField,actual:box(e),expected:ui.rect(e.dataset.uiField,true)}));
       const mr=map.getBoundingClientRect(),at=(x,y)=>{const e=document.elementFromPoint(x,y);return e?{tag:e.tagName,id:e.id,className:String(e.className)}:null};
-      return {fields,outer,flows,siteFields,pocketPointer:getComputedStyle(document.getElementById('mini-pocket')).pointerEvents,mapPointer:getComputedStyle(map).pointerEvents,mapCorner:at(mr.left+2,mr.top+2),mapCenter:at(mr.left+mr.width/2,mr.top+mr.height/2),font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
+      return {fields,outer,flows,siteFields,pocketPointer:getComputedStyle(document.getElementById('mini-pocket')).pointerEvents,mapPointer:getComputedStyle(map).pointerEvents,mapCorner:at(mr.left+2,mr.top+2),mapCenter:at(mr.left+mr.width/2,mr.top+mr.height/2),font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),glassInset:SSSDisplayGlass.readInset(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
     }''')
     (args.out/(name+'.json')).write_text(json.dumps(snap,indent=2)+'\n')
     for group in ['fields','outer']:
@@ -48,6 +48,7 @@ try:
      for edge in ['left','top','width','height']:
       assert abs(entry['actual'][edge]-entry['expected'][edge])<1.1,(name,entry['field'],edge,entry)
     assert abs(snap['unit']-max(width,height)/64)<1e-8,(name,snap)
+    assert abs(snap['glassInset']-snap['unit']/2)<1e-8,(name,'glass clearance is not grid-derived',snap)
     if site=='philosophy': assert snap['font'] is not None and abs(snap['font']-snap['unit'])<.1,(name,snap['font'],snap['unit'])
     assert snap['pocketPointer']=='none' and snap['mapPointer']=='auto',(name,'navigator intercepts unrelated body contacts',snap)
     if height>width:

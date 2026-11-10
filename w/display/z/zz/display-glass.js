@@ -7,11 +7,13 @@
  */
 (function(root,factory){
   'use strict';
-  const api=factory();
+  const api=factory(root);
   if(typeof module==='object'&&module.exports) module.exports=api;
   else root.SSSDisplayGlass=api;
-})(typeof globalThis==='object'?globalThis:this,function(){
+})(typeof globalThis==='object'?globalThis:this,function(root){
   'use strict';
+  const TYPE=root.SSSDisplayType||(typeof module==='object'&&module.exports?require('../../w/wx/display-type.js'):null);
+  if(!TYPE?.typeUnitPx)throw new Error('Display glass requires the shared grid type unit');
   const MAX=8;
   const anonymousIds=new WeakMap(),entrySources=new WeakMap();let nextSurface=0;
   function surfaceId(el){if(el.id)return el.id;if(!anonymousIds.has(el))anonymousIds.set(el,'glass-surface-'+(++nextSurface));return anonymousIds.get(el)}
@@ -37,12 +39,9 @@
   }
   function contains(a,b,slack=1){return b.left>=a.left-slack&&b.right<=a.right+slack&&b.top>=a.top-slack&&b.bottom<=a.bottom+slack}
   /* A measured reading rectangle is content, not optical bevel. The same
-   * half-rem edge surrounds HUDs and a contacted lens; no glyph scan is needed.
+   * half-cell edge surrounds HUDs and a contacted lens; no glyph scan is needed.
    * Font/layout owners retain measurement and continuation. */
-  function readInset(doc=globalThis.document,getStyle=globalThis.getComputedStyle){
-    const rem=doc?.documentElement&&getStyle?parseFloat(getStyle(doc.documentElement).fontSize):16;
-    return (Number.isFinite(rem)&&rem>0?rem:16)/2;
-  }
+  function readInset(doc=root.document){return TYPE.typeUnitPx(doc)/2}
   function readingFrame(value,inset=PARAMS.bevelMax){
     const readRect=box(value),p=Math.max(0,number(inset));
     return {readRect,rect:box({left:readRect.left-p,top:readRect.top-p,width:readRect.width+2*p,height:readRect.height+2*p}),inset:p};
