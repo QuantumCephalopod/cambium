@@ -4,32 +4,34 @@
   "home": {
     "changed_scope": [
       "ui-grid.json",
+      "sierpinski.js",
       "sierpinski.css",
       "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — The upright physiology, HUD and label spans admit readable controls; source organisms and the separate source-freshness operation remain unchanged."
+    "outcome": "PARTIAL / OPEN — the bounded candidate is staged; the original intake remains unresolved."
   },
-  "observed_at_utc": "2026-11-09T01:36:17.840084Z",
-  "owner": "papers",
+  "observed_at_utc": "2026-11-10T01:52:10.363458Z",
+  "owner": "organism:papers",
   "phenotype": null,
-  "reflected_home_event": "papers-mobile-field-fit-20261109",
+  "reflected_home_event": "papers-shared-format-candidate-20261110",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "ad00b3ca49628776a2d7919b8547a4e9c058009f0e52faccb87ac86238b4ced4"
+      "sha256": "6caf8272f3d8f4f75f8d71a8fad4d5d98cd661bffb0cbcf14ddef404a5558cff"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
     "stomach_direct": [
+      "NUTRIENT__shared-format-source-inquiry__20261110.md",
       "NUTRIENT__source-inquiry-metabolite-projection__20260926.md"
     ],
     "waste_direct_count": 72
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "d3828eef6633eaac563ed00afc570fef990266c6"
+    "source_revision": "013abee38d9ae58e3aae578a02ab69f4ec596d46"
   }
 }

@@ -26,14 +26,15 @@
   "home": {
     "changed_scope": [
       "w/ui-grid.json",
+      "w/render.js",
       "w/style.css",
       "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — The upright title and controls fit the tested carriers, with safe text continuation and unchanged legal facts and destinations."
+    "outcome": "PARTIAL / OPEN — the bounded candidate is staged; the original intake remains unresolved."
   },
-  "observed_at_utc": "2026-11-09T01:36:17.842310Z",
-  "owner": "impressum",
+  "observed_at_utc": "2026-11-10T01:52:10.370729Z",
+  "owner": "organism:impressum",
   "phenotype": {
     "w": {
       "noun": "Identity"
@@ -48,21 +49,23 @@
       "noun": "Contact"
     }
   },
-  "reflected_home_event": "impressum-mobile-field-fit-20261109",
+  "reflected_home_event": "impressum-shared-format-candidate-20261110",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "06554cda4f29fb41a34ce5458e1549d9b9b57086dc3381811f070f6ae060cd3e"
+      "sha256": "0083e9c256581e49c6ce8641cf12296099f117216e695e8c9953aa2926a7d9fd"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [],
+    "stomach_direct": [
+      "NUTRIENT__shared-recursive-format__20261110.md"
+    ],
     "waste_direct_count": 10
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "d3828eef6633eaac563ed00afc570fef990266c6"
+    "source_revision": "013abee38d9ae58e3aae578a02ab69f4ec596d46"
   }
 }

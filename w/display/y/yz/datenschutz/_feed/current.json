@@ -26,14 +26,15 @@
   "home": {
     "changed_scope": [
       "w/ui-grid.json",
+      "w/render.js",
       "w/style.css",
       "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — The upright title and controls fit the tested carriers, with safe text continuation and unchanged legal facts and destinations."
+    "outcome": "PARTIAL / OPEN — the bounded candidate is staged; the original intake remains unresolved."
   },
-  "observed_at_utc": "2026-11-09T01:36:17.845296Z",
-  "owner": "datenschutz",
+  "observed_at_utc": "2026-11-10T01:52:10.369113Z",
+  "owner": "organism:datenschutz",
   "phenotype": {
     "w": {
       "noun": "Transparency"
@@ -48,21 +49,23 @@
       "noun": "Rights"
     }
   },
-  "reflected_home_event": "datenschutz-mobile-field-fit-20261109",
+  "reflected_home_event": "datenschutz-shared-format-candidate-20261110",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "4ab3c32f95edd41e08548a4c92b3b3a0c5d669e714b4d0e5bbd0dec812cc26d6"
+      "sha256": "fde41c5633794749b698c99770a362464e6bb2dd247a94d1eb5061a7e26f0278"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [],
+    "stomach_direct": [
+      "NUTRIENT__shared-recursive-format__20261110.md"
+    ],
     "waste_direct_count": 12
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "d3828eef6633eaac563ed00afc570fef990266c6"
+    "source_revision": "013abee38d9ae58e3aae578a02ab69f4ec596d46"
   }
 }

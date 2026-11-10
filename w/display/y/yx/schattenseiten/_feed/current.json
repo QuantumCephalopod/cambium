@@ -4,30 +4,33 @@
   "home": {
     "changed_scope": [
       "ui-grid.json",
-      "RITUALS/organism/RITUAL.md",
-      "validate-projection.test.py"
+      "render.js",
+      "style.css",
+      "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — restored the exact owner-declared compass span from before the unrequested widening."
+    "outcome": "PARTIAL / OPEN — the bounded candidate is staged; the original intake remains unresolved."
   },
-  "observed_at_utc": "2026-11-09T20:32:30.354448Z",
-  "owner": "schattenseiten",
+  "observed_at_utc": "2026-11-10T01:52:10.364759Z",
+  "owner": "organism:schattenseiten",
   "phenotype": null,
-  "reflected_home_event": "schattenseiten-restore-compass-20261109",
+  "reflected_home_event": "schattenseiten-shared-format-candidate-20261110",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "a30e358fe17d8afd764ad462931ca743029adab41447dd8e66378626780b0418"
+      "sha256": "9779cc44ce7eb069f7d3a219f8961ed686cb19fb26fa2546ee9db38db004c32b"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [],
+    "stomach_direct": [
+      "NUTRIENT__shared-recursive-format__20261110.md"
+    ],
     "waste_direct_count": 14
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "c89d7a10f57d50b34aaed27dfa06902d80efba9a"
+    "source_revision": "013abee38d9ae58e3aae578a02ab69f4ec596d46"
   }
 }

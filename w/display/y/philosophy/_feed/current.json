@@ -25,15 +25,15 @@
   },
   "home": {
     "changed_scope": [
-      "w/ui-grid.json",
-      "RITUALS/organism/RITUAL.md",
-      "z/projection.test.py"
+      "w/render.js",
+      "w/style.css",
+      "RITUALS/organism/RITUAL.md"
     ],
     "delivery_state": "HOME_DURABLE_FEED_ASYNC",
-    "outcome": "COMPLETED — restored the exact owner-declared compass span from before the unrequested widening."
+    "outcome": "PARTIAL / OPEN — the bounded candidate is staged; the original intake remains unresolved."
   },
-  "observed_at_utc": "2026-11-09T20:32:30.332526Z",
-  "owner": "philosophy",
+  "observed_at_utc": "2026-11-10T01:52:10.360518Z",
+  "owner": "organism:philosophy",
   "phenotype": {
     "w": {
       "noun": "Inquiry"
@@ -48,21 +48,23 @@
       "noun": "Care"
     }
   },
-  "reflected_home_event": "philosophy-restore-compass-20261109",
+  "reflected_home_event": "philosophy-shared-format-candidate-20261110",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "62c7226d59be3d5e45811570878b6bcc57f6bca9f9cb8e730f8168254df512b6"
+      "sha256": "f2dfdc340797fe5af86a6c42d214e44494a599f735a1eef89de3f04e17cffc81"
     }
   ],
   "shell": {
     "feed": "_feed/current.json",
     "root_history": "_root",
-    "stomach_direct": [],
-    "waste_direct_count": 22
+    "stomach_direct": [
+      "NUTRIENT__shared-grid-type__20261110.md"
+    ],
+    "waste_direct_count": 24
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "c89d7a10f57d50b34aaed27dfa06902d80efba9a"
+    "source_revision": "013abee38d9ae58e3aae578a02ab69f4ec596d46"
   }
 }
