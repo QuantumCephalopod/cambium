@@ -19,7 +19,7 @@ let projection=null,scopeId='main',nav=null,STRUCT={leaves:[],addresses:[]},lang
 let GLOBAL_TARGETS=[],activeGlobalAddress='',activeGlobalLocus='overview';
 let GLOBAL_BODIES=[],targetInk=[],hoverTarget=null;
 let mapZoom=1,mapOffset={x:0,y:0},bodyTree=null,clusterInk=[];
-const twin=document.getElementById('navTwin'),tc=twin.getContext('2d');
+const twin=document.getElementById('navTwin'),twinInput=document.getElementById('nav-map-input')||twin,tc=twin.getContext('2d');
 const miniState=document.getElementById('mini-state');
 
 function miniProject(p){const scale=Math.min(twin.width,twin.height)/2.9*mapZoom,q=qRot(orient,p);return {x:twin.width/2+mapOffset.x+q[0]*scale,y:twin.height/2+mapOffset.y-q[1]*scale,z:q[2]}}
@@ -119,27 +119,23 @@ function setActiveGlobalAddress(path='',locus='overview'){activeGlobalAddress=St
 function requestGlobalTarget(target,source='global-minimap',origin=null){if(!target)return false;dispatchEvent(new CustomEvent('sss:global-navigate',{detail:{scopeId,path:target.path,locus:target.locus,interlocutorIds:[...target.interlocutorIds],source,origin}}));return true}
 function rotateBy(dx,dy,source='background'){ease=null;restActive=false;orient=qNorm(qMul(qAxis([1,0,0],dy*.00325),qMul(qAxis([0,1,0],dx*.00325),orient)));drawTwin();emitOrientation(source)}
 
-twin.addEventListener('pointermove',e=>{const p=twinPoint(e),t=hitTarget(p.x,p.y);if(t!==hoverTarget){hoverTarget=t;drawTwin()}});
+twinInput.addEventListener('pointermove',e=>{const p=twinPoint(e),t=hitTarget(p.x,p.y);if(t!==hoverTarget){hoverTarget=t;drawTwin()}});
 function zoomMap(factor,p={x:twin.width/2,y:twin.height/2}){
   const next=Math.max(1,mapZoom*factor);if(!Number.isFinite(next))return;const ratio=next/mapZoom;
   mapOffset.x=(mapOffset.x+twin.width/2-p.x)*ratio-twin.width/2+p.x;
   mapOffset.y=(mapOffset.y+twin.height/2-p.y)*ratio-twin.height/2+p.y;
   mapZoom=next;if(next===1)mapOffset={x:0,y:0};hoverTarget=null;drawTwin();
 }
-twin.addEventListener('wheel',e=>{e.preventDefault();zoomMap(Math.exp(-Math.max(-240,Math.min(240,e.deltaY))*.004),twinPoint(e))},{passive:false});
-twin.addEventListener('dblclick',e=>{mapZoom=1;mapOffset={x:0,y:0};hoverTarget=null;drawTwin();e.preventDefault()});
-twin.addEventListener('keydown',e=>{if(e.key.startsWith('Arrow')){e.preventDefault();const d=twin.width/4;mapOffset.x+=e.key==='ArrowLeft'?d:e.key==='ArrowRight'?-d:0;mapOffset.y+=e.key==='ArrowUp'?d:e.key==='ArrowDown'?-d:0;drawTwin();return}if(['+','=','-','0','Escape'].includes(e.key)){e.preventDefault();if(e.key==='0'||e.key==='Escape'){mapZoom=1;mapOffset={x:0,y:0};drawTwin()}else zoomMap(e.key==='-'?.5:2)}});
-twin.addEventListener('pointerleave',()=>{hoverTarget=null;drawTwin()});
-twin.addEventListener('pointerdown',e=>{
+twinInput.addEventListener('wheel',e=>{e.preventDefault();zoomMap(Math.exp(-Math.max(-240,Math.min(240,e.deltaY))*.004),twinPoint(e))},{passive:false});
+twinInput.addEventListener('dblclick',e=>{mapZoom=1;mapOffset={x:0,y:0};hoverTarget=null;drawTwin();e.preventDefault()});
+twinInput.addEventListener('keydown',e=>{if(e.key.startsWith('Arrow')){e.preventDefault();const d=twin.width/4;mapOffset.x+=e.key==='ArrowLeft'?d:e.key==='ArrowRight'?-d:0;mapOffset.y+=e.key==='ArrowUp'?d:e.key==='ArrowDown'?-d:0;drawTwin();return}if(['+','=','-','0','Escape'].includes(e.key)){e.preventDefault();if(e.key==='0'||e.key==='Escape'){mapZoom=1;mapOffset={x:0,y:0};drawTwin()}else zoomMap(e.key==='-'?.5:2)}});
+twinInput.addEventListener('pointerleave',()=>{hoverTarget=null;drawTwin()});
+twinInput.addEventListener('pointerdown',e=>{
   if(e.button!==0||!nav)return;drawTwin();const p=twinPoint(e),target=hitTarget(p.x,p.y);
   const group=(!target||target.path==='')&&clusterInk.find(b=>Math.hypot(b.x-p.x,b.y-p.y)<=8*twin.width/Math.max(1,twin.getBoundingClientRect().width));
   if(group){zoomMap(2,{x:group.x,y:group.y});e.preventDefault()}
   else if(target){requestGlobalTarget(target,'global-minimap',{x:e.clientX,y:e.clientY});e.preventDefault()}
 });
-// The actual selection happens on pointerdown. Also expose the canvas as a
-// click target to browser touch hit-testing, so a neighbouring button does
-// not acquire a tap whose point lies inside the authored map field.
-twin.addEventListener('click',e=>e.preventDefault());
 
 const axes={x:document.getElementById('axis-x'),y:document.getElementById('axis-y')};
 const AXIS_SETTLE_MS=520,AXIS_SETTLE_EPS=.018;
