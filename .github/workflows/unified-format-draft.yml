@@ -16,6 +16,9 @@ jobs:
         run: |
           python3 -m pip install playwright==1.56.0
           python3 -m playwright install --with-deps chromium
+      - name: Inspect actual map touch target
+        continue-on-error: true
+        run: python3 y/diagnose-format-touch.py
       - name: Witness the common fields
         run: |
           python3 y/test-unified-format-browser.py --artifact _site --out _unified-format-witness/canvas

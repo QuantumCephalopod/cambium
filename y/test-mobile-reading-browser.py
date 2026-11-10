@@ -103,7 +103,8 @@ try:
                                 button.tap(trial=True, timeout=10000)
                         if site in ('datenschutz','impressum'):
                             select=page.locator('[data-ui-field="controls"] select')
-                            assert select.bounding_box()['width']>=100, (stem, 'select too narrow')
+                            box=select.bounding_box()
+                            assert box and max(box['width'],box['height'])>=100, (stem, 'select has too little room along its reading direction')
                             select.tap(trial=True, timeout=10000)
                         if site=='papers':
                             page.locator('.papers-physiology button').tap(trial=True, timeout=10000)

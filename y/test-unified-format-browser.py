@@ -36,7 +36,8 @@ try:
       const host=document.querySelector('[data-interlocutor]:not([hidden])'),ui=SSSDisplayRuntime.ui.get(host.dataset.interlocutor);
       const flows=[...host.querySelectorAll('[data-ui-flow="long-axis"]')].filter(e=>e.firstElementChild).map(e=>({field:e.dataset.uiField,flow:getComputedStyle(e.firstElementChild).writingMode}));
       const siteFields=[...host.querySelectorAll('[data-ui-field][data-ui-bounded="true"]')].map(e=>({field:e.dataset.uiField,actual:box(e),expected:ui.rect(e.dataset.uiField,true)}));
-      return {fields,outer,flows,siteFields,pocketPointer:getComputedStyle(document.getElementById('mini-pocket')).pointerEvents,mapPointer:getComputedStyle(map).pointerEvents,font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
+      const mr=map.getBoundingClientRect(),at=(x,y)=>{const e=document.elementFromPoint(x,y);return e?{tag:e.tagName,id:e.id,className:String(e.className)}:null};
+      return {fields,outer,flows,siteFields,pocketPointer:getComputedStyle(document.getElementById('mini-pocket')).pointerEvents,mapPointer:getComputedStyle(map).pointerEvents,mapCorner:at(mr.left+2,mr.top+2),mapCenter:at(mr.left+mr.width/2,mr.top+mr.height/2),font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
     }''')
     (args.out/(name+'.json')).write_text(json.dumps(snap,indent=2)+'\n')
     for group in ['fields','outer']:
