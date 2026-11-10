@@ -139,8 +139,8 @@ try:
             assert [(f['name'],f['cells']) for f in after['fields']]==[(f['name'],f['cells']) for f in before['fields']],(before,after)
             for field in after['fields']:expect_box(field['actual'],field['logical'],width,height,height>width,('resize',field['name']))
         page.close()
-        # An owner that actually declares upright spans must also survive the
-        # live turn without a reload, identity change, or mutation of its grid.
+        # Even an owner with historical upright spans retains the very same
+        # ordinary cells through a live turn, without mutating its grid.
         page=browser.new_page(viewport={'width':800,'height':600},reduced_motion='reduce')
         page.goto(base+'#main:y',wait_until='domcontentloaded')
         before=examine(page,'organism:crawlerbait',800,600)
@@ -155,10 +155,10 @@ try:
             for field in after['fields']:expect_box(field['actual'],field['logical'],width,height,height>width,('owner resize',field['name']))
             old=next(f for f in before['fields'] if f['name']=='header')
             new=next(f for f in after['fields'] if f['name']=='header')
-            assert (new['cells']!=old['cells'])==(height>width),('owner variant selection',old,new)
+            assert new['cells']==old['cells'],('owner address changed on turn',old,new)
             for language in ('de','en'):page.locator(f'[data-lang="{language}"]').click(trial=True)
         page.close();browser.close()
 finally:
     server.shutdown();server.server_close()
     (args.out/'long-axis.json').write_text(json.dumps({'cases':cases,'scope':__doc__},indent=2)+'\n')
-print(json.dumps({'status':'PASS','cases':len(cases),'live_resize_and_square_tie':True,'owner_variant_resize':True}))
+print(json.dumps({'status':'PASS','cases':len(cases),'live_resize_and_square_tie':True,'owner_address_invariant':True}))

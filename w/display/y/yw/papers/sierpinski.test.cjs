@@ -64,10 +64,17 @@ s.identities=new Map(s.identities);s.identities.set('S.0',{id:'S.0',rank:'S',gen
 console.log('Papers finite-LOD/background+selected collector/reference/source-invalidation checks PASS');
 const names=load(source.replace('const G=nameGlyphs(rec,L);','globalThis.nameCalls=(globalThis.nameCalls||0)+1;const G=null;'));
 const record={id:'S.name',rank:'S',locus:'x',world:[0,0,0]},records=[record],cached={open:1},ctx={beginPath(){},arc(){},clip(){},save(){},restore(){}};
-const ns={records,identities:new Map(),namesFor:records,names:new Map([['S.name@60',cached]]),textCanvas:{dataset:{},getContext:()=>ctx,getBoundingClientRect:()=>({left:0,top:0})},pretextStatus:'ready',canvas:{style:{}},chamberFocus:{center:[0,0,0],scale:1}};
+const ns={records,identities:new Map(),namesFor:records,namesUnit:12,names:new Map([['S.name@60',cached]]),textCanvas:{dataset:{},getContext:()=>ctx,getBoundingClientRect:()=>({left:0,top:0})},pretextStatus:'ready',canvas:{style:{}},chamberFocus:{center:[0,0,0],scale:1}};
 names.setState(ns);names.setPretext({});names.setLens(()=>({x:-100,y:-100,r:20}));names.drawNames({width:800,height:600},1);assert.equal(cached.open,0);
 assert.equal(names.nameCalls(),0);assert.equal(ns.names.size,1);names.setLens(()=>({x:400,y:300,r:20}));names.drawNames({width:800,height:600},2);assert.equal(names.nameCalls(),1);
 console.log('Papers cold off-lens admission/re-entry execution checks PASS');
+let activeUnit=12;
+const scaled=load(source,null,{SSSDisplayType:{rankPx:r=>activeUnit*2**(r/2)}}),scaledState={inquiryBodies:{},parents:new Map(),textCanvas:{getContext:()=>({})},inner:null,originOpen:false};
+scaled.setState(scaledState);const specimen={id:'S.scale',kind:'source'},firstBeing=scaled.ensureBeing(specimen,390);
+const inner={kind:'vertex',key:'w'};scaledState.inner=inner;scaledState.originOpen=true;activeUnit=24;
+const resizedBeing=scaled.ensureBeing(specimen,780);
+assert.notEqual(firstBeing,resizedBeing,'grid type change rebuilds cached glyph geometry');assert.equal(resizedBeing.typeUnit,24);assert.equal(scaledState.inner,inner,'retyping keeps the live selected simplex');assert.equal(scaledState.originOpen,true,'retyping keeps the source aperture');
+console.log('Papers type follows the current carrier without resetting selected inquiry PASS');
 const events=[],constants=new Map();let bound,serial=0;
 const gl=new Proxy({},{get(_,k){if(/^[A-Z_]+$/.test(k)){if(!constants.has(k))constants.set(k,constants.size+1);return constants.get(k)}if(k.startsWith('create'))return()=>({serial:++serial});if(k==='getShaderParameter'||k==='getProgramParameter')return()=>true;if(k==='getAttribLocation')return()=>serial++;if(k==='getUniformLocation')return(_,name)=>name;if(k==='bindBuffer')return(_,buffer)=>{bound=buffer};if(k==='bufferData')return(_,data)=>events.push({kind:'allocate',buffer:bound,data:typeof data==='number'?data:[...data]});if(k==='bufferSubData')return(_,offset,data)=>events.push({kind:'upload',buffer:bound,offset,data:[...data]});return(...args)=>events.push({kind:k,args});}});
 const renderer=api.createRenderer({getContext:()=>gl}),instances=[{center:[1,.2,-.3],scale:.08,color:[.1,.2,.3,.4]}],args=[[1,0,0,0],[0,0,0],new Float32Array(16),new Float32Array(16)];

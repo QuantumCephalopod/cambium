@@ -29,7 +29,7 @@
 }
 .crawlerbait-hud-rail::-webkit-scrollbar{display:none}
 .crawlerbait-hud-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.25rem 1.1rem;padding-bottom:.55rem;border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
-.crawlerbait-hud-top h1{grid-column:1/-1;margin:0 0 .35rem;font:600 var(--type-r0)/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase}
+.crawlerbait-hud-top h1{grid-column:1/-1;margin:0 0 .35rem;font:600 var(--type-rp1)/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase}
 .crawlerbait-hud-through{grid-column:1/-1;color:var(--dim);font-size:var(--type-rn2);letter-spacing:.06em;margin-top:.2rem}
 .crawlerbait-hud-link{grid-column:1/-1;justify-self:start;color:var(--ink);font-size:var(--type-rn2);text-decoration:none;border-bottom:1px solid var(--faint)}
 .crawlerbait-hud-link:hover,.crawlerbait-hud-link:focus-visible{border-color:var(--ink);outline:none}

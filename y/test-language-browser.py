@@ -39,7 +39,10 @@ def check(page, language, identity):
     assert page.locator('#route-mark, #status').count() == 0
     page.wait_for_function('() => document.getElementById("site-state").textContent === ""')
     assert page.locator('#site-state').get_attribute('aria-live') == 'polite'
-    assert page.locator('#display-membrane-status').evaluate('(el) => el.getBoundingClientRect().height') == 0
+    # Empty feedback keeps its authored cell; it must not contain status ink or
+    # acquire a content-measured size when language changes.
+    assert page.locator('#site-state').inner_text() == ''
+    assert page.evaluate('''()=>{const a=document.getElementById('display-membrane-status').getBoundingClientRect(),b=SSSDisplayMembraneGrid.rect('status');return ['left','top','width','height'].every(k=>Math.abs(a[k]-b[k])<1)}''')
     if identity == 'organism:philosophy':
         page.wait_for_function('() => document.querySelectorAll("[data-interlocutor=\\"organism:philosophy\\"] .field-body-label").length >= 5')
         labels = page.locator('[data-interlocutor="organism:philosophy"] .field-body-label b').all_text_contents()

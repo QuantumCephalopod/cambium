@@ -83,7 +83,10 @@ try:
                         # Witness the actual map and touch without imposing a
                         # new minimum size on the author's exchanged fields.
                         map_box=page.locator('#navTwin').bounding_box()
-                        assert map_box and abs(map_box['width']-map_box['height'])<1.1, (stem,map_box)
+                        # The authored map field may be rectangular. The canvas
+                        # backing store must match it so its square projection
+                        # is not stretched by CSS.
+                        assert map_box and page.locator('#navTwin').evaluate('''e=>{const r=e.getBoundingClientRect();return Math.abs(e.width/e.height-r.width/r.height)<.02}'''), (stem,map_box)
                         assert map_box['width']>0, (stem,map_box,'map has no visible area')
                         page.locator('#navTwin').tap(trial=True,timeout=10000)
                         if site=='philosophy':
