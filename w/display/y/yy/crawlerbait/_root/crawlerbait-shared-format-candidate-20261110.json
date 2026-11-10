@@ -1,0 +1,27 @@
+{
+  "kind": "HOME",
+  "event_id": "crawlerbait-shared-format-candidate-20261110",
+  "home_at_utc": "2026-11-10T01:48:44.897183Z",
+  "organism": "organism:crawlerbait",
+  "entrypoint": "_stomach/NUTRIENT__shared-recursive-format__20261110.md",
+  "outcome": "PARTIAL / OPEN — the bounded candidate is staged; the original intake remains unresolved.",
+  "changed_scope": [
+    "ui-grid.json",
+    "z/render.js",
+    "z/style.css",
+    "RITUALS/organism/RITUAL.md"
+  ],
+  "context": {
+    "implementation_commit": "bf7897a102749ea338ac0c3cc43dee8a0672b0a3",
+    "witness_commit": "dd1b37508627f5403ef2d9de6a75fccf6e43d753",
+    "witness": {
+      "path": "_root/crawlerbait-shared-format-candidate-witness-20261110.json",
+      "sha256": "cabcef99d3ee9918f488a1c52834c7a07624034493c5bf5c1e7b9073db3439ef"
+    },
+    "earned": "The original header, description and timeline cells turn unchanged; the header content has a declared subfield and title rank +1. Native replay/renderer and browser field checks pass.",
+    "open": "The local rail/timeline internals and narrow-screen reading and contact are not yet fully witnessed.",
+    "retained_intake": "_stomach/NUTRIENT__shared-recursive-format__20261110.md",
+    "delivery": "Staging candidate only; no merge or deployment is asserted."
+  },
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}
