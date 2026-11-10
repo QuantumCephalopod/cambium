@@ -1,0 +1,27 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-grid-checks-and-open-coverage-witness-20261110",
+  "witness_at_utc": "2026-11-10T02:34:27.041922Z",
+  "owner": "display",
+  "status": "PARTIAL / OPEN",
+  "entrypoint": "_stomach/NUTRIENT__unified-fractal-format__20261110.md",
+  "implementation_commit": "293723fcd4e7c1ce00499d0e891686b1527a595d",
+  "claim": "The checked-in browser assertions now test the declared map field and backing projection and retain explicit reading/overflow checks, rather than expecting the removed square, content-fitted map and portrait-only field variants. This does not close the overall requested format invariant.",
+  "evidence": [
+    "Both updated Python browser scripts compile locally. Their exact blob SHAs match the temporary experiment at 654a5ff0: membrane 404513332d2f66fdac3e700981793a995b1f8efd; bounded b3155151bfa820d5133bf3732175d25b006e63a2.",
+    "In the browser grid-probe run https://github.com/QuantumCephalopod/cambium/actions/runs/42741743565, the updated membrane-grid step passed 18 site/viewport cases. The experiment also contained a narrower headerContent field; the outer and map declarations were unchanged. This is not a browser run of the exact product head.",
+    "The updated bounded-layout step found horizontal header overflow at 390 by 844 in the experimental narrower-header variant (clientWidth 49, scrollWidth 58). That experiment is not in the product branch. This is an unresolved design and readability finding, not proof that the exact product-head header has the same overflow.",
+    "A prior bounded-layout run against the earlier header placement also encountered a header clearance assertion; it compared a container boundary, so it does not by itself prove glyph clipping."
+  ],
+  "open": [
+    "Resolve and rerun the actual product header reading/overflow checks in both orientations using a real browser, without speculative CSS fitting or changing the authored outer cells.",
+    "Papers lens reading still uses content-derived region sizing and avoidance rather than only declared cells.",
+    "Standalone legal and generated Crawlerbait pages, and other local site styling, still have independent rem or other layout relations. Do not describe all type and presentation as globally grid-derived.",
+    "The browser runtime was unavailable locally. No new fork workflows were started to investigate, because the user reported repeated emails. Full GLES script earlier exited 137; targeted cases passed only within their stated evidence.",
+    "The fork Actions job guards are scoped to current working branches, not repository-wide settings. The canonical pull request could not be created through the integration (403)."
+  ],
+  "retained_intakes": [
+    "_stomach/NUTRIENT__unified-fractal-format__20261110.md",
+    "_stomach/UPLINK__shared-format-child-returns__20261110.md"
+  ]
+}
