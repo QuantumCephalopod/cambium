@@ -27,5 +27,11 @@ for(const mode of ['landscape','portrait']){
   assert.deepEqual(crawler.cells,shadows.cells,'the shared timeline must use the same declared address in '+mode);
   assert.deepEqual(crawler.bounds,shadows.bounds);
 }
+for(const id of ['organism:crawlerbait','organism:schattenseiten']){
+  const state=states.get(id),header=G.fieldInfo(state,'header').bounds,clearance=G.fieldInfo(state,'headerClearance').bounds,ink=G.fieldInfo(state,'headerContent').bounds;
+  assert.equal(clearance.x,header.x);assert.equal(clearance.w,header.w);
+  assert.equal(clearance.y,1/16);assert.equal(clearance.h,1/16);
+  assert.equal(ink.y,clearance.y+clearance.h);assert.equal(ink.y+ink.h,header.y+header.h);
+}
 
 console.log('site UI grids: '+sites.length+' canonical v2 carriers PASS');

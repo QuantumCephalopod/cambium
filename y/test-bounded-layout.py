@@ -15,17 +15,11 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/index.html';results=[]
 expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.75,.5,.25,.5),'viewport':(.25,.25,.625,.625)}
-portrait_expected={
- ('organism:philosophy','viewport'):(0,.25,1,.5),
- **{(site,field):box for site in ('organism:crawlerbait','organism:schattenseiten') for field,box in {
-   'header':(0,0,1,.125),'description':(0,.125,.5,.25),'timeline':(0,.375,.375,.375)
- }.items()}
-}
 def bounds(page,selector):return page.locator(selector).evaluate('(e)=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}}')
 def close(actual,field,w,h,variant='default',identity=None):
  x,y,fw,fh=expected[field]
  if h>w:
-  x,y,fw,fh=portrait_expected.get((identity,field),(1-y-fh,x,fh,fw))
+  x,y,fw,fh=1-y-fh,x,fh,fw
  for k,v in dict(x=x*w,y=y*h,width=fw*w,height=fh*h).items():assert abs(actual[k]-v)<1.1,(field,k,actual,v)
 def wait_scene(page,identity):
  page.wait_for_selector(f'[data-interlocutor="{identity}"]:not([hidden]) [data-ui-bounded="true"]',timeout=180000)
@@ -35,18 +29,18 @@ def header_content(page,host,identity,w,h):
  outer=host+' [data-ui-field="header"]';close(bounds(page,outer),'header',w,h,identity=identity)
  inner=outer+(' .crawlerbait-hud-top' if identity=='organism:crawlerbait' else ' .ss-hud-top')
  reading=page.locator(inner)
- metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot(),safe=SSSDisplaySafeArea.snapshot().insets;return {top:r.top,bottom:r.bottom,right:r.right,height:r.height,outerBottom:o.bottom,safeTop:safe.top,safeRight:safe.right,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,headerLeft:h.left,glassBottom:g.rect.bottom,glassLeft:g.rect.left,inset:g.inset,fieldBottom:f.top.bottom,fieldLeft:f.top.left,topCells:f.outer.fields.top.cells}}''')
+ metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot(),safe=SSSDisplaySafeArea.snapshot().insets,range=document.createRange();range.selectNodeContents(document.getElementById('display-brand-name'));const ink=range.getBoundingClientRect();return {top:r.top,bottom:r.bottom,right:r.right,height:r.height,outerBottom:o.bottom,safeTop:safe.top,safeRight:safe.right,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,headerLeft:h.left,brandInkBottom:ink.bottom,brandInkLeft:ink.left,glassBottom:g.rect.bottom,glassLeft:g.rect.left,inset:g.inset,fieldBottom:f.top.bottom,fieldLeft:f.top.left,topCells:f.outer.fields.top.cells}}''')
  assert metrics['top']>=metrics['safeTop']-.5,metrics
  assert metrics['bottom']<=metrics['outerBottom']+.5,metrics
  assert metrics['clientHeight']>=metrics['titleHeight']-.5,('no complete title line',metrics)
  assert metrics['scrollWidth']<=metrics['clientWidth']+1,('horizontal header overflow',metrics)
  if h>w:
   assert abs(metrics['glassLeft']-metrics['fieldLeft'])<.5,('liquid edge departed from its realized field',metrics)
-  assert metrics['headerLeft']>=metrics['glassLeft']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
+  assert metrics['brandInkLeft']>=metrics['glassLeft']+metrics['inset']-.5,('brand ink touches liquid rim',metrics)
   assert metrics['right']<=w-metrics['safeRight']+.5,('site reading tissue touches liquid rim',metrics)
  else:
   assert abs(metrics['glassBottom']-metrics['fieldBottom'])<.5,('liquid edge departed from its realized field',metrics)
-  assert metrics['glassBottom']>=metrics['headerBottom']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
+  assert metrics['glassBottom']>=metrics['brandInkBottom']+metrics['inset']-.5,('brand ink touches liquid rim',metrics)
   assert metrics['top']>=metrics['glassBottom']+metrics['inset']-.5,('site reading tissue touches liquid rim',metrics)
  reading.evaluate('(e)=>{e.scrollTop=e.scrollHeight}')
  end=reading.evaluate('e=>({top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,last:e.lastElementChild.getBoundingClientRect().bottom,scrollTop:e.scrollTop})')
