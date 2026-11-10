@@ -1,0 +1,27 @@
+{
+  "kind": "HOME",
+  "event_id": "cambium-fork-actions-quiet-20261110",
+  "home_at_utc": "2026-11-10T02:25:25.549703Z",
+  "organism": "cambium",
+  "entrypoint": "_stomach/NUTRIENT__quiet-staging-actions__20261110.md",
+  "outcome": "PASS / BOUNDED — the two active fork branches no longer run their push-triggered jobs; broader fork-wide settings remain open.",
+  "changed_scope": [
+    ".github/workflows/pages.yml",
+    ".github/workflows/papers-shadow-materializer-test.yml",
+    ".github/workflows/cloudflare-live.yml",
+    "RITUALS/organism/RITUAL.md"
+  ],
+  "context": {
+    "implementation_commit": "7b41d33b30b78b4f695ef8aa085bd318d79272de",
+    "witness_commit": "9de390967fb0f2ddf27793102d31f05f9a46d979",
+    "witness": {
+      "path": "_root/cambium-fork-actions-quiet-witness-20261110.json",
+      "sha256": "e481ad3ce4d984dc30a14168d72dfd8ace2b969a4ff0a39a1fea06a7b9a41ebb"
+    },
+    "test_branch_quiet_commit": "182a9104eb6af6c89bda4fa1f9075d9396062e00",
+    "retained_intake": "_stomach/NUTRIENT__quiet-staging-actions__20261110.md",
+    "limits": "This is a branch-level guard. The fork-wide Actions setting and already-running jobs were not changed; other branches may still carry their prior workflow configuration. Canonical main remains untouched.",
+    "next": "Where repository settings are authorized and available, disable Actions at the fork repository boundary and witness the result; meanwhile do not re-add test workflows or start new staging jobs."
+  },
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC"
+}

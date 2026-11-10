@@ -174,3 +174,8 @@ The Crawlerbait browser-layout case uses the existing no-Worker capability fallb
 
 
 The usability follow-up strengthens rendered tests with square map geometry and default no-scroll fit rather than only outer rectangles. Its Crawlerbait browser case uses normal Worker acquisition and the actual Canvas2D capability path at DPR1; source GLSL keeps separate native/software-GLES evidence. No Worker override is used in this follow-up. Earlier staging evidence retains its original declared scope. The actual live inspection lacked WebGL; absent glass/source GPU paint there is not classified as a new layout regression.
+
+
+## Fork workflow quieting — 2026-11-10
+
+The staging candidate guards the Display, Papers materializer-test and Cloudflare test jobs so that they run only in `self-similar-systems/cambium`; canonical job conditions remain otherwise unchanged. The disposable staging test branch retires its temporary browser workflows and push-triggered display/test workflows. This is a branch-carried boundary, not a change to the fork repository-wide Actions setting: other branches and already-started jobs retain their actual state. The user encounter remains open until any broader fork-wide setting obligation is resolved.
