@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
   test:
+    if: github.repository == 'self-similar-systems/cambium'
     runs-on: ubuntu-latest
     steps:
       - name: Reacquire cambium

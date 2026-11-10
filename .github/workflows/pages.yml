@@ -25,12 +25,12 @@ concurrency:
 jobs:
   build:
     if: >-
-      github.event_name != 'workflow_run' ||
-      (github.repository == 'self-similar-systems/cambium' &&
-       github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.event == 'workflow_dispatch' &&
-       github.event.workflow_run.head_branch == 'main' &&
-       github.event.workflow_run.head_repository.full_name == github.repository)
+      github.repository == 'self-similar-systems/cambium' &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'workflow_dispatch' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.head_repository.full_name == github.repository))
     runs-on: ubuntu-latest
     outputs:
       publish: ${{ steps.publication.outputs.publish }}
