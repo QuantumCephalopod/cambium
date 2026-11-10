@@ -1,0 +1,22 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-grid-glass-clearance-witness-20261110",
+  "witness_at_utc": "2026-11-10T02:19:55.605144Z",
+  "owner": "display",
+  "status": "PASS / BOUNDED",
+  "source": {
+    "implementation_commit": "694f9736904c77d36a63ad5fe22e4821fecf488a",
+    "glass_git_blob": "4e6ad8bf294d592b7b9ae2e2db0be164a4a234a4",
+    "browser_test_branch_revision": "c516178a5dc4fbb0da1d1802fff05415b56babd3",
+    "browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42741414195"
+  },
+  "claim": "The optical reading clearance uses one half of Display's authored rank-zero cell instead of a separate root-rem value; its actual surface rectangles remain address-derived.",
+  "evidence": [
+    "display-glass.test.cjs passed same-axis turns and explicit 390x844 and 1280x800 clearance values; display-glass-observation.test.cjs passed shared frame observation, invalidation and bounded DOM reads; display-safe-area.test.cjs and display-lens.test.cjs passed.",
+    "The common-field browser step in the linked run passed all six sites at 1280x800, 390x844 and 320x568 plus two Philosophy formats in Canvas2D and two Philosophy formats in software WebGL, including actual clearance equals U/2. The glass code and its native tests match the staged Git blobs."
+  ],
+  "limits": [
+    "This witnesses the shared reading clearance and addressed outer fields, not all optical constants, local inner spacing, visual readability, selected Source, physical devices or full global format closure.",
+    "The other browser steps and the combined full local GLES process retain their independent outcomes; no full-run success is inferred from a passing substep."
+  ]
+}
