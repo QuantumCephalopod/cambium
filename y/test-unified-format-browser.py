@@ -20,7 +20,7 @@ try:
  with sync_playwright() as pw:
   flags=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'] if args.webgl else ['--disable-webgl']
   browser=pw.chromium.launch(headless=True,args=['--no-sandbox']+flags)
-  carriers=[(1280,800,'philosophy','overview'),(390,844,'philosophy','overview')] if args.webgl else [(w,h,site,address) for w,h in [(1280,800),(390,844)] for site,address in sites]+[(844,390,'philosophy','overview'),(1920,1080,'philosophy','overview')]
+  carriers=[(1280,800,'philosophy','overview'),(390,844,'philosophy','overview')] if args.webgl else [(w,h,site,address) for w,h in [(1280,800),(390,844),(320,568)] for site,address in sites]+[(844,390,'philosophy','overview'),(1920,1080,'philosophy','overview')]
   for width,height,site,address in carriers:
    page=browser.new_page(viewport={'width':width,'height':height},device_scale_factor=1,reduced_motion='reduce')
    errors=[];page.on('pageerror',lambda e:errors.append(str(e)));name=f'{site}-{width}x{height}'
@@ -36,7 +36,7 @@ try:
       const host=document.querySelector('[data-interlocutor]:not([hidden])'),ui=SSSDisplayRuntime.ui.get(host.dataset.interlocutor);
       const flows=[...host.querySelectorAll('[data-ui-flow="long-axis"]')].filter(e=>e.firstElementChild).map(e=>({field:e.dataset.uiField,flow:getComputedStyle(e.firstElementChild).writingMode}));
       const siteFields=[...host.querySelectorAll('[data-ui-field][data-ui-bounded="true"]')].map(e=>({field:e.dataset.uiField,actual:box(e),expected:ui.rect(e.dataset.uiField,true)}));
-      return {fields,outer,flows,siteFields,font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
+      return {fields,outer,flows,siteFields,pocketPointer:getComputedStyle(document.getElementById('mini-pocket')).pointerEvents,mapPointer:getComputedStyle(map).pointerEvents,font:text?parseFloat(getComputedStyle(text).fontSize):null,unit:SSSDisplayType.typeUnitPx(),cssUnit:getComputedStyle(document.documentElement).getPropertyValue('--type-unit'),mapCanvas:[map.width,map.height],mode:G.snapshot().orientation,active:SSSDisplayRuntime.state.activeIds};
     }''')
     (args.out/(name+'.json')).write_text(json.dumps(snap,indent=2)+'\n')
     for group in ['fields','outer']:
@@ -48,6 +48,7 @@ try:
       assert abs(entry['actual'][edge]-entry['expected'][edge])<1.1,(name,entry['field'],edge,entry)
     assert abs(snap['unit']-max(width,height)/64)<1e-8,(name,snap)
     if site=='philosophy': assert snap['font'] is not None and abs(snap['font']-snap['unit'])<.1,(name,snap['font'],snap['unit'])
+    assert snap['pocketPointer']=='none' and snap['mapPointer']=='auto',(name,'navigator intercepts unrelated body contacts',snap)
     if height>width:
      for flow in snap['flows']: assert flow['flow']=='vertical-rl',(name,flow)
     a=snap['fields']['map']['actual'];cw,ch=snap['mapCanvas'];assert abs(cw/ch-a['width']/a['height'])<.02,(name,'map distorted',snap)

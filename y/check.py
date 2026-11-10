@@ -172,8 +172,7 @@ def main():
     check('assets/site-fold-particles.js' in template and 'assets/goo-material.js' in template and 'SSSSiteFoldParticles' in fold and 'uTracks[4]' in particles and 'drawArraysInstanced' in particles,'target-origin tetrahedral particle closure missing')
     check("data-aperture=\"closed\"" in actual and "dataset.aperture='open'" in aperture,'global navigator is not aperture-owned')
     check('@keyframes aperture-shell-resolve' in aperture_css,'split aperture resolve animation missing')
-    hud=aperture_css.split('Global navigator as HUD',1)[1].split('html[data-composition="split"] #mini,',1)[0] if 'Global navigator as HUD' in aperture_css else ''
-    check('--hud-t' in hud and 'background:none' in hud and 'clip-path:none' in hud and 'pointer-events:none' in hud,'single-encounter navigator is not a HUD')
+    check(all(token in aperture_css for token in ('--navigator-map-x','--navigator-axis-x-x','--navigator-help-x','background:none','pointer-events:none')),'navigator HUD no longer uses authored fields and transparent interaction tissue')
     check('location.assign' not in runtime and 'location.href' not in runtime,'document redirect architecture returned')
     dependencies=build.display_dependencies(); pretext=dependencies.get('@chenglou/pretext')
     check(pretext is not None and pretext['version']=='0.0.9' and (pretext['body']/'layout.js').is_file() and (pretext['body']/'LICENSE').is_file(),'Display cannot reacquire Pretext by stable package identity')

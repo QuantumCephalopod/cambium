@@ -20,6 +20,15 @@ jobs:
         run: |
           python3 y/test-unified-format-browser.py --artifact _site --out _unified-format-witness/canvas
           python3 y/test-unified-format-browser.py --artifact _site --out _unified-format-witness/webgl --webgl
+      - name: Diagnose existing language witness
+        continue-on-error: true
+        run: python3 y/test-language-browser.py --artifact _site --out _unified-format-witness/language
+      - name: Diagnose existing mobile reading witness
+        continue-on-error: true
+        run: python3 y/test-mobile-reading-browser.py --artifact _site --out _unified-format-witness/mobile
+      - name: Diagnose existing long-axis witness
+        continue-on-error: true
+        run: python3 y/test-long-axis-browser.py --artifact _site --out _unified-format-witness/long-axis
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@v4
