@@ -1,5 +1,6 @@
 'use strict';
 const assert=require('assert');
+global.innerWidth=1024;global.innerHeight=768;
 const G=require('./display-glass.js');
 
 /* derive: centre + half-size in buffer pixels, origin bottom-left */
@@ -108,20 +109,20 @@ console.log('compatible top fields and stable UI/layer identity witness: PASS');
 }
 console.log('compact header and real feedback share one measured top reservoir: PASS');
 
-/* Full measured content stays inside its optical hull at root-relative scales.
+/* Full measured content stays inside its optical hull at grid-relative scales.
  * Protected rectangles keep original geometry, including merged top content. */
-for(const rem of [12,16,24,32]){
- const inset=G.readInset({documentElement:{}},()=>({fontSize:rem+'px'}));
+for(const [width,height] of [[768,1024],[1024,768],[390,844],[1280,800]]){
+ const inset=G.readInset({defaultView:{innerWidth:width,innerHeight:height}});
  const content={left:0,top:0,width:390,height:60};
  const a=G.readingFrame(content,inset);
- assert.equal(inset,rem/2);
+ assert.equal(inset,Math.max(width,height)/128);
  assert.equal(a.rect.left,-inset);assert.equal(a.rect.right,390+inset);
  const p=G.derive([a],{left:0,top:0,width:390,height:844},{width:780,height:1688});
  assert.deepEqual([...p.readData.slice(0,4)],[390,1628,390,60]);
  assert.equal(p.inset,inset);assert.equal(p.scale,2);
 }
 assert.deepEqual(topGlass[0].readRect,{left:0,top:0,width:500,height:122,right:500,bottom:122});
-console.log('root-relative optical hull and unchanged reading rectangle witness: PASS');
+console.log('grid-relative optical hull and unchanged reading rectangle witness: PASS');
 
 const nested=G.derive([
  {rect:{left:0,top:0,width:200,height:200},readRect:{left:10,top:10,width:180,height:180}},

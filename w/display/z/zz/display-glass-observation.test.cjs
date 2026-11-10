@@ -18,6 +18,7 @@ const huds=[hud],doc={documentElement:root,body,createElement:element,querySelec
 class Observer{constructor(callback){this.callback=callback}observe(){}disconnect(){}takeRecords(){return pending.splice(0)}}
 let wallClock=10;
 const win={document:doc,innerWidth:800,innerHeight:600,MutationObserver:Observer,
+  SSSDisplayType:{typeUnitPx:()=>800/64},
   performance:{now:()=>wallClock},matchMedia:()=>({matches:false}),
   getComputedStyle(node){counts.styles++;return {fontSize:'16px',display:node===hud&&!isVisible?'none':'block',visibility:'visible',opacity:'1'}},
   addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},
@@ -31,7 +32,7 @@ const styleChange=()=>pending.push({type:'attributes',target:hud,attributeName:'
 // A field may run before the lens, or long after it, inside one browser frame.
 rectangle(10);assert.equal(counts.scans,1);frames.shift()(10);wallClock=42;
 rectangle(10);rectangle(10,{width:1600,height:1200});
-assert.deepEqual(counts,{scans:1,styles:2,rects:1},'one phase must not depend on callback wall time or field count');
+assert.deepEqual(counts,{scans:1,styles:1,rects:1},'one phase must not depend on callback wall time or field count');
 assert.equal(L.snapshot(10).home.rect.left,20);
 
 // A real style/geometry mutation creates a fresh phase, including the lens's
@@ -69,5 +70,5 @@ for(let i=0;i<60;i++){
  rectangle(frame);rectangle(frame,{width:1600,height:1200});
 }
 assert.deepEqual({scans:counts.scans-before.scans,styles:counts.styles-before.styles,rects:counts.rects-before.rects},
- {scans:60,styles:120,rects:60},'one lens and two fields exceeded one HUD read per frame');
+ {scans:60,styles:60,rects:60},'one lens and two fields exceeded one HUD read per frame');
 console.log('PASS — actual Lens and fields share a frame observation; intervening geometry, visibility, scroll and grid changes reopen it');
