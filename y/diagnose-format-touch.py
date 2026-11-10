@@ -19,7 +19,12 @@ with sync_playwright() as pw:
     m=page.locator('#navTwin').bounding_box()
     before=page.evaluate('''m=>{const e=document.elementFromPoint(m.x+2,m.y+2),map=document.getElementById('navTwin');window.__events=[];for(const type of ['pointerdown','pointerup','click'])document.addEventListener(type,e=>window.__events.push({stage:'capture',type,id:e.target.id,pointer:e.pointerType,x:e.clientX,y:e.clientY}),true);map.addEventListener('pointerdown',e=>window.__events.push({stage:'map',id:e.target.id,pointer:e.pointerType}));return {point:[m.x+2,m.y+2],at:e&&{tag:e.tagName,id:e.id,cls:String(e.className)},map:map.getBoundingClientRect().toJSON(),mini:document.getElementById('mini').getBoundingClientRect().toJSON(),scroll:[...map.closest('#mini').querySelectorAll('*')].filter(e=>e.scrollLeft||e.scrollTop).map(e=>({id:e.id,x:e.scrollLeft,y:e.scrollTop})),htmlScroll:[scrollX,scrollY]}}''',m)
     page.touchscreen.tap(m['x']+2,m['y']+2)
-    print(json.dumps({'before':before,'events':page.evaluate('window.__events')},ensure_ascii=False),flush=True)
+    events=page.evaluate('window.__events')
+    print(json.dumps({'before':before,'events':events},ensure_ascii=False),flush=True)
+    assert any(e.get('stage')=='map' and e.get('pointer')=='touch' for e in events), 'map did not receive its own touch'
+    assert not any(e.get('type')=='click' and e.get('id')=='mini-help-toggle' for e in events), 'help activated for a map point'
+    assert page.locator('#mini-guide').is_hidden(), 'map touch opened help'
+    page.locator('#mini-help-toggle').tap();assert page.locator('#mini-guide').is_visible(), 'actual help point stopped working'
     page.screenshot(path='_touch-diagnostic.png')
     browser.close()
 server.shutdown()

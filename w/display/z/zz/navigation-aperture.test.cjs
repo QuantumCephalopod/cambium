@@ -5,12 +5,17 @@ for(const composition of ['single','split','grid']){
  const node=()=>({dataset:{},attrs:{},events:{},hidden:false,inert:false,setAttribute(k,v){this.attrs[k]=v},getAttribute(k){return this.attrs[k]},addEventListener(k,f){this.events[k]=f},contains(n){return n===legal},focus(){if(!this.focused){this.focused=true;this.events.focus?.()}}});
  const ids=['mini','mini-trigger','mini-pocket','legal-links','mini-core','navTwin','mini-help-bar','mini-hint-map','mini-hint-mapKeys','mini-hint-axis','mini-hint-keys','mini-help-toggle','mini-guide','mini-map-help','mini-axis-help','axis-x','axis-y'];
  const els=Object.fromEntries(ids.map(id=>[id,node()])),mini=els.mini,trigger=els['mini-trigger'],pocket=els['mini-pocket'],legal=els['legal-links'],guide=els['mini-guide'],button=els['mini-help-toggle'];guide.hidden=true;
- const context={document:{getElementById:id=>els[id],documentElement:{dataset:{composition},lang:'en'}},MutationObserver:class{constructor(fn){this.fn=fn}observe(){}},addEventListener(k,f){listeners.set(k,f)},setTimeout(fn){timer=fn;return 1},clearTimeout(){timer=null}};
+ const context={document:{getElementById:id=>els[id],documentElement:{dataset:{composition},lang:'en'}},MutationObserver:class{constructor(fn){this.fn=fn}observe(){}},PointerEvent:class{constructor(type,init){this.type=type;Object.assign(this,init)}},addEventListener(k,f){listeners.set(k,f)},setTimeout(fn){timer=fn;return 1},clearTimeout(){timer=null}};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'navigation-aperture.js'),'utf8'),context);
  assert.equal(pocket.inert,false,'navigator opens on first encounter');
  assert.equal(trigger.attrs['aria-expanded'],'true');
  const hint=()=>['map','mapKeys','axis','keys'].map(k=>els['mini-hint-'+k]).find(el=>el.attrs['aria-hidden']==='false').textContent;
  assert.match(hint(),/select a body/);els['axis-x'].events.pointerenter();assert.match(hint(),/hold still/);
+ let forwarded=null,downStopped=false,clickStopped=false;els.navTwin.dispatchEvent=e=>{forwarded=e};context.document.elementFromPoint=()=>els.navTwin;
+ listeners.get('pointerdown')({isTrusted:true,pointerType:'touch',pointerId:9,target:button,clientX:101,clientY:202,button:0,buttons:1,isPrimary:true,preventDefault(){},stopImmediatePropagation(){downStopped=true}});
+ assert(downStopped&&forwarded&&forwarded.type==='pointerdown'&&forwarded.clientX===101&&forwarded.clientY===202,'touch targeting follows the exact map point');
+ listeners.get('click')({isTrusted:true,pointerType:'touch',pointerId:9,target:button,preventDefault(){},stopImmediatePropagation(){clickStopped=true}});assert(clickStopped,'the displaced button must not also activate');
+ forwarded=null;context.document.elementFromPoint=()=>button;listeners.get('pointerdown')({isTrusted:true,pointerType:'touch',pointerId:10,target:button,clientX:1,clientY:2});assert.equal(forwarded,null,'a real button point remains the button');
  els['axis-x'].events.focus();listeners.get('keydown')({key:'Tab'});assert.match(hint(),/release to stop/);
  els['axis-x'].events.blur();els.navTwin.events.focus();assert.match(hint(),/arrows pan/);
  button.events.click();assert.equal(guide.hidden,false);assert.equal(button.attrs['aria-expanded'],'true');
