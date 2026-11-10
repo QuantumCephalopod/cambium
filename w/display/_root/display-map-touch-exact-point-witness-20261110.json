@@ -1,0 +1,26 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-map-touch-exact-point-witness-20261110",
+  "witness_at_utc": "2026-11-10T02:05:42.043731Z",
+  "owner": "display",
+  "status": "PASS / BOUNDED",
+  "source": {
+    "counterexample_witness": "_root/display-shared-format-candidate-witness-20261110.json",
+    "implementation_commit": "1d62df82e47bba372a67bd6b2ce9f41f16edad73",
+    "browser_test_branch_revision": "6078abae4a33383fac46116a48dc10f6abee47e2",
+    "browser_run": "https://github.com/QuantumCephalopod/cambium/actions/runs/42740118079",
+    "matched_git_blobs": {
+      "z/zz/navigation-aperture.js": "ca34f1fbc46e1b446ab537bad86b3a4df89c513b",
+      "z/zz/navigation-aperture.test.cjs": "25dbc97fb72a0801d1c507ff3e0094d44a5328c1"
+    }
+  },
+  "claim": "For a disputed native touch whose exact point hits the map canvas, the navigator delivers the same point to the map and suppresses the displaced button click. An actual point on help continues to open help. Declared fields are unchanged.",
+  "evidence": [
+    "Chromium emulated touch at 320x568: the previously failing point (197, 445.75) reached navTwin as touch and did not open help; a subsequent actual help tap opened help.",
+    "navigation-aperture.test.cjs passed exact-point forwarding, non-activation of the displaced help, ordinary help targeting and existing navigation behavior."
+  ],
+  "limits": [
+    "The individual correction does not constitute a passed full mobile suite, multi-touch/physical-device witness, or completion of global formatting.",
+    "Separate local sharp-ink and remaining site/static layout limitations retain their prior OPEN state."
+  ]
+}
