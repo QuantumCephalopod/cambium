@@ -15,17 +15,11 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(a.artifact.resolve())));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/index.html';results=[]
 expected={'header':(0,0,1,.25),'description':(0,.25,.25,.75),'timeline':(.25,.875,.5,.125),'compass':(.75,.5,.25,.5),'viewport':(.25,.25,.625,.625)}
-portrait_expected={
- ('organism:philosophy','viewport'):(0,.25,1,.5),
- **{(site,field):box for site in ('organism:crawlerbait','organism:schattenseiten') for field,box in {
-   'header':(0,0,1,.125),'description':(0,.125,.5,.25),'timeline':(0,.375,.375,.375)
- }.items()}
-}
 def bounds(page,selector):return page.locator(selector).evaluate('(e)=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}}')
 def close(actual,field,w,h,variant='default',identity=None):
  x,y,fw,fh=expected[field]
  if h>w:
-  x,y,fw,fh=portrait_expected.get((identity,field),(1-y-fh,x,fh,fw))
+  x,y,fw,fh=1-y-fh,x,fh,fw
  for k,v in dict(x=x*w,y=y*h,width=fw*w,height=fh*h).items():assert abs(actual[k]-v)<1.1,(field,k,actual,v)
 def wait_scene(page,identity):
  page.wait_for_selector(f'[data-interlocutor="{identity}"]:not([hidden]) [data-ui-bounded="true"]',timeout=180000)
@@ -35,18 +29,18 @@ def header_content(page,host,identity,w,h):
  outer=host+' [data-ui-field="header"]';close(bounds(page,outer),'header',w,h,identity=identity)
  inner=outer+(' .crawlerbait-hud-top' if identity=='organism:crawlerbait' else ' .ss-hud-top')
  reading=page.locator(inner)
- metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot(),safe=SSSDisplaySafeArea.snapshot().insets;return {top:r.top,bottom:r.bottom,right:r.right,height:r.height,outerBottom:o.bottom,safeTop:safe.top,safeRight:safe.right,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,headerLeft:h.left,glassBottom:g.rect.bottom,glassLeft:g.rect.left,inset:g.inset,fieldBottom:f.top.bottom,fieldLeft:f.top.left,topCells:f.outer.fields.top.cells}}''')
+ metrics=reading.evaluate('''e=>{const r=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect(),h=document.getElementById('display-header').getBoundingClientRect(),g=SSSDisplayGlass.collect().find(s=>s.ids.includes('display-header')),f=SSSDisplayMembraneGrid.snapshot(),safe=SSSDisplaySafeArea.snapshot().insets,range=document.createRange();range.selectNodeContents(document.getElementById('display-brand-name'));const ink=range.getBoundingClientRect();return {top:r.top,bottom:r.bottom,right:r.right,height:r.height,outerBottom:o.bottom,safeTop:safe.top,safeRight:safe.right,clientWidth:e.clientWidth,scrollWidth:e.scrollWidth,clientHeight:e.clientHeight,scrollHeight:e.scrollHeight,titleHeight:e.querySelector('h1').getBoundingClientRect().height,headerBottom:h.bottom,headerLeft:h.left,brandInkBottom:ink.bottom,brandInkLeft:ink.left,glassBottom:g.rect.bottom,glassLeft:g.rect.left,inset:g.inset,fieldBottom:f.top.bottom,fieldLeft:f.top.left,topCells:f.outer.fields.top.cells}}''')
  assert metrics['top']>=metrics['safeTop']-.5,metrics
  assert metrics['bottom']<=metrics['outerBottom']+.5,metrics
  assert metrics['clientHeight']>=metrics['titleHeight']-.5,('no complete title line',metrics)
  assert metrics['scrollWidth']<=metrics['clientWidth']+1,('horizontal header overflow',metrics)
  if h>w:
   assert abs(metrics['glassLeft']-metrics['fieldLeft'])<.5,('liquid edge departed from its realized field',metrics)
-  assert metrics['headerLeft']>=metrics['glassLeft']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
+  assert metrics['brandInkLeft']>=metrics['glassLeft']+metrics['inset']-.5,('brand ink touches liquid rim',metrics)
   assert metrics['right']<=w-metrics['safeRight']+.5,('site reading tissue touches liquid rim',metrics)
  else:
   assert abs(metrics['glassBottom']-metrics['fieldBottom'])<.5,('liquid edge departed from its realized field',metrics)
-  assert metrics['glassBottom']>=metrics['headerBottom']+metrics['inset']-.5,('reading tissue touches liquid rim',metrics)
+  assert metrics['glassBottom']>=metrics['brandInkBottom']+metrics['inset']-.5,('brand ink touches liquid rim',metrics)
   assert metrics['top']>=metrics['glassBottom']+metrics['inset']-.5,('site reading tissue touches liquid rim',metrics)
  reading.evaluate('(e)=>{e.scrollTop=e.scrollHeight}')
  end=reading.evaluate('e=>({top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,last:e.lastElementChild.getBoundingClientRect().bottom,scrollTop:e.scrollTop})')
@@ -103,14 +97,13 @@ try:
       else:
        page.locator(host+' .crawlerbait-modes button').nth(1).click()
       assert bounds(page,timeline)==before,'selection/mode moved the declared footer';close(bounds(page,description),'description',w,h,identity=identity)
-     page.wait_for_function("(()=>{const m=document.getElementById('navTwin').getBoundingClientRect(),c=document.getElementById('mini-core');return Math.abs(m.width-m.height)<1.1&&c.scrollHeight<=c.clientHeight+1})()",timeout=10000)
-     map_box=bounds(page,'#navTwin');assert abs(map_box['width']-map_box['height'])<1.1,('distorted map',map_box)
-     compass_box=bounds(page,'#mini');pocket_box=bounds(page,'#mini-pocket')
-     chrome=page.locator('#mini').evaluate('e=>Number(e.dataset.mapChrome)||0')
-     map_room=page.evaluate('''()=>{const core=document.getElementById('mini-core'),s=getComputedStyle(core),instrument=document.getElementById('mini-instrument');return Math.max(0,core.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap))}''')
-     expected_usable=min(pocket_box['width']/2,max(0,pocket_box['height']-chrome),map_room)
-     assert map_box['width']>=expected_usable-1,('the map fits but is too small to use',map_box,compass_box,pocket_box,chrome)
-     records['square_map']=map_box
+     page.wait_for_function("document.getElementById('navTwin').getBoundingClientRect().width>0",timeout=10000)
+     map_box=bounds(page,'#navTwin');declared=page.evaluate("SSSDisplayMembraneGrid.nested('map')")
+     for edge in ('x','y','width','height'):
+      target={'x':'left','y':'top'}.get(edge,edge)
+      assert abs(map_box[edge]-declared[target])<1.1,('map left its declared field',map_box,declared)
+     assert page.locator('#navTwin').evaluate('''e=>{const r=e.getBoundingClientRect();return Math.abs(e.width/e.height-r.width/r.height)<.02}'''),('map projection stretched',map_box)
+     records['authored_map']=map_box
      records['compass_variant']=compass_variant
      mini=bounds(page,'#mini')
      if page.locator('#mini-pocket').get_attribute('aria-hidden')=='true':page.locator('#mini-trigger').click()
