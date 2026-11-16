@@ -49,6 +49,25 @@ main{max-width:1460px;padding:22px clamp(12px,2.4vw,32px) 40px;margin:auto}.head
 </section></div><div class="footer">Experimental CPU materialization of actual public Papers inquiry, not the deployed site. A splat is a raster sample of an admitted surface, not a new organism or address. Source: <a href="https://github.com/self-similar-systems/cambium/tree/main/w/display/y/yw/papers/inquiry" target="_blank" rel="noopener">Cambium Papers inquiry JSON</a>. Pixel-resolve mechanism follows the MIT-licensed Ink Studio approach © 2026 siliconjungle; the CPU raster implementation here is experimental. Times are measured on your device and include one material frame, not external DOM layout.</div>
 </main>
 <script>
+/*
+MIT License
+Copyright (c) 2026 siliconjungle
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 (()=>{'use strict';
 const DATA={
  '5H.Dw6a':{
@@ -165,8 +184,8 @@ function drawOverlay(W,H){const projected=V0.map(v=>camera(v,W,H)),mid=(a,b)=>({
  for(const e of d.edges){const i=rootPart(e[0][0]),j=rootPart(e[0][1]);const p=mid(i,j);ctx.fillStyle='#d4e3b5';ctx.fillRect(p.x-2,p.y-2,4,4)}
  const metpos=[[0,.20,.00],[-.16,-.05,.10],[.14,-.09,-.12]];d.metabolites.forEach((m,i)=>{const p=camera(metpos[i],W,H);ctx.strokeStyle=['#cdf3b4','#b9d9ff','#ffc3c4'][i];ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(p.x,p.y,9+i*2,0,Math.PI*2);ctx.stroke();ctx.fillStyle=ctx.strokeStyle;ctx.fillRect(p.x-1.5,p.y-1.5,3,3);if(state.zoom>1.05){ctx.font='10px ui-monospace,monospace';ctx.fillText(m[0].slice(-2),p.x+10,p.y-8)}});
  let h=state.hover||state.selected;const spot=hitparts.find(p=>h?.kind===p.kind&&h?.id===p.id);if(spot){ctx.strokeStyle='#f3fbd4';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(spot.x,spot.y,spot.r*.6,0,Math.PI*2);ctx.stroke()}ctx.restore();}
-function paint(){state.dirty=false;const start=performance.now();const [W,H]=layout();const pitch=state.pitchPx;const nw=Math.ceil(W/pitch),nh=Math.ceil(H/pitch),rw=nw*2,rh=nh*2;const frameR=performance.now();const high=raster(rw,rh,2),normal=raster(nw,nh,1);const rasterMs=performance.now()-frameR;
- const frameP=performance.now();let image=resolve(high,normal);const resolveMs=performance.now()-frameP;const raw=rawImage(normal);
+function paint(){state.dirty=false;const start=performance.now();const [W,H]=layout();const pitch=state.pitchPx;const nw=Math.ceil(W/pitch),nh=Math.ceil(H/pitch),rw=nw*2,rh=nh*2;const frameR=performance.now();const high=state.mode==='raw'?null:raster(rw,rh,2),normal=raster(nw,nh,1);const rasterMs=performance.now()-frameR;
+ const frameP=performance.now();let image=high?resolve(high,normal):null;const resolveMs=performance.now()-frameP;const raw=rawImage(normal);
  ctx.clearRect(0,0,W,H);ctx.fillStyle='#080d12';ctx.fillRect(0,0,W,H);
  if(state.mode==='pixel')drawSurfaceImage(image,null,{x:0,y:0,w:W,h:H});else if(state.mode==='raw')drawSurfaceImage(raw,null,{x:0,y:0,w:W,h:H});else {ctx.save();ctx.beginPath();ctx.rect(0,0,W/2,H);ctx.clip();drawSurfaceImage(raw,null,{x:0,y:0,w:W,h:H});ctx.restore();ctx.save();ctx.beginPath();ctx.rect(W/2,0,W/2,H);ctx.clip();drawSurfaceImage(image,null,{x:0,y:0,w:W,h:H});ctx.restore();ctx.strokeStyle='#e5f5df';ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,H);ctx.stroke();}
  hitparts=spots(W,H);drawOverlay(W,H);$('frame-ms').textContent=(performance.now()-start).toFixed(1)+' ms';$('resolve-ms').textContent=resolveMs.toFixed(1)+' ms';$('body-count').textContent=String(normal.n)+' instances';$('specimen-name').textContent=state.id+' / '+(state.id.startsWith('5')?'RANK 5':'RANK 4');$('zoomv').textContent=state.zoom.toFixed(2)+'×';$('pitchv').textContent=pitch+'px';$('part-floater').textContent=state.hover?.label||'Tap an edge, face, metabolight or parent · rotate to inspect';renderCount++;
