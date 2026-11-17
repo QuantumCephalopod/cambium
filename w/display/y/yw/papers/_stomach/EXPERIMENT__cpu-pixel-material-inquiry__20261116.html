@@ -118,12 +118,20 @@ const splatCache=new Map();let hitparts=[], renderCount=0;
 function getSpec(){return DATA[state.id]}
 function descendants(){const d=getSpec();const p=GENES.map((g,i)=>({gene:g,id:d.vertices[g],tet:childTet(V0,g),rank:state.id[0]==='5'?4:3}));return p}
 function camera(p,W,H){let [x,y,z]=p;const cy=Math.cos(state.yaw),sy=Math.sin(state.yaw);let X=x*cy+z*sy,Z=z*cy-x*sy;const cp=Math.cos(state.pitch),sp=Math.sin(state.pitch);let Y=y*cp-Z*sp;Z=y*sp+Z*cp;const dz=3.9-state.zoom*.28+Z,ss=Math.min(W,H)*.9*state.zoom/(dz||1);return {x:W*.50+X*ss,y:H*.51-Y*ss,z:dz,scale:ss}}
+// The canonical tetrahedral faces have outward winding. In our screen projection
+// Y points down and the camera views along +Z, so outward-facing triangles have
+// a positive projected cross product. A face looking away is not an exterior skin.
+function exteriorFace(ps){
+ const [a,b,c]=ps;
+ return (b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x)>1e-4;
+}
+const FACE_BY_GENES=Object.fromEntries(FACES.map(f=>[f.map(i=>GENES[i]).sort().join(''),f]));
 function generateSamples(owner,tet,gene,level,opacity,route){const key=owner+'|'+route+'|'+gene+'|'+level;let cached=splatCache.get(key);if(cached)return cached;const rand=rnd(key);const out=[];for(let f=0;f<4;f++){const face=FACES[f],a=tet[face[0]],b=tet[face[1]],c=tet[face[2]],n=norm(cross(sub(b,a),sub(c,a)));let amount=level===0?185:level===1?100:39;for(let k=0;k<amount;k++){const u=Math.sqrt((k+rand())/amount),v=rand();const p=add(scale(a,1-u),add(scale(b,u*(1-v)),scale(c,u*v)));const r=rand(),lit=clamp(.58+.42*n[0]*-.2+.4*n[1]+.32*n[2],.28,1);out.push({p,n,gene,level,opacity,r,light:lit,face:f});}}splatCache.set(key,out);return out}
 function worldSurface(){const d=getSpec();const bodies=[{id:state.id,gene:'w',tet:V0,level:0,opacity:.25,route:''}];const kids=descendants();for(const p of kids)bodies.push({id:p.id,gene:p.gene,tet:p.tet,level:1,opacity:.92,route:p.gene});if(state.extra&&state.zoom>1.3)for(const p of kids){const dp=DATA[p.id];if(!dp)continue;for(let j=0;j<4;j++){const ch=GENES[j],id=dp.vertices[ch],tet=childTet(p.tet,ch);bodies.push({id,gene:ch,tet,level:2,opacity:.46,route:p.gene+ch})}}return bodies}
 function spots(W,H){const d=getSpec();const pts=V0.map(v=>camera(v,W,H)),arr=[];
  for(let i=0;i<4;i++)arr.push({kind:'parents',id:d.vertices[GENES[i]],part:GENES[i],x:pts[i].x,y:pts[i].y,r:30,label:GENES[i]+' / '+d.vertices[GENES[i]]});
  for(const e of d.edges){const a=pts[rootPart(e[0][0])],b=pts[rootPart(e[0][1])];if(!a||!b)continue;arr.push({kind:'edges',id:e[0],part:e[0],x:(a.x+b.x)/2,y:(a.y+b.y)/2,r:20,label:e[0]+' / '+e[1]})}
- for(const f of d.faces){const arrp=[...f[0]].map(g=>pts[rootPart(g)]);if(arrp.length<3||arrp.some(x=>!x))continue;arr.push({kind:'faces',id:f[0],part:f[0],x:arrp.reduce((a,b)=>a+b.x,0)/3,y:arrp.reduce((a,b)=>a+b.y,0)/3,r:23,label:f[0]+' / '+f[1]})}
+ for(const f of d.faces){const arrp=[...f[0]].map(g=>pts[rootPart(g)]);if(arrp.length<3||arrp.some(x=>!x))continue;const exterior=FACE_BY_GENES[[...f[0]].sort().join('')];if(!exteriorFace(exterior.map(i=>pts[i])))continue;arr.push({kind:'faces',id:f[0],part:f[0],x:arrp.reduce((a,b)=>a+b.x,0)/3,y:arrp.reduce((a,b)=>a+b.y,0)/3,r:23,label:f[0]+' / '+f[1]})}
  const metpos=[[0,.20,.00],[-.16,-.05,.10],[.14,-.09,-.12]];d.metabolites.forEach((m,i)=>{const p=camera(metpos[i],W,H);arr.push({kind:'metabolites',id:m[0],part:m[2],x:p.x,y:p.y,r:24,label:m[1]})});return arr}
 // Body splats are sampled from realized tetrahedral faces, never from a random semantic cluster.
 function raster(W,H,factor){const n=W*H,col=new Float32Array(n*3),dep=new Float32Array(n).fill(1);const bg=palette[0];for(let p=0;p<n;p++){const k=p*3;col[k]=bg[0];col[k+1]=bg[1];col[k+2]=bg[2]}
@@ -131,12 +139,13 @@ function raster(W,H,factor){const n=W*H,col=new Float32Array(n*3),dep=new Float3
  // Real authored tetrahedral faces establish material coverage; Gaussian samples
  // add texture on that same geometry. No sampled point creates a semantic body.
  const tris=[];
- for(const body of bodies) for(const face of FACES){
+ for(const body of bodies){body.frontFaces=[];for(let f=0;f<FACES.length;f++){const face=FACES[f];
    const ps=face.map(j=>camera(body.tet[j],W,H));
+   body.frontFaces[f]=exteriorFace(ps);if(!body.frontFaces[f])continue;
    const a=body.tet[face[0]],b=body.tet[face[1]],c=body.tet[face[2]];
    const nn=norm(cross(sub(b,a),sub(c,a)));const light=clamp(.54+.32*nn[1]+.16*nn[2],.3,1);
    tris.push({ps,z:ps.reduce((n,q)=>n+q.z,0)/3,body,light});
- }
+ }}
  tris.sort((a,b)=>b.z-a.z);
  for(const t of tris){
    const a=t.ps[0],b=t.ps[1],c=t.ps[2];
@@ -155,7 +164,7 @@ function raster(W,H,factor){const n=W*H,col=new Float32Array(n*3),dep=new Float3
      dep[i]=Math.min(dep[i],clamp((t.z-2.8)/1.9,0,.97));
    }
  }
- for(const body of bodies){for(const s of generateSamples(body.id,body.tet,body.gene,body.level,body.opacity,body.route)){const p=camera(s.p,W,H);all.push({x:p.x,y:p.y,z:p.z,s,body})}}all.sort((a,b)=>b.z-a.z);
+ for(const body of bodies){for(const s of generateSamples(body.id,body.tet,body.gene,body.level,body.opacity,body.route)){if(!body.frontFaces[s.face])continue;const p=camera(s.p,W,H);all.push({x:p.x,y:p.y,z:p.z,s,body})}}all.sort((a,b)=>b.z-a.z);
  for(const a of all){const {s}=a,body=a.body,lit=s.light,base=baseColors[s.gene],depth=clamp((a.z-2.8)/1.9,0,.97),rad=body.level===0?1.65:body.level===1?2.15:1.05,rad0=rad*factor,rx=rad0*.94,ry=rad0*.88;
   const v=(.55+.45*lit)*(body.level===0?.8:1);const mixTone=s.r<.26?.47:s.r>.82?1.0:.76;const pc=[base[0]*v*mixTone,base[1]*v*mixTone,base[2]*v*mixTone],a0=body.opacity*(body.level===0?.38:.80);const lim=2.3*rad0;
   const x0=Math.max(0,Math.floor(a.x-lim)),x1=Math.min(W-1,Math.ceil(a.x+lim)),y0=Math.max(0,Math.floor(a.y-lim)),y1=Math.min(H-1,Math.ceil(a.y+lim));for(let y=y0;y<=y1;y++){const dy=(y+.5-a.y)/ry;for(let x=x0;x<=x1;x++){const dx=(x+.5-a.x)/rx;let g=Math.exp(-1.65*(dx*dx+dy*dy))*a0;if(g<.016)continue;const ix=y*W+x,j=ix*3,t=1-g;col[j]=col[j]*t+pc[0]*g;col[j+1]=col[j+1]*t+pc[1]*g;col[j+2]=col[j+2]*t+pc[2]*g;if(g>.1)dep[ix]=Math.min(dep[ix],depth)}}}
@@ -177,7 +186,7 @@ function resolve(samples,native){const w=samples.w,W=w/2,H=samples.h/2,out=new U
 }
 function rawImage(r){const out=new ImageData(r.w,r.h);for(let i=0;i<r.w*r.h;i++){out.data[i*4]=r.color[i*3];out.data[i*4+1]=r.color[i*3+1];out.data[i*4+2]=r.color[i*3+2];out.data[i*4+3]=255}return out}
 function drawSurfaceImage(image,viewport,rect){const cv=image===null?null:document.createElement('canvas');if(!cv)return;cv.width=image.width;cv.height=image.height;cv.getContext('2d').putImageData(image,0,0);ctx.imageSmoothingEnabled=false;ctx.drawImage(cv,rect.x,rect.y,rect.w,rect.h)}
-function drawOverlay(W,H){const projected=V0.map(v=>camera(v,W,H)),mid=(a,b)=>({x:(projected[a].x+projected[b].x)/2,y:(projected[a].y+projected[b].y)/2}),d=getSpec();ctx.save();ctx.lineWidth=1;ctx.strokeStyle='#c1eace78';for(const a of FACES){ctx.beginPath();ctx.moveTo(projected[a[0]].x,projected[a[0]].y);for(let j=1;j<3;j++)ctx.lineTo(projected[a[j]].x,projected[a[j]].y);ctx.closePath();ctx.stroke()}
+function drawOverlay(W,H){const projected=V0.map(v=>camera(v,W,H)),mid=(a,b)=>({x:(projected[a].x+projected[b].x)/2,y:(projected[a].y+projected[b].y)/2}),d=getSpec();ctx.save();ctx.lineWidth=1;ctx.strokeStyle='#c1eace78';for(const a of FACES){if(!exteriorFace(a.map(i=>projected[i])))continue;ctx.beginPath();ctx.moveTo(projected[a[0]].x,projected[a[0]].y);for(let j=1;j<3;j++)ctx.lineTo(projected[a[j]].x,projected[a[j]].y);ctx.closePath();ctx.stroke()}
  // Correct 4 source-owned parent identity markers, with no invented semantic nodes.
  for(let i=0;i<4;i++){const p=projected[i],c=colorOf(GENES[i]);ctx.fillStyle=`rgb(${c.join(',')})`;ctx.beginPath();ctx.arc(p.x,p.y,4.1,0,Math.PI*2);ctx.fill();ctx.font='11px ui-monospace,monospace';ctx.textBaseline='middle';ctx.fillText(GENES[i]+' · '+d.parents[i],p.x+9,p.y-6)}
  // Relation material occupies actual tetrahedral edges; labels are source-authored.
