@@ -14,6 +14,7 @@
   const GAP=8;
   let state=Object.freeze({viewport:Object.freeze({width:0,height:0}),occupied:Object.freeze([]),insets:Object.freeze({top:0,right:0,bottom:0,left:0})});
   let started=false,resizeObserver=null,mutationObserver=null,raf=0;
+  let measuringInk=null,inkWidths=new WeakMap();
 
   function number(v){v=Number(v);return Number.isFinite(v)?v:0}
   function rect(value={}){
@@ -62,6 +63,29 @@
     if(r.width<.5||r.height<.5)return null;
     return {id:el.id||'',role:UI.orientEdges(el.getAttribute('data-display-occupancy')||'',mode),rect:r,readRect:rect(raw),canonical:!!globalThis.SSSDisplayMembraneGrid,clearance};
   }
+  // Keep or lower the existing type rank by one half octave. The longest
+  // real word decides whether that step can remove an emergency word break.
+  function fitInk(el,text,width){
+    if(!el||!text?.trim()||width<=0)return;
+    const style=getComputedStyle(el),scale=el.hasAttribute('data-compact-type')?Math.SQRT2:1;
+    const size=Number((parseFloat(style.fontSize)*scale).toFixed(4));
+    const spacing=Number(((parseFloat(style.letterSpacing)||0)*scale).toFixed(4));
+    const {fontWeight,fontFamily}=style;
+    const words=(style.textTransform==='uppercase'?text.toUpperCase():text).trim().split(/\s+/);
+    const key=JSON.stringify([fontWeight,fontFamily,size,spacing,words]);
+    let measured=inkWidths.get(el);
+    if(measured?.key!==key){
+      measuringInk??=document.createElement('canvas').getContext('2d');
+      if(!measuringInk)return;
+      const widest=factor=>{
+        measuringInk.font=`${fontWeight} ${size/factor}px ${fontFamily}`;
+        return Math.max(...words.map(word=>measuringInk.measureText(word).width+Array.from(word).length*spacing/factor));
+      };
+      measured={key,ordinary:widest(1),compact:widest(Math.SQRT2)};
+      inkWidths.set(el,measured);
+    }
+    el.toggleAttribute('data-compact-type',measured.ordinary>width&&measured.compact<=width);
+  }
   function readingLimit(clearance,mode){
     let limit=Infinity;
     for(const field of document.querySelectorAll('[data-interlocutor]:not([hidden]) [data-ui-bounded="true"]')){
@@ -90,16 +114,25 @@
     const mode=UI.orientation(innerWidth,innerHeight),root=document.documentElement;
     if(root.dataset.displayOrientation!==mode)root.dataset.displayOrientation=mode;
     const elements=[...document.querySelectorAll('[data-display-occupancy]')];
-    // Place real feedback after the measured header before acquiring its own
-    // geometry. Reuse the ordinary header read; no additional layout scan or
-    // observer phase is needed, including the first/explicit refresh.
+    const status=elements.find(el=>el.id==='display-membrane-status');
+    const legal=elements.find(el=>el.id==='legal-links');
+    // Place feedback after the measured header in landscape or in the free
+    // run between its controls in portrait, before measuring the feedback.
     const header=elements.find(el=>el.id==='display-header'),headerEntry=header?measure(header):null;
     if(header){
       const style=document.documentElement.style,value=(headerEntry?.raw.bottom??(headerEntry?headerEntry.raw.top+headerEntry.raw.height:0))+'px';
       if(style.getPropertyValue?.('--display-header-bottom')!==value)style.setProperty('--display-header-bottom',value);
-      const depth=(mode==='portrait'&&headerEntry?Math.max(0,innerWidth-headerEntry.raw.left):0)+'px';
-      if(style.getPropertyValue?.('--display-header-depth')!==depth)style.setProperty('--display-header-depth',depth);
+      if(mode==='portrait'){
+        const brand=header.querySelector?.('.brand')?.getBoundingClientRect();
+        const language=header.querySelector?.('.lang')?.getBoundingClientRect();
+        const start=(brand?.bottom??0)+'px',end=(language?.top??innerHeight)+'px';
+        if(style.getPropertyValue?.('--display-status-start')!==start)style.setProperty('--display-status-start',start);
+        if(style.getPropertyValue?.('--display-status-end')!==end)style.setProperty('--display-status-end',end);
+      }
     }
+    const feedback=status?.firstElementChild;
+    if(feedback?.textContent)fitInk(feedback,feedback.textContent,status.clientWidth);
+    if(legal)fitInk(legal,[...legal.children].map(link=>link.textContent).join(' '),legal.clientWidth);
     const measured=elements.map(el=>el===header?headerEntry:measure(el)).filter(Boolean);
     const find=id=>measured.find(entry=>entry.el.id===id)?.raw;
     let inset=0;
@@ -136,6 +169,7 @@
       const mini=document.getElementById('mini');if(mini)mutationObserver.observe(mini,{attributes:true,attributeFilter:['data-aperture','data-pinned','style']});
     }
     addEventListener('resize',schedule,{passive:true});
+    document.fonts?.addEventListener('loadingdone',()=>{inkWidths=new WeakMap();schedule()});
     return refresh();
   }
   return Object.freeze({derive,snapshot,refresh,start});

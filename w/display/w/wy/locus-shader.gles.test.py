@@ -30,7 +30,11 @@ attrs=(I*13)(0x3024,8,0x3023,8,0x3022,8,0x3033,1,0x3040,0x40,0x3025,24,0x3038)
 config,count=P(),I();E.eglChooseConfig.argtypes=[P,C.POINTER(I),C.POINTER(P),I,C.POINTER(I)]
 assert E.eglChooseConfig(display,attrs,C.byref(config),1,C.byref(count)) and count.value
 E.eglCreateContext.argtypes=[P,P,P,C.POINTER(I)];E.eglCreateContext.restype=P
-context=E.eglCreateContext(display,config,None,(I*3)(0x3098,3,0x3038));assert context
+E.eglDestroyContext.argtypes=[P,P]
+def create_context():
+    created=E.eglCreateContext(display,config,None,(I*3)(0x3098,3,0x3038));assert created
+    return created
+context=create_context()
 E.eglMakeCurrent.argtypes=[P,P,P,P];assert E.eglMakeCurrent(display,None,None,context)
 
 cache={}
@@ -66,8 +70,17 @@ simple={
  'DeleteProgram':[U],'DeleteShader':[U],
 }
 def replay(commands,width,height,min_depth_clears=3):
-    # Each browser canvas owns a fresh context; do not leak a preceding replay's
-    # enable/write state into the next declared consumer context.
+    # Each capture represents one browser canvas. Retire all its context-local
+    # programs, textures and framebuffers before replaying a different canvas.
+    owned=create_context()
+    try:
+        assert E.eglMakeCurrent(display,None,None,owned)
+        return replay_current_context(commands,width,height,min_depth_clears)
+    finally:
+        assert E.eglMakeCurrent(display,None,None,context)
+        assert E.eglDestroyContext(display,owned)
+
+def replay_current_context(commands,width,height,min_depth_clears):
     for flag in (3042,2929,3089,2960,2884):gl('Disable',None,[U],flag)
     gl('DepthMask',None,[C.c_ubyte],True);gl('ColorMask',None,[C.c_ubyte]*4,True,True,True,True)
     gl('DepthFunc',None,[U],513);gl('ClearDepthf',None,[F],1);gl('ActiveTexture',None,[U],33984)

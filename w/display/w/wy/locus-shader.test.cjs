@@ -524,3 +524,39 @@ console.log('PASS — inactive optical targets retire once, repeated returns pla
  broken=false;assert.equal(f.api.prepareFrame(),true,'a source exception made the field impossible to retry');
 }
 console.log('PASS — prepared return refuses context loss/incomplete targets and retries without duplicating the frame loop');
+
+{
+ let releaseCount=0,bodyReleases=0,preloads=0,drawCount=0,broken=false;
+ const shader={id:'restored-field',fragment:fragment('restored-field'),
+   releaseContext({gl}){assert.equal(gl,f.gl);releaseCount++},
+   afterDraw(){drawCount++;if(broken)throw Error('source restoration unavailable')}
+ };
+ const f=fixture({fieldShader:shader,points:true});
+ f.bodies.b.shader.preload=()=>preloads++;
+ f.bodies.b.shader.body.release=({gl})=>{assert.equal(gl,f.gl);bodyReleases++};
+ f.frame(0);f.api.selectPoint('point');
+ const gpuInk=f.frames.at(-1).find(c=>c.type==='draw'&&c.name.includes('uScene'));
+ let prevented=false;
+ f.gl.lost=true;f.canvas.webglcontextlost({preventDefault(){prevented=true}});
+ assert(prevented);assert.equal(releaseCount,1);assert.equal(bodyReleases,1);
+ assert.equal(f.canvas.dataset.fieldRenderer,'context-lost');
+ assert.equal(f.canvas.dataset.refractedLabels,'0');
+ assert.equal(f.api.prepareFrame(),false);
+ assert.equal(f.frame(16).length,0);
+ f.clickBody(0,false);
+ assert.equal(f.events.at(-1).type,'sss:enter-body','the native body label lost its navigation target');
+ f.gl.lost=false;f.canvas.webglcontextrestored();broken=true;
+ f.frame(32);
+ assert.equal(f.canvas.dataset.fieldRenderer,'context-lost','partial source frame became visible');
+ assert.equal(f.canvas.dataset.frameError,'source restoration unavailable');
+ assert.equal(f.canvas.dataset.refractedLabels,'0','failed repaint hid the native label fallback');
+ const count=drawCount;f.frame(48);
+ assert.equal(drawCount,count,'failed automatic recovery retried every animation frame');
+ broken=false;assert.equal(f.api.prepareFrame(),true,'explicit retry could not restore the same encounter');
+ assert.equal(f.api.selectedPointId,'point');
+ assert.equal(f.canvas.dataset.fieldRenderer,'webgl2');
+ assert.equal(preloads,1,'a context reset reacquired the same hosted source');
+ const restored=f.frame(64).find(c=>c.type==='draw'&&c.name.includes('uScene'));
+ assert(restored&&restored.vao!==gpuInk.vao,'restored optics reused an invalid vertex array');
+}
+console.log('PASS — active loss preserves encounter; failed owner repaint stays hidden until successful same-field retry');

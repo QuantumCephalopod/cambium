@@ -543,6 +543,7 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   tickHud();if(CAM.on&&performance.now()-(CAM.cardAt||0)>1000){CAM.cardAt=performance.now();camCard()}
 }
 shader.afterDraw=afterDraw;
+shader.releaseContext=({gl})=>{if(LAYER?.gl===gl)LAYER=null};
 shader.snapshot=temporalField;
 shader.composite=()=>INK.canvas?[INK.canvas]:[];
 shader.focus=camFocus;

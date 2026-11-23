@@ -48,7 +48,6 @@ function orthographic(half,aspect,near,far){const nf=1/(near-far);return new Flo
 function perspective(fovy,aspect,near,far){const f=1/Math.tan(fovy/2),nf=1/(near-far);return new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)*nf,-1,0,0,2*far*near*nf,0])}
 function lookAt(eye,center,up){const z=nrm(sub(eye,center)),x=nrm(cross(up,z)),y=cross(z,x);return new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-x.reduce((s,v,i)=>s+v*eye[i],0),-y.reduce((s,v,i)=>s+v*eye[i],0),-z.reduce((s,v,i)=>s+v*eye[i],0),1])}
 function model(q,scale,center){const[w,x,y,z]=q,c=qRot(q,center),o=[-c[0]*scale,-c[1]*scale,-c[2]*scale];return new Float32Array([(1-2*y*y-2*z*z)*scale,(2*x*y+2*w*z)*scale,(2*x*z-2*w*y)*scale,0,(2*x*y-2*w*z)*scale,(1-2*x*x-2*z*z)*scale,(2*y*z+2*w*x)*scale,0,(2*x*z+2*w*y)*scale,(2*y*z-2*w*x)*scale,(1-2*x*x-2*y*y)*scale,0,o[0],o[1],o[2],1])}
-function compile(gl,type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s}
 const VERTEX=`#version 300 es
 precision highp float;in vec3 aPos;in vec3 aNormal;in float aRegion;uniform mat4 uProj,uView,uModel;out vec3 vN;out vec3 vW;out float vRegion;void main(){vec4 w=uModel*vec4(aPos,1.);vW=w.xyz;vN=mat3(uModel)*aNormal;vRegion=aRegion;gl_Position=uProj*uView*w;}`;
 const POINT_VERTEX=`#version 300 es
@@ -93,8 +92,20 @@ const ENV_VERTEX=`#version 300 es
 precision highp float;uniform vec4 uQuat;uniform vec3 uCenter;uniform float uSpan;uniform float uEnvRegion;out vec3 vN;out vec3 vW;out float vRegion;
 vec3 qrot(vec4 q,vec3 v){return v+2.0*cross(q.yzw,cross(q.yzw,v)+q.x*v);}
 void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);vW=qrot(uQuat,uCenter+vec3(p*.72,-.35)*uSpan);vN=qrot(uQuat,normalize(vec3(-p.x*.18,-p.y*.18,1.)));vRegion=uEnvRegion;}`;
-function program(gl,fragment,vertex=VERTEX){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vertex));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fragment));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
-function pointProgram(gl){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,POINT_VERTEX));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,POINT_FRAGMENT));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
+function program(gl,fragment,vertex=VERTEX){
+  const p=gl.createProgram(),stages=[];
+  try{
+    for(const [kind,source] of [[gl.VERTEX_SHADER,vertex],[gl.FRAGMENT_SHADER,fragment]]){
+      const stage=gl.createShader(kind);stages.push(stage);gl.shaderSource(stage,source);gl.compileShader(stage);
+      if(!gl.getShaderParameter(stage,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(stage)||'WebGL shader unavailable');
+      gl.attachShader(p,stage);
+    }
+    gl.linkProgram(p);
+    if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p)||'WebGL program unavailable');
+    return p;
+  }catch(error){gl.deleteProgram(p);throw error}
+  finally{for(const stage of stages)gl.deleteShader(stage)}
+}
 function geometry(cells){const data=[];function tri(a,b,c,region){const no=nrm(cross(sub(b,a),sub(c,a)));for(const v of [a,b,c])data.push(...v,...no,region)}for(const cell of cells){const r=geneIndex[cell.path[0]]??0;for(const f of faceIx)tri(cell.tet[f[0]],cell.tet[f[1]],cell.tet[f[2]],r)}return new Float32Array(data)}
 /* Geometry is always drawn at full realized resolution: a Sierpinski body is cheap.
  * LOD governs content only (pools), never the shape of a body. */
@@ -158,7 +169,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   let GL=null,PG=null;
   const placeholder=shader.bodyPlaceholder;
   let PLAIN=null;
-  if(gl&&placeholder){const p=program(gl,placeholder.fragment);PLAIN={p,U:Object.fromEntries(['proj','view','model','time','focus','resolution','pal'].map((k,i)=>[k,gl.getUniformLocation(p,['uProj','uView','uModel','uTime','uFocus','uResolution','uPalette[0]'][i])]))}}
+  let recovery=null,retirementError=null;
   /* DESCENT — the walked path. The witness is inside exactly one container; ascent
    * pops back through the container it came through. A field bound to the global
    * scope mirrors its container into World View so the navigator reads the same walk. */
@@ -169,7 +180,8 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return walk.at(-1)||'';
   }
   let shownFor=null,cells=[],visible=[],cam=null;
-  if(gl){
+  function buildFieldResources(){
+    if(placeholder){const p=program(gl,placeholder.fragment);PLAIN={p,U:Object.fromEntries(['proj','view','model','time','focus','resolution','pal'].map((k,i)=>[k,gl.getUniformLocation(p,['uProj','uView','uModel','uTime','uFocus','uResolution','uPalette[0]'][i])]))}}
     const p=program(gl,shader.fragment),vao=gl.createVertexArray(),buf=gl.createBuffer();
     gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,buf);
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(0),gl.DYNAMIC_DRAW);
@@ -177,13 +189,14 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(p,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride,off)}
     GL={p,vao,buf,count:0,U:{proj:gl.getUniformLocation(p,'uProj'),view:gl.getUniformLocation(p,'uView'),model:gl.getUniformLocation(p,'uModel'),time:gl.getUniformLocation(p,'uTime'),focus:gl.getUniformLocation(p,'uFocus'),resolution:gl.getUniformLocation(p,'uResolution')},pal:gl.getUniformLocation(p,'uPalette[0]')};
     if(pointRecords.length||typeof shader.snapshot==='function'){
-      const pp=pointProgram(gl),pvao=gl.createVertexArray(),pbuf=gl.createBuffer();
+      const pp=program(gl,POINT_FRAGMENT,POINT_VERTEX),pvao=gl.createVertexArray(),pbuf=gl.createBuffer();
       gl.bindVertexArray(pvao);gl.bindBuffer(gl.ARRAY_BUFFER,pbuf);
       const pstride=6*4;
       for(const [name,size,off] of [['aPos',3,0],['aRegion',1,12],['aKind',1,16],['aHot',1,20]]){const loc=gl.getAttribLocation(pp,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,pstride,off)}
       PG={p:pp,vao:pvao,buf:pbuf,count:0,U:{proj:gl.getUniformLocation(pp,'uProj'),view:gl.getUniformLocation(pp,'uView'),model:gl.getUniformLocation(pp,'uModel'),pointScale:gl.getUniformLocation(pp,'uPointScale')},pal:gl.getUniformLocation(pp,'uPalette[0]')};
     }
   }
+  if(gl)buildFieldResources();
   const ctx=!gl?canvas.getContext('2d'):null;
   canvas.dataset.fieldRenderer=gl?'webgl2':ctx?'canvas2d':'unavailable';
   /* HOST ENVIRONMENT AT THE LOCUS — inside a site the host's geometry is not seen.
@@ -201,7 +214,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
       try{
         const hp=program(gl,e.shader.fragment,ENV_VERTEX);
         HOST={key:e.hostId+'|'+e.shader.id,p:hp,vao:gl.createVertexArray(),colors:paletteSet(e.palette),U:{quat:gl.getUniformLocation(hp,'uQuat'),center:gl.getUniformLocation(hp,'uCenter'),span:gl.getUniformLocation(hp,'uSpan'),region:gl.getUniformLocation(hp,'uEnvRegion'),time:gl.getUniformLocation(hp,'uTime'),focus:gl.getUniformLocation(hp,'uFocus'),resolution:gl.getUniformLocation(hp,'uResolution'),pal:gl.getUniformLocation(hp,'uPalette[0]')}};
-      }catch(err){console.warn('host environment unavailable for '+id,err);HOST={key:e.hostId+'|'+e.shader.id,p:null}}
+      }catch(err){if(recovery)throw err;console.warn('host environment unavailable for '+id,err);HOST={key:e.hostId+'|'+e.shader.id,p:null}}
     }
     if(!HOST.p)return null;
     const k=e.place.k,f=currentFrame();
@@ -210,7 +223,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   /* FLOATING BODIES — organisms whose host is this field float in their mount cell,
    * drawn with their own identity shader at full geometry, entered by selection. */
   const BODIES=new Map();
-  function releaseBody(B){if(gl){B.release?.({gl});if(B.p)gl.deleteProgram(B.p);if(B.vao)gl.deleteVertexArray(B.vao);if(B.plainVAO)gl.deleteVertexArray(B.plainVAO);if(B.buf)gl.deleteBuffer(B.buf)}}
+  function releaseBody(B){if(gl&&!B.lost){B.release?.({gl});if(B.p)gl.deleteProgram(B.p);if(B.vao)gl.deleteVertexArray(B.vao);if(B.plainVAO)gl.deleteVertexArray(B.plainVAO);if(B.buf)gl.deleteBuffer(B.buf)}}
   function floatingBodies(){
     for(const B of BODIES.values())B.active=false;
     if((!gl&&!ctx)||typeof bodies!=='function')return [];
@@ -218,10 +231,11 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     for(const b of list){
       if(!(b?.shader?.body?.fragment||b?.shader?.fragment)||!b.root)continue;
       let B=BODIES.get(b.id);
-      if(!B||B.key!==b.shader.id+'|'+b.path){
+      const key=b.shader.id+'|'+b.path,remount=B?.key!==key;
+      if(remount||B.lost){
         if(B)releaseBody(B);
         try{
-          try{b.shader.preload?.()}catch(err){canvas.dataset.previewError=String(err?.message||err)}
+          if(remount){try{b.shader.preload?.()}catch(err){canvas.dataset.previewError=String(err?.message||err)}}
           const place=placement(structure,b.path),material=b.shader.body||b.shader;
           const ownCells=typeof material.cells==='function'?material.cells({projection:b.projection,root:b.root}):null;
           if(ownCells&&(!Array.isArray(ownCells)||ownCells.some(c=>!Array.isArray(c.tet)||c.tet.length!==4||c.tet.some(v=>!Array.isArray(v)||v.length!==3||v.some(x=>!Number.isFinite(x)||Math.abs(x)>2)))))throw new Error('invalid site-owned coarse cells');
@@ -229,7 +243,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
           const bounds=[[Infinity,-Infinity],[Infinity,-Infinity],[Infinity,-Infinity]];
           for(let i=0;i<g.length;i+=7)for(let j=0;j<3;j++){bounds[j][0]=Math.min(bounds[j][0],g[i+j]);bounds[j][1]=Math.max(bounds[j][1],g[i+j])}
           const corners=Array.from({length:8},(_,i)=>bounds.map((b,j)=>Number.isFinite(b[(i>>j)&1])?b[(i>>j)&1]:0));
-          B={key:b.shader.id+'|'+b.path,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],corners,reveal:typeof material.draw==='function'||typeof b.shader.preview==='function',count:g.length/7,preview:b.shader.preview,draw:material.draw,release:material.release,projection:b.projection,state:material.state||{},colors:paletteSet(b.palette),mesh:gl?null:g,fallbackAlpha:Number(material.fallbackAlpha??.28),ready:true};
+          B={key,id:b.id,place,title:b.title||b.id,drift:driftPath(place,b.id),pos:[...place.center],corners,reveal:typeof material.draw==='function'||typeof b.shader.preview==='function',count:g.length/7,preview:b.shader.preview,draw:material.draw,release:material.release,projection:b.projection,state:material.state||{},colors:paletteSet(b.palette),mesh:gl?null:g,fallbackAlpha:Number(material.fallbackAlpha??.28),ready:true};
           if(gl){
             const bp=program(gl,material.fragment),bvao=gl.createVertexArray(),bbuf=gl.createBuffer();
             gl.bindVertexArray(bvao);gl.bindBuffer(gl.ARRAY_BUFFER,bbuf);gl.bufferData(gl.ARRAY_BUFFER,g,gl.STATIC_DRAW);
@@ -237,7 +251,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
             Object.assign(B,{p:bp,vao:bvao,buf:bbuf,U:{proj:gl.getUniformLocation(bp,'uProj'),view:gl.getUniformLocation(bp,'uView'),model:gl.getUniformLocation(bp,'uModel'),time:gl.getUniformLocation(bp,'uTime'),focus:gl.getUniformLocation(bp,'uFocus'),resolution:gl.getUniformLocation(bp,'uResolution'),pal:gl.getUniformLocation(bp,'uPalette[0]')}});
             if(PLAIN){B.plainVAO=gl.createVertexArray();gl.bindVertexArray(B.plainVAO);for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(PLAIN.p,name);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,28,off)}}
           }
-        }catch(err){console.warn('floating body unavailable: '+b.id,err);B={key:b.shader.id+'|'+b.path,id:b.id,p:null}}
+        }catch(err){if(recovery)throw err;console.warn('floating body unavailable: '+b.id,err);B={key,id:b.id,p:null}}
         BODIES.set(b.id,B);
       }
       if(B.ready){B.active=true;B.title=b.title||b.id;out.push(B)}
@@ -249,14 +263,15 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   const labelObserver=typeof ResizeObserver==='function'?new ResizeObserver(entries=>{for(const e of entries){const b=e.borderBoxSize?.[0];labelSizes.set(e.target,{w:b?.inlineSize??e.contentRect.width,h:b?.blockSize??e.contentRect.height})}}):null;
   addEventListener('pagehide',()=>labelObserver?.disconnect());
   function bodyLabel(B){
-    let n=bodyLabels.get(B.id);
+    const bodyId=B.id;
+    let n=bodyLabels.get(bodyId);
     if(!n){n=document.createElement('button');n.type='button';n.className='field-label field-body-label';n.innerHTML='<b></b>';n.querySelector('b').textContent=B.title;
-      n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const p=e.detail===0?projectBody(B.id):null,r=p&&canvas.getBoundingClientRect();enterBody(B.id,p?{x:r.left+p.x,y:r.top+p.y}:{x:e.clientX,y:e.clientY})});
-      n.addEventListener('pointerenter',()=>{hoverLabelId=B.id});
-      n.addEventListener('pointerleave',()=>{if(hoverLabelId===B.id)hoverLabelId=''});
-      n.addEventListener('focus',()=>{hoverLabelId=B.id});
-      n.addEventListener('blur',()=>{if(hoverLabelId===B.id)hoverLabelId=''});
-      (labelHost||element).append(n);bodyLabels.set(B.id,n);labelObserver?.observe(n)}
+      n.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const p=e.detail===0?projectBody(bodyId):null,r=p&&canvas.getBoundingClientRect();enterBody(bodyId,p?{x:r.left+p.x,y:r.top+p.y}:{x:e.clientX,y:e.clientY})});
+      n.addEventListener('pointerenter',()=>{hoverLabelId=bodyId});
+      n.addEventListener('pointerleave',()=>{if(hoverLabelId===bodyId)hoverLabelId=''});
+      n.addEventListener('focus',()=>{hoverLabelId=bodyId});
+      n.addEventListener('blur',()=>{if(hoverLabelId===bodyId)hoverLabelId=''});
+      (labelHost||element).append(n);bodyLabels.set(bodyId,n);labelObserver?.observe(n)}
     const ink=n.querySelector('b');if(ink.textContent!==B.title)ink.textContent=B.title;
     return n;
   }
@@ -640,7 +655,7 @@ void main(){
     if(!COMP){const vs=`#version 300 es
 void main(){vec2 p=gl_VertexID==0?vec2(-1.,-1.):(gl_VertexID==1?vec2(3.,-1.):vec2(-1.,3.));gl_Position=vec4(p,0.,1.);}`,fs=`#version 300 es
 precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void main(){o=texture(uSrc,gl_FragCoord.xy/uRes);}`;
-      const p=gl.createProgram();for(const [t,src] of [[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);gl.shaderSource(sh,src);gl.compileShader(sh);gl.attachShader(p,sh)}gl.linkProgram(p);
+      const p=program(gl,fs,vs);
       COMP={p,vao:gl.createVertexArray(),src:gl.getUniformLocation(p,'uSrc'),res:gl.getUniformLocation(p,'uRes')}}
     const unit0=gl.getParameter(gl.ACTIVE_TEXTURE);gl.activeTexture(gl.TEXTURE0);const tex0=gl.getParameter(gl.TEXTURE_BINDING_2D);
     gl.viewport(0,0,w,h);gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
@@ -704,7 +719,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         }catch(err){canvas.dataset.previewError=String(err?.message||err);if(PLAIN)drawBodyGL(B,proj,view,t,base,ms,r,d,w,h,true)}
       }
       return true;
-    }catch(err){canvas.dataset.previewError=String(err?.message||err);return false}
+    }catch(err){disposePreview();canvas.dataset.previewError=String(err?.message||err);return false}
     finally{gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.bindRenderbuffer(gl.RENDERBUFFER,rb);gl.bindTexture(gl.TEXTURE_2D,texture);gl.viewport(0,0,w,h)}
   }
   function disposeForeground(){if(!FOREGROUND)return;gl.deleteFramebuffer(FOREGROUND.fb);gl.deleteRenderbuffer(FOREGROUND.depth);gl.deleteTexture(FOREGROUND.tex);FOREGROUND=null}
@@ -731,7 +746,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
         const B=fb.find(b=>b.id===bodyId);if(!B)return false;g.targetBody=bodyId;drawBodyGL(B,proj,view,t,base,ms,r,d,w,h);return true;
       }});
       if(Array.isArray(result)){gl.disable(gl.SCISSOR_TEST);drawComposite(result.filter(c=>c?.width>0&&c?.height>0),w,h);ready=true}else ready=result===true;
-    }catch(error){canvas.dataset.foregroundError=String(error?.message||error)}
+    }catch(error){disposeForeground();canvas.dataset.foregroundError=String(error?.message||error)}
     finally{gl.blendFunc=blend;gl.bindFramebuffer=bind;gl.bindFramebuffer(gl.FRAMEBUFFER,target);gl.bindRenderbuffer(gl.RENDERBUFFER,rb);gl.activeTexture(active);gl.bindTexture(gl.TEXTURE_2D,texture);gl.viewport(0,0,w,h);gl.colorMask(true,true,true,true);gl.depthMask(false);gl.disable(gl.SCISSOR_TEST)}
     return ready;
   }
@@ -853,9 +868,10 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     if(P.U.time)gl.uniform1f(P.U.time,ms*.001);if(P.U.focus)gl.uniform1f(P.U.focus,-1);if(P.U.resolution)gl.uniform2f(P.U.resolution,w,h);if(P.U.pal)gl.uniform3fv(P.U.pal,new Float32Array(B.colors.flat()));
     gl.bindVertexArray(plain?B.plainVAO:B.vao);gl.drawArrays(gl.TRIANGLES,0,B.count);
   }
-  function draw(ms,prepareOnly=false){
+  function paintFrame(ms){
     viewCache=null;
-    if(element.hidden){trace?.clear();restDone=false;resetLabelInk();disposePreview();disposeForeground();disposeScene();if(!prepareOnly)requestAnimationFrame(draw);return false}
+    if(element.hidden){trace?.clear();restDone=false;resetLabelInk();disposePreview();disposeForeground();disposeScene();return false}
+    if(gl?.isContextLost?.())return false;
     if(!restDone){restDone=true;if(Array.isArray(VIEW?.rest)&&VIEW.rest.length===4)W.easeTo?.(VIEW.rest);else W.restoreHome?.()}
     followStep(ms);refreshProjection(ms);refreshVisible();const {r,d,w,h}=resize(),t=target(),cur=container(),focus=cur?(geneIndex[cur[0]]??-1):-1,base=(viewBox(r).width<560?1.42:1.75);
     const proj=fieldProjectionMatrix(r),view=lookAt([0,0,3.2],[0,0,0],[0,1,0]),mdl=model(W.orientation,base*t.scale,t.center);
@@ -911,22 +927,78 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
       if(typeof shader.afterDraw==='function'){try{shader.afterDraw({gl:null,context2D:ctx,canvas,proj,view,model:mdl,ms,width:w,height:h,dpr:d,frame:{center:[...t.center],scale:t.scale},following:Boolean(follow),container:cur,orientation:W.orientation,rect:r,viewRect:viewBox(r)})}catch(err){canvas.dataset.layerError=String(err?.message||err)}}
       drawPoints2D(r);ctx.restore();
     }
-    if(!prepareOnly)requestAnimationFrame(draw);
     return true;
+  }
+  function draw(ms){
+    if(!recovery||element.hidden)paintFrame(ms);
+    else if(recovery==='pending')prepareFrame(ms);
+    requestAnimationFrame(draw);
+  }
+  function exposeNativeInk(){
+    canvasState('glass','0');canvasState('composite','0');resetLabelInk();
+  }
+  function loseContext(event){
+    event.preventDefault();
+    recovery='lost';retirementError=null;
+    canvasState('fieldRenderer','context-lost');
+    exposeNativeInk();trace?.clear();
+
+    // The browser invalidates all GL objects, even though it restores the
+    // same context object. Owners drop caches for this context only.
+    for(const B of BODIES.values()){
+      if(B.lost)continue;
+      try{B.release?.({gl})}catch(error){retirementError??=error}
+      Object.assign(B,{p:null,vao:null,plainVAO:null,buf:null,U:null,lost:true});
+    }
+    try{shader.releaseContext?.({gl})}catch(error){retirementError??=error}
+    labelInk?.dispose();labelInk=null;compTex.clear();
+    GL=PG=PLAIN=HOST=GLASS_PG=COMP=SCENE=PREVIEW=FOREGROUND=null;
+    GLASS_OFF=false;shapeDirty=true;
+    if(retirementError)canvas.dataset.frameError=String(retirementError.message||retirementError);
+  }
+  if(gl){
+    canvas.addEventListener('webglcontextlost',loseContext);
+    canvas.addEventListener('webglcontextrestored',()=>{if(recovery==='lost')recovery='pending'});
   }
   // During a covered handoff, paint the candidate before its previous field
   // is retired. A lost context or newly failed target leaves the old field in
-  // place; a later retry may build the same optical attachments again.
-  function prepareFrame(){
-    if(element.hidden||(!gl&&!ctx)||gl?.isContextLost?.())return false;
+  // place. A restored field becomes visible only after its first full paint.
+  function prepareFrame(ms=performance.now()){
+    if(element.hidden||(!gl&&!ctx)||recovery==='lost'||gl?.isContextLost?.())return false;
     const wasOff=GLASS_OFF,ownBind=gl&&Object.prototype.hasOwnProperty.call(gl,'bindFramebuffer'),bind=gl?.bindFramebuffer;
+    const recovering=Boolean(recovery);
     try{
-      const painted=draw(performance.now(),true);
-      if(!wasOff&&GLASS_OFF){GLASS_OFF=false;return false}
+      if(recovering){
+        recovery='refused';
+        if(retirementError)throw retirementError;
+        for(const key of ['bodyError','layerError','previewError','foregroundError'])delete canvas.dataset[key];
+        if(!GL){
+          try{buildFieldResources()}
+          catch(error){
+            for(const resources of [PLAIN,GL,PG]){
+              if(!resources)continue;
+              if(resources.buf)gl.deleteBuffer(resources.buf);
+              if(resources.vao)gl.deleteVertexArray(resources.vao);
+              gl.deleteProgram(resources.p);
+            }
+            PLAIN=GL=PG=null;
+            throw error;
+          }
+        }
+      }
+      const painted=paintFrame(ms);
+      if(!wasOff&&GLASS_OFF)throw new Error('glass target unavailable');
+      if(recovering){
+        const error=canvas.dataset.bodyError||canvas.dataset.layerError||canvas.dataset.previewError||canvas.dataset.foregroundError;
+        if(error)throw new Error(error);
+        if(!painted||gl.isContextLost())throw new Error('restored frame unavailable');
+        recovery=null;canvasState('fieldRenderer','webgl2');
+      }
       delete canvas.dataset.frameError;return painted;
     }catch(error){
       if(gl){if(ownBind)gl.bindFramebuffer=bind;else delete gl.bindFramebuffer}
       if(!wasOff)GLASS_OFF=false;
+      if(recovering)exposeNativeInk();
       canvas.dataset.frameError=String(error?.message||error);return false;
     }
   }

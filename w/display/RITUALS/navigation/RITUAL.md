@@ -153,6 +153,8 @@ In a single encounter the global navigator is a HUD, not a plate:
 - legal links retain their declared Display-owned slot when the navigator moves. Measured wrapping/localized height reserves viewport space; links remain available outside the closed pocket and publish occupancy, while their wording and destinations remain site-owned;
 - split and grid encounters keep the seam aperture (plate, clip, bloom), because there the navigator lives on the shared seam between two fields.
 
+In portrait, the common upper field becomes the right-edge liquid. The upright brand leaves the existing optical inset inside that field. Feedback occupies the free run between the measured brand and language controls, and lends its actual extent to the same recursive surface refinement. Removing feedback returns to the original empty extent. Feedback and legal-link lettering use the ordinary shared type rank whenever it fits. When a word would break and the next smaller half-octave rank can hold it, that rank fits the text inside its existing field. Link targets, wording, and scroll continuation keep their owners.
+
 ## Glass and the goo lens
 
 - every occupied HUD surface (`data-display-occupancy`) is glass: the field behind it is refracted inside its rounded rectangle by one post pass in the field renderer; `data-display-glass="off"` opts a surface out, `"on"` opts one in; under `prefers-reduced-transparency` there is no glass;
@@ -221,3 +223,5 @@ Usability return2026-10-28: the navigator map preserves its square projection. M
 
 
 Layout return2026-10-29: The compass consumes the current declared compass field without substituting its former rectangle. Its square map, actual chrome budget, persistent help and fixed extent remain invariant while the declaration grows.
+
+Inside the exchanged portrait pocket, two successive halvings divide the instrument width into four columns. The vertical rail uses one column up to its ordinary breadth. When that column constrains the rail, the enclosing pocket reduces the context inset and row gap by the same breadth shortfall. The map takes the square that fits alongside the rail and actual chrome. Back, legal, help and the trigger keep their addressed relations, and ordinary spacing returns when the full rail fits. Browser measurements witness the fit and contact.

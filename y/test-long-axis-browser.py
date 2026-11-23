@@ -9,6 +9,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import argparse
 import json
+import os
 import threading
 
 from playwright.sync_api import sync_playwright
@@ -67,9 +68,59 @@ def examine(page, identity, width, height):
         safe:SSSDisplaySafeArea.snapshot().insets};
     }''',identity)
 
+def witness_membrane_ink(page):
+    evidence = page.evaluate('''() => {
+      function words(root) {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), results = [];
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          for (const match of node.data.matchAll(/\\S+/g)) {
+            const range = document.createRange();
+            range.setStart(node, match.index);
+            range.setEnd(node, match.index + match[0].length);
+            const lines = new Set(Array.from(range.getClientRects(), rect => Math.round(rect.top)));
+            results.push({word: match[0], lines: lines.size});
+          }
+        }
+        return results;
+      }
+      const feedback = document.getElementById('site-state');
+      const before = SSSDisplayMembraneGrid.snapshot();
+      feedback.textContent = 'ENCOUNTER UNAVAILABLE · RETRY THE ENCOUNTER';
+      SSSDisplaySafeArea.refresh();
+      const {top, fit} = SSSDisplayMembraneGrid.snapshot();
+      const inset = SSSDisplayGlass.readInset();
+      const r = feedback.getBoundingClientRect();
+      const brand = document.getElementById('root-home').getBoundingClientRect();
+      const languages = document.querySelector('#display-header .lang').getBoundingClientRect();
+      const result = {
+        carrier: [innerWidth, innerHeight], orientation: before.orientation,
+        fit: fit.top, feedback: words(feedback),
+        feedback_width: r.width, feedback_height: r.height,
+        feedback_scroll: [feedback.scrollWidth, feedback.scrollHeight],
+        ink_inside: before.orientation === 'portrait'
+          ? r.left >= top.left + inset - .5 && r.top >= brand.bottom && r.bottom <= languages.top
+          : r.bottom + inset <= top.bottom + .5,
+        legal: [...document.querySelectorAll('#legal-links a')].flatMap(words)
+      };
+      feedback.textContent = '';
+      SSSDisplaySafeArea.refresh();
+      result.restored = SSSDisplayMembraneGrid.snapshot().outer.fields.top.cells.join(',') === before.outer.fields.top.cells.join(',');
+      return result;
+    }''')
+    assert evidence['fit'] and evidence['ink_inside'] and evidence['restored'], evidence
+    assert evidence['feedback_width'] > 0 and evidence['feedback_height'] > 0, evidence
+    assert evidence['feedback_scroll'][0] <= evidence['feedback_width'] + 1, evidence
+    assert evidence['feedback_scroll'][1] <= evidence['feedback_height'] + 1, evidence
+    assert evidence['feedback'] and evidence['legal'], evidence
+    assert all(word['lines'] == 1 for word in evidence['feedback'] + evidence['legal']), evidence
+    return evidence
+
+ink_cases = []
 try:
     with sync_playwright() as pw:
-        browser=pw.chromium.launch(headless=True,args=['--no-sandbox','--disable-webgl'])
+        executable={'executable_path':os.environ['CHROMIUM_EXECUTABLE']} if os.environ.get('CHROMIUM_EXECUTABLE') else {}
+        browser=pw.chromium.launch(headless=True,args=['--no-sandbox','--disable-webgl'],**executable)
         for width,height in [(1280,800),(390,844)]:
             portrait=height>width
             for site,address in sites:
@@ -127,10 +178,10 @@ try:
         # The same encounter and field addresses survive live format changes,
         # including the deterministic square tie and both sides of the boundary.
         page=browser.new_page(viewport={'width':800,'height':600},reduced_motion='reduce')
-        page.goto(base+'#main:overview',wait_until='domcontentloaded')
+        page.goto(base+'?lang=de#main:overview',wait_until='domcontentloaded')
         before=examine(page,'organism:philosophy',800,600)
         original_state=page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:philosophy").state)')
-        for width,height in [(600,800),(600,600),(599,600),(600,599),(800,600)]:
+        for width,height in [(320,568),(390,844),(600,800),(600,600),(599,600),(600,599),(667,375),(800,600)]:
             page.set_viewport_size({'width':width,'height':height})
             page.wait_for_function('([w,h]) => SSSDisplayMembraneGrid.snapshot().viewport.width===w && SSSDisplayMembraneGrid.snapshot().viewport.height===h',arg=[width,height])
             after=examine(page,'organism:philosophy',width,height)
@@ -138,6 +189,7 @@ try:
             assert page.evaluate('JSON.stringify(SSSDisplayRuntime.ui.get("organism:philosophy").state)')==original_state
             assert [(f['name'],f['cells']) for f in after['fields']]==[(f['name'],f['cells']) for f in before['fields']],(before,after)
             for field in after['fields']:expect_box(field['actual'],field['logical'],width,height,height>width,('resize',field['name']))
+            ink_cases.append(witness_membrane_ink(page))
         page.close()
         # An owner that actually declares upright spans must also survive the
         # live turn without a reload, identity change, or mutation of its grid.
@@ -160,5 +212,5 @@ try:
         page.close();browser.close()
 finally:
     server.shutdown();server.server_close()
-    (args.out/'long-axis.json').write_text(json.dumps({'cases':cases,'scope':__doc__},indent=2)+'\n')
-print(json.dumps({'status':'PASS','cases':len(cases),'live_resize_and_square_tie':True,'owner_variant_resize':True}))
+    (args.out/'long-axis.json').write_text(json.dumps({'cases':cases,'ink_on_resize':ink_cases,'scope':__doc__},indent=2)+'\n')
+print(json.dumps({'status':'PASS','cases':len(cases),'ink_on_resize':len(ink_cases),'live_resize_and_square_tie':True,'owner_variant_resize':True}))
