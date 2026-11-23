@@ -1,0 +1,613 @@
+{
+  "kind": "WITNESS",
+  "event_id": "display-nutrients-witness-20261123",
+  "organism": "display",
+  "base_revision": "84476e8ba50c48e9059ed45a6a315e78218b5d9b",
+  "implementation_revision": "c0ae5c1ba7c717428a3ab1ebf75661d64301d3e1",
+  "artifact_index_sha256": "e71075c395eb884fc68a3f760b2e31cea8f064b3c7e2ec7e6972eb50763e8f7d",
+  "source_sha256": {
+    "w/display/RITUALS/navigation/RITUAL.md": "166a5fca65ddbc3889db1d782ca98d535034c91fd6f73cc041cace568a7367a9",
+    "w/display/RITUALS/organism/RITUAL.md": "ca7dd26063d7274f59daca68851b95b9b3df5bdf13c7aacf8b661d5d76bdc9ed",
+    "w/display/w/wx/tetra-text.js": "a11dc1bf5804603f7b84be5f4870037312b195a38cb167723eed0210de8cf7c9",
+    "w/display/w/wy/locus-shader.gles-capture.cjs": "c75a7de53c0a0929d176f319358fdf1452853b74fea835359703989a84cd0fda",
+    "w/display/w/wy/locus-shader.gles.test.py": "44e9bee28878550a2f12067ca021bdfbe50f1227f33ae4c9edcba0f02cd09ce1",
+    "w/display/w/wy/locus-shader.js": "5d53e8f3f244c05ffd529c4132c7d45f5c73531b1cf5a119a84d2fadf8820d6f",
+    "w/display/w/wy/locus-shader.test.cjs": "7f38a30683a112518744cab2adfba5b25920c1acee8d5d255223adbea0efe07f",
+    "w/display/w/wz/interlocutors.css": "4d53c2510aacab824a6b28751bf1a1451b8cb2b9c41147d25d0b9924dc2d5ea3",
+    "w/display/y/yw/papers/sierpinski.js": "619bb98c341ef7e72e28b6338850f6e6cb60b19395cce640885c978794c870ac",
+    "w/display/y/yx/schattenseiten/render.js": "184968f2297ef6f34622f6d079bde74735b491bcc7b74cefa035dcb9dfb060ab",
+    "w/display/y/yxz/impressum/w/render.js": "b8ef822fc7a399e6ded2d003846a11ceeaf5fa800e2e3e01d8edd985b9f70823",
+    "w/display/y/yy/crawlerbait/z/render.js": "c11b932e1d1da156796f3823ca9f7eb523d629e71e92d5823144447eabef3d5f",
+    "w/display/y/yz/datenschutz/w/render.js": "707e32dff89f72e1d1d172485745200899b0753d0342d3e67fe25e143a7f5ad0",
+    "w/display/z/zz/display-safe-area.css": "354372c5b4e631df8f9d1b008969d460f4e63f3e8e74c75b857d64aae92c54e4",
+    "w/display/z/zz/display-safe-area.js": "7f09c2360602d7a9106a65d96afcbd2939eee1d0b2d11afb87f4a365674422ed",
+    "w/display/z/zz/navigation-aperture.css": "7bf1bc18f1080e1b96514d071c7b1f7b375f496579f37e53c2db69c5590f2b6b",
+    "w/display/z/zz/navigation-aperture.js": "ea3fd48d487f0bbcb870eea32516e5a2d249b7edb89b95d150b549338a5fe773",
+    "y/test-display-optics-browser.py": "ff800c1b03024b0b4c5564d03cbb621b15379f72950b2eb6d327e1e14730128a",
+    "y/test-long-axis-browser.py": "4a8c70ed4393a31539bd5c9093bde539a02d7662ca2310db252d12b20b8efcfa",
+    "y/test-membrane-grid.py": "dd17311510f81f0c3ceb2702c3c7abf62641dcd4442e57c9cd9e8b2b3ed9f986"
+  },
+  "native": "The tree-addressed structural and owner witness, built address algebra, tetrahedral passage, and exact public artifact verification passed.",
+  "browser": {
+    "engine": "Chromium Headless 153, Canvas2D for layout and SwiftShader WebGL2 for context restoration",
+    "long_axis": {
+      "fresh_mounts": 12,
+      "live_resize_ink_cases": [
+        {
+          "carrier": [
+            320,
+            568
+          ],
+          "orientation": "portrait",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        },
+        {
+          "carrier": [
+            390,
+            844
+          ],
+          "orientation": "portrait",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        },
+        {
+          "carrier": [
+            600,
+            800
+          ],
+          "orientation": "portrait",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        },
+        {
+          "carrier": [
+            600,
+            600
+          ],
+          "orientation": "landscape",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        },
+        {
+          "carrier": [
+            599,
+            600
+          ],
+          "orientation": "portrait",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        },
+        {
+          "carrier": [
+            600,
+            599
+          ],
+          "orientation": "landscape",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        },
+        {
+          "carrier": [
+            667,
+            375
+          ],
+          "orientation": "landscape",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        },
+        {
+          "carrier": [
+            800,
+            600
+          ],
+          "orientation": "landscape",
+          "field_fit": true,
+          "empty_state_restored": true,
+          "whole_feedback_words": 6,
+          "whole_legal_words": 2
+        }
+      ]
+    },
+    "mobile_reading": {
+      "cases": 24,
+      "languages": [
+        "de",
+        "en"
+      ]
+    },
+    "membrane_grid": {
+      "cases": 24,
+      "small_portrait_actual_rails": true
+    },
+    "portrait_compass": [
+      {
+        "site": "philosophy",
+        "viewport": [
+          320,
+          568
+        ],
+        "map_rect": [
+          185.72,
+          437.19,
+          36,
+          36
+        ]
+      },
+      {
+        "site": "philosophy",
+        "viewport": [
+          390,
+          844
+        ],
+        "map_rect": [
+          235.13,
+          660.19,
+          88,
+          88
+        ]
+      },
+      {
+        "site": "schattenseiten",
+        "viewport": [
+          320,
+          568
+        ],
+        "map_rect": [
+          185.72,
+          437.19,
+          36,
+          36
+        ]
+      },
+      {
+        "site": "schattenseiten",
+        "viewport": [
+          390,
+          844
+        ],
+        "map_rect": [
+          235.13,
+          660.19,
+          88,
+          88
+        ]
+      },
+      {
+        "site": "crawlerbait",
+        "viewport": [
+          320,
+          568
+        ],
+        "map_rect": [
+          185.72,
+          437.19,
+          36,
+          36
+        ]
+      },
+      {
+        "site": "crawlerbait",
+        "viewport": [
+          390,
+          844
+        ],
+        "map_rect": [
+          235.13,
+          660.19,
+          88,
+          88
+        ]
+      },
+      {
+        "site": "papers",
+        "viewport": [
+          320,
+          568
+        ],
+        "map_rect": [
+          185.72,
+          437.19,
+          36,
+          36
+        ]
+      },
+      {
+        "site": "papers",
+        "viewport": [
+          390,
+          844
+        ],
+        "map_rect": [
+          235.13,
+          660.19,
+          88,
+          88
+        ]
+      },
+      {
+        "site": "datenschutz",
+        "viewport": [
+          320,
+          568
+        ],
+        "map_rect": [
+          185.72,
+          437.19,
+          36,
+          36
+        ]
+      },
+      {
+        "site": "datenschutz",
+        "viewport": [
+          390,
+          844
+        ],
+        "map_rect": [
+          235.13,
+          660.19,
+          88,
+          88
+        ]
+      },
+      {
+        "site": "impressum",
+        "viewport": [
+          320,
+          568
+        ],
+        "map_rect": [
+          185.72,
+          437.19,
+          36,
+          36
+        ]
+      },
+      {
+        "site": "impressum",
+        "viewport": [
+          390,
+          844
+        ],
+        "map_rect": [
+          235.13,
+          660.19,
+          88,
+          88
+        ]
+      }
+    ],
+    "optical_return": [
+      {
+        "viewport": [
+          1280,
+          800
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "observation": {
+          "same": 1,
+          "after": 2,
+          "shift": 7
+        },
+        "active": {
+          "Framebuffer": 3,
+          "Renderbuffer": 3,
+          "Texture": 4
+        },
+        "hidden": [
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          },
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          }
+        ],
+        "returned": [
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          },
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          }
+        ],
+        "lost_cached_context_refused_with_prior_preserved": true,
+        "cached_recovered": {
+          "prepared": true,
+          "sameField": true,
+          "sameContext": true,
+          "distinctPixels": 6,
+          "oldProgram": true,
+          "newProgram": true,
+          "glassValid": true,
+          "losses": 1,
+          "restores": 1,
+          "error": 0,
+          "sourceTextureArrayUploads": [
+            0,
+            0
+          ],
+          "fieldError": null,
+          "layerError": null
+        }
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "observation": {
+          "same": 1,
+          "after": 2,
+          "shift": 7
+        },
+        "active": {
+          "Framebuffer": 3,
+          "Renderbuffer": 3,
+          "Texture": 4
+        },
+        "hidden": [
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          },
+          {
+            "Framebuffer": 0,
+            "Renderbuffer": 0,
+            "Texture": 2
+          }
+        ],
+        "returned": [
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          },
+          {
+            "Framebuffer": 3,
+            "Renderbuffer": 3,
+            "Texture": 4
+          }
+        ],
+        "lost_cached_context_refused_with_prior_preserved": true,
+        "cached_recovered": {
+          "prepared": true,
+          "sameField": true,
+          "sameContext": true,
+          "distinctPixels": 7,
+          "oldProgram": true,
+          "newProgram": true,
+          "glassValid": true,
+          "losses": 1,
+          "restores": 1,
+          "error": 0,
+          "sourceTextureArrayUploads": [
+            0,
+            0
+          ],
+          "fieldError": null,
+          "layerError": null
+        }
+      },
+      {
+        "viewport": [
+          800,
+          520
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "entered": "datenschutz",
+        "ownerProgram": "authored-text",
+        "encounter_camera_history_preserved": true,
+        "cameraSampleDeltaDuringLoss": 0.00499308312453195,
+        "cameraSampleDeltaAfterRestoration": 0.009083283769115269,
+        "readingOffset": "120",
+        "active_recovered": {
+          "prepared": true,
+          "sameField": true,
+          "sameContext": true,
+          "distinctPixels": 19,
+          "oldProgram": true,
+          "newProgram": true,
+          "glassValid": true,
+          "losses": 1,
+          "restores": 1,
+          "error": 0,
+          "sourceTextureArrayUploads": [
+            0,
+            0
+          ],
+          "fieldError": null,
+          "layerError": null
+        },
+        "sourceScope": "artifact"
+      },
+      {
+        "viewport": [
+          800,
+          520
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "entered": "impressum",
+        "ownerProgram": "authored-text",
+        "encounter_camera_history_preserved": true,
+        "cameraSampleDeltaDuringLoss": 0.002588341948467132,
+        "cameraSampleDeltaAfterRestoration": 0.010047729364998759,
+        "readingOffset": "120",
+        "active_recovered": {
+          "prepared": true,
+          "sameField": true,
+          "sameContext": true,
+          "distinctPixels": 22,
+          "oldProgram": true,
+          "newProgram": true,
+          "glassValid": true,
+          "losses": 1,
+          "restores": 1,
+          "error": 0,
+          "sourceTextureArrayUploads": [
+            0,
+            0
+          ],
+          "fieldError": null,
+          "layerError": null
+        },
+        "sourceScope": "artifact"
+      },
+      {
+        "viewport": [
+          800,
+          520
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "entered": "papers",
+        "ownerProgram": "papers",
+        "encounter_camera_history_preserved": true,
+        "cameraSampleDeltaDuringLoss": 0.0,
+        "cameraSampleDeltaAfterRestoration": 0.0,
+        "readingOffset": null,
+        "active_recovered": {
+          "prepared": true,
+          "sameField": true,
+          "sameContext": true,
+          "distinctPixels": 24,
+          "oldProgram": true,
+          "newProgram": true,
+          "glassValid": true,
+          "losses": 1,
+          "restores": 1,
+          "error": 0,
+          "sourceTextureArrayUploads": [
+            0,
+            0
+          ],
+          "fieldError": null,
+          "layerError": null
+        },
+        "sourceScope": "artifact"
+      },
+      {
+        "viewport": [
+          800,
+          520
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "entered": "schattenseiten",
+        "ownerProgram": "sheet",
+        "encounter_camera_history_preserved": true,
+        "cameraSampleDeltaDuringLoss": 0.0,
+        "cameraSampleDeltaAfterRestoration": 0.0,
+        "readingOffset": null,
+        "active_recovered": {
+          "prepared": true,
+          "sameField": true,
+          "sameContext": true,
+          "distinctPixels": 23,
+          "oldProgram": true,
+          "newProgram": true,
+          "glassValid": true,
+          "losses": 1,
+          "restores": 1,
+          "error": 0,
+          "sourceTextureArrayUploads": [
+            0,
+            0
+          ],
+          "fieldError": null,
+          "layerError": null
+        },
+        "sourceScope": "artifact"
+      },
+      {
+        "viewport": [
+          800,
+          520
+        ],
+        "backend": "Chromium WebGL2 / SwiftShader",
+        "entered": "crawlerbait",
+        "ownerProgram": "traffic-ink",
+        "encounter_camera_history_preserved": true,
+        "cameraSampleDeltaDuringLoss": 0.0,
+        "cameraSampleDeltaAfterRestoration": 0.0,
+        "readingOffset": null,
+        "active_recovered": {
+          "prepared": true,
+          "sameField": true,
+          "sameContext": true,
+          "distinctPixels": 25,
+          "oldProgram": true,
+          "newProgram": true,
+          "glassValid": true,
+          "losses": 1,
+          "restores": 1,
+          "error": 0,
+          "sourceTextureArrayUploads": [
+            0,
+            0
+          ],
+          "fieldError": null,
+          "layerError": null
+        },
+        "sourceScope": {
+          "beings": 1,
+          "baits": 23,
+          "encounters": 24
+        }
+      }
+    ],
+    "limits": [
+      "The Crawlerbait active case uses an exact bounded public source slice and the normal Worker. Full-source first entry did not complete within the separate 90-second SwiftShader probe, before any loss was injected.",
+      "Schattenseiten exercised the sheet shader and first restored frame, with no external media uploads in the measured generations.",
+      "Physical-device performance was outside these browser witnesses."
+    ],
+    "small_square_remainder": {
+      "site": "philosophy",
+      "viewport": [
+        320,
+        320
+      ],
+      "map_rect": [
+        285,
+        107.19,
+        12,
+        12
+      ],
+      "axis_x_rect": [
+        285,
+        123.19,
+        0,
+        28
+      ],
+      "trigger_rect": [
+        280,
+        119.98,
+        40,
+        39.98
+      ],
+      "baseline": "The same zero-width horizontal rail was reproduced at the pinned pre-change baseline."
+    }
+  }
+}
