@@ -69,8 +69,12 @@ function create({blocks,pretext,vertices=root.SSSDisplayNavigation.V0,type=root.
   }
  }
  function draw(args){texture();const points=project(vertices,args);if(args.gl)drawGL(args);else draw2D(args,points);return points}
- function release(){for(const [gl,g]of gpu){gl.deleteTexture(g.texture);gl.deleteVertexArray(g.vao);gl.deleteProgram(g.p)}gpu.clear();canvas.width=canvas.height=1;paintKey=''}
- return Object.freeze({layout,scroll,draw,release,get lines(){return lines},get sections(){return sections},get offset(){return offset},get maxScroll(){return maxScroll()},get length(){return length},get version(){return version},get canvas(){return canvas},get region(){return region},get size(){return size}});
+ function releaseContext(gl){
+  const g=gpu.get(gl);if(!g)return;
+  gpu.delete(gl);gl.deleteTexture(g.texture);gl.deleteVertexArray(g.vao);gl.deleteProgram(g.p);
+ }
+ function release(){for(const gl of gpu.keys())releaseContext(gl);canvas.width=canvas.height=1;paintKey=''}
+ return Object.freeze({layout,scroll,draw,release,releaseContext,get lines(){return lines},get sections(){return sections},get offset(){return offset},get maxScroll(){return maxScroll()},get length(){return length},get version(){return version},get canvas(){return canvas},get region(){return region},get size(){return size}});
 }
 return Object.freeze({prepare,create,project,hull,freeRectangle});
 });

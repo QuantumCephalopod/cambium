@@ -68,12 +68,13 @@ const shader={
   /* the rest view: along the shadow axis, parallel projection — a tetrahedron is then a square and everything is flat */
   view:Object.freeze({rest:Object.freeze([1,0,0,0]),projection:'orthographic'}),
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
+  releaseContext,
   /* the body seen from a host: shadow ink — a face turned toward the light is paper, a face turned away is black, so turning it
    * cuts the body into shadows and light without any grey between */
   body:Object.freeze({
     cells:()=>BODY.list.map(b=>({path:'x',tet:V0.map(v=>v.map((x,j)=>b.world[j]+x*Math.sqrt(3)*b.size))})),
     draw:args=>{args.drawPlaceholder?.();ensureTier(64);drawSheet({...args,clearDepth:false},false)},
-    release:({gl})=>{const record=GPU.get(gl);if(record)disposeGPU(gl,record)},
+    release:releaseContext,
     state:Object.freeze({blend:true,depthTest:true,depthWrite:true}),
     fragment:`#version 300 es
 precision highp float;
@@ -128,6 +129,10 @@ function ensureTier(size){
 function disposeGPU(gl,record,highOnly=false){
   for(const [size,L] of record.tiers)if(!highOnly||size===512){gl.deleteTexture(L.tex);record.tiers.delete(size)}
   if(!highOnly){gl.deleteProgram(record.p);gl.deleteVertexArray(record.vao);GPU.delete(gl)}
+}
+function releaseContext({gl}){
+  const record=GPU.get(gl);
+  if(record)disposeGPU(gl,record);
 }
 function resetMedia(){
   for(const [gl,record] of GPU)disposeGPU(gl,record);

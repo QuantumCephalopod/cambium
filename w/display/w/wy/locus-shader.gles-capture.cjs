@@ -15,6 +15,9 @@ const inject=`
     return value;
   }
   for(const name of new Set([...Object.keys(gl),'bindFramebuffer'])){
+    // This capture runs with the fixture's healthy context. The WebGL
+    // status query has no drawing command to replay on the GLES transport.
+    if(name==='isContextLost')continue;
     const original=gl[name];if(typeof original!=='function')continue;
     const wrapped=function(...args){const result=original.apply(gl,args);COMMANDS.push({name,args:args.map(capturedValue),result:capturedValue(result)});return result};
     if(name==='bindFramebuffer')Object.getPrototypeOf(gl)[name]=wrapped;else gl[name]=wrapped;

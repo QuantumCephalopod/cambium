@@ -25,7 +25,7 @@ try:
  with sync_playwright() as pw:
   kw={'executable_path':os.environ['CHROMIUM_EXECUTABLE']} if os.environ.get('CHROMIUM_EXECUTABLE') else {}
   browser=pw.chromium.launch(headless=True,args=['--disable-webgl'],**kw)
-  for width,height in [(1280,800),(667,375),(390,844)]:
+  for width,height in [(1280,800),(667,375),(390,844),(320,568)]:
    for site,address in sites:
     page=browser.new_page(viewport={'width':width,'height':height},device_scale_factor=1,reduced_motion='reduce')
     errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
@@ -48,7 +48,9 @@ try:
       const instruments=Object.fromEntries(['navTwin','axis-x','axis-y','mini-help'].map(id=>[id,toBox(document.getElementById(id).getBoundingClientRect())]));
       const chrome=Number(document.getElementById('mini').dataset.mapChrome)||0;
       const core=document.getElementById('mini-core'),cs=getComputedStyle(core),instrument=document.getElementById('mini-instrument');
-      const mapRoom=Math.max(0,core.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-document.getElementById('axis-y').getBoundingClientRect().width-parseFloat(getComputedStyle(instrument).columnGap));
+      const coreWidth=core.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+      const nominalRail=1.75*parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const mapRoom=Math.max(0,coreWidth-instruments['axis-y'].width-parseFloat(getComputedStyle(instrument).columnGap));
       const timeline=document.querySelector('[data-interlocutor]:not([hidden]) [data-ui-field="timeline"]');
       const siteTargets=timeline?[...timeline.querySelectorAll('button,input,a')].map(el=>{
        const r=el.getBoundingClientRect(),p=timeline.getBoundingClientRect();
@@ -77,7 +79,7 @@ try:
       const topAddress=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'top').bounds,state.orientation);
       const oldBack=SSSUIGrid.orientBounds(SSSUIGrid.fieldInfo(state.outer,'ascent').bounds,state.orientation);
       const nested=Object.fromEntries(['pocket','help','trigger','legal'].map(name=>[name,SSSUIGrid.orientBounds(SSSUIGrid.carrierField(state.inner,name,state.orientation).bounds,state.orientation)]));
-      return {state:{top:state.top,compass:state.compass,pocket:state.pocket,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,oldBack,nested,fields,controls,glass,map,instruments,chrome,mapRoom,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
+      return {state:{top:state.top,compass:state.compass,pocket:state.pocket,ascent:state.ascent,outer:state.outer,inner:state.inner,fit:state.fit},topAddress,oldBack,nested,fields,controls,glass,map,instruments,chrome,mapRoom,coreWidth,nominalRail,siteTargets,navTargets,returnSlot,returnButton,otherTargets};
      }''',identity)
      assert measured['state']['fit']=={'top':True,'trigger':True},(site,measured['state']['fit'])
      assert measured['fields'] and all(f['bounded']=='true' for f in measured['fields']),(site,measured['fields'])
@@ -115,6 +117,9 @@ try:
      usable=min(pocket['width']/2,max(0,pocket['height']-measured['chrome']),measured['mapRoom'])
      assert measured['map']['width']>=usable-1,(site,measured['map'],compass,pocket,measured['chrome'])
      assert abs(measured['map']['width']-measured['map']['height'])<1.1,(site,measured['map'])
+     if height>width:
+      expected_rail=min(measured['nominalRail'],measured['coreWidth']/4)
+      assert abs(measured['instruments']['axis-y']['width']-expected_rail)<.5,(site,'upright rail column',measured['instruments']['axis-y'],expected_rail)
      previous=measured['oldBack']
      for key,value in [('left',previous['x']*width),('top',previous['y']*height),('width',previous['w']*width),('height',previous['h']*height)]:
       assert abs(pocket[key]-value)<.5,(site,'compass did not take the original Back field',pocket,previous)
@@ -147,6 +152,16 @@ try:
      assert page.locator('#mini-guide').is_visible()
      assert abs(page.locator('#navTwin').bounding_box()['width']-measured['map']['width'])<1,(site,'help shrank the map')
      page.locator('#mini-help-toggle').click()
+     if (width,height)==(320,568):
+      for axis in ['x','y']:
+       slider=page.locator('#axis-'+axis)
+       slider.click(trial=True)
+       box=slider.bounding_box()
+       page.mouse.move(box['x']+box['width']*(.75 if axis=='x' else .5),box['y']+box['height']*(.5 if axis=='x' else .25))
+       page.mouse.down()
+       try:assert int(slider.get_attribute('aria-valuenow'))>0,(site,axis,'rail did not receive pointer input')
+       finally:page.mouse.up()
+       assert slider.get_attribute('aria-valuenow')=='0',(site,axis,'rail did not release')
      page.locator('#navTwin').focus();page.keyboard.press('=');page.keyboard.press('0')
      if site=='schattenseiten':
       read_shadow="""()=>({filter:getComputedStyle(document.documentElement).filter,shadow:getComputedStyle(document.querySelector('[data-interlocutor="organism:schattenseiten"] [data-ui-field="header"] h1')).textShadow,canvas:SSSDisplayType.shadowColor()})"""

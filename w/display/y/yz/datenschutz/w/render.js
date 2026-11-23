@@ -47,7 +47,7 @@ void main(){
   float a=(uFocus<-.5||abs(vRegion-uFocus)<.2)?.19:.08;
   outColor=vec4(c,a+.09*rim);
 }`,
- afterDraw,focus:()=>state?{center:[0,0,0],scale:state.fit}:null});
+ afterDraw,releaseContext:({gl})=>state?.material.releaseContext(gl),focus:()=>state?{center:[0,0,0],scale:state.fit}:null});
 function semanticText(blocks,language){
  const article=el('article','datenschutz-source');article.lang=language;article.setAttribute('data-type-fold','off');let list=null;
  for(const block of blocks){const p=el(block.tag);let cursor=0;for(const link of block.links){const at=block.text.indexOf(link.text,cursor);if(at<0)throw new Error('Source link missing from approved block');p.append(document.createTextNode(block.text.slice(cursor,at)));const a=el('a','',link.text);a.href=link.href;a.tabIndex=-1;p.append(a);cursor=at+link.text.length}p.append(document.createTextNode(block.text.slice(cursor)));if(block.tag==='li'){if(!list){list=el('ul');article.append(list)}list.append(p)}else{list=null;article.append(p)}}return article;

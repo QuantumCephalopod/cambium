@@ -60,6 +60,11 @@ const shader=Object.freeze({
   composite:()=>state?.mounted?[state.textCanvas,...(state.tissueLive?[state.tissueCanvas]:[])]:null,
   focus:()=>state?.mounted&&state.current&&!state.closing?{center:[0,0,0],scale:FAR_Z/state.current.cameraTo,stiffness:6}:null,
   afterDraw:frame=>draw(frame.ms,frame),
+  releaseContext({gl}){
+    if(state?.renderer?.gl!==gl)return;
+    state.renderer.dispose();
+    state.renderer=null;
+  },
   clear:[0,0,0,0],
   fallbackAlpha:0,
   state:Object.freeze({blend:true,depthTest:false,depthWrite:false}),
@@ -654,7 +659,7 @@ function drawOverviewPhysiology(now){
 function projectedPixels(scale,cameraZ,height){return (scale/cameraZ)*(height/2)/Math.tan(FOV/2)*2}
 function childBodies(current){
   const ps=state.parents.get(current.id)||[];if(ps.length!==4)return [];
-  return ps.map((pid,i)=>({id:pid,center:mul(state.renderer.V0[i],current.scale*.5),scale:current.scale*.5}));
+  return ps.map((pid,i)=>({id:pid,center:mul(N.V0[i],current.scale*.5),scale:current.scale*.5}));
 }
 function inquiryBody(id){return state?.inquiryBodies?.[id]||null}
 function inquiryMetabolites(entity){
@@ -669,7 +674,7 @@ function metaboliteWisdomText(metabolite){
 }
 function metaboliteField(entity,current,cam,height,now=performance.now()){
   const metabolites=inquiryMetabolites(entity);if(!current||!metabolites.length)return [];
-  const fieldScale=current.scale*METABOLITE_FIELD_SCALE,tet=state.renderer.V0.map(v=>mul(v,fieldScale)),pal=PALETTE[entity?.gene]||PALETTE.x,px=projectedPixels(fieldScale,cam,height);
+  const fieldScale=current.scale*METABOLITE_FIELD_SCALE,tet=N.V0.map(v=>mul(v,fieldScale)),pal=PALETTE[entity?.gene]||PALETTE.x,px=projectedPixels(fieldScale,cam,height);
   return metabolites.map((metabolite,index)=>{
     const metaboliteId=(typeof metabolite.id==='string'&&metabolite.id.trim())?metabolite.id.trim():'M'+(index+1),id=entity.id+'·'+metaboliteId;
     const record={
@@ -705,8 +710,8 @@ const BODY_TEMPLATE_NODES=200000;
 function bodyTemplateCache(){
   let c=state.bodyTemplates;
   /* These owners replace their immutable projections on admission; a new inquiry body also invalidates ember metadata. */
-  if(!c||c.identities!==state.identities||c.parents!==state.parents||c.inquiry!==state.inquiryBodies||c.vertices!==state.renderer.V0){
-    c=state.bodyTemplates={identities:state.identities,parents:state.parents,inquiry:state.inquiryBodies,vertices:state.renderer.V0,templates:new Map(),metadata:new Map(),nodes:0};
+  if(!c||c.identities!==state.identities||c.parents!==state.parents||c.inquiry!==state.inquiryBodies){
+    c=state.bodyTemplates={identities:state.identities,parents:state.parents,inquiry:state.inquiryBodies,templates:new Map(),metadata:new Map(),nodes:0};
   }
   return c;
 }
@@ -723,7 +728,7 @@ function bodyTemplate(id,scale,cameraZ,height,depth){
       meta={entity,pal,rank,color:mix3(pal,[1.0,.90,.64],clamp(.40+rank*.035+(hasMetabolites?.08:0),.40,.64)),alpha:clamp(.18+rank*.055+(hasMetabolites?.06:0),.18,.68),phase:random01(id,'organism-ember')*Math.PI*2};c.metadata.set(id,meta)}
     const ps=state.parents.get(id)||[],leaf=ps.length!==4||level>=limit;
     t.push({id,offset,factor,level,leaf,meta});
-    if(!leaf)for(let i=0;i<4;i++)visit(ps[i],add(offset,mul(state.renderer.V0[i],factor*.5)),factor*.5,level+1);
+    if(!leaf)for(let i=0;i<4;i++)visit(ps[i],add(offset,mul(N.V0[i],factor*.5)),factor*.5,level+1);
   }
   visit(id,[0,0,0],1,0);
   /* LRU bounds retained support, never the drawn population or recursion. Oversized entries remain uncached. */
@@ -865,7 +870,7 @@ function metaboliteGlyphs(B,light,font){
 }
 function lockInner(piece){
   state.inner=piece;state.originOpen=false;state.beingTargetQ=null;if(!piece||!state.current)return;
-  const V=state.renderer.V0,q=state.localQ;
+  const V=N.V0,q=state.localQ;
   if(piece.kind==='edge'){const e=state.being?.edges.find(x=>x.key===piece.key);if(!e)return;
     let d=beingNorm(sub(V[e.b],V[e.a]));const m=beingNorm(mul(add(V[e.a],V[e.b]),.5));
     if(qRot(q,d)[0]<0)d=mul(d,-1);const bb=beingCross(m,d);
@@ -1162,7 +1167,7 @@ function drawWisdom(rect,cam,translate,metabolights,now){
   if(!state.current||!entity){if(state.originButton)state.originButton.hidden=true;withdrawPaperLens();canvas.dataset.wisdomState='inactive';state.being=null;state.beingGeo=null;state.inner=null;state.beingTargetQ=null;return}
   if(state.pretextStatus!=='ready'||!pretextModule){withdrawPaperLens();canvas.dataset.wisdomState=state.pretextStatus;return}
   const alpha=smooth(clamp((state.transition-.50)/.32));if(alpha<=.01){withdrawPaperLens();canvas.dataset.wisdomState='lod-hidden';state.beingGeo=null;return}
-  const B=ensureBeing(entity,rect.width),V=state.renderer.V0,sc=state.current.scale;
+  const B=ensureBeing(entity,rect.width),V=N.V0,sc=state.current.scale;
   const proj=local=>{const r=qRot(state.localQ,local),p=projectWorldPoint(add(r,translate),cam,rect.width,rect.height);p.vz=r[2];return p};
   const P=V.map(v=>proj(mul(v,sc))),front={};for(const f of B.faces)front[f.key]=qRot(state.localQ,V[f.miss])[2]<0;
   const font=wisdomFont(rect.width),metGeo=[];
@@ -1347,7 +1352,7 @@ function drawNames(rect,now){
  * current container brighter, the rest receding; all of it steps back while an organism is open. */
 function outerCells(width,alphaBase=CHAMBER_SHELL_ALPHA){
   const focus=inquiryFrameFocus(),scale=rootFieldScale(width)*focus.scale,active=state?.chamberPath||'',recede=1-.75*backgroundPassage();
-  return GENES.map((g,i)=>{const p=PALETTE[g],k=active?(active.startsWith(g)?1.6:.45):1,alpha=alphaBase*k*recede;return {center:mul(sub(mul(state.renderer.V0[i],.5),focus.center),scale),scale:.5*scale,color:[...mix3(p,[.86,1,.93],.62),alpha]}});
+  return GENES.map((g,i)=>{const p=PALETTE[g],k=active?(active.startsWith(g)?1.6:.45):1,alpha=alphaBase*k*recede;return {center:mul(sub(mul(N.V0[i],.5),focus.center),scale),scale:.5*scale,color:[...mix3(p,[.86,1,.93],.62),alpha]}});
 }
 /* A projected enclosing bound is a conservative witness for every descendant of the body.
  * A body behind/outside the camera is retained in source and simulation, but not expanded
@@ -1368,7 +1373,7 @@ function collectVisibleBody(id,center,scale,width,height,cam,q,leaves,lights,dep
   if(z+radius+fringe<=.1/zoom||z-radius-fringe>=20/zoom||!populationInView(center,scale,width,height,cam,q))return;
   const distance=Math.max(.1/zoom,z),px=projectedPixels(scale,distance,height),entity=state.identities.get(id),parents=state.parents.get(id)||[];
   if(entity)lights.push(organismEmber(id,center,px,entity,depth===0));
-  if(parents.length===4&&px>=LOD_PX){for(let i=0;i<4;i++)collectVisibleBody(parents[i],add(center,mul(state.renderer.V0[i],scale*.5)),scale*.5,width,height,cam,q,leaves,lights,depth+1);}
+  if(parents.length===4&&px>=LOD_PX){for(let i=0;i<4;i++)collectVisibleBody(parents[i],add(center,mul(N.V0[i],scale*.5)),scale*.5,width,height,cam,q,leaves,lights,depth+1);}
   else{const pal=PALETTE[entity?.gene||'x']||PALETTE.x;leaves.push({id,center,scale,color:[...pal,.11+Math.min(.30,px/150)]});}
 }
 function populationBodies(width,height,bodyFade=1,lightFade=bodyFade,now=performance.now(),cameraZ=FAR_Z){
@@ -1577,10 +1582,10 @@ function drawContactTrace(rect,now){
   }else if(contact.kind==='organism'){
     const rec=state.recordById.get(contact.id);if(!rec){trace.clear();return}
     const body=overviewBodyProjection(rec,rect,now),q=overviewOrientation(),cam=cameraZ();
-    trace.tetra(state.renderer.V0.map(v=>projectPoint(add(body.center,mul(v,body.scale)),q,cam,w,h)),w,h,contact.id);
+    trace.tetra(N.V0.map(v=>projectPoint(add(body.center,mul(v,body.scale)),q,cam,w,h)),w,h,contact.id);
   }else if(contact.kind==='child'){
     const child=childBodies(state.current).find(c=>c.id===contact.id),t=currentTranslation(),cam=cameraZ();
-    if(child)trace.tetra(state.renderer.V0.map(v=>projectWorldPoint(add(qRot(state.localQ,add(child.center,mul(v,child.scale))),t),cam,w,h)),w,h,contact.id);else trace.clear();
+    if(child)trace.tetra(N.V0.map(v=>projectWorldPoint(add(qRot(state.localQ,add(child.center,mul(v,child.scale))),t),cam,w,h)),w,h,contact.id);else trace.clear();
   }else{
     const piece=contact.piece,G=state.beingGeo,B=state.being;if(!G){trace.clear();return}
     if(piece.kind==='whole')trace.tetra(G.P,w,h,piece.key);

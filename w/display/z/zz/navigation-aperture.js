@@ -6,6 +6,7 @@ const pocket=document.getElementById('mini-pocket');
 if(!mini||!trigger||!pocket) throw new Error('global navigation aperture surface missing');
 const legal=document.getElementById('legal-links');
 const core=document.getElementById('mini-core'),map=document.getElementById('navTwin');
+const instrument=document.getElementById('mini-instrument'),verticalRail=document.getElementById('axis-y');
 const helpButton=document.getElementById('mini-help-toggle'),helpBar=document.getElementById('mini-help-bar'),guide=document.getElementById('mini-guide');
 const hints=Object.fromEntries(['map','mapKeys','axis','keys'].map(key=>[key,document.getElementById('mini-hint-'+key)]));
 const mapHelp=document.getElementById('mini-map-help'),axisHelp=document.getElementById('mini-axis-help');
@@ -17,7 +18,7 @@ let pointerContext='map',focusContext=null,keyboard=true;
 function copy(){return COPY[document.documentElement.lang==='de'?'de':'en']}
 function renderHint(){const key=focusContext&&keyboard?(focusContext==='axis'?'keys':'mapKeys'):pointerContext||focusContext||'map';for(const [id,el] of Object.entries(hints))el?.setAttribute('aria-hidden',String(id!==key))}
 function language(){const c=copy();for(const [key,el] of Object.entries(hints))if(el)el.textContent=c[key];renderHint();if(helpButton)helpButton.setAttribute('aria-label',c.help);if(mapHelp)mapHelp.textContent=c.mapHelp;if(axisHelp)axisHelp.textContent=c.axisHelp;measure()}
-for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[document.getElementById('axis-y'),'axis']]){
+for(const [el,key] of [[map,'map'],[document.getElementById('axis-x'),'axis'],[verticalRail,'axis']]){
   if(!el)continue;
   el.setAttribute('aria-describedby',key==='map'?'mini-map-help':'mini-axis-help');
   el.addEventListener('pointerenter',()=>{keyboard=false;pointerContext=key;renderHint()});
@@ -60,14 +61,18 @@ function measure(){
   // Its actual width is excluded by clientWidth; leave the measured padding
   // and the existing rail/gap room before choosing a square map extent.
   const padding=(Number.parseFloat(coreStyle?.paddingLeft)||.5*rem)+(Number.parseFloat(coreStyle?.paddingRight)||.5*rem);
-  const mapWidth=Math.max(0,(core.clientWidth??field?.width??0)-padding-2*rem);
+  const instrumentStyle=instrument?globalThis.getComputedStyle?.(instrument):null;
+  const railWidth=verticalRail?.getBoundingClientRect?.()?.width??1.75*rem;
+  const columnGap=Number.parseFloat(instrumentStyle?.columnGap);
+  const sideRoom=railWidth+(Number.isFinite(columnGap)?columnGap:.25*rem);
+  const mapWidth=Math.max(0,(core.clientWidth??field?.width??0)-padding-sideRoom);
   let mapCap=Math.floor(Math.max(0,Math.min(available-chrome,mapWidth))),railCut=0,hintCut=0;
   if(bounded&&trigger.getBoundingClientRect&&map.getBoundingClientRect){
     const b=trigger.getBoundingClientRect(),r=map.getBoundingClientRect(),axis=document.getElementById('axis-x'),a=axis?.getBoundingClientRect?.();
     // Help can scroll the core without changing the instrument's layout.
     // Fit against its unscrolled position so disclosure cannot resize it.
     const sx=core.scrollLeft||0,sy=core.scrollTop||0,m={left:r.left+sx,right:r.right+sx,top:r.top+sy,width:r.width};
-    const instrument=document.getElementById('mini-instrument'),rowGap=Number.parseFloat(globalThis.getComputedStyle?.(instrument)?.rowGap)||0;
+    const rowGap=Number.parseFloat(instrumentStyle?.rowGap)||0;
     // The instrument is centered. Predict its uncapped right edge so this
     // measured fit remains stable after a previous fit changed its size.
     const naturalRight=m.right+(mapCap-m.width)/2;

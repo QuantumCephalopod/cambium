@@ -1,0 +1,30 @@
+{
+  "kind": "HOME",
+  "event_id": "papers-display-context-return-20261123",
+  "home_at_utc": "2026-11-23T20:16:13.903565Z",
+  "organism": "papers",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "COMPLETED — Recreated the entered chamber renderer on the restored context and preserved loss-window contact.",
+  "changed_scope": [
+    "sierpinski.js"
+  ],
+  "delivery_state": "HOME_DURABLE_FEED_ASYNC",
+  "context": {
+    "source_revision": "c0ae5c1ba7c717428a3ab1ebf75661d64301d3e1",
+    "witness": {
+      "path": "w/display/_root/display-nutrients-witness-20261123.json",
+      "sha256": "0be724230652b036445afd13ba0e84dc73c00aea7a1d6dea7ef2ef300637d636"
+    },
+    "display_home": "w/display/_root/display-nutrients-return-20261123.json",
+    "owner_witness": {
+      "entered": "papers",
+      "claim": "Recreated the entered chamber renderer on the restored context and preserved loss-window contact."
+    },
+    "source_exact_spent_intake": {
+      "source": "w/display/y/yw/papers/_stomach/NUTRIENT__display-webgl-context-return__20261123.md",
+      "destination": "w/display/y/yw/papers/_waste/NUTRIENT__display-webgl-context-return__20261123.md",
+      "sha256": "3bb24d2a2ad0f0f8444125b6c5d05b65eeae3a73ad676759c69fc4a840598193",
+      "source_exact": true
+    }
+  }
+}
