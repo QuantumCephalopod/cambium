@@ -251,7 +251,7 @@ function posAt(S,dist,o){const c=S.cum;while(o.seg<c.length-2&&c[o.seg+1]<dist)o
   return {p:[a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u,a[2]+(b[2]-a[2])*u],seg:L,dir:L>0?[(b[0]-a[0])/L,(b[1]-a[1])/L,(b[2]-a[2])/L]:[0,0,0]}}
 function allowed(S,t,o){let j=o?o.j||0:0;if(o&&o.jt>t)j=0;while(j+1<S.wps.length&&S.wps[j+1].t<=t)j++;if(o){o.j=j;o.jt=t}return j}
 function spawn(S){const o={S,seg:0,hot:0,trail:[],off:[0,0,0],head:[0,0,0],done:null,fade:0,slow:1,fine:0,coarseKey:null,facts:prefixFacts(S.b.history,SIM.life.t0+SIM.simT*1000)};
-  const j=allowed(S,SIM.simT,o);o.dist=S.wd[j];o.reached=j;const r=posAt(S,o.dist,o);o.base=r.p;o.p=r.p.slice();S.o=o;SIM.alive.add(o)}
+  const j=allowed(S,SIM.simT,o);o.dist=S.wd[j];o.reached=j;const r=posAt(S,o.dist,o);o.base=r.p;o.p=r.p.slice();o.head=r.dir.slice();S.o=o;SIM.alive.add(o)}
 function despawn(o){o.S.o=null;SIM.alive.delete(o)}
 function resetTo(t){for(const o of [...SIM.alive])despawn(o);SIM.drops.length=0;SIM.simT=t;SIM.cursor=0}
 /* The existing Display content relation: each cell halves per digit, its content
@@ -306,8 +306,7 @@ function body(o,now,pxOf){
   const tr=o.trail,N=tr.length;
   for(let i=0;i<N;i++){const a=i/N,q=tr[i];splat(q[0],q[1],q[2],sz*(.14+.2*a),.8*a*a*f,ph0+a*.6)}
 }
-/* a colony clings to its own Sierpinski cell: the cell is its skeleton, its mass the sum of its members,
- * its phase their complex sum — kin print in their ink, strangers cancel into bone */
+// The same recursive cells locate Places and the four repertoire examples on the Beings tab.
 const colonyCache=new Map();
 function colonyGeom(key){
   let g=colonyCache.get(key);
@@ -317,20 +316,120 @@ function colonyGeom(key){
     if(colonyCache.size>4096)colonyCache.clear();colonyCache.set(key,g)}
   return g;
 }
-function colony(key,c,now){
-  const g=colonyGeom(key);
-  const f=c.f/c.n,amp=Math.hypot(c.re,c.im),coh=amp/Math.max(c.f,1e-6),ph=Math.atan2(c.im,c.re);
-  const mass=Math.log10(1+c.n),w=f*Math.min(1.25,.62+.32*mass),t=now*.001;
-  const r0=g.edge*(.1+.05*Math.min(2,mass))*(1+.06*Math.sin(t*.9+g.seed));
-  splat(g.cen[0],g.cen[1],g.cen[2],r0*1.25,w,ph,coh);
-  g.nodes.forEach((q,i)=>splat(q[0],q[1],q[2],r0*(i<4?.95:.72)*(1+.08*Math.sin(t*1.7+g.seed+i*1.3)),w*(i<4?1:.85),ph+(i<4?.04*i:0),coh));
+// Optical integrals for hidden anatomy. Positions and spin do not enter these
+// three zeroth moments. Coefficients are relative to radius, fade and base phase.
+const anatomyMoments=new Map(), trailMoments=new Map();
+function momentTable(emit){
+  const groups=new Map();
+  emit((radius,weight,angle,copies=1)=>{
+    let g=groups.get(weight);
+    if(!g){g={weight,mass:0,re:0,im:0};groups.set(weight,g)}
+    const mass=radius*radius*weight*copies;
+    g.mass+=mass;g.re+=mass*Math.cos(angle);g.im+=mass*Math.sin(angle);
+  });
+  const rows=[...groups.values()].sort((a,b)=>a.weight-b.weight);
+  // Each row is a suffix. One lookup accounts for the native per-splat gate.
+  let mass=0,re=0,im=0;
+  for(let i=rows.length-1;i>=0;i--){const g=rows[i];g.mass=mass+=g.mass;g.re=re+=g.re;g.im=im+=g.im}
+  return rows;
 }
-/* a being between colonies: one droplet of its own ink, thinning behind it */
-function droplet(o,now){
-  const G=colonyGeom(o.cell),r=G.edge*.075,ph=KIND[o.facts.k].phase+(o.S.g[4]/255-.5)*.5,f=o.fade,tr=o.ctrail||[];
-  if(o.transit)splat(o.cp[0],o.cp[1],o.cp[2],r,f,ph);
-  for(let i=0;i<tr.length;i++){const a=(i+1)/tr.length,q=tr[i];splat(q[0],q[1],q[2],r*(.45+.45*a),.8*a*a*f,ph)}
+function admittedMoment(table,fade){
+  let a=0,b=table.length;
+  while(a<b){const i=(a+b)>>>1;if(table[i].weight*fade<=.001)a=i+1;else b=i}
+  return table[a];
 }
+function anatomyMomentTable(kind,n){
+  const key=kind+n;
+  let rows=anatomyMoments.get(key);
+  if(rows)return rows;
+  rows=momentTable(put=>{
+    for(let i=0;i<4;i++)put(.3,1,i*.14);
+    for(let i=0;i<6;i++)put(.22,.85,.08+i*.07);
+    if(kind==='x'){
+      put(.42,1,0);
+      for(let i=0;i<4;i++)put(.3,1,.1+i*.05);
+    }else if(kind==='z'){
+      put(.55,1,0);
+      for(let j=0;j<6;j++)put(.26*(1-j*.15),.95,.05*j,n);
+    }else if(kind==='y'){
+      for(let i=0;i<n;i++){
+        const sc=Math.pow(.86,i);
+        put(.46*sc,1,i*.5);
+        for(let vi=0;vi<4;vi++)put(.2*sc,.8,i*.5+vi*.3);
+      }
+    }else put(.5,1,0);
+  });
+  anatomyMoments.set(key,rows);
+  return rows;
+}
+function trailMomentTable(count){
+  let rows=trailMoments.get(count);
+  if(!rows){
+    rows=momentTable(put=>{
+      for(let i=0;i<count;i++){const a=i/count;put(.14+.2*a,.8*a*a,a*.6)}
+    });
+    trailMoments.set(count,rows);
+  }
+  return rows;
+}
+function opticalMoment(o,now,followed){
+  const fade=o.fade,kind=o.facts.k,g=o.S.g;
+  const n=kind==='z'?3+Math.min(12,Math.round(Math.log2(1+o.facts.baits)*2.2)):
+          kind==='y'?Math.min(6,o.facts.days+1):0;
+  const body=admittedMoment(anatomyMomentTable(kind,n),fade),trail=admittedMoment(trailMomentTable(o.trail.length),fade);
+  let mass=(body?.mass||0)+(trail?.mass||0),re=(body?.re||0)+(trail?.re||0),im=(body?.im||0)+(trail?.im||0);
+  if(kind==='w'){
+    for(let i=0;i<4;i++){
+      const u=(now*.001*.35+i*.25+g[6]/255)%1,weight=Math.pow(1-u,.6);
+      if(fade*weight<=.001)continue;
+      const m=.28*.28*weight,ph=.8+i*.4;
+      mass+=m;re+=m*Math.cos(ph);im+=m*Math.sin(ph);
+    }
+  }
+  if(followed&&.34*fade>.001)mass+=1.5*1.5*.34;
+  const phase=KIND[kind].phase+(g[4]/255-.5)*.5,cs=Math.cos(phase),sn=Math.sin(phase);
+  const rad=2.2*o.radius,scale=rad*rad*fade;
+  return {mass:mass*scale,re:(re*cs-im*sn)*scale,im:(re*sn+im*cs)*scale};
+}
+
+const opticalRootEdge=colonyGeom('').edge;
+const fullResolution=()=>Infinity;
+function opticalBody(o,now,pxOf){
+  const pixelScale=Math.max(1e-9,pxOf(o.p,1)),physical=o.radius*.62*2.2;
+  const sigma=opticalRootEdge*Math.min(.5,4*Math.pow(2,BEING_RANKS)/pixelScale)*.075*2.2;
+  const blend=Math.max(0,Math.min(1,(Math.log2(o.radius/sigma)+2)/2));
+  const detail=blend*blend*(3-2*blend),blur2=sigma*sigma;
+  let mass=0,re=0,im=0;
+  const first=SIM.ns,buf=SIM.sPos;
+  if(detail>0){
+    o.fine=1;body(o,now,fullResolution);
+    for(let j=first*7;j<SIM.ns*7;j+=7){
+      const m=buf[j+3]*buf[j+3]*buf[j+4];mass+=m;
+      if(detail<1){const mc=m*buf[j+6];re+=mc*Math.cos(buf[j+5]);im+=mc*Math.sin(buf[j+5]);}
+    }
+  }else{
+    const moment=opticalMoment(o,now,o===CAM.o);mass=moment.mass;re=moment.re;im=moment.im;
+  }
+  o.fine=detail;
+  if(!(mass>0))return detail;
+  if(detail>0){
+    const gain=1+o.fade*blur2/mass,end=SIM.ns;
+    let next=first;
+    for(let i=first;i<end;i++){
+      const j=i*7,r2=buf[j+3]**2,rr=r2+blur2,w=detail*gain*buf[j+4]*r2/rr;
+      if(w<=.001)continue;
+      const write=next++*7;if(write!==j)buf.copyWithin(write,j,j+7);
+      buf[write+3]=Math.sqrt(rr);buf[write+4]=w;
+    }
+    SIM.ns=next;
+  }
+  if((1-detail)*o.fade>.001){
+    const r=Math.hypot(physical,sigma),w=(1-detail)*(mass+o.fade*blur2)/(r*r);
+    splat(...o.p,r/2.2,w,Math.atan2(im,re),Math.hypot(re,im)/mass);
+  }
+  return detail;
+}
+
 /* Display: content sits two ranks below its container. Baits are the field's content (container + 2);
  * beings are the content of baits, so they resolve two ranks further down. */
 const BEING_RANKS=CONTENT_RANKS*2;
@@ -351,52 +450,31 @@ function step(dt,now,pxOf){
   // spawn by time: sessions are sorted by start, so only a window needs scanning
   while(SIM.cursor<ss.length&&ss[SIM.cursor].t0-LEAD<=T){const S=prepareWalk(ss[SIM.cursor++]);if(T<=S.tEnd&&!S.o)spawn(S)}
   for(const o of SIM.alive)if(T>o.S.tEnd||T<o.S.t0-LEAD)despawn(o);
-  const C=SIM.container,crowd=new Map();
+  const crowd=new Map();
   for(const o of SIM.alive){const S=o.S;o.facts=prefixFacts(S.b.history,L.t0+T*1000);syncWalk(o,L.t0+T*1000);const lim=S.wd[allowed(S,T,o)];
     let r=posAt(S,o.dist,o);const hw=Math.min(3,.7+1.3*Math.sqrt(r.seg/.08));
     // never before a recorded time; at slow pace the body still crawls at its own real speed
     o.dist=Math.min(lim,o.dist+Math.max(S.v*dts,SIM.playing?V_REAL*dt:0)*hw*o.slow);
     r=posAt(S,o.dist,o);o.base=r.p;
-    for(let k=0;k<3;k++)o.head[k]+=(r.dir[k]-o.head[k])*Math.min(1,dt*4);
+    if(SIM.playing)for(let k=0;k<3;k++)o.head[k]+=(r.dir[k]-o.head[k])*Math.min(1,dt*4);
     while(o.reached+1<S.wps.length&&o.dist>=S.wd[o.reached+1]-1e-9){o.reached++;const w=S.wps[o.reached];SIM.drops.push({a:w.a,p:pointOf(w.a),t:now,w:Math.min(1,.4+Math.log10(1+w.n)*.35),ph:KIND[o.facts.k].phase});o.hot=1}
-    o.hot*=Math.exp(-dt*1.2);
+    if(SIM.playing)o.hot*=Math.exp(-dt*1.2);
     if(o.done==null&&o.dist>=S.L-1e-9&&T>=S.tLast)o.done=T;
     const inF=Math.min(1,(T-(S.t0-LEAD))/LEAD),outF=o.done==null?1:1-Math.max(0,T-o.done-LINGER)/DISS;o.fade=Math.max(0,Math.min(inF,outF));
     o.radius=bodySize(o);o.pri=S.v*(S.L-o.dist+S.size);for(let k=0;k<3;k++)o.p[k]=o.base[k]+o.off[k];
-    /* COARSE RESOLUTION — Display's pool law, applied to beings: a being is its own body only while the bait it
-     * last touched resolves on screen; deeper it belongs to the projected cell's colony. Selection
-     * does not exclude visible siblings. Coalesced beings keep walking but pay no separate body. */
-    const a=S.wps[o.reached].a;o.coarseKey=resolutionCell(a,pxOf)||a;o.cell=resolutionCell(a,pxOf);
+    const address=S.wps[o.reached].a;
+    o.cell=resolutionCell(address,pxOf);o.coarseKey=o.cell||address;
     if(o.cell)crowd.set(o.cell,(crowd.get(o.cell)||0)+1)}
-  // coalescence is joining: a being alone in its cell has nothing to join and stays itself
-  for(const o of SIM.alive){if(o.cell&&(crowd.get(o.cell)<2||o===CAM.o||lockedBeing()===o.S.b.id))o.cell='';if(o.cell!==''&&o.trail.length){o.trail.length=0;o.off[0]=o.off[1]=o.off[2]=0}}
-  /* COARSE WALK — a coalesced being still walks, at the viewed resolution: every change of its rank-H cell is one
-   * coarse step, taken along the Sierpinski edges between the two cells. Six fine steps may become two coarse ones,
-   * but they still happen: a droplet pinches off one colony and flows into the next. */
+  // These contact prefixes describe navigation only. Every Being's ink stays at its own position.
+  SIM.lockedId=lockedBeing();
   for(const o of SIM.alive){
-    if(!o.cell){o.ck=null;o.cp=null;o.transit=false;o.wasFine=o.cell==='';continue}
-    const G=colonyGeom(o.cell);
-    if(!o.cp)o.cp=o.wasFine?o.p.slice():G.cen.slice();
-    if(o.ck!==o.cell){
-      const pts=[o.cp.slice()];if(o.ck)for(const q of route(o.ck,o.cell))pts.push(q);pts.push(G.cen);
-      const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1],pts[i][2]-pts[i-1][2]));
-      o.cpath=pts;o.ccum=cum;o.cu=0;o.cseg=0;o.ck=o.cell;o.ctrail=o.ctrail||[];
-    }
-    const Lc=o.ccum[o.ccum.length-1];
-    if(o.cu<Lc){
-      o.cu=Math.min(Lc,o.cu+Math.max(Lc/.9,G.edge*1.4)*dt);
-      while(o.cseg<o.ccum.length-2&&o.ccum[o.cseg+1]<o.cu)o.cseg++;
-      const i=o.cseg,a0=o.cpath[i],b0=o.cpath[i+1]||a0,sl=(o.ccum[i+1]??o.ccum[i])-o.ccum[i],u=sl>0?(o.cu-o.ccum[i])/sl:1;
-      o.cp=[a0[0]+(b0[0]-a0[0])*u,a0[1]+(b0[1]-a0[1])*u,a0[2]+(b0[2]-a0[2])*u];
-      o.ctrail.push(o.cp);if(o.ctrail.length>10)o.ctrail.shift();
-    }else if(o.ctrail&&o.ctrail.length)o.ctrail.shift();
-    o.transit=o.cu<Lc-1e-9;o.wasFine=false;
+    if(o.cell&&(crowd.get(o.cell)<2||o===CAM.o||SIM.lockedId===o.S.b.id))o.cell='';
   }
   // right of way, felt through actual bodies: further to go and faster passes; the other gives way sideways and slows
-  let maxRadius=0;for(const o of SIM.alive)if(o.cell==='')maxRadius=Math.max(maxRadius,o.radius);
+  let maxRadius=0;for(const o of SIM.alive)maxRadius=Math.max(maxRadius,o.radius);
   const cs=maxRadius*3.2||1;grid.clear();
-  for(const o of SIM.alive){if(o.cell!=='')continue;const key=cellKey(Math.floor(o.p[0]/cs),Math.floor(o.p[1]/cs),Math.floor(o.p[2]/cs));let l=grid.get(key);if(!l)grid.set(key,l=[]);l.push(o)}
-  for(const o of SIM.alive){if(o.cell!==''){o.slow=1;continue}const push=[0,0,0];let slow=1;const b=o.p,R0=o.radius*1.6;
+  for(const o of SIM.alive){const key=cellKey(Math.floor(o.p[0]/cs),Math.floor(o.p[1]/cs),Math.floor(o.p[2]/cs));let l=grid.get(key);if(!l)grid.set(key,l=[]);l.push(o)}
+  for(const o of SIM.alive){if(!SIM.playing)continue;const push=[0,0,0];let slow=1;const b=o.p,R0=o.radius*1.6;
     const gx=Math.floor(b[0]/cs),gy=Math.floor(b[1]/cs),gz=Math.floor(b[2]/cs);
     for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){const l=grid.get(cellKey(gx+x,gy+y,gz+z));if(!l)continue;
       for(const q of l){if(q===o)continue;const R=R0+q.radius*1.6,d0=b[0]-q.p[0],d1=b[1]-q.p[1],d2=b[2]-q.p[2];let dl=Math.sqrt(d0*d0+d1*d1+d2*d2);if(dl>=R)continue;let d=[d0,d1,d2];
@@ -408,19 +486,17 @@ function step(dt,now,pxOf){
     const om=Math.sqrt(o.off[0]*o.off[0]+o.off[1]*o.off[1]+o.off[2]*o.off[2]);if(om>cap)for(let k=0;k<3;k++)o.off[k]*=cap/om;
     for(let k=0;k<3;k++)o.p[k]=o.base[k]+o.off[k];
     const tl=o.trail[o.trail.length-1];if(!tl||Math.hypot(o.p[0]-tl[0],o.p[1]-tl[1],o.p[2]-tl[2])>o.radius*.18){o.trail.push(o.p.slice());if(o.trail.length>34)o.trail.shift()}}
-  // Resolution blends complementary shares; changing container does not cut a body away.
-  for(const o of SIM.alive){const target=o.cell===''?1:0;o.fine+=(target-o.fine)*(1-Math.exp(-dt*7));if(Math.abs(target-o.fine)<.001)o.fine=target}
-  // print every body into the field
-  SIM.ns=0;const counts={w:0,x:0,z:0,y:0},cols=new Map();let resolved=0;
-  for(const o of SIM.alive){counts[o.facts.k]++;if(o.fade<=0||o.cell===null)continue;
-    if(o.fine>.001){resolved++;body(o,now,pxOf)}
-    const share=1-o.fine;if(share<=.001)continue;
-    if(o.cell&&o.transit){droplet(o,now);continue}
-    const key=o.cell||o.coarseKey;let c=cols.get(key);if(!c)cols.set(key,c={n:0,f:0,re:0,im:0});
-    const ph=KIND[o.facts.k].phase+(o.S.g[4]/255-.5)*.5,f=o.fade*share;c.n++;c.f+=f;c.re+=f*Math.cos(ph);c.im+=f*Math.sin(ph)}
-  for(const [key,c] of cols)colony(key,c,now);
-  SIM.resolved=resolved;SIM.colonies=cols.size;
-  for(let i=SIM.drops.length-1;i>=0;i--){const d=SIM.drops[i],age=(now-d.t)/1400;if(age>1){SIM.drops.splice(i,1);continue}
+  // Every Being retains its own world support. Their projected density composes the coarse field.
+  if(SIM.playing||SIM.materialAt==null)SIM.materialAt=now;
+  SIM.ns=0;const counts={w:0,x:0,z:0,y:0};let resolved=0,partial=0,blurred=0;
+  for(const o of SIM.alive){
+    counts[o.facts.k]++;if(o.fade<=0||MODE==='beings')continue;
+    const detail=opticalBody(o,SIM.materialAt,pxOf);
+    if(detail===0)blurred++;else if(detail===1)resolved++;else partial++;
+  }
+  SIM.resolved=resolved;SIM.partial=partial;SIM.blurred=blurred;SIM.colonies=0;
+  SIM.beingSplats=SIM.ns;
+  for(let i=SIM.drops.length-1;i>=0;i--){const d=SIM.drops[i],age=((SIM.materialAt??now)-d.t)/1400;if(age>1){SIM.drops.splice(i,1);continue}
     splat(d.p[0],d.p[1],d.p[2],Math.pow(2,-(d.a.length+BEING_RANKS))*(1.2-age*.5),d.w*Math.min(1,age*6)*(1-age*age),d.ph)}
   SIM.counts=counts;
 }
@@ -517,7 +593,7 @@ function paintGoo({gl,proj,view,model,width,height,dpr,clip=null,exact=false},di
   gl.useProgram(Lr.copy);gl.bindTexture(gl.TEXTURE_2D,Lr.inkTex);gl.uniform1i(Lr.copyTex,0);gl.uniform2f(Lr.copySize,width,height);gl.drawArrays(gl.TRIANGLES,0,3);
   if(clip)gl.disable(gl.SCISSOR_TEST);
   if(diagnostic){gl.canvas.dataset.inkPixels=String(Lr.fw*Lr.fh);
-  gl.canvas.dataset.gooLayer=`${SIM.alive.size} alive · ${SIM.resolved} bodies · ${SIM.colonies} colonies · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;}
+  gl.canvas.dataset.gooLayer=MODE==='beings'?`${SIM.renderBodies?.length??0} class forms · ${SIM.ns} splats`:`${SIM.alive.size} alive · ${SIM.resolved} resolved · ${SIM.partial} mixed · ${SIM.blurred} blurred · ${SIM.ns} splats · ${SIM.perf.upd.toFixed(1)} ms`;}
   return true;
 }
 function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,height,dpr,frame,container,viewRect=null,rect=null}){
@@ -528,17 +604,17 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   const ms3=Math.hypot(model[0],model[1],model[2]),f=proj[5],pxBase=ms3*f*height/2;
   const pxOf=(P,r)=>{const z=model[2]*P[0]+model[6]*P[1]+model[10]*P[2]+model[14];return r*pxBase/Math.max(.05,3.2-z)};
   SIM.pxOf=pxOf;advance(ms);
-  SIM.renderBodies=MODE==='beings'?typeBodies(ms,pxOf):null;
-  SIM.placeStart=SIM.ns;if(MODE==='reef')placeForms(ms);
+  SIM.renderBodies=MODE==='beings'?typeBodies(SIM.materialAt??ms,pxOf):null;
+  if(MODE==='beings')SIM.beingSplats=SIM.ns;SIM.placeStart=SIM.ns;if(MODE==='reef')placeForms(ms);
   const screen=screenFrame(proj,view,model,width/(dpr||1),height/(dpr||1));
   if(CAM.on&&CAM.o){const p=screen(CAM.o.p),r=canvas?.getBoundingClientRect?.();if(p.front)CAM.origin={x:(r?.left||0)+p.x,y:(r?.top||0)+p.y}}
   updateInk(screen,ms,width,height,dpr||1,canvas);
-  if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
-  if(!gl){drawFallback(context2D,screen);camFollow(ms);tickHud();return}
+  if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.opticalBodies=JSON.stringify({mode:MODE,alive:SIM.alive.size,resolved:MODE==='reef'?SIM.resolved:null,partial:MODE==='reef'?SIM.partial:null,blurred:MODE==='reef'?SIM.blurred:null,represented:MODE==='beings'?SIM.renderBodies?.length:SIM.resolved+SIM.partial+SIM.blurred,explicitColonies:0,beingKernels:SIM.beingSplats});canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
+  if(!gl){drawFallback(context2D,screen,dpr||1);camFollow(ms);tickHud();return}
   paintGoo({gl,proj,view,model,width,height,dpr});
   camFollow(ms);
-  if(CAM.on&&CAM.o){const P=CAM.o.cell===''||!CAM.o.cp?CAM.o.p:CAM.o.cp,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
-    const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.cell===''?'body':'colony'} · fade ${CAM.o.fade.toFixed(2)}`}
+  if(CAM.on&&CAM.o){const P=CAM.o.p,M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
+    const c=M(proj,M(view,M(model,[P[0],P[1],P[2],1])));gl.canvas.dataset.gooFollow=`${Math.round((c[0]/c[3]*.5+.5)*width/(dpr||1))},${Math.round((.5-c[1]/c[3]*.5)*height/(dpr||1))} · ${CAM.o.fine>=1?'resolved':CAM.o.fine>0?'mixed':'blurred'} · fade ${CAM.o.fade.toFixed(2)}`}
   else delete gl.canvas.dataset.gooFollow;
   tickHud();if(CAM.on&&performance.now()-(CAM.cardAt||0)>1000){CAM.cardAt=performance.now();camCard()}
 }
@@ -643,7 +719,7 @@ function fitHud(){
 const FOCUS_SPLATS=new Float32Array(MAXS*7);
 function focusTarget(targetId,frame){
   if(frame.fieldId!==id||!INK.canvas)return false;const target=INK.offers.get(targetId),snap=globalThis.SSSDisplayLens?.snapshot?.()?.lens;if(!target||!snap||snap.lock?.id!==targetId||(!target.o&&!INK.pretext))return false;
-  if(target.o&&frame.gl){const old=SIM.sPos,n=SIM.ns;try{SIM.sPos=FOCUS_SPLATS;SIM.ns=0;body(target.o,frame.ms,SIM.pxOf||((p,r)=>r*900));paintGoo({...frame,clip:[(snap.x-(snap.boundX||snap.hx)-frame.rect.left)/frame.rect.width,1-(snap.y+(snap.boundY||snap.hy)-frame.rect.top)/frame.rect.height,(snap.x+(snap.boundX||snap.hx)-frame.rect.left)/frame.rect.width,1-(snap.y-(snap.boundY||snap.hy)-frame.rect.top)/frame.rect.height]},false)}finally{SIM.sPos=old;SIM.ns=n}}
+  if(target.o&&frame.gl){const old=SIM.sPos,n=SIM.ns;try{SIM.sPos=FOCUS_SPLATS;SIM.ns=0;opticalBody(target.o,SIM.materialAt??frame.ms,SIM.pxOf||((p,r)=>r*900));paintGoo({...frame,clip:[(snap.x-(snap.boundX||snap.hx)-frame.rect.left)/frame.rect.width,1-(snap.y+(snap.boundY||snap.hy)-frame.rect.top)/frame.rect.height,(snap.x+(snap.boundX||snap.hx)-frame.rect.left)/frame.rect.width,1-(snap.y-(snap.boundY||snap.hy)-frame.rect.top)/frame.rect.height]},false)}finally{SIM.sPos=old;SIM.ns=n}}
   const c=INK.focusCanvas||(INK.focusCanvas=document.createElement('canvas')),d=frame.dpr||1;if(c.width!==frame.width)c.width=frame.width;if(c.height!==frame.height)c.height=frame.height;const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,c.width/d,c.height/d);
   paintLensWords(ctx,target,snap,INK.canvas.getBoundingClientRect(),frame.ms);
   return [c];
@@ -657,7 +733,7 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
   if(ms-INK.reservedAt>120||!INK.reservedAt){fitHud();INK.reservedAt=ms;INK.reserved=[...(c.parentNode?.querySelectorAll('.crawlerbait-hud-top,.crawlerbait-modes,.crawlerbait-cam-bar,.crawlerbait-cam,.crawlerbait-inspector,.crawlerbait-transport')||[])].map(n=>n.getBoundingClientRect()).filter(r=>r.width>1&&r.height>1).map(r=>({left:r.left-rect.left,right:r.right-rect.left,top:r.top-rect.top,bottom:r.bottom-rect.top}))}
   for(const o of SIM.alive){
     const id='crawlerbait:being:'+o.S.b.id,old=INK.offers.get(id);let point=screen(o.p);
-    if(MODE!=='reef'||o.fade<.15||o.fine<.2||!point.front||point.x<0||point.y<0||point.x>rect.width||point.y>rect.height)point=null;
+    if(MODE!=='reef'||o.fade<.15||(o.fine<.2&&o!==CAM.o&&o.S.b.id!==SIM.lockedId)||!point.front||point.x<0||point.y<0||point.x>rect.width||point.y>rect.height)point=null;
     if(!old&&!point)continue;
     seen.add(id);if(old){Object.assign(old,{o,point});continue}
     const target={o,point};INK.offers.set(id,target);L?.offer?.(id,{kind:'body',foreground:frame=>focusTarget(id,frame),point:()=>{const p=INK.offers.get(id)?.point,r=c.getBoundingClientRect();return p?{x:r.left+p.x,y:r.top+p.y,r:Math.max(7,typePx(-1))}:null},frame:()=>{const t=INK.offers.get(id);return INK.pretext?targetFrame(t):null}});
@@ -688,10 +764,17 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
   if(target){if(paintLensWords(ctx,target,snap,rect,ms))c.dataset.lensBeing=target.o?.S.b.id||snap.lock.id;else delete c.dataset.lensBeing}
   c.dataset.replayBaits=String(baitFold?.root.count||0);
 }
-function drawFallback(ctx,screen){
-  if(!ctx)return;ctx.save();const colonies=new Map();
-  for(const o of SIM.renderBodies||SIM.alive){if(o.cell===null||o.fade<=0)continue;const p=screen(o.cell&&o.cp?o.cp:o.p);if(!p.front)continue;ctx.fillStyle=KIND[o.facts.k].ink;ctx.globalAlpha=o.fade*.7;
-    if(o.cell){if(colonies.has(o.cell))continue;colonies.set(o.cell,true);ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill()}else{const r=Math.max(...[0,1,2].map(i=>{const q=screen(o.p.map((v,j)=>v+(j===i?o.radius:0)));return Math.hypot(q.x-p.x,q.y-p.y)}));if(!Number.isFinite(r))continue;ctx.beginPath();for(let i=0;i<4;i++){const a=i*Math.PI/2+INK.ms*.0003;const x=p.x+Math.cos(a)*r,y=p.y+Math.sin(a)*r;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.fill()}}
+function drawFallback(ctx,screen,renderDpr){
+  if(!ctx)return;ctx.save();
+  const a=SIM.sPos,view=ctx.canvas?.getBoundingClientRect?.(),colors=[KIND.w.ink,KIND.x.ink,KIND.z.ink,KIND.y.ink];
+  for(let i=0;i<(SIM.beingSplats||0);i++){
+    const j=i*7,point=[a[j],a[j+1],a[j+2]],p=screen(point);if(!p.front)continue;
+    const radius=Math.max(.12,SIM.pxOf(point,a[j+3])/(2*renderDpr));
+    if(!Number.isFinite(radius)||view&&(p.x+radius<0||p.y+radius<0||p.x-radius>view.width||p.y-radius>view.height))continue;
+    const band=((Math.round(a[j+5]/(Math.PI*.5))%4)+4)%4;
+    ctx.fillStyle=colors[band];ctx.globalAlpha=Math.min(.87,a[j+4]*.64);
+    ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill();
+  }
   for(let i=SIM.placeStart||0;i<SIM.ns;i++){const at=i*7,a=SIM.sPos,p=screen([a[at],a[at+1],a[at+2]]),q=screen([a[at]+a[at+3]/2.2,a[at+1],a[at+2]]);if(!p.front)continue;const r=Math.hypot(q.x-p.x,q.y-p.y);ctx.fillStyle='#ece5d3';ctx.globalAlpha=.6;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill()}
   ctx.restore();
 }
