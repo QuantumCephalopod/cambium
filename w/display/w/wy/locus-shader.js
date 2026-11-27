@@ -117,7 +117,6 @@ function bodyGeometry(structure,place){
   for(let i=0;i<raw.length;i+=7){for(let j=0;j<3;j++)raw[i+j]*=k}
   return raw;
 }
-function nodeAt(root,path){let n=root;for(const g of path){n=n?.children?.[g];if(!n)return null}return n}
 function shaderContract(shader){
   if(!shader||typeof shader!=='object'||typeof shader.id!=='string'||!shader.id) throw new Error('identity-owned shader required');
   if(typeof shader.fragment!=='string'||!shader.fragment.includes('void main')) throw new Error('shader fragment body missing: '+shader.id);
@@ -178,6 +177,17 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   function container(){
     if(scopeBound()){const v=W.view||'';if((walk.at(-1)||'')!==v)walk=v?[...v].map((_,i)=>v.slice(0,i+1)):[];return v}
     return walk.at(-1)||'';
+  }
+  // Keep the four native directions in their picking order, including empty slots.
+  // A new projection can change a child even when the walked address stays put.
+  let childContainer=null,childGeneration=null,childRecords=[];
+  function localChildren(){
+    const path=container();
+    if(path!==childContainer||structure!==childGeneration){
+      childRecords=N.GENES.map(g=>N.addressRecord(structure,path+g));
+      childContainer=path;childGeneration=structure;
+    }
+    return childRecords;
   }
   let shownFor=null,cells=[],visible=[],cam=null;
   function buildFieldResources(){
@@ -367,7 +377,15 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     return true;
   }
   const geneLabels=[];
-  if(labelHost){labelHost.replaceChildren();for(const g of N.GENES){const n=document.createElement('div');n.className='field-label';n.setAttribute('aria-hidden','true');n.dataset.gene=g;const node=nodeAt(projection.root,g);n.innerHTML=`<span>${g}</span><b>${node?.en||node?.noun||g}</b>`;labelHost.append(n);geneLabels.push(n)}}
+  if(labelHost){
+    labelHost.replaceChildren();
+    for(const gene of N.GENES){
+      const label=document.createElement('div'),prefix=document.createElement('span'),name=document.createElement('b');
+      label.className='field-label';label.setAttribute('aria-hidden','true');label.dataset.gene=gene;label.hidden=true;
+      prefix.textContent=gene;label.append(prefix,name);labelHost.append(label);
+      geneLabels.push({label,name,record:null,language:null});
+    }
+  }
   let selectedPointId='',hoverPointId='',hoverLabelId='',hoverPosition=null,clickContacts=[],down=null,api=null;
   let tooltip=null;
   if(pointRecords.length||typeof shader.snapshot==='function'){
@@ -457,9 +475,9 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   /* Selection is local: only the current container's children can be entered. */
   function hitChild(x,y,rect){
-    const c=container();let best=null;
-    for(const a of structure.addresses){
-      if(a.path.length!==c.length+1||!a.path.startsWith(c))continue;
+    let best=null;
+    for(const a of localChildren()){
+      if(!a)continue;
       const pts=a.tet.map(p=>project(p,rect));
       for(const f of faceIx){const tri=[pts[f[0]],pts[f[1]],pts[f[2]]];if(!pointInTriangle(x,y,...tri))continue;const z=(tri[0].z+tri[1].z+tri[2].z)/3;if(!best||z>best.z)best={path:a.path,z}}
     }
@@ -520,7 +538,31 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     if(notify&&typeof module?.activateFieldPoint==='function')module.activateFieldPoint({point:rec?.spec||null,field:api});
     return rec?.spec||null;
   }
-  function updateLabels(bounds){if(!labelHost||element.hidden)return;const r=bounds||canvas.getBoundingClientRect();for(const n of geneLabels){const a=N.addressRecord(structure,n.dataset.gene);if(!a){n.hidden=true;continue}const p=project(a.point,r);n.hidden=false;n.style.left=p.x+'px';n.style.top=p.y+'px';n.style.opacity=p.z<-.12?'.32':'.82'}}
+  function updateLabels(bounds){
+    if(!labelHost||element.hidden)return;
+    const r=bounds||canvas.getBoundingClientRect(),children=localChildren(),language=W.language||'en';
+    for(let i=0;i<geneLabels.length;i++){
+      const slot=geneLabels[i],label=slot.label,record=children[i];
+      if(record!==slot.record||language!==slot.language){
+        slot.record=record;slot.language=language;
+        const hidden=!record;
+        if(label.hidden!==hidden)label.hidden=hidden;
+        if(record){
+          if(label.dataset.path!==record.path)label.dataset.path=record.path;
+          const text=record.node[language]||record.node.en||record.node.noun||label.dataset.gene;
+          if(slot.name.textContent!==text)slot.name.textContent=text;
+        }else{
+          if(label.dataset.path!==undefined)delete label.dataset.path;
+          if(slot.name.textContent)slot.name.textContent='';
+        }
+      }
+      if(!record)continue;
+      const p=project(record.point,r),opacity=p.z<-.12?'.32':'.82';
+      if(slot.x!==p.x){slot.x=p.x;label.style.left=p.x+'px'}
+      if(slot.y!==p.y){slot.y=p.y;label.style.top=p.y+'px'}
+      if(slot.opacity!==opacity){slot.opacity=opacity;label.style.opacity=opacity}
+    }
+  }
   function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,1.5),w=Math.max(1,Math.floor(r.width*d)),h=Math.max(1,Math.floor(r.height*d));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}return {r,d,w,h}}
   /* GLASS — every occupied HUD surface (see z/zz/display-glass.js) refracts this field.
    * While at least one surface touches this canvas the field is drawn into a multisampled

@@ -379,7 +379,12 @@ feedHandoffWitness().then(()=>console.log('display runtime: address-bounded carr
 {
  const inquiry=boot();inquiry.W.inspect('w');inquiry.emit('sss:enter-body',{from:ids[0],id:ids[1],origin:{x:30,y:40}});
  assert.equal(inquiry.runtime.state.activeIds[0],ids[1]);assert.equal(inquiry.runtime.state.localView,'');assert.equal(inquiry.runtime.state.stack[0].localView,'w');
+ assert.equal(inquiry.runtime.state.activeAddress,'w');
+ assert.equal(inquiry.options.get(ids[0]).localScope,'main');
+ assert.equal(inquiry.options.get(ids[1]).localScope,ids[1]);
+ assert.equal(inquiry.renders.at(-1).path,'','the host mount word cannot become the entered owner’s local path');
  inquiry.key({key:'Escape',preventDefault(){}});assert.equal(inquiry.runtime.state.activeIds[0],ids[0]);assert.equal(inquiry.runtime.state.localView,'w');
+ assert.equal(inquiry.renders.at(-1).path,'w','Back restores the host’s local address');
 }
 
 /* The real runtime withdraws/reoffers a continuing owner during local repaint.

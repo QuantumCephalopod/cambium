@@ -10,7 +10,7 @@ const fragment=name=>`#version 300 es\n// ${name}\nprecision highp float;out vec
 /* The actual renderer is executed; only the browser/GL transport is replaced.
  * Clears obey WebGL write-mask/scissor rules and depth belongs to each target.
  * This catches a masked clear even when the frame has no composite canvases. */
-function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined,foreground=null,presentation=null,labelBox=null}={}){
+function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=false,composite=false,layer=false,preview=false,lens=null,order=['a','b','c','d','e'],tree=root,pointSpecs=null,inspectable=false,snapshot=null,afterDraw=null,fallbackAlpha=undefined,glassEntries=null,glassReference=false,glassParams=null,lensHome=null,bodyPlaceholder=false,fieldShader=null,fieldPalette=undefined,foreground=null,presentation=null,labelBox=null,navigation=N}={}){
   let serial=0,currentProgram=null,currentVAO=null,drawTarget=null,readTarget=null,textureUnit=0,now=0;
   const calls=[],frames=[],queue=[],timers=[],events=[],resources={created:[],deleted:[]},enabled=new Set(),depths=new Map(),values={depth:true,color:[true,true,true,true],clearDepth:1};
   const gl={},constants=['VERTEX_SHADER','FRAGMENT_SHADER','COMPILE_STATUS','LINK_STATUS','ARRAY_BUFFER','FLOAT','DYNAMIC_DRAW','STATIC_DRAW','TRIANGLES','POINTS','COLOR_BUFFER_BIT','DEPTH_BUFFER_BIT','BLEND','DEPTH_TEST','SCISSOR_TEST','SRC_ALPHA','ONE_MINUS_SRC_ALPHA','ONE','FRAMEBUFFER','READ_FRAMEBUFFER','DRAW_FRAMEBUFFER','RENDERBUFFER','COLOR_ATTACHMENT0','DEPTH_ATTACHMENT','RGBA8','DEPTH_COMPONENT24','FRAMEBUFFER_COMPLETE','TEXTURE_2D','TEXTURE0','TEXTURE_BINDING_2D','ACTIVE_TEXTURE','MAX_SAMPLES','TEXTURE_MIN_FILTER','TEXTURE_MAG_FILTER','TEXTURE_WRAP_S','TEXTURE_WRAP_T','LINEAR','CLAMP_TO_EDGE','NEAREST','RGBA','UNSIGNED_BYTE','UNPACK_FLIP_Y_WEBGL','UNPACK_PREMULTIPLY_ALPHA_WEBGL','TEXTURE1','FRAMEBUFFER_BINDING','RENDERBUFFER_BINDING'];
@@ -45,7 +45,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   gl.uniform1fv=(loc,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
   gl.uniform4f=(loc,...value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=value};
   gl.uniformMatrix4fv=(loc,_,value)=>{loc.program.uniforms||={};loc.program.uniforms[loc.name]=Array.from(value)};
-  function element(){const ink={textContent:''};return {hidden:false,dataset:{},style:{setProperty(k,v){this[k]=v}},attributes:{},children:[],append(...nodes){this.children.push(...nodes)},remove(){},replaceChildren(){this.children=[]},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(){return this.children[0]||ink},querySelectorAll(){return this.children}}}
+  function element(tagName){const ink={textContent:''};return {tagName,hidden:false,dataset:{},style:{setProperty(k,v){this[k]=v}},attributes:{},children:[],append(...nodes){this.children.push(...nodes)},remove(){},replaceChildren(...nodes){this.children=nodes},addEventListener(name,fn){this[name]=fn},setAttribute(k,v){this.attributes[k]=v},querySelector(selector){return this.children.find(child=>child.tagName===selector)||this.children[0]||ink},querySelectorAll(){return this.children}}}
   let inkPath=[];
   const ctx2d={beginPath(){inkPath=[]},moveTo(x,y){inkPath.push([x,y])},lineTo(x,y){inkPath.push([x,y])},fill(){calls.push({type:'fill2d',path:inkPath.map(p=>[...p]),style:this.fillStyle})}};
   for(const name of ['rect','clip','setTransform','fillRect','closePath','stroke','save','restore','translate','rotate','strokeRect','arc'])ctx2d[name]=()=>{};
@@ -53,7 +53,7 @@ function fixture({width=1280,height=800,webgl=true,glass=true,host=false,points=
   const canvas=element();Object.assign(canvas,{width,height,getContext:type=>type==='2d'?ctx2d:webgl?gl:null,getBoundingClientRect:()=>({left:0,top:0,width,height})});
   gl.canvas=canvas;
   const hostElement=element(),labelHost=element(),world={orientation:[1,0,0,0],scopeId:'fixture',view:'',restoreHome(){},rotateBy(){},inspect(path){this.view=path},clearInspection(){this.view=''}};
-  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:()=>element(),createElementNS:()=>element()},SSSDisplayNavigation:N,SSSWorldView:world,SSSInterlocutorModules:new Map()};
+  const context={console,performance:{now:()=>now},devicePixelRatio:1,requestAnimationFrame:fn=>queue.push(fn),addEventListener(){},dispatchEvent(e){events.push(e)},setTimeout(fn){timers.push(fn)},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail}},document:{createElement:tag=>element(tag),createElementNS:()=>element()},SSSDisplayNavigation:navigation,SSSWorldView:world,SSSInterlocutorModules:new Map()};
   if(labelBox)context.ResizeObserver=class{constructor(fn){this.fn=fn}observe(target){this.fn([{target,borderBoxSize:[{inlineSize:labelBox.w,blockSize:labelBox.h}]}])}disconnect(){}};
   if(glass){const G=require('../../z/zz/display-glass.js');context.SSSDisplayGlass={...G,enabled:()=>true,rects:(_r,_b,_n,_skip,liquid)=>glassEntries?G.derive(glassEntries.filter(e=>!_skip?.includes(e.id)),{left:0,top:0,width,height},{width,height},liquid):{count:preview||lens?0:1,scale:1,data:new Float32Array(32),readData:new Float32Array(32),inset:8},PARAMS:glassReference?{...G.PARAMS,bevel:0,refract:0,mag:0,halftone:0,shadowK:0,tint:[0,0,0,0]}:{...G.PARAMS,...glassParams}}}
   if(lens!==false&&(preview||lens))context.SSSDisplayLens={foreground:(_id,frame)=>foreground?foreground(frame):null,snapshot:()=>({lens:lens||{x:width/2,y:height/2,hx:2000,hy:2000,ax:0,ay:0,mag:.12},home:typeof lensHome==='function'?lensHome():lensHome})};
@@ -432,6 +432,95 @@ for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,tru
  }
 }
 console.log('PASS — unrelated owner locus/self/reciprocal anchors, ordinary samples and folded centres agree on both field transports');
+
+// Each label names a child of the current container. Its semantic point and
+// the pickable cell geometry stay distinct even when two raw paths share a locus.
+for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){
+  const names=(parent,childBranches={})=>Object.fromEntries(N.GENES.map(gene=>[
+    gene,{noun:parent+' '+gene,children:childBranches[gene]||{}}
+  ]));
+  const tree=(edition)=>({noun:'field',children:names('root',{w:names(edition,{x:names('grain')})})});
+  let offered={root:tree('quartz'),points:[],revision:1},camera=null,matrices;
+  const f=fixture({width,height,webgl,order:[],glass:false,tree:offered.root,
+    snapshot:()=>offered,fieldShader:{id:'strata',fragment:fragment('strata'),focus:()=>camera},
+    afterDraw:frame=>{matrices=frame}});
+  let time=0;
+  function settle(){f.frame(time);time+=650;f.frame(time);time+=16}
+  function clickCell(path){
+    const at=f.api.projectAddressCenter(path);
+    const event={button:0,pointerId:1,clientX:at.x,clientY:at.y,preventDefault(){}};
+    f.canvas.pointermove(event);f.canvas.pointerdown(event);f.canvas.pointerup(event);
+    assert.equal(f.api.container,path,'pointer addresses the indicated child cell');
+    settle();
+  }
+  function assertLabels(parent){
+    assert.equal(f.api.container,parent);
+    const node=[...parent].reduce((n,g)=>n.children[g],offered.root);
+    const rows=f.labels.children.filter(el=>el.className==='field-label'&&!el.hidden);
+    assert.deepEqual(rows.map(el=>el.dataset.path),Object.keys(node.children).map(g=>parent+g));
+    for(const row of rows){
+      const {gene,path}=row.dataset;
+      assert.equal(row.querySelector('span').textContent,gene);
+      const child=node.children[gene];
+      assert.equal(row.querySelector('b').textContent,child[f.world.language]||child.en||child.noun);
+      let v=[...N.cellForPath(path).point,1];
+      for(const matrix of [matrices.model,matrices.view,matrices.proj]){
+        v=[0,1,2,3].map(r=>matrix[r]*v[0]+matrix[4+r]*v[1]+matrix[8+r]*v[2]+matrix[12+r]*v[3]);
+      }
+      const x=(.5+v[0]/v[3]/2)*width,y=(.5-v[1]/v[3]/2)*height;
+      assert(Math.abs(parseFloat(row.style.left)-x)<.002&&Math.abs(parseFloat(row.style.top)-y)<.002,
+        'label is anchored at the current child’s semantic point');
+    }
+  }
+  settle();assertLabels('');
+  clickCell('w');assertLabels('w');
+  const newRoot=tree('basalt');
+  Object.assign(newRoot.children.w.children.z,{en:'Lamella',de:'Lamelle'});
+  offered={root:newRoot,points:[],revision:2};settle();assertLabels('w');
+  f.world.language='de';settle();assertLabels('w');
+  clickCell('wx');assertLabels('wx');
+  clickCell('wxx');assertLabels('wxx');
+  for(const row of f.labels.children.filter(el=>el.className==='field-label')){
+    assert.equal(row.dataset.path,undefined);assert.equal(row.querySelector('b').textContent,'');
+  }
+  assert(f.api.ascend('back'));settle();assertLabels('wx');
+  assert(f.api.ascend('back'));settle();assertLabels('w');
+  camera={id:'followed crystal',attached:true,center:N.cellForPath('x').center,scale:2};
+  const before=f.api.projectAddressCenter('wx');for(let i=0;i<30;i++){f.frame(time);time+=50}
+  const after=f.api.projectAddressCenter('wx');
+  assert(Math.hypot(after.x-before.x,after.y-before.y)>10,'camera actually moved');
+  assertLabels('w');
+  // Host and local field can address the same raw word in independent scopes.
+  camera=null;settle();f.world.scopeId='host';f.world.inspect('w');
+  clickCell('wx');assertLabels('wx');assert.equal(f.world.view,'w');
+  assert(f.api.ascend('back'));settle();assertLabels('w');assert.equal(f.world.view,'w');
+}
+console.log('PASS — current field children, names, anchors, pointer descent and return survive projection replacement and optical focus');
+
+// Hovering a single cell must not enumerate the entire offered population.
+{
+  let scans=0,lookups=0;
+  const navigation={...N,
+    collectStructure(tree){
+      const result=N.collectStructure(tree),records=result.addresses;
+      records[Symbol.iterator]=function(){scans++;return Array.prototype.values.call(this)};
+      return result;
+    },
+    addressRecord(...args){lookups++;return N.addressRecord(...args)}
+  };
+  let tree=atom('sample');
+  for(let rank=0;rank<5;rank++)tree={noun:'stratum',children:Object.fromEntries(N.GENES.map(g=>[g,tree]))};
+  const f=fixture({navigation,tree,glass:false,order:[]});f.frame(0);
+  const p=f.api.projectAddressCenter('x'),event={pointerId:1,clientX:p.x,clientY:p.y};
+  scans=0;lookups=0;
+  for(let t=16;t<=160;t+=16){f.canvas.pointermove(event);f.frame(t)}
+  assert.equal(scans,0,'steady contact scanned the address population');
+  assert(lookups<=10,'drawing the active trace should need at most one indexed lookup per frame');
+  f.canvas.pointerleave();lookups=0;
+  for(let t=176;t<=320;t+=16)f.frame(t);
+  assert.equal(lookups,0,'idle frames rediscovered the same local children');
+  assert.equal(scans,0,'idle frames scanned the address population');
+}
 
 // An unrelated owner opts into sibling context, then actually enters that sibling.
 for(const [width,height] of [[390,844],[1280,800]])for(const webgl of [false,true]){

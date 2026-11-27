@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.31"
+version: "3.32"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -27,6 +27,23 @@ Camera focus is perceptual and distinct:
 The membrane minimap is **not** a generic Philosophy VIEW selector.
 
 so each selected recursive cell is framed as one co-equal fourfold rather than throwing the witness onto an outer vertex.
+
+## MMMM follows the addressed whole
+
+Display inherits the witness-relative lens from shared Cambium, [xyx · Locality](https://drive.google.com/file/d/1FVfEJN9MWEzRg3JF_dpCGwWyq92SvmyA/view). Its public evidence comes from the active owner’s offered anatomy and accepted navigation. At each addressed whole the four horizons have the following meaning.
+
+| Horizon | What the witness can encounter |
+| --- | --- |
+| Meta (+1) | The actual containing whole, where that relationship is known. |
+| Macro (0) | The addressed whole (SELF), its supplied local closure and its realized peers in the same containing whole. |
+| Meso (−1) | The immediate constituents realized within SELF. |
+| Micro (−2) | The realized immediate constituents of those Meso wholes. |
+
+Entering a realized constituent makes it the new Macro. The previous Macro becomes Meta, and the constituent’s own immediate parts become Meso. An unsplit whole has an empty inward horizon. Each locus keeps its identity, raw address in its own scope and inherited CCCC role through every shift.
+
+The field takes its local child labels and selectable child faces from the same current projection and walked container. A pool lends the frontier its owner actually offers. Within a scope, BACK retraces the walked relation. At an independent membrane the encountered owner starts at its own local root and the accepted host frame supplies the return route. Anatomical parentage and closure require evidence from the owner. Philosophy’s local `y` (Becoming) and the global mount `y` (Crawlerbait) illustrate why the scope belongs with the address.
+
+Camera follow, magnification and compass orientation change what is visible. Semantic focus changes when the corresponding inspection, descent or entry is accepted.
 
 ## Generation-local lookup of realized addresses
 
@@ -96,7 +113,7 @@ Address spaces stay distinct across the membrane while passage stays continuous.
 
 ## Descent and ascent — one walked relation at every rank
 
-The witness is always inside exactly one current container: a realized cell of the global field or an organism body floating in one. A container's content is its four children. Content propagates on every split (Cambium wood law, `ua^m ~ ua`), so every organism floats in every cell above its deepest realized address; the view's resolution only decides how finely it is sorted.
+The witness is always inside exactly one current container: a realized cell of the global field or an organism body floating in one. A realized fourfold exposes its immediate children. Content propagates on every split (Cambium wood law, `ua^m ~ ua`), so every organism floats in every cell above its deepest realized address; the view's resolution only decides how finely it is sorted.
 
 - select: only the current container's children can be entered;
 - descend: the container is pushed onto the walked path and the child is framed at its centroid, relatively, with no absolute zoom ceiling; the camera moves there smoothly (~0.33 s), never teleports, and ascent moves back the same way;
