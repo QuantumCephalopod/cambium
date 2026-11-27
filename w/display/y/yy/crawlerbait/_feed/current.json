@@ -25,19 +25,18 @@
   },
   "home": {
     "changed_scope": [
+      "z/render.js",
+      "z/style.css",
+      "z/render.test.cjs",
       "RITUALS/organism/RITUAL.md",
-      "_stomach/NUTRIENT__microscope-zoom-spatial-continuity__20261127.md",
-      "_waste/NUTRIENT__microscope-zoom-spatial-continuity__20261127.md",
-      "_stomach/NUTRIENT__microscope-optics-acceptance__20261127.md",
-      "_waste/NUTRIENT__microscope-optics-acceptance__20261127.md",
-      "_stomach/NUTRIENT__small-carrier-microscope-reach__20261127.md",
-      "_stomach/NUTRIENT__deep-microscope-replay-cost__20261127.md",
-      "_root/crawlerbait-microscope-optics-accepted-20261127.json"
+      "_stomach/NUTRIENT__octahedron-reading-without-lens__20261127.md",
+      "_waste/NUTRIENT__octahedron-reading-without-lens__20261127.md",
+      "_root/crawlerbait-octahedron-reading-return-20261127.json"
     ],
     "delivery_state": "STAGING_OUTCOME_DURABLE_CANONICAL_PROMOTION_SEPARATE",
-    "outcome": "COMPLETED — Crawlerbait adopts the tested fixed-site Reef optics. Its original spatial-continuity encounter and the readability acceptance are spent."
+    "outcome": "COMPLETED — Visitors can read the four authored Reef paragraphs inside the negative octahedron, at their own pace, in English and German. The ordinary Reef retains its opening view and offers a closer reading encounter when the sentence cannot fit."
   },
-  "observed_at_utc": "2026-11-27T17:39:39.967731Z",
+  "observed_at_utc": "2026-11-27T19:25:33.233803Z",
   "owner": "crawlerbait",
   "phenotype": {
     "w": {
@@ -53,11 +52,11 @@
       "noun": "Membrane"
     }
   },
-  "reflected_home_event": "crawlerbait-microscope-optics-accepted-20261127",
+  "reflected_home_event": "crawlerbait-octahedron-reading-return-20261127",
   "rituals": [
     {
       "path": "RITUALS/organism/RITUAL.md",
-      "sha256": "a4401429bfa4c648b981126d8bf28d13db1ad45793c5fd0905e6db401d0b9c55"
+      "sha256": "b471309738c5583b88aa6fe5d324ae64e429d30e1b7d9a100b3f741635a6eaf9"
     }
   ],
   "shell": {
@@ -68,10 +67,10 @@
       "NUTRIENT__deep-microscope-replay-cost__20261127.md",
       "NUTRIENT__small-carrier-microscope-reach__20261127.md"
     ],
-    "waste_direct_count": 48
+    "waste_direct_count": 49
   },
   "substrate_witness": {
     "kind": "git",
-    "source_revision": "84b422a21d76ecfe1a5d673708f1b99568e97e8f"
+    "source_revision": "cda74c525fe415847febf4ae6d6683e4a661e1e4"
   }
 }
