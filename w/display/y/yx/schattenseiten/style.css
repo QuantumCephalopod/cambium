@@ -103,3 +103,10 @@
 .ss-hud-bottom .ss-breadcrumb{align-items:center}
 .ss-work-choices{grid-template-columns:repeat(auto-fit,minmax(min(100%,6.5ch),1fr))}
 .ss-work-choices .ss-action{white-space:nowrap;overflow-wrap:normal;padding-inline:.15em}
+
+.ss-hud-bottom .ss-breadcrumb{inline-size:fit-content;max-inline-size:100%;gap:.15em .4em;padding:.2em}
+.ss-hud-bottom .ss-action,.ss-hud-bottom .ss-hud-flat,.ss-hud-bottom .ss-current{
+ font-size:var(--type-rn1);line-height:1.35;letter-spacing:0;
+ padding:.2em;white-space:normal;word-break:normal;overflow-wrap:normal
+}
+.ss-hud-bottom .ss-hud-flat,.ss-hud-bottom .ss-current{white-space:nowrap}

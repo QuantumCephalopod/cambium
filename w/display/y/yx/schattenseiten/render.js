@@ -267,6 +267,7 @@ const STAGES={
  en:['Forest walk','The first seven images','The first 28 images'],
  de:['Waldspaziergang','Die ersten sieben Bilder','Die ersten 28 Bilder']
 };
+const PATH_STAGES={en:['Forest','7 images','28 images'],de:['Wald','7 Bilder','28 Bilder']};
 function rankTitle(rank){return STAGES[lang()][rank-1]||T[lang()].rank+' '+rank}
 function rowTitle(row){return row===1?T[lang()].forest:'Cluster '+(row-1)}
 function multipleRows(rank,row){return P.works.some(w=>w.rank===rank&&w.row!==row)}
@@ -298,7 +299,7 @@ function updateNavigation(){
  const {content,breadcrumb,rail}=LAST,t=T[lang()];
  content.dataset.detail=String(!!selectedRank);
  breadcrumb.replaceChildren(button(t.overview,returnSheet,!selectedRank));
- if(selectedRank)breadcrumb.append(button(rankTitle(selectedRank),()=>selectRank(selectedRank),!selected&&!selectedRow));
+ if(selectedRank)breadcrumb.append(button(PATH_STAGES[lang()][selectedRank-1]||rankTitle(selectedRank),()=>selectRank(selectedRank),!selected&&!selectedRow));
  if(selectedRow&&multipleRows(selectedRank,selectedRow))breadcrumb.append(button(rowTitle(selectedRow),()=>selectRow(selectedRow),!selected));
  if(selected)breadcrumb.append(el('span','ss-current',selected.id));
  showWork();rail.scrollTop=0;fitPanel();
