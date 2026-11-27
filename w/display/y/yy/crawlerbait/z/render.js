@@ -609,6 +609,7 @@ function afterDraw({gl,context2D,canvas=gl?.canvas,proj,view,model,ms,width,heig
   const screen=screenFrame(proj,view,model,width/(dpr||1),height/(dpr||1));
   if(CAM.on&&CAM.o){const p=screen(CAM.o.p),r=canvas?.getBoundingClientRect?.();if(p.front)CAM.origin={x:(r?.left||0)+p.x,y:(r?.top||0)+p.y}}
   updateInk(screen,ms,width,height,dpr||1,canvas);
+  if(INK.narrating)frameReading({model,proj,view,frame,width:width/(dpr||1),height:height/(dpr||1)});
   if(canvas){canvas.dataset.replayTime=String(Math.round(SIM.simT));canvas.dataset.opticalBodies=JSON.stringify({mode:MODE,alive:SIM.alive.size,resolved:MODE==='reef'?SIM.resolved:null,partial:MODE==='reef'?SIM.partial:null,blurred:MODE==='reef'?SIM.blurred:null,represented:MODE==='beings'?SIM.renderBodies?.length:SIM.resolved+SIM.partial+SIM.blurred,explicitColonies:0,beingKernels:SIM.beingSplats});canvas.dataset.gooBackend=gl?'webgl2':'canvas2d'}
   if(!gl){drawFallback(context2D,screen,dpr||1);camFollow(ms);tickHud();return}
   paintGoo({gl,proj,view,model,width,height,dpr});
@@ -633,12 +634,22 @@ const typePx=rank=>globalThis.SSSDisplayType?.rankPx?.(rank)??16*Math.pow(2,rank
 const typeFont=rank=>`400 ${typePx(rank)}px "SpriteSheet Mono", monospace`;
 function lockedBeing(){const id=globalThis.SSSDisplayLens?.snapshot?.()?.lens?.lock?.id||'';return id.startsWith('crawlerbait:being:')?id.slice(18):null}
 function mountInk(content,dependency,ui){
-  disposeInk();INK.dependency=dependency;INK.ui=ui;const epoch=INK.epoch;
+  disposeInk();delete content.dataset.reading;INK.dependency=dependency;INK.ui=ui;const epoch=INK.epoch;
   const c=INK.retained||(INK.retained=el('canvas','crawlerbait-ink'));c.setAttribute('aria-hidden','true');content.append(c);INK.canvas=c;INK.reader=el('p','crawlerbait-reader');INK.reader.setAttribute('aria-live','polite');content.append(INK.reader);
+  const story=el('section','crawlerbait-narrative');story.tabIndex=0;story.hidden=true;
+  story.setAttribute('aria-label',word('Über Crawlerbait','About Crawlerbait'));
+  story.lang=globalThis.SSSWorldView?.language||'en';
+  for(const paragraph of stories()){
+    const line=el('p','');line.append(el('span','',paragraph));story.append(line);
+  }
+  story.id='crawlerbait-narrative';
+  const open=el('button','crawlerbait-read-in-place');open.type='button';open.append(el('span','',word('Lesen','Read')));
+  open.setAttribute('aria-controls',story.id);open.addEventListener('click',()=>setReading(true));
+  open.hidden=true;content.append(story,open);INK.story=story;INK.openStory=open;INK.storyKey=null;
   if(typeof dependency==='function')import(dependency('@chenglou/pretext','layout.js')).then(m=>{if(epoch===INK.epoch){INK.pretext=m;c.dataset.pretext='ready';INK.prepared.clear();INK.reading=null}}).catch(()=>{if(epoch===INK.epoch)c.dataset.pretext='unavailable'});
   document.fonts?.load?.(typeFont(-1)).then(()=>{if(epoch===INK.epoch){INK.pretext?.clearCache?.();INK.prepared.clear();INK.reading=null}}).catch(()=>{});
 }
-function disposeInk(){if(INK.layout&&INK.ui?.state){INK.ui.state.fields.bottom=INK.layout.base;INK.ui.refresh()}INK.layout=null;for(const id of INK.offers.keys())globalThis.SSSDisplayLens?.withdraw?.(id);INK.offers.clear();INK.prepared.clear();INK.reading=null;INK.canvas?.remove();INK.canvas=null;INK.reader?.remove();INK.reader=null;INK.reserved=[];INK.reservedAt=0;INK.epoch++}
+function disposeInk(){if(INK.layout&&INK.ui?.state){INK.ui.state.fields.bottom=INK.layout.base;INK.ui.refresh()}INK.layout=null;for(const id of INK.offers.keys())globalThis.SSSDisplayLens?.withdraw?.(id);INK.offers.clear();INK.prepared.clear();INK.reading=null;INK.canvas?.remove();INK.canvas=null;INK.reader?.remove();INK.reader=null;INK.story?.remove();INK.story=null;INK.openStory?.remove();INK.openStory=null;INK.storyButton=null;INK.narrating=false;INK.storyKey=null;INK.reserved=[];INK.reservedAt=0;INK.epoch++}
 function screenFrame(proj,view,model,w,h){
   const mul=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
   return P=>{const q=mul(proj,mul(view,mul(model,[...P,1])));return {x:(q[0]/q[3]*.5+.5)*w,y:(.5-q[1]/q[3]*.5)*h,front:q[3]>0}};
@@ -647,6 +658,121 @@ function triangleRows(tri,lh,pad=5,clip=null){
   const rows=[],top=Math.max(clip?.top??-Infinity,Math.min(...tri.map(p=>p.y))),bottom=Math.min(clip?.bottom??Infinity,Math.max(...tri.map(p=>p.y)));
   const span=y=>{const xs=[];for(let i=0;i<3;i++){const a=tri[i],b=tri[(i+1)%3];if(y>=Math.min(a.y,b.y)&&y<Math.max(a.y,b.y))xs.push(a.x+(b.x-a.x)*(y-a.y)/(b.y-a.y))}return xs.sort((a,b)=>a-b)};
   for(let y=top+pad;y+lh<bottom-pad;y+=lh){const a=span(y),b=span(y+lh);if(a.length<2||b.length<2)continue;const x=Math.max(a[0],b[0])+pad,right=Math.min(a.at(-1),b.at(-1))-pad;if(right-x>Math.max(96,typePx(-1)*10))rows.push({x,y,w:right-x})}return rows;
+}
+// Only an outward-facing hole is open to this camera. A row inside the
+// octahedron silhouette alone can still be covered by a positive child.
+function readingBox(hull,safe,reserved,em){
+  if(hull.some(p=>!p.front))return null;
+  const [a,b,c]=hull;
+  if((b.x-a.x)*(c.y-a.y)>=(b.y-a.y)*(c.x-a.x))return null;
+  const pad=em/4;
+  const top=Math.max(safe.y,Math.min(...hull.map(p=>p.y)))+pad;
+  const bottom=Math.min(safe.y+safe.h,Math.max(...hull.map(p=>p.y)))-pad;
+  if(!(bottom>top))return null;
+  const rows=[];
+  // Sixteen subdivisions keep work independent of physical pixel density.
+  for(let i=0;i<=16;i++){
+    const y=top+(bottom-top)*i/16,xs=[];
+    for(let j=0;j<hull.length;j++){
+      const a=hull[j],b=hull[(j+1)%hull.length];
+      if(a.y!==b.y&&y>=Math.min(a.y,b.y)&&y<=Math.max(a.y,b.y))xs.push(a.x+(y-a.y)*(b.x-a.x)/(b.y-a.y));
+    }
+    rows.push({y,left:Math.max(safe.x,Math.min(...xs))+pad,right:Math.min(safe.x+safe.w,Math.max(...xs))-pad});
+  }
+  let best=null,score=0;
+  for(let i=0;i<16;i++)for(let j=i+1;j<=16;j++){
+    const a=rows[i],b=rows[j],height=b.y-a.y;
+    if(height<em*1.4)continue;
+    const left=Math.max(a.left,b.left),right=Math.min(a.right,b.right);
+    if(right-left<em*3)continue;
+    let gaps=[[left,right]];
+    for(const obstacle of reserved){
+      if(a.y>=obstacle.bottom+pad||b.y<=obstacle.top-pad)continue;
+      gaps=gaps.flatMap(([l,r])=>r<=obstacle.left-pad||l>=obstacle.right+pad?[[l,r]]:
+        [[l,Math.min(r,obstacle.left-pad)],[Math.max(l,obstacle.right+pad),r]].filter(([x,z])=>z>x));
+    }
+    for(const [x,end] of gaps){
+      const width=end-x,area=width*height*Math.min(1,width/(em*12));
+      if(width>=em*3&&area>score){score=area;best={x,y:a.y,width,height}}
+    }
+  }
+  return best;
+}
+function setReading(on){
+  if(INK.narrating===on)return;
+  if(on){camSet(false);INK.readKey=null;}
+  INK.narrating=on;INK.storyKey=null;INK.reservedAt=0;
+  if(INK.story?.parentNode)INK.story.parentNode.dataset.reading=String(on);
+  if(INK.storyButton){
+    INK.storyButton.setAttribute('aria-expanded',String(on));
+    INK.storyButton.textContent=on?word('Lesen beenden','Close reading'):word('Riff lesen','Read Reef');
+  }
+  if(on)INK.focusReading=true;
+  else {INK.focusReading=false;INK.storyButton?.focus?.({preventScroll:true})}
+}
+function openFaceBox(points,safe,obstacles,unit){
+  let best=null;
+  // EDGES holds 01,02,03,12,13,23. Each opening has outward winding.
+  for(const indices of [[1,3,0],[0,4,2],[2,5,1],[3,5,4]]){
+    const box=readingBox(indices.map(i=>points[i]),safe,obstacles,unit);
+    if(box&&(!best||box.width*box.height>best.width*best.height))best=box;
+  }
+  return best;
+}
+function frameReading({model,proj,view,frame,width,height}){
+  const path=SIM.container,center=colonyGeom(path).cen,tet=cellIn(V0,path);
+  const safe=INK.ui?.carrier||{x:0,y:0,w:width,h:height},obstacles=INK.storyReserved||[];
+  const em=typePx(0),key=[path,width,height,em,...(globalThis.SSSWorldView?.orientation||[]),
+    safe.x,safe.y,safe.w,safe.h,...obstacles.flatMap(r=>[r.left,r.right,r.top,r.bottom])].join('|');
+  if(INK.readKey===key)return;
+  INK.readKey=key;
+  const vertices=EDGES.map(([a,b])=>mid(tet[a],tet[b])),unit=typePx(-2);
+  let best=1,score=0;
+  // Compare a bounded sequence of dyadic gains at the same addressed centre.
+  // Divide the present gain out before projecting: a spring frame cannot
+  // feed back into its own destination. Rotation or occupancy earns a new fit.
+  for(let rank=0;rank<=8;rank++){
+    const gain=2**(rank/2),ratio=gain*2**path.length/(frame?.scale||1),m=Array.from(model);
+    for(let i=0;i<12;i++)m[i]*=ratio;
+    for(let i=0;i<3;i++)m[12+i]=-(m[i]*center[0]+m[4+i]*center[1]+m[8+i]*center[2]);
+    const screen=screenFrame(proj,view,m,width,height),box=openFaceBox(vertices.map(screen),safe,obstacles,unit);
+    if(!box)continue;
+    const fit=Math.min(em*18,box.width)*Math.min(em*8,box.height)*Math.min(1,box.width/(em*9))*Math.min(1,box.height/(em*5));
+    if(fit>score){best=gain;score=fit;}
+  }
+  INK.readScale=best;
+}
+function placeNarrative(screen,rect){
+  if(MODE!=='reef'){if(INK.story)INK.story.hidden=true;if(INK.openStory)INK.openStory.hidden=true;INK.storyKey=null;return null}
+  const tet=cellIn(V0,SIM.container),vertices=EDGES.map(([a,b])=>mid(tet[a],tet[b])),points=vertices.map(screen);
+  const safe=INK.ui?.carrier||{x:0,y:0,w:rect.width,h:rect.height};
+  const em=typePx(-2),key=[em,safe.x,safe.y,safe.w,safe.h,...points.flatMap(p=>[p.front,p.x,p.y]),
+    ...(INK.storyReserved||[]).flatMap(r=>[r.left,r.right,r.top,r.bottom])].join('|');
+  if(key!==INK.storyKey){
+    INK.storyKey=key;INK.storyBox=openFaceBox(points,safe,INK.storyReserved||[],em);
+    const story=INK.story,box=INK.storyBox;
+    if(story){
+      story.hidden=!box;INK.openStory.hidden=true;
+      if(box){
+        const position={left:box.x+'px',top:box.y+'px',width:box.width+'px',height:box.height+'px'};
+        Object.assign(story.style,position);
+        // Keep the opening sentence whole. When a small face cannot hold it,
+        // the visitor can approach that same physical opening at their own pace.
+        if(!INK.narrating){
+          story.dataset.opening='normal';
+          if(story.firstElementChild.offsetHeight>box.height)story.dataset.opening='compact';
+          if(story.firstElementChild.offsetHeight>box.height){
+            story.hidden=true;INK.openStory.hidden=false;Object.assign(INK.openStory.style,position);
+          }
+        }else{
+          story.dataset.opening='normal';
+          if(story.firstElementChild.offsetHeight>box.height)story.dataset.opening='compact-first';
+          if(INK.focusReading){story.focus({preventScroll:true});INK.focusReading=false}
+        }
+      }
+    }
+  }
+  return INK.storyBox;
 }
 function textPages(text,font,rows){
   const P=INK.pretext;if(!P||!rows.length)return [];
@@ -725,12 +851,22 @@ function focusTarget(targetId,frame){
   return [c];
 }
 function updateInk(screen,ms,w,h,d,fieldCanvas){
-  const view=INK.ui?.bounded?INK.ui.rect('viewport'):null,within=p=>p?.front;
+  const within=p=>p?.front;
   const c=INK.canvas;if(!c)return;INK.ms=ms;if(c.width!==w||c.height!==h){c.width=w;c.height=h}
   c.style.visibility=fieldCanvas?.dataset.composite==='1'?'hidden':'visible';
   const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w/d,h/d);
   const seen=new Set(),L=globalThis.SSSDisplayLens,rect=c.getBoundingClientRect();
-  if(ms-INK.reservedAt>120||!INK.reservedAt){fitHud();INK.reservedAt=ms;INK.reserved=[...(c.parentNode?.querySelectorAll('.crawlerbait-hud-top,.crawlerbait-modes,.crawlerbait-cam-bar,.crawlerbait-cam,.crawlerbait-inspector,.crawlerbait-transport')||[])].map(n=>n.getBoundingClientRect()).filter(r=>r.width>1&&r.height>1).map(r=>({left:r.left-rect.left,right:r.right-rect.left,top:r.top-rect.top,bottom:r.bottom-rect.top}))}
+  if(ms-INK.reservedAt>120||!INK.reservedAt){
+    fitHud();INK.reservedAt=ms;
+    const bounds=selector=>[...(c.parentNode?.querySelectorAll(selector)||[])].map(n=>n.getBoundingClientRect())
+      .filter(r=>r.width>1&&r.height>1).map(r=>({left:r.left-rect.left,right:r.right-rect.left,top:r.top-rect.top,bottom:r.bottom-rect.top}));
+    INK.reserved=bounds('.crawlerbait-hud-top,.crawlerbait-modes,.crawlerbait-cam-bar,.crawlerbait-cam,.crawlerbait-inspector,.crawlerbait-transport');
+    const localReadingSurfaces=INK.narrating?'.crawlerbait-modes,.crawlerbait-hud-block,.crawlerbait-cam-bar,.crawlerbait-cam,.crawlerbait-inspector':'.crawlerbait-hud-rail';
+    INK.storyReserved=bounds('.crawlerbait-hud-header,.crawlerbait-hud-bottom,'+localReadingSurfaces);
+    for(const {rect:r} of globalThis.SSSDisplaySafeArea?.snapshot?.()?.occupied||[]){
+      if(r&&r.width>0&&r.height>0)INK.storyReserved.push({left:r.left-rect.left,right:r.right-rect.left,top:r.top-rect.top,bottom:r.bottom-rect.top});
+    }
+  }
   for(const o of SIM.alive){
     const id='crawlerbait:being:'+o.S.b.id,old=INK.offers.get(id);let point=screen(o.p);
     if(MODE!=='reef'||o.fade<.15||(o.fine<.2&&o!==CAM.o&&o.S.b.id!==SIM.lockedId)||!point.front||point.x<0||point.y<0||point.x>rect.width||point.y>rect.height)point=null;
@@ -745,17 +881,12 @@ function updateInk(screen,ms,w,h,d,fieldCanvas){
   }
   if(MODE==='beings')for(const k of GENES){const p=screen(colonyGeom(k).cen);offerWords('crawlerbait:type:'+k,within(p)?p:null,`${KIND[k].name}. ${word(KIND_DE[k],KIND[k].does)}. ${SIM.typeCounts?.[k]||0} ${word('Besucher an dieser Stelle des Verlaufs','visitors at this point in the record')}.`,KIND[k].ink)}
   // Narrative identity survives a grazing angle: only its world projection can disappear.
-  const tet=cellIn(V0,SIM.container),faces=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]],holes=faces.map(f=>f.map((i,j)=>screen(mid(tet[i],tet[f[(j+1)%3]]))));
-  const safe=view?{x:view.x,y:view.y,w:view.width,h:view.height}:INK.ui?.carrier||{x:0,y:0,w:rect.width,h:rect.height};
-  const rowSets=holes.filter(tri=>tri.every(p=>p.front)).map(tri=>freeRows(triangleRows(tri,typePx(-1)*1.4,5,{top:safe.y,bottom:safe.y+safe.h}).map(r=>{const x=Math.max(r.x,safe.x+10),right=Math.min(r.x+r.w,safe.x+safe.w-10);return {...r,x,w:right-x}}).filter(r=>r.y>=safe.y+10&&r.y+typePx(-1)*1.4<safe.y+safe.h-54&&r.w>Math.max(96,typePx(-1)*10))));
-  rowSets.sort((a,b)=>b.reduce((n,r)=>n+r.w,0)-a.reduce((n,r)=>n+r.w,0));
-  const rows=rowSets[0]||[];
-  const storyPoint=rows.length?{x:rows[0].x+rows[0].w/2,y:rows[0].y+typePx(-1)*.7,front:true}:null;
+  const box=placeNarrative(screen,rect);
+  const storyPoint=box?{x:box.x+box.width/2,y:box.y+box.height/2,front:true}:null;
   const pinned=L?.snapshot?.()?.lens?.lock?.id==='crawlerbait:narrative',storyAnchor=MODE==='reef'&&storyPoint?storyPoint:pinned?INK.offers.get('crawlerbait:narrative')?.point:null;
   offerWords('crawlerbait:narrative',storyAnchor,stories().join(' '),'#ece5d3',true);
   for(const id of INK.offers.keys())if(!seen.has(id)){L?.withdraw?.(id);INK.offers.delete(id)}
   if(!INK.pretext)return;
-  if(MODE==='reef'&&rows.length)paintWords(ctx,stories()[Math.floor(ms/16000)%stories().length],rows,'#ece5d3',ms);
   if(MODE==='beings')for(const k of GENES){const p=screen(colonyGeom(k).cen);if(p.front)paintWords(ctx,`${KIND[k].name} · ${SIM.typeCounts?.[k]||0}. ${word(KIND_DE[k],KIND[k].does)}.`,[{x:p.x-90,y:p.y+35,w:180},{x:p.x-90,y:p.y+55,w:180},{x:p.x-90,y:p.y+75,w:180}],KIND[k].ink,ms)}
   // Kind is behavior, not a reef corner. Its explanatory view owns these labels.
   // Selected place facts live in its single readable context, never as a wall of opaque IDs.
@@ -844,7 +975,7 @@ function prettyTime(value){
   return String(value).replace('T',' ').replace('Z',' UTC');
 }
 let MODE='reef';
-const HUD={legend:null,clock:null,pace:null,paceLabel:null,alive:null,story:null,storyTimer:0,cam:null,camBtn:null};
+const HUD={legend:null,clock:null,pace:null,paceLabel:null,alive:null,cam:null,camBtn:null};
 /* CRAWLERCAM — follows one being with Display's continuous focus: the camera eases after the body (a spring, never
  * Descent steps), attached to its actual position; the walk, pools and selection remain Display's. */
 const CAM={on:false,o:null,target:null,moved:0,origin:null};
@@ -858,7 +989,12 @@ function advance(ms){
 function camFocus({ms}={}){
   if(Number.isFinite(ms))advance(ms);
   if(MODE==='beings')return {center:[0,0,0],scale:1};
-  const o=CAM.on?CAM.o:null;if(!o||!SIM.alive.has(o))return null;
+  const o=CAM.on?CAM.o:null;
+  if(!o||!SIM.alive.has(o)){
+    if(!INK.narrating)return null;
+    const path=globalThis.SSSInterlocutorFields?.get(id)?.container??SIM.container;
+    return {center:colonyGeom(path).cen,scale:(INK.readScale||2)*2**path.length,stiffness:5};
+  }
   const P=o.p,frame=beingFrame(o);
   return {id:'crawlerbait:being:'+o.S.b.id,attached:true,center:[...P],scale:frame.scale,stiffness:3.4};
 }
@@ -872,7 +1008,7 @@ function camPick(dir=1){const l=camCandidates();if(!l.length)return CAM.o&&SIM.a
   const i=CAM.o?pool.indexOf(CAM.o):-1;return i<0?pool[dir>0?0:pool.length-1]:pool[(i+dir+pool.length)%pool.length]}
 // riding with a being means travelling at its pace: engaging the cam slows time to about ×60 (the slider still rules)
 const CAM_PACE=1.8;
-function camEngage(){if(!CAM.on){CAM.on=true;if(SIM.paceLog>CAM_PACE){SIM.paceLog=CAM_PACE;if(HUD.pace)HUD.pace.value=String(CAM_PACE)}}}
+function camEngage(){if(INK.narrating)setReading(false);if(!CAM.on){CAM.on=true;if(SIM.paceLog>CAM_PACE){SIM.paceLog=CAM_PACE;if(HUD.pace)HUD.pace.value=String(CAM_PACE)}}}
 function camSet(on){if(on)camEngage();else CAM.on=false;CAM.target=null;if(on&&(!CAM.o||!SIM.alive.has(CAM.o)))camRide(camPick(1));if(!on)CAM.o=null;camCard()}
 function camFollow(ms){
   if(!CAM.on)return;
@@ -936,12 +1072,6 @@ function lifeParts(projection){
   camCard();
   return {legendBox,camBox,bar};
 }
-function storyLine(host){
-  clearTimeout(HUD.storyTimer);
-  const p=el('p','crawlerbait-note crawlerbait-story','');host.append(p);HUD.story=p;
-  let i=0;const next=()=>{if(HUD.story!==p)return;p.classList.remove('on');HUD.storyTimer=setTimeout(()=>{if(HUD.story!==p)return;p.textContent=stories()[i%stories().length];p.classList.add('on');i++;HUD.storyTimer=setTimeout(next,6200)},700)};
-  next();
-}
 function updatePlaceSummary(path){const n=inspectorHost?.querySelector('.crawlerbait-place-summary');if(!n)return;const t=SIM.life?SIM.life.t0+SIM.simT*1000:Date.parse(lastProjection?.raw_capture_start),v=placeVisits(path,t);n.textContent=`${v.count} ${word('Begegnungen','encounters')} · ${v.beings} ${word('Besucher','visitors')} · ${v.roots.length} ${word('gewachsene Formen','grown forms')}`}
 function renderInspector(route){
   if(!inspectorHost)return;if(route&&inspectorHost.dataset.place===route.path){updatePlaceSummary(route.path);return}inspectorHost.replaceChildren();
@@ -978,8 +1108,11 @@ function render({host,content,projection,ui=null,dependency=null}={}){
   // left — who the reef is and who lives in it; right — the one being you ride with and the bait you chose; bottom-left — time
   const rail=el('div','crawlerbait-hud-rail'),header=el('div','crawlerbait-hud-header');
   header.append(top);content.append(header);if(ui)ui.bind(header,'header');
-  const modes=el('div','crawlerbait-modes');for(const [mode,label]of [['reef',word('Riff','Reef')],['beings',word('Beings','Beings')]]){const button=el('button','crawlerbait-play',label);button.type='button';button.setAttribute('aria-pressed',String(MODE===mode));button.addEventListener('click',()=>{MODE=mode;camSet(false);if(life)life.camBox.hidden=mode!=='reef';if(inspectorHost)inspectorHost.hidden=mode!=='reef';for(const b of modes.children)b.setAttribute('aria-pressed',String(b===button));});modes.append(button)}rail.append(modes);
-  storyLine(rail);
+  const modes=el('div','crawlerbait-modes');for(const [mode,label]of [['reef',word('Riff','Reef')],['beings',word('Beings','Beings')]]){const button=el('button','crawlerbait-play',label);button.type='button';button.setAttribute('aria-pressed',String(MODE===mode));button.addEventListener('click',()=>{MODE=mode;if(INK.narrating)setReading(false);camSet(false);if(life)life.camBox.hidden=mode!=='reef';if(inspectorHost)inspectorHost.hidden=mode!=='reef';for(const b of modes.children)if(b!==INK.storyButton)b.setAttribute('aria-pressed',String(b===button));if(INK.storyButton)INK.storyButton.hidden=mode!=='reef';});modes.append(button)}
+  const readButton=el('button','crawlerbait-play',word('Riff lesen','Read Reef'));readButton.type='button';
+  readButton.setAttribute('aria-controls','crawlerbait-narrative');readButton.setAttribute('aria-expanded','false');
+  readButton.addEventListener('click',()=>setReading(!INK.narrating));readButton.hidden=MODE!=='reef';
+  INK.storyButton=readButton;modes.append(readButton);rail.append(modes);
   const life=Array.isArray(projection.encounters)&&projection.encounters.length?lifeParts(projection):null;
   if(life)rail.append(life.legendBox);
   const side=el('div','crawlerbait-hud-side');
@@ -1001,13 +1134,13 @@ function activateFieldPoint({point}={}){
 function unmount({host,content}={}){
   if(host)host.hidden=true;
   if(content)content.replaceChildren();
-  disposeInk();SIM.lastMs=0;clearTimeout(HUD.storyTimer);CAM.on=false;CAM.o=null;
+  disposeInk();SIM.lastMs=0;CAM.on=false;CAM.o=null;
   inspectorHost=null;crawlerById=new Map();
-  for(const k of Object.keys(HUD))if(k!=='storyTimer')HUD[k]=null;
+  for(const k of Object.keys(HUD))HUD[k]=null;
 }
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,prepareFieldProjection,activateFieldPoint,
+modules.set(id,Object.freeze({id,shader,render,unmount,canEscape:()=>!!INK.narrating,escape:()=>{if(!INK.narrating)return false;setReading(false);return true},fieldProjection,prepareFieldProjection,activateFieldPoint,
   // pure witnesses for tests: the walk law, the life built from a projection, and the frame cost of living it
-  _law:Object.freeze({pointOf,route,buildLife,prepareWalk,buildGrowth,createBaitFold,prefixFacts,publicFacts,triangleRows,textLines,lensLayout,screenFrame,beingFrame,bodySize,buildVisits,resolutionCell,hudPlacement,visibleCell,KIND,
+  _law:Object.freeze({pointOf,route,buildLife,prepareWalk,buildGrowth,createBaitFold,prefixFacts,publicFacts,readingBox,triangleRows,textLines,lensLayout,screenFrame,beingFrame,bodySize,buildVisits,resolutionCell,hudPlacement,visibleCell,KIND,
     simulate({projection,at=0,frames=120,dt=1/60,pace=3.2,container='',changeAt=null,nextContainer=''}){
       SIM.life=buildLife(projection);resetTo(at*SIM.life.seconds);SIM.paceLog=SIM.paceCur=pace;SIM.playing=true;SIM.container=container;
       const pxOf=(P,r)=>r*900;let worst=0,sum=0;

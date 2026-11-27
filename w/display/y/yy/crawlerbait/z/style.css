@@ -59,8 +59,6 @@
 .crawlerbait-hud-block{display:grid;gap:.4rem;pointer-events:auto}
 .crawlerbait-hud-label{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.8rem;color:var(--dim);font-size:var(--type-rn2);text-transform:uppercase;letter-spacing:.16em;padding-bottom:.25rem;border-bottom:1px solid color-mix(in srgb,var(--ink) 12%,transparent)}
 .crawlerbait-hud-label>span{min-inline-size:0;overflow-wrap:anywhere}
-.crawlerbait-story{margin:0;min-height:4.4em;opacity:0;transition:opacity 1.2s;font:italic 300 var(--type-rn1)/1.45 Georgia,"Times New Roman",serif;color:var(--ink)}
-.crawlerbait-story.on{opacity:.9}
 .crawlerbait-legend{display:grid;gap:.18rem}
 .crawlerbait-kind{display:grid;grid-template-columns:5.4rem 4.2rem;gap:.5rem;align-items:baseline;font-size:var(--type-rn1)}
 .crawlerbait-kind b{color:var(--kind);font-weight:500;letter-spacing:.06em}
@@ -109,7 +107,7 @@
 
 /* narrow: one column along the left border; the side panel folds under it */
 @media (max-width:720px){
-  .crawlerbait-hud-through,.crawlerbait-hud-link,.crawlerbait-story{display:none}
+  .crawlerbait-hud-through,.crawlerbait-hud-link{display:none}
   .crawlerbait-pace,.crawlerbait-pace-label,.crawlerbait-dim{display:none}
   .crawlerbait-clock{min-width:0}
 }
@@ -132,9 +130,8 @@
 /* Words share the field camera and enter Display's glass through the same source canvas. */
 .crawlerbait-ink{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .crawlerbait-hud-rail,.crawlerbait-hud-side,.crawlerbait-hud-bottom{z-index:2}
-.crawlerbait-story,.crawlerbait-legend,.crawlerbait-inspector-empty,.crawlerbait-reader{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}
+.crawlerbait-legend,.crawlerbait-inspector-empty,.crawlerbait-reader{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}
 
-.crawlerbait-story{display:block!important}
 
 @media(max-width:720px){.crawlerbait-pace{display:block;flex:0 1 3rem}.crawlerbait-transport{gap:.45rem}.crawlerbait-clock{white-space:nowrap}}
 
@@ -165,3 +162,32 @@
 .crawlerbait-content>.crawlerbait-hud-rail[data-ui-bounded],.crawlerbait-content>.crawlerbait-hud-bottom[data-ui-bounded]{padding:.75rem;pointer-events:auto}
 .crawlerbait-hud-rail .crawlerbait-hud-side{position:static;inline-size:100%;max-inline-size:100%;max-block-size:none;overflow:visible}
 .crawlerbait-hud-bottom[data-ui-bounded] .crawlerbait-transport{inline-size:100%;max-inline-size:100%;min-inline-size:0;box-sizing:border-box}
+
+/* A transparent native reading surface inside the projected octahedron. */
+.crawlerbait-narrative{
+  position:absolute;z-index:1;box-sizing:border-box;pointer-events:auto;touch-action:pan-y;
+  overflow:hidden auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--dim) transparent;
+  color:var(--ink);font:400 var(--type-r0)/1.4 Georgia,"Times New Roman",serif;
+  overflow-wrap:break-word;text-align:start;
+}
+.crawlerbait-narrative[hidden]{display:none}
+.crawlerbait-narrative p{margin:0 0 .7em}
+.crawlerbait-narrative p:last-child{margin:0}
+.crawlerbait-narrative:focus-visible{outline:1px dotted currentColor;outline-offset:-1px}
+
+.crawlerbait-narrative[data-opening="compact"],.crawlerbait-narrative[data-opening="compact-first"] p:first-child{font-size:var(--type-rn1)}
+.crawlerbait-read-in-place{
+  position:absolute;z-index:1;overflow:hidden;padding:0;border:0;background:transparent;
+  color:var(--ink);font:400 var(--type-rn1)/1.4 Georgia,"Times New Roman",serif;
+  text-decoration:underline;text-underline-offset:.15em;cursor:pointer;
+}
+.crawlerbait-read-in-place[hidden]{display:none}
+
+.crawlerbait-narrative p>span,.crawlerbait-read-in-place span{
+  color:#fff9e9;background-color:rgba(12,15,12,.8);
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+}
+
+.crawlerbait-content[data-reading="true"]>.crawlerbait-hud-rail[data-ui-bounded]{
+  pointer-events:none;
+}

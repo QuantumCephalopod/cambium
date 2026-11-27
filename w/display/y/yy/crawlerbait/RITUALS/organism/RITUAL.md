@@ -1,7 +1,7 @@
 ---
 name: crawlerbait
 description: "Local receptor for the independently rooted Crawlerbait site-holon: preserve exact functional web encounters, opaque phenotype-bearing traffic Beings, a same-type Bait population, bounded private sensing, and deliberate post-Tide publication."
-version: "5.21"
+version: "5.22"
 ---
 
 # CRAWLERBAIT SITE-HOLON RITUAL — local root
@@ -198,7 +198,9 @@ Riff/Reef carries actual geography. Beings is a distinct explanatory arrangement
 
 Each earned visit contributes an opaque-genome-shaped unit to its place. Four equal-rank children compose a parent; their complex phases and shape coefficients add. The base-four forest retains every incomplete group, and a prefix query admits no future visit. A place prepares its composition index only on first resolution. Sculptures stay inside the current address cell and become more complex within its bounded span. The small 1/4/7/16 visual derivation is `_root/visit-growth-derivation-20261026.svg`, from actual admitted source events through the real Goo/Ink programs. This is presentation tissue, not a second semantic address tree.
 
-The source narrative remains in the visible empty portions of the selected tetrahedron. Clipped triangle rows bound work to the carrier. The same complete source wording is offered to Display's existing drop. Once contacted, its last actual readable anchor survives a grazing angle; continuation reflows in that one liquid frame. No second visible story panel is introduced.
+At rest, the explanation inhabits an outward-facing triangular opening of the addressed tetrahedron's negative octahedron. The normal Reef keeps its whole frame. Where the complete opening sentence fits, it stays available at its source reading size; a smaller opening offers direct reading contact. The site’s reading control remains reachable when the projection supplies too little exposed area for that contact. Both controls enter the same reading encounter. The four authored paragraphs stay in order in the selected language and the visitor scrolls, touches or keys through them at their own pace. Their ink may have local contrast support. The source words occupy the visible opening clear of the actual local and shared controls.
+
+An explicit reading approach keeps the current tetrahedron’s geometric centroid on Display's optical axis. Crawlerbait chooses among bounded dyadic gains according to the projected open face and actual occupied geometry. Rotation, a changed carrier or a new addressed cell renews that fit. The settled camera gain cannot move its own target. Closing the reading encounter returns the overview or walked cell. The same complete wording remains available to Display’s existing drop; once contacted, its last projected reading anchor survives a grazing angle.
 
 `z/render.js` derives exact address-native forward/reverse changes while constructing the existing birth/collision index. Its generation-local Bait adapter consumes Display's `SSSRecursiveFold` capability; the structural operation no longer has a second live implementation here. One leaf carries the actual source Bait, and each parent sums its four children. Birth/collision indexing, forward/reverse delta order, source identities, Bait counts, labels and the two-rank refinement policy remain here. An edit copies only the affected address spine and shares unchanged siblings. Rewind applies inverse changes through the same operation; it does not rebuild a flat population or retain a catalog of historical roots. Leaf source identity and all source facts remain intact. Empty cells are not Baits, and the ordinary self-child remains inhabited when earned.
 

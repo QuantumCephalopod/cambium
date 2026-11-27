@@ -125,6 +125,16 @@ const whole=law.buildGrowth(projection.routes);for(const r of projection.routes)
 const facts=law.publicFacts([{t:1,a:'w',method:'GET',status:200},{t:86400001,a:'x',method:'GET',status:200},{t:86400002,a:'z',method:'GET',status:404},{t:86400003,a:'y',method:'POST',status:201}]);
 assert.deepEqual(law.prefixFacts(facts,0),{events:0,days:0,baits:0,k:'x'});
 for(const [at,k,events,days]of [[1,'x',1,1],[86400001,'y',2,2],[86400002,'z',3,2],[86400003,'w',4,2]]){const f=law.prefixFacts(facts,at);assert.equal(f.k,k);assert.equal(f.events,events);assert.equal(f.days,days)}
+// The reader fits an outward-facing open triangle and never crosses an occupied surface.
+{
+  const opening=[{x:0,y:0,front:true},{x:0,y:512,front:true},{x:512,y:0,front:true}];
+  const safe={x:0,y:0,w:512,h:512},hud={left:0,right:110,top:0,bottom:512};
+  const box=law.readingBox(opening,safe,[hud],16);
+  assert(box&&box.x>=hud.right&&box.y>=0&&box.width>0&&box.height>0);
+  assert(box.x+box.width+box.y+box.height<512,'text rectangle leaves the negative opening');
+  assert.equal(law.readingBox(opening.toReversed(),safe,[],16),null,'back face cannot host reading ink');
+  assert.equal(law.readingBox(opening,safe,[{left:0,right:512,top:0,bottom:512}],16),null);
+}
 const rows=law.triangleRows([{x:0,y:0},{x:240,y:0},{x:120,y:240}],16);
 assert(rows.length>5);for(const r of rows){assert(r.w>0);assert(r.x>=0&&r.x+r.w<=240)}
 console.log('PASS · stable tissue, eligible self-child, all canonical addresses, temporal births and earned morphology');
@@ -273,6 +283,19 @@ try {
   assert(moduleRef.render({host,content,projection,ui:{bind:(el,name)=>bound.push(name)}}));
   assert.deepStrictEqual(bound,['header','description','timeline'],'selected context created a competing overlay');
   assert.equal(content.querySelector('h1').textContent,'Crawlerbait');
+  const reading=content.querySelector('.crawlerbait-narrative'),readButton=content.querySelector('.crawlerbait-modes').children[2];
+  assert.equal(reading.tabIndex,0);assert.equal(reading.children.length,4);
+  assert.equal(reading.children[0].querySelector('span').textContent,language==='de'?'Jede Anfrage an diese Seite ist eine Begegnung.':'Every request to this site is an encounter.');
+  assert.equal(readButton.attributes['aria-expanded'],'false');readButton.listeners.click();assert(moduleRef.canEscape());
+  assert.equal(readButton.attributes['aria-expanded'],'true');
+  let addressed='';
+  const priorFields=global.SSSInterlocutorFields;
+  global.SSSInterlocutorFields={get:()=>({container:addressed})};
+  try{
+    assert(near(moduleRef.shader.focus().center,N.cellForPath('').center));
+    addressed='wx';assert(near(moduleRef.shader.focus().center,N.cellForPath('wx').center));
+  }finally{global.SSSInterlocutorFields=priorFields}
+  assert(moduleRef.escape());assert(!moduleRef.canEscape());
   const scrub=content.querySelector('.crawlerbait-scrub');scrub.value='400';scrub.listeners.input();
   const before=moduleRef.shader.snapshot({container:''}),modes=content.querySelector('.crawlerbait-modes').children;
   modes[1].listeners.click();assert.equal(moduleRef.shader.snapshot({container:''}).revision,'being-types');
