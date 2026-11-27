@@ -37,7 +37,7 @@ function walk(scales) {
     const actors = [...SIM.alive].filter(o => o.fade > 0);
     assert.equal(actors.length, 2);
     // Optical gates can change across cameras. World walks/contacts cannot.
-    frames.push(actors.map(o => [o.S.b.id,o.dist,Array.from(o.p),o.trail.map(p=>Array.from(p))]));
+    frames.push(actors.map(o => [o.S.b.id,o.dist,Array.from(o.p),o.trail.map(p=>Array.from(p)),Array.from(o.head),o.hot]));
     if (!SIM.playing && scale === 1) {
       coarse = {count:SIM.beingSplats,
         expected:actors.map(o => Array.from(o.p,Math.fround)),
