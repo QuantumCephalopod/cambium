@@ -1,0 +1,46 @@
+{
+  "kind": "HOME",
+  "event_id": "crawlerbait-microscope-optical-prototype-20261127",
+  "organism": "crawlerbait",
+  "entrypoint": "RITUALS/organism/RITUAL.md",
+  "outcome": "EXPERIMENT_STAGED — The Reef prototype keeps body positions on their source walks while the camera resolves each Being's ink. The original microscope-zoom intake remains OPEN for owner review.",
+  "changed_scope": [
+    "z/render.js",
+    "z/microscope.test.cjs",
+    "y/validate.test.py",
+    "_root/crawlerbait-microscope-optical-prototype-20261127.json"
+  ],
+  "delivery_state": "STAGING_OUTCOME_DURABLE_CANONICAL_PROMOTION_SEPARATE",
+  "context": {
+    "continues": "crawlerbait-microscope-isolated-optics-20261127",
+    "intake": "_stomach/NUTRIENT__microscope-zoom-spatial-continuity__20261127.md",
+    "baseline_revision": "5b266fa0bd83590d7469623ec8945055949b6530",
+    "public_generation": "2026-11-27T08:34:40Z",
+    "implementation_revision": "962c6f2f620a59d22b0d5742d6067872e6231b49",
+    "render_sha256": "5f518e5d63d6e33c28400c2fa601900e35bf9a74eb7f5cd152b6f0dff12ed16a",
+    "regression_sha256": "6f95c186c2bdad3c6af6c911874a0ea8e9121b0a87b7d97f943fafa426461838",
+    "act": "Decouple source-space walking and contact from camera resolution. In the WebGL Reef print unresolved material at each Being's own center and blend into its authored anatomy as the projection resolves it. Integrate the microscope regression into Crawlerbait's existing validation.",
+    "witness": {
+      "owner_regression": "Runs the renderer with the shared navigation module. Compares moving and paused walks under different projection sequences, unresolved positions, and hidden density and complex components against authored kernels for all four kinds across fade thresholds, followed and unfollowed. Passed on fork readback. The final test also checks the paused heading and contact heat.",
+      "working_iteration": {
+        "scope": "These runs exercised experimental iterations before the final renderer freeze.",
+        "portal": "At replay 51510 in the ordinary WebGL2 portal, with 104 active and Crawlercam on Prober 5E79, half-opacity detector samples near the source fell from 153 to 10 in the original renderer. An intermediate candidate produced 91 → 154 → 156, then held at 156. Its settled ink framebuffer repeated bit for bit.",
+        "playing_replay": "At the 30% playhead, paceLog 2, 150 steps of 1/60 s at two projection scales (900 and 1800) had the same IDs, waypoints, distances, 3D body and walk positions frame by frame. Each run counted 258 actor/frame advances, with zero waypoint transitions in this sample.",
+        "playing_cpu": "Native JavaScript median step time with 403 active at projection scales 900, 3600 and 14400 measured 5.41 → 5.70, 8.16 → 8.20 and 10.44 → 13.75 ms, original → experimental. The dense/deep sample with 145 active measured 2.86 → 4.80 ms. These observations concern host CPU time."
+      },
+      "frozen_webgl_portal": {
+        "environment": "Normal localhost portal entry, Crawlercam controls, full-data fallback acquisition and Chromium WebGL2 (SwiftShader). The frozen renderer was the single substituted script. All other requests passed through unchanged.",
+        "sample": "Replay second 51510, 104 active Beings, followed Prober 5E79. After zooming in place, the number of readout samples at or above one-half opacity within radius 7 of the tracked origin was 91 → 155 → 156 → 156. Across the whole ink target the count was 1153 → 2569 → 1456 → 1456. At the settled scale 6/104 were optically resolved and the followed Prober itself was still blurred (fade 1.00). This witness measures material retention at its location.",
+        "settled": "The final two whole-target half-opacity masks matched exactly. Five of 43,200 samples differed in an RGBA component. Four alpha values differed, by at most 4/255. Transient sampling depends on frame timing."
+      },
+      "frozen_canvas2d": "At frozen replay second 1931612 and 406 active, Crawlercam enter, hold, exit and Beings-mode round trip retained the replay clock. Overview showed 406 blurred members and 406 Being kernels. Settled follow showed 157 resolved, 24 partial and 225 blurred with 9657 kernels. The recorded 1746 representation changes during approach and exit gave zero camera-induced transits or source-position moves. Beings mode printed four representatives and returning restored 406 blurred Reef members. The shared cell-face fill washed out the settled Canvas2D background.",
+      "frozen_kernel_sweep": "Across 15 magnifications from 1× to 128×, the same 406 frozen body centers had identical digests. Kernel output matched the independent optical reference in count at every scale. All 822,241 component comparisons had a maximum normalized error below 1.23e−7. The followed specimen went from fully blurred to fully detailed, with detail on the same material sites.",
+      "full_artifact": {
+        "build": "The normal Display site-public build produced 135752309 bytes across 20747 files, bundle 3dd905ad837dfd1b.",
+        "check": "The normal artifact check reported pass across 197 Display checks. Crawlerbait reported 722468 checks, four local suites, 23 refusal cases and 275 canonical traffic captures. The address witness and the site-public exact-file check passed. All four normal commands exited 0."
+      }
+    },
+    "open": "The owner can review the microscope feel in the ordinary interaction. The settled Canvas2D background and the higher native CPU cost at dense, deep magnification are open. This experiment supplies no hardware GPU performance measurement."
+  },
+  "home_at_utc": "2026-11-27T17:29:53.095Z"
+}
