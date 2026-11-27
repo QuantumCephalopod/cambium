@@ -173,6 +173,7 @@ def integration(body, capabilities):
         [sys.executable, str(body / 'y/migrate_path_privacy.py'), '--self-test'],
         ['node', str(body / 'z/render.test.cjs'), str(capabilities['recursive_fold']),
          str(capabilities['navigation']), str(capabilities['ui_grid'])],
+        ['node', str(body / 'z/microscope.test.cjs'), str(capabilities['navigation'])],
     ]
     grid_test = """const assert=require('node:assert/strict'),fs=require('node:fs'),G=require(process.argv[1]);
 const manifest=JSON.parse(fs.readFileSync(process.argv[2]+'/site.json'));
