@@ -3,7 +3,7 @@ name: navigation
 description: "Display-local navigation physiology: Population anatomy determines global site targets while Philosophy locally inspects the same recursive field."
 organism: display
 geometry: tetrahedral
-version: "3.32"
+version: "3.33"
 ---
 
 # NAVIGATION RITUAL — display local
@@ -112,6 +112,8 @@ Examples:
 Address spaces stay distinct across the membrane while passage stays continuous. Crawlerbait-local machine-facing routes never become global navigation addresses.
 
 ## Descent and ascent — one walked relation at every rank
+
+The active tetrahedron turns about its three-dimensional centroid. Project that centroid onto the centre of the screen at the settled root and at every settled local rank. Compute the centroid before perspective projection. A declared UI viewport lends its extent for magnification; its location places its UI field. In a composed encounter each independently drawn field uses its own carrier centre. World labels, pointer contacts, Canvas2D and WebGL share the same projection. Descent, return and deliberate source-owned following keep their continuous motion through the same optical axis.
 
 The witness is always inside exactly one current container: a realized cell of the global field or an organism body floating in one. A realized fourfold exposes its immediate children. Content propagates on every split (Cambium wood law, `ua^m ~ ua`), so every organism floats in every cell above its deepest realized address; the view's resolution only decides how finely it is sorted.
 

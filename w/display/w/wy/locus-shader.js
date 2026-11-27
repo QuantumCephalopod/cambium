@@ -142,7 +142,11 @@ function fieldPointRecords(structure,projection){
     const pool=raw.fold===true&&!!addressed&&Number.isInteger(raw.count)&&raw.count>0;
     // An owner may contact the actual address locus rather than an interior sample.
     // Folded populations still represent their containing cell, never a leaf vertex.
-    out.push({spec,path:(addressed||cell).path||'',world:pool||raw.anchor==='cell'&&addressed?[...cell.center]:raw.anchor==='locus'&&addressed?[...addressed.point]:pointInTet(cell.tet,spec),pool});
+    const scale=raw.contactScale;
+    const contactTet=raw.anchor==='cell'&&addressed&&!pool&&Number.isFinite(scale)&&scale>0&&scale<=1
+      ?addressed.tet.map(v=>v.map((n,i)=>addressed.center[i]+(n-addressed.center[i])*scale))
+      :null;
+    out.push({spec,contactTet,path:(addressed||cell).path||'',world:pool||raw.anchor==='cell'&&addressed?[...cell.center]:raw.anchor==='locus'&&addressed?[...addressed.point]:pointInTet(cell.tet,spec),pool});
   }
   return out;
 }
@@ -152,6 +156,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   const trace=createTrace(element);
   const module=globalThis.SSSInterlocutorModules instanceof Map?globalThis.SSSInterlocutorModules.get(id):null;
   shader=shaderContract(shader||module?.shader);
+  const navigateCells=shader.navigation?.cells!==false,drawPointInk=shader.navigation?.pointInk!==false;
   if(typeof shader.preload==='function')shader.preload();
   /* optional identity-owned rest view: {rest:[w,x,y,z], projection:'orthographic'} */
   const VIEW=shader.view&&typeof shader.view==='object'?shader.view:null,ORTHO=VIEW?.projection==='orthographic';let restDone=false;
@@ -182,6 +187,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   // A new projection can change a child even when the walked address stays put.
   let childContainer=null,childGeneration=null,childRecords=[];
   function localChildren(){
+    if(!navigateCells)return childRecords;
     const path=container();
     if(path!==childContainer||structure!==childGeneration){
       childRecords=N.GENES.map(g=>N.addressRecord(structure,path+g));
@@ -198,7 +204,7 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     const stride=7*4;
     for(const [name,size,off] of [['aPos',3,0],['aNormal',3,12],['aRegion',1,24]]){const loc=gl.getAttribLocation(p,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride,off)}
     GL={p,vao,buf,count:0,U:{proj:gl.getUniformLocation(p,'uProj'),view:gl.getUniformLocation(p,'uView'),model:gl.getUniformLocation(p,'uModel'),time:gl.getUniformLocation(p,'uTime'),focus:gl.getUniformLocation(p,'uFocus'),resolution:gl.getUniformLocation(p,'uResolution')},pal:gl.getUniformLocation(p,'uPalette[0]')};
-    if(pointRecords.length||typeof shader.snapshot==='function'){
+    if(drawPointInk&&(pointRecords.length||typeof shader.snapshot==='function')){
       const pp=program(gl,POINT_FRAGMENT,POINT_VERTEX),pvao=gl.createVertexArray(),pbuf=gl.createBuffer();
       gl.bindVertexArray(pvao);gl.bindBuffer(gl.ARRAY_BUFFER,pbuf);
       const pstride=6*4;
@@ -441,19 +447,25 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
   }
   function target(){return follow?{center:follow.c,scale:Math.exp(follow.l)}:currentFrame()}
   let viewCache=null;
-  function viewBox(rect){
-    if(viewCache?.width===rect.width&&viewCache?.height===rect.height)return viewCache.box;
+  function fieldFrame(rect){
+    if(viewCache?.width===rect.width&&viewCache?.height===rect.height)return viewCache;
     const p=typeof presentation==='function'?presentation():null;
-    if(!p||![p.x??p.left,p.y??p.top,p.width,p.height].every(Number.isFinite)||p.width<=0||p.height<=0)return {x:0,y:0,width:rect.width,height:rect.height,bounded:false};
-    const x=Math.max(0,Math.min(rect.width,p.x??p.left)),y=Math.max(0,Math.min(rect.height,p.y??p.top)),box={x,y,width:Math.max(1,Math.min(p.width,rect.width-x)),height:Math.max(1,Math.min(p.height,rect.height-y)),bounded:true};viewCache={width:rect.width,height:rect.height,box};return box;
+    let layout={x:0,y:0,width:rect.width,height:rect.height,bounded:false};
+    if(p&&[p.x??p.left,p.y??p.top,p.width,p.height].every(Number.isFinite)&&p.width>0&&p.height>0){
+      const x=Math.max(0,Math.min(rect.width,p.x??p.left)),y=Math.max(0,Math.min(rect.height,p.y??p.top));
+      layout={x,y,width:Math.max(1,Math.min(p.width,rect.width-x)),height:Math.max(1,Math.min(p.height,rect.height-y)),bounded:true};
+    }
+    // The grid lends its extent. The optical axis goes through the carrier centre.
+    const camera={...layout,x:(rect.width-layout.width)/2,y:(rect.height-layout.height)/2};
+    viewCache={width:rect.width,height:rect.height,layout,camera};return viewCache;
   }
+  function viewBox(rect){return fieldFrame(rect).camera}
   function fieldProjectionMatrix(rect){
-    const b=viewBox(rect),span=b.bounded?Math.min(b.width,b.height):b.height,stretch=b.height/Math.max(1,span),half=3.2*Math.tan(Math.PI/6.6)*stretch;
-    const P=ORTHO?orthographic(half,b.width/b.height,.1,20):perspective(2*Math.atan(Math.tan(Math.PI/6.6)*stretch),b.width/b.height,.1,20);
-    if(!b.bounded)return P;const sx=b.width/rect.width,sy=b.height/rect.height,tx=(2*b.x+b.width)/rect.width-1,ty=1-(2*b.y+b.height)/rect.height;
-    for(let c=0;c<4;c++){P[c*4]=sx*P[c*4]+tx*P[c*4+3];P[c*4+1]=sy*P[c*4+1]+ty*P[c*4+3]}return P;
+    const b=viewBox(rect),span=b.bounded?Math.min(b.width,b.height):rect.height;
+    const tangent=Math.tan(Math.PI/6.6)*rect.height/Math.max(1,span),aspect=rect.width/rect.height;
+    return ORTHO?orthographic(3.2*tangent,aspect,.1,20):perspective(2*Math.atan(tangent),aspect,.1,20);
   }
-  function project(point,rect){const b=viewBox(rect),t=target(),q=qRot(W.orientation,sub(point,t.center)),scale=(b.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=((b.bounded?Math.min(b.width,b.height):b.height)/2)/Math.tan(Math.PI/6.6);return {x:b.x+b.width/2+q[0]*scale*f/z,y:b.y+b.height/2-q[1]*scale*f/z,z:q[2],front:z>0};}
+  function project(point,rect,t=target()){const b=viewBox(rect),q=qRot(W.orientation,sub(point,t.center)),scale=(b.width<560?1.42:1.75)*t.scale,camZ=3.2,z=ORTHO?camZ:camZ-q[2]*scale,f=((b.bounded?Math.min(b.width,b.height):b.height)/2)/Math.tan(Math.PI/6.6);return {x:b.x+b.width/2+q[0]*scale*f/z,y:b.y+b.height/2-q[1]*scale*f/z,z:q[2],front:z>0,clipW:z};}
   function pointInTriangle(x,y,a,b,c){
     const area=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);
     const p={x,y},s1=area(a,b,p),s2=area(b,c,p),s3=area(c,a,p);
@@ -494,15 +506,57 @@ function create({id,element,canvas,labelHost,projection,palette,shader,inspectab
     for(const v of N.V0){const q=project(v.map((x,j)=>B.pos[j]+x*B.place.k),r);ext=Math.max(ext,Math.hypot(q.x-c.x,q.y-c.y))}
     return {id:bodyId,x:c.x,y:c.y,z:c.z,r:ext,width:r.width,height:r.height};
   }
+  // A material contact uses the front surface facing the pointer, including when
+  // several works overlap after rotation. clipW enables perspective-correct depth.
+  function surfaceDepth(x,y,vertices){
+    let front=-Infinity;
+    for(const [i,j,k] of faceIx){
+      const a=vertices[i],b=vertices[j],c=vertices[k];
+      if(!a.front||!b.front||!c.front)continue;
+      const area=(b.y-c.y)*(a.x-c.x)+(c.x-b.x)*(a.y-c.y);
+      if(Math.abs(area)<1e-9)continue;
+      const u=((b.y-c.y)*(x-c.x)+(c.x-b.x)*(y-c.y))/area;
+      const v=((c.y-a.y)*(x-c.x)+(a.x-c.x)*(y-c.y))/area,w=1-u-v;
+      if(u<0||v<0||w<0)continue;
+      const ua=u/a.clipW,vb=v/b.clipW,wc=w/c.clipW;
+      front=Math.max(front,(ua*a.z+vb*b.z+wc*c.z)/(ua+vb+wc));
+    }
+    return front;
+  }
+  // The projected footprint stays put for as long as the camera and carrier do.
+  let tileView=null;
+  function tileFrame(rect){
+    const camera=target(),box=viewBox(rect);
+    const key=[rect.width,rect.height,box.x,box.y,box.width,box.height,...W.orientation,...camera.center,camera.scale];
+    if(!tileView||!key.every((value,i)=>value===tileView.key[i])){
+      tileView={key,camera,shapes:new WeakMap()};
+    }
+    return tileView;
+  }
   function hitPoint(x,y,rect){
-    let best=null;
+    let best=null,frontTile=null,frame=null;
     for(const rec of visible){
+      if(rec.contactTet){
+        frame??=tileFrame(rect);
+        let shape=frame.shapes.get(rec);
+        if(!shape){
+          const vertices=rec.contactTet.map(v=>project(v,rect,frame.camera));
+          const xs=vertices.map(v=>v.x),ys=vertices.map(v=>v.y);
+          shape={vertices,left:Math.min(...xs),right:Math.max(...xs),top:Math.min(...ys),bottom:Math.max(...ys)};
+          frame.shapes.set(rec,shape);
+        }
+        if(x<shape.left||x>shape.right||y<shape.top||y>shape.bottom)continue;
+        const depth=surfaceDepth(x,y,shape.vertices);
+        if(depth!==-Infinity&&(!frontTile||depth>frontTile.depth)){
+          frontTile={rec,depth,p:project(rec.world,rect,frame.camera)};
+        }
+        continue;
+      }
       const p=project(rec.world,rect),radius=rec.spec.kind==='holon'?14:10,d=Math.hypot(x-p.x,y-p.y);
       if(d<radius&&(!best||d<best.d||(d===best.d&&p.z>best.p.z)))best={rec,d,p};
     }
-    return best;
+    return best||frontTile;
   }
-  // Hover, click and empty-space return all use the very same precedence.
   function contactAt(x,y,rect){
     const point=hasPoints?hitPoint(x,y,rect):null;if(point)return {kind:'point',point};
     const body=hitBody(x,y,rect);if(body)return {kind:'body',id:body};
@@ -868,7 +922,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     gl.useProgram(PG.p);gl.uniformMatrix4fv(PG.U.proj,false,proj);gl.uniformMatrix4fv(PG.U.view,false,view);gl.uniformMatrix4fv(PG.U.model,false,mdl);gl.uniform1f(PG.U.pointScale,d);gl.uniform3fv(PG.pal,new Float32Array(colors.flat()));gl.bindVertexArray(PG.vao);gl.drawArrays(gl.POINTS,0,PG.count);
   }
   function drawPoints2D(r){
-    if(!ctx||!visible.length)return;
+    if(!drawPointInk||!ctx||!visible.length)return;
     const ordered=visible.map(rec=>({rec,p:project(rec.world,r)})).sort((a,b)=>a.p.z-b.p.z);
     for(const {rec,p} of ordered){
       const hot=rec.spec.id===selectedPointId||rec.spec.id===hoverPointId,c=colors[geneIndex[rec.spec.gene]??0],rgb=c.map(v=>Math.round(v*255)).join(',');
@@ -1091,7 +1145,7 @@ precision highp float;uniform sampler2D uSrc;uniform vec2 uRes;out vec4 o;void m
     });
   }
   requestAnimationFrame(draw);
-  api=Object.freeze({prepareFrame,presentationRect:()=>viewBox(canvas.getBoundingClientRect()),
+  api=Object.freeze({prepareFrame,presentationRect:()=>fieldFrame(canvas.getBoundingClientRect()).layout,
     id,shaderId:shader.id,element,canvas,get projection(){return projection},palette,inspectable,draggable,interactive:inspectable,localScope,
     selectPoint,projectAddressCenter,projectBody,get container(){return container()},approachBody(bodyId){const B=BODIES.get(bodyId);if(!B?.active)return false;cam={from:currentFrame(),to:{center:[...B.pos],scale:1/B.place.k},start:performance.now()};return true},arriveFrom(place,bodyId){const B=place&&bodyId&&BODIES.get(bodyId),c=B?.pos||place?.center;cam={from:place?{center:[...c],scale:1/place.k}:currentFrame(),to:frameFor(container()),start:performance.now()}},get walk(){return [...walk]},descendTo,ascend,
     hitAddressFace(clientX,clientY){const r=canvas.getBoundingClientRect();return hitFace(clientX-r.left,clientY-r.top,r)},

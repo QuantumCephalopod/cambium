@@ -553,12 +553,29 @@ console.log('PASS — independently lent target draw, carrier ownership and with
 
 {
  const M=(m,v)=>[0,1,2,3].map(r=>m[r]*v[0]+m[4+r]*v[1]+m[8+r]*v[2]+m[12+r]*v[3]);
- for(const [width,height]of [[390,844],[1280,800]])for(const webgl of [false,true]){
-  const box={x:width*.05,y:height*.25,width:width*.4,height:height*.5},f=fixture({width,height,webgl,glass:false,order:[],presentation:()=>box});f.frame(0);
-  const p=f.api.projectAddressCenter(''),b=f.api.presentationRect();assert.equal(p.x,box.x+box.width/2);assert.equal(p.y,box.y+box.height/2);assert(b.bounded);
-  if(webgl){const draw=f.frames[0].find(c=>c.model&&c.proj),point=N.cellForPath('w').center,v=M(draw.proj,M(draw.view,M(draw.model,[...point,1]))),actual=f.api.projectAddressCenter('w');assert(Math.abs((v[0]/v[3]*.5+.5)*width-actual.x)<.001);assert(Math.abs((.5-v[1]/v[3]*.5)*height-actual.y)<.001)}
+ for(const [width,height]of [[390,844],[1280,800]])for(const webgl of [false,true])for(const projection of ['perspective','orthographic']){
+  const box={x:width*.05,y:height*.25,width:width*.4,height:height*.5};
+  let frame;
+  const f=fixture({width,height,webgl,glass:false,order:[],presentation:()=>box,
+    fieldShader:{id:'centroid',fragment:fragment('centroid'),view:{projection}},afterDraw:args=>{frame=args}});
+  f.world.orientation=[Math.cos(.31),Math.sin(.31),0,0];
+  function check(path){
+    const layout=f.api.presentationRect(),camera=frame.viewRect;
+    assert.equal(layout.x,box.x);assert.equal(layout.y,box.y);
+    assert.equal(camera.width,box.width);assert.equal(camera.height,box.height);
+    assert.equal(camera.x+camera.width/2,width/2);assert.equal(camera.y+camera.height/2,height/2);
+    const centroid=N.centroid(N.cellTet(path)),v=M(frame.proj,M(frame.view,M(frame.model,[...centroid,1])));
+    assert(Math.abs(v[0]/v[3])<1e-6&&Math.abs(v[1]/v[3])<1e-6,'3D centroid missed the optical axis');
+    const p=f.api.projectAddressCenter(path);assert(Math.abs(p.x-width/2)<.001&&Math.abs(p.y-height/2)<.001);
+    // The ordinary pick/label projection agrees with the actual rendered matrix away from its origin too.
+    const other='x',q=M(frame.proj,M(frame.view,M(frame.model,[...N.cellForPath(other).center,1]))),hit=f.api.projectAddressCenter(other);
+    assert(Math.abs((q[0]/q[3]*.5+.5)*width-hit.x)<.001&&Math.abs((.5-q[1]/q[3]*.5)*height-hit.y)<.001);
+  }
+  f.frame(0);check('');
+  assert(f.api.descendTo('w','centroid-witness'));f.frame(1);f.frame(500);check('w');
+  assert(f.api.ascend('centroid-witness'));f.frame(501);f.frame(1000);check('');
  }
- console.log('PASS — bounded viewfocus shares actual source projection/camera/pointer geometry on both carriers and backends');
+ console.log('PASS — rotated root and descended 3D cell centroids stay at screen center across layouts, transports and lenses');
 }
 
 {
@@ -649,3 +666,21 @@ console.log('PASS — prepared return refuses context loss/incomplete targets an
  assert(restored&&restored.vao!==gpuInk.vao,'restored optics reused an invalid vertex array');
 }
 console.log('PASS — active loss preserves encounter; failed owner repaint stays hidden until successful same-field retry');
+
+// Physical cells can support artworks whose own points are the only destinations.
+for(const webgl of [true,false]){
+  const f=fixture({webgl,order:[],fieldShader:{id:'sheet',fragment:fragment('sheet'),navigation:{cells:false,pointInk:false}},
+    pointSpecs:[{id:'inner',path:'w',gene:'w',kind:'work',context:true,anchor:'cell',contactScale:.72},
+      {id:'print',path:'w',gene:'w',kind:'work',context:true,anchor:'cell',contactScale:.94}]});
+  f.frame(0);
+  function contact(path,dx=0){
+    const {x,y}=f.api.projectAddressCenter(path);
+    const event={button:0,pointerId:3,clientX:x+dx,clientY:y,preventDefault(){}};
+    f.canvas.pointermove(event);f.canvas.pointerdown(event);f.canvas.pointerup(event);
+  }
+  assert(f.labels.children.filter(el=>el.className==='field-label').every(el=>el.hidden));
+  contact('x');assert.equal(f.api.container,'');assert.equal(f.api.selectedPointId,'');
+  assert(!f.frames[0].some(call=>call.type==='draw'&&call.mode===f.gl.POINTS||call.type==='point2d'));
+  contact('w',26);assert.equal(f.api.selectedPointId,'print');assert.equal(f.api.container,'');
+}
+console.log('PASS — artwork contacts preserve support geometry without exposing its cells as destinations');
