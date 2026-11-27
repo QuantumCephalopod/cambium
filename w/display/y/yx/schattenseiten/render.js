@@ -12,7 +12,7 @@ if(!RH)throw new Error('Display representation handoff physiology required');
  * cut from (free in row 1, which has none). The first display line stays free. All slots are the same size: the seeds are
  * conceptually the biggest, so the recursion's scale does not rank them. Nothing floats; each shadow rests in its leaf,
  * so that seen along the axis the whole is one flat picture and only turning it shows the tetrahedra. */
-let P=null,selected=null,selectedRow=null,panel=null,byId=new Map(),SIDE_BASE=null,VIEW='still';
+let P=null,selected=null,selectedRow=null,selectedRank=null,panel=null,byId=new Map(),VIEW='still';
 
 /* Display's own cell geometry: the four corners of a cell, and the cell toward one corner */
 const geometry=globalThis.SSSDisplayNavigation;
@@ -20,12 +20,13 @@ if(!geometry?.cellTet)throw new Error('Display cell geometry required');
 const {V0,GENES,cellTet:cellFor}=geometry;
 
 /* the sheet as geometry: G[line][column], read top to bottom, left to right */
+const TILE_SCALE=.94;
 const SHEET=(()=>{
   const leaves=[];
   for(const a of GENES)for(const b of GENES)for(const c of GENES){
     const path=a+b+c,t=cellFor(path),world=[0,1,2].map(k=>t.reduce((s,v)=>s+v[k],0)/4);
     const edge=Math.hypot(...[0,1,2].map(k=>t[0][k]-t[1][k]));
-    leaves.push({path,world,size:edge/(2*Math.SQRT2)*.94});
+    leaves.push({path,world,size:edge/(2*Math.SQRT2)*TILE_SCALE});
   }
   leaves.sort((p,q)=>q.world[1]-p.world[1]);           // top to bottom
   const G=[];for(let r=0;r<8;r++)G.push(leaves.slice(r*8,r*8+8).sort((p,q)=>p.world[0]-q.world[0]));
@@ -42,11 +43,16 @@ function fieldProjection(projection={}){
   BODY.list=[];
   (projection.works||[]).forEach(w=>{
     const r=w.row-1,displayRow=r+1,cell=SHEET[displayRow]?.[seen[r]++];if(!cell||seen[r]>7)return;
-    if(w.cluster_positive&&!clustered.has(r)){clustered.add(r);const c=SHEET[displayRow][7];noun.set(c.path,'Cluster '+(r));BODY.list.push({kind:'cluster',row:r,src:w.cluster_positive,world:c.world,size:c.size})}
+    if(w.cluster_positive&&!clustered.has(r)){
+      clustered.add(r);const c=SHEET[displayRow][7],label='Cluster '+r;
+      noun.set(c.path,label);
+      points.push(Object.freeze({id:'cluster:'+r,path:c.path,gene:c.path[0],kind:'cluster',context:true,anchor:'cell',contactScale:TILE_SCALE,label,meta:'',row:w.row}));
+      BODY.list.push({kind:'cluster',row:r,rank:w.rank,src:w.cluster_positive,world:c.world,size:c.size});
+    }
     noun.set(cell.path,w.id);
-    const p=Object.freeze({id:'work:'+w.id,gene:cell.path[0],path:cell.path,kind:'work',anchor:'cell',label:w.id,meta:w.id,work:w});
+    const p=Object.freeze({id:'work:'+w.id,gene:cell.path[0],path:cell.path,kind:'work',context:true,anchor:'cell',contactScale:TILE_SCALE,label:w.id,meta:'',work:w});
     points.push(p);
-    BODY.list.push({p,work:w,row:r,src:w.still,world:cell.world,size:cell.size});
+    BODY.list.push({p,work:w,row:r,rank:w.rank,src:w.still,world:cell.world,size:cell.size});
   });
   if(selected)selected=byId.get(selected.id)||null;
   // the tree is the sheet's own address space: a full depth-three split; only the named slots carry a noun
@@ -63,8 +69,9 @@ const freeze=node=>{for(const g of Object.keys(node.children||{}))freeze(node.ch
 /* ============ field: the host's own environment; shadows rest on it ============ */
 const shader={
   id:'shader:organism:schattenseiten',
+  navigation:Object.freeze({cells:false,pointInk:false}),
   clear:[0.93,0.925,0.91,1],
-  fallbackAlpha:.10,
+  fallbackAlpha:0,
   /* the rest view: along the shadow axis, parallel projection — a tetrahedron is then a square and everything is flat */
   view:Object.freeze({rest:Object.freeze([1,0,0,0]),projection:'orthographic'}),
   state:Object.freeze({blend:true,depthTest:true,depthWrite:false}),
@@ -86,15 +93,9 @@ void main(){vec3 n=normalize(vN);float lit=step(0.,dot(n,normalize(vec3(-.35,.6,
   }),
   fragment:`#version 300 es
 precision highp float;
-in vec3 vN;in vec3 vW;in float vRegion;
-uniform float uFocus;
-out vec4 outColor;
-void main(){
-  vec3 n=normalize(vN);vec3 eye=normalize(vec3(0.,0.,3.2)-vW);
-  float fres=pow(1.-abs(dot(n,eye)),1.6);
-  float sel=(uFocus<-.5||abs(vRegion-uFocus)<.2)?1.:.5;
-  outColor=vec4(vec3(.08),(.02+.10*fres)*sel);
-}`
+in vec3 vN;in float vRegion;uniform vec3 uPalette[4];out vec4 outColor;
+void main(){outColor=vec4(uPalette[int(clamp(vRegion,0.,3.))]*abs(vN.z),0.);}`
+
 };
 
 /* ============ bodies: one tetrahedron per shadow, the shadow on it ============
@@ -181,13 +182,13 @@ function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=t
   gl.activeTexture(gl.TEXTURE0);const texture=gl.getParameter(gl.TEXTURE_BINDING_2D_ARRAY);
   try{
     const B=new Float32Array(64*4);BODY.list.forEach((b,i)=>B.set([...b.world,b.size],i*4));
-    const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));if(high){BODY.last=ms;BODY.dim+=((selected||selectedRow?1:0)-BODY.dim)*(1-Math.exp(-dt*4))}
+    const dt=Math.min(.1,Math.max(0,(ms-BODY.last)*.001));if(high){BODY.last=ms;BODY.dim+=((selectedRank?1:0)-BODY.dim)*(1-Math.exp(-dt*4))}
     gl.disable(gl.SCISSOR_TEST);gl.depthMask(true);if(clearDepth){gl.clearDepth(1);gl.clear(gl.DEPTH_BUFFER_BIT)}gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
     for(const size of (high?[64,512]:[64])){
       const {record,L}=tier(gl,size);gl.useProgram(record.p);gl.bindVertexArray(record.vao);
       gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uProj'),false,proj);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uView'),false,view);gl.uniformMatrix4fv(gl.getUniformLocation(record.p,'uModel'),false,model);
       gl.uniform4fv(gl.getUniformLocation(record.p,'uB'),B);gl.uniform1fv(gl.getUniformLocation(record.p,'uReady'),L.ready);
-      gl.uniform1i(gl.getUniformLocation(record.p,'uHot'),high&&selected?BODY.list.findIndex(b=>b.work===selected):-1);const rowIndices=high&&selectedRow?BODY.list.flatMap((b,i)=>b.row===selectedRow-1?[i]:[]):[];gl.uniform2f(gl.getUniformLocation(record.p,'uRow'),rowIndices.length?Math.min(...rowIndices):-1,rowIndices.length?Math.max(...rowIndices):-1);gl.uniform1f(gl.getUniformLocation(record.p,'uDim'),high?BODY.dim:0);
+      gl.uniform1i(gl.getUniformLocation(record.p,'uHot'),high&&selected?BODY.list.findIndex(b=>b.work===selected):-1);const rowIndices=high&&selectedRank?BODY.list.flatMap((b,i)=>inSelection(b)?[i]:[]):[];gl.uniform2f(gl.getUniformLocation(record.p,'uRow'),rowIndices.length?Math.min(...rowIndices):-1,rowIndices.length?Math.max(...rowIndices):-1);gl.uniform1f(gl.getUniformLocation(record.p,'uDim'),high?BODY.dim:0);
       gl.uniform4f(gl.getUniformLocation(record.p,'uClip'),lens?(lens.x-rect.left)*dpr:0,lens?(rect.height-(lens.y-rect.top))*dpr:0,lens?lens.r*dpr:0,lens?1:0);
       gl.bindTexture(gl.TEXTURE_2D_ARRAY,L.tex);gl.uniform1i(gl.getUniformLocation(record.p,'uImg'),0);
       gl.colorMask(false,false,false,false);gl.depthFunc(size===64?gl.LESS:gl.LEQUAL);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,6,BODY.list.length);
@@ -197,12 +198,48 @@ function drawSheet({gl,proj,view,model,ms,lens=null,rect=null,dpr=1,clearDepth=t
     gl.bindTexture(gl.TEXTURE_2D_ARRAY,texture);gl.activeTexture(active);gl.useProgram(program);gl.bindVertexArray(vao);gl.depthMask(depth);gl.colorMask(...color);gl.depthFunc(func);gl.clearDepth(clear);gl.blendFuncSeparate(...blend);for(const [k,on] of flags)on?gl.enable(k):gl.disable(k);
   }
 }
-function afterDraw(args){if(!ENTERED)return;BODY.viewport=args.viewRect||args.rect;entryGL=args.gl;ensureTier(64);ensureTier(512);drawSheet(args,true)}
+// Use the same four corners, source UVs and camera as the textured GPU sheet.
+const faces=[[0,1,2],[1,2,3],[2,3,0],[3,0,1]],uv=[[1,0],[0,1],[0,0],[1,1]];
+function drawSheet2D({context2D:ctx,model,view,proj,rect}){
+ if(!ctx||!rect)return;
+ const mul=(m,v)=>[0,1,2,3].map(i=>m[i]*v[0]+m[i+4]*v[1]+m[i+8]*v[2]+m[i+12]*v[3]);
+ const triangles=[];
+ for(const b of BODY.list){
+   const ready=MEDIA.get(512).get(cacheKey(b.src,512)),low=MEDIA.get(64).get(cacheKey(b.src,64));
+   const image=ready?.status==='ready'?ready.value:low?.status==='ready'?low.value:null;
+   if(!image)continue;
+   const vertices=V0.map(v=>{const point=b.world.map((x,i)=>x+v[i]*Math.sqrt(3)*b.size);
+    const clip=mul(proj,mul(view,mul(model,[...point,1])));return {x:(1+clip[0]/clip[3])*rect.width/2,y:(1-clip[1]/clip[3])*rect.height/2,z:clip[2]/clip[3]}});
+   const dimmed=selected?b.work!==selected:selectedRank&&!inSelection(b);
+   const alpha=dimmed ? .12 : 1;
+   for(const indices of faces){
+     const points=indices.map(i=>vertices[i]),depth=points.reduce((sum,p)=>sum+p.z,0);
+     triangles.push({indices,points,depth,image,alpha});
+   }
+ }
+ triangles.sort((a,b)=>b.depth-a.depth);
+ for(const {indices,points,image,alpha} of triangles){
+   const [p,q,r]=points,[[u,v],[U,V],[X,Y]]=indices.map(i=>uv[i]);
+   const det=(U-u)*(Y-v)-(X-u)*(V-v);
+   const a=((q.x-p.x)*(Y-v)-(r.x-p.x)*(V-v))/det,b=((q.y-p.y)*(Y-v)-(r.y-p.y)*(V-v))/det;
+   const c=((r.x-p.x)*(U-u)-(q.x-p.x)*(X-u))/det,d=((r.y-p.y)*(U-u)-(q.y-p.y)*(X-u))/det;
+   ctx.save();ctx.globalAlpha=alpha;ctx.imageSmoothingEnabled=image.width>64;
+   ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.lineTo(r.x,r.y);ctx.closePath();ctx.clip();
+   ctx.transform(a,b,c,d,p.x-a*u-c*v,p.y-b*u-d*v);ctx.drawImage(image,0,0,1,1);ctx.restore();
+ }
+}
+function afterDraw(args){
+ if(!ENTERED)return;BODY.viewport=args.viewRect||args.rect;entryGL=args.gl;ensureTier(64);ensureTier(512);
+ if(entryGL)drawSheet(args,true);else drawSheet2D(args);
+}
 function preview(args){ensureTier(64);drawSheet(args,false)}
 /* Descent into one shadow: Display's continuous focus carries the camera until the body fills the view */
+function inSelection(body){
+ return selectedRow?body.row===selectedRow-1:body.rank===selectedRank;
+}
 function focus(){
  if(selected){const b=BODY.list.find(x=>x.work===selected);return b?{center:b.world,scale:1/(b.size*1.9)}:null}
- if(!selectedRow)return null;const row=BODY.list.filter(b=>b.row===selectedRow-1);if(!row.length)return null;
+ if(!selectedRank)return null;const row=BODY.list.filter(inSelection);if(!row.length)return null;
  const lo=[0,1,2].map(k=>Math.min(...row.map(b=>b.world[k]-b.size))),hi=[0,1,2].map(k=>Math.max(...row.map(b=>b.world[k]+b.size))),aspect=(BODY.viewport?.width||1)/(BODY.viewport?.height||1);
  return {center:lo.map((v,k)=>(v+hi[k])/2),scale:2/(1.9*Math.max(...hi.map((v,k)=>v-lo[k])))*Math.max(1,Math.min(1.8,aspect*.8))};
 }
@@ -217,8 +254,8 @@ const T={
   de:{shadows:'Schatten',ranks:'Ränge',clusters:'Cluster',moving:'bewegt',rank:'Rang',row:'Reihe',forest:'aus dem Wald',from:n=>'aus Cluster '+n,
       cluster:'das Cluster, aus dem dieser Schatten geschnitten wurde',flat:'orthogonal',flatTip:'zurück in die Achse: alles flach'}
 };
-Object.assign(T.en,{intro:'49 shadow images. Selected shadows become pictures that cast the next shadows.',overview:'whole work',about:'About the work',rows:'Rows and perspectives',choose:'Choose a shadow in this row',documentation:'Work and documentation',work:'Shadow',clusterView:'Source cluster',motion:'Movement',positive:'Source cluster · positive',negative:'Source cluster · negative',path:'Path through the work',workWords:'Words of the work',unwritten:'The remaining work text is to be handwritten by the artist.',seven:'Seven selected shadows belong to this perspective.',rowOne:'The walk is the first rank: seven shadows from the forest.',rowTwo:'The first seven images return to an overhead projector. Three shuffles produce three perspectives, each with seven selected shadows.',rowThree:'The first four rows — 28 images — become the next set. Three further shuffles again yield three perspectives of seven shadows.',cluster:'This positive/negative pair documents the cluster from which this row’s seven shadows were selected.',motionCaption:'Recorded movement of this shadow',description:'gefallen, gefunden comprises 49 shadow images in three ranks. A set, one light and a chooser: seven shadows are selected, photographed and cropped. The images become the next set on an overhead projector. Three shuffles produce three new perspectives. The seven rows preserve that process: the forest walk, three perspectives of the first seven images, then three perspectives of the first 28. Choose a row, a shadow, its source cluster or its recorded movement.'});
-Object.assign(T.de,{intro:'49 Schattenbilder. Ausgewählte Schatten werden zu Bildern, die die nächsten Schatten werfen.',overview:'Gesamtwerk',about:'Über die Arbeit',rows:'Reihen und Perspektiven',choose:'Schatten dieser Reihe auswählen',documentation:'Werk und Dokumentation',work:'Schatten',clusterView:'Ausgangscluster',motion:'Bewegung',positive:'Ausgangscluster · Positiv',negative:'Ausgangscluster · Negativ',path:'Weg durch die Arbeit',workWords:'Worte der Arbeit',unwritten:'Der weitere Werktext soll vom Künstler handgeschrieben werden.',seven:'Sieben ausgewählte Schatten gehören zu dieser Perspektive.',rowOne:'Der Spaziergang ist der erste Rang: sieben Schatten aus dem Wald.',rowTwo:'Die ersten sieben Bilder kommen auf einen Overheadprojektor. Drei Neuanordnungen ergeben drei Perspektiven mit jeweils sieben ausgewählten Schatten.',rowThree:'Die ersten vier Reihen — 28 Bilder — werden zum nächsten Set. Drei weitere Neuanordnungen ergeben erneut drei Perspektiven mit je sieben Schatten.',cluster:'Dieses Positiv/Negativ-Paar dokumentiert das Cluster, aus dem die sieben Schatten dieser Reihe ausgewählt wurden.',motionCaption:'Aufgezeichnete Bewegung dieses Schattens',description:'gefallen, gefunden umfasst 49 Schattenbilder in drei Rängen. Ein Set, ein Licht und eine wählende Person: Sieben Schatten werden ausgewählt, fotografiert und zugeschnitten. Die Bilder werden auf einem Overheadprojektor zum nächsten Set. Drei Neuanordnungen ergeben drei neue Perspektiven. Die sieben Reihen bewahren diesen Ablauf: der Waldspaziergang, drei Perspektiven der ersten sieben Bilder und drei Perspektiven der ersten 28. Wähle eine Reihe, einen Schatten, sein Ausgangscluster oder seine aufgezeichnete Bewegung.'});
+Object.assign(T.en,{intro:'49 shadow images. Selected shadows become pictures that cast the next shadows.',overview:'whole work',about:'About the work',rows:'Rows and perspectives',choose:'Choose a shadow in this row',documentation:'Work and documentation',work:'Shadow',clusterView:'Source cluster',motion:'Movement',positive:'Source cluster · positive',negative:'Source cluster · negative',path:'Path through the work',workWords:'Words of the work',unwritten:'The remaining work text is to be handwritten by the artist.',seven:'Seven selected shadows belong to this perspective.',rowOne:'Seven shadows were selected on the walk to the Schwarzenbergturm on 11 November 2023.',rowTwo:'The first seven images return to an overhead projector. Three shuffles produce three perspectives, each with seven selected shadows.',rowThree:'The first four rows — 28 images — become the next set. Three further shuffles again yield three perspectives of seven shadows.',cluster:'This positive/negative pair documents the cluster from which this row’s seven shadows were selected.',motionCaption:'Recorded movement of this shadow',description:'gefallen, gefunden comprises 49 shadow images in three ranks. A set, one light and a chooser: seven shadows are selected, photographed and cropped. The images become the next set on an overhead projector. Three shuffles produce three new perspectives. The seven rows preserve that process: the forest walk, three perspectives of the first seven images, then three perspectives of the first 28. Choose a row, a shadow, its source cluster or its recorded movement.'});
+Object.assign(T.de,{intro:'49 Schattenbilder. Ausgewählte Schatten werden zu Bildern, die die nächsten Schatten werfen.',overview:'Gesamtwerk',about:'Über die Arbeit',rows:'Reihen und Perspektiven',choose:'Schatten dieser Reihe auswählen',documentation:'Werk und Dokumentation',work:'Schatten',clusterView:'Ausgangscluster',motion:'Bewegung',positive:'Ausgangscluster · Positiv',negative:'Ausgangscluster · Negativ',path:'Weg durch die Arbeit',workWords:'Worte der Arbeit',unwritten:'Der weitere Werktext soll vom Künstler handgeschrieben werden.',seven:'Sieben ausgewählte Schatten gehören zu dieser Perspektive.',rowOne:'Auf dem Spaziergang zum Schwarzenbergturm am 11. November 2023 wurden sieben Schatten ausgewählt.',rowTwo:'Die ersten sieben Bilder kommen auf einen Overheadprojektor. Drei Neuanordnungen ergeben drei Perspektiven mit jeweils sieben ausgewählten Schatten.',rowThree:'Die ersten vier Reihen — 28 Bilder — werden zum nächsten Set. Drei weitere Neuanordnungen ergeben erneut drei Perspektiven mit je sieben Schatten.',cluster:'Dieses Positiv/Negativ-Paar dokumentiert das Cluster, aus dem die sieben Schatten dieser Reihe ausgewählt wurden.',motionCaption:'Aufgezeichnete Bewegung dieses Schattens',description:'gefallen, gefunden umfasst 49 Schattenbilder in drei Rängen. Ein Set, ein Licht und eine wählende Person: Sieben Schatten werden ausgewählt, fotografiert und zugeschnitten. Die Bilder werden auf einem Overheadprojektor zum nächsten Set. Drei Neuanordnungen ergeben drei neue Perspektiven. Die sieben Reihen bewahren diesen Ablauf: der Waldspaziergang, drei Perspektiven der ersten sieben Bilder und drei Perspektiven der ersten 28. Wähle eine Reihe, einen Schatten, sein Ausgangscluster oder seine aufgezeichnete Bewegung.'});
 const lang=()=>globalThis.SSSWorldView?.language==='de'?'de':'en';
 const tx=v=>v&&typeof v==='object'?(v[lang()]??v.en??v.de??''):(v??'');
 const stat=(v,l)=>{const m=el('span','ss-hud-stat');m.append(el('b','',String(v)),el('small','',l));return m};
@@ -226,41 +263,99 @@ function block(label,right){const b=el('section','ss-hud-block'),h=el('div','ss-
 function button(label,act,active=false,cls='ss-action'){
  const b=el('button',cls,label);b.type='button';b.setAttribute?.('aria-pressed',String(active));b.addEventListener('click',act);return b;
 }
-function rowTitle(row){return row===1?T[lang()].forest:T[lang()].from(row-1)}
-function selectRow(row){selected=null;selectedRow=row;VIEW='still';showWork(null);updateNavigation()}
-function selectWork(work){selected=work;selectedRow=work?.row||null;VIEW='still';showWork(work);updateNavigation()}
-function returnSheet(){selected=null;selectedRow=null;VIEW='still';showWork(null);updateNavigation()}
+const STAGES={
+ en:['Forest walk','The first seven images','The first 28 images'],
+ de:['Waldspaziergang','Die ersten sieben Bilder','Die ersten 28 Bilder']
+};
+function rankTitle(rank){return STAGES[lang()][rank-1]||T[lang()].rank+' '+rank}
+function rowTitle(row){return row===1?T[lang()].forest:'Cluster '+(row-1)}
+function multipleRows(rank,row){return P.works.some(w=>w.rank===rank&&w.row!==row)}
+function selectRank(rank){
+ selectedRank=rank;selected=null;VIEW='still';
+ const rows=[...new Set(P.works.filter(w=>w.rank===rank).map(w=>w.row))];
+ selectedRow=rows.length===1?rows[0]:null;
+ updateNavigation();
+}
+function selectRow(row){
+ const first=P.works.find(w=>w.row===row);if(!first)return;
+ selectedRank=first.rank;selectedRow=row;selected=null;VIEW='still';updateNavigation();
+}
+function selectWork(work){
+ if(!work)return;
+ selected=work;selectedRank=work.rank;selectedRow=work.row;VIEW='still';updateNavigation();
+}
+function returnSheet(){selected=null;selectedRow=null;selectedRank=null;VIEW='still';updateNavigation()}
+function escape(){
+ if(!selectedRank)return false;
+ if(selected&&VIEW!=='still'){VIEW='still';updateNavigation()}
+ else if(selected)selectRow(selectedRow);
+ else if(selectedRow&&multipleRows(selectedRank,selectedRow))selectRank(selectedRank);
+ else returnSheet();
+ return true;
+}
 function updateNavigation(){
- if(!LAST)return;LAST.content.dataset??={};LAST.content.dataset.detail=String(!!selectedRow);for(const b of LAST.rowButtons||[])b.setAttribute?.('aria-pressed',String(Number(b.dataset?.row)===selectedRow));
- LAST.breadcrumb?.replaceChildren(button(T[lang()].overview,returnSheet,!selectedRow));
- if(selectedRow)LAST.breadcrumb?.append(button(rowTitle(selectedRow),()=>selectRow(selectedRow),!selected));
- if(selected)LAST.breadcrumb?.append(el('span','ss-current',selected.id));
- fitPanel();
+ if(!LAST)return;
+ const {content,breadcrumb,rail}=LAST,t=T[lang()];
+ content.dataset.detail=String(!!selectedRank);
+ breadcrumb.replaceChildren(button(t.overview,returnSheet,!selectedRank));
+ if(selectedRank)breadcrumb.append(button(rankTitle(selectedRank),()=>selectRank(selectedRank),!selected&&!selectedRow));
+ if(selectedRow&&multipleRows(selectedRank,selectedRow))breadcrumb.append(button(rowTitle(selectedRow),()=>selectRow(selectedRow),!selected));
+ if(selected)breadcrumb.append(el('span','ss-current',selected.id));
+ showWork();rail.scrollTop=0;fitPanel();
 }
 function imageFigure(src,label,cls=''){
  const url=mediaUrl(src);if(!url)return null;const figure=el('figure','ss-document '+cls),image=el('img');image.src=url;image.alt=label;image.decoding='async';figure.append(image,el('figcaption','',label));return figure;
 }
-function showWork(w){
- if(!panel)return;panel.replaceChildren();panel.hidden=!w&&!selectedRow;if(panel.hidden)return;
- const t=T[lang()],row=selectedRow||w.row,works=(P.works||[]).filter(x=>x.row===row),rank=works[0]?.rank;
- const b=block(w?w.id:rowTitle(row),`${t.rank} ${w?.rank||rank} · ${t.row} ${row}`);
- b.append(el('p','ss-meta',w?(w.source==='forest'?t.forest:t.from(row-1)):t.seven));
- if(!w){
-  const choices=el('nav','ss-work-choices');choices.setAttribute?.('aria-label',t.choose);
-  for(const work of works)choices.append(button(work.id,()=>selectWork(work)));
-  b.append(choices,el('p','ss-description',row===1?t.rowOne:rank===2?t.rowTwo:t.rowThree));
-  const example=works.find(x=>x.cluster_positive);
-  if(example){const img=imageFigure(example.cluster_positive,t.positive);if(img)b.append(img)}
- }else{
-  const tabs=el('nav','ss-view-choices');tabs.setAttribute?.('aria-label',t.documentation);
-  const views=[['still',t.work],...(w.cluster_positive?[['cluster',t.clusterView]]:[]),...(w.animation?[['animation',t.motion]]:[])];
-  for(const [mode,label]of views)tabs.append(button(label,()=>{VIEW=mode;showWork(w)},VIEW===mode));b.append(tabs);
-  if(VIEW==='cluster'){
-   b.append(el('p','ss-description',t.cluster));const pair=el('div','ss-cluster');for(const [src,label]of [[w.cluster_positive,t.positive],[w.cluster_negative,t.negative]]){const figure=imageFigure(src,label);if(figure)pair.append(figure)}b.append(pair);
-  }else{const figure=imageFigure(VIEW==='animation'?w.animation:w.still,VIEW==='animation'?t.motionCaption:t.work+' '+w.id);if(figure)b.append(figure)}
-  const peers=el('nav','ss-work-choices');peers.setAttribute?.('aria-label',t.choose);for(const peer of works)peers.append(button(peer.id,()=>selectWork(peer),peer.id===w.id));b.append(peers);
+function addClusterPair(container,work,t){
+ const pair=el('div','ss-cluster');
+ for(const [src,label] of [[work.cluster_positive,t.positive],[work.cluster_negative,t.negative]]){
+   const figure=imageFigure(src,label);if(figure)pair.append(figure);
  }
- panel.append(b);fitPanel();
+ container.append(el('p','ss-description',t.cluster),pair);
+}
+function addChoices(container,works){
+ const nav=el('nav','ss-work-choices');nav.setAttribute('aria-label',T[lang()].choose);
+ for(const work of works){
+   const control=button(work.id,()=>selectWork(work),selected?.id===work.id);
+   const url=mediaUrl(work.still,64);
+   if(url){const thumbnail=el('img','ss-thumbnail');thumbnail.alt='';thumbnail.src=url;control.prepend(thumbnail)}
+   nav.append(control);
+ }
+ container.append(nav);
+}
+function showWork(){
+ if(!panel)return;panel.replaceChildren();panel.hidden=!selectedRank;if(panel.hidden)return;
+ const t=T[lang()],works=P.works.filter(w=>w.rank===selectedRank),rowWorks=works.filter(w=>w.row===selectedRow);
+ const b=block(selected?selected.id:selectedRow?rowTitle(selectedRow):rankTitle(selectedRank),t.rank+' '+selectedRank);
+ if(!selectedRow){
+  b.append(el('p','ss-description',selectedRank===2?t.rowTwo:t.rowThree));
+  const choices=el('nav','ss-perspectives');choices.setAttribute('aria-label',t.rows);
+  for(const row of new Set(works.map(w=>w.row))){
+   const sample=works.find(w=>w.row===row),control=button(rowTitle(row),()=>selectRow(row));
+   const url=mediaUrl(sample.cluster_positive,64);
+   if(url){const img=el('img','ss-thumbnail');img.src=url;img.alt='';control.prepend(img)}
+   choices.append(control);
+  }
+  b.append(choices);
+ }else if(!selected){
+  const sample=rowWorks[0];
+  if(sample?.cluster_positive){
+    addClusterPair(b,sample,t);
+  }else b.append(el('p','ss-description',t.rowOne));
+  addChoices(b,rowWorks);
+ }else{
+  const w=selected, tabs=el('nav','ss-view-choices');tabs.setAttribute('aria-label',t.documentation);
+  const views=[['still',t.work],...(w.cluster_positive?[['cluster',t.clusterView]]:[]),...(w.animation?[['animation',t.motion]]:[])];
+  for(const [mode,label] of views)tabs.append(button(label,()=>{VIEW=mode;updateNavigation()},VIEW===mode));
+  b.append(tabs);
+  if(VIEW==='cluster'){
+   addClusterPair(b,w,t);
+  }else{
+   const figure=imageFigure(VIEW==='animation'?w.animation:w.still,VIEW==='animation'?t.motionCaption:t.work+' '+w.id);if(figure)b.append(figure);
+  }
+  addChoices(b,rowWorks);
+ }
+ panel.append(b);
 }
 /* The common grid fixes the containing rectangle; image size and reading
  * flow stay owner-local inside that rectangle. Selection never moves cells. */
@@ -277,19 +372,23 @@ function render({host,content,projection,ui=null,safeArea=null}={}){
  for(const [v,l]of [[works.length,t.shadows],[ranks.length,t.ranks],[clusters,t.clusters]])top.append(stat(v,l));const header=el('div','ss-hud-header');header.append(top);
  rail.append(el('p','ss-intro',t.intro));
  const about=el('details','ss-about');about.append(el('summary','',t.about),el('p','ss-description',t.description));rail.append(about);
- const navigation=el('nav','ss-rows');navigation.setAttribute?.('aria-label',t.rows);const rowButtons=[];
- for(const row of [...new Set(works.map(w=>w.row))]){const sample=works.find(w=>w.row===row),b=button(`${t.rank} ${sample.rank} · ${rowTitle(row)}`,()=>selectRow(row),selectedRow===row);b.dataset??={};b.dataset.row=String(row);navigation.append(b);rowButtons.push(b)}rail.append(navigation);
+ const navigation=el('nav','ss-rows');navigation.setAttribute('aria-label',t.path);
+ for(const rank of new Set(works.map(w=>w.rank))){
+   const control=button(rankTitle(rank),()=>selectRank(rank));
+   control.dataset.rank=String(rank);navigation.append(control);
+ }
+ rail.append(navigation);
  const words=el('details','ss-author-words');words.append(el('summary','',t.workWords));for(const word of projection.words||[])words.append(el('p','ss-word'+(word?.placeholder?' ss-placeholder':''),word?.placeholder?t.unwritten:tx(word)));rail.append(words);
  const side=el('div','ss-hud-side');panel=el('div','ss-panel');side.append(panel);
  const bottom=el('div','ss-hud-bottom'),breadcrumb=el('nav','ss-breadcrumb');breadcrumb.setAttribute?.('aria-label',t.path);bottom.append(breadcrumb,button(t.flat,()=>globalThis.SSSWorldView?.easeTo?.(shader.view.rest,900),false,'ss-hud-flat'));
- rail.append(side);content.append(header,rail,bottom);LAST={host,content,projection,ui,safeArea,rail,side,bottom,breadcrumb,rowButtons};
+ rail.append(side);content.append(header,rail,bottom);LAST={host,content,projection,ui,safeArea,rail,side,bottom,breadcrumb};
  if(ui){ui.bind(header,'header');ui.bind(rail,'description');ui.bind(bottom,'timeline')}
- showWork(selected);updateNavigation();return true;
+ updateNavigation();return true;
 }
 addEventListener('sss:language',()=>{if(LAST&&LAST.content.isConnected)render(LAST)});
 addEventListener('sss:safe-area',fitPanel);addEventListener('resize',fitPanel);
-function activateFieldPoint({point}={}){if(!ENTERED)return;selectWork(point?.work||null)}
-function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;selectedRow=null;panel=null;LAST=null;SIDE_BASE=null;ENTERED=false;MEDIA.get(512).setActive(false);if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
+function activateFieldPoint({point}={}){if(!ENTERED||!point)return;if(point.work)selectWork(point.work);else if(point.kind==='cluster')selectRow(point.row)}
+function unmount({host,content}={}){if(host)host.hidden=true;if(content)content.replaceChildren();selected=null;selectedRow=null;selectedRank=null;VIEW='still';panel=null;LAST=null;ENTERED=false;MEDIA.get(512).setActive(false);if(entryGL&&GPU.has(entryGL))disposeGPU(entryGL,GPU.get(entryGL),true);entryGL=null}
 addEventListener('pagehide',resetMedia);
-modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint}));
+modules.set(id,Object.freeze({id,shader,render,unmount,fieldProjection,activateFieldPoint,canEscape:()=>Boolean(selectedRank),escape}));
 })();

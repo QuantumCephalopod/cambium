@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const source=fs.readFileSync(path.join(__dirname,'render.js'),'utf8');
 if(!process.argv[2]||!process.argv[3]||!process.argv[4])throw Error('pass shared representation-handoff, navigation and ui-grid modules as witness arguments');
 const RH=require(path.resolve(process.argv[2])),N=require(path.resolve(process.argv[3])),UI=require(path.resolve(process.argv[4]));
-function node(tag){return {tag,className:'',children:[],dataset:{},attrs:{},events:{},style:{setProperty(){}},setAttribute(k,v){this.attrs[k]=v},append(...children){for(const child of children){if(child.parentNode)child.parentNode.children=child.parentNode.children.filter(x=>x!==child);child.parentNode=this;this.children.push(child)}},replaceChildren(...children){this.children=children},addEventListener(k,fn){this.events[k]=fn}}}
+function node(tag){return {tag,className:'',children:[],dataset:{},attrs:{},events:{},style:{setProperty(){}},setAttribute(k,v){this.attrs[k]=v},prepend(...children){this.children.unshift(...children)},append(...children){for(const child of children){if(child.parentNode)child.parentNode.children=child.parentNode.children.filter(x=>x!==child);child.parentNode=this;this.children.push(child)}},replaceChildren(...children){this.children=children},addEventListener(k,fn){this.events[k]=fn}}}
 function fakeGL(){
   const owner={},alloc=[],uploads=[],deleted=[],enabled=new Set();let texture=null;
   return new Proxy({alloc,uploads,deleted,filters:[],isEnabled:k=>enabled.has(k),enable:k=>enabled.add(k),disable:k=>enabled.delete(k),createProgram:()=>({owner}),createShader:()=>({owner}),createVertexArray:()=>({owner}),createTexture:()=>({owner}),deleteTexture:t=>{assert.equal(t.owner,owner);deleted.push(t)},deleteProgram(){},deleteVertexArray(){},getShaderParameter:()=>true,getUniformLocation:(_,name)=>name,
@@ -13,7 +13,7 @@ function fakeGL(){
 }
 async function tick(){for(let i=0;i<220;i++)await Promise.resolve()}
 function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,holdLow=false,bad64=null,bad512=null}={}){
-  const requests=[],modules=new Map(),works=Array.from({length:49},(_,i)=>({id:String(i),row:Math.floor(i/7)+1,rank:1,source:'forest',still:'still/'+i+'.webp',...(i>=7?{cluster_positive:'cluster_positive/'+Math.floor(i/7)+'.webp',cluster_negative:'cluster_negative/'+Math.floor(i/7)+'.webp'}:{}),...(i===0?{animation:'animation/0.webp'}:{})}));
+  const requests=[],modules=new Map(),works=Array.from({length:49},(_,i)=>({id:String(i),row:Math.floor(i/7)+1,rank:i<7?1:i<28?2:3,source:i<7?'forest':'cluster '+Math.floor(i/7),still:'still/'+i+'.webp',...(i>=7?{cluster_positive:'cluster_positive/'+Math.floor(i/7)+'.webp',cluster_negative:'cluster_negative/'+Math.floor(i/7)+'.webp'}:{}),...(i===0?{animation:'animation/0.webp'}:{})}));
   const sources=new Set(works.flatMap(w=>[w.still,w.cluster_positive,w.cluster_negative,w.animation].filter(Boolean))),maps=Object.fromEntries([64,512].map(size=>[size,Object.fromEntries([...sources].map(s=>[s,'sizes/'+size+'/'+s]))]));if(missing)delete maps[64][works[0].still];
   if(bad64!==null)maps[64][works[0].still]=bad64;
   if(bad512!==null)for(const s of ['still/0.webp','animation/0.webp','cluster_negative/1.webp'])maps[512][s]=bad512;
@@ -25,7 +25,7 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
   f.module.shader.preload();await tick();assert.equal(f.requests.length,55);assert(f.requests.every(x=>x.includes('/64/')&&!x.includes('animation')));assert(f.peak()<=4);
   f.module.shader.preview(args(hostGL));assert.deepEqual(hostGL.alloc[0].slice(1),[1,'RGBA8',64,64,55]);assert.equal(hostGL.uploads.length,55);assert.equal(hostGL.clip[3],1);assert(hostGL.filters.some(x=>x[1]==='TEXTURE_MAG_FILTER'&&x[2]==='NEAREST'));
   const host=node('host'),content=node('content');f.module.render({host,content,projection:f.projection});f.module.shader.afterDraw(args(entryGL));assert.equal(entryGL.uploads.length,55,'entry immediately uploads completed decoded low cache');assert.deepEqual(entryGL.alloc.map(x=>x.slice(1)),[[1,'RGBA8',64,64,55],[10,'RGBA8',512,512,55]]);
-  const images=()=>{const result=[];function walk(n){if(n.tag==='img')result.push(n.src);for(const c of n.children||[])walk(c)}walk(content);return result};
+  const images=()=>{const result=[];function walk(n){if(n.tag==='img'&&n.className!=='ss-thumbnail')result.push(n.src);for(const c of n.children||[])walk(c)}walk(content);return result};
   const all=()=>{const list=[];function walk(n){list.push(n);for(const c of n.children||[])walk(c)}walk(content);return list},press=label=>{const b=all().find(x=>x.tag==='button'&&x.textContent===label);assert(b,'missing control '+label);b.events.click()};
   f.module.activateFieldPoint({point:{work:f.projection.works[0]}});assert.deepEqual(images(),['https://fat.invalid/x/sizes/512/still/0.webp']);press('Movement');assert.deepEqual(images(),['https://fat.invalid/x/sizes/512/animation/0.webp'],'animation loads only on explicit selected-work demand');
   f.module.activateFieldPoint({point:{work:f.projection.works[7]}});press('Source cluster');assert.deepEqual(images(),['https://fat.invalid/x/sizes/512/cluster_positive/1.webp','https://fat.invalid/x/sizes/512/cluster_negative/1.webp']);
@@ -58,14 +58,29 @@ function fixture({missing=false,highFail=false,holdHigh=false,lowFail=false,hold
  }
  leaves.sort((p,q)=>q.world[1]-p.world[1]);const expected=[];for(let row=0;row<8;row++)expected.push(leaves.slice(row*8,row*8+8).sort((p,q)=>p.world[0]-q.world[0]));
  assert.deepEqual(JSON.parse(JSON.stringify(f.law.SHEET)),expected,'shared geometry changed a local sheet coordinate, size or row/column order');
- assert.equal(field.points.length,49);assert.equal(f.law.BODY.list.length,55);
- for(const point of field.points){const c=byPath.get(point.path);assert.equal(c.row,point.work.row);assert.equal(point.anchor,'cell');assert.equal(point.work.id,point.id.slice(5));}
+ assert.equal(field.points.length,55);assert.equal(f.law.BODY.list.length,55);
+ assert.equal(f.module.shader.navigation.cells,false);assert.equal(f.module.shader.navigation.pointInk,false);
+ for(const point of field.points){
+   const c=byPath.get(point.path);assert.equal(point.anchor,'cell');assert.equal(point.context,true);assert.equal(point.contactScale,.94);
+   if(point.work){assert.equal(c.row,point.work.row);assert.equal(point.work.id,point.id.slice(5))}
+   else{assert.equal(point.kind,'cluster');assert.equal(c.row,point.row);}
+ }
  assert(!f.law.BODY.list.some(b=>f.law.SHEET[0].some(c=>c.world===b.world)),'first display row is not empty');
  const host=node('host'),content=node('content');f.module.render({host,content,projection:f.projection});
  const nodes=()=>{const out=[];function visit(n){out.push(n);for(const c of n.children||[])visit(c)}visit(content);return out},press=label=>{const b=nodes().find(n=>n.tag==='button'&&n.textContent===label);assert(b,label);b.events.click()};
  assert(nodes().some(n=>n.textContent?.includes('49 shadow images')));
- const row=nodes().find(n=>n.dataset.row==='3');assert(row);row.events.click();assert.equal(f.law.selected().selectedRow,3);assert.equal(f.law.selected().selected,null);assert(f.law.focus());
- press('14');assert.equal(f.law.selected().selected.id,'14');assert(f.law.focus().scale>1);press('whole work');assert.equal(f.law.focus(),null);
+ press('The first seven images');assert.equal(f.law.selected().selectedRow,null);
+ assert.equal(nodes().filter(n=>n.tag==='button'&&n.textContent?.startsWith('Cluster ')).length,3);
+ press('Cluster 2');assert.equal(f.law.selected().selectedRow,3);assert(f.law.focus());
+ press('14');assert.equal(f.law.selected().selected.id,'14');assert(f.law.focus().scale>1);
+ press('Source cluster');assert(f.module.escape());assert.equal(f.law.selected().selected.id,'14');
+ assert(f.module.escape());assert.equal(f.law.selected().selectedRow,3);assert.equal(f.law.selected().selected,null);
+ assert(f.module.escape());assert.equal(f.law.selected().selectedRow,null);assert(f.module.canEscape());
+ assert(f.module.escape());assert(!f.module.canEscape());assert.equal(f.law.focus(),null);
+ f.module.activateFieldPoint({point:field.points.find(p=>p.id==='cluster:5')});assert.equal(f.law.selected().selectedRow,6);
+ press('whole work');press('Forest walk');assert.equal(f.law.selected().selectedRow,1);press('0');
+ assert(!nodes().some(n=>n.tag==='button'&&n.textContent==='Source cluster'));
+ press('Movement');assert(f.module.escape());assert.equal(f.law.selected().selected.id,'0');press('whole work');
  const grid=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json'))));
  for(const [w,h]of [[1280,800],[390,844]]){
   const bound=fixture(),state=UI.normalizeState(JSON.parse(fs.readFileSync(path.join(__dirname,'ui-grid.json')))),before=JSON.stringify(state),bindings=[];

@@ -1,11 +1,11 @@
-/* Schattenseiten HUD: pale ink over the host's dark field. Every kind of information has a fixed place at the
+/* Schattenseiten HUD: dark ink on the same paper as the work. Every kind of information has a fixed place at the
    edges; nothing floats over the field in a box, so the flat picture in the centre stays free. Same grammar as the
    other bodies' HUDs; Display's own surfaces are respected through the safe-area contract:
    var(--display-safe-top) is the header, var(--display-safe-bottom) the minimap's band on the right. */
 .schattenseiten-content{
-  --ink:#ecebe6;--dim:#9a9a94;--faint:#4d4d49;--paper:#0b1412;--edge:clamp(.9rem,2.2vw,1.6rem);
+  --ink:#171914;--dim:#383b32;--faint:#676b5d;--paper:#f3f2ec;--edge:clamp(.9rem,2.2vw,1.6rem);
   position:absolute;inset:0;pointer-events:none;color:var(--ink);
-  font-family:var(--mono);text-shadow:var(--display-text-shadow);
+  font-family:var(--mono);text-shadow:none;
 }
 .schattenseiten-content button,.schattenseiten-content input,.schattenseiten-content a{pointer-events:auto}
 .ss-hud-rail{
@@ -78,3 +78,28 @@
 .schattenseiten-content>.ss-hud-rail[data-ui-bounded]{padding:.75rem;pointer-events:auto;gap:.65rem}
 .schattenseiten-content>.ss-hud-bottom[data-ui-bounded]{padding:.75rem;align-content:flex-start;pointer-events:auto}
 .ss-hud-rail .ss-hud-side{position:static;inline-size:100%;max-inline-size:100%;max-block-size:none;padding:0;overflow:visible}
+
+/* Each input set leads to its recorded arrangements and seven chosen cuts. */
+.ss-rows{grid-template-columns:minmax(0,1fr)}
+.ss-perspectives,.ss-work-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5em;align-items:end}
+.ss-perspectives .ss-action,.ss-work-choices .ss-action{display:grid;gap:.25em;min-inline-size:0;font-variant-numeric:tabular-nums}
+.ss-thumbnail{display:block;inline-size:100%;aspect-ratio:1;object-fit:contain;background:var(--paper)}
+
+/* The site prints on pale paper. The shared inverse control turns the entire
+ * sheet and its ink together. An opaque reading surface also works over a cut. */
+.ss-hud-header .ss-hud-top,.ss-hud-rail .ss-intro,.ss-hud-rail .ss-about,
+.ss-hud-rail .ss-author-words,.ss-hud-rail .ss-hud-block,.ss-hud-bottom .ss-breadcrumb{
+ background:var(--paper);color:var(--ink);padding:.4em .55em
+}
+.ss-hud-header .ss-hud-top{flex:0 1 auto;inline-size:fit-content}
+.ss-hud-rail .ss-action,.ss-hud-bottom .ss-action,.ss-hud-bottom .ss-hud-flat{
+ background:var(--paper);color:var(--ink);font-size:var(--type-r0);
+ line-height:1.4;padding:.2em .45em;text-decoration:underline;text-underline-offset:.18em
+}
+.ss-hud-rail .ss-action[aria-pressed="true"],.ss-hud-bottom .ss-action[aria-pressed="true"]{font-weight:700;text-decoration-style:double}
+.ss-hud-rail .ss-action:focus-visible,.ss-hud-bottom :focus-visible{outline:.15em solid var(--ink);outline-offset:-.15em}
+.ss-hud-header .ss-hud-series,.ss-hud-header .ss-hud-stat small,.ss-hud-block .ss-hud-label,
+.ss-document figcaption{font-size:var(--type-rn1);color:var(--dim)}
+.ss-hud-bottom .ss-breadcrumb{align-items:center}
+.ss-work-choices{grid-template-columns:repeat(auto-fit,minmax(min(100%,6.5ch),1fr))}
+.ss-work-choices .ss-action{white-space:nowrap;overflow-wrap:normal;padding-inline:.15em}

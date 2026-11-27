@@ -1,7 +1,7 @@
 ---
 name: schattenseiten
 description: "Independently rooted Schattenseiten site organism: own presentation, interaction and media readiness for source-admitted works, with its own local lifecycle membrane."
-version: "1.14"
+version: "1.15"
 ---
 
 # SCHATTENSEITEN — site-holon receptor
@@ -26,7 +26,7 @@ The site membrane declares body-local `validate-projection.py` and `validate-pro
 
 ## Body
 
-The work is titled **gefallen, gefunden** (the organ's folder is Schattenseiten). The current body is an 8×8 sheet: depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid. The first display row is empty, providing headroom below the upper liquid membrane. Source rows 1–7 follow in their original order in display rows 2–8; this presentation offset never rewrites source row, rank, cluster or work identity. Each source row is one line of eight slots: seven shadows and, in the eighth, the cluster the row was cut from (free in source row 1). All slots are the same size. Nothing floats: each shadow rests in its leaf. The site declares a rest view (`shader.view`): along the shadow axis, in parallel projection, the whole is one flat picture, and turning it shows the tetrahedra. An `orthogonal` control returns to it. Local focus follows the actual work: whole sheet → one source row/perspective → one shadow, with a breadcrumb back to row or whole work. Each row exposes its seven admitted shadows; this does not substitute generic Sierpinski rank for the work’s own stages. A selected work first shows its still; explicit controls expose its admitted positive/negative source cluster and recorded movement where declared. The orthogonal control changes orientation, not the chosen work.
+The work is titled **gefallen, gefunden** (the organ's folder is Schattenseiten). The current body is an 8×8 sheet: depth three of the tetrahedron has sixty-four leaves, and along the shadow axis they are exactly an 8×8 grid. The first display row is empty, providing headroom below the upper liquid membrane. Source rows 1–7 follow in their original order in display rows 2–8; this presentation offset never rewrites source row, rank, cluster or work identity. Each source row is one line of eight slots: seven shadows and, in the eighth, the cluster the row was cut from (free in source row 1). All slots are the same size. Nothing floats: each shadow rests in its leaf. The site declares a rest view (`shader.view`): along the shadow axis, in parallel projection, the whole is one flat picture, and turning it shows the tetrahedra. An `orthogonal` control returns to it. Local focus follows the actual making of the work. The three input sets are the forest walk, the seven resulting images, and the 28 images of the first four rows. Each of the two later sets yields three recorded arrangements. Their cuts remain siblings from a shared cluster. The artwork supplies no per-cut crop coordinates or ancestry between individual shadows. Each row exposes its seven admitted shadows; this does not substitute generic Sierpinski rank for the work’s own stages. A selected work first shows its still; explicit controls expose its admitted positive/negative source cluster and recorded movement where declared. The orthogonal control changes orientation, not the chosen work.
 
 The three 2026-10-19 presentation nutrients are completed and retained source-exact in local `_waste/`. Their owner-local HOME records the actual source, controls, geometry, media and narrow/wide technical witnesses. Subsequent concrete failures enter as new nutrients; no personal acceptance or downstream merge is a metabolic stage.
 
@@ -85,3 +85,10 @@ The owner-declared compass keeps its ordinary wide address and lends `z` on port
 ## Upright mobile field — 2026-11-09
 
 The turned carrier uses source-declared upright header, description and timeline address spans, while the ordinary declarations and the works, source geometry, media and controls remain intact. The header and description do not cover each other's touch targets. The upright timeline is exactly the same source-addressed span as Crawlerbait's and remains fixed during selection. The common compass stays at its ordinary address; previous compass-variant wording above describes an earlier carrier rather than the current selection.
+
+
+## Navigation through the making of the work — 2026-11-27
+
+Entry keeps the whole sheet visible and offers the three recorded input sets. The forest stage opens its seven shadows directly. The two later stages offer their three arrangements and then each arrangement’s seven shadows. A work tile enters that shadow and a cluster tile opens its perspective, with both source exposures when admitted. The source IDs, sheets, document variants and two artist-authored sentences retain their own identity. No forest cluster image exists in the admitted set.
+
+The site declines generic cell navigation and point ink. Each of the 55 occupied sheet tiles owns its source contact at its existing physical extent. Empty cells have no gallery action. The graphic primitives remain presentation coordinates; their subdivisions do not establish artwork genealogy. The gallery also offers native controls for the same choices and retains the original selected-work media. A local return goes from documentation to its still, from a shadow to its seven siblings, from a later perspective to its input set, and from a set to the complete sheet. The shared Back control leaves the site after these local returns. Changing the orientation preserves the work selection.
